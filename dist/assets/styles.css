@@ -250,3 +250,43 @@ header{border-bottom:1px solid var(--line);background:rgba(255,255,255,.97);posi
 .home-rights-home,.member-growth-home{border-block:1px solid var(--line)}
 @media(max-width:850px){.member-workspace-layout,.home-rights-layout{grid-template-columns:1fr}.member-growth-output,.home-rights-output{position:static;max-height:none}}
 @media print{.member-growth-hero,.home-rights-hero,[data-member-growth-form],[data-home-rights-form]{display:none!important}.member-workspace-layout,.home-rights-layout{display:block}.member-growth-output,.home-rights-output{position:static;max-height:none;border:0;box-shadow:none;padding:0}}
+
+/* R18 Franklin Everyday Operating System */
+[data-r18-home-hero]{padding-top:44px;background:linear-gradient(145deg,#e8f6f2 0%,#fff 50%,#fff3dc 100%)}
+.navigator-bot{margin-top:28px;padding:clamp(18px,3vw,30px);background:#fff;border:2px solid #a8cbc5;border-radius:20px;box-shadow:0 18px 48px rgba(3,69,75,.13)}
+.navigator-form label{font-size:1.12rem;font-weight:850;color:var(--brand-dark)}
+.navigator-input-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:stretch;margin-top:9px}
+.navigator-input-row textarea{min-height:104px;font-size:1.05rem;line-height:1.5;resize:vertical}
+.navigator-go{min-width:155px;align-self:stretch;justify-content:center}
+.navigator-examples{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.navigator-examples button{border:1px solid #b8cfcb;border-radius:999px;background:var(--soft);padding:8px 12px;color:var(--brand-dark);font-weight:700;cursor:pointer}
+.navigator-examples button:hover,.navigator-examples button:focus-visible{border-color:var(--brand);background:#fff}
+.navigator-output{margin-top:18px;border-top:1px solid var(--line);padding-top:18px;outline:none}
+.navigator-output:focus{outline:3px solid #f2b544;outline-offset:4px}
+.navigator-result{padding:16px 0;border-bottom:1px solid var(--line)}
+.navigator-result:last-child{border-bottom:0}
+.navigator-result h3,.navigator-result h4{margin:.1rem 0 .5rem}
+.home-command-bar{background:#173a3d;color:#fff;padding:16px 0}
+.command-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.command-grid a{display:grid;gap:3px;padding:14px;border-radius:12px;color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.18)}
+.command-grid a:hover,.command-grid a:focus-visible{background:rgba(255,255,255,.1)}
+.command-grid strong{color:#ffe1a5;font-size:1rem}.command-grid span{font-size:.82rem;color:#dce9e7}
+.section-heading-row{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:20px}
+.split-feature{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:32px;align-items:center}
+.feature-list-card{padding:24px;border:1px solid #bad2ce;border-radius:16px;background:#fff;box-shadow:var(--shadow)}
+.today-hero{background:linear-gradient(145deg,#e7f4f1,#fff 58%,#f7e8c9)}
+.timeline-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.get-done-grid{display:grid;gap:20px}
+.done-card{padding:clamp(20px,3vw,30px);border:1px solid var(--line);border-left:6px solid var(--brand);border-radius:16px;background:#fff;box-shadow:var(--shadow);scroll-margin-top:90px}
+.done-card ol{padding-left:1.25rem}.done-card li{margin:.65rem 0}.done-step{font-size:.78rem;font-weight:850;text-transform:uppercase;letter-spacing:.08em;color:var(--brand)}
+.my-franklin-hero{background:linear-gradient(145deg,#edf7f4,#fff 55%,#f9ecd7)}
+.my-franklin-layout{display:grid;grid-template-columns:minmax(320px,.85fr) minmax(0,1.15fr);gap:28px;align-items:start}
+.profile-detail-card{max-width:820px;padding:clamp(20px,4vw,36px);border:1px solid var(--line);border-top:6px solid var(--brand);border-radius:18px;background:#fff;box-shadow:var(--shadow)}
+.business-dashboard-hero{background:linear-gradient(145deg,#e4f3ee,#fff 52%,#f6e4c3)}
+@media(max-width:960px){.command-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.split-feature,.my-franklin-layout{grid-template-columns:1fr}}
+@media(max-width:720px){.navigator-input-row{grid-template-columns:1fr}.navigator-go{min-width:0}.command-grid,.timeline-grid{grid-template-columns:1fr}.section-heading-row{display:block}.section-heading-row .button{margin-top:12px}}
+
+.reminder-list{list-style:none;padding:0;margin:1rem 0;display:grid;gap:.65rem}.reminder-list li{display:flex;align-items:center;justify-content:space-between;gap:1rem;border:1px solid var(--line,#d7e1df);border-radius:.7rem;padding:.75rem;background:#fff}.button.small{padding:.45rem .7rem;font-size:.9rem}
+
+/* R18 public growth integration */
+.updates-layout,.member-display-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr);gap:1.5rem;align-items:start}.updates-consent{display:flex;gap:.7rem;align-items:flex-start}.updates-consent input{margin-top:.35rem;flex:0 0 auto}.member-display-preview{border:3px solid currentColor;border-radius:18px;padding:2rem;text-align:center;display:grid;gap:.55rem;max-width:440px;background:#fff}.member-display-preview strong{font-size:1.35rem;letter-spacing:.08em}.member-display-preview span{font-size:2rem;font-weight:800}.member-display-qr-placeholder{width:108px;height:108px;margin:.5rem auto;display:grid;place-items:center;border:8px double currentColor;font-weight:900;letter-spacing:.15em}.contact-channel{border-left:4px solid currentColor;padding-left:1rem}.source-badge{display:inline-flex;padding:.25rem .55rem;border:1px solid currentColor;border-radius:999px;font-size:.85rem}@media(max-width:760px){.updates-layout,.member-display-layout{grid-template-columns:1fr}.member-display-preview{max-width:none}}

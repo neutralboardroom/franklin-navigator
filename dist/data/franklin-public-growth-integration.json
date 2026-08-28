@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "smarter.franklin.public-growth-integration.v18",
+  "release": "FR-NAV0.3.0-CANDIDATE-R18",
+  "checkedAt": "2026-08-28",
+  "predecessor": {
+    "release": "FR-NAV0.2.0-CANDIDATE-R17",
+    "bytes": 9150782,
+    "sha256": "4887778c933a3b2472d970f8ee2b1598113f72ccace7aec5e652caa0a36e4441",
+    "gitCommit": "4fa7b9ab1c747fec58040ec754e2d0090f078c19"
+  },
+  "workOrders": [
+    "WO-20260828-LOCAL-FRANKLIN-PUBLIC-GROWTH-INTEGRATION-015",
+    "WO-20260828-LOCAL-FRANKLIN-PAID-MEMBERSHIP-ACTIVATION-012",
+    "WO-20260828-LOCAL-FRANKLIN-MEMBER-PHYSICAL-COMMUNITY-MARK-013",
+    "WO-20260828-LOCAL-FRANKLIN-RESIDENT-UPDATES-OPTIN-014"
+  ],
+  "residentUpdates": {
+    "route": "/updates/",
+    "explicitConsentRequired": true,
+    "precheckedConsent": false,
+    "publicUseFree": true,
+    "subscriberAuthority": "SRE_OWNER_CONSOLE",
+    "verifiedAutomatedEndpointAvailable": false,
+    "interimIntake": "EXPLICIT_USER_INITIATED_EMAIL",
+    "mailbox": "community@franklinnavigator.com",
+    "attributionAllowlist": [
+      "WEBSITE",
+      "EVENT_QR",
+      "MEMBER_DISPLAY_QR",
+      "AMBASSADOR",
+      "COMMUNITY_PARTNER"
+    ],
+    "silentExport": false,
+    "boughtOrScrapedLists": false
+  },
+  "membership": {
+    "route": "/membership-start/",
+    "priceAuthority": "LOCAL_MEMBERSHIP_PRICE_AUTHORITY_2026_08_27_V2",
+    "paymentsAcceptedNow": false,
+    "checkoutLive": false,
+    "billingLive": false,
+    "paidEntitlementsLive": false,
+    "accountIdentityOperational": false,
+    "claimSubmissionOperational": false,
+    "memberPersistenceOperational": false,
+    "supportMailbox": "community@franklinnavigator.com",
+    "freeCorrectionIndependent": true,
+    "payToRank": false
+  },
+  "communityMemberDisplay": {
+    "route": "/community-member-display/",
+    "includedPerActivePaidSubscribedLocation": 1,
+    "additionalMembershipFeeUsd": 0,
+    "defaultOption": "WINDOW_DOOR_DECAL",
+    "alternativeOption": "OFFICE_RECEPTION_DISPLAY",
+    "copy": {
+      "brand": "FRANKLIN NAVIGATOR",
+      "status": "Community Member",
+      "benefitSignal": "Supporting Local Connections",
+      "term": "CURRENT MEMBERSHIP YEAR_OR_TERM",
+      "qrCaption": "Scan to view our Franklin Navigator profile"
+    },
+    "qrTargetTemplate": "/profile/?id={PROFILE_ID}&source=MEMBER_DISPLAY_QR",
+    "prohibitedStatusWords": [
+      "Verified",
+      "Approved",
+      "Recommended",
+      "Best",
+      "Trusted",
+      "Certified"
+    ],
+    "fulfillmentLive": false,
+    "shippingLive": false
+  },
+  "ambassador": {
+    "route": "/work-with-franklin-navigator/",
+    "pipelineOwner": "SRE_OWNER_CONSOLE",
+    "finalInterviewDecision": "Roger Gillman",
+    "months1Through12CommissionPercent": 50,
+    "afterMonth12RecurringPercent": 40,
+    "guaranteedIncome": false,
+    "publicWorkerClassificationSet": false,
+    "interestMailbox": "community@franklinnavigator.com"
+  },
+  "phone": {
+    "verifiedNumberAvailable": false,
+    "published": false,
+    "preferredAreaCode": "615",
+    "fallbackAreaCode": "629",
+    "placeholderPublished": false,
+    "intendedUse": [
+      "INBOUND_VOICE",
+      "VOICEMAIL",
+      "CUSTOMER_INITIATED_TEXT"
+    ]
+  },
+  "authority": {
+    "localOwnsPublicProduct": true,
+    "sreOwnsSubscriberCampaignsAndAttribution": true,
+    "profileFactoryOwnsCanonicalProfileTruth": true,
+    "authorityTransfer": false,
+    "privateProspectStateImported": false
+  }
+}

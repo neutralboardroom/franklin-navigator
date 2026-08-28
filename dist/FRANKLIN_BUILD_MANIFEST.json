@@ -1,17 +1,18 @@
 {
-  "schemaVersion": "smarter.franklin.static-build-manifest.v17",
+  "schemaVersion": "smarter.franklin.static-build-manifest.v18",
   "editionId": "franklin",
-  "release": "FR-NAV0.2.0-CANDIDATE-R17",
+  "release": "FR-NAV0.3.0-CANDIDATE-R18",
   "canonicalOrigin": "https://franklinnavigator.com",
   "exactDirectPredecessor": {
-    "release": "FR-NAV0.2.0-CANDIDATE-R16",
-    "artifactFileName": "SMARTER_FRANKLIN_NAVIGATOR__FR-NAV0.2.0__CANDIDATE_R16__MEMBER_GROWTH_WORKSPACE_SGE1__HOME_RIGHTS_NOTICE_CENTER__149_DONOR_PARITY__19103_PROFILES__SOURCE_QUALIFIED__DEPLOY_BLOCKED_GIT_PATH__2026-08-28.zip",
-    "bytes": 9163683,
-    "sha256": "c1314795c1627d5960a91d1d9bbb8334a4f41d3536015423258e67b88683f774",
-    "libraryFileId": "libfile_008caffb3be88191858744298be9b950",
-    "treeDigest": "932ec7e3cf02b274146042d470e2b5b3bbd6f739ddfea66bb35b3bbc69d0c50c",
+    "release": "FR-NAV0.2.0-CANDIDATE-R17",
+    "artifactFileName": "SMARTER_FRANKLIN_NAVIGATOR__FR-NAV0.2.0__CANDIDATE_R17__PRODUCTION_AUDIT_REPAIR__PLAIN_LANGUAGE_BUSINESS_GROWTH__19103_PROFILES__149_DONOR_PARITY__DEPLOY_READY__2026-08-28.zip",
+    "bytes": 9150782,
+    "sha256": "4887778c933a3b2472d970f8ee2b1598113f72ccace7aec5e652caa0a36e4441",
+    "libraryFileId": "libfile_9c911e87f23481919f48691150c7fedc",
+    "treeDigest": "15983604ece32b67c82455f3de7d9a64cfed5e7356ccf5b239b1f92d7d826202",
     "qualified": true,
-    "accepted": false,
+    "liveProduction": true,
+    "sccAccepted": false,
     "unchanged": true
   },
   "exactAcceptedBaseline": {
@@ -28,8 +29,8 @@
     "libraryFileId": "libfile_88d04a785bd081919b39f7186cf9e209",
     "libraryPersistenceGate": "PASS_LIBRARY_PERSISTED",
     "recognizedFranklinCandidate": "R4_PUBLIC_FREE_BASELINE",
-    "newerLocalSource": "R16_LIBRARY_PERSISTED",
-    "r17HandoffRequired": true,
+    "newerLocalSource": "R18_LOCAL_SUCCESSOR_OF_LIVE_R17",
+    "r18HandoffRequired": true,
     "sccAuthorityMutated": false
   },
   "hypergeo": {
@@ -38,9 +39,9 @@
     "state": "Tennessee",
     "country": "US"
   },
-  "sourceHtmlPages": 31,
+  "sourceHtmlPages": 41,
   "generatedPages": 121,
-  "builtHtmlPages": 153,
+  "builtHtmlPages": 163,
   "profileProjection": {
     "lane": "FR-PF",
     "release": "FR-PF-PLATFORM-15.2",
@@ -418,6 +419,87 @@
     "versionStatus": "COMPLETE_AFTER_QUALIFICATION",
     "programStatus": "IN_PROGRESS"
   },
+  "r18OperatingSystem": {
+    "release": "FR-NAV0.3.0-CANDIDATE-R18",
+    "checkedAt": "2026-08-28",
+    "navigatorBot": {
+      "route": "/#ask-navigator",
+      "plainLanguageInput": true,
+      "localIntentRouting": true,
+      "narrativeStored": false,
+      "networkSubmission": false,
+      "externalAi": false,
+      "urgentRouting": true
+    },
+    "todayInFranklin": {
+      "route": "/today/",
+      "sourceBoard": 9,
+      "snapshotItems": 6,
+      "checkedAt": "2026-08-28"
+    },
+    "getItDone": {
+      "route": "/get-it-done/",
+      "completionWorkflows": 14
+    },
+    "myFranklin": {
+      "route": "/my-franklin/",
+      "optionalLocalDeviceStorage": true,
+      "localReminders": true,
+      "maxLocalReminders": 25,
+      "exactAddressRequested": false,
+      "nameEmailRequested": false,
+      "accountCreated": false,
+      "clearControl": true
+    },
+    "housingNavigator": {
+      "route": "/housing/",
+      "audiences": [
+        "renters",
+        "homeowners",
+        "workforce households",
+        "seniors and caregivers"
+      ],
+      "eligibilityDecisions": false,
+      "legalAdvice": false
+    },
+    "profileDetail": {
+      "route": "/profile/",
+      "shareableQueryProfiles": true,
+      "records": 19103,
+      "directoryBridge": true,
+      "claimBridge": true
+    },
+    "businessDashboard": {
+      "route": "/business-dashboard/",
+      "weeklyPlanner": true,
+      "growthGuides": 13,
+      "ninetyDayPlan": true,
+      "paidMembershipOpen": false
+    },
+    "publicGrowthIntegration": {
+      "route": "/updates/",
+      "explicitResidentConsent": true,
+      "subscriberEndpointLive": false,
+      "attributionSources": 5,
+      "membershipStartRoute": "/membership-start/",
+      "checkoutLive": false,
+      "communityMemberDisplayRoute": "/community-member-display/",
+      "displayFulfillmentLive": false,
+      "ambassadorRoute": "/work-with-franklin-navigator/",
+      "phonePublished": false,
+      "workOrders": 4
+    },
+    "visibleTopLevelJobs": [
+      "Ask Navigator",
+      "Today",
+      "Get It Done",
+      "Find Local",
+      "Community",
+      "My Franklin",
+      "For Business"
+    ],
+    "paidCommerce": false
+  },
   "localPhotography": {
     "count": 9,
     "current": 6,
@@ -453,6 +535,10 @@
     "revenueRelease": "SRE-OC-CP-2.0.0",
     "growthEngineRelease": "SGE-1.0",
     "franklinOnlyDeploymentAuthorizedAfterQualification": true,
+    "publicGrowthIntegration": "WO-20260828-LOCAL-FRANKLIN-PUBLIC-GROWTH-INTEGRATION-015",
+    "paidMembershipActivation": "WO-20260828-LOCAL-FRANKLIN-PAID-MEMBERSHIP-ACTIVATION-012",
+    "physicalMemberDisplay": "WO-20260828-LOCAL-FRANKLIN-MEMBER-PHYSICAL-COMMUNITY-MARK-013",
+    "residentUpdatesOptIn": "WO-20260828-LOCAL-FRANKLIN-RESIDENT-UPDATES-OPTIN-014",
     "paidCommerceAuthorized": false,
     "authorityTransfer": false
   },
@@ -460,29 +546,29 @@
     "A": "PASS",
     "B": "PASS",
     "C": "PASS_SOURCE_CANDIDATE",
-    "D": "AUTHORIZED_BY_ROGER_FOR_FRANKLIN_R17_AFTER_QUALIFICATION",
+    "D": "AUTHORIZED_BY_ROGER_FOR_FRANKLIN_R18_AFTER_QUALIFICATION",
     "E": "PENDING_DEPLOYMENT"
   },
   "files": [
     {
       "path": "404.html",
-      "bytes": 3174,
-      "sha256": "be2b8c28cabb4e638f609f8984ea188bb1874287b7885d56d027647f7a32f1ab"
+      "bytes": 2672,
+      "sha256": "40aba217ed9eb61f47ee4c06c5c610abd69d403e9ba10823ef3f84d2ccacec9f"
     },
     {
       "path": "about/index.html",
-      "bytes": 6398,
-      "sha256": "f6498fcc9b6259e5a1fb57a3afe0cc63790346ceebf61a38179d213c5f99c311"
+      "bytes": 6131,
+      "sha256": "88243b293d795bd339bed7ef5903aa548491f72871845cc16c04e140a415be31"
     },
     {
       "path": "accessibility/index.html",
-      "bytes": 5207,
-      "sha256": "ed1ec1d9b32773b58e43b9cc21273c5601fb1f5f68b1bb94631b94d920c8d2c6"
+      "bytes": 4705,
+      "sha256": "25a7c43e1db242aa6109d5e021cb58260ef4bed8d44df33c1f58cd9e41f166a0"
     },
     {
       "path": "action-center/index.html",
-      "bytes": 5296,
-      "sha256": "f008d96ad7d7bf7e92b2e60acb9dfc16543096a6331322c26fbab935e129900d"
+      "bytes": 4794,
+      "sha256": "f3a765bc8cd0b545543ad199d261cec7731e5bba9f7f1cc966790bf6c66b9b25"
     },
     {
       "path": "assets/accessibility.css",
@@ -491,8 +577,8 @@
     },
     {
       "path": "assets/app.js",
-      "bytes": 38728,
-      "sha256": "a25bd6f64717b82638c5263113d430bb801f33a71704990922616660b5155a8e"
+      "bytes": 38909,
+      "sha256": "53135dac6e7b95ae50ee1d158298da83ac29f49b2e440dc2b9925125a33e163a"
     },
     {
       "path": "assets/franklin-mark.svg",
@@ -570,74 +656,104 @@
       "sha256": "0936e8b8c90cdd761e5ff52880d899ca651929b4fd2e3206d01cfdc77178e54b"
     },
     {
+      "path": "assets/my-franklin.js",
+      "bytes": 5088,
+      "sha256": "18301876c6084173ab05f6bbd56e1df50bf07881d40b891483ad71891ccccfcc"
+    },
+    {
+      "path": "assets/navigator-bot.js",
+      "bytes": 12160,
+      "sha256": "c760a07049f066ea6fe5da51cb7817d90f67da061a6b2f801f731372dadc1245"
+    },
+    {
       "path": "assets/preparation-studio.js",
       "bytes": 6928,
       "sha256": "109b06fa2dcba92fae1cf598985a30679d26a66069c00d923b24232dc616b31f"
     },
     {
+      "path": "assets/profile-detail.js",
+      "bytes": 3589,
+      "sha256": "6c9334bff7bda984409ce8c9549dbd4ed2b2aa60e6dbf144e576c38be25dd850"
+    },
+    {
+      "path": "assets/resident-updates.js",
+      "bytes": 1856,
+      "sha256": "a07da16bf3abb47ec18462dbea5ecff469f4c1630cee9eeb79ad697aafb1e699"
+    },
+    {
       "path": "assets/styles.css",
-      "bytes": 22440,
-      "sha256": "e596f812ed2ac91a38460a143db2e5454d5de73f5825de22273d725a712fad20"
+      "bytes": 27512,
+      "sha256": "f1059cdf639519f59c14414255b0d7476d66b8e0c4f3dde6ba3d875cb5024487"
     },
     {
       "path": "auto-vehicle-help/index.html",
-      "bytes": 13382,
-      "sha256": "e857079d80dff49d49b20de214ed5ef86cc3d45214ab4d0fd6f12c8e9b688600"
+      "bytes": 12880,
+      "sha256": "d31b6ca62cd2b1fe619402df1b8a49dc0fc47679039d77979b5265147c9ddf03"
+    },
+    {
+      "path": "business-dashboard/index.html",
+      "bytes": 10064,
+      "sha256": "aae60e19c8559020c8ed076dd8a06c9a8bc474d16e62567ea87fa708abe4ea62"
     },
     {
       "path": "business-membership/index.html",
-      "bytes": 9642,
-      "sha256": "037008d1d2dd74e7659bcd4e708ab629e5f1055d62ebc90885b9e89ea745e57b"
+      "bytes": 9869,
+      "sha256": "0cf23b4ed25880be6928030e3c4a02ab5461c18ea759c59d9e0e4a0a8b112928"
     },
     {
       "path": "business/index.html",
-      "bytes": 6150,
-      "sha256": "ed97809e5024d9c7cb555b3fb546a86c46f2a2f6d56423b2d0bb8696262381f6"
+      "bytes": 5648,
+      "sha256": "8e0344cbdf072025914b31dd28729c5bdb930d35adebc302b0302880f03ace69"
     },
     {
       "path": "capability-status/index.html",
-      "bytes": 6546,
-      "sha256": "7f0c7a5546c7211be5f2ebaf36df0b9da7ae097931a12d93c8d38b6fb5db34af"
+      "bytes": 6044,
+      "sha256": "2207c14e2fbd2da0d4ccf42cec9fa2812baef70782dbc5a7e52da6f7d2e5a4d5"
     },
     {
       "path": "civic-involvement/index.html",
-      "bytes": 5140,
-      "sha256": "2107b46b250587d345bcb977755e764efee582a8b1ad08f3747d8c9bc4c29419"
+      "bytes": 7494,
+      "sha256": "553f311c862e3eab15666132c739ec7ea601cedefb0c85b4c4497fb350f01a80"
     },
     {
       "path": "claim-profile/index.html",
-      "bytes": 12909,
-      "sha256": "4473397ddebed7b9272632a51e772f8a9792b9cfa0f6664b5808cf769fcb5d3e"
+      "bytes": 12407,
+      "sha256": "191dab3e72b6b020a0a61444e82100b0083607e24f447c64610b1210c16c1a53"
     },
     {
       "path": "collaboration-studio/index.html",
-      "bytes": 5338,
-      "sha256": "1d06ec72491d6a77968c0d6d695dd64f22d7c825075d68df141f17eb40224a72"
+      "bytes": 4836,
+      "sha256": "e61724e1bbf1622e67c53cf0f86a92881635f0115686ae286c68d91de9e69050"
     },
     {
       "path": "community-help-center/index.html",
-      "bytes": 17748,
-      "sha256": "026d9a5c553f230fcdea52adda589e2ec72d8c125225f7140c034ba5103db2bf"
+      "bytes": 17246,
+      "sha256": "44bb16826a9c91d94cc31f28345d8601685470771f0243622c04120e02bcbb82"
+    },
+    {
+      "path": "community-member-display/index.html",
+      "bytes": 5719,
+      "sha256": "d2ea8d02a5a141f22020e93a382037fad57078a3e3a22ee6685d35551cc7ffbb"
     },
     {
       "path": "community-needs-exchange/index.html",
-      "bytes": 5310,
-      "sha256": "7be2f60dc2c8323a6174211bbe69d9525c7810fbda3a0a468d7e3d1f79f965de"
+      "bytes": 4808,
+      "sha256": "d5bc5c89aa4f12257722b47fe2a2d22556e98a18071ea50ea4ff0161342b9f4b"
     },
     {
       "path": "community-pulse/index.html",
-      "bytes": 4988,
-      "sha256": "7d09c083a7904ce45b2e075aa6eb53f5086b9f223f98a335a0f59ee47a245dcc"
+      "bytes": 4486,
+      "sha256": "81bcbfddab19ef4347225d75ccc12a7e75c34f32fa82ae690878d39179fc1908"
     },
     {
       "path": "community/index.html",
-      "bytes": 5823,
-      "sha256": "151495ba4dbd337f83d2d4da8511dac26b9ad2ab68b5f367801f81e47671a3d8"
+      "bytes": 8796,
+      "sha256": "dc404d8e31e9e72829e0323f88fe487a3e20a64228340d6cce98801d582c6b2f"
     },
     {
       "path": "corrections/index.html",
-      "bytes": 5295,
-      "sha256": "760128f8b64ae1bb72af57b94dc40d29b0e22102379e628f4412b804927315e5"
+      "bytes": 4793,
+      "sha256": "cdfab806cd609a1b47249a94afa42ffc69d9a1afcf05acf12a63e743e9f4c9a4"
     },
     {
       "path": "data/franklin-home-rights-center.json",
@@ -765,19 +881,29 @@
       "sha256": "925cb4f9f1a475122b781fc5f41a7f11b59109833a87d06b9b41d9ff4dfccd04"
     },
     {
+      "path": "data/franklin-public-growth-integration.json",
+      "bytes": 3404,
+      "sha256": "e702890b80108b6920de1aa64e5c67e76c067414d54dc1ea8279047cca1cc990"
+    },
+    {
       "path": "data/membership-pricing.json",
       "bytes": 17878,
       "sha256": "95e6d06896604eba43b8dfb5c23c9c4777531d9b5bb77d5a091108cb6e13fa27"
     },
     {
+      "path": "data/r18-franklin-operating-system.json",
+      "bytes": 4611,
+      "sha256": "5f2489d6588461ff3340d2b2a36ef8e98c4a301bbf12f958f0347fbee5f80152"
+    },
+    {
       "path": "directory/index.html",
-      "bytes": 6741,
-      "sha256": "c6b51afbaa66c3762ab9bec92f64fa7b5c38dea6735312d879a25ce6bfa0c8be"
+      "bytes": 6239,
+      "sha256": "fec4c527351b81502b3dae583e43a8b1ffb07ad9ea238c5c05f3a998d697bc4f"
     },
     {
       "path": "emergency-ready/index.html",
-      "bytes": 5577,
-      "sha256": "23e974e4882ce884d5f9c7b7fc28bc4417d098c132d3ce2a0a16a2c20b133bd8"
+      "bytes": 5075,
+      "sha256": "19012e64f87c2610845c8203736f8a5ccde52c09f2eee849bfc1d5acc9a4a2ed"
     },
     {
       "path": "es/accesibilidad/index.html",
@@ -836,293 +962,303 @@
     },
     {
       "path": "events/index.html",
-      "bytes": 7472,
-      "sha256": "10989340b09df8de01aa5f89204fa5ddb08dd713cf33b776b984f4b9056c6091"
+      "bytes": 6963,
+      "sha256": "50f97314fdd5a19b3a2ec50b7815699c6594a21ecbc69d593d95f433a44277d0"
     },
     {
       "path": "everyday-help/index.html",
-      "bytes": 33693,
-      "sha256": "52049b399c29997664554cafddea33019107c03e5c2a307ff7622aab1fec939d"
+      "bytes": 33191,
+      "sha256": "f9b9153d6127e6d6d544146479ace5168a626f24834d128325e854663b7b5a99"
     },
     {
       "path": "explore-franklin/index.html",
-      "bytes": 6576,
-      "sha256": "49b14e0e6fec5b23b4dcdb69c83b91f9437fa8f7c41e2818a7d818a7f180be64"
+      "bytes": 6074,
+      "sha256": "094bae850ebe2a9b0cb935990fb9dcc7b40607f31a946148e0b8cca1105e7329"
     },
     {
       "path": "free-membership/index.html",
-      "bytes": 7206,
-      "sha256": "16678035d5a328f8939f20fedf0b16e51094ed627b1d0555ca29a6054ef2f33d"
+      "bytes": 6704,
+      "sha256": "48d8c10b558a892f51c6e1ef096fdc9ca7c3bad40a7194bb459789cfecd188b0"
+    },
+    {
+      "path": "get-it-done/index.html",
+      "bytes": 13729,
+      "sha256": "bd7a575b54fee84a3cbed91d02dab9634da4ab1c0c18c80b948e3fb2783e9743"
     },
     {
       "path": "getting-around/index.html",
-      "bytes": 5022,
-      "sha256": "767d087ffcc1f5c2e72885c239a31de7570d476ac66cdf96585ee8c2d561b528"
+      "bytes": 8225,
+      "sha256": "de1071d3c371f8a5102102e4db0ab7ced92a43685c13ea082d3e28c3c67293ec"
     },
     {
       "path": "health-help/index.html",
-      "bytes": 15046,
-      "sha256": "fb0a81b0fd73623758aaff0694ae7b46a8fbdbfdedb5a5c8145c56fed75d7d00"
+      "bytes": 14544,
+      "sha256": "ca37b1b5626f483c4347c0c933ed5b83d16ec1f973eff2bf74d301948c74d18d"
     },
     {
       "path": "health-safety/index.html",
-      "bytes": 5111,
-      "sha256": "a90fb3a4db5dc38be2da2ffdb58125cfcd09a138f0ff5984fbfcfdd4a4682340"
+      "bytes": 4609,
+      "sha256": "c05b1c0aef22c474a7e36b710ae0218e4da39b01c3685ee2e7e1f0496e97d2fc"
     },
     {
       "path": "help/auto/auto-business-growth-readiness/index.html",
-      "bytes": 8548,
-      "sha256": "7f6e911d6a2ea308d10bc69a8aa621b0b2ea79241243816149d3856e285b5c0c"
+      "bytes": 8046,
+      "sha256": "e82816d446c30fe0e6b2dfe522e209d23ec44a665f53f333b498def6413b61b9"
     },
     {
       "path": "help/auto/crash-next-steps/index.html",
-      "bytes": 9117,
-      "sha256": "3a4ac49dbe863282da53400f198c73738500cf0cc125f6e03d89ba536acb3d44"
+      "bytes": 8615,
+      "sha256": "eb927472c15e5e7b80353dd73f2575179c286584e5ec32e4f45dbc26c189abdf"
     },
     {
       "path": "help/auto/dealer-compare/index.html",
-      "bytes": 8298,
-      "sha256": "6aaaf118061ebf12db2b89fefba83fc545a925810bbade1c1c57027eb8b73ed2"
+      "bytes": 7796,
+      "sha256": "13c20d727d65bf5850f271170d713f276416d5e337b5ac417949546069fc758c"
     },
     {
       "path": "help/auto/independent-shop-compare/index.html",
-      "bytes": 8368,
-      "sha256": "bf4fc45caeb6f5b3a3d42a64e2ad7cf323487017f0637ef3c8c520cd40acf33e"
+      "bytes": 7866,
+      "sha256": "654b9009dadd3cc591aae26cbce66367e329557f18669e51c3603382457d5bd6"
     },
     {
       "path": "help/auto/maintenance-repair/index.html",
-      "bytes": 8394,
-      "sha256": "7f81efa774e6132df44052800dc28f73f2dc41f827c559d614ab804596b37544"
+      "bytes": 7892,
+      "sha256": "6e0c61999c9960139c3dc37f966f464882bfacc7863a32bf5143276f569cc6e9"
     },
     {
       "path": "help/auto/recall-safety/index.html",
-      "bytes": 8656,
-      "sha256": "cfa7a3601f4a54e959ff01c6cc59797fb9c733403086857968b9815f494cf2c1"
+      "bytes": 8154,
+      "sha256": "33bb7187f9ce7b104cb1f18a8ef77e898706ffc44379d8bd1c0122ea1af54014"
     },
     {
       "path": "help/auto/rental-sharing/index.html",
-      "bytes": 8289,
-      "sha256": "20e9399902f4fb0420555f6a2f257c4d372d3653e38d36cc520419a56d98ea64"
+      "bytes": 7787,
+      "sha256": "1863300e1da2cb2f6f5cb730ab1416d11280f66b2c158a8049101f7e984b5cfb"
     },
     {
       "path": "help/auto/repair-collision-business/index.html",
-      "bytes": 8600,
-      "sha256": "654243125b5025f9b03bcbffa27646f2ddb4d961e7494406e0d59810f65969ec"
+      "bytes": 8098,
+      "sha256": "4b885ce8da834d8563be32bbaa2971521b2b07a78219a08b963ab17c323df4e7"
     },
     {
       "path": "help/auto/used-car-warranty/index.html",
-      "bytes": 8413,
-      "sha256": "fdcf2f7f8afae8288844ebf2a55f6b09d2158b65a12c925e8dc314defdffb147"
+      "bytes": 7911,
+      "sha256": "69d823b21a76bb6bfb036e2f2eb709ae683cc89c4baa83b1a2c110911e664837"
     },
     {
       "path": "help/health/behavioral-health-fit/index.html",
-      "bytes": 8598,
-      "sha256": "2139cecc7c8039ecd82fa299c71362221a14d6210a2a8018e6853493c61f148d"
+      "bytes": 8096,
+      "sha256": "8d751146ed2911eea462ab0d1bd32a613f14c4edbeaa4fe297eb55fa61fe3323"
     },
     {
       "path": "help/health/caregiver-long-term-care/index.html",
-      "bytes": 8812,
-      "sha256": "3a6f85cfbb8b5a9681263a3cf53b486a128e2b689fd06e90a96b20fdd079131e"
+      "bytes": 8310,
+      "sha256": "92ba61ef7a20945d8bf980a4877bc2a6fd5dd39c067ce4c85084fbf7eff699d2"
     },
     {
       "path": "help/health/child-health-coordination/index.html",
-      "bytes": 8628,
-      "sha256": "9462dedddc7b800b84c4f73b46d7d8226bc4ae01c6cfef20589036f881963ee6"
+      "bytes": 8126,
+      "sha256": "1c375ccb2df70086057764f68baaab9ef140d104a8b8c028519aff4285ac0564"
     },
     {
       "path": "help/health/coverage-appeal/index.html",
-      "bytes": 8589,
-      "sha256": "aea636c49395f737c66cb0ef2ec6ef4e183b8c835296a2043bea6a6f94d167e2"
+      "bytes": 8087,
+      "sha256": "354e2c1c5f45f408060798d24ec7e77420eac8018671eeeaf6d315087783e0a7"
     },
     {
       "path": "help/health/coverage-cost-records/index.html",
-      "bytes": 8667,
-      "sha256": "20700f1b0a9cc2107647c813c87b2f908cbe61081705117e162d6706926abbc9"
+      "bytes": 8165,
+      "sha256": "c2e2b92f96296c96804c71a1c7197b5b9bb5bd429ddc1b9f2cdfc84fa41a7477"
     },
     {
       "path": "help/health/dental-vision-compare/index.html",
-      "bytes": 8202,
-      "sha256": "324b79b4278258f13a122d67cb1e93949c3b927d5df44ea011c38175a74265f1"
+      "bytes": 7700,
+      "sha256": "483eca1a9d4627453c78688244974c37c98f730a5c72c12674ca56d6e810f9ee"
     },
     {
       "path": "help/health/discharge-transition/index.html",
-      "bytes": 8831,
-      "sha256": "b0f17762cfa25af7f4fd69b9cff4712f77317c0f242f0bd4aaddb89d32bc7ffc"
+      "bytes": 8329,
+      "sha256": "fbb114a8dfda997196877fc77d0f1a11596b1309301be12c0a9628306eb14331"
     },
     {
       "path": "help/health/labs-imaging/index.html",
-      "bytes": 8487,
-      "sha256": "39c19988938a9f165be66081dac8e39cba62688a528d330711cdbf7febb2cb5c"
+      "bytes": 7985,
+      "sha256": "96d5434dcdc77a30a88ce9094f1f2058c7f1d699e638db4dd7c8663f5fbc6da0"
     },
     {
       "path": "help/health/medication-visit-prep/index.html",
-      "bytes": 8766,
-      "sha256": "c12d9d670f7c4609f2db00a07a389d554ec66253b6e62eeb645efed1aa7dbdb1"
+      "bytes": 8264,
+      "sha256": "edb6bd0fab1539a9f56e67fee447cae9f84169d2a2b2de290def490e9b121abd"
     },
     {
       "path": "help/health/pregnancy-support-plan/index.html",
-      "bytes": 8771,
-      "sha256": "05e82187233ac8d07f08e6a746a064ad411474c980e08f55cb3b664fce639718"
+      "bytes": 8269,
+      "sha256": "dee894c69c2bc0df381b04e5e86b6cdd4b70bec3d3ee59ab21474c7e31e07071"
     },
     {
       "path": "help/health/primary-care-fit/index.html",
-      "bytes": 8515,
-      "sha256": "50a9bd66bc9dd5a254d469dc31d6c4c18139cf623e894791de6443b512f18c8c"
+      "bytes": 8013,
+      "sha256": "668e97bf92955ead00f4ae2b1bb25de80b6e7eeb0071dca0d09ca4080145f79a"
     },
     {
       "path": "help/health/referral-care-team/index.html",
-      "bytes": 8723,
-      "sha256": "84c80fa3a94f97dd7e1410394b37ad6e195b35fd67e725113120e5a62c24577b"
+      "bytes": 8221,
+      "sha256": "0e391b5c50cac7ae4fd89b037f35c97694f6d2a16912dacfa0e8e4c5d6f756cd"
     },
     {
       "path": "help/health/transition-to-adult-care/index.html",
-      "bytes": 8806,
-      "sha256": "449d0b22e647c0422021851c838c38dfd44a310e96c7e14b1016873a179b269b"
+      "bytes": 8304,
+      "sha256": "bc699b097d3634686e6290922e7c885fa27ab74e41d67f3c3615df52bb000ed7"
     },
     {
       "path": "help/home/association-hoa/index.html",
-      "bytes": 8397,
-      "sha256": "3f97aed774271b00d7810c3d019e5726c85f03cae5aa153914da6d0296267025"
+      "bytes": 7895,
+      "sha256": "253ee34bef128e30fc343d2b62431af528cc0298e9151be1cee53888666521ff"
     },
     {
       "path": "help/home/energy-resilience/index.html",
-      "bytes": 8843,
-      "sha256": "db12d61bd3231d1a899cacfbd508da2c0b74050651a37a75be9de99d1b687398"
+      "bytes": 8341,
+      "sha256": "2d9b797657a204549c9b400a0c879fa5a28dfebe75300ad818bedd7b2643ae33"
     },
     {
       "path": "help/home/insurance-repair-record/index.html",
-      "bytes": 8958,
-      "sha256": "911e7b3bfb9be5daea88cf833d8c9a2bf9b84f717ed57917e07079a616281b07"
+      "bytes": 8456,
+      "sha256": "366d88227f9a936a16ea5994f2d0633f70e35fbd101ad857fb63f617595c1086"
     },
     {
       "path": "help/home/move-buy-rent-sell/index.html",
-      "bytes": 8893,
-      "sha256": "516eb802ad728431f788c5a766a5f1ef10320a99fea0e3fc5bce8ffe5996627c"
+      "bytes": 8391,
+      "sha256": "7eff44c237e168d3764282bfe1b2ae9948a8c93e55ae571eaf0de47f4db78067"
     },
     {
       "path": "help/home/permit-contractor/index.html",
-      "bytes": 9085,
-      "sha256": "eeafb425bf8ed6ad038456a3d2d62831862e346f1c7952087a8b26894a40589d"
+      "bytes": 8583,
+      "sha256": "8f03e1e25d00db723e6593bca9453d1e5374f6a7d227b032e2e61acd936fdf59"
     },
     {
       "path": "help/home/professional-introduction/index.html",
-      "bytes": 8591,
-      "sha256": "66c38f30d0e39fae199421b37188d38b4142384b23c84ed6e1eeed40df2c923e"
+      "bytes": 8089,
+      "sha256": "5a4140f01b803e648cee4ce34d40d9052587ef1a364ca456555a9a9fb0af9442"
     },
     {
       "path": "help/home/property-records-zoning/index.html",
-      "bytes": 9076,
-      "sha256": "39d2e555d5a84e1fbbbba9535f33954fa6530e3407fb8d0c5a232f1f65331314"
+      "bytes": 8574,
+      "sha256": "0064b3e36aeccfc45d7f9dee61cc9577869bba7f51a544e90471d3445a7a4b78"
     },
     {
       "path": "help/home/records-disputes-resources/index.html",
-      "bytes": 9234,
-      "sha256": "07b18e6b1f7cf6d5a80a2d743d18a3c918f7141496de2a5aed85316d3cd79146"
+      "bytes": 8732,
+      "sha256": "160e4bc919fe48824a277d5fab25fa010a4940ce3d6d08c06a4b6ec7e3beb31e"
     },
     {
       "path": "help/legal/business-compliance-lifecycle/index.html",
-      "bytes": 8514,
-      "sha256": "6d032906dfc7466325e6d02eed61f4a7a416b6ca985043082256664eb64bbce7"
+      "bytes": 8012,
+      "sha256": "641ffabd710d38714b8683e547c9db798b53aef4312c8e93433d8fcea78667bf"
     },
     {
       "path": "help/legal/contract-negotiation/index.html",
-      "bytes": 8301,
-      "sha256": "0f3a278ae97248cb5509c1cc8e61cae0b6b75fe2cdde33ba804f6be6150aa680"
+      "bytes": 7799,
+      "sha256": "5347efd99175d4d470c2162bbf9cffb48449b4c3a7ed0955d65ba2ada8ebbb9e"
     },
     {
       "path": "help/legal/court-notice-roadmap/index.html",
-      "bytes": 9011,
-      "sha256": "69a6b1cf8edc2be5ce9e35ba2714ba811fbd2746a27be60ab1a474ad4565499f"
+      "bytes": 8509,
+      "sha256": "e1613a4bb531b96b08423942c3cb01680205622347c5076622a1e6ec708736be"
     },
     {
       "path": "help/legal/estate-family-map/index.html",
-      "bytes": 8522,
-      "sha256": "05eaf6bcad34dd4ce07c29156dbc9470c38a18d4b4d5bb1c52db8bf378926462"
+      "bytes": 8020,
+      "sha256": "fc9f8876624fef73a99a269360fcbad3e84c2a24af12fdc908025646364a686c"
     },
     {
       "path": "help/legal/family-safety-plan/index.html",
-      "bytes": 8583,
-      "sha256": "50e4a66ebc1f47886877ac5b1f132bc8aad820cabca94bde5bfe711bea19fa55"
+      "bytes": 8081,
+      "sha256": "ecdd6b42fe64cbb06904e6d123debf90bfb55a5af8e11eac6a38ba3cfcf1cfe7"
     },
     {
       "path": "help/legal/household-coverage-map/index.html",
-      "bytes": 8524,
-      "sha256": "3f1f6823708542a64d969ee2eb2b2ae69f37ca727493f94f87efbb156673aa6e"
+      "bytes": 8022,
+      "sha256": "da802b822e331af87cc1a5e50fcf34944bc11d8611a6a975804796e1b945da9c"
     },
     {
       "path": "help/legal/housing-consumer-dispute/index.html",
-      "bytes": 8882,
-      "sha256": "2368e8936791374c0b07772afe2172e8da8aa2f37bf6e2fe1696f2e091065cd6"
+      "bytes": 8380,
+      "sha256": "6126b277c4268be1b5f8c1ba1c6f38646fa1bb78b9d65b8ca281619d8c8cace0"
     },
     {
       "path": "help/legal/professional-compare/index.html",
-      "bytes": 8513,
-      "sha256": "a1941a1ebc7137fe9c5e481b1d26fa2c8c8bc21cf416fd5b0720cb7815034552"
+      "bytes": 8011,
+      "sha256": "368ee718d00aaafcf81d20d2153e9a0666426715375e64a27afb74c4317efc1f"
     },
     {
       "path": "home-property-help/index.html",
-      "bytes": 13930,
-      "sha256": "65d6bde4ab21e75f2cf695737411f856f4b7c8172d3313696b23ce692f245a84"
+      "bytes": 13428,
+      "sha256": "4591240a65ddd7649d80005868290d7cfb046ae5c6cc59ed67560b1ed615273b"
     },
     {
       "path": "home-rights-center/index.html",
-      "bytes": 10272,
-      "sha256": "de8a3e57100617156344a98c660834b5bad7dc0fab57f827b338c9e420e50a56"
+      "bytes": 9770,
+      "sha256": "15fe0ba08e20711eafb04aee0edc1ddd21fb03b83f1c5f4af60c89bedbeeec4f"
+    },
+    {
+      "path": "housing/index.html",
+      "bytes": 7406,
+      "sha256": "84c6ff837558584b5b70be20497ca2793e93fce28906589bdc879e90f182134e"
     },
     {
       "path": "index.html",
-      "bytes": 22847,
-      "sha256": "1c688bb226b5b7a7ace98d32ab740e001f3c9fe2a45033fd2b0328464378627d"
+      "bytes": 26266,
+      "sha256": "ab87a5534c50522e7e4334a7a47c7a73d99b671e11d1d963221ed9b7b79f7858"
     },
     {
       "path": "jobs-internships/index.html",
-      "bytes": 5223,
-      "sha256": "ca542af607f16993eb56aa0cab48575ad04fbeebfff876574ab1a1fdb064218a"
+      "bytes": 4721,
+      "sha256": "a429080bf47a4972cbe7769f244eb9c7dd9ab415cf00360f489bcd8434b44500"
     },
     {
       "path": "legal-help/index.html",
-      "bytes": 12896,
-      "sha256": "f9c1fb5c1ea0e37cad89c8b019d62dca4db19c5cfe55f20385473242b7bcabe6"
+      "bytes": 12394,
+      "sha256": "25c1ce3ba65289b0453205d4ffde2eeb87330985b1c014a1818232cd34468187"
     },
     {
       "path": "life-change-plans/caregiver-transition-permissions/index.html",
-      "bytes": 9600,
-      "sha256": "71bc8deb12e5b46bcc969b92b0ca38b57234d112492f32ca54c69bd6918fdfb4"
+      "bytes": 9098,
+      "sha256": "c40213a516a30e93f7aebb6197f6e06915a2a90f87b17f0def034bd1c696ff85"
     },
     {
       "path": "life-change-plans/disability-access-everyday-life/index.html",
-      "bytes": 9596,
-      "sha256": "6db50a9106167c3147c2cc4045032ee7a883280414b999ea902bfff263683f09"
+      "bytes": 9094,
+      "sha256": "36affb002d352e9f45f0c007b48a97fa6222e9674c345f5d6d42ef17eefcfe75"
     },
     {
       "path": "life-change-plans/fraud-scam-consumer-recovery/index.html",
-      "bytes": 9414,
-      "sha256": "6c856d7a45e9bd9491be41c7e2bccaa87330262f4570fd6290570b6933a39276"
+      "bytes": 8912,
+      "sha256": "33c2255d77b14c676646d69d9d335de68638990eb3257f584145cc311a97a9df"
     },
     {
       "path": "life-change-plans/index.html",
-      "bytes": 10107,
-      "sha256": "847124d7216dead30f144a55901c28f0c718d6a30a07f9862f4013dc61b15d7a"
+      "bytes": 9605,
+      "sha256": "13a9ea8ea9bcebfb16c2350c678d1a91cda661caca59b8a3662a255c3e63c93f"
     },
     {
       "path": "life-change-plans/job-loss-coverage-household/index.html",
-      "bytes": 9962,
-      "sha256": "fb560fc26ebf2e3f4046f482e6b05a4c0d1d45c45497a654c758ad26e9c608b1"
+      "bytes": 9460,
+      "sha256": "55fa41ab9d055037073fce165ecbdbdef2f4c56ea94a577e7158f746f71fe432"
     },
     {
       "path": "life-change-plans/storm-emergency-recovery/index.html",
-      "bytes": 9569,
-      "sha256": "f49bb81c51b15c923a2d1814082bbc4715001bfb41dcbe182411509682e333bb"
+      "bytes": 9067,
+      "sha256": "69fb32865c0979bd36c5e49167911607285a489b53f1bdba8a6f32ae04ff7701"
     },
     {
       "path": "life-change-plans/used-vehicle-purchase-problem/index.html",
-      "bytes": 9371,
-      "sha256": "b07e075fe512842bc0689d1c7435c84dff18880f8cb2a318d1703f96d5651812"
+      "bytes": 8869,
+      "sha256": "72e760f12e582e8bf253b8455b8b3779bab73af53b9b439706ce56062f15dd19"
     },
     {
       "path": "live-local/index.html",
-      "bytes": 25354,
-      "sha256": "6a300425edefce8974b8cf9619d7be1a5c9e14cb20e4a3dd9017a73479eb24a5"
+      "bytes": 24845,
+      "sha256": "10833fc23aaf16cbb21bfc05dedfa5f838498ab310685faf2f2afbdaac6b7e7c"
     },
     {
       "path": "local-growth-desk/index.html",
@@ -1131,223 +1267,238 @@
     },
     {
       "path": "local-growth-engine/index.html",
-      "bytes": 14151,
-      "sha256": "c640688c29d258a871989ce6083341135e53039fab0a105ffdc23a2e55b85d38"
+      "bytes": 13649,
+      "sha256": "bbfcbf4d0620be9f087cea06cb805a291b41535703f72f98045e295f0ab7a7b7"
     },
     {
       "path": "local-opportunities/index.html",
-      "bytes": 5794,
-      "sha256": "c968c958349cbb5b944af871a466ac2acca8b22c6d44efd087427c5dca272142"
+      "bytes": 5292,
+      "sha256": "a108d39276728cb42dd05a0a214fb060847cb0532c1f9f3ef1cab13f19ddf9f7"
     },
     {
       "path": "local-pathways/beauty-fitness-wellness/index.html",
-      "bytes": 9358,
-      "sha256": "03dbc31b3050962f690a521730cf72952fbf0f81f740d93d27600b248aee8fdd"
+      "bytes": 8856,
+      "sha256": "a4d4d1e06e53ff0990541db69d9b295383063a43c0c63f067ead82f37990c9a5"
     },
     {
       "path": "local-pathways/children-family/index.html",
-      "bytes": 9764,
-      "sha256": "dbac0f797c675a2726ec63092d04d02d4e25960243ce9676b59eb7c937e6ca6e"
+      "bytes": 9262,
+      "sha256": "a0a273902ae87d29b45d72210632c9ca7b2be7a20f56ea034bc91e23f469cf3f"
     },
     {
       "path": "local-pathways/civic-neighborhood/index.html",
-      "bytes": 9844,
-      "sha256": "6fd1db59b8f19908dd2ad28b6e111f29f88f2578497f01bec04eeed1b3446488"
+      "bytes": 9342,
+      "sha256": "e3f7e0eb98f9b7219d4736a0de78745643b26f16027f46a29be437e9dc45175c"
     },
     {
       "path": "local-pathways/community-volunteering/index.html",
-      "bytes": 9555,
-      "sha256": "386a27bd1404c9530a50eca8ac6519adac67c435e8e452c8fc466f0be09a3364"
+      "bytes": 9053,
+      "sha256": "a5669d0f8deec8a7c21256be3029c94b0f32ac62fb1870c5f047f449ea6f2532"
     },
     {
       "path": "local-pathways/education-learning/index.html",
-      "bytes": 9559,
-      "sha256": "d188ab60ceb6a498623a52dca537dfcc1a05fc5c2e3e64a8693273368f779f90"
+      "bytes": 9057,
+      "sha256": "f4b5899cbe495c8dfe347243b00b6b5ebb4a138136df80f0a5d78e362ba33b5b"
     },
     {
       "path": "local-pathways/emergency-preparedness/index.html",
-      "bytes": 10076,
-      "sha256": "7c268d3bf5610356cf342d6bc8f5f4e59f25d9ad8c960798ba322e10b17ce029"
+      "bytes": 9574,
+      "sha256": "930123f28f288f5dae0af6d003a099cb8bf590020ede42db42e4b5aba15ce330"
     },
     {
       "path": "local-pathways/food-benefits/index.html",
-      "bytes": 9815,
-      "sha256": "d0e9fb16e0441fb30b05cd2d28aea8b0c8e20ed7cdc577366a91c3f57d8f9a6c"
+      "bytes": 9313,
+      "sha256": "c7f9f4607f29788968a5b6d382033d15bf532623c03dabfcd305e3d174d817d3"
     },
     {
       "path": "local-pathways/index.html",
-      "bytes": 15931,
-      "sha256": "5aa62ba3e9fd73c3328c627d999bb092232be3a605dab073ca0f3cb5f45ba74a"
+      "bytes": 15402,
+      "sha256": "56eb02629c2b437d9fb9649d9be554843f7e88245ff0a6d1f0b19e5cb70464d0"
     },
     {
       "path": "local-pathways/jobs-career/index.html",
-      "bytes": 9343,
-      "sha256": "ff0d103b5eabc88c212484f048b029225986fed3f339211aaebd02149a48d15f"
+      "bytes": 8841,
+      "sha256": "7dc5d37f321725973c5b878ab36f87889db647883b8a64b33178aa31ff85a9a8"
     },
     {
       "path": "local-pathways/money-tax-professional/index.html",
-      "bytes": 9377,
-      "sha256": "b16c6b913f4be2a55e8ba04bf72dd7e36be4ca7fabcfe863d08e073e7668c80b"
+      "bytes": 8875,
+      "sha256": "7ccb592547e4711427e58c295f13d40a5c4eeaab232722240129c960f15e178c"
     },
     {
       "path": "local-pathways/pets-animals/index.html",
-      "bytes": 8755,
-      "sha256": "49f330a01582ff15d463d8b8b0ee6fda0451f41943970f16b24c5e05e6adc232"
+      "bytes": 8253,
+      "sha256": "eea453ff8e44605f6c9f78c8f63d955273a3436fa33aa9fc0ab95e40e5c48bb3"
     },
     {
       "path": "local-pathways/restaurants-local-experience/index.html",
-      "bytes": 9117,
-      "sha256": "01418537449a588c5bc95c18834ea1303070db9252b6f519784fb8e9e2ab2409"
+      "bytes": 8601,
+      "sha256": "e4fa7c05d18929a8aeeb4d7ed0274d30cbcaca36468569d0b1abcbac83f48153"
     },
     {
       "path": "local-pathways/retail-local-commerce/index.html",
-      "bytes": 8988,
-      "sha256": "568273a5f48a20fa0ff76e10df502543cb7bc7f1413e03dff4785b57fea984d4"
+      "bytes": 8486,
+      "sha256": "de07819d7b594eb9d0702aa0e2ca8e1213f951d1a268532503008d39e58a3fcb"
     },
     {
       "path": "local-pathways/seniors-caregiving/index.html",
-      "bytes": 9719,
-      "sha256": "907933efa41290c7781bea7dd04a3e41fb54879b78cd993dea9ed7da990d5902"
+      "bytes": 9217,
+      "sha256": "99d7bfe87fb7a67c08ba28418f73d4ace88aa3ef6d8fcb0f2e2e68c4390b194e"
     },
     {
       "path": "local-pathways/start-run-business/index.html",
-      "bytes": 9694,
-      "sha256": "c4fc08595ba1ba7ede3178be24fc8a39f53605a531e34d07006f0db9f7796d8f"
+      "bytes": 9192,
+      "sha256": "64d4ac8374d78541912111466cf58996f00a3d76fec510f8fb42965215f7072b"
     },
     {
       "path": "local-pathways/transportation-mobility/index.html",
-      "bytes": 9786,
-      "sha256": "aee2b897b5c888213168d46c88fa49528f184d5c1c7cc530d8a9986d5e944e07"
+      "bytes": 9284,
+      "sha256": "1bb4ca1113475e2a0826da971fe3c9b9d5c24155085efc50cacd6b2fe293a102"
     },
     {
       "path": "member-growth-workspace/index.html",
-      "bytes": 11012,
-      "sha256": "0c621806234877f8e1f904319b904e160106bcb8d62b90bff11346141081d247"
+      "bytes": 10510,
+      "sha256": "63d45196c4bdb5b42f7fbb26d6cb6657b535581f1f7babd1983298e65b6eef3e"
     },
     {
       "path": "member-success/index.html",
-      "bytes": 5762,
-      "sha256": "f67f03ea5e4910d24c7184c3cc7e31993835f6d03a46d18cf5ab95c9b75163c4"
+      "bytes": 5260,
+      "sha256": "160b03a07bfca163c206de28f3145d3110e654bef0d6a2ef459c8e2f341e2354"
     },
     {
       "path": "member-support/index.html",
-      "bytes": 5514,
-      "sha256": "1590770ba7a4a502428c377a3424446b68352e212656d89febb453bfd0719cb4"
+      "bytes": 5099,
+      "sha256": "e7938e2743eb3497980526bdd091a5c3e4d95ac955668c3141d89d22328e022b"
     },
     {
       "path": "member-value/index.html",
-      "bytes": 6016,
-      "sha256": "8dfc3c72f9ce13c7ef8c3b35a4185b89e35674822785b25b52687b9581f1dd52"
+      "bytes": 5514,
+      "sha256": "8b36800f55875d1017b2ce09f4a08791a9d947952583e3201c4446fa07ddfe4a"
     },
     {
       "path": "membership-pricing/index.html",
-      "bytes": 30385,
-      "sha256": "7228878453c9b44155a77959f6a6f8f8e5b256b8678dc5d980858e63d11e9c04"
+      "bytes": 30112,
+      "sha256": "e7a5abc5c183d58b29f4d4719b26989c38db4b2cc5fc4ef6ddc2374b49eead8f"
+    },
+    {
+      "path": "membership-start/index.html",
+      "bytes": 6653,
+      "sha256": "e1cf88d392a7e1d7207d418ea2e5b030ef36bb4e726f8ce5fb5fb35a5de4b898"
+    },
+    {
+      "path": "my-franklin/index.html",
+      "bytes": 8440,
+      "sha256": "429bf6deb970467a3b29563ba55ac70f53c5a9152e5226cca5a3f67df076f15a"
     },
     {
       "path": "navigator-growth-desk/accounting-tax/index.html",
-      "bytes": 7770,
-      "sha256": "b50b28ef27d4d9ecd9229ad8c32574eb2b421bb84a9c349fc257ce58f64febb1"
+      "bytes": 7268,
+      "sha256": "1e0575fd4b8e55f6feffb4bc37e11f2421c5dcf54507ab23afa0c8b4f3c93d82"
     },
     {
       "path": "navigator-growth-desk/auto/index.html",
-      "bytes": 7873,
-      "sha256": "34a46ee6eaa4584bb329ba62ac3921a129a65fbd6fbf87749679e492ab3adccd"
+      "bytes": 7371,
+      "sha256": "750e461d7f0d9e3b6e8f9bfe6fe6abe0c6913ab3067fc73ec03a640a302823fd"
     },
     {
       "path": "navigator-growth-desk/beauty-fitness/index.html",
-      "bytes": 7977,
-      "sha256": "02993b4a7306df90dff77f942221cb109bcb823772583692243eff32772bcafa"
+      "bytes": 7475,
+      "sha256": "5f9986efbd8e2008465655c51d1de45d22c9797b5f374f43bc9ab834bc23aaa4"
     },
     {
       "path": "navigator-growth-desk/community-nonprofit/index.html",
-      "bytes": 7926,
-      "sha256": "a31c3608242b2e7f7cde98e832d5ad97a095034435806703f66e24e5913db175"
+      "bytes": 7424,
+      "sha256": "3ff5cdccc5aefe5c11fed3f40e5692c902bd2c84ff631229228312d866506059"
     },
     {
       "path": "navigator-growth-desk/education-tutoring/index.html",
-      "bytes": 7758,
-      "sha256": "ea9fdfe8c1a3b87c8efa5d4ad1f4e220c8df0416d08645619d025f2e6d8c2863"
+      "bytes": 7256,
+      "sha256": "1f9b7e0df247636ea6880c1004f5886cba68228de23728aed79db8684bad09ae"
     },
     {
       "path": "navigator-growth-desk/health/index.html",
-      "bytes": 7893,
-      "sha256": "78c90255ffc943bec9a116daa4ebf031c7e947ee681ae649263a605fe0fdefdb"
+      "bytes": 7391,
+      "sha256": "98008199b29fc16c6c3c28bd5a5869b98cc963178a76cb04e3a594d7ef67d741"
     },
     {
       "path": "navigator-growth-desk/home-property/index.html",
-      "bytes": 7978,
-      "sha256": "9cf22fc29c3ed00cc875927d11d6713d2c150b325c42af302f50c6e2d5519aa4"
+      "bytes": 7476,
+      "sha256": "033097d8df1051133bf71136520c8fea670d2a914e47d04fd51a97ffd1dd465b"
     },
     {
       "path": "navigator-growth-desk/index.html",
-      "bytes": 12475,
-      "sha256": "9dba7da52204827ab9981d13418d8816773d877ddee41d797d7fd5cb1a5b3e50"
+      "bytes": 11973,
+      "sha256": "fb55c3ff72ecda14e5454c14a8b29974d96ab7f871087eabf04fed6317cb9273"
     },
     {
       "path": "navigator-growth-desk/legal/index.html",
-      "bytes": 7969,
-      "sha256": "9145fc0efc96f3ca5576f144ce3b025676ffd82342ae54bd59f445c43709febd"
+      "bytes": 7467,
+      "sha256": "0c67162a78bab41d95ed88bdffd8d408cf7b44a24d3e0f397432dd7029eb36b7"
     },
     {
       "path": "navigator-growth-desk/pet-services/index.html",
-      "bytes": 7929,
-      "sha256": "98577e582ab781d3dcbeb6274270b55e7b0757e998c35566ef55e6794b30b365"
+      "bytes": 7427,
+      "sha256": "e474653e25ef355207caf5d3bf1295b7a5ab303d0e31b27865d120268dff1d52"
     },
     {
       "path": "navigator-growth-desk/professional-services/index.html",
-      "bytes": 7809,
-      "sha256": "66604cf6c3cd8573a6e950000c9150e7aa8090fae031bf1d9557ef0fa0ca4bbd"
+      "bytes": 7307,
+      "sha256": "6e97f97e0ee850b68585ec6c2e8d98af28e70260872a88de56314cd799c02566"
     },
     {
       "path": "navigator-growth-desk/restaurants-hospitality/index.html",
-      "bytes": 7829,
-      "sha256": "06b5c98e0902203ae3cee8bb43b710f72de5090ffbf2e1f29cb5a8ddb3cb6f7a"
+      "bytes": 7327,
+      "sha256": "80120e4d006f3a421e506851fca4b9f7a6c982d24043250b5b7bd3338640021c"
     },
     {
       "path": "navigator-growth-desk/retail/index.html",
-      "bytes": 7691,
-      "sha256": "09673754c7825d440fe3c8a158edce394a3fc1e12bab92599ca264692ef6031d"
+      "bytes": 7189,
+      "sha256": "71b771b907c5df4dd2f50778ffe1c64a5b3046044270832c3fa0e6358dafbefe"
     },
     {
       "path": "navigator-growth-desk/senior-services/index.html",
-      "bytes": 7865,
-      "sha256": "18030c1a1902e804dfe665cccf3b34be4fae3d723b1bcfa6050ee09c0808569f"
+      "bytes": 7363,
+      "sha256": "d437a8c9b6a6f8269c472e54aa309faac934832c4602d8f430c09b1722f04d5c"
     },
     {
       "path": "new-to-franklin/index.html",
-      "bytes": 5731,
-      "sha256": "1ebeeb8a8dfa96038608eb574a407abe8b106d8d699b8f7d06011716b6a8e348"
+      "bytes": 5229,
+      "sha256": "a7da8ccb2e5539ce6a80d0dcff8df2c1e35aa6caa45f70b3a503b4a11842fa3a"
     },
     {
       "path": "permits-home/index.html",
-      "bytes": 5516,
-      "sha256": "8744896071f336bf5c9187797fcf0b8655e78b26f57e882a77e560ce25c21fa9"
+      "bytes": 5014,
+      "sha256": "dc9ea07439c4ad7757fcc20e24ee6dbe00e544a7c2bc79e00eb8ffef5eeeeeb3"
     },
     {
       "path": "photo-credits/index.html",
-      "bytes": 8253,
-      "sha256": "3fcc3ab595f4486089675f103808cfe4a47ef0d2b583f2acaf9b5ea82dbcac3c"
+      "bytes": 7751,
+      "sha256": "4ae9bda62d17add2a0cd1e2ac1cbb689ccbc6426bfd51d3cf311d8519d1292e3"
     },
     {
       "path": "preparation-studio/index.html",
-      "bytes": 10846,
-      "sha256": "549a2b559c6964680112a5ea67d490b07a5bc78d58d51cf42d30549e3041d162"
+      "bytes": 10344,
+      "sha256": "5429d2adae6c343e360ff79019d8f848a2a959d9fa15037fb72b17360d84dd88"
     },
     {
       "path": "privacy/index.html",
-      "bytes": 5370,
-      "sha256": "b8759a657a3e284f7c1b0fcc28b619d8457ab4c27ff0cc2ca26bb546c84f7484"
+      "bytes": 5357,
+      "sha256": "dd1020084d48c4490cfc651632f545ba388cc4931d165bfea890645d54bfdba6"
+    },
+    {
+      "path": "profile/index.html",
+      "bytes": 4811,
+      "sha256": "e5c7a1d19e75f4f021b34e8b1c4ec4b1008c61c6a6abdceefe8df099f140f843"
     },
     {
       "path": "request-brief/index.html",
-      "bytes": 4895,
-      "sha256": "91c81f784d5b75b8b9c8b71d867b938ccb43a32cf5a91e24de2d855ed8c76565"
+      "bytes": 4393,
+      "sha256": "f98e860ce1252b3afd6df3b14c741a278a8c9d885bd5000846f03d5593cfde43"
     },
     {
       "path": "resources/index.html",
-      "bytes": 13492,
-      "sha256": "f4a717efe00b3df71af753aa68f2003e5d6d50201895c5eb4edf6e384b8b7671"
+      "bytes": 12990,
+      "sha256": "e2340cc4e9281fe845931cf262f798b9511f743bb2dd76d9cdd28e79a70db0c0"
     },
     {
       "path": "robots.txt",
@@ -1356,13 +1507,13 @@
     },
     {
       "path": "school-enrollment/index.html",
-      "bytes": 5316,
-      "sha256": "811668a9be49531f84617e2da787a9fd5baa435d6c74d4929447effd9a098d4a"
+      "bytes": 4814,
+      "sha256": "8ae4b63d9eaa0d3adbf064b8d716409689e9f3529009643a79d8e1790aefb933"
     },
     {
       "path": "senior-caregiver/index.html",
-      "bytes": 5588,
-      "sha256": "fab9efa6bab61198d598cd59ff4e2f854226abdde15776c82924945c7230ed6a"
+      "bytes": 5086,
+      "sha256": "9dd88805dc2f001229a12dcf6dc4f8ca5999f7f9ba110b592022d8fc9f6e3da3"
     },
     {
       "path": "site.webmanifest",
@@ -1371,103 +1522,118 @@
     },
     {
       "path": "sitemap.xml",
-      "bytes": 12275,
-      "sha256": "386aba265a729e87ae4c9026db726bfa8a12057b0c2931bf59e1dcdf603fff7c"
+      "bytes": 12969,
+      "sha256": "586a1efff5d764c4b439487c07069f282025a492064878031d07bcfae9b1b4f9"
     },
     {
       "path": "start-a-business/index.html",
-      "bytes": 5518,
-      "sha256": "01f2fa4689f00ca4f27ba74f94f803ec08c1688e8673fda777430e31032b7888"
+      "bytes": 5016,
+      "sha256": "c411977644f0045366c707e7b1e56161f1be643bef2bb470cf84d6ba9152d75e"
     },
     {
       "path": "task-workspace/index.html",
-      "bytes": 4684,
-      "sha256": "f6ab32a66c817a4defb0c95ec7066eebbff012d11ed39f0772c00248408319ad"
+      "bytes": 4182,
+      "sha256": "eb0e17c33f8e42494a04962dd247a98e1f96c97064efff7a6ba886c7d21868d8"
     },
     {
       "path": "terms/index.html",
-      "bytes": 5635,
-      "sha256": "0a429c51d1af95e5e0c5d0bc5f9bde502ae92b325822fab5c7df8788fb2a0ea2"
+      "bytes": 5133,
+      "sha256": "2219ea52a7d9c4a3f6452f5973d1d0ac842ffd212d8abe8ac66f6e123f25971f"
+    },
+    {
+      "path": "today/index.html",
+      "bytes": 9940,
+      "sha256": "061c100d5aad70c4162c7985bb63d02eb1da2606b7d0713f5ba123a1374b670a"
+    },
+    {
+      "path": "updates/index.html",
+      "bytes": 6576,
+      "sha256": "9b1b1505896c536d3093c7056475a0c4db70e2825b5c378af1a4112485aeee79"
     },
     {
       "path": "verticals/accounting-tax/index.html",
-      "bytes": 6323,
-      "sha256": "6e6fde69be86cc479237e363e5e1a91b77081aaee66e6ec61536aca4a860ff6c"
+      "bytes": 5821,
+      "sha256": "6aae8bb700941c6d622c0f278257ba2e7157d392ca7dd7ef59ac943bd9652ad8"
     },
     {
       "path": "verticals/auto-services/index.html",
-      "bytes": 6773,
-      "sha256": "999e2dd1f5a53cbbb96b58873c84cf616901fa6e7001aa5dd090c49283f78418"
+      "bytes": 6271,
+      "sha256": "8f64ddbc034afb5a7b1c5749df6ffe4adf4c291d8861373a39cb0fb345436384"
     },
     {
       "path": "verticals/beauty-fitness/index.html",
-      "bytes": 6379,
-      "sha256": "a758e3a7583f25f0b14bc94dc2e229c4de99765577a72efc4a1d09349b9b085d"
+      "bytes": 5877,
+      "sha256": "700ed75ea2246392432c50e400546707e46623925f79ea6a6fc0bdc3ffbed8a4"
     },
     {
       "path": "verticals/community-nonprofit/index.html",
-      "bytes": 6238,
-      "sha256": "8bb3ea5716a95c8fb11205846cafaac92ea10dcc4149a7aa335f89045f282aca"
+      "bytes": 5736,
+      "sha256": "6ead2a49ff4a27bd50301f1f0553d8da7cd30a7446cd8f9005a61b278ce54130"
     },
     {
       "path": "verticals/education-tutoring/index.html",
-      "bytes": 6335,
-      "sha256": "40a1745ab7fa09ddbde16f27cb61ae48feca133ac0a1f6b805192f046fbb74cd"
+      "bytes": 5833,
+      "sha256": "9b415f19ebb7a033d9b0e334117161457f62258895738e994c8e12c313a19f7b"
     },
     {
       "path": "verticals/health/index.html",
-      "bytes": 6979,
-      "sha256": "6e56b1a7a097cabac81f9a53604a25deab3146dda84864a9ac428d3d8d192438"
+      "bytes": 6477,
+      "sha256": "4e88f0c8f2e67d265c03d74a947ca0568752d98e57ab23f37a38ffcc0b7d4968"
     },
     {
       "path": "verticals/home-services/index.html",
-      "bytes": 6826,
-      "sha256": "0ca99b489ce06f5ecafaef2d85693b878157b0a3f08875ac4d7714f88c7ea26e"
+      "bytes": 6324,
+      "sha256": "f044a9d7b244d1be82b33aa7b84d659b80be13c86d07b8d36207319543a82855"
     },
     {
       "path": "verticals/hospitality/index.html",
-      "bytes": 6208,
-      "sha256": "97164dae525d75b035273538e72794728f4902233037a94028651a0174e51e17"
+      "bytes": 5706,
+      "sha256": "b76b6571688fcf4b5c8a9a70be502fa9d4e166766d81b232676b08d8d751a7ae"
     },
     {
       "path": "verticals/legal/index.html",
-      "bytes": 6702,
-      "sha256": "e11bbccf2ce116ad072846397b9866d75048232da97bccd2c6416f1cdfa2fbd2"
+      "bytes": 6200,
+      "sha256": "0ce068580b3dc95c2132eaf6afcc904c75cbae4b7c250cfe607a726e60c75dce"
     },
     {
       "path": "verticals/pet-services/index.html",
-      "bytes": 6325,
-      "sha256": "e506e708d4ef43c443231909bae90699737242bfe3f0f4aefaa54dd24e029dee"
+      "bytes": 5823,
+      "sha256": "0278a98f3864d12d320dcb12602c478e34513a2999db934d4b33a2e5d920cf5d"
     },
     {
       "path": "verticals/professional-services/index.html",
-      "bytes": 6353,
-      "sha256": "4004ec5b9b0484b18a74182a16265fd5b71af070c198d7f23dbe9dff8dffeff5"
+      "bytes": 5851,
+      "sha256": "a12ada1bf17d77610ec54a05630a186e80569d43facb20418615f4c35a865d6c"
     },
     {
       "path": "verticals/real-estate/index.html",
-      "bytes": 6913,
-      "sha256": "024a955b1d32c8650ecc8dcf6e113ae12a00726f1ca2eccf0a43561d9700c5ba"
+      "bytes": 6411,
+      "sha256": "688e9b214e74245ea2671db92f6e2543f9c850d38c625950a179f74f35a5db2a"
     },
     {
       "path": "verticals/restaurants/index.html",
-      "bytes": 6353,
-      "sha256": "148834722cf563855354317357dd468c41fd26f3bc5e220a8c62a697b7c51393"
+      "bytes": 5851,
+      "sha256": "24c5ea27584118ac912520fe086bee095ff147f1f546c1fa98832fc6bd1abb26"
     },
     {
       "path": "verticals/retail-local-commerce/index.html",
-      "bytes": 6416,
-      "sha256": "3757029f985ad768cd645d3d8f439f4152f696df1b6465f717eccbb0bb6f186f"
+      "bytes": 5914,
+      "sha256": "9f70ab93e8fa233d0dd8f03ac64516075393e717e2f2fe6cd9183509dc72b070"
     },
     {
       "path": "verticals/senior-services/index.html",
-      "bytes": 6334,
-      "sha256": "79a90ef08654dd3e467aec03c164c5db2502d7e3c1384afa5d332305ca1d7db7"
+      "bytes": 5832,
+      "sha256": "5b2f5bd75f955d5ee26bab818f99b3cdfff9e7b1018c0b08d5601fe4451762ce"
     },
     {
       "path": "whole-situation-navigator/index.html",
-      "bytes": 25414,
-      "sha256": "147c2d5609fe5af2dc612c2bd08cfcb4e35b68bf4850ff81ee79c81c0ce0601f"
+      "bytes": 24912,
+      "sha256": "17cf1daee1a96ed544c6cd63563ff4f2d987e73376aac35717327fb2e89429c6"
+    },
+    {
+      "path": "work-with-franklin-navigator/index.html",
+      "bytes": 6596,
+      "sha256": "ffafa727e12629aa1e16808916d720c3745959151fc6193d7406895dfab00c7c"
     }
   ],
   "productionDeployPerformed": false
