@@ -2,7 +2,7 @@ services:
   - type: web
     runtime: static
     name: franklin-navigator
-    buildCommand: test -f dist/FRANKLIN_BUILD_MANIFEST.json && test -f dist/index.html
+    buildCommand: test -f dist/FRANKLIN_BUILD_MANIFEST.json && test -f dist/index.html && test -f PRODUCTION_RELEASE.json
     staticPublishPath: ./dist
     autoDeployTrigger: "off"
     previews:
@@ -51,3 +51,6 @@ services:
       - type: redirect
         source: /index.html
         destination: /
+      - type: redirect
+        source: /local-growth-desk/
+        destination: /navigator-growth-desk/
