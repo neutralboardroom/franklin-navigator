@@ -36,6 +36,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          test "$(git rev-parse HEAD:dist)" = "96b2bf8f66bdade79c99870f300d682007c104aa"
+          find dist -type d -exec chmod 2755 {} +
           tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -cf /tmp/r16-dist.tar dist
           echo "ad4cf6cd02496a882354a4743aa90c9aa66ac36f5baee6594687e6a2454dbe85  /tmp/r16-dist.tar" | sha256sum -c -
 
