@@ -1,0 +1,63 @@
+name: Expand verified Franklin R17 payload
+
+on:
+  push:
+    branches:
+      - r17-production-stage
+    paths:
+      - .r17-patch/READY
+
+permissions:
+  contents: write
+
+jobs:
+  expand-r17:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out staging branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install zstd
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq zstd
+
+      - name: Reassemble and verify delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .r17-patch/part-* > /tmp/r17.patch.b64
+          base64 --decode /tmp/r17.patch.b64 > /tmp/r17-dist.patch.zst
+          echo "4e2dfdfd2b380163ab1e7499237bdaebfc47bedf816846441758876549f027f8  /tmp/r17-dist.patch.zst" | sha256sum -c -
+
+      - name: Verify exact R16 public starting tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -cf /tmp/r16-dist.tar dist
+          echo "ad4cf6cd02496a882354a4743aa90c9aa66ac36f5baee6594687e6a2454dbe85  /tmp/r16-dist.tar" | sha256sum -c -
+
+      - name: Reconstruct and verify exact R17 public tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          zstd -q -d --patch-from=/tmp/r16-dist.tar /tmp/r17-dist.patch.zst -o /tmp/r17-dist.tar
+          echo "9bd25011e4d27272495127704aff2059f7ea27c21504f8b6c4e0b5d5dc42f62f  /tmp/r17-dist.tar" | sha256sum -c -
+          rm -rf dist
+          tar -xf /tmp/r17-dist.tar
+          test -f dist/index.html
+          test -f dist/FRANKLIN_BUILD_MANIFEST.json
+          grep -q 'FR-NAV0.2.0-CANDIDATE-R17' dist/FRANKLIN_BUILD_MANIFEST.json
+
+      - name: Commit verified R17 public payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .r17-patch/part-*
+          git config user.name "Franklin Navigator Release Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A dist .r17-patch
+          git commit -m "Stage Franklin Navigator R17 public payload"
+          git push origin HEAD:r17-production-stage
