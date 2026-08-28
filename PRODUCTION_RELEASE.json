@@ -1,27 +1,35 @@
 {
-  "schemaVersion": "smarter.franklin.production-release.v1",
+  "schemaVersion": "smarter.franklin.production-release.v2",
   "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
   "editionId": "franklin",
-  "release": "FR-NAV0.2.0-CANDIDATE-R16",
+  "release": "FR-NAV0.2.0-CANDIDATE-R17",
   "canonicalOrigin": "https://franklinnavigator.com",
+  "exactDirectPredecessor": {
+    "release": "FR-NAV0.2.0-CANDIDATE-R16",
+    "sourceArtifactSha256": "c1314795c1627d5960a91d1d9bbb8334a4f41d3536015423258e67b88683f774",
+    "productionGitCommit": "85fc3f44cc04392d11bef065d5b23906b6d7724d"
+  },
   "sourceArtifact": {
-    "fileName": "SMARTER_FRANKLIN_NAVIGATOR__FR-NAV0.2.0__CANDIDATE_R16__MEMBER_GROWTH_WORKSPACE_SGE1__HOME_RIGHTS_NOTICE_CENTER__149_DONOR_PARITY__19103_PROFILES__SOURCE_QUALIFIED__DEPLOY_BLOCKED_GIT_PATH__2026-08-28.zip",
-    "bytes": 9163683,
-    "sha256": "c1314795c1627d5960a91d1d9bbb8334a4f41d3536015423258e67b88683f774",
-    "treeDigest": "932ec7e3cf02b274146042d470e2b5b3bbd6f739ddfea66bb35b3bbc69d0c50c",
-    "libraryFileId": "libfile_008caffb3be88191858744298be9b950"
+    "fileName": "SMARTER_FRANKLIN_NAVIGATOR__FR-NAV0.2.0__CANDIDATE_R17__PRODUCTION_AUDIT_REPAIR__PLAIN_LANGUAGE_BUSINESS_GROWTH__19103_PROFILES__149_DONOR_PARITY__DEPLOY_READY__2026-08-28.zip",
+    "bytes": 9150782,
+    "sha256": "4887778c933a3b2472d970f8ee2b1598113f72ccace7aec5e652caa0a36e4441",
+    "treeDigest": "15983604ece32b67c82455f3de7d9a64cfed5e7356ccf5b239b1f92d7d826202"
   },
   "publicPayload": {
     "directory": "dist",
     "htmlPages": 153,
-    "sitemapRoutes": 152,
+    "sitemapRoutes": 151,
     "profiles": 19103,
-    "testedLocalizedDonorCapabilities": 149
+    "testedLocalizedDonorCapabilities": 149,
+    "publicLanguageFindings": 0,
+    "brokenInternalTargets": 0,
+    "brokenAnchors": 0,
+    "unintendedOrphanPages": 0
   },
   "deployment": {
     "provider": "Render",
+    "serviceId": "srv-da8tg6rbc2fs73crru2g",
     "serviceName": "franklin-navigator",
-    "workspaceId": "tea-d87bbcrtqb8s7394bmcg",
     "repository": "https://github.com/neutralboardroom/franklin-navigator",
     "branch": "main",
     "automaticDeploy": false,
