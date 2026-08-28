@@ -1,0 +1,44 @@
+name: Verify Franklin R17 convergence
+
+on:
+  push:
+    branches:
+      - r17-production-stage
+    paths:
+      - .github/workflows/verify-r17-convergence.yml
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compare GitHub Render and canonical payloads
+        shell: bash
+        run: |
+          set -euo pipefail
+          stamp="$(date +%s)"
+          curl --fail --silent --show-error --location "https://raw.githubusercontent.com/neutralboardroom/franklin-navigator/main/dist/index.html?${stamp}" -o /tmp/github.html
+          curl --fail --silent --show-error --location -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' "https://franklin-navigator.onrender.com/?verify=${stamp}" -D /tmp/onrender.headers -o /tmp/onrender.html
+          curl --fail --silent --show-error --location -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' "https://franklinnavigator.com/?verify=${stamp}" -D /tmp/canonical.headers -o /tmp/canonical.html
+          echo '--- SHA256 ---'
+          sha256sum /tmp/github.html /tmp/onrender.html /tmp/canonical.html
+          echo '--- BYTE MATCH ---'
+          cmp -s /tmp/github.html /tmp/onrender.html && echo 'GITHUB_ONRENDER=MATCH' || echo 'GITHUB_ONRENDER=MISMATCH'
+          cmp -s /tmp/github.html /tmp/canonical.html && echo 'GITHUB_CANONICAL=MATCH' || echo 'GITHUB_CANONICAL=MISMATCH'
+          cmp -s /tmp/onrender.html /tmp/canonical.html && echo 'ONRENDER_CANONICAL=MATCH' || echo 'ONRENDER_CANONICAL=MISMATCH'
+          echo '--- SIGNATURES ---'
+          for f in github onrender canonical; do
+            echo "[$f]"
+            grep -q '>For Business<' "/tmp/${f}.html" && echo 'R17_FOR_BUSINESS=YES' || echo 'R17_FOR_BUSINESS=NO'
+            grep -q '>Business Growth<' "/tmp/${f}.html" && echo 'R17_BUSINESS_GROWTH=YES' || echo 'R17_BUSINESS_GROWTH=NO'
+            grep -q '>Prepare<' "/tmp/${f}.html" && echo 'R17_PREPARE=YES' || echo 'R17_PREPARE=NO'
+            grep -q '<strong>Sources shown</strong>' "/tmp/${f}.html" && echo 'R17_SOURCES_SHOWN=YES' || echo 'R17_SOURCES_SHOWN=NO'
+            grep -q '>Preparation Studio<' "/tmp/${f}.html" && echo 'R16_PREPARATION_STUDIO_NAV=YES' || echo 'R16_PREPARATION_STUDIO_NAV=NO'
+            grep -q '<strong>Source-backed</strong>' "/tmp/${f}.html" && echo 'R16_SOURCE_BACKED=YES' || echo 'R16_SOURCE_BACKED=NO'
+          done
+          echo '--- ONRENDER HEADERS ---'
+          cat /tmp/onrender.headers
+          echo '--- CANONICAL HEADERS ---'
+          cat /tmp/canonical.headers
