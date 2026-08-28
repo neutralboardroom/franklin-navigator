@@ -1,0 +1,1 @@
+Final Franklin R18 WO-015 deployment transport. Binary patch is stored as a Git blob and will be applied only after exact R17 base verification. Production main remains untouched until staging verification passes.
