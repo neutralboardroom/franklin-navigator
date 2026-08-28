@@ -2,12 +2,14 @@
 
 Production deployment repository for [FranklinNavigator.com](https://franklinnavigator.com).
 
-This repository contains the tested static public payload for `FR-NAV0.2.0-CANDIDATE-R16`. Canonical Profile Factory and Local Investigator inputs are consumed read-only; internal source evidence and governance records remain outside the public deployment repository.
+This repository contains the qualified public payload for `FR-NAV0.2.0-CANDIDATE-R17`.
 
-- Public site: free community navigation and source-backed local discovery
-- Published profiles: 19,103
+R17 focuses on production-audit repairs and clear customer language, especially the business-owner growth experience. Canonical Profile Factory and Local Investigator inputs remain read-only; internal governance/source evidence stays outside this public deployment repository.
+
+- Public profiles: 19,103
 - Built HTML pages: 153
+- Tested/localized donor capabilities: 149
 - Paid commerce: disabled
 - Automatic deployment: disabled
 
-The exact source release, integrity identity, and deployment boundary are recorded in `PRODUCTION_RELEASE.json`.
+The exact source release and deployment identity are recorded in `PRODUCTION_RELEASE.json`.
