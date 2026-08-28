@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "smarter.franklin.production-release.v1",
+  "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
+  "editionId": "franklin",
+  "release": "FR-NAV0.2.0-CANDIDATE-R16",
+  "canonicalOrigin": "https://franklinnavigator.com",
+  "sourceArtifact": {
+    "fileName": "SMARTER_FRANKLIN_NAVIGATOR__FR-NAV0.2.0__CANDIDATE_R16__MEMBER_GROWTH_WORKSPACE_SGE1__HOME_RIGHTS_NOTICE_CENTER__149_DONOR_PARITY__19103_PROFILES__SOURCE_QUALIFIED__DEPLOY_BLOCKED_GIT_PATH__2026-08-28.zip",
+    "bytes": 9163683,
+    "sha256": "c1314795c1627d5960a91d1d9bbb8334a4f41d3536015423258e67b88683f774",
+    "treeDigest": "932ec7e3cf02b274146042d470e2b5b3bbd6f739ddfea66bb35b3bbc69d0c50c",
+    "libraryFileId": "libfile_008caffb3be88191858744298be9b950"
+  },
+  "publicPayload": {
+    "directory": "dist",
+    "htmlPages": 153,
+    "sitemapRoutes": 152,
+    "profiles": 19103,
+    "testedLocalizedDonorCapabilities": 149
+  },
+  "deployment": {
+    "provider": "Render",
+    "serviceName": "franklin-navigator",
+    "workspaceId": "tea-d87bbcrtqb8s7394bmcg",
+    "repository": "https://github.com/neutralboardroom/franklin-navigator",
+    "branch": "main",
+    "automaticDeploy": false,
+    "paidCommerceActive": false
+  },
+  "authorityTransfer": false
+}

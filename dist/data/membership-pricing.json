@@ -1,0 +1,528 @@
+{
+  "schemaVersion": "franklin.public-membership-pricing.v2",
+  "editionId": "franklin",
+  "priceAuthorityId": "LOCAL_MEMBERSHIP_PRICE_AUTHORITY_2026_08_27_V2",
+  "status": "PROVISIONAL_DISPLAY_ONLY",
+  "currency": "USD",
+  "annualMultiplierOfMonthly": 10,
+  "annualSavingsMonthsEquivalent": 2,
+  "freePresence": {
+    "planId": "FRANKLIN_FREE_PRESENCE_V2",
+    "priceUsd": 0,
+    "entitlements": [
+      "LISTING_BASIC",
+      "FACTUAL_CORRECTION_PREP",
+      "ORGANIC_DISCOVERY"
+    ],
+    "correctionsRemainFree": true
+  },
+  "liveCheckout": false,
+  "liveBilling": false,
+  "liveEntitlements": false,
+  "verticals": [
+    {
+      "id": "health",
+      "label": "Health & Wellness",
+      "memberName": "Franklin Navigator Health Member",
+      "priceAuthorityKey": "HEALTH",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 169,
+          "annualUsd": 1690,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 19,
+          "annualUsd": 190,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 79,
+          "annualUsd": 790,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 49,
+          "annualUsd": 490,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "legal",
+      "label": "Legal Services",
+      "memberName": "Franklin Navigator Legal Member",
+      "priceAuthorityKey": "LEGAL",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 169,
+          "annualUsd": 1690,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 19,
+          "annualUsd": 190,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 79,
+          "annualUsd": 790,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 49,
+          "annualUsd": 490,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "home-services",
+      "label": "Home Services & Trades",
+      "memberName": "Franklin Navigator Home Services Member",
+      "priceAuthorityKey": "HOME_SERVICES",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 129,
+          "annualUsd": 1290,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 15,
+          "annualUsd": 150,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 59,
+          "annualUsd": 590,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 35,
+          "annualUsd": 350,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "real-estate",
+      "label": "Real Estate & Property",
+      "memberName": "Franklin Navigator Real Estate Member",
+      "priceAuthorityKey": "REAL_ESTATE",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 149,
+          "annualUsd": 1490,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 19,
+          "annualUsd": 190,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 69,
+          "annualUsd": 690,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 39,
+          "annualUsd": 390,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "restaurants",
+      "label": "Restaurants & Food",
+      "memberName": "Franklin Navigator Restaurant Member",
+      "priceAuthorityKey": "RESTAURANTS",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 99,
+          "annualUsd": 990,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 10,
+          "annualUsd": 100,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 45,
+          "annualUsd": 450,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 25,
+          "annualUsd": 250,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "hospitality",
+      "label": "Hospitality",
+      "memberName": "Franklin Navigator Hospitality Member",
+      "priceAuthorityKey": "HOSPITALITY",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 129,
+          "annualUsd": 1290,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 15,
+          "annualUsd": 150,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 59,
+          "annualUsd": 590,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 35,
+          "annualUsd": 350,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "beauty-fitness",
+      "label": "Beauty, Fitness & Personal Care",
+      "memberName": "Franklin Navigator Beauty & Fitness Member",
+      "priceAuthorityKey": "BEAUTY_FITNESS",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 99,
+          "annualUsd": 990,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 10,
+          "annualUsd": 100,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 45,
+          "annualUsd": 450,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 25,
+          "annualUsd": 250,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "professional-services",
+      "label": "Professional Services",
+      "memberName": "Franklin Navigator Professional Services Member",
+      "priceAuthorityKey": "PROFESSIONAL_SERVICES",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 129,
+          "annualUsd": 1290,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 15,
+          "annualUsd": 150,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 59,
+          "annualUsd": 590,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 35,
+          "annualUsd": 350,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "accounting-tax",
+      "label": "Accounting & Tax",
+      "memberName": "Franklin Navigator Accounting & Tax Member",
+      "priceAuthorityKey": "ACCOUNTING_TAX",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 149,
+          "annualUsd": 1490,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 19,
+          "annualUsd": 190,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 69,
+          "annualUsd": 690,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 39,
+          "annualUsd": 390,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "retail-local-commerce",
+      "label": "Retail & Local Commerce",
+      "memberName": "Franklin Navigator Local Commerce Member",
+      "priceAuthorityKey": "RETAIL",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 99,
+          "annualUsd": 990,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 10,
+          "annualUsd": 100,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 45,
+          "annualUsd": 450,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 25,
+          "annualUsd": 250,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "education-tutoring",
+      "label": "Education & Tutoring",
+      "memberName": "Franklin Navigator Education Member",
+      "priceAuthorityKey": "EDUCATION",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 99,
+          "annualUsd": 990,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 10,
+          "annualUsd": 100,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 45,
+          "annualUsd": 450,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 25,
+          "annualUsd": 250,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "senior-services",
+      "label": "Senior Services",
+      "memberName": "Franklin Navigator Senior Services Member",
+      "priceAuthorityKey": "SENIOR_SERVICES",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 129,
+          "annualUsd": 1290,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 15,
+          "annualUsd": 150,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 59,
+          "annualUsd": 590,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 35,
+          "annualUsd": 350,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "auto-services",
+      "label": "Auto Services",
+      "memberName": "Franklin Navigator Auto Services Member",
+      "priceAuthorityKey": "AUTO",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 129,
+          "annualUsd": 1290,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 15,
+          "annualUsd": 150,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 59,
+          "annualUsd": 590,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 35,
+          "annualUsd": 350,
+          "startingAt": false
+        }
+      ]
+    },
+    {
+      "id": "pet-services",
+      "label": "Pet Services",
+      "memberName": "Franklin Navigator Pet Services Member",
+      "priceAuthorityKey": "PET",
+      "tiers": [
+        {
+          "tier": "ENTERPRISE",
+          "label": "Larger organization, 16+ covered people and/or multi-location/network needs. Starting price; materially larger scope may require a custom quote.",
+          "monthlyUsd": 99,
+          "annualUsd": 990,
+          "startingAt": true
+        },
+        {
+          "tier": "INDIVIDUAL",
+          "label": "One professional/provider/owner-operated business or vertical-equivalent single location.",
+          "monthlyUsd": 10,
+          "annualUsd": 100,
+          "startingAt": false
+        },
+        {
+          "tier": "OFFICE",
+          "label": "One office/practice/firm/location with up to 15 covered professionals/providers/staff identities.",
+          "monthlyUsd": 45,
+          "annualUsd": 450,
+          "startingAt": false
+        },
+        {
+          "tier": "TEAM",
+          "label": "Up to 5 covered professionals/providers/staff identities.",
+          "monthlyUsd": 25,
+          "annualUsd": 250,
+          "startingAt": false
+        }
+      ]
+    }
+  ]
+}

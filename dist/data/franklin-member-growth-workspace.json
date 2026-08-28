@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "smarter.franklin.member-growth-workspace.v1",
+  "candidate": "FR-NAV0.2.0-CANDIDATE-R16",
+  "publicRoute": "/member-growth-workspace/",
+  "publicName": "Franklin Member Growth Workspace",
+  "status": "DEVICE_ONLY_PRODUCT_PREVIEW_NOT_ACCOUNT_NOT_ENTITLEMENT",
+  "workOrderId": "WO-20260828-LOCAL-SGE-MEMBER-VALUE-008",
+  "productOwner": "LOCAL_COMMUNITY_PLATFORM",
+  "commercialOwner": "SRE_OWNER_CONSOLE",
+  "revenueRelease": "SRE-OC-CP-2.0.0",
+  "growthEngineRelease": "SGE-1.0",
+  "revenueArtifact": {
+    "bytes": 77885,
+    "sha256": "a88ff5a415ace7e1461cbc766f4c92e36e3c80d27b023ad840dd19297b133aa5",
+    "libraryFileId": "libfile_d87f678b3154819185d5d257609fe8c8"
+  },
+  "memberContract": {
+    "includedInPaidMembership": true,
+    "incrementalLaunchPriceUsd": 0,
+    "launchUsagePolicy": "GENEROUS_INCLUDED_FAIR_USE",
+    "futureHighUsagePriceStatus": "UNSET_NOT_APPROVED",
+    "automaticOverageCharge": false,
+    "publicFreeProfileAndCorrectionsRemainFree": true
+  },
+  "freeVsMember": [
+    {
+      "capability": "Source-backed public profile and factual corrections",
+      "free": "Included",
+      "member": "Included"
+    },
+    {
+      "capability": "Device-only profile audit and one private plan",
+      "free": "Available preview",
+      "member": "Included"
+    },
+    {
+      "capability": "Saved isolated workspace",
+      "free": "Not active",
+      "member": "Designed; not active on this public build"
+    },
+    {
+      "capability": "Team, office and multi-location coordination",
+      "free": "Not active",
+      "member": "Preview only; no accounts or shared state"
+    },
+    {
+      "capability": "Permission-aware external execution",
+      "free": "Not available",
+      "member": "Requires separate authorization and runtime gates"
+    }
+  ],
+  "cadences": [
+    {
+      "id": "seven",
+      "label": "Next 7 days"
+    },
+    {
+      "id": "thirty",
+      "label": "Next 30 days"
+    },
+    {
+      "id": "ninety",
+      "label": "Next 90 days"
+    }
+  ],
+  "collaborationScopes": {
+    "INDIVIDUAL": {
+      "label": "Individual",
+      "locations": 1,
+      "roles": [
+        "Owner"
+      ]
+    },
+    "TEAM": {
+      "label": "Team",
+      "locations": 1,
+      "roles": [
+        "Owner",
+        "Contributor",
+        "Reviewer"
+      ]
+    },
+    "OFFICE": {
+      "label": "Office",
+      "locations": 1,
+      "roles": [
+        "Owner",
+        "Location lead",
+        "Contributor",
+        "Reviewer"
+      ]
+    },
+    "ENTERPRISE": {
+      "label": "Enterprise",
+      "locations": "MULTI_LOCATION_PREVIEW",
+      "roles": [
+        "Portfolio owner",
+        "Location lead",
+        "Contributor",
+        "Reviewer"
+      ]
+    }
+  },
+  "valueSignals": [
+    "public profile reviewed",
+    "factual correction path prepared",
+    "next-best actions prioritized",
+    "weekly plan prepared",
+    "local opportunity reviewed",
+    "draft prepared for member review",
+    "action marked complete by member"
+  ],
+  "permissionStates": [
+    "DEVICE_ONLY",
+    "MEMBER_REVIEW",
+    "DRAFT_ONLY",
+    "EXTERNAL_ACTION_BLOCKED"
+  ],
+  "supportReadiness": [
+    {
+      "id": "support",
+      "label": "Support and factual correction routes",
+      "route": "/member-support/"
+    },
+    {
+      "id": "cancel",
+      "label": "Cancellation readiness",
+      "state": "NO_ACTIVE_SUBSCRIPTION_ON_THIS_SITE"
+    },
+    {
+      "id": "refund",
+      "label": "Refund readiness",
+      "state": "NO_PAYMENT_ACCEPTED_ON_THIS_SITE"
+    },
+    {
+      "id": "failed-payment",
+      "label": "Failed-payment readiness",
+      "state": "NO_BILLING_RUNTIME_ON_THIS_SITE"
+    }
+  ],
+  "runtimeTruth": {
+    "deviceOnlyPreview": true,
+    "accountCreation": false,
+    "profileClaimSubmission": false,
+    "persistentWorkspace": false,
+    "crossUserCollaboration": false,
+    "externalAi": false,
+    "externalSending": false,
+    "publishing": false,
+    "advertisingSpend": false,
+    "checkout": false,
+    "billing": false,
+    "paidEntitlements": false
+  },
+  "guardrails": [
+    "No customer, resident, patient, client, payment, password or confidential matter data.",
+    "No guaranteed leads, revenue, rankings, savings or return on investment.",
+    "Every draft and action remains under member review; this preview cannot send, publish, spend or charge.",
+    "Profile accuracy, safety, credentials and organic relevance never depend on payment.",
+    "Team and location controls are a device-only product demonstration until identity and hard tenant isolation qualify."
+  ],
+  "authorityTransfer": false
+}

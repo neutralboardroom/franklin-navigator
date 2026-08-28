@@ -1,0 +1,53 @@
+services:
+  - type: web
+    runtime: static
+    name: franklin-navigator
+    buildCommand: test -f dist/FRANKLIN_BUILD_MANIFEST.json && test -f dist/index.html
+    staticPublishPath: ./dist
+    autoDeployTrigger: "off"
+    previews:
+      generation: off
+    domains:
+      - franklinnavigator.com
+      - www.franklinnavigator.com
+    headers:
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Permissions-Policy
+        value: "camera=(), microphone=(), geolocation=(), payment=()"
+      - path: /*
+        name: Cross-Origin-Opener-Policy
+        value: same-origin
+      - path: /*
+        name: Cross-Origin-Resource-Policy
+        value: same-origin
+      - path: /*
+        name: Strict-Transport-Security
+        value: "max-age=31536000"
+      - path: /*
+        name: X-Permitted-Cross-Domain-Policies
+        value: none
+      - path: /assets/*
+        name: Cache-Control
+        value: "public, max-age=3600, stale-while-revalidate=86400"
+      - path: /data/*
+        name: Cache-Control
+        value: "public, max-age=3600, stale-while-revalidate=86400"
+      - path: /*
+        name: Cache-Control
+        value: "public, max-age=300, must-revalidate"
+    routes:
+      - type: redirect
+        source: /index.html
+        destination: /

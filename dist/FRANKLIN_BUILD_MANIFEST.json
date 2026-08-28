@@ -1,0 +1,1473 @@
+{
+  "schemaVersion": "smarter.franklin.static-build-manifest.v16",
+  "editionId": "franklin",
+  "release": "FR-NAV0.2.0-CANDIDATE-R16",
+  "canonicalOrigin": "https://franklinnavigator.com",
+  "exactDirectPredecessor": {
+    "release": "FR-NAV0.2.0-CANDIDATE-R15",
+    "bytes": 9037159,
+    "sha256": "91d48b88a4c81ff947da25bc524f68d65e409d3d810922c28767596c529c02a5",
+    "libraryFileId": "libfile_a57f8f8a40648191ae4b43fac5b221bb",
+    "treeDigest": "e69ec987ef61d21079ed72d002f098f4b080c7d674c455b9d4b02e98bb79bbef",
+    "qualified": true,
+    "accepted": false,
+    "unchanged": true
+  },
+  "exactAcceptedBaseline": {
+    "release": "FR-NAV0.2.0-CANDIDATE-R4",
+    "bytes": 4471996,
+    "sha256": "9f0f73cf0e4251f1ad51e4dfe5982f3f738f1a4fee6918d1026f6b0f01f990a5",
+    "gateD": "PASS",
+    "unchanged": true
+  },
+  "coordinationCurrentness": {
+    "sccRelease": "SCC V0.22.0 / SCCC22.0 / UEC-1.20",
+    "artifactBytes": 302329720,
+    "artifactSha256": "d4ff5c75cf65baed8c7d80ffdf085964381353b2e4327df9c2ae9caa8196f6f4",
+    "libraryFileId": "libfile_88d04a785bd081919b39f7186cf9e209",
+    "libraryPersistenceGate": "PASS_LIBRARY_PERSISTED",
+    "recognizedFranklinCandidate": "R4_PUBLIC_FREE_BASELINE",
+    "newerLocalSource": "R15_LIBRARY_PERSISTED",
+    "r16HandoffRequired": true,
+    "sccAuthorityMutated": false
+  },
+  "hypergeo": {
+    "city": "Franklin",
+    "county": "Williamson County",
+    "state": "Tennessee",
+    "country": "US"
+  },
+  "sourceHtmlPages": 31,
+  "generatedPages": 121,
+  "builtHtmlPages": 153,
+  "profileProjection": {
+    "lane": "FR-PF",
+    "release": "FR-PF-PLATFORM-15.2",
+    "records": 19103,
+    "predecessorRecords": 18056,
+    "newReadyRecords": 1047,
+    "chunks": 20,
+    "heldInPublicProjection": 0,
+    "acceptedPF74HoldsExcluded": 3543,
+    "newGeographyHoldsExcluded": 127,
+    "fabricated": 0,
+    "sourceSha256": "48b93626f860d653a42831653491e501aea9f4b385c7a7e9dc5ab0f1cbc96690",
+    "handoffSha256": "9d818b38254ee80df2a151a21cd3c7c6e162fa8affb9e1059ea97ef1b75eea09",
+    "readOnly": true,
+    "deepLinkFilters": true,
+    "correctionBriefLocalOnly": true,
+    "claimEntryLinks": 19103,
+    "claimState": "PREPARED_NOT_SUBMITTED",
+    "profileSpecificShareLinks": true
+  },
+  "localInvestigator": {
+    "baseRelease": "SLI-21M-0.19.0",
+    "baseArtifactSha256": "4244d452b2148fa2a2d8f8339a1ac2f05645a882aa29d288d516e7a1584d2500",
+    "overlayContract": "FRANKLIN-TN-LI-HANDOFF-20260827-006",
+    "overlayArtifactSha256": "b6af4c2eddde6569d0c5ca7c9b330f1eb2b8d56b307555680e943ed14e579f42",
+    "sourceRoutes": 194,
+    "newSourceRoutes": 38,
+    "facts": 104,
+    "newFacts": 22,
+    "eventCivicAndDiscoveryRecords": 59,
+    "newDynamicCandidates": 18,
+    "opportunities": 61,
+    "liveLocalCategories": 12,
+    "verificationTasks": 32,
+    "dynamicCandidatesPublished": 0,
+    "dynamicCandidatesSuppressed": 18,
+    "residentLifeCategories": 22,
+    "searchIntentGroups": 24,
+    "datedEventOccurrencesPublished": 0,
+    "readOnly": true,
+    "durableAreaGuide": true,
+    "liveLocalRoute": "/live-local/"
+  },
+  "verticalMembership": {
+    "registryVersion": "franklin.vertical-registry.v2",
+    "publicVerticals": 15,
+    "pricedCommercialVerticals": 14,
+    "capabilityIds": 20,
+    "planIds": 56,
+    "activeEntitlements": 0,
+    "paidCommerce": "NO_GO_SEPARATE_LANE",
+    "organicMemberSponsoredEditorialSafetySeparated": true
+  },
+  "pricing": {
+    "priceAuthorityId": "LOCAL_MEMBERSHIP_PRICE_AUTHORITY_2026_08_27_V2",
+    "authoritySha256": "a77b067db730378546a45667127e48165a5af9d40b9b57e3ae2216aac30df6f1",
+    "status": "OWNER_APPROVED_PROVISIONAL_DISPLAY_AUTHORIZED",
+    "monthlyAndAnnualDisplay": true,
+    "annualMultiplierOfMonthly": 10,
+    "franklinMarketMultiplier": 1,
+    "liveCheckout": false,
+    "liveBilling": false,
+    "liveEntitlements": false
+  },
+  "communityHelpCenter": {
+    "route": "/community-help-center/",
+    "status": "FREE_PUBLIC_DEVICE_ONLY",
+    "urgentRoutes": 5,
+    "situationTopics": 10,
+    "preparationTools": 8,
+    "serverSubmission": false,
+    "browserStorage": false,
+    "externalAi": false,
+    "homepageProminent": true,
+    "wholeSituationRoute": "/whole-situation-navigator/",
+    "preparationStudioRoute": "/preparation-studio/",
+    "localPathwaysRoute": "/local-pathways/",
+    "lifeChangePlansRoute": "/life-change-plans/",
+    "advancedCores": 4,
+    "deepDonorWorkflows": 38,
+    "deepLocalPathways": 15,
+    "lifeChangePlans": 6,
+    "preparationTracks": 16,
+    "spanishAccessPages": 11
+  },
+  "localPathways": {
+    "route": "/local-pathways/",
+    "status": "FREE_PUBLIC_DEVICE_ONLY",
+    "pathways": 15,
+    "sourceBindings": 58,
+    "profileRecords": 19103,
+    "growthLinks": 15,
+    "deviceOnly": true,
+    "serverSubmission": false,
+    "browserStorage": false,
+    "externalAi": false,
+    "professionalAdvice": false,
+    "endorsement": false,
+    "homepageProminent": true,
+    "helpCenterProminent": true,
+    "spanishAccessRoute": "/es/caminos-locales/"
+  },
+  "lifeChangePlans": {
+    "route": "/life-change-plans/",
+    "plans": 6,
+    "newWholeSituationChoices": 6,
+    "totalWholeSituationChoices": 19,
+    "sourceBindings": 24,
+    "portableJsonDownloads": true,
+    "deviceOnly": true,
+    "serverSubmission": false,
+    "browserStorage": false,
+    "externalAi": false,
+    "professionalAdvice": false,
+    "endorsement": false
+  },
+  "freeMemberClaim": {
+    "route": "/claim-profile/",
+    "freeMembershipRoute": "/free-membership/",
+    "capabilityStatusRoute": "/capability-status/",
+    "supportRoute": "/member-support/",
+    "claimEntryLinks": 19103,
+    "state": "PREPARED_NOT_SUBMITTED",
+    "downloadableLocalPacket": true,
+    "profileSpecificShareLink": true,
+    "qrCodeIssuance": false,
+    "accountCreated": false,
+    "claimSubmitted": false,
+    "claimApproved": false,
+    "freeMemberActivated": false,
+    "networkSubmission": false,
+    "browserStorage": false,
+    "externalAi": false,
+    "featureCapabilityStates": 9,
+    "firstValueTracks": 6,
+    "stripeSetup": false,
+    "checkout": false,
+    "billing": false,
+    "paidEntitlements": false
+  },
+  "donorInheritance": {
+    "programStatus": "IN_PROGRESS",
+    "versionSliceStatus": "R15_PRESERVED_R16_ADDS_MEMBER_GROWTH_AND_HOME_RIGHTS_AND_PROMOTES_THIRTEEN_CAPABILITIES",
+    "registrySchema": "smarter.local.donor-capability-registry.v5",
+    "totalCapabilitiesFound": 219,
+    "testedLocalizedParity": 149,
+    "newCandidateImplementedPatterns": 13,
+    "programRegistryReconciliationPending": false,
+    "deferredWithCause": 65,
+    "rejectedWithCause": 5,
+    "unexplained": 0,
+    "wholeSituationScenarios": 19,
+    "advancedCores": 4,
+    "deepWorkflows": 38,
+    "lifeChangePlans": 6,
+    "preparationTracks": 16,
+    "homeRightsTracks": 4,
+    "foundationalSpanishPages": 11,
+    "growthPlaybooks": 13,
+    "donorSummary": {
+      "SMARTER_JUSTICE": {
+        "materialCapabilitiesFound": 104,
+        "adopt": 0,
+        "adapt": 45,
+        "rejectWithCause": 4,
+        "deferWithCause": 55,
+        "implementedLocalParity": 45,
+        "localizedParity": 45,
+        "testedParity": 45,
+        "unexplained": 0
+      },
+      "SMARTER_HEALTH": {
+        "materialCapabilitiesFound": 54,
+        "adopt": 0,
+        "adapt": 44,
+        "rejectWithCause": 0,
+        "deferWithCause": 10,
+        "implementedLocalParity": 44,
+        "localizedParity": 44,
+        "testedParity": 44,
+        "unexplained": 0
+      },
+      "SMARTER_HOME": {
+        "materialCapabilitiesFound": 37,
+        "adopt": 0,
+        "adapt": 37,
+        "rejectWithCause": 0,
+        "deferWithCause": 0,
+        "implementedLocalParity": 37,
+        "localizedParity": 37,
+        "testedParity": 37,
+        "unexplained": 0
+      },
+      "SMARTER_AUTO": {
+        "materialCapabilitiesFound": 24,
+        "adopt": 0,
+        "adapt": 23,
+        "rejectWithCause": 1,
+        "deferWithCause": 0,
+        "implementedLocalParity": 23,
+        "localizedParity": 23,
+        "testedParity": 23,
+        "unexplained": 0
+      }
+    },
+    "donors": {
+      "SMARTER_JUSTICE": {
+        "release": "PRE120",
+        "bytes": 258722699,
+        "sha256": "1be95fd1ef025ec6d65bbd0c1e67c8814a38ea53b0073066b82cf5a5002e6bd9"
+      },
+      "SMARTER_HEALTH": {
+        "release": "v0.30/H26",
+        "bytes": 2990207,
+        "sha256": "412264ba3858526aaaeb8c78278da0bca7d836af1fe5de6b658f9c7ad2337e90"
+      },
+      "SMARTER_HOME": {
+        "release": "v0.58/NAV7.2",
+        "bytes": 27231601,
+        "sha256": "3bdc5334d48917c1f5a1ec808b39137a299a70631d299fe3d20ac8c932f4d154"
+      },
+      "SMARTER_AUTO": {
+        "release": "v1.9/A9",
+        "bytes": 290433,
+        "sha256": "bee00a9bc70b3409c10cec4da6019794142e49fc44e30d810923cfba736870fd"
+      }
+    },
+    "privateStateImported": false,
+    "brandingImported": false,
+    "donorProductsMutated": false,
+    "fullProgramParityClaimed": false,
+    "fullSpanishParityClaimed": false,
+    "otherAdvancedDonorsSearched": true,
+    "otherQualifiedCandidatesFound": 0
+  },
+  "directoryComparison": {
+    "maxSelected": 3,
+    "deviceOnly": true,
+    "browserStorage": false,
+    "serverSubmission": false,
+    "ranking": false,
+    "endorsement": false
+  },
+  "growthDesk": {
+    "publicName": "Growth planning library",
+    "successorBrand": "Franklin Local Growth Engine",
+    "verticalPlaybooks": 13,
+    "newPlaybooksThisVersion": 0,
+    "freeCorrectionsSeparate": true,
+    "freeFirstValueRoutes": 6,
+    "profileClaimBridge": true,
+    "liveEnrollment": false,
+    "liveCheckout": false,
+    "liveBilling": false,
+    "activePaidEntitlements": 0,
+    "revenueAuthorityTransferred": false
+  },
+  "localGrowthEngine": {
+    "route": "/local-growth-engine/",
+    "publicName": "Franklin Local Growth Engine",
+    "descriptor": "Powered by SMARTER Growth Engine",
+    "status": "SOURCE_CANDIDATE_DEVICE_ONLY_PREVIEW",
+    "workOrderId": "WO-20260828-LOCAL-MEMBER-SMARTER-GROWTH-ENGINE-007",
+    "revenueRelease": "SRE-OC-CP-1.9.0",
+    "productOwner": "LOCAL_COMMUNITY_PLATFORM",
+    "commercialOwner": "SRE_OWNER_CONSOLE",
+    "seventhBuilderCreated": false,
+    "freePreviewActiveInSource": true,
+    "onboardingDimensions": 6,
+    "profileAuditChecks": 5,
+    "universalActions": 5,
+    "verticalPlaybooks": 13,
+    "localOpportunityStartingPoints": 3,
+    "draftTypes": 3,
+    "reviewQueueDeviceOnly": true,
+    "firstValueLedgerDeviceOnly": true,
+    "tierExperiences": 4,
+    "automationLoopStages": 10,
+    "usageBillingMeter": false,
+    "automaticOverageCharge": false,
+    "incrementalLaunchPriceUsd": 0,
+    "accountSystemActive": false,
+    "persistentTenantStateActive": false,
+    "externalAiActive": false,
+    "externalSendingActive": false,
+    "publishingActive": false,
+    "checkoutActive": false,
+    "billingActive": false,
+    "paidEntitlementsActive": false,
+    "authorityTransfer": false
+  },
+  "preparationStudio": {
+    "route": "/preparation-studio/",
+    "publicName": "Franklin Preparation Studio",
+    "status": "FREE_PUBLIC_DEVICE_ONLY",
+    "verticals": 4,
+    "tracks": 16,
+    "legalTracks": 4,
+    "healthTracks": 4,
+    "homeTracks": 4,
+    "autoTracks": 4,
+    "newlyPromotedDeferredCapabilities": 16,
+    "portableJsonDownloads": true,
+    "copyAndPrint": true,
+    "fixedChoiceOnly": true,
+    "narrativeIntake": false,
+    "fileUpload": false,
+    "browserStorage": false,
+    "serverSubmission": false,
+    "externalAi": false,
+    "professionalAdvice": false,
+    "authorityTransfer": false
+  },
+  "memberGrowthWorkspace": {
+    "route": "/member-growth-workspace/",
+    "status": "DEVICE_ONLY_PRODUCT_PREVIEW_NOT_ACCOUNT_NOT_ENTITLEMENT",
+    "workOrderId": "WO-20260828-LOCAL-SGE-MEMBER-VALUE-008",
+    "revenueRelease": "SRE-OC-CP-2.0.0",
+    "growthEngineRelease": "SGE-1.0",
+    "verticals": 13,
+    "profileAuditChecks": 5,
+    "cadences": 3,
+    "collaborationScopes": 4,
+    "permissionStates": 4,
+    "valueSignals": 7,
+    "deviceOnly": true,
+    "accountCreation": false,
+    "persistentWorkspace": false,
+    "crossUserCollaboration": false,
+    "externalAi": false,
+    "externalSending": false,
+    "publishing": false,
+    "advertisingSpend": false,
+    "checkout": false,
+    "billing": false,
+    "paidEntitlements": false,
+    "incrementalLaunchPriceUsd": 0,
+    "authorityTransfer": false
+  },
+  "homeRightsCenter": {
+    "route": "/home-rights-center/",
+    "status": "FREE_PUBLIC_DEVICE_ONLY",
+    "tracks": 4,
+    "documentRoles": 6,
+    "donorPatterns": 7,
+    "fixedChoiceOnly": true,
+    "narrativeIntake": false,
+    "documentText": false,
+    "fileUpload": false,
+    "browserStorage": false,
+    "serverSubmission": false,
+    "externalAi": false,
+    "professionalAdvice": false,
+    "authorityTransfer": false
+  },
+  "spanishFoundation": {
+    "pages": 11,
+    "preservedR11Pages": 10,
+    "newLocalPathwaysPage": 1,
+    "status": "BOUNDED_FOUNDATIONAL_SPANISH_ACCESS_NOT_CERTIFIED_FULL_PARITY",
+    "certifiedTranslationClaimed": false,
+    "fullSiteParityClaimed": false,
+    "deviceOnly": true,
+    "serverSubmission": false
+  },
+  "maximumReasonableWork": {
+    "directiveSha256": "74607b559112df011b7de4f91a16c0e1c97e4237cb23e185e37c8f827c6e09e4",
+    "directiveBytes": 21901,
+    "priorityQueueItems": 12,
+    "implementedThisVersion": 6,
+    "deferredWithCause": 3,
+    "blockedHandoff": 3,
+    "currentVersionMaximumReasonableWorkCheck": "PASS",
+    "remainingSafeMaterialWorkAvailableNow": false,
+    "versionStatus": "COMPLETE_AFTER_QUALIFICATION",
+    "programStatus": "IN_PROGRESS"
+  },
+  "localPhotography": {
+    "count": 9,
+    "current": 6,
+    "historical": 3,
+    "locallyHosted": true,
+    "openLicensedOrPublicDomain": true,
+    "creditsRoute": "/photo-credits/"
+  },
+  "directives": {
+    "universalMembership": {
+      "bytes": 44288,
+      "sha256": "3be0755485cf9bf0382363fc42a64f25459dda0102bad1ab79d43127403d2cbe",
+      "adopted": true
+    },
+    "continuousDonorInheritance": {
+      "bytes": 55326,
+      "sha256": "1826e946cdcf7644719f174b155a81640cb8a9855dc8f317506044fff47d5e37",
+      "adopted": true,
+      "programStatus": "IN_PROGRESS"
+    },
+    "maximumReasonableWork": {
+      "bytes": 21901,
+      "sha256": "74607b559112df011b7de4f91a16c0e1c97e4237cb23e185e37c8f827c6e09e4",
+      "adopted": true,
+      "permanent": true
+    }
+  },
+  "workOrders": {
+    "ownerBuildCommand": "ROGER_OWNER_BUILD_COMMAND_NEXT_LOCAL_COMMUNITY_PLATFORM_VERSION_2026_08_28",
+    "selfServeFreeMember": "WO-20260828-LOCAL-FRANKLIN-SELF-SERVE-FREE-MEMBER-005",
+    "membershipReadiness": "WO-20260828-LOCAL-FRANKLIN-MEMBERSHIP_AND_MONETIZATION_READINESS-006",
+    "localGrowthEngine": "WO-20260828-LOCAL-SGE-MEMBER-VALUE-008",
+    "revenueRelease": "SRE-OC-CP-2.0.0",
+    "growthEngineRelease": "SGE-1.0",
+    "franklinOnlyDeploymentAuthorizedAfterQualification": true,
+    "paidCommerceAuthorized": false,
+    "authorityTransfer": false
+  },
+  "gates": {
+    "A": "PASS",
+    "B": "PASS",
+    "C": "PASS_SOURCE_CANDIDATE",
+    "D": "AUTHORIZED_BY_ROGER_FOR_FRANKLIN_R16_AFTER_QUALIFICATION",
+    "E": "PENDING_DEPLOYMENT"
+  },
+  "files": [
+    {
+      "path": "404.html",
+      "bytes": 3567,
+      "sha256": "ebb1965fd19000e1ef4a36cdf948a541c985da151e68bd4e8c78c80351744d0d"
+    },
+    {
+      "path": "about/index.html",
+      "bytes": 6409,
+      "sha256": "8178338970290b3294cdfe95cc4873d754aa52ac631bf35e9f6aff69d8a4eff6"
+    },
+    {
+      "path": "accessibility/index.html",
+      "bytes": 5227,
+      "sha256": "0f10346ee79b2cd0bb89fd529262ccf10c97b0bfaabb6caac9e8d0c6ea89a481"
+    },
+    {
+      "path": "action-center/index.html",
+      "bytes": 5320,
+      "sha256": "b39ef76b2b3ed5c7f836cc7e345b959cc0eff5b23e1cea837b0ffd0027fd2148"
+    },
+    {
+      "path": "assets/accessibility.css",
+      "bytes": 381,
+      "sha256": "d1b0874c4c981bfbad75afcfd77ec77c9178394aa3364a97f19460ff0481dfec"
+    },
+    {
+      "path": "assets/app.js",
+      "bytes": 38527,
+      "sha256": "19a1061d3c048d19e624345e883ecf74ca7082bade2050d9673085e08f78f4fb"
+    },
+    {
+      "path": "assets/franklin-mark.svg",
+      "bytes": 296,
+      "sha256": "ad0dfbb25cf9306c18282f7680f00348e4dfb290b6d93cd21b9d2470b7a2db15"
+    },
+    {
+      "path": "assets/franklin-photos/battlefield-engraving-1880s.webp",
+      "bytes": 329450,
+      "sha256": "a35c4f3dac30ccfe48e7d0766a274715ec70ff6d6d10687e9e42acf5ae48b9da"
+    },
+    {
+      "path": "assets/franklin-photos/business.webp",
+      "bytes": 129996,
+      "sha256": "ff3e7656a0efcfda7a16ca6eeb2d1c7c37e141a29083a119288b3ba1e151ebcd"
+    },
+    {
+      "path": "assets/franklin-photos/carter-gin-1880.webp",
+      "bytes": 47002,
+      "sha256": "ff14be018aea6760c05ad67dbebc7b0d197f03c9dba39cc4fba4809a3572d78f"
+    },
+    {
+      "path": "assets/franklin-photos/franklin-map-1864.webp",
+      "bytes": 204004,
+      "sha256": "21b671668208f1857950b8b059eb289a5f95a0604cf837bad9ebabbbc2abfda1"
+    },
+    {
+      "path": "assets/franklin-photos/harlinsdale.webp",
+      "bytes": 85386,
+      "sha256": "0b08789958f352c9225e12c6701a3654e585b8dc8abccfab9fa3359768e43f81"
+    },
+    {
+      "path": "assets/franklin-photos/main-street.webp",
+      "bytes": 125766,
+      "sha256": "4a9e2d4b43577285a8fcf9bcbf54a1695e902e006bf807f074cdfa063c4dd284"
+    },
+    {
+      "path": "assets/franklin-photos/pinkerton.webp",
+      "bytes": 281330,
+      "sha256": "3f91071fa80f403574b32ac5d463bbf08179e4b93e45956f5057b9f86a165e8c"
+    },
+    {
+      "path": "assets/franklin-photos/skyline.webp",
+      "bytes": 125790,
+      "sha256": "0d2d27147ec4aeea0e7632700c545b24d9718aca0268ee39d8b3e1f374adfdbf"
+    },
+    {
+      "path": "assets/franklin-photos/square.webp",
+      "bytes": 118458,
+      "sha256": "8a2ccc899d8476dbd9002c9f7c2837e5153e1cc0c41903d0f16bc594c667ede6"
+    },
+    {
+      "path": "assets/franklin-social.png",
+      "bytes": 56642,
+      "sha256": "2895ef7246f328e516127d5538e2ff614daef596fe4ed6815486ced07adfde25"
+    },
+    {
+      "path": "assets/franklin-social.svg",
+      "bytes": 881,
+      "sha256": "31f7dfc87f00ddac2d4fab97f5b1d063d3409ae45ed16e9937dfc56c43c9f50b"
+    },
+    {
+      "path": "assets/home-rights-center.js",
+      "bytes": 5692,
+      "sha256": "edab28cfc7919557fce72eb52cc3bc390056e5ee7e66f196703453b2c47ebf51"
+    },
+    {
+      "path": "assets/local-growth-engine.js",
+      "bytes": 11454,
+      "sha256": "1609c8bbc600f1525854f42d8a18602335c2936a7fd8040c0fe252638c2d2f05"
+    },
+    {
+      "path": "assets/member-growth-workspace.js",
+      "bytes": 6868,
+      "sha256": "dcdd91b3c64c01980d122656fd203b25e2349660f5e5d11b85c426bbfd7aef22"
+    },
+    {
+      "path": "assets/preparation-studio.js",
+      "bytes": 6915,
+      "sha256": "e0ce58746dad8542defba8f7eea75efcf08a7bcebeadba4e4f2554f6cc394f7a"
+    },
+    {
+      "path": "assets/styles.css",
+      "bytes": 22440,
+      "sha256": "e596f812ed2ac91a38460a143db2e5454d5de73f5825de22273d725a712fad20"
+    },
+    {
+      "path": "auto-vehicle-help/index.html",
+      "bytes": 13549,
+      "sha256": "3648ba38b848db7b96b70555f2402f71966a9e6f9e434a04c73a7b2f58274d0b"
+    },
+    {
+      "path": "business-membership/index.html",
+      "bytes": 9526,
+      "sha256": "2109066ddb9a581f71c79350383f451f64ca00c6493137902199d5c3a9c9c380"
+    },
+    {
+      "path": "business/index.html",
+      "bytes": 6150,
+      "sha256": "422a856dc164ed04b0f841375be3b3d301e9998d4ba72acb4d94de11ae6fb673"
+    },
+    {
+      "path": "capability-status/index.html",
+      "bytes": 7107,
+      "sha256": "faaa5e96ea26b4421c98239b63aeba0187223810d1868293e392013067797a8e"
+    },
+    {
+      "path": "civic-involvement/index.html",
+      "bytes": 5138,
+      "sha256": "3c29081a6069ce92e994d70c722a8898c5d0e63b6ff3368c5423b0cad3309a8d"
+    },
+    {
+      "path": "claim-profile/index.html",
+      "bytes": 12853,
+      "sha256": "90195805255a752a250081b7f47ef7b7052ab7e899d9c689e9d7990e8627b35c"
+    },
+    {
+      "path": "collaboration-studio/index.html",
+      "bytes": 5287,
+      "sha256": "3e9fc3020d79299ccdbbcea75f5944cb1d8719b668953e4004f6618976a86102"
+    },
+    {
+      "path": "community-help-center/index.html",
+      "bytes": 17864,
+      "sha256": "37796f2b818168d28d6af8014b274da42d6ffa06f1dd284f66439da13e2e89cd"
+    },
+    {
+      "path": "community-needs-exchange/index.html",
+      "bytes": 5230,
+      "sha256": "4a6f6c910564d4ad320518a20dac51bdaa5e428922dccde36815e15c8f83d4fa"
+    },
+    {
+      "path": "community-pulse/index.html",
+      "bytes": 5043,
+      "sha256": "638bd921f9e8e5886a02d08420f6d38e0b2aaadf0dabfa87552721cc99896759"
+    },
+    {
+      "path": "community/index.html",
+      "bytes": 5768,
+      "sha256": "e1140588bc7a805b12322e92cfc263281092a7894c18fa2ae0b6abbe47968f03"
+    },
+    {
+      "path": "corrections/index.html",
+      "bytes": 5315,
+      "sha256": "c867ca6f963ce85bdf9691dadb77aff4fb67bd3d4c617ce531781cf5a6c16ffc"
+    },
+    {
+      "path": "data/franklin-home-rights-center.json",
+      "bytes": 6068,
+      "sha256": "ee69466dce22d64297a775df00de68c63708633ebf8e75fbf5a93b66b95a038f"
+    },
+    {
+      "path": "data/franklin-local-growth-engine.json",
+      "bytes": 8559,
+      "sha256": "536f1c816240e324684758343b97289ddefbc441f6803c0da3a3999d2ffe9b9a"
+    },
+    {
+      "path": "data/franklin-member-growth-workspace.json",
+      "bytes": 4575,
+      "sha256": "838f2917f322bcb4e0cdf24211fc1218a9846e53ef860418d2b022a98d19890a"
+    },
+    {
+      "path": "data/franklin-preparation-studio.json",
+      "bytes": 25004,
+      "sha256": "a2e4452f1aeb7e468eafbcfa1e97a8c9f35008c845a1fed89938721668b755db"
+    },
+    {
+      "path": "data/franklin-profiles-01.json",
+      "bytes": 327476,
+      "sha256": "1493d5a4542e93c8d54e095cfbdb2bd212d8bdc3db0fee2d832611d58b1facae"
+    },
+    {
+      "path": "data/franklin-profiles-02.json",
+      "bytes": 214792,
+      "sha256": "b64fe58330d140db69fe0f5f4c83bdd17c25fcd82628f04fcdf6094910b4fc12"
+    },
+    {
+      "path": "data/franklin-profiles-03.json",
+      "bytes": 212050,
+      "sha256": "72af2fe1b10c4a150b4a1cce183a015cc88313f0eca150b13880efbcd8b536fd"
+    },
+    {
+      "path": "data/franklin-profiles-04.json",
+      "bytes": 211749,
+      "sha256": "fa66bd2bf7b9fac16ba06213b58853e0a0e8708a047b6d123cf47d5a0dab1297"
+    },
+    {
+      "path": "data/franklin-profiles-05.json",
+      "bytes": 211492,
+      "sha256": "1eced20f67c18b85c4f46ed9fb66fcdc2f2f5b6cb899f17ffb03c2ca3445b80e"
+    },
+    {
+      "path": "data/franklin-profiles-06.json",
+      "bytes": 219306,
+      "sha256": "8557c0574b3bf98351429a970d90ef639024ea4be427d38a07fa5e01a5be5f19"
+    },
+    {
+      "path": "data/franklin-profiles-07.json",
+      "bytes": 225287,
+      "sha256": "b233887b17a3a5597a24913512464e4cb503ede42dfe3c304f18ead4f58797d5"
+    },
+    {
+      "path": "data/franklin-profiles-08.json",
+      "bytes": 222444,
+      "sha256": "d652fcbb18f83d816141ff6fb5e779ea2af56be24a66b270feb9a548a4dc8f62"
+    },
+    {
+      "path": "data/franklin-profiles-09.json",
+      "bytes": 223943,
+      "sha256": "2a0946afb0534726b2b9cf4cc2d78b7b35b9004e315f2bc16279a3ec281a598c"
+    },
+    {
+      "path": "data/franklin-profiles-10.json",
+      "bytes": 230789,
+      "sha256": "6f20dab5d4c1ac53d29f8ad0157527be045214dfd2e7f4a95ea3c358ab74c704"
+    },
+    {
+      "path": "data/franklin-profiles-11.json",
+      "bytes": 223340,
+      "sha256": "3eaf419583443ba237aa40aa7f39cc65eb5858060928838ceb583ce8cc3f7825"
+    },
+    {
+      "path": "data/franklin-profiles-12.json",
+      "bytes": 221685,
+      "sha256": "146c5cf4a27b3a3a062627b89e3eaf6f218880392520de0710a63173f3503f41"
+    },
+    {
+      "path": "data/franklin-profiles-13.json",
+      "bytes": 223333,
+      "sha256": "570e4703e8c1da516635cfa32dcab401c997bbcd1a18cee275a6aea9ef01ce08"
+    },
+    {
+      "path": "data/franklin-profiles-14.json",
+      "bytes": 232997,
+      "sha256": "48232a642e582f161ca5ed6dd5fce6cca5afe8e5eab2f7bf7732c298deeadb91"
+    },
+    {
+      "path": "data/franklin-profiles-15.json",
+      "bytes": 245716,
+      "sha256": "06880809c418d57e8c708ecb2578ebeabb517f29f7d97b15f86be45d38e7260c"
+    },
+    {
+      "path": "data/franklin-profiles-16.json",
+      "bytes": 243966,
+      "sha256": "1c0683cf9816540e116debd9ec14df2d5b2ccdf2c7ae9cf578b7c1cf0da1dbe4"
+    },
+    {
+      "path": "data/franklin-profiles-17.json",
+      "bytes": 243896,
+      "sha256": "9d05646ada0b16806a280aab64c20743a77013c961dbc62caa28f58aca4e5f05"
+    },
+    {
+      "path": "data/franklin-profiles-18.json",
+      "bytes": 242996,
+      "sha256": "7a64d9ade7dd50e172681a74bd76a15fb4487e281fa8e3496814158b31b8114c"
+    },
+    {
+      "path": "data/franklin-profiles-19.json",
+      "bytes": 283907,
+      "sha256": "fe4038458a90286b84ca097de3a9210ac597d2779db562b3506579f2c76afa00"
+    },
+    {
+      "path": "data/franklin-profiles-20.json",
+      "bytes": 29873,
+      "sha256": "e9a09b932225712301eacc096cdcb426dd8cb8b333b175d00a5e303209ed9e65"
+    },
+    {
+      "path": "data/franklin-profiles-manifest.json",
+      "bytes": 3440,
+      "sha256": "925cb4f9f1a475122b781fc5f41a7f11b59109833a87d06b9b41d9ff4dfccd04"
+    },
+    {
+      "path": "data/membership-pricing.json",
+      "bytes": 17878,
+      "sha256": "95e6d06896604eba43b8dfb5c23c9c4777531d9b5bb77d5a091108cb6e13fa27"
+    },
+    {
+      "path": "directory/index.html",
+      "bytes": 6710,
+      "sha256": "cb90171b9168f431e8f9af136a1babc7a08d37affe34d1e5b27a1f2da0e4d2cf"
+    },
+    {
+      "path": "emergency-ready/index.html",
+      "bytes": 5590,
+      "sha256": "8daa684644f18da726ede54c8bbfcc707d8163d95280d8ccbbb8af7685807dbd"
+    },
+    {
+      "path": "es/accesibilidad/index.html",
+      "bytes": 7860,
+      "sha256": "bd428765c4dfbaf9729024caf40ac499bd5ca1e80208f5079ddb705298481a95"
+    },
+    {
+      "path": "es/ayuda-conectada/index.html",
+      "bytes": 8314,
+      "sha256": "4098844257bd17947f3b020142a508407102cf3716cd516f61e68f0e37d478ef"
+    },
+    {
+      "path": "es/ayuda-cotidiana/index.html",
+      "bytes": 8044,
+      "sha256": "b363f10e8539d3245401ef453b9c087a064f0e9eaa7729f9112074b02ee610c6"
+    },
+    {
+      "path": "es/ayuda-legal/index.html",
+      "bytes": 8179,
+      "sha256": "a62fc7109e7c1c9b2470afea941df02682e26353ec2a7fac82f012f5b591e07f"
+    },
+    {
+      "path": "es/ayuda-salud/index.html",
+      "bytes": 8125,
+      "sha256": "b697ac01a56f6de52b68b6231d73e064848c0beeae20a0dede5d9c9199628ae9"
+    },
+    {
+      "path": "es/ayuda-vehiculo/index.html",
+      "bytes": 8147,
+      "sha256": "317e7a4e0f4a8a149100dafc92eb1d5668f92dbc10a9b15c2454aebf543abb79"
+    },
+    {
+      "path": "es/ayuda-vivienda/index.html",
+      "bytes": 8196,
+      "sha256": "8eb029c93b19e0b408e3e65a302597c4b89f18144a2e195c5f8d9aabb151ba28"
+    },
+    {
+      "path": "es/caminos-locales/index.html",
+      "bytes": 8782,
+      "sha256": "74ee8ca7a9dfb507d8ed1e8b0e2242bedfb77407422ae2ee0a0c71498f50c304"
+    },
+    {
+      "path": "es/centro-de-ayuda/index.html",
+      "bytes": 7941,
+      "sha256": "7df0d8ab77facf8aa1e3d452a4f659dbdd7931dcdf12b3a0c72c1ce55f5d74f8"
+    },
+    {
+      "path": "es/directorio/index.html",
+      "bytes": 8017,
+      "sha256": "6d0207d2e5690a791ae3a29d5e3e7db9549ffcb7c625ec6ef1300e1561c5fbbd"
+    },
+    {
+      "path": "es/privacidad/index.html",
+      "bytes": 7980,
+      "sha256": "c9f4cb9af4b3697c4748ac99b633d7127c648feb4bdd854a2c13890c73a57544"
+    },
+    {
+      "path": "events/index.html",
+      "bytes": 7493,
+      "sha256": "714795ff4cc66ee80a2a9905f706a29feab8bccb3d6a415eae10ef8b907e12a4"
+    },
+    {
+      "path": "everyday-help/index.html",
+      "bytes": 34023,
+      "sha256": "d40736450cf60b38cf3d48fc178be7409213d36a5d6e47f05b1b0317c10cd0fd"
+    },
+    {
+      "path": "explore-franklin/index.html",
+      "bytes": 6544,
+      "sha256": "58f4244d877f296daa9d6e523077e8fa6f4b331f57c55c6c2e76d4d894e21601"
+    },
+    {
+      "path": "free-membership/index.html",
+      "bytes": 7742,
+      "sha256": "7aacda55034585202b4befb94392081577db7cc7e1f31167f574afae29e92d80"
+    },
+    {
+      "path": "getting-around/index.html",
+      "bytes": 5039,
+      "sha256": "6420db135fb17295c813d09d20e2ead58409fa218401f7676a2b5bd03c8a78b8"
+    },
+    {
+      "path": "health-help/index.html",
+      "bytes": 15211,
+      "sha256": "bfe12eb49f0d9c458dcab8761a4ee6a28b5f5dd7b3bcf26ab175578e9a8024c2"
+    },
+    {
+      "path": "health-safety/index.html",
+      "bytes": 5077,
+      "sha256": "0b22c651a0516c557109edb9a11ce88f7b81161adeebd8b3c84e576b7f259f7f"
+    },
+    {
+      "path": "help/auto/auto-business-growth-readiness/index.html",
+      "bytes": 8646,
+      "sha256": "9b692dcf20dc54aa8d58da703cbe95877fde7232ba136b4ba55181a9a9335fd3"
+    },
+    {
+      "path": "help/auto/crash-next-steps/index.html",
+      "bytes": 9296,
+      "sha256": "e2e12b45e221104366ca931beffba3d82f9d36a6fed3fb7ee4eeb839166751d3"
+    },
+    {
+      "path": "help/auto/dealer-compare/index.html",
+      "bytes": 8365,
+      "sha256": "cbd78298028d9015e8223455762d90ad01772cb557c8abec18063899e037cb38"
+    },
+    {
+      "path": "help/auto/independent-shop-compare/index.html",
+      "bytes": 8475,
+      "sha256": "f74d8e225bc8498ace70a43ba6d16f77902ff9f698534ad218f408a68d642fe2"
+    },
+    {
+      "path": "help/auto/maintenance-repair/index.html",
+      "bytes": 8501,
+      "sha256": "d43d0d1cd74067ef4e3fcdb983eab9ec1f13dec51e8b7490de27f6b79792e2db"
+    },
+    {
+      "path": "help/auto/recall-safety/index.html",
+      "bytes": 8782,
+      "sha256": "5401d7e06d24232838e5e322ec9006fc2a47bf536e78a07bd93c1f3cbe982887"
+    },
+    {
+      "path": "help/auto/rental-sharing/index.html",
+      "bytes": 8368,
+      "sha256": "76814541e59fb8ee3b7a9012fa67bd0cddcae4d860013b97ce36bfdc1420a43a"
+    },
+    {
+      "path": "help/auto/repair-collision-business/index.html",
+      "bytes": 8756,
+      "sha256": "b2904575dbd6c7c9761ccd4f9a605b465d333d3a127ebcf4b8e1586160509ba3"
+    },
+    {
+      "path": "help/auto/used-car-warranty/index.html",
+      "bytes": 8469,
+      "sha256": "8198d96bbdbc09367552f99fb501b7e2a71770a15ad2897f1bf454a8c3a15ae2"
+    },
+    {
+      "path": "help/health/behavioral-health-fit/index.html",
+      "bytes": 8696,
+      "sha256": "3bacce9c38c7f0676f79088f69eb8c593a26aa92890c8007b8252540111d56c3"
+    },
+    {
+      "path": "help/health/caregiver-long-term-care/index.html",
+      "bytes": 8972,
+      "sha256": "bcbe313ca1cb44ffbfa24e202784ae8b80f0b4bf3e7c6cac452dd544e30f3bb3"
+    },
+    {
+      "path": "help/health/child-health-coordination/index.html",
+      "bytes": 8731,
+      "sha256": "9dc1a1d08d7641f60c520c48c802006727cf0ff515669dbf58a8959d3e4817a5"
+    },
+    {
+      "path": "help/health/coverage-appeal/index.html",
+      "bytes": 8689,
+      "sha256": "90c7e363ccf8400c2d7c8770509a2997736333b55647c1d8aad8e7ce0c97389b"
+    },
+    {
+      "path": "help/health/coverage-cost-records/index.html",
+      "bytes": 8820,
+      "sha256": "d81d7f14d35ab24b9aaa44cecd51b0dd6cc198c67f5f97c1367b86034e14d5ab"
+    },
+    {
+      "path": "help/health/dental-vision-compare/index.html",
+      "bytes": 8273,
+      "sha256": "a89dfc45c4765f2c192b8f0c8dba79d2e516d9e744ad16c8c78c7a2abeaf9e26"
+    },
+    {
+      "path": "help/health/discharge-transition/index.html",
+      "bytes": 8958,
+      "sha256": "901a25c801e75bc2190c025c9a2e619ae68b183d3d4e9a124e655ec0f2dd002f"
+    },
+    {
+      "path": "help/health/labs-imaging/index.html",
+      "bytes": 8604,
+      "sha256": "a128be9fc4fb5971ea8b64baacffb19eacd09fe2b6fa744abead4c1415e1f8b9"
+    },
+    {
+      "path": "help/health/medication-visit-prep/index.html",
+      "bytes": 8856,
+      "sha256": "8a628d385e262d0a2c21ba7c4b3514f062e7467d1d8614c636837fc8554b63d3"
+    },
+    {
+      "path": "help/health/pregnancy-support-plan/index.html",
+      "bytes": 8934,
+      "sha256": "9f5c864b2628f53ac3544cf3f3826bb88cc4af37091f0f28633e483cb3a448c3"
+    },
+    {
+      "path": "help/health/primary-care-fit/index.html",
+      "bytes": 8635,
+      "sha256": "8bb238527241eca7c6f88cdf441d1258f535b2a29a742c9771093551c75d5313"
+    },
+    {
+      "path": "help/health/referral-care-team/index.html",
+      "bytes": 8856,
+      "sha256": "89dc2f1d8648beab0a408f641268b4b872d6d8620ba0471b431efeaeff982d5a"
+    },
+    {
+      "path": "help/health/transition-to-adult-care/index.html",
+      "bytes": 8954,
+      "sha256": "1e3b8e8c6947b7af5e29f24923509189a3d53011122c4ecf74124b4313a485c5"
+    },
+    {
+      "path": "help/home/association-hoa/index.html",
+      "bytes": 8478,
+      "sha256": "f147b9edbbb476396130d7c29f93b2f1ed0dd0dec6e06669d3aaf7eaaf8ac18b"
+    },
+    {
+      "path": "help/home/energy-resilience/index.html",
+      "bytes": 8934,
+      "sha256": "caf83462b82d9eb81dee9b6e892f6dbbf595471fd66f1612f7403672303d8966"
+    },
+    {
+      "path": "help/home/insurance-repair-record/index.html",
+      "bytes": 9044,
+      "sha256": "00e6a206306c9d27bcda8b5f91afc6c27663161e8efb92ee3c49be53e8317701"
+    },
+    {
+      "path": "help/home/move-buy-rent-sell/index.html",
+      "bytes": 9035,
+      "sha256": "e33797abacb7a3050266542892eea5a621f9eba46c3c96dbe7d0ea7c3bc0887c"
+    },
+    {
+      "path": "help/home/permit-contractor/index.html",
+      "bytes": 9208,
+      "sha256": "53cbecb397192e73150bac5f7db38fee5563dac11b3d636bb125a554066a0a54"
+    },
+    {
+      "path": "help/home/professional-introduction/index.html",
+      "bytes": 8676,
+      "sha256": "69b67e97941c29cc966e65639b45ebd358deb1c10461662e4975edd75a05453f"
+    },
+    {
+      "path": "help/home/property-records-zoning/index.html",
+      "bytes": 9210,
+      "sha256": "8e5a830784dee1a67982a038ba9b38aa5a72a33edff452b53635a0156b4b1ed4"
+    },
+    {
+      "path": "help/home/records-disputes-resources/index.html",
+      "bytes": 9380,
+      "sha256": "4a65b58971c7da61d12df64841998b9a44260ebb41a70e6638aa934b5f3ab67a"
+    },
+    {
+      "path": "help/legal/business-compliance-lifecycle/index.html",
+      "bytes": 8568,
+      "sha256": "f9a6911d4aadf08c2d7a14d173a801f707b80cccfad471c915d05fc3b21e0ad8"
+    },
+    {
+      "path": "help/legal/contract-negotiation/index.html",
+      "bytes": 8318,
+      "sha256": "6ef9904476683bb5371e7e35720e30a78c0f33dae77acee0da3c5b85b066753c"
+    },
+    {
+      "path": "help/legal/court-notice-roadmap/index.html",
+      "bytes": 8971,
+      "sha256": "e7ab889a2f14ea6d87377d755be6fa14f18d0f306c1ccb3a1d92fdcd40a198aa"
+    },
+    {
+      "path": "help/legal/estate-family-map/index.html",
+      "bytes": 8569,
+      "sha256": "2b3d0d3bf3944355bd3312046ff293c250f337b85534a6afa5a202d7cc1b7297"
+    },
+    {
+      "path": "help/legal/family-safety-plan/index.html",
+      "bytes": 8662,
+      "sha256": "771ff9c6be305fec4348b81a96178fa9b974f531280f42642555e747a3ba254d"
+    },
+    {
+      "path": "help/legal/household-coverage-map/index.html",
+      "bytes": 8609,
+      "sha256": "55b2de5114749b9cbba4abaf983e071506091f24b7fe56208793c2ff1dacb3b1"
+    },
+    {
+      "path": "help/legal/housing-consumer-dispute/index.html",
+      "bytes": 8999,
+      "sha256": "a5716c1db91dd60dc2f52048ff7ac54f9c9678fa4ffb75a103489439ad2ac7d0"
+    },
+    {
+      "path": "help/legal/professional-compare/index.html",
+      "bytes": 8579,
+      "sha256": "3cb78598d70a6e07835ce8b711ba2e08d95f6475e2834cc56e5baf234a1d6ce2"
+    },
+    {
+      "path": "home-property-help/index.html",
+      "bytes": 13598,
+      "sha256": "7399a4b781a11ef24aaee93e2141f8164c1439be0c503e4f7f6e587a8b0a2151"
+    },
+    {
+      "path": "home-rights-center/index.html",
+      "bytes": 10245,
+      "sha256": "e427fd852e20d9606196231d641a1b590d3d5c998fc303997177635fabf93bff"
+    },
+    {
+      "path": "index.html",
+      "bytes": 22851,
+      "sha256": "60dade722052ddb8af0df55bc876b81ae9a546a55fbc4055ae2a0ffae9bbdb4b"
+    },
+    {
+      "path": "jobs-internships/index.html",
+      "bytes": 5178,
+      "sha256": "3425f4ebfcb136e9180eb562fadb4330a5d48ae0d4a9c52e44b25a5ca6e53316"
+    },
+    {
+      "path": "legal-help/index.html",
+      "bytes": 12959,
+      "sha256": "bf9b4094db6e34d29f1be9e7abec25f7260a414aab7cc00a2466d4951a19611b"
+    },
+    {
+      "path": "life-change-plans/caregiver-transition-permissions/index.html",
+      "bytes": 9818,
+      "sha256": "ff3e62e23e89d3b5f256ccb22a8788e0132338904a11acd99ca57b556605eb8a"
+    },
+    {
+      "path": "life-change-plans/disability-access-everyday-life/index.html",
+      "bytes": 9788,
+      "sha256": "efec3fd7084e8c464c59adaea05833999dfb19ca32ee472b213d4c57aa0194fc"
+    },
+    {
+      "path": "life-change-plans/fraud-scam-consumer-recovery/index.html",
+      "bytes": 9494,
+      "sha256": "84feaa1f994c5ceb8f222b19154ff684be034f588729c50513e0b5198a6bfb5a"
+    },
+    {
+      "path": "life-change-plans/index.html",
+      "bytes": 10105,
+      "sha256": "3abb3aa43fdc49681f2209f4ca5eb8e1f7d67a592d201cf68180b4df4ef0910d"
+    },
+    {
+      "path": "life-change-plans/job-loss-coverage-household/index.html",
+      "bytes": 10072,
+      "sha256": "385b51c784e130141c1d57960e59607408243929bc49f0561b533d4c56482b12"
+    },
+    {
+      "path": "life-change-plans/storm-emergency-recovery/index.html",
+      "bytes": 9645,
+      "sha256": "76fb1e5f6461a993f711f6752600e23f048dc3568d75a5be88fa9548fe672233"
+    },
+    {
+      "path": "life-change-plans/used-vehicle-purchase-problem/index.html",
+      "bytes": 9462,
+      "sha256": "f6a62e6b66e09c07ee32eb0ce62b9823b16fb6cbe850508207e02e6210a2df4c"
+    },
+    {
+      "path": "live-local/index.html",
+      "bytes": 24738,
+      "sha256": "d275df4796e60e48affd4a171054413134f67d884d397af5afaaf57489bf7fae"
+    },
+    {
+      "path": "local-growth-desk/index.html",
+      "bytes": 1365,
+      "sha256": "68e9cb33afdf35c55fe6113e4ad5a7d107d3d7423b0c78e1f46123536a8f3049"
+    },
+    {
+      "path": "local-growth-engine/index.html",
+      "bytes": 15746,
+      "sha256": "5ac887b5fda87ee6702bbcba43133d4c159f813f24ef5f10b230e00960932220"
+    },
+    {
+      "path": "local-opportunities/index.html",
+      "bytes": 4997,
+      "sha256": "cacf919e6f34b6f62beb31972df302ebc9c31e6a8dbac6363e5466d4587b8273"
+    },
+    {
+      "path": "local-pathways/beauty-fitness-wellness/index.html",
+      "bytes": 9452,
+      "sha256": "cdb7b85411dcaf25b247c028df1894647cd43c594f4e6c595117d493082c565a"
+    },
+    {
+      "path": "local-pathways/children-family/index.html",
+      "bytes": 9943,
+      "sha256": "4b84c8e554638b9e599d01ce6dcec1f3d703346e451be056fc38ddd6cb87ae50"
+    },
+    {
+      "path": "local-pathways/civic-neighborhood/index.html",
+      "bytes": 9924,
+      "sha256": "d214ae2fa776c1747ab2edc4c535d4f6b0a74f24e8a0aecda6706c1bced799ad"
+    },
+    {
+      "path": "local-pathways/community-volunteering/index.html",
+      "bytes": 9606,
+      "sha256": "8e3d9dc6f74a66228cd2d967f4acbb2c83e0afba206c7996097d0402e43caaac"
+    },
+    {
+      "path": "local-pathways/education-learning/index.html",
+      "bytes": 9643,
+      "sha256": "ee64f0d5ad58b34c3fffef86fe3667806d7034f302cd5d9c1ec2aad6f3ed7266"
+    },
+    {
+      "path": "local-pathways/emergency-preparedness/index.html",
+      "bytes": 10155,
+      "sha256": "e0b1b0d4ea0e02d5971c3d0439ec76ece9597a3e684653f3ddce4090648a5adb"
+    },
+    {
+      "path": "local-pathways/food-benefits/index.html",
+      "bytes": 10030,
+      "sha256": "74119a09b2b1c750c80f7a38cb5d93ebea019fd4dda275b8bb5039999ba8e890"
+    },
+    {
+      "path": "local-pathways/index.html",
+      "bytes": 15862,
+      "sha256": "5a6d792ba6b288b3496c5d34c4543990ac044df755c012af318ecfdf0acb0a8f"
+    },
+    {
+      "path": "local-pathways/jobs-career/index.html",
+      "bytes": 9480,
+      "sha256": "6aa9f435b9caed1047804cdf3b77e39f5299a983a05639d22f17d7963754bab1"
+    },
+    {
+      "path": "local-pathways/money-tax-professional/index.html",
+      "bytes": 9407,
+      "sha256": "7609f4803d19673d13a7124abb1dd3e8eb7a44fd791f22b05f136614cf27ef23"
+    },
+    {
+      "path": "local-pathways/pets-animals/index.html",
+      "bytes": 8794,
+      "sha256": "4614036ff1f3afcf10db883b7d4ef0530dad59605a166121ad526ea7b469a9ac"
+    },
+    {
+      "path": "local-pathways/restaurants-local-experience/index.html",
+      "bytes": 9155,
+      "sha256": "f8336170c0f7493ba2f9e330c797dd9f75cfb3976ef938d4645fd3ff3104c6a7"
+    },
+    {
+      "path": "local-pathways/retail-local-commerce/index.html",
+      "bytes": 9033,
+      "sha256": "3562a96097d24daa41be8c0d7465d49fb3830d71605a6b7b1382652add755142"
+    },
+    {
+      "path": "local-pathways/seniors-caregiving/index.html",
+      "bytes": 9855,
+      "sha256": "93b97b7c18cd75610d5685df43bc7299cb682a8c2c96d320177b5d4e7492b5e7"
+    },
+    {
+      "path": "local-pathways/start-run-business/index.html",
+      "bytes": 9702,
+      "sha256": "190b567a5bd61203b1c99ea1ba3548d7bf2a8df8f3b0e6099eb4513fe8f23bb3"
+    },
+    {
+      "path": "local-pathways/transportation-mobility/index.html",
+      "bytes": 9967,
+      "sha256": "b31faa4c0e35a072bcfb7f1eb375c1004d2460039a5085dd08ab6695d03ff335"
+    },
+    {
+      "path": "member-growth-workspace/index.html",
+      "bytes": 11637,
+      "sha256": "4c8487a29156ef174c2ad63fe67fe1a6d99b886bfc895ec3c54d6631ec380757"
+    },
+    {
+      "path": "member-success/index.html",
+      "bytes": 4798,
+      "sha256": "f907a2002c7491d02e6a2e7ccc00894de4f36adddf936ae55ae8259f6f111d35"
+    },
+    {
+      "path": "member-support/index.html",
+      "bytes": 5860,
+      "sha256": "a46e9bdbf3850c0b4ff612fd3d05630065c47dd216cd930bf65a589f134aed84"
+    },
+    {
+      "path": "member-value/index.html",
+      "bytes": 4905,
+      "sha256": "5d18e746970ba0620a1aac182a953dda0e9d7dffaf09967f3de388daeb416158"
+    },
+    {
+      "path": "membership-pricing/index.html",
+      "bytes": 30402,
+      "sha256": "2c3317861f38f787d8811a6077360611b500c1bcc43cd2d427a30c088e2e4bbd"
+    },
+    {
+      "path": "navigator-growth-desk/accounting-tax/index.html",
+      "bytes": 7819,
+      "sha256": "bc1f70fa0f158d0e70e7577d4fcf89d5edf69ff1e7eca29b8975fe0f512a6d44"
+    },
+    {
+      "path": "navigator-growth-desk/auto/index.html",
+      "bytes": 7896,
+      "sha256": "df824555969242226efbbe5089ce1c7f157489dd80d38029d1b535a7c3deb378"
+    },
+    {
+      "path": "navigator-growth-desk/beauty-fitness/index.html",
+      "bytes": 8152,
+      "sha256": "d46125dba5731c8ece6e40759b95f85f39dc7fa62e2e3ca7fa653b5c5d7167e7"
+    },
+    {
+      "path": "navigator-growth-desk/community-nonprofit/index.html",
+      "bytes": 8134,
+      "sha256": "7fc31635770bc8661b9b7c151c65c6ba7bcc83a2db534c37eb29aa0e7d6e0f0e"
+    },
+    {
+      "path": "navigator-growth-desk/education-tutoring/index.html",
+      "bytes": 7849,
+      "sha256": "5043254fd105fd0eb037d8d596ff4c1c2919964cb088ded5a539f141e7501f44"
+    },
+    {
+      "path": "navigator-growth-desk/health/index.html",
+      "bytes": 7907,
+      "sha256": "0c41da269e43a7881c3b2584c9e1f2c3456ce17ccc2c1d1c94b11878cc0fc0e4"
+    },
+    {
+      "path": "navigator-growth-desk/home-property/index.html",
+      "bytes": 7934,
+      "sha256": "5b5931a2e45da06be5340f453fcf087796037744c2a5be05a5edb8c9b2e65597"
+    },
+    {
+      "path": "navigator-growth-desk/index.html",
+      "bytes": 15714,
+      "sha256": "dae4f9aca2bd0a977a42717dffebf0bda07c7a27251875e77a82bdd26d6b2e5c"
+    },
+    {
+      "path": "navigator-growth-desk/legal/index.html",
+      "bytes": 7931,
+      "sha256": "3edace1f4bdc26975b01d915420f478f9a8f39d406e23a546d5114316b7d8ba4"
+    },
+    {
+      "path": "navigator-growth-desk/pet-services/index.html",
+      "bytes": 8081,
+      "sha256": "01b3621197b7b63fc1f8a6ccd83756db5a05bed361b38971ad59057322e739d4"
+    },
+    {
+      "path": "navigator-growth-desk/professional-services/index.html",
+      "bytes": 7842,
+      "sha256": "85022f6fe21f4beefcb7ec5b0e239eae02a8a64c7162e16575d5294016ff28f1"
+    },
+    {
+      "path": "navigator-growth-desk/restaurants-hospitality/index.html",
+      "bytes": 7976,
+      "sha256": "d17ec081094681a2f5b19e0b036704cbb614f65c95f6db8100eeeaf148c3aef0"
+    },
+    {
+      "path": "navigator-growth-desk/retail/index.html",
+      "bytes": 7758,
+      "sha256": "caebaae4223f9ddd7a91f71791a1e4ed94ff204356d9c3c9ba90cd50dc04d81f"
+    },
+    {
+      "path": "navigator-growth-desk/senior-services/index.html",
+      "bytes": 8005,
+      "sha256": "66c70befeb199fc25f6d0c9454da7fb182856ea02be846b5f9b1ad5da718f635"
+    },
+    {
+      "path": "new-to-franklin/index.html",
+      "bytes": 5742,
+      "sha256": "8cac1c8940b209c192e9ff3338382adee9febcbb903610b2cbd50dc2a8581080"
+    },
+    {
+      "path": "permits-home/index.html",
+      "bytes": 5529,
+      "sha256": "639d52bcced4e45bf3e76856eee61294d96c8de09e182e3909122410541fd470"
+    },
+    {
+      "path": "photo-credits/index.html",
+      "bytes": 8273,
+      "sha256": "e4103141494c5071cca3c3bb6cdd5ae21b6e878beeee8d9774f936e971b2ad87"
+    },
+    {
+      "path": "preparation-studio/index.html",
+      "bytes": 10821,
+      "sha256": "7feca95ba160ab21800b2bab8d21c3908110403f934ce6e7a3fa6f6bb9b048ee"
+    },
+    {
+      "path": "privacy/index.html",
+      "bytes": 5390,
+      "sha256": "81c36b0986b3ffc079f365a871d4cc7a0b284f99332dd722542ea1737fd4e105"
+    },
+    {
+      "path": "request-brief/index.html",
+      "bytes": 4914,
+      "sha256": "688fd72765aeb724aeb55a7327e13982998fc2c9c9ccb61b4d205178d90a7621"
+    },
+    {
+      "path": "resources/index.html",
+      "bytes": 11876,
+      "sha256": "3f0b4783153baf61f15b34f7e9190114f8df49704864b5ff59eb191f7e82af1b"
+    },
+    {
+      "path": "robots.txt",
+      "bytes": 74,
+      "sha256": "ee3c6fee4d405e4c3817dbd71c0f1185165821455a0ce1828eec6c657eb6a531"
+    },
+    {
+      "path": "school-enrollment/index.html",
+      "bytes": 5331,
+      "sha256": "d78b5dcacfb1f268f1c9928c61fe8b76c894783a25753d1318cb5ffd46ea1edc"
+    },
+    {
+      "path": "senior-caregiver/index.html",
+      "bytes": 5598,
+      "sha256": "7112441292c707bc0d7e7d55a0a9e8bd74b72100fe0c186f9d7eb37ca4cff669"
+    },
+    {
+      "path": "site.webmanifest",
+      "bytes": 239,
+      "sha256": "5846424b3af2591f87a0bb25e03cf2ee16276167d6f52e229af9e32a5a4f2ef5"
+    },
+    {
+      "path": "sitemap.xml",
+      "bytes": 12348,
+      "sha256": "4d5c5ce26e633c0e9b2771b5fdbb37cd307f6446aaab1b367fdc976a09aefbbc"
+    },
+    {
+      "path": "start-a-business/index.html",
+      "bytes": 5455,
+      "sha256": "69189385f0bf75d9b6bb5f40d38168464812867776610e34df329088e3c7666f"
+    },
+    {
+      "path": "task-workspace/index.html",
+      "bytes": 4705,
+      "sha256": "cb116edb021b1756c35a2ec4e3a128e28303382751d849f73d9e1bbe2fd60ab7"
+    },
+    {
+      "path": "terms/index.html",
+      "bytes": 5625,
+      "sha256": "78f7dbc38abd97f113b21ac828965b334a7b96655c4cd2df27ad184e4ee3ad0b"
+    },
+    {
+      "path": "verticals/accounting-tax/index.html",
+      "bytes": 6178,
+      "sha256": "3de66b8a413e13d869d42e1e03e9cbd622af6e84e0b58b64227ca7fc63f1505b"
+    },
+    {
+      "path": "verticals/auto-services/index.html",
+      "bytes": 6660,
+      "sha256": "32763deb59a7379856252e8d741b3290eb930811398a08a7d7278dbb9eeb7ca0"
+    },
+    {
+      "path": "verticals/beauty-fitness/index.html",
+      "bytes": 6265,
+      "sha256": "5873fa4c59336262fa2017124aaf3dbf6a0a0ab1a06fb7c83b375a1978b9c3a0"
+    },
+    {
+      "path": "verticals/community-nonprofit/index.html",
+      "bytes": 6167,
+      "sha256": "f0a2e5b7a06638ddfd70d60ce2c7d2f02814f4710739561c6a35ee9b12552f8f"
+    },
+    {
+      "path": "verticals/education-tutoring/index.html",
+      "bytes": 6230,
+      "sha256": "5eca23bfd0ad1ae7ff6c1dca2b3a30fb4a1b5e601dbb60d775f54da87ff394dd"
+    },
+    {
+      "path": "verticals/health/index.html",
+      "bytes": 6716,
+      "sha256": "667911d8b76bbb96afc797e27a2509008f42818888e0662c9ce2033b650acc6e"
+    },
+    {
+      "path": "verticals/home-services/index.html",
+      "bytes": 6713,
+      "sha256": "ad79cc0dc09da0b2ab1e9339dfd8cb1a5f072c0d6882a61f3476e1afd3a8dd69"
+    },
+    {
+      "path": "verticals/hospitality/index.html",
+      "bytes": 6087,
+      "sha256": "c91a37d5227553cedbac4b9161bc3448c017e4f2e93b12dbb143cfc98dc65943"
+    },
+    {
+      "path": "verticals/legal/index.html",
+      "bytes": 6534,
+      "sha256": "905ecbf0eb7c7873c21e1cd61274dcf6eebc4f752b88e23632776c919647063e"
+    },
+    {
+      "path": "verticals/pet-services/index.html",
+      "bytes": 6187,
+      "sha256": "2e7586878570dde86fcb2f8dc9eb68ff3603b3b984b745dae1431be3670bb08a"
+    },
+    {
+      "path": "verticals/professional-services/index.html",
+      "bytes": 6241,
+      "sha256": "0f5aa7f91d6f9e33148fd383ab041136e88d3ccc933e779e2444298c43c0e69a"
+    },
+    {
+      "path": "verticals/real-estate/index.html",
+      "bytes": 6752,
+      "sha256": "2d384968b1d04107c148a8356227d61b87f78b0e527672414bf21e01cbc6c688"
+    },
+    {
+      "path": "verticals/restaurants/index.html",
+      "bytes": 6231,
+      "sha256": "5e843819d12b2c549eaed734ddb9af874f43f4e0103b2e8794816f1652995b1a"
+    },
+    {
+      "path": "verticals/retail-local-commerce/index.html",
+      "bytes": 6294,
+      "sha256": "62e72d4fd92b452158d0e1092c81294bdfd7893fe3147b6a7f77ca215285df1d"
+    },
+    {
+      "path": "verticals/senior-services/index.html",
+      "bytes": 6205,
+      "sha256": "b7a45df5b9935d986a9b3d8955cec1e5408a13cab323368706e79979334a02a6"
+    },
+    {
+      "path": "whole-situation-navigator/index.html",
+      "bytes": 25290,
+      "sha256": "38b62cda6c74b85d121fb2f2eae5620d85cc5e20cca88776fb1c9fc262bb93b8"
+    }
+  ],
+  "productionDeployPerformed": false
+}
