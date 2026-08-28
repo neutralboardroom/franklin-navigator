@@ -33,7 +33,7 @@
     if(!vertical||!track)return null;
     const selected=new Set([...form.querySelectorAll('input[name="prepared"]:checked')].map(item=>Number(item.value)));
     const urgency=form.elements.urgency.value;
-    const firstAction=urgency==='today'?vertical.todayBoundary:urgency==='soon'?'Confirm changing requirements, deadlines, cost and availability at the responsible source before acting.':'Use this packet to organize broad questions before sharing any personal story or document.';
+    const firstAction=urgency==='today'?vertical.todayBoundary:urgency==='soon'?'Confirm changing requirements, deadlines, cost and availability on the official or first-party website before acting.':'Use this packet to organize broad questions before sharing any personal story or document.';
     return {schemaVersion:'franklin.preparation-packet.device-only.v1',candidate:catalog.candidate,communityId:'FRANKLIN_TN',state:'LOCAL_ONLY_NOT_SUBMITTED',verticalId,verticalLabel:vertical.label,trackId:track.id,title:track.title,urgency,stage:form.elements.stage.value,boundary:vertical.boundary,firstAction,steps:track.steps,checklist:track.checklist.map((item,index)=>({item,status:selected.has(index)?'READY_TO_REVIEW':'TO_PREPARE'})),questions:track.questions,sourceRoutes:track.sourceRoutes,directoryRoute:track.directoryRoute,donorPatterns:track.donorCapabilityIds,privacy:{fixedChoiceOnly:true,narrativeCollected:false,documentUpload:false,browserStorage:false,networkSubmission:false,externalAi:false},externalEffects:{send:false,submit:false,file:false,schedule:false,pay:false},professionalAdvice:false,authorityTransfer:false};
   };
   const renderPacket=()=>{
