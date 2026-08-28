@@ -1,0 +1,46 @@
+name: Verify Franklin R17 live domain
+
+on:
+  push:
+    branches:
+      - r17-production-stage
+    paths:
+      - .github/workflows/verify-r17-live.yml
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify homepage and live R17 copy
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --retry 5 --retry-delay 2 --fail --silent --show-error --location --dump-header /tmp/home.headers https://franklinnavigator.com/ -o /tmp/home.html
+          grep -q 'Franklin Navigator' /tmp/home.html
+          grep -q 'Business Growth Planner' /tmp/home.html
+
+      - name: Verify business growth pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --retry 5 --retry-delay 2 --fail --silent --show-error --location https://franklinnavigator.com/navigator-growth-desk/ -o /tmp/guides.html
+          grep -q 'Choose the guide that fits your business' /tmp/guides.html
+          curl --retry 5 --retry-delay 2 --fail --silent --show-error --location https://franklinnavigator.com/local-growth-engine/ -o /tmp/planner.html
+          grep -q 'Get a clear plan for what to improve next' /tmp/planner.html
+          curl --retry 5 --retry-delay 2 --fail --silent --show-error --location https://franklinnavigator.com/member-growth-workspace/ -o /tmp/plan90.html
+          grep -q 'Turn one goal into a 7-, 30- and 90-day business plan' /tmp/plan90.html
+
+      - name: Report legacy route behavior and security headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --retry 5 --retry-delay 2 --silent --show-error --location --write-out '%{http_code} %{url_effective}\n' --output /tmp/legacy.html https://franklinnavigator.com/local-growth-desk/ | tee /tmp/legacy.result
+          echo '--- HOME RESPONSE HEADERS ---'
+          cat /tmp/home.headers
+          echo '--- HEADER PRESENCE ---'
+          for h in content-security-policy strict-transport-security x-content-type-options x-frame-options permissions-policy referrer-policy; do
+            if grep -qi "^${h}:" /tmp/home.headers; then echo "PRESENT ${h}"; else echo "MISSING ${h}"; fi
+          done
