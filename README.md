@@ -1,15 +1,7 @@
-# Franklin Navigator
+# Franklin Navigator production
 
-Production deployment repository for [FranklinNavigator.com](https://franklinnavigator.com).
+This repository serves the Franklin, Tennessee community edition of Franklin Navigator.
 
-This repository contains the qualified public payload for `FR-NAV0.2.0-CANDIDATE-R17`.
+Current release payload: `FR-NAV0.6.0-CANDIDATE-R21`.
 
-R17 focuses on production-audit repairs and clear customer language, especially the business-owner growth experience. Canonical Profile Factory and Local Investigator inputs remain read-only; internal governance/source evidence stays outside this public deployment repository.
-
-- Public profiles: 19,103
-- Built HTML pages: 153
-- Tested/localized donor capabilities: 149
-- Paid commerce: disabled
-- Automatic deployment: disabled
-
-The exact source release and deployment identity are recorded in `PRODUCTION_RELEASE.json`.
+The production `dist/` tree is reconstructed and SHA-verified from the sealed R21 artifact before promotion. Paid commerce remains disabled. The prior R17 production commit `4fa7b9ab1c747fec58040ec754e2d0090f078c19` remains the immediate rollback reference for this cutover.

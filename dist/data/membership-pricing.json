@@ -1,11 +1,18 @@
 {
-  "schemaVersion": "franklin.public-membership-pricing.v2",
+  "schemaVersion": "franklin.public-membership-pricing.v3",
   "editionId": "franklin",
   "priceAuthorityId": "LOCAL_MEMBERSHIP_PRICE_AUTHORITY_2026_08_27_V2",
   "status": "PROVISIONAL_DISPLAY_ONLY",
   "currency": "USD",
   "annualMultiplierOfMonthly": 10,
   "annualSavingsMonthsEquivalent": 2,
+  "billingRules": {
+    "monthlyAutoRenew": true,
+    "annualAutoRenew": true,
+    "annualCustomerCopy": "12 months for the price of 10 — 2 months free",
+    "cancellationAccessRequired": true,
+    "checkoutLive": false
+  },
   "freePresence": {
     "planId": "FRANKLIN_FREE_PRESENCE_V2",
     "priceUsd": 0,

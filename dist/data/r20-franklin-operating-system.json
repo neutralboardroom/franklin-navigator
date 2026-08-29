@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "smarter.franklin.operating-system.v20",
+  "release": "FR-NAV0.5.0-CANDIDATE-R20",
+  "checkedAt": "2026-08-29",
+  "purpose": "R20 continuation of the Franklin everyday operating system with privacy-first exact-address routing, device-only saved local profiles, stronger profile currentness and a benchmark-raised public profile experience.",
+  "exactDirectPredecessor": {
+    "release": "FR-NAV0.4.0-CANDIDATE-R19",
+    "artifactFileName": "FRANKLIN_NAVIGATOR__R19__PROFILE_CANONICALS__SPANISH__FRESHNESS__DEPLOY_READY__2026-08-29.zip",
+    "bytes": 50109877,
+    "sha256": "896f4bd5711bd1f3eedc851c53a487daa125bbee79219febcb10c74008de7be7",
+    "sourceTreeDigestSha256": "24157cce3a1a2d982353de4d95b95556df3ae6c69fe81308ce83e63eedd051a2",
+    "libraryFileId": "file_000000004ac081f59642055909c20b31",
+    "productionDeployPerformed": false
+  },
+  "addressLookupCenter": {
+    "route": "/address-lookup/",
+    "spanishRoute": "/es/busquedas-oficiales/",
+    "addressCollectedByFranklinNavigator": false,
+    "addressStoredByFranklinNavigator": false,
+    "addressSubmittedToFranklinNavigator": false,
+    "externalOfficialLookupOnly": true,
+    "checkedAt": "2026-08-29",
+    "sources": [
+      {
+        "id": "city-services",
+        "label": "City of Franklin — Find My City Services",
+        "url": "https://publicmaps.franklintn.gov/FranklinServices/",
+        "use": "Address-based city services and service-area lookup"
+      },
+      {
+        "id": "city-zoning",
+        "label": "City of Franklin — Zoning Map",
+        "url": "https://publicmaps.franklintn.gov/Zoning/",
+        "use": "City zoning starting point"
+      },
+      {
+        "id": "city-gis",
+        "label": "City of Franklin — GIS Map Gallery",
+        "url": "https://www.franklintn.gov/government/departments-a-j/information-technology/geographical-information-systems-gis",
+        "use": "Official map gallery including wards, development, permits and city services"
+      },
+      {
+        "id": "city-ward",
+        "label": "City of Franklin — Aldermanic Ward Map",
+        "url": "https://www.franklintn.gov/government/board-of-mayor-aldermen/aldermanic-ward-map",
+        "use": "City ward map and alderman routing"
+      },
+      {
+        "id": "wcs-zones",
+        "label": "Williamson County Schools — Bus Routes & School Zones",
+        "url": "https://www.wcs.edu/about-us/school-zones",
+        "use": "Address-based WCS zoned school and bus-stop lookup"
+      },
+      {
+        "id": "fsd-zones",
+        "label": "Franklin Special District — Map & Zoning",
+        "url": "https://www.fssd.org/about-us/district-map",
+        "use": "Address-based Franklin Special District school-zone lookup"
+      },
+      {
+        "id": "county-assessor",
+        "label": "Williamson County — Property Assessor",
+        "url": "https://www.williamsoncounty-tn.gov/64/Property-Assessor",
+        "use": "Property-assessment starting point and official mapping links"
+      },
+      {
+        "id": "county-property-search",
+        "label": "Williamson County — Property Search",
+        "url": "https://inigo.williamsoncounty-tn.gov/property_search/",
+        "use": "Property-address and parcel search"
+      },
+      {
+        "id": "county-maps",
+        "label": "Williamson County — Maps",
+        "url": "https://www.williamsoncounty-tn.gov/1381/Maps",
+        "use": "County zoning, voting-district, civil-district and other parcel-related maps"
+      },
+      {
+        "id": "county-voting",
+        "label": "Williamson County — Voting Information",
+        "url": "https://www.williamsoncounty-tn.gov/1576/Voting-Information",
+        "use": "Voter-registration, vote-center and political-district starting points"
+      }
+    ]
+  },
+  "myFranklinSavedProfiles": {
+    "status": "ACTIVE_OPTIONAL_LOCAL_DEVICE_ONLY",
+    "storageKey": "franklinNavigator.savedProfiles.v1",
+    "maxSavedProfiles": 25,
+    "storageSurface": "MY_FRANKLIN_ONLY",
+    "saveTransfer": "PUBLIC_PROFILE_ID_AND_CHUNK_QUERY_ONLY",
+    "serverSubmission": false,
+    "accountCreated": false,
+    "crossDeviceSync": false,
+    "externalAi": false,
+    "sensitiveFieldsStored": false
+  },
+  "profileExperience": {
+    "staticCanonicalPages": 19103,
+    "saveToMyFranklinLink": true,
+    "copyLinkControl": true,
+    "browserCalculatedFreshnessCue": true,
+    "freshnessThresholdDays": {
+      "recent": 30,
+      "recheckRecommended": 90
+    },
+    "microdataOrganizationMarkup": true,
+    "rankOrEndorsementClaim": false,
+    "paidPlacementEffect": false,
+    "benchmarkRaised": true,
+    "separateCanonicalPagePerProfile": true,
+    "breadcrumbs": true,
+    "sourceEvidenceSection": true,
+    "credentialNonInferenceDisclosure": true,
+    "outreachPermissionNonInferenceDisclosure": true,
+    "freeCorrectionSeparatedFromClaim": true,
+    "membershipTruthSeparatedFromFacts": true,
+    "categoryDiscovery": true,
+    "relatedCategoryListings": 3,
+    "nativeShareWithClipboardFallback": true,
+    "printControl": true,
+    "schemaTypeByEntity": "Person for individual healthcare provider; Organization otherwise",
+    "gracefulMissingData": true,
+    "mobileResponsiveActions": true,
+    "internalWorkflowStateExposedPublicly": false
+  },
+  "spanishExpansion": {
+    "previousRoutes": 16,
+    "newRoutes": [
+      "/es/busquedas-oficiales/"
+    ],
+    "totalSpanishRoutes": 17,
+    "savedProfilesBilingual": true,
+    "certifiedTranslationClaimed": false,
+    "fullSiteParityClaimed": false
+  },
+  "boundaries": {
+    "paidCommerce": false,
+    "stripeRecurringPriceIdsBound": false,
+    "authenticatedAccounts": false,
+    "profileClaimsSubmitted": false,
+    "serverFreshnessJobs": false,
+    "verifiedLocalPhonePublished": false,
+    "authorityTransfer": false,
+    "productionDeployPerformed": false
+  }
+}

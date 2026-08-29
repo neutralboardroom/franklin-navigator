@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title"><title id="title">Franklin Navigator</title><rect width="64" height="64" rx="14" fill="#03454b"/><path d="M17 17h31v8H26v8h18v8H26v15h-9z" fill="#fff"/><path d="M45 44l6 4-6 4z" fill="#d9aa4b"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Franklin Navigator</title>
+  <desc id="desc">A refined Franklin F within a subtle compass ring and a gold north needle.</desc>
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="#03454b"/>
+  <rect x="3" y="3" width="58" height="58" rx="14" fill="none" stroke="#d8e7e5" stroke-opacity=".28"/>
+  <circle cx="31" cy="33" r="20" fill="none" stroke="#ffffff" stroke-opacity=".16" stroke-width="1.5"/>
+  <path d="M18 16h25v7.5H26v8.4h14.5v7.3H26V52h-8z" fill="#ffffff"/>
+  <path d="M46.5 11.5 51 26l-4.5-2.8L42 26z" fill="#c5943a"/>
+  <path d="M46.5 14.8v7.7" stroke="#fbf8f1" stroke-width="1.7" stroke-linecap="round"/>
+</svg>
