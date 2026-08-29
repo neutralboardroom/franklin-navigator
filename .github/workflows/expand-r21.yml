@@ -30,16 +30,17 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse origin/main)" = "4fa7b9ab1c747fec58040ec754e2d0090f078c19"
           test "$(git merge-base HEAD origin/main)" = "4fa7b9ab1c747fec58040ec754e2d0090f078c19"
-          cat .r21-payload/overlay.b64.part-* | tr -d '\n\r' | base64 --decode > /tmp/r21-overlay.tar.zst
-          cat .r21-payload/address.b64.part-* | tr -d '\n\r' | base64 --decode > /tmp/r21-address-map.json.zst
-          echo "424fbe2949e65da2075c4ea0bd2f23820b8ddeae453cf209cb5caa0751db764f  /tmp/r21-overlay.tar.zst" | sha256sum -c -
-          echo "ed8c24b66ce7327ae565052dc5bcd459030672c1cf8e5dc60055390d12a2a2bd  /tmp/r21-address-map.json.zst" | sha256sum -c -
-          echo "d228d6cdbf39c04fd061fad75224b3466ded023cbd8d1cc616c761c9512de442  .r21-payload/hr-overlay.txt" | sha256sum -c -
-          echo "42643fa220443753fba47ea4cf8f569f6cbf78a374d6e98533d2dcdf9643c57b  .r21-payload/generate-profiles.mjs" | sha256sum -c -
-          echo "9179679f93b2ef271ffdbbc83d5403bf84636e772d45aabc3c0f4ca67cb79538  .r21-payload/manifest-template.json" | sha256sum -c -
-          echo "0c1ab6434cf0e8d01f10b347b0d3fa4af3d621db6d7a529f8249da9a0ea7efa2  .r21-payload/PRODUCTION_RELEASE.json" | sha256sum -c -
-          echo "57836a0f17095cb814187c6970115a52eed310bd074e51ad94cbdc7da869a0f8  .r21-payload/README.md" | sha256sum -c -
-          test "$(wc -c < .r21-payload/hr-overlay.txt)" -eq 19103
+          cat .r21-payload/control.b64.part-* | tr -d '\n\r' | base64 --decode > /tmp/r21-control.tar.zst
+          echo "69dd942080fb95188a7f7d0a5eb930b051c83268e6f5b865517b0025270c4d95  /tmp/r21-control.tar.zst" | sha256sum -c -
+          rm -rf /tmp/r21-control && zstd -q -dc /tmp/r21-control.tar.zst | tar -xf - -C /tmp
+          echo "424fbe2949e65da2075c4ea0bd2f23820b8ddeae453cf209cb5caa0751db764f  /tmp/r21-control/overlay.tar.zst" | sha256sum -c -
+          echo "ed8c24b66ce7327ae565052dc5bcd459030672c1cf8e5dc60055390d12a2a2bd  /tmp/r21-control/address-map.json.zst" | sha256sum -c -
+          echo "d228d6cdbf39c04fd061fad75224b3466ded023cbd8d1cc616c761c9512de442  /tmp/r21-control/hr-overlay.txt" | sha256sum -c -
+          echo "42643fa220443753fba47ea4cf8f569f6cbf78a374d6e98533d2dcdf9643c57b  /tmp/r21-control/generate-profiles.mjs" | sha256sum -c -
+          echo "9179679f93b2ef271ffdbbc83d5403bf84636e772d45aabc3c0f4ca67cb79538  /tmp/r21-control/manifest-template.json" | sha256sum -c -
+          echo "0c1ab6434cf0e8d01f10b347b0d3fa4af3d621db6d7a529f8249da9a0ea7efa2  /tmp/r21-control/PRODUCTION_RELEASE.json" | sha256sum -c -
+          echo "57836a0f17095cb814187c6970115a52eed310bd074e51ad94cbdc7da869a0f8  /tmp/r21-control/README.md" | sha256sum -c -
+          test "$(wc -c < /tmp/r21-control/hr-overlay.txt)" -eq 19103
           test "$(find dist/data -maxdepth 1 -type f -name 'franklin-profiles-??.json' | wc -l)" -eq 20
           test "$(find dist/assets/franklin-photos -maxdepth 1 -type f -name '*.webp' | wc -l)" -eq 9
 
@@ -51,11 +52,11 @@ jobs:
           cp -a dist/assets/franklin-photos /tmp/r21-preserve/franklin-photos
           cp dist/data/franklin-profiles-??.json /tmp/r21-preserve/
           rm -rf dist
-          zstd -q -dc /tmp/r21-overlay.tar.zst | tar -xf -
+          zstd -q -dc /tmp/r21-control/overlay.tar.zst | tar -xf -
           mkdir -p dist/assets dist/data
           cp -a /tmp/r21-preserve/franklin-photos dist/assets/franklin-photos
           cp /tmp/r21-preserve/franklin-profiles-??.json dist/data/
-          zstd -q -dc /tmp/r21-address-map.json.zst > /tmp/r21-address-map.json
+          zstd -q -dc /tmp/r21-control/address-map.json.zst > /tmp/r21-address-map.json
 
       - name: Reconstruct exact R21 profile chunks
         shell: bash
@@ -63,7 +64,7 @@ jobs:
           set -euo pipefail
           node <<'NODE'
           const fs=require('fs'),path=require('path'),crypto=require('crypto');
-          const codes=fs.readFileSync('.r21-payload/hr-overlay.txt','utf8').trim();
+          const codes=fs.readFileSync('/tmp/r21-control/hr-overlay.txt','utf8').trim();
           const expected=[
           'bff41414e9f9f1f7d816d7744e4419b8430548b43ea6e928abde7b5077e4da86','238862b0b533429c239116b203024f69515f206e7ae0592aa71d261f5eacf62d','c753591a3025ef115f5e875911d39ae1c8ad54c580f82cbcd2bee4214d7d2db5','82229274dc22168badd67c179458bb406d686ae9c7ff439e22466cada2ada2f7','d07ce99f8d4ffc635dc145e909bda27621861c1ecc2b896e05c09b27e62f6883','e890994d1b3063bea52ef89c276a7aee5faa784517e5fd01ebaf9c79160a2447','4a8f7efb20fdff9eaa0acee3d16de5b13185d71c5672af8fd107226c25064978','ff822deb74f55e5009f3a646c6aac077e4de4949e35dbf2a7df8d57c9a18f2b3','aae9704cbfcba1655585434a6c5a69416b2589bc2314b291c9d44409c916f7fa','4fa51ce995729b603e1417b8df74d178393b01861806bd621c1670c782046492','be5821d9adeb06f91744d685d3cff5dc302c41b9ae9b4634c9324cba75a6bc05','e84eafdc6bd6e8cbcaadcf88a27a0b26c2de46ffb0561517cf3b554c2d804eec','3bca19613d6812b8d86c6ded4bdd4a751884ac032fda22083732a592a8e4e100','fce6e830b4fcf5eeb4c4cefd0f69024ccef0006bb17228d8b669807bee61cc53','6abf1cea67cf218f841fb2b90134883530d11579f9a8a3b589224e43a412ac43','b0905522d6c8dc34406d9dfa7ce191dcfdbe268e55eb2c9ff60da14941df3fa5','ccd06a67d56d35e11e546023283f53f792d54ecbd877816b1ed71a4e546a772d','82f858202d9757bc592b213e59389652a4302ce2955228aafb559da811f5df35','3415de0a32043ab26255659021ba7a8f37b031d407f3310140f4580ad87ef7e9','8a3b319c0e1a96544b7c35dcf2bd044f326275ed8316d4a2a6f2ef5c3e7c05a3'];
           let k=0,total=0;
@@ -83,7 +84,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node .r21-payload/generate-profiles.mjs . /tmp/r21-address-map.json
+          node /tmp/r21-control/generate-profiles.mjs . /tmp/r21-address-map.json
           test "$(find dist/profiles -mindepth 2 -maxdepth 2 -type f -name index.html | wc -l)" -eq 19103
 
       - name: Generate exact sitemap and build manifest
@@ -99,7 +100,7 @@ jobs:
           const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
           let xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';for(const r of routes)xml+=`  <url><loc>${esc('https://franklinnavigator.com'+r)}</loc></url>\n`;xml+='</urlset>\n';
           fs.writeFileSync('dist/sitemap.xml',xml);if(routes.length!==19271)throw new Error(`sitemap count ${routes.length}`);
-          const template=JSON.parse(fs.readFileSync('.r21-payload/manifest-template.json','utf8'));let files=[];
+          const template=JSON.parse(fs.readFileSync('/tmp/r21-control/manifest-template.json','utf8'));let files=[];
           function walkFiles(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())walkFiles(p);else if(e.isFile()){const rel=path.relative(root,p).split(path.sep).join('/');if(rel==='FRANKLIN_BUILD_MANIFEST.json')continue;const b=fs.readFileSync(p);files.push({path:rel,bytes:b.length,sha256:crypto.createHash('sha256').update(b).digest('hex')});}}}
           walkFiles(root);files.sort((a,b)=>a.path.localeCompare(b.path));template.files=files;fs.writeFileSync('dist/FRANKLIN_BUILD_MANIFEST.json',JSON.stringify(template,null,2)+'\n');
           if(files.length!==19335)throw new Error(`manifest count ${files.length}`);
@@ -123,8 +124,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cp .r21-payload/PRODUCTION_RELEASE.json PRODUCTION_RELEASE.json
-          cp .r21-payload/README.md README.md
+          cp /tmp/r21-control/PRODUCTION_RELEASE.json PRODUCTION_RELEASE.json
+          cp /tmp/r21-control/README.md README.md
           rm -rf .r21-payload .github/workflows/expand-r21.yml
           git config user.name "Franklin Navigator Release Bot"
           git config user.email "actions@users.noreply.github.com"
