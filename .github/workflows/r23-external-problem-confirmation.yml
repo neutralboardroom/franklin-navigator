@@ -1,0 +1,39 @@
+name: Franklin R23 External Problem Confirmation
+
+on:
+  push:
+    branches: [r23-audit-stage]
+    paths:
+      - 'recheck-r22-external-problems.mjs'
+      - '.github/workflows/r23-external-problem-confirmation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  confirm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Download first-pass audit artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: franklin-r23-external-link-audit
+          path: previous
+          repository: neutralboardroom/franklin-navigator
+          run-id: 33276997777
+          github-token: ${{ github.token }}
+      - name: Recheck hard-broken and server-error candidates
+        run: node recheck-r22-external-problems.mjs
+      - name: Upload confirmation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-r23-external-problem-confirmation
+          path: r23-external-problem-confirmation.json
+          retention-days: 7
