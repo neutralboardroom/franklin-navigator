@@ -45,4 +45,6 @@ jobs:
           rm -rf /tmp/r21-upload
           mkdir -p /tmp/r21-upload
           unzip -q FRANKLIN_R21__GITHUB_DEPLOY_PAYLOAD.zip -d /tmp/r21-upload
+          sed -i 's/ \.r21-payload//' /tmp/r21-upload/deploy-r21.sh
+          ! grep -q 'git add .*\.r21-payload' /tmp/r21-upload/deploy-r21.sh
           bash /tmp/r21-upload/deploy-r21.sh
