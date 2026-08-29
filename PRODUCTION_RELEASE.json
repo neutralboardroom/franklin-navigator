@@ -1,30 +1,34 @@
 {
-  "schemaVersion": "smarter.franklin.production-release.v2",
+  "schemaVersion": "smarter.franklin.production-release.v3",
   "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
   "editionId": "franklin",
-  "release": "FR-NAV0.2.0-CANDIDATE-R17",
+  "release": "FR-NAV0.6.0-CANDIDATE-R21",
   "canonicalOrigin": "https://franklinnavigator.com",
   "exactDirectPredecessor": {
-    "release": "FR-NAV0.2.0-CANDIDATE-R16",
-    "sourceArtifactSha256": "c1314795c1627d5960a91d1d9bbb8334a4f41d3536015423258e67b88683f774",
-    "productionGitCommit": "85fc3f44cc04392d11bef065d5b23906b6d7724d"
+    "release": "FR-NAV0.5.0-CANDIDATE-R20",
+    "sourceArtifactSha256": "69799daf056c22bf07cafafc06bf9cfc2d5c30d90852ca3ed4c4565afaf43015",
+    "productionDeployPerformed": false
+  },
+  "liveRollbackBaseline": {
+    "release": "FR-NAV0.2.0-CANDIDATE-R17",
+    "productionGitCommit": "4fa7b9ab1c747fec58040ec754e2d0090f078c19"
   },
   "sourceArtifact": {
-    "fileName": "SMARTER_FRANKLIN_NAVIGATOR__FR-NAV0.2.0__CANDIDATE_R17__PRODUCTION_AUDIT_REPAIR__PLAIN_LANGUAGE_BUSINESS_GROWTH__19103_PROFILES__149_DONOR_PARITY__DEPLOY_READY__2026-08-28.zip",
-    "bytes": 9150782,
-    "sha256": "4887778c933a3b2472d970f8ee2b1598113f72ccace7aec5e652caa0a36e4441",
-    "treeDigest": "15983604ece32b67c82455f3de7d9a64cfed5e7356ccf5b239b1f92d7d826202"
+    "fileName": "FRANKLIN_NAVIGATOR__R21__REFINED_IDENTITY__BETTER_DIRECTORY_DECISIONS__DEPLOY_READY__2026-08-29.zip",
+    "bytes": 83373200,
+    "sha256": "75e39ddf06aa41009b0762e4fda4b232cd04802b6decbac3c98a5fb7a3c30ccc",
+    "treeDigest": "242c912365c3f490548364b2fc6ab2a1ecbdc5dacd53526ba320404e73bd0014"
   },
   "publicPayload": {
     "directory": "dist",
-    "htmlPages": 153,
-    "sitemapRoutes": 151,
+    "deterministicTarSha256": "4ce48fdd63a54e5b53a733e37e909ab1ebfebd2642bb1d233bb9149e38b9c791",
+    "htmlPages": 19273,
+    "sitemapRoutes": 19271,
     "profiles": 19103,
-    "testedLocalizedDonorCapabilities": 149,
     "publicLanguageFindings": 0,
     "brokenInternalTargets": 0,
     "brokenAnchors": 0,
-    "unintendedOrphanPages": 0
+    "unsafeScriptLikeLinks": 0
   },
   "deployment": {
     "provider": "Render",

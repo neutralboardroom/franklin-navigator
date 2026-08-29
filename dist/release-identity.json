@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "franklin.public-release-identity.v1",
+  "editionId": "franklin",
+  "release": "FR-NAV0.6.0-CANDIDATE-R21",
+  "canonicalOrigin": "https://franklinnavigator.com",
+  "profileCount": 19103,
+  "builtAt": "2026-08-29",
+  "expectedRepository": "neutralboardroom/franklin-navigator",
+  "expectedBranch": "main",
+  "productionContentIdentityGate": "SOURCE_REPOSITORY_PROVIDER_ORIGIN_CANONICAL_MUST_CONVERGE",
+  "artifactSha256": "PENDING_POST_SEAL_PACKAGE_HASH",
+  "gitCommit": "PENDING_DEPLOYMENT"
+}
