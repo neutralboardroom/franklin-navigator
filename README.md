@@ -1,7 +1,9 @@
-# Franklin Navigator production
+# Franklin Navigator production source
 
-This repository serves the Franklin, Tennessee community edition of Franklin Navigator.
+Production payload for **FR-NAV0.7.0-CANDIDATE-R22**.
 
-Current release payload: `FR-NAV0.6.0-CANDIDATE-R21`.
-
-The production `dist/` tree is reconstructed and SHA-verified from the sealed R21 artifact before promotion. Paid commerce remains disabled. The prior R17 production commit `4fa7b9ab1c747fec58040ec754e2d0090f078c19` remains the immediate rollback reference for this cutover.
+- Canonical site: https://franklinnavigator.com
+- Public tree: `dist/`
+- Profiles: 19,103
+- Paid commerce: fail-closed
+- Exact rollback predecessor: R21 production commit `8ffa7a9dd935e8763f1ca7fd731d98b6b38d4d79`

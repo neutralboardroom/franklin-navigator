@@ -1,30 +1,29 @@
 {
-  "schemaVersion": "smarter.franklin.production-release.v3",
+  "schemaVersion": "smarter.franklin.production-release.v4",
   "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
   "editionId": "franklin",
-  "release": "FR-NAV0.6.0-CANDIDATE-R21",
+  "release": "FR-NAV0.7.0-CANDIDATE-R22",
   "canonicalOrigin": "https://franklinnavigator.com",
   "exactDirectPredecessor": {
-    "release": "FR-NAV0.5.0-CANDIDATE-R20",
-    "sourceArtifactSha256": "69799daf056c22bf07cafafc06bf9cfc2d5c30d90852ca3ed4c4565afaf43015",
-    "productionDeployPerformed": false
-  },
-  "liveRollbackBaseline": {
-    "release": "FR-NAV0.2.0-CANDIDATE-R17",
-    "productionGitCommit": "4fa7b9ab1c747fec58040ec754e2d0090f078c19"
+    "release": "FR-NAV0.6.0-CANDIDATE-R21",
+    "sourceArtifactSha256": "75e39ddf06aa41009b0762e4fda4b232cd04802b6decbac3c98a5fb7a3c30ccc",
+    "productionGitCommit": "8ffa7a9dd935e8763f1ca7fd731d98b6b38d4d79",
+    "productionDeployPerformed": true
   },
   "sourceArtifact": {
-    "fileName": "FRANKLIN_NAVIGATOR__R21__REFINED_IDENTITY__BETTER_DIRECTORY_DECISIONS__DEPLOY_READY__2026-08-29.zip",
-    "bytes": 83373200,
-    "sha256": "75e39ddf06aa41009b0762e4fda4b232cd04802b6decbac3c98a5fb7a3c30ccc",
-    "treeDigest": "242c912365c3f490548364b2fc6ab2a1ecbdc5dacd53526ba320404e73bd0014"
+    "fileName": "FRANKLIN_NAVIGATOR__R22__500_AUDIT_REDESIGN__PF15_4_RICH_PROFILES__MEMBER_VALUE__DEPLOY_READY__2026-08-29.zip",
+    "bytes": 73217167,
+    "sha256": "315ae3bb778a3ed41c09e6d1647e0ed85b9d807fdfcc0e5b84fe6b16918d631e",
+    "treeDigest": "b78db69c9ec6938447d6d5324816f6f303a6713f379bb16423b2949a2b3c1630"
   },
   "publicPayload": {
-    "directory": "dist",
-    "deterministicTarSha256": "4ce48fdd63a54e5b53a733e37e909ab1ebfebd2642bb1d233bb9149e38b9c791",
-    "htmlPages": 19273,
-    "sitemapRoutes": 19271,
+    "deterministicTarSha256": "3f9d413b6d9ec599c769e8b0c124f2d18a01d0ee145c0cd4a45b889e76a36549",
+    "htmlPages": 19275,
+    "sitemapRoutes": 19273,
     "profiles": 19103,
+    "websiteProfiles": 9203,
+    "phoneProfiles": 17105,
+    "publicBusinessEmailRows": 4298,
     "publicLanguageFindings": 0,
     "brokenInternalTargets": 0,
     "brokenAnchors": 0,
