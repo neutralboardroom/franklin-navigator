@@ -1,1 +1,135 @@
-{"schemaVersion":"franklin.public-profile-manifest.v2","sourceRelease":"FR-PF-PLATFORM-15.2","recordCount":19103,"predecessorRecords":18056,"newReadyRecords":1047,"chunkCount":20,"heldInPublicProjection":0,"acceptedPF74HoldsExcluded":3543,"newGeographyHoldsExcluded":127,"fabricated":0,"sourceSha256":"48b93626f860d653a42831653491e501aea9f4b385c7a7e9dc5ab0f1cbc96690","handoffSha256":"9d818b38254ee80df2a151a21cd3c7c6e162fa8affb9e1059ea97ef1b75eea09","chunks":[{"file":"/data/franklin-profiles-01.json","records":1000,"bytes":343278,"sha256":"bff41414e9f9f1f7d816d7744e4419b8430548b43ea6e928abde7b5077e4da86"},{"file":"/data/franklin-profiles-02.json","records":1000,"bytes":230792,"sha256":"238862b0b533429c239116b203024f69515f206e7ae0592aa71d261f5eacf62d"},{"file":"/data/franklin-profiles-03.json","records":1000,"bytes":228050,"sha256":"c753591a3025ef115f5e875911d39ae1c8ad54c580f82cbcd2bee4214d7d2db5"},{"file":"/data/franklin-profiles-04.json","records":1000,"bytes":227749,"sha256":"82229274dc22168badd67c179458bb406d686ae9c7ff439e22466cada2ada2f7"},{"file":"/data/franklin-profiles-05.json","records":1000,"bytes":227492,"sha256":"d07ce99f8d4ffc635dc145e909bda27621861c1ecc2b896e05c09b27e62f6883"},{"file":"/data/franklin-profiles-06.json","records":1000,"bytes":235306,"sha256":"e890994d1b3063bea52ef89c276a7aee5faa784517e5fd01ebaf9c79160a2447"},{"file":"/data/franklin-profiles-07.json","records":1000,"bytes":241287,"sha256":"4a8f7efb20fdff9eaa0acee3d16de5b13185d71c5672af8fd107226c25064978"},{"file":"/data/franklin-profiles-08.json","records":1000,"bytes":238444,"sha256":"ff822deb74f55e5009f3a646c6aac077e4de4949e35dbf2a7df8d57c9a18f2b3"},{"file":"/data/franklin-profiles-09.json","records":1000,"bytes":239943,"sha256":"aae9704cbfcba1655585434a6c5a69416b2589bc2314b291c9d44409c916f7fa"},{"file":"/data/franklin-profiles-10.json","records":1000,"bytes":246789,"sha256":"4fa51ce995729b603e1417b8df74d178393b01861806bd621c1670c782046492"},{"file":"/data/franklin-profiles-11.json","records":1000,"bytes":239340,"sha256":"be5821d9adeb06f91744d685d3cff5dc302c41b9ae9b4634c9324cba75a6bc05"},{"file":"/data/franklin-profiles-12.json","records":1000,"bytes":237685,"sha256":"e84eafdc6bd6e8cbcaadcf88a27a0b26c2de46ffb0561517cf3b554c2d804eec"},{"file":"/data/franklin-profiles-13.json","records":1000,"bytes":239333,"sha256":"3bca19613d6812b8d86c6ded4bdd4a751884ac032fda22083732a592a8e4e100"},{"file":"/data/franklin-profiles-14.json","records":1000,"bytes":248997,"sha256":"fce6e830b4fcf5eeb4c4cefd0f69024ccef0006bb17228d8b669807bee61cc53"},{"file":"/data/franklin-profiles-15.json","records":1000,"bytes":261716,"sha256":"6abf1cea67cf218f841fb2b90134883530d11579f9a8a3b589224e43a412ac43"},{"file":"/data/franklin-profiles-16.json","records":1000,"bytes":259966,"sha256":"b0905522d6c8dc34406d9dfa7ce191dcfdbe268e55eb2c9ff60da14941df3fa5"},{"file":"/data/franklin-profiles-17.json","records":1000,"bytes":259896,"sha256":"ccd06a67d56d35e11e546023283f53f792d54ecbd877816b1ed71a4e546a772d"},{"file":"/data/franklin-profiles-18.json","records":1000,"bytes":258996,"sha256":"82f858202d9757bc592b213e59389652a4302ce2955228aafb559da811f5df35"},{"file":"/data/franklin-profiles-19.json","records":1000,"bytes":298963,"sha256":"3415de0a32043ab26255659021ba7a8f37b031d407f3310140f4580ad87ef7e9"},{"file":"/data/franklin-profiles-20.json","records":103,"bytes":31418,"sha256":"8a3b319c0e1a96544b7c35dcf2bd044f326275ed8316d4a2a6f2ef5c3e7c05a3"}]}
+{
+  "schemaVersion": "franklin.public-profile-manifest.v3",
+  "sourceRelease": "FR-PF-PLATFORM-15.4",
+  "recordCount": 19103,
+  "heldInPublicProjection": 0,
+  "heldCandidatesExcluded": 13,
+  "sourceSha256": "16776e90bd3f4a06ea2aaae28a251861a42ce2dbdf1d40ee9cdaed58dd489849",
+  "handoffSha256": "33690f86ff59f20126c7a78eefc229ecd86991335e85e2f31e41e95855a3bb23",
+  "validPhoneProfiles": 17105,
+  "validPublicBusinessEmailRows": 4298,
+  "validWebsiteProfiles": 9203,
+  "validWebsiteRoutes": 9225,
+  "chunks": [
+    {
+      "file": "/data/franklin-profiles-01.json",
+      "records": 1000,
+      "bytes": 383148,
+      "sha256": "963a3b469847bc6f741669cc51c3c5520871c16d746785bb695a8a2e568a4034"
+    },
+    {
+      "file": "/data/franklin-profiles-02.json",
+      "records": 1000,
+      "bytes": 270559,
+      "sha256": "1e1e63e508d86db1949dea5d1645d1ec6d349d05ddb6bcb3d081d6b610202db7"
+    },
+    {
+      "file": "/data/franklin-profiles-03.json",
+      "records": 1000,
+      "bytes": 270111,
+      "sha256": "c247e9410af64c1e586867326892259e35008ed67b22f24e4887dbee4e2a0bd5"
+    },
+    {
+      "file": "/data/franklin-profiles-04.json",
+      "records": 1000,
+      "bytes": 268074,
+      "sha256": "2b314dd6edc450672920e5c2c2b9f39f07323cccc13f2fa96c35ea4417e0f4a9"
+    },
+    {
+      "file": "/data/franklin-profiles-05.json",
+      "records": 1000,
+      "bytes": 267253,
+      "sha256": "e2c7595495c602b87cca76e9edfc32d002c1c9b397625ecba4d1f1445b8924df"
+    },
+    {
+      "file": "/data/franklin-profiles-06.json",
+      "records": 1000,
+      "bytes": 274017,
+      "sha256": "2b39b67544995180904408a2c2f50c4301a47858d0cb6f280ac729c165a0d29e"
+    },
+    {
+      "file": "/data/franklin-profiles-07.json",
+      "records": 1000,
+      "bytes": 278226,
+      "sha256": "909c0d3c579e8e78dcda812caa8fdcb25ef9cb8633d1fbc96f7756b44e8c4315"
+    },
+    {
+      "file": "/data/franklin-profiles-08.json",
+      "records": 1000,
+      "bytes": 276178,
+      "sha256": "19cd3bf51e8ec95c0f2a39669354b7b3ccb7f2ba9e3ee9288a00a6f3eae7b2d7"
+    },
+    {
+      "file": "/data/franklin-profiles-09.json",
+      "records": 1000,
+      "bytes": 277025,
+      "sha256": "54a2b27bdae22824c5edeb992a9ea98dde08faafadcbd7161c2ee46232f2fab7"
+    },
+    {
+      "file": "/data/franklin-profiles-10.json",
+      "records": 1000,
+      "bytes": 275930,
+      "sha256": "c3622c414ac230378486b9dd30a6ece01ccdba46546db90c0ef47a21dd0eaec9"
+    },
+    {
+      "file": "/data/franklin-profiles-11.json",
+      "records": 1000,
+      "bytes": 255943,
+      "sha256": "82db9c6663a4a804573ff71c644545501f335622f4da3a54b6cd441d37d1fba5"
+    },
+    {
+      "file": "/data/franklin-profiles-12.json",
+      "records": 1000,
+      "bytes": 253738,
+      "sha256": "24f695dd3a938c5e28f360583b8401fa8306d92e20b81eebcc7b97c7d2a88430"
+    },
+    {
+      "file": "/data/franklin-profiles-13.json",
+      "records": 1000,
+      "bytes": 254739,
+      "sha256": "cacaee67b065970eb05346d9d8489a769241759c23947629c9d0b3ea58681b2c"
+    },
+    {
+      "file": "/data/franklin-profiles-14.json",
+      "records": 1000,
+      "bytes": 258767,
+      "sha256": "d870952536c1d34183441a8f2f5133e6da7b8883a2f406f6ee2cfcf1a2c0111d"
+    },
+    {
+      "file": "/data/franklin-profiles-15.json",
+      "records": 1000,
+      "bytes": 269893,
+      "sha256": "938066e82ab738d0b04ec07dfe4dc8509aa78032f2ebf587eb99164f62e31622"
+    },
+    {
+      "file": "/data/franklin-profiles-16.json",
+      "records": 1000,
+      "bytes": 269755,
+      "sha256": "e0c084c14e4dd212193023d51fe7f5e65b89968c691f2c1589b830aadae00480"
+    },
+    {
+      "file": "/data/franklin-profiles-17.json",
+      "records": 1000,
+      "bytes": 269056,
+      "sha256": "1fbbf515eb005a71da3a49c8326cebcdb8e2f3b809cd2b4f5685daccf34a6d01"
+    },
+    {
+      "file": "/data/franklin-profiles-18.json",
+      "records": 1000,
+      "bytes": 269010,
+      "sha256": "8dbf0fb160977610cbd2b1bef4a0ef79ec14c4b060adc72478553989387833b8"
+    },
+    {
+      "file": "/data/franklin-profiles-19.json",
+      "records": 1000,
+      "bytes": 289256,
+      "sha256": "993ab00c9561e54aefa7fd69bf28463d98136f5550112035d8aaee244448d5e6"
+    },
+    {
+      "file": "/data/franklin-profiles-20.json",
+      "records": 103,
+      "bytes": 31856,
+      "sha256": "13bda79c3fb1559d5f79ae6faff12c48a98996e3d3ab13684d858368711002a1"
+    }
+  ]
+}

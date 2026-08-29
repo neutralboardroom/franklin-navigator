@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "franklin.operating-system.r22.v1",
+  "release": "FR-NAV0.7.0-CANDIDATE-R22",
+  "exactPredecessor": {
+    "release": "FR-NAV0.6.0-CANDIDATE-R21",
+    "sha256": "75e39ddf06aa41009b0762e4fda4b232cd04802b6decbac3c98a5fb7a3c30ccc",
+    "productionCommit": "8ffa7a9dd935e8763f1ca7fd731d98b6b38d4d79"
+  },
+  "profileFactory": {
+    "version": "FR-PF-PLATFORM-15.4",
+    "sha256": "33690f86ff59f20126c7a78eefc229ecd86991335e85e2f31e41e95855a3bb23",
+    "profiles": 19103,
+    "heldExcluded": 13,
+    "validWebsiteProfiles": 9203,
+    "validPhoneProfiles": 17105,
+    "validPublicEmailRows": 4298
+  },
+  "localInvestigator": {
+    "version": "V7",
+    "sourceRoutes": 219,
+    "facts": 134,
+    "discoveryRecords": 91,
+    "readOnly": true
+  },
+  "commerce": {
+    "checkout": false,
+    "billing": false,
+    "paidEntitlements": false,
+    "profileStudio": "DEVICE_ONLY_PREVIEW"
+  },
+  "auditFindings": 500,
+  "authorityTransfer": false
+}
