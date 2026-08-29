@@ -1,0 +1,34 @@
+name: Franklin R23 External Link Audit
+
+on:
+  push:
+    branches: [r23-audit-stage]
+    paths:
+      - 'audit-r22-external-links.mjs'
+      - '.github/workflows/r23-external-link-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Verify audited production baseline
+        run: |
+          test -f dist/PRODUCTION_RELEASE.json || test -f PRODUCTION_RELEASE.json
+          test -f dist/index.html
+      - name: Audit every unique third-party URL and key live routes
+        run: node audit-r22-external-links.mjs
+      - name: Upload audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-r23-external-link-audit
+          path: r23-external-link-audit.json
+          retention-days: 7
