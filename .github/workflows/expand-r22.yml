@@ -1,0 +1,45 @@
+name: Expand verified Franklin R22 payload
+
+on:
+  push:
+    branches:
+      - r22-production-stage
+
+permissions:
+  contents: write
+
+jobs:
+  expand-r22:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out staging branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install deployment dependency
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq zstd unzip
+
+      - name: Verify accidental main upload is contained
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='8ffa7a9dd935e8763f1ca7fd731d98b6b38d4d79'
+          MAIN_UPLOAD='711332599f19cd88667055aaf1aaa2e8deafd02f'
+          test "$(git rev-parse origin/main)" = "$MAIN_UPLOAD"
+          test "$(git rev-parse origin/main^)" = "$BASE"
+          test "$(git diff --name-only "$BASE" "$MAIN_UPLOAD")" = 'FRANKLIN_R22__GITHUB_DEPLOY_PAYLOAD.zip'
+          test "$(git merge-base HEAD "$BASE")" = "$BASE"
+          git update-ref refs/remotes/origin/main "$BASE"
+
+      - name: Verify and expand exact R22 public payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '15323df60731adfe76fd6a3d160abaf8df9467733e56b26f2a5381f119f1db31  FRANKLIN_R22__GITHUB_DEPLOY_PAYLOAD.zip' | sha256sum -c -
+          rm -rf /tmp/r22-upload
+          mkdir -p /tmp/r22-upload
+          unzip -q FRANKLIN_R22__GITHUB_DEPLOY_PAYLOAD.zip -d /tmp/r22-upload
+          bash /tmp/r22-upload/deploy-r22.sh
