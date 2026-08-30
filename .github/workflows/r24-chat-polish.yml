@@ -1,0 +1,84 @@
+name: Finalize Franklin Navigator R24 Ask Navigator proportions
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/r24-chat-polish.yml
+      - scripts/apply-r24-chat-polish.mjs
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-stage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out R24 polish trigger
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply, verify and stage final R24 public tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='8f93853c767637908a623b31a504f3455dc3ff2b'
+          SCRIPT='scripts/apply-r24-chat-polish.mjs'
+          EXPECTED_SCRIPT_SHA='91d496e0c9bf13fd16867c6515750e4303c326b60fc1cac04be6ffde32f8b1e7'
+
+          MERGE_BASE="$(git merge-base HEAD "$BASE")"
+          test "$MERGE_BASE" = "$BASE"
+          test -f "$SCRIPT"
+          echo "$EXPECTED_SCRIPT_SHA  $SCRIPT" | sha256sum -c -
+          cp "$SCRIPT" /tmp/apply-r24-chat-polish.mjs
+
+          git checkout -B r24-final-production-stage "$BASE"
+          R24_PATCH_SCRIPT_SHA="$EXPECTED_SCRIPT_SHA" node /tmp/apply-r24-chat-polish.mjs
+          rm -rf .github scripts
+
+          test "$(find dist -type f | wc -l)" -eq 19351
+          test "$(find dist -type f -name '*.html' | wc -l)" -eq 19276
+          test "$(find dist/profiles -mindepth 2 -maxdepth 2 -type f -name index.html | wc -l)" -eq 19103
+          test "$(find . -mindepth 1 -maxdepth 1 ! -name .git | wc -l)" -eq 4
+          test -f PRODUCTION_RELEASE.json
+          test -f README.md
+          test -d dist
+          test -f render.yaml
+          test ! -e .github
+          test ! -e scripts
+
+          grep -q 'R24.1 Ask Navigator proportion polish' dist/assets/styles.css
+          grep -q 'max-width:540px' dist/assets/styles.css
+          grep -q 'min-height:110px' dist/assets/styles.css
+          grep -q 'rows="3"' dist/index.html
+          grep -q 'R24_ASK_NAVIGATOR_PROPORTION_POLISH_2026_08_30' dist/release-identity.json
+          grep -q 'FR-NAV0.9.0-CANDIDATE-R24' PRODUCTION_RELEASE.json
+
+          node <<'NODE'
+          const fs = require('fs');
+          const crypto = require('crypto');
+          const path = require('path');
+          const manifest = JSON.parse(fs.readFileSync('dist/FRANKLIN_BUILD_MANIFEST.json', 'utf8'));
+          if (manifest.release !== 'FR-NAV0.9.0-CANDIDATE-R24' || manifest.profilePages !== 19103 || manifest.builtHtmlPages !== 19276) throw new Error('R24 identity/count mismatch');
+          if (manifest.presentationRevision?.id !== 'R24_ASK_NAVIGATOR_PROPORTION_POLISH_2026_08_30') throw new Error('R24 presentation revision missing');
+          if (manifest.files.length !== 19350) throw new Error('R24 manifest file count mismatch');
+          for (const item of manifest.files) {
+            const filePath = path.join('dist', item.path);
+            const bytes = fs.readFileSync(filePath);
+            const digest = crypto.createHash('sha256').update(bytes).digest('hex');
+            if (bytes.length !== item.bytes || digest !== item.sha256) throw new Error(`R24 manifest mismatch: ${item.path}`);
+          }
+          const release = JSON.parse(fs.readFileSync('PRODUCTION_RELEASE.json', 'utf8'));
+          if (release.visibleHomepage?.askNavigator?.desktopCardMaxWidthPx !== 540) throw new Error('Ask Navigator card width contract mismatch');
+          if (release.visibleHomepage?.askNavigator?.desktopTextareaMinHeightPx !== 110) throw new Error('Ask Navigator textarea contract mismatch');
+          if (release.commerce?.paidCommerceActive !== false || release.commerce?.productionEntitlementPersistence !== false) throw new Error('Commerce fail-closed regression');
+          console.log(JSON.stringify({ ok: true, release: manifest.release, profiles: manifest.profilePages, htmlPages: manifest.builtHtmlPages, manifestFiles: manifest.files.length }, null, 2));
+          NODE
+
+          git config user.name 'Franklin Navigator Release Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Stage final Franklin Navigator R24 Ask Navigator proportion polish'
+          git push --force origin HEAD:r24-final-production-stage
