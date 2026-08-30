@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "franklin.growth-desk.r23.v1",
+  "name": "Franklin Navigator Growth Desk",
+  "modes": [
+    "ENGLISH_TO_SPANISH",
+    "SPANISH_TO_ENGLISH",
+    "BILINGUAL"
+  ],
+  "campaignExecution": false,
+  "rawBulkEmailExport": false,
+  "languageInferenceFromProtectedOrProxyTraits": false,
+  "requiresAuthenticatedMemberAssertion": true,
+  "requiresLocalEntitlement": true
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "franklin.wo022.r23.readiness.v1",
+  "workOrder": "WO-20260829-LOCAL-FRANKLIN-R22-COMMERCE-INTEGRATION-022",
+  "implementation": {
+    "entitlementStateMachine": "IMPLEMENTED",
+    "idempotentEventHandling": "IMPLEMENTED",
+    "atomicJsonPersistenceAdapter": "IMPLEMENTED_FOR_TEST_AND_DURABLE_DISK_RUNTIME",
+    "redirectDoesNotActivate": true,
+    "settledPaymentActivates": true,
+    "paymentFailureGraceAndSuspension": true,
+    "recoveryAndRenewal": true,
+    "cancelAtPeriodEnd": true,
+    "subscriptionDeleteRevokes": true,
+    "refundRevokes": true
+  },
+  "providerBinding": {
+    "stripeAccount": "acct_1TZU2TRxNra9nizo",
+    "products": 14,
+    "selfServiceRecurringPrices": 84,
+    "selfServiceTiers": [
+      "INDIVIDUAL",
+      "TEAM",
+      "OFFICE"
+    ],
+    "enterprise": "QUOTE_ONLY",
+    "lookupKeyBinding": "IMPLEMENTED"
+  },
+  "foundingOffer": {
+    "code": "FOUNDING30",
+    "percentOff": 30,
+    "firstMonths": 12,
+    "enrollBy": "2026-12-31"
+  },
+  "production": {
+    "checkout": false,
+    "downstreamStripeProcessing": false,
+    "entitlementActivation": false,
+    "reason": "Current Franklin Render product is a static site and an isolated persistent Local runtime/store has not been provisioned."
+  },
+  "completionReceiptEligible": false
+}
