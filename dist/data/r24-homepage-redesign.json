@@ -28,5 +28,14 @@
       "City of Franklin"
     ]
   },
-  "authorityTransfer": false
+  "authorityTransfer": false,
+  "presentationRevision": {
+    "id": "R24_ASK_NAVIGATOR_PROPORTION_POLISH_2026_08_30",
+    "decision": "SLIGHTLY_LARGER_BALANCED_ASK_NAVIGATOR",
+    "desktopCardMaxWidthPx": 540,
+    "desktopTextareaMinHeightPx": 110,
+    "examplePromptsDesktopColumns": 2,
+    "aroundFranklinStillTargetedWithinFirstLaptopViewport": true,
+    "patchScriptSha256": "91d496e0c9bf13fd16867c6515750e4303c326b60fc1cac04be6ffde32f8b1e7"
+  }
 }

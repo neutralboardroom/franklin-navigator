@@ -208,8 +208,8 @@
     },
     {
       "path": "assets/styles.css",
-      "bytes": 45146,
-      "sha256": "9c3478e7dfecf864c76a9e9759cb0c8a069ace7b9a26eab3467fa30cde0a1002"
+      "bytes": 45974,
+      "sha256": "fe4ada0bc9d5b6180b9dc0fb1aaf30c9b488c89900338286cbffcfd9d2049947"
     },
     {
       "path": "auto-vehicle-help/index.html",
@@ -478,8 +478,8 @@
     },
     {
       "path": "data/r24-homepage-redesign.json",
-      "bytes": 975,
-      "sha256": "5a041423ac6cdf619bda3190a1d79266fe2dce2030e515fe731c916a07732a5e"
+      "bytes": 1396,
+      "sha256": "d7d7c80e98021d6d91becb9d9b4b37e1facfb11cf8f0443125bf3d918d08e9e3"
     },
     {
       "path": "directory-method/index.html",
@@ -834,7 +834,7 @@
     {
       "path": "index.html",
       "bytes": 15308,
-      "sha256": "9e9a685645cbadcecd2c63c27f17a8924649e3686f52fa1a191f5d7a575e5307"
+      "sha256": "90557d1707c43f65debc6d2ceee3c7612d00123fc52d5a2f7f9578ab43fa3486"
     },
     {
       "path": "jobs-internships/index.html",
@@ -96638,8 +96638,8 @@
     },
     {
       "path": "release-identity.json",
-      "bytes": 424,
-      "sha256": "cd921b000f59e9d71d3bb85bb7e8e0c68809b9a5f6aacc35e6d97991a97dc723"
+      "bytes": 500,
+      "sha256": "46a62991c88aa564a144402936102a6a63743b10e6353139ad1d74951eca6b1a"
     },
     {
       "path": "request-brief/index.html",
@@ -96788,5 +96788,11 @@
     }
   ],
   "visibleHomepageRedesign": true,
-  "homepageFirstScreenTarget": "1366x768_VERIFIED"
+  "homepageFirstScreenTarget": "1366x768_VERIFIED",
+  "presentationRevision": {
+    "id": "R24_ASK_NAVIGATOR_PROPORTION_POLISH_2026_08_30",
+    "patchScriptSha256": "91d496e0c9bf13fd16867c6515750e4303c326b60fc1cac04be6ffde32f8b1e7",
+    "desktopCardMaxWidthPx": 540,
+    "desktopTextareaMinHeightPx": 110
+  }
 }

@@ -398,3 +398,25 @@ header .top{background:#fff}
 .r24-business-section{border-top:1px solid #eee7d8}
 @media(max-width:960px){.r24-hero-grid{grid-template-columns:1fr}.r24-home-hero{padding-top:24px}.r24-hero-photos{max-width:none}.grid.four,.r24-destination-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.r24-home-hero h1{font-size:2.55rem}.r24-hero-photos{grid-template-columns:1fr 1fr}.r24-hero-photos figure:last-child{display:none}.r24-hero-photos img{height:82px}.r24-ask-actions{grid-template-columns:1fr}.r24-speak{order:2}.grid.four,.r24-destination-grid{grid-template-columns:1fr}.r24-around{padding-top:24px}}
+
+
+/* R24.1 Ask Navigator proportion polish */
+@media(min-width:961px){
+  .r24-hero-grid{grid-template-columns:minmax(0,1fr) minmax(390px,1.02fr);gap:28px}
+  .r24-ask{width:100%;max-width:540px;justify-self:end;padding:23px 24px}
+  .r24-ask label{font-size:1.17rem}
+  .r24-ask textarea{min-height:110px;font-size:1rem;line-height:1.45;padding:13px 14px}
+  .r24-ask-actions .button{min-height:46px}
+  .r24-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .r24-chips button{text-align:left;padding:8px 10px}
+  .r24-navigator-output{max-height:320px}
+}
+@media(max-width:960px){
+  .r24-ask{width:100%;max-width:680px;justify-self:start;padding:22px}
+  .r24-ask textarea{min-height:104px}
+}
+@media(max-width:620px){
+  .r24-ask{padding:20px}
+  .r24-chips{display:flex}
+  .r24-ask textarea{min-height:96px}
+}
