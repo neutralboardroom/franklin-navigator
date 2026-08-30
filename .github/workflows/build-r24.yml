@@ -29,7 +29,8 @@ jobs:
           SCRIPT='scripts/build-r24-deploy.mjs'
           EXPECTED_SCRIPT_SHA='1f531d23245468ed1ece8e6ba99ffa8c6ff2845d6f2e39336b2a6c49daf94b6d'
 
-          test "$(git merge-base HEAD \"$BASE\")" = "$BASE"
+          MERGE_BASE="$(git merge-base HEAD "$BASE")"
+          test "$MERGE_BASE" = "$BASE"
           test -f "$SCRIPT"
           echo "$EXPECTED_SCRIPT_SHA  $SCRIPT" | sha256sum -c -
           cp "$SCRIPT" /tmp/build-r24-deploy.mjs
