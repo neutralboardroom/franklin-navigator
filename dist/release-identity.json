@@ -8,5 +8,6 @@
   "expectedRepository": "neutralboardroom/franklin-navigator",
   "expectedBranch": "main",
   "sourceArtifactSha256": "PENDING_POST_SEAL_PACKAGE_HASH",
-  "gitCommit": "PENDING_DEPLOYMENT"
+  "gitCommit": "PENDING_DEPLOYMENT",
+  "presentationRevision": "R24_ASK_NAVIGATOR_PROPORTION_POLISH_2026_08_30"
 }

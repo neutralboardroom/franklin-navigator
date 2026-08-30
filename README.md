@@ -2,4 +2,4 @@
 
 Clean public static production tree for `FR-NAV0.9.0-CANDIDATE-R24`.
 
-R24 visibly shortens the first laptop screen, places Franklin photography in the hero, and brings Around Franklin above the fold. Paid commerce remains fail-closed pending a Franklin-isolated persistent Local runtime.
+The final R24 candidate includes the visible homepage redesign plus a proportion-polished Ask Navigator card: slightly wider, a deeper three-row typing area, and cleaner two-column example prompts on desktop. Paid commerce remains fail-closed pending a Franklin-isolated persistent Local runtime.
