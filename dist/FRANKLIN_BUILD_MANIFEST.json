@@ -1,12 +1,13 @@
 {
-  "schemaVersion": "franklin.build-manifest.r23.v1",
-  "release": "FR-NAV0.8.0-CANDIDATE-R23",
+  "schemaVersion": "franklin.build-manifest.r24.v1",
+  "release": "FR-NAV0.9.0-CANDIDATE-R24",
   "canonicalOrigin": "https://franklinnavigator.com",
   "builtAt": "2026-08-30",
   "exactPredecessor": {
-    "release": "FR-NAV0.7.0-CANDIDATE-R22",
-    "sha256": "315ae3bb778a3ed41c09e6d1647e0ed85b9d807fdfcc0e5b84fe6b16918d631e",
-    "productionCommit": "1f912410b3127f5be3482b0b5674fcd57ec697ed"
+    "release": "FR-NAV0.8.0-CANDIDATE-R23",
+    "sha256": "5a5c1a98910dbea08b75e133ea664a8d31c10a398f4b72acc70e7fed4eb7f494",
+    "productionCommit": "513ee290ab6fa4f00ebaba5506a20c07bb5ebafb",
+    "productionDeployId": "dep-daa5tf1f2nfc739ar900"
   },
   "sourceHtmlPages": 42,
   "builtHtmlPages": 19276,
@@ -26,7 +27,7 @@
     "sourceRoutes": 219,
     "discoveryRecords": 91
   },
-  "auditFindings": 500,
+  "auditFindings": 501,
   "paidCommerce": false,
   "checkoutActive": false,
   "billingActive": false,
@@ -172,8 +173,8 @@
     },
     {
       "path": "assets/navigator-bot.js",
-      "bytes": 13773,
-      "sha256": "623d159b8184b771a2201b80e42156cdd3f3e30cb1a37e3baddb954406af9c19"
+      "bytes": 13793,
+      "sha256": "58b5799e80f027d09e2b4516e15d395df2651dea1d2f5bd936b9eb692cbe590a"
     },
     {
       "path": "assets/preparation-studio.js",
@@ -196,14 +197,19 @@
       "sha256": "803b9108909343f955ec2b5870598c6b10e78fcc3219f364db44c17bf78e11c7"
     },
     {
+      "path": "assets/r24.js",
+      "bytes": 925,
+      "sha256": "753dfea86b231ec62b54ccb83c15f4b272ccbbbc9c5c3bd59540a30310b249aa"
+    },
+    {
       "path": "assets/resident-updates.js",
       "bytes": 1856,
       "sha256": "a07da16bf3abb47ec18462dbea5ecff469f4c1630cee9eeb79ad697aafb1e699"
     },
     {
       "path": "assets/styles.css",
-      "bytes": 41592,
-      "sha256": "ead4aae0b7f4c84c96f6b0e8314907d955fe8fce0de02e328036f88cd978c834"
+      "bytes": 45146,
+      "sha256": "9c3478e7dfecf864c76a9e9759cb0c8a069ace7b9a26eab3467fa30cde0a1002"
     },
     {
       "path": "auto-vehicle-help/index.html",
@@ -469,6 +475,11 @@
       "path": "data/r23-pricing-preview.json",
       "bytes": 13823,
       "sha256": "b49a25ae24fabaa30f3992f0b9af9fead6304d1a99931c49aa9a2f9381cbbfaa"
+    },
+    {
+      "path": "data/r24-homepage-redesign.json",
+      "bytes": 975,
+      "sha256": "5a041423ac6cdf619bda3190a1d79266fe2dce2030e515fe731c916a07732a5e"
     },
     {
       "path": "directory-method/index.html",
@@ -822,8 +833,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 18719,
-      "sha256": "c3f301cb4b8e59c2f2d022ba52936e793051b372383b69d72891d8af1afc4f43"
+      "bytes": 15308,
+      "sha256": "9e9a685645cbadcecd2c63c27f17a8924649e3686f52fa1a191f5d7a575e5307"
     },
     {
       "path": "jobs-internships/index.html",
@@ -96628,7 +96639,7 @@
     {
       "path": "release-identity.json",
       "bytes": 424,
-      "sha256": "26f59d170deb0c1350a57516529cc62a305fd02343ffdebd3d6e88cb59624a3f"
+      "sha256": "cd921b000f59e9d71d3bb85bb7e8e0c68809b9a5f6aacc35e6d97991a97dc723"
     },
     {
       "path": "request-brief/index.html",
@@ -96682,8 +96693,8 @@
     },
     {
       "path": "today/index.html",
-      "bytes": 17576,
-      "sha256": "2596732b1d3a4e6af63a39f47d12b28e4da73b068ef7717852e282f42a989149"
+      "bytes": 11048,
+      "sha256": "4eef0ddcb7a473c1e4c4185fe29126e4657ae5a27f7da15aeefcf7b6cf3da64a"
     },
     {
       "path": "updates/index.html",
@@ -96775,5 +96786,7 @@
       "bytes": 6958,
       "sha256": "bb4e6d9b20b0f26e66b13c4a788a7d0ae7bfddc0468ec3e10ea050f50c49033a"
     }
-  ]
+  ],
+  "visibleHomepageRedesign": true,
+  "homepageFirstScreenTarget": "1366x768_VERIFIED"
 }

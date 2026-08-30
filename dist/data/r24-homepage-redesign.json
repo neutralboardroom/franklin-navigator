@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "franklin.r24.visible-homepage-redesign.v1",
+  "release": "FR-NAV0.9.0-CANDIDATE-R24",
+  "approvedTarget": {
+    "visibleLengthReduction": "50-65 percent",
+    "majorHomepageSections": 8,
+    "aroundFranklinNearTop": true,
+    "smallLocalPhotographyInFirstScreen": true,
+    "residentUtilityBeforeBusiness": true
+  },
+  "implemented": {
+    "shorterHero": true,
+    "twoLineHeadline": true,
+    "compactAskNavigator": true,
+    "initialNavigatorOutputCollapsed": true,
+    "heroPhotoStrip": true,
+    "aroundFranklinWithinFirstScreen": true,
+    "homepageEventsExpireAndLimitToThree": true,
+    "todayCurrentEventSetRefreshed": true,
+    "fourResidentDestinationsBeforeBusiness": true
+  },
+  "sourceCurrentness": {
+    "checkedAtUtc": "2026-08-30T16:20:00Z",
+    "officialSources": [
+      "Williamson County Public Library",
+      "Franklin Theatre",
+      "Williamson County Schools",
+      "City of Franklin"
+    ]
+  },
+  "authorityTransfer": false
+}

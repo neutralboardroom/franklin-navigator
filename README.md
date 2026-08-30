@@ -1,3 +1,5 @@
-# Franklin Navigator R23 GitHub deployment payload
+# Franklin Navigator production
 
-Compact carrier for the verified public static R23 tree. It preserves all 19,103 profiles, adds the R23 public UX/currentness improvements, exact V2 pricing disclosure + FOUNDING30, current Franklin contact identity, and the bilingual Growth Desk preview. Paid checkout and downstream Stripe processing remain OFF until Franklin has its own isolated persistent Local runtime/store.
+Clean public static production tree for `FR-NAV0.9.0-CANDIDATE-R24`.
+
+R24 visibly shortens the first laptop screen, places Franklin photography in the hero, and brings Around Franklin above the fold. Paid commerce remains fail-closed pending a Franklin-isolated persistent Local runtime.
