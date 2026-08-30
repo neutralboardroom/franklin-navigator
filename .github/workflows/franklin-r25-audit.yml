@@ -1,0 +1,47 @@
+name: Franklin Navigator R25 full-site audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/franklin-r25-audit.yml
+      - scripts/audit-all-pages.mjs
+      - scripts/visual-audit.mjs
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+      - name: Install pinned audit tooling
+        run: |
+          npm install --no-save --ignore-scripts linkedom@0.18.12 @playwright/test@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Audit every generated page and internal reference
+        run: node scripts/audit-all-pages.mjs
+      - name: Start local production server
+        run: |
+          nohup python3 -m http.server 4173 --directory dist > /tmp/franklin-audit-server.log 2>&1 &
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/ >/dev/null && exit 0; sleep 1; done
+          cat /tmp/franklin-audit-server.log
+          exit 1
+      - name: Audit representative desktop and mobile pages
+        continue-on-error: true
+        run: node scripts/visual-audit.mjs
+      - name: Upload complete audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-r25-full-site-audit
+          path: audit-output/
+          if-no-files-found: error
+          retention-days: 14
