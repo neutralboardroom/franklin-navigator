@@ -1,0 +1,49 @@
+name: Publish Franklin isolated commerce runtime seed
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-franklin-commerce-runtime.yml
+      - artifacts/franklin-commerce-runtime-seed.tar.gz.b64
+
+permissions:
+  contents: write
+
+jobs:
+  publish-runtime-branch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify and extract exact runtime seed
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 -d artifacts/franklin-commerce-runtime-seed.tar.gz.b64 > /tmp/franklin-commerce-runtime-seed.tar.gz
+          echo 'f25b9bd16a49e6a5c45d92c8a4c28781eaadf33f02902261d92ac7766420bafe  /tmp/franklin-commerce-runtime-seed.tar.gz' | sha256sum -c -
+          rm -rf /tmp/franklin-commerce-runtime
+          mkdir -p /tmp/franklin-commerce-runtime
+          tar -xzf /tmp/franklin-commerce-runtime-seed.tar.gz -C /tmp/franklin-commerce-runtime
+          test -f /tmp/franklin-commerce-runtime/package.json
+          test -f /tmp/franklin-commerce-runtime/server.js
+          test -f /tmp/franklin-commerce-runtime/test/lifecycle.test.js
+          test -f /tmp/franklin-commerce-runtime/.github/workflows/commerce-runtime-ci.yml
+          node --check /tmp/franklin-commerce-runtime/server.js
+          node --check /tmp/franklin-commerce-runtime/test/lifecycle.test.js
+      - name: Publish hard-isolated Local runtime branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout --orphan franklin-commerce-runtime-seed
+          git rm -rf . >/dev/null 2>&1 || true
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a /tmp/franklin-commerce-runtime/. .
+          git config user.name 'Franklin Navigator Release Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Build Franklin-owned commerce and entitlement runtime'
+          git push --force origin HEAD:franklin-commerce-runtime
