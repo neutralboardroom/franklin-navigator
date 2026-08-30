@@ -1,0 +1,76 @@
+name: Expand Franklin Navigator R23 exact payload
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/expand-r23.yml
+
+permissions:
+  contents: write
+
+jobs:
+  expand-and-stage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out uploaded carrier commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact upload and construct clean R23 staging tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='1f912410b3127f5be3482b0b5674fcd57ec697ed'
+          ZIP='FRANKLIN_R23__GITHUB_DEPLOY_PAYLOAD.zip'
+          EXPECTED_ZIP_SHA='6d0b3e2ad7dcc6efc5adae1395adcec8eeeca38cd1590a2324cb9926250c59e9'
+          EXPECTED_ZIP_BYTES='9395712'
+          EXPECTED_DIST_TAR_SHA='c72b60d23064f67f5a86b864e9e8b0720b12d7f496a0dbb7b4f48c1d9f12612a'
+
+          test "$(git merge-base HEAD "$BASE")" = "$BASE"
+          test -f "$ZIP"
+          test "$(stat -c%s "$ZIP")" = "$EXPECTED_ZIP_BYTES"
+          echo "$EXPECTED_ZIP_SHA  $ZIP" | sha256sum -c -
+
+          rm -rf /tmp/r23-upload /tmp/r23-dist.tar /tmp/r23-dist-verify.tar
+          mkdir -p /tmp/r23-upload
+          unzip -q "$ZIP" -d /tmp/r23-upload
+          test "$(find /tmp/r23-upload -maxdepth 1 -type f | wc -l)" -eq 5
+          echo 'e143adac0f358f69f4af84e901c9c982749f7e8117567b45bd55962549dd362c  /tmp/r23-upload/r23-dist.tar.zst' | sha256sum -c -
+          echo 'df3e1afe7989814fa35c8d2be58756f0997f730ba9839afab14258130211b80b  /tmp/r23-upload/PRODUCTION_RELEASE.json' | sha256sum -c -
+          echo '6cdddabdd8abc4ce73469ae80621c0233fc3bf30691f6b8b97315e4bf72cc0b7  /tmp/r23-upload/README.md' | sha256sum -c -
+          echo '93689d429cb85334db8cd9b5de4c92562839b4cdc19045830b847dcd33392736  /tmp/r23-upload/deploy-r23.sh' | sha256sum -c -
+
+          zstd -q -dc /tmp/r23-upload/r23-dist.tar.zst > /tmp/r23-dist.tar
+          echo "$EXPECTED_DIST_TAR_SHA  /tmp/r23-dist.tar" | sha256sum -c -
+
+          git checkout -B r23-production-stage "$BASE"
+          rm -rf dist
+          tar -xf /tmp/r23-dist.tar
+          cp /tmp/r23-upload/PRODUCTION_RELEASE.json PRODUCTION_RELEASE.json
+          cp /tmp/r23-upload/README.md README.md
+          rm -f "$ZIP"
+          rm -rf .github
+
+          test "$(find dist -type f -name '*.html' | wc -l)" -eq 19276
+          test "$(find dist/profiles -mindepth 2 -maxdepth 2 -type f -name index.html | wc -l)" -eq 19103
+          grep -q 'FR-NAV0.8.0-CANDIDATE-R23' dist/release-identity.json
+          grep -q 'FOUNDING30' dist/membership-pricing/index.html
+          grep -q '(615) 656-7020' dist/index.html
+          grep -q 'Franklin Navigator Growth Desk' dist/growth-desk/index.html
+          echo '7a19067a26045b44db2598ce578e00019baaedd024b91ff1c985a7cbbeeac195  dist/sitemap.xml' | sha256sum -c -
+          echo 'c3f301cb4b8e59c2f2d022ba52936e793051b372383b69d72891d8af1afc4f43  dist/index.html' | sha256sum -c -
+          echo '4edcb03098644421626ec20d8781e42f1eda1bff2f7169eb38742cc311841dbf  dist/FRANKLIN_BUILD_MANIFEST.json' | sha256sum -c -
+
+          find dist -type d -exec chmod 755 {} +
+          find dist -type f -exec chmod 644 {} +
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -cf /tmp/r23-dist-verify.tar dist
+          echo "$EXPECTED_DIST_TAR_SHA  /tmp/r23-dist-verify.tar" | sha256sum -c -
+
+          git config user.name 'Franklin Navigator Release Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Stage Franklin Navigator R23 exact verified public payload'
+          git push --force origin HEAD:r23-production-stage
