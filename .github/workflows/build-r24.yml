@@ -1,6 +1,7 @@
 name: Build Franklin Navigator R24 visible homepage
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
