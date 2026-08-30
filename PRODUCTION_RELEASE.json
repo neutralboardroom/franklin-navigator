@@ -1,1 +1,69 @@
-{"schemaVersion":"smarter.franklin.production-release.v5","stableRoleId":"LOCAL_COMMUNITY_PLATFORM","editionId":"franklin","release":"FR-NAV0.8.0-CANDIDATE-R23","canonicalOrigin":"https://franklinnavigator.com","exactDirectPredecessor":{"release":"FR-NAV0.7.0-CANDIDATE-R22","sourceArtifactSha256":"315ae3bb778a3ed41c09e6d1647e0ed85b9d807fdfcc0e5b84fe6b16918d631e","productionGitCommit":"1f912410b3127f5be3482b0b5674fcd57ec697ed","productionDeployId":"dep-da9ksiss728c73e30ba0","productionDeployPerformed":true},"sourceArtifact":{"fileName":"FRANKLIN_NAVIGATOR__R23__WO022_LIFECYCLE_HARDENING__FOUNDING30__BILINGUAL_GROWTH_DESK__LOCAL_UX__PUBLIC_STATIC_DEPLOY_READY__2026-08-30.zip","bytes":74390372,"sha256":"5a5c1a98910dbea08b75e133ea664a8d31c10a398f4b72acc70e7fed4eb7f494","treeDigest":"a2a879ed62d0d7063c63ffda7bb6c79641a81fa45a838213429c8c9dfc1b3381"},"publicPayload":{"deterministicTarSha256":"c72b60d23064f67f5a86b864e9e8b0720b12d7f496a0dbb7b4f48c1d9f12612a","htmlPages":19276,"sitemapRoutes":19274,"profiles":19103,"websiteProfiles":9203,"phoneProfiles":17105,"publicBusinessEmailRows":4298,"publicLanguageFindings":0,"brokenInternalTargets":0,"brokenAnchors":0,"unsafeScriptLikeLinks":0},"commerce":{"products":14,"selfServiceRecurringPrices":84,"enterprise":"QUOTE_ONLY","foundingOffer":"FOUNDING30","codeLifecycleTests":"PASS","paidCommerceActive":false,"productionEntitlementPersistence":false,"blocker":"FRANKLIN_ISOLATED_PERSISTENT_LOCAL_RUNTIME_NOT_PROVISIONED"},"deployment":{"provider":"Render","serviceId":"srv-da8tg6rbc2fs73crru2g","serviceName":"franklin-navigator","repository":"https://github.com/neutralboardroom/franklin-navigator","branch":"main","automaticDeploy":false,"scope":"PUBLIC_STATIC_R23_ONLY"},"authorityTransfer":false}
+{
+  "schemaVersion": "smarter.franklin.production-release.v6",
+  "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
+  "editionId": "franklin",
+  "release": "FR-NAV0.9.0-CANDIDATE-R24",
+  "canonicalOrigin": "https://franklinnavigator.com",
+  "exactDirectPredecessor": {
+    "release": "FR-NAV0.8.0-CANDIDATE-R23",
+    "sourceArtifactSha256": "5a5c1a98910dbea08b75e133ea664a8d31c10a398f4b72acc70e7fed4eb7f494",
+    "productionGitCommit": "513ee290ab6fa4f00ebaba5506a20c07bb5ebafb",
+    "productionDeployId": "dep-daa5tf1f2nfc739ar900",
+    "productionDeployPerformed": true
+  },
+  "sourceArtifact": {
+    "fileName": "FRANKLIN_NAVIGATOR__R24__VISIBLE_HOMEPAGE_REDESIGN__ASK_NAVIGATOR_COMPACT__AROUND_FRANKLIN_CURRENT__1366_LAPTOP_VERIFIED__PUBLIC_STATIC_DEPLOY_READY__2026-08-30.zip",
+    "bytes": 74526115,
+    "sha256": "c6a7d63524d4889f5a048ad0bb284247530f1847fb706f48349f78e9984221ae",
+    "treeDigestSha256": "a981b6a0d89c3bd4c446303fa6d469345ce206108aca379f456db6d5001d05ec"
+  },
+  "publicPayload": {
+    "htmlPages": 19276,
+    "sitemapRoutes": 19274,
+    "profiles": 19103,
+    "internalReferencesChecked": 863557,
+    "brokenInternalTargets": 0,
+    "brokenAnchors": 0,
+    "unsafeScriptLikeLinks": 0,
+    "publicLanguageFindings": 0
+  },
+  "visibleHomepage": {
+    "viewportVerified": "1366x768",
+    "shortHero": true,
+    "compactAskNavigator": true,
+    "threeFranklinPhotosAboveFold": true,
+    "aroundFranklinTopPx": 547.65625,
+    "aroundFranklinWithinFirstViewport": true,
+    "currentCardsMaxVisible": 3,
+    "expiredCardsAutoHidden": true,
+    "residentDestinationsBeforeBusiness": true
+  },
+  "verification": {
+    "coreAssertions": 157,
+    "r24Assertions": 16,
+    "accessibilitySecurityAssertions": 22,
+    "commerceLifecycleScenarios": 11,
+    "visualVerification": "PASS"
+  },
+  "commerce": {
+    "products": 14,
+    "selfServiceRecurringPrices": 84,
+    "enterprise": "QUOTE_ONLY",
+    "foundingOffer": "FOUNDING30",
+    "paidCommerceActive": false,
+    "stripeDownstreamEntitlementProcessingActive": false,
+    "productionEntitlementPersistence": false,
+    "codeLifecycleTests": "PASS",
+    "blocker": "FRANKLIN_ISOLATED_PERSISTENT_LOCAL_RUNTIME_NOT_PROVISIONED"
+  },
+  "deployment": {
+    "provider": "Render",
+    "serviceId": "srv-da8tg6rbc2fs73crru2g",
+    "serviceName": "franklin-navigator",
+    "repository": "https://github.com/neutralboardroom/franklin-navigator",
+    "branch": "main",
+    "automaticDeploy": false,
+    "scope": "PUBLIC_STATIC_R24_VISIBLE_HOMEPAGE_ONLY"
+  },
+  "authorityTransfer": false
+}
