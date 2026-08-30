@@ -1,13 +1,13 @@
 {
-  "schemaVersion": "franklin.build-manifest.r24.v1",
-  "release": "FR-NAV0.9.0-CANDIDATE-R24",
+  "schemaVersion": "franklin.build-manifest.r24.1.v1",
+  "release": "FR-NAV0.9.1-CANDIDATE-R24.1",
   "canonicalOrigin": "https://franklinnavigator.com",
   "builtAt": "2026-08-30",
   "exactPredecessor": {
-    "release": "FR-NAV0.8.0-CANDIDATE-R23",
-    "sha256": "5a5c1a98910dbea08b75e133ea664a8d31c10a398f4b72acc70e7fed4eb7f494",
-    "productionCommit": "513ee290ab6fa4f00ebaba5506a20c07bb5ebafb",
-    "productionDeployId": "dep-daa5tf1f2nfc739ar900"
+    "release": "FR-NAV0.9.0-CANDIDATE-R24",
+    "productionCommit": "e290fbbf720cdcf95a89d005e9cdc719b1e294a2",
+    "productionTree": "4f3fdfc8adbd211ba74763ad2774ffccf2dde583",
+    "productionDeployId": "dep-daaao6on74is73abn6o0"
   },
   "sourceHtmlPages": 42,
   "builtHtmlPages": 19276,
@@ -198,8 +198,8 @@
     },
     {
       "path": "assets/r24.js",
-      "bytes": 925,
-      "sha256": "753dfea86b231ec62b54ccb83c15f4b272ccbbbc9c5c3bd59540a30310b249aa"
+      "bytes": 2913,
+      "sha256": "5e97ac392c123d9677148b2a3000c0fcd5066704a240c2e1e1d021798db1d22e"
     },
     {
       "path": "assets/resident-updates.js",
@@ -208,8 +208,8 @@
     },
     {
       "path": "assets/styles.css",
-      "bytes": 45974,
-      "sha256": "fe4ada0bc9d5b6180b9dc0fb1aaf30c9b488c89900338286cbffcfd9d2049947"
+      "bytes": 46368,
+      "sha256": "abea56d4b8acfe36e9e5cac89836a235ad825b9721005c873f90b9b1ef9c6cd4"
     },
     {
       "path": "auto-vehicle-help/index.html",
@@ -478,8 +478,8 @@
     },
     {
       "path": "data/r24-homepage-redesign.json",
-      "bytes": 1396,
-      "sha256": "d7d7c80e98021d6d91becb9d9b4b37e1facfb11cf8f0443125bf3d918d08e9e3"
+      "bytes": 1840,
+      "sha256": "acf54a4d4c6d1af08a956f4348d7e73783acf6b6c90182e07d79688e4eb281d0"
     },
     {
       "path": "directory-method/index.html",
@@ -96638,8 +96638,8 @@
     },
     {
       "path": "release-identity.json",
-      "bytes": 500,
-      "sha256": "46a62991c88aa564a144402936102a6a63743b10e6353139ad1d74951eca6b1a"
+      "bytes": 569,
+      "sha256": "3b37aea51727ef595cae7695b7d3b90f8caae82980baace70d7f1eebbfefc27d"
     },
     {
       "path": "request-brief/index.html",
@@ -96794,5 +96794,11 @@
     "patchScriptSha256": "91d496e0c9bf13fd16867c6515750e4303c326b60fc1cac04be6ffde32f8b1e7",
     "desktopCardMaxWidthPx": 540,
     "desktopTextareaMinHeightPx": 110
+  },
+  "interactionRevision": {
+    "id": "R24_1_DYNAMIC_ASK_NAVIGATOR_2026_08_30",
+    "patchScriptSha256": "a0fd42a77d8567ed533cea8bed841b098cb0c01018966a20f34ec9258718e628",
+    "autoGrowMaximumLines": 6,
+    "answerExpansion": "NATURAL_VERTICAL_BELOW_INPUT"
   }
 }

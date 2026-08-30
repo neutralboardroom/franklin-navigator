@@ -420,3 +420,11 @@ header .top{background:#fff}
   .r24-chips{display:flex}
   .r24-ask textarea{min-height:96px}
 }
+
+
+/* R24.1 dynamic Ask Navigator behavior */
+.r24-ask textarea[data-autogrow]{resize:none;overflow-y:hidden;transition:height .16s ease}
+.r24-ask.has-answer{align-self:start}
+.r24-ask.has-answer .r24-navigator-output{max-height:none;overflow:visible}
+.r24-navigator-output[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){.r24-ask textarea[data-autogrow]{transition:none}}

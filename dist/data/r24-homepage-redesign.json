@@ -1,6 +1,6 @@
 {
   "schemaVersion": "franklin.r24.visible-homepage-redesign.v1",
-  "release": "FR-NAV0.9.0-CANDIDATE-R24",
+  "release": "FR-NAV0.9.1-CANDIDATE-R24.1",
   "approvedTarget": {
     "visibleLengthReduction": "50-65 percent",
     "majorHomepageSections": 8,
@@ -37,5 +37,15 @@
     "examplePromptsDesktopColumns": 2,
     "aroundFranklinStillTargetedWithinFirstLaptopViewport": true,
     "patchScriptSha256": "91d496e0c9bf13fd16867c6515750e4303c326b60fc1cac04be6ffde32f8b1e7"
+  },
+  "interactionRevision": {
+    "id": "R24_1_DYNAMIC_ASK_NAVIGATOR_2026_08_30",
+    "decision": "RESTING_SIZE_PRESERVED_DYNAMIC_ON_USE",
+    "restingDesktopCardMaxWidthPx": 540,
+    "restingTextareaMinHeightPx": 110,
+    "autoGrowMaximumLines": 6,
+    "answerExpansion": "NATURAL_VERTICAL_BELOW_INPUT",
+    "mobileWidth": "FULL_AVAILABLE_WIDTH",
+    "patchScriptSha256": "a0fd42a77d8567ed533cea8bed841b098cb0c01018966a20f34ec9258718e628"
   }
 }
