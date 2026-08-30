@@ -1,0 +1,78 @@
+name: Promote Franklin Navigator R24.1 dynamic Ask Navigator
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/promote-r24-1-dynamic-chat.yml
+
+permissions:
+  contents: write
+
+jobs:
+  verify-stage-promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out promotion trigger
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build exact stage and promote clean production tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='e290fbbf720cdcf95a89d005e9cdc719b1e294a2'
+          SCRIPT='scripts/apply-r24-1-dynamic-chat.mjs'
+          TRIGGER="$(git rev-parse HEAD)"
+
+          test "$(git merge-base "$TRIGGER" "$BASE")" = "$BASE"
+          test -f "$SCRIPT"
+          SCRIPT_SHA256="$(sha256sum "$SCRIPT" | awk '{print $1}')"
+          cp "$SCRIPT" /tmp/apply-r24-1-dynamic-chat.mjs
+
+          git checkout -B r24-1-production-stage "$BASE"
+          R24_1_PATCH_SCRIPT_SHA="$SCRIPT_SHA256" node /tmp/apply-r24-1-dynamic-chat.mjs
+          rm -rf .github scripts
+
+          test "$(find dist -type f | wc -l)" -eq 19351
+          test "$(find dist -type f -name '*.html' | wc -l)" -eq 19276
+          test "$(find dist/profiles -mindepth 2 -maxdepth 2 -type f -name index.html | wc -l)" -eq 19103
+          test "$(find . -mindepth 1 -maxdepth 1 ! -name .git | wc -l)" -eq 4
+          grep -q 'R24.1 dynamic Ask Navigator behavior' dist/assets/r24.js
+          grep -q "input.dataset.autogrow='six-lines'" dist/assets/r24.js
+          grep -q "line\*6" dist/assets/r24.js
+          grep -q "card.classList.toggle('has-answer',open)" dist/assets/r24.js
+          grep -q 'R24.1 dynamic Ask Navigator behavior' dist/assets/styles.css
+          grep -q 'max-height:none' dist/assets/styles.css
+          grep -q 'FR-NAV0.9.1-CANDIDATE-R24.1' dist/release-identity.json
+          grep -q 'FR-NAV0.9.1-CANDIDATE-R24.1' PRODUCTION_RELEASE.json
+
+          node <<'NODE'
+          const fs=require('fs'),crypto=require('crypto'),path=require('path');
+          const manifest=JSON.parse(fs.readFileSync('dist/FRANKLIN_BUILD_MANIFEST.json','utf8'));
+          if(manifest.release!=='FR-NAV0.9.1-CANDIDATE-R24.1'||manifest.profilePages!==19103||manifest.builtHtmlPages!==19276)throw new Error('R24.1 identity/count mismatch');
+          if(manifest.interactionRevision?.autoGrowMaximumLines!==6||manifest.interactionRevision?.answerExpansion!=='NATURAL_VERTICAL_BELOW_INPUT')throw new Error('R24.1 interaction contract missing');
+          if(manifest.files.length!==19350)throw new Error('R24.1 manifest file count mismatch');
+          for(const item of manifest.files){const p=path.join('dist',item.path),b=fs.readFileSync(p),h=crypto.createHash('sha256').update(b).digest('hex');if(b.length!==item.bytes||h!==item.sha256)throw new Error('R24.1 manifest mismatch: '+item.path)}
+          const release=JSON.parse(fs.readFileSync('PRODUCTION_RELEASE.json','utf8'));
+          const ask=release.visibleHomepage?.askNavigator;
+          if(ask?.restingDesktopCardMaxWidthPx!==540||ask?.restingTextareaMinHeightPx!==110||ask?.autoGrowMaximumLines!==6||ask?.answerExpansion!=='NATURAL_VERTICAL_BELOW_INPUT')throw new Error('R24.1 Ask Navigator contract mismatch');
+          if(release.commerce?.paidCommerceActive!==false||release.commerce?.stripeDownstreamEntitlementProcessingActive!==false||release.commerce?.productionEntitlementPersistence!==false)throw new Error('Commerce fail-closed regression');
+          NODE
+
+          git config user.name 'Franklin Navigator Release Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Stage Franklin Navigator R24.1 dynamic Ask Navigator'
+          STAGE="$(git rev-parse HEAD)"
+          git push --force origin HEAD:r24-1-production-stage
+
+          git checkout -B main "$TRIGGER"
+          git merge --no-ff --no-commit "$STAGE"
+          rm -rf .github scripts
+          git add -A
+          test "$(find . -mindepth 1 -maxdepth 1 ! -name .git | wc -l)" -eq 4
+          git commit -m 'Promote Franklin Navigator R24.1 dynamic Ask Navigator [skip ci]'
+          git push origin HEAD:main
