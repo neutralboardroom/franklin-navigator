@@ -42,7 +42,7 @@ jobs:
           test "$(find dist -type f | wc -l)" -eq 19351
           test "$(find dist -type f -name '*.html' | wc -l)" -eq 19276
           test "$(find dist/profiles -mindepth 2 -maxdepth 2 -type f -name index.html | wc -l)" -eq 19103
-          test "$(find . -mindepth 1 -maxdepth 1 | wc -l)" -eq 4
+          test "$(find . -mindepth 1 -maxdepth 1 ! -name .git | wc -l)" -eq 4
           test -f PRODUCTION_RELEASE.json
           test -f README.md
           test -d dist
