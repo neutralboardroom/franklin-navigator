@@ -1,9 +1,3 @@
-# Franklin Navigator production source
+# Franklin Navigator R23 GitHub deployment payload
 
-Production payload for **FR-NAV0.7.0-CANDIDATE-R22**.
-
-- Canonical site: https://franklinnavigator.com
-- Public tree: `dist/`
-- Profiles: 19,103
-- Paid commerce: fail-closed
-- Exact rollback predecessor: R21 production commit `8ffa7a9dd935e8763f1ca7fd731d98b6b38d4d79`
+Compact carrier for the verified public static R23 tree. It preserves all 19,103 profiles, adds the R23 public UX/currentness improvements, exact V2 pricing disclosure + FOUNDING30, current Franklin contact identity, and the bilingual Growth Desk preview. Paid checkout and downstream Stripe processing remain OFF until Franklin has its own isolated persistent Local runtime/store.

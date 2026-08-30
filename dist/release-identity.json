@@ -1,10 +1,10 @@
 {
   "schemaVersion": "franklin.public-release-identity.v1",
   "editionId": "franklin",
-  "release": "FR-NAV0.7.0-CANDIDATE-R22",
+  "release": "FR-NAV0.8.0-CANDIDATE-R23",
   "canonicalOrigin": "https://franklinnavigator.com",
   "profileCount": 19103,
-  "builtAt": "2026-08-29",
+  "builtAt": "2026-08-30",
   "expectedRepository": "neutralboardroom/franklin-navigator",
   "expectedBranch": "main",
   "sourceArtifactSha256": "PENDING_POST_SEAL_PACKAGE_HASH",

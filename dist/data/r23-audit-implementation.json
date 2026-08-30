@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "franklin.r23.audit-implementation.v1",
+  "release": "FR-NAV0.8.0-CANDIDATE-R23",
+  "auditFindings": 500,
+  "auditedSurfaces": [
+    "My Franklin",
+    "Homepage",
+    "Find Local",
+    "Individual profile",
+    "For Business",
+    "Today",
+    "Get It Done",
+    "Community",
+    "Membership start",
+    "Membership pricing"
+  ],
+  "majorImplementationGroups": {
+    "globalShell": "IMPLEMENTED",
+    "homepageSimplification": "IMPLEMENTED",
+    "profileRedesign": "IMPLEMENTED",
+    "pf154PublicContactEnrichment": "IMPLEMENTED",
+    "directorySimplification": "IMPLEMENTED",
+    "myFranklinDashboard": "IMPLEMENTED",
+    "todayCurrentness": "IMPLEMENTED_WITH_V7_READ_ONLY",
+    "getItDoneConsolidation": "IMPLEMENTED",
+    "communityConsolidation": "IMPLEMENTED",
+    "forBusinessSeparation": "IMPLEMENTED_PUBLIC_LANDING",
+    "membershipValueRewrite": "IMPLEMENTED",
+    "pricingSimplification": "IMPLEMENTED_DISPLAY_GUARD",
+    "profileStudio": "IMPLEMENTED_DEVICE_ONLY_PREVIEW",
+    "secureAuthenticatedMemberPublishing": "CODE_PREPARED_RUNTIME_NOT_PROVISIONED",
+    "paidCheckout": "FAIL_CLOSED_PENDING_PERSISTENT_LOCAL_RUNTIME",
+    "liveMemberAnalytics": "DEFERRED_WITH_CAUSE_NO_SECURE_MEMBER_RUNTIME",
+    "founding30Pricing": "IMPLEMENTED_PUBLIC_COPY_AND_PRICE_BINDINGS",
+    "growthDeskBilingual": "IMPLEMENTED_PREVIEW_EXECUTION_GATED",
+    "contactIdentity": "IMPLEMENTED",
+    "commerceLifecycle": "IMPLEMENTED_AND_NONCHARGING_TESTED"
+  },
+  "noLossRule": "Deeper R21 routes remain in the product; audited landing pages were restructured rather than deleting qualified capabilities."
+}
