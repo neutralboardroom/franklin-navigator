@@ -1,0 +1,80 @@
+name: Build Franklin Navigator R24 visible homepage
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/build-r24.yml
+      - scripts/build-r24-deploy.mjs
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-stage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out R24 build trigger
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build, verify and stage exact R24 public tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='513ee290ab6fa4f00ebaba5506a20c07bb5ebafb'
+          SCRIPT='scripts/build-r24-deploy.mjs'
+          EXPECTED_SCRIPT_SHA='1f531d23245468ed1ece8e6ba99ffa8c6ff2845d6f2e39336b2a6c49daf94b6d'
+
+          test "$(git merge-base HEAD \"$BASE\")" = "$BASE"
+          test -f "$SCRIPT"
+          echo "$EXPECTED_SCRIPT_SHA  $SCRIPT" | sha256sum -c -
+          cp "$SCRIPT" /tmp/build-r24-deploy.mjs
+
+          git checkout -B r24-production-stage "$BASE"
+          node /tmp/build-r24-deploy.mjs
+          rm -rf .github scripts
+
+          test "$(find dist -type f | wc -l)" -eq 19351
+          test "$(find dist -type f -name '*.html' | wc -l)" -eq 19276
+          test "$(find dist/profiles -mindepth 2 -maxdepth 2 -type f -name index.html | wc -l)" -eq 19103
+          test "$(find . -mindepth 1 -maxdepth 1 | wc -l)" -eq 4
+          test -f PRODUCTION_RELEASE.json
+          test -f README.md
+          test -d dist
+          test -f render.yaml
+          test ! -e .github
+          test ! -e scripts
+
+          echo '9e9a685645cbadcecd2c63c27f17a8924649e3686f52fa1a191f5d7a575e5307  dist/index.html' | sha256sum -c -
+          echo '4eef0ddcb7a473c1e4c4185fe29126e4657ae5a27f7da15aeefcf7b6cf3da64a  dist/today/index.html' | sha256sum -c -
+          echo '9c3478e7dfecf864c76a9e9759cb0c8a069ace7b9a26eab3467fa30cde0a1002  dist/assets/styles.css' | sha256sum -c -
+          echo '58b5799e80f027d09e2b4516e15d395df2651dea1d2f5bd936b9eb692cbe590a  dist/assets/navigator-bot.js' | sha256sum -c -
+          echo '753dfea86b231ec62b54ccb83c15f4b272ccbbbc9c5c3bd59540a30310b249aa  dist/assets/r24.js' | sha256sum -c -
+          echo '5a041423ac6cdf619bda3190a1d79266fe2dce2030e515fe731c916a07732a5e  dist/data/r24-homepage-redesign.json' | sha256sum -c -
+          echo 'cd921b000f59e9d71d3bb85bb7e8e0c68809b9a5f6aacc35e6d97991a97dc723  dist/release-identity.json' | sha256sum -c -
+          echo 'fd64b29a7166abaac17f7d0d1ec96da6c37538a1699e2930a2c6a006b9993455  dist/FRANKLIN_BUILD_MANIFEST.json' | sha256sum -c -
+          echo 'f35e51e9ed075334a34ecdb956496caae5e35183d2d353af4030dc2b85aa2820  PRODUCTION_RELEASE.json' | sha256sum -c -
+          echo 'ca64f50b99c657dd980a3cb1ff59713b1103f27b25c7cc2f5070912ca478d46f  README.md' | sha256sum -c -
+
+          node <<'NODE'
+          const fs=require('fs'),crypto=require('crypto'),path=require('path');
+          const root='dist';
+          const manifest=JSON.parse(fs.readFileSync(path.join(root,'FRANKLIN_BUILD_MANIFEST.json'),'utf8'));
+          if(manifest.release!=='FR-NAV0.9.0-CANDIDATE-R24'||manifest.profilePages!==19103||manifest.builtHtmlPages!==19276||manifest.visibleHomepageRedesign!==true)throw new Error('R24 build manifest identity/count mismatch');
+          if(manifest.files.length!==19350)throw new Error('R24 build manifest file count mismatch');
+          for(const item of manifest.files){const p=path.join(root,item.path),b=fs.readFileSync(p),h=crypto.createHash('sha256').update(b).digest('hex');if(b.length!==item.bytes||h!==item.sha256)throw new Error('R24 manifest mismatch: '+item.path)}
+          const home=fs.readFileSync('dist/index.html','utf8');
+          if(!home.includes('What do you need in Franklin today?')||!home.includes('r24-hero-photos')||home.indexOf('Around Franklin')>home.indexOf('Franklin businesses and organizations'))throw new Error('R24 visible homepage ordering mismatch');
+          const release=JSON.parse(fs.readFileSync('PRODUCTION_RELEASE.json','utf8'));
+          if(release.sourceArtifact.sha256!=='c6a7d63524d4889f5a048ad0bb284247530f1847fb706f48349f78e9984221ae'||release.commerce.paidCommerceActive!==false)throw new Error('R24 production release binding mismatch');
+          console.log(JSON.stringify({ok:true,release:manifest.release,manifestFiles:manifest.files.length,profiles:manifest.profilePages,htmlPages:manifest.builtHtmlPages},null,2));
+          NODE
+
+          git config user.name 'Franklin Navigator Release Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Stage Franklin Navigator R24 visible homepage correction'
+          git push --force origin HEAD:r24-production-stage
