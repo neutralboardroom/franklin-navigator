@@ -1,7 +1,7 @@
 {
   "schemaVersion": "franklin.public-release-identity.v1",
   "editionId": "franklin",
-  "release": "FR-NAV0.9.0-CANDIDATE-R24",
+  "release": "FR-NAV0.9.1-CANDIDATE-R24.1",
   "canonicalOrigin": "https://franklinnavigator.com",
   "profileCount": 19103,
   "builtAt": "2026-08-30",
@@ -9,5 +9,6 @@
   "expectedBranch": "main",
   "sourceArtifactSha256": "PENDING_POST_SEAL_PACKAGE_HASH",
   "gitCommit": "PENDING_DEPLOYMENT",
-  "presentationRevision": "R24_ASK_NAVIGATOR_PROPORTION_POLISH_2026_08_30"
+  "presentationRevision": "R24_ASK_NAVIGATOR_PROPORTION_POLISH_2026_08_30",
+  "interactionRevision": "R24_1_DYNAMIC_ASK_NAVIGATOR_2026_08_30"
 }
