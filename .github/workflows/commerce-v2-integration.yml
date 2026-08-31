@@ -1,0 +1,168 @@
+name: Integrate and stage Franklin commerce runtime v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - franklin-commerce-runtime-v2
+    paths:
+      - .github/workflows/commerce-v2-integration.yml
+      - package.json
+      - server_v2.js
+      - lib/**
+      - schema/**
+      - test/**
+      - tests/**
+      - render.yaml
+
+permissions:
+  contents: write
+
+jobs:
+  integrate-stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: franklin_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d franklin_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+      - name: Install production dependency and run tests
+        run: |
+          npm install --ignore-scripts --no-audit --no-fund
+          npm test
+      - name: Start fail-closed runtime against PostgreSQL 18
+        env:
+          NODE_ENV: production
+          PORT: 10000
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/franklin_test
+          PG_SSL: "false"
+          PUBLIC_SITE_ORIGIN: https://franklinnavigator.com
+          SERVICE_ORIGIN: http://127.0.0.1:10000
+          FRANKLIN_LOCAL_RELEASE: FR-NAV0.10.0-CANDIDATE-R25
+          SESSION_SECRET: 0123456789abcdefghijklmnopqrstuvwxyzABCDEF
+          LOCAL_EVENT_SECRET: 1123456789abcdefghijklmnopqrstuvwxyzABCDEF
+          ENTITLEMENT_ASSERTION_SECRET: 2123456789abcdefghijklmnopqrstuvwxyzABCDEF
+          ADMIN_API_TOKEN: 3123456789abcdefghijklmnopqrstuvwxyzABCDEF
+          CONTROLLED_PURCHASE_TOKEN: 4123456789abcdefghijklmnopqrstuv
+          LIVE_COMMERCE_ENABLED: "false"
+          CHECKOUT_GENERAL_AVAILABILITY: "false"
+          STRIPE_EVENT_PROCESSING_ENABLED: "false"
+          SRE_EVENT_PROCESSING_ENABLED: "false"
+          PG_POOL_MAX: "3"
+        run: |
+          node server_v2.js > /tmp/franklin-commerce.log 2>&1 &
+          echo $! > /tmp/franklin-commerce.pid
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:10000/health > /tmp/health.json; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:10000/health | tee /tmp/health.json
+          curl -fsS http://127.0.0.1:10000/api/catalog | tee /tmp/catalog.json
+          curl -fsS http://127.0.0.1:10000/api/commerce/readiness | tee /tmp/readiness.json
+          node <<'NODE'
+          const fs=require('fs');
+          const health=JSON.parse(fs.readFileSync('/tmp/health.json'));
+          const catalog=JSON.parse(fs.readFileSync('/tmp/catalog.json'));
+          const readiness=JSON.parse(fs.readFileSync('/tmp/readiness.json'));
+          if(!health.ok||health.community!=='FRANKLIN_TN')throw new Error('health contract failed');
+          if(catalog.products!==14||catalog.selfServiceRecurringPrices!==84||catalog.enterprise!=='quote_only')throw new Error('catalog contract failed');
+          if(readiness.paidCommerceEnabled!==false||readiness.generalCheckoutAvailable!==false||readiness.stripeEventProcessing!==false||readiness.sreEventProcessing!==false)throw new Error('fail-closed contract failed');
+          NODE
+      - name: Verify database inventory and hard isolation
+        env:
+          PGPASSWORD: postgres
+        run: |
+          set -euo pipefail
+          TABLE_COUNT="$(psql -h 127.0.0.1 -U postgres -d franklin_test -Atc "select count(*) from information_schema.tables where table_schema='public' and table_type='BASE TABLE'")"
+          test "$TABLE_COUNT" -ge 17
+          psql -h 127.0.0.1 -U postgres -d franklin_test -Atc "select version from schema_migrations order by version" | grep -q '003_auth_retry'
+          psql -h 127.0.0.1 -U postgres -d franklin_test -Atc "select pg_get_constraintdef(oid) from pg_constraint where conrelid='member_accounts'::regclass" | grep -q 'FRANKLIN_TN'
+          psql -h 127.0.0.1 -U postgres -d franklin_test -Atc "select count(*) from checkout_price_bindings" | grep -qx '0'
+          printf '%s\n' "$TABLE_COUNT" > /tmp/table-count.txt
+      - name: Exercise account and session creation without taking payment
+        run: |
+          set -euo pipefail
+          curl -fsS -c /tmp/cookies.txt -H 'content-type: application/json' \
+            -d '{"email":"controlled-test@franklinnavigator.example","password":"Franklin-Strong-2026","organizationName":"Franklin Controlled Test","profileId":"FR-RUNTIME-CONTROLLED-TEST","locationId":"FR-RUNTIME-CONTROLLED-TEST","preferredLanguage":"ENGLISH"}' \
+            http://127.0.0.1:10000/api/accounts/register > /tmp/register.json
+          CSRF="$(node -p "JSON.parse(require('fs').readFileSync('/tmp/register.json')).csrfToken")"
+          test -n "$CSRF"
+          curl -fsS -b /tmp/cookies.txt http://127.0.0.1:10000/api/me > /tmp/me.json
+          node <<'NODE'
+          const fs=require('fs');
+          const register=JSON.parse(fs.readFileSync('/tmp/register.json'));
+          const me=JSON.parse(fs.readFileSync('/tmp/me.json'));
+          if(!register.ok||register.emailVerificationRequired!==true)throw new Error('registration contract failed');
+          if(me.emailVerified!==false||me.organizations.length!==1)throw new Error('account persistence failed');
+          NODE
+          STATUS="$(curl -sS -o /tmp/checkout-closed.json -w '%{http_code}' -b /tmp/cookies.txt -H "x-csrf-token: $CSRF" -H 'content-type: application/json' -H 'idempotency-key: controlled-test-idempotency-0001' -d '{"lookupKey":"franklin_legal_individual_monthly_v2","profileLinkId":"'"$(node -p "JSON.parse(require('fs').readFileSync('/tmp/register.json')).profileLinkId")"'"}' http://127.0.0.1:10000/api/checkout/session)"
+          test "$STATUS" = 403
+          grep -q 'verified_email_required' /tmp/checkout-closed.json
+      - name: Create exact runtime artifact and verified deploy branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          kill "$(cat /tmp/franklin-commerce.pid)" || true
+          mkdir -p evidence /tmp/franklin-commerce-v2
+          cp /tmp/health.json /tmp/catalog.json /tmp/readiness.json /tmp/register.json /tmp/me.json /tmp/checkout-closed.json /tmp/table-count.txt evidence/
+          SOURCE_TREE="$(git rev-parse HEAD^{tree})"
+          cat > evidence/FRANKLIN_COMMERCE_V2_INTEGRATION_RECEIPT.json <<JSON
+          {
+            "schemaVersion": "franklin.commerce.v2.integration-receipt.v1",
+            "release": "FRANKLIN-COMMERCE-2.0.0",
+            "community": "FRANKLIN_TN",
+            "sourceCommit": "${GITHUB_SHA}",
+            "sourceTree": "$SOURCE_TREE",
+            "postgresVersion": "18",
+            "schemaMigrations": ["001_init","002_live_membership","003_auth_retry"],
+            "products": 14,
+            "selfServiceRecurringPrices": 84,
+            "accountSessionPersistence": "PASS",
+            "emailVerificationRequiredBeforeCheckout": "PASS",
+            "unverifiedCheckoutFailClosed": "PASS",
+            "allSensitiveSwitchDefaultsFalse": "PASS",
+            "realChargeCreated": false,
+            "liveCommerceClaimed": false,
+            "authorityTransfer": false
+          }
+          JSON
+          cp -a . /tmp/franklin-commerce-v2/source
+          rm -rf /tmp/franklin-commerce-v2/source/.git /tmp/franklin-commerce-v2/source/node_modules /tmp/franklin-commerce-v2/source/evidence
+          cp -a evidence /tmp/franklin-commerce-v2/
+          (cd /tmp/franklin-commerce-v2 && zip -q -r /tmp/FRANKLIN_NAVIGATOR_COMMERCE_RUNTIME__V2__POSTGRES18__ACCOUNT_SESSION_ENTITLEMENT__84_PRICE__FAIL_CLOSED__2026-08-31.zip .)
+          sha256sum /tmp/FRANKLIN_NAVIGATOR_COMMERCE_RUNTIME__V2__POSTGRES18__ACCOUNT_SESSION_ENTITLEMENT__84_PRICE__FAIL_CLOSED__2026-08-31.zip > /tmp/franklin-commerce-v2.sha256
+
+          git checkout -B franklin-commerce-runtime-v2-verified
+          rm -rf .github evidence node_modules
+          git config user.name 'Franklin Commerce Verification Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Verify Franklin commerce runtime v2 against PostgreSQL 18'
+          git push --force origin HEAD:franklin-commerce-runtime-v2-verified
+      - uses: actions/upload-artifact@v4
+        with:
+          name: franklin-commerce-runtime-v2-exact
+          path: |
+            /tmp/FRANKLIN_NAVIGATOR_COMMERCE_RUNTIME__V2__POSTGRES18__ACCOUNT_SESSION_ENTITLEMENT__84_PRICE__FAIL_CLOSED__2026-08-31.zip
+            /tmp/franklin-commerce-v2.sha256
+            evidence/
+            /tmp/franklin-commerce.log
+          if-no-files-found: error
+          retention-days: 14
