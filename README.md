@@ -1,5 +1,13 @@
-# Franklin Navigator production
+# Franklin Navigator membership runtime
 
-Clean public static production tree for `FR-NAV0.9.0-CANDIDATE-R24`.
+Franklin-only persistent account, checkout, subscription, entitlement, onboarding, support, and billing-state service for `FR-NAV1.0.0-CANDIDATE-R25`.
 
-The final R24 candidate includes the visible homepage redesign plus a proportion-polished Ask Navigator card: slightly wider, a deeper three-row typing area, and cleaner two-column example prompts on desktop. Paid commerce remains fail-closed pending a Franklin-isolated persistent Local runtime.
+Key properties:
+
+- exact 14-product / 84-price Franklin catalog;
+- checkout redirect never grants access;
+- signed, idempotent Stripe and SRE event ingestion;
+- failure, grace, suspension, recovery, cancellation, termination, refund, and renewal handling;
+- secure sessions, profile authority links, member assertions, first-value onboarding, support, and exception visibility;
+- strict `FRANKLIN_TN` isolation;
+- real checkout remains fail-closed until all 84 Payment Links, the live webhook secret, persistent Postgres, and customer billing portal are configured.

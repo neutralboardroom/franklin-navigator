@@ -1,0 +1,13 @@
+{
+  "name": "franklin-navigator-commerce-runtime",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Franklin-isolated account, subscription, and entitlement service",
+  "engines": {"node": ">=22.0.0"},
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "check": "node --check server.js && node --check lib/catalog.js && node --check lib/lifecycle.js && node --check lib/security.js"
+  },
+  "dependencies": {"pg": "8.16.3"}
+}
