@@ -1,0 +1,30 @@
+name: Export exact Franklin commerce runtime source
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [franklin-commerce-runtime]
+    paths:
+      - .github/workflows/export-runtime-source.yml
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create exact source archive
+        run: |
+          set -euo pipefail
+          tar --exclude=.git -czf /tmp/franklin-commerce-runtime-source.tar.gz .
+          sha256sum /tmp/franklin-commerce-runtime-source.tar.gz | tee /tmp/franklin-commerce-runtime-source.tar.gz.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: franklin-commerce-runtime-source
+          path: |
+            /tmp/franklin-commerce-runtime-source.tar.gz
+            /tmp/franklin-commerce-runtime-source.tar.gz.sha256
+          retention-days: 7
+          compression-level: 0
