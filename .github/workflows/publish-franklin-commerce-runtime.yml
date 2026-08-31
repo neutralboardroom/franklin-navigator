@@ -34,7 +34,7 @@ jobs:
           target.write_bytes(decoded)
           print({'carrier_chars': len(raw), 'clean_chars': len(clean), 'decoded_bytes': len(decoded), 'sha256': hashlib.sha256(decoded).hexdigest()})
           PY
-          echo 'f25b9bd16a49e6a5c45d92c8a4c28781eaadf33f02902261d92ac7766420bafe  /tmp/franklin-commerce-runtime-seed.tar.gz' | sha256sum -c -
+          echo '75e36d11b9b43c2a8e0e0aaa714f2a13e00ce9d402a18c92eed9660889974eb9  /tmp/franklin-commerce-runtime-seed.tar.gz' | sha256sum -c -
           rm -rf /tmp/franklin-commerce-runtime
           mkdir -p /tmp/franklin-commerce-runtime
           tar -xzf /tmp/franklin-commerce-runtime-seed.tar.gz -C /tmp/franklin-commerce-runtime
