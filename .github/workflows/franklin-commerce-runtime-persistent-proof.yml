@@ -126,7 +126,14 @@ jobs:
           const links=plans.map((plan,index)=>({lookupKey:plan.lookupKey,paymentLinkId:'plink_TEST'+String(index+1).padStart(4,'0'),url:'https://buy.stripe.com/test'+String(index+1).padStart(4,'0')}));
           process.stdout.write(JSON.stringify({links}));
           NODE
-          curl -fsS -H "Authorization: Bearer $ADMIN_TOKEN" -H 'content-type: application/json' --data-binary @/tmp/payment-links.json http://127.0.0.1:4180/admin/payment-links/sync > /tmp/payment-link-sync.json
+          STATUS=$(curl -sS -o /tmp/payment-link-sync.json -w '%{http_code}' -H "Authorization: Bearer $ADMIN_TOKEN" -H 'content-type: application/json' --data-binary @/tmp/payment-links.json http://127.0.0.1:4180/admin/payment-links/sync || true)
+          if [ "$STATUS" != '200' ]; then
+            echo "payment-link sync HTTP status: $STATUS"
+            cat /tmp/payment-link-sync.json || true
+            echo '--- runtime log ---'
+            cat /tmp/franklin-commerce-runtime.log || true
+            exit 1
+          fi
           jq -e '.ok==true and .count==84' /tmp/payment-link-sync.json
 
       - name: Verify infrastructure readiness while commerce remains closed
