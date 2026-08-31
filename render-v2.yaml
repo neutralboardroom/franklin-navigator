@@ -1,0 +1,60 @@
+services:
+  - type: web
+    name: franklin-navigator-commerce-v2
+    runtime: node
+    region: virginia
+    plan: starter
+    branch: franklin-commerce-runtime-v2-verified
+    autoDeploy: false
+    buildCommand: npm install --omit=dev
+    startCommand: node server_v2_fixed.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: PUBLIC_SITE_ORIGIN
+        value: https://franklinnavigator.com
+      - key: FRANKLIN_LOCAL_RELEASE
+        value: FR-NAV0.10.0-CANDIDATE-R25
+      - key: PG_SSL
+        value: "true"
+      - key: LIVE_COMMERCE_ENABLED
+        value: "false"
+      - key: CHECKOUT_GENERAL_AVAILABILITY
+        value: "false"
+      - key: STRIPE_EVENT_PROCESSING_ENABLED
+        value: "false"
+      - key: SRE_EVENT_PROCESSING_ENABLED
+        value: "false"
+      - key: ALLOW_DIRECT_STRIPE_WEBHOOK
+        value: "true"
+      - key: PAYMENT_FAILURE_GRACE_DAYS
+        value: "7"
+      - key: SESSION_HOURS
+        value: "168"
+      - key: DATABASE_URL
+        sync: false
+      - key: SERVICE_ORIGIN
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: LOCAL_EVENT_SECRET
+        sync: false
+      - key: ENTITLEMENT_ASSERTION_SECRET
+        sync: false
+      - key: ADMIN_API_TOKEN
+        sync: false
+      - key: CONTROLLED_PURCHASE_TOKEN
+        sync: false
+      - key: STRIPE_ACCOUNT_ID
+        value: acct_1TZU2TRxNra9nizo
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: VERIFICATION_DELIVERY_WEBHOOK_URL
+        sync: false
+      - key: VERIFICATION_DELIVERY_SECRET
+        sync: false
