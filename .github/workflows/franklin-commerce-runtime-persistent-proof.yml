@@ -9,9 +9,11 @@ on:
       - server.js
       - lib/**
       - schema/**
-      - tests/**
+      - test/**
       - package.json
       - package-lock.json
+      - render.yaml
+      - evidence/**
       - .github/workflows/franklin-commerce-runtime-persistent-proof.yml
 
 permissions:
@@ -20,7 +22,7 @@ permissions:
 jobs:
   persistent-proof:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     services:
       postgres:
         image: postgres:18
@@ -38,15 +40,18 @@ jobs:
     env:
       NODE_ENV: test
       PORT: '4180'
+      LOCAL_RELEASE: FR-NAV1.2.0-CANDIDATE-R27
+      PUBLIC_ORIGIN: http://127.0.0.1:4180
       DATABASE_URL: postgresql://franklin:franklin_test_only@127.0.0.1:5432/franklin_membership
-      APP_ORIGIN: http://127.0.0.1:4180
-      COMMUNITY_ID: FRANKLIN_TN
+      SESSION_SECRET: github-actions-test-session-secret-0123456789
+      LOCAL_ASSERTION_SECRET: github-actions-test-assertion-secret-0123456789
+      SRE_SHARED_SECRET: github-actions-test-sre-shared-secret-0123456789
+      STRIPE_WEBHOOK_SECRET: whsec_github_actions_test_only_0123456789
+      STRIPE_ACCOUNT_ID: acct_1TZU2TRxNra9nizo
+      STRIPE_PORTAL_LOGIN_URL: https://billing.stripe.com/p/login/testonly
+      ADMIN_TOKEN: github-actions-test-admin-token-0123456789
+      SESSION_DAYS: '14'
       COMMERCE_ENABLED: 'false'
-      SESSION_SECRET: github-actions-test-session-secret-not-production
-      SRE_EVENT_SHARED_SECRET: github-actions-test-sre-secret-not-production
-      MEMBER_ASSERTION_SECRET: github-actions-test-assertion-secret-not-production
-      STRIPE_SECRET_KEY: ''
-      STRIPE_WEBHOOK_SECRET: ''
     steps:
       - name: Check out exact Franklin runtime branch
         uses: actions/checkout@v4
@@ -58,19 +63,45 @@ jobs:
           cache: npm
 
       - name: Install exact dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts --no-audit --no-fund
 
-      - name: Apply the canonical persistent schema
+      - name: Verify source, syntax and complete unit suite
+        run: |
+          set -euo pipefail
+          npm run check
+          npm test
+          test "$(grep -c '^function parseCookies' server.js)" -eq 1
+          grep -q "COMMERCE_ENABLED" server.js
+          grep -q "COMMERCE_DISABLED" server.js
+
+      - name: Apply canonical schema and verify exact table inventory
         shell: bash
         run: |
           set -euo pipefail
-          test -f schema/001_init.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f schema/001_init.sql
-          psql "$DATABASE_URL" -Atc "select tablename from pg_tables where schemaname='public' order by tablename" | tee /tmp/franklin-commerce-tables.txt
-          test "$(wc -l </tmp/franklin-commerce-tables.txt)" -ge 6
-
-      - name: Run the complete runtime test suite
-        run: npm test
+          psql "$DATABASE_URL" -Atc "select tablename from pg_tables where schemaname='public' order by tablename" > /tmp/franklin-commerce-tables.txt
+          cat > /tmp/expected-tables.txt <<'TABLES'
+          franklin_accounts
+          franklin_audit_log
+          franklin_checkout_intents
+          franklin_dead_letters
+          franklin_entitlements
+          franklin_event_ledger
+          franklin_memberships
+          franklin_onboarding
+          franklin_payment_links
+          franklin_profile_links
+          franklin_recovery_tokens
+          franklin_schema_migrations
+          franklin_sessions
+          franklin_support_requests
+          TABLES
+          sed -i 's/^          //' /tmp/expected-tables.txt
+          diff -u /tmp/expected-tables.txt /tmp/franklin-commerce-tables.txt
+          if psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_accounts(account_id,community,email,email_normalized,password_hash) values('bad_community','OTHER','bad@example.test','bad@example.test','x')"; then
+            echo 'Cross-community insert unexpectedly succeeded'; exit 1
+          fi
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_accounts(account_id,community,email,email_normalized,password_hash) values('proof_account','FRANKLIN_TN','proof@example.test','proof@example.test','proof_hash') on conflict(account_id) do nothing"
 
       - name: Start fail-closed runtime against PostgreSQL
         shell: bash
@@ -78,35 +109,40 @@ jobs:
           set -euo pipefail
           npm start >/tmp/franklin-commerce-runtime.log 2>&1 &
           echo $! >/tmp/franklin-commerce-runtime.pid
-          for attempt in $(seq 1 40); do
+          for attempt in $(seq 1 45); do
             if curl -fsS http://127.0.0.1:4180/health >/tmp/franklin-health.json; then exit 0; fi
             sleep 1
           done
           cat /tmp/franklin-commerce-runtime.log
           exit 1
 
-      - name: Verify fail-closed payment boundary and persistent health
+      - name: Synchronize exactly 84 synthetic non-charging mappings
         shell: bash
         run: |
           set -euo pipefail
-          node <<'NODE'
-          const fs=require('fs');
-          const health=JSON.parse(fs.readFileSync('/tmp/franklin-health.json','utf8'));
-          if(health.ok!==true) throw new Error('health_not_ok');
-          const text=JSON.stringify(health).toLowerCase();
-          if(!text.includes('franklin')) throw new Error('community_health_binding_missing');
+          node <<'NODE' >/tmp/payment-links.json
+          const {plans}=require('./lib/catalog');
+          if(plans.length!==84) throw new Error('catalog_not_84');
+          const links=plans.map((plan,index)=>({lookupKey:plan.lookupKey,paymentLinkId:'plink_TEST'+String(index+1).padStart(4,'0'),url:'https://buy.stripe.com/test'+String(index+1).padStart(4,'0')}));
+          process.stdout.write(JSON.stringify({links}));
           NODE
-          STATUS=$(curl -sS -o /tmp/checkout-disabled.json -w '%{http_code}' \
-            -H 'content-type: application/json' \
-            -d '{"lookupKey":"franklin_legal_individual_monthly_v2","profileId":"proof-profile"}' \
-            http://127.0.0.1:4180/api/checkout || true)
-          case "$STATUS" in
-            401|403|404|409|423|503) ;;
-            *) echo "Unexpected fail-closed checkout status: $STATUS"; cat /tmp/checkout-disabled.json; exit 1;;
-          esac
-          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "select count(*) from information_schema.tables where table_schema='public';"
+          curl -fsS -H "Authorization: Bearer $ADMIN_TOKEN" -H 'content-type: application/json' --data-binary @/tmp/payment-links.json http://127.0.0.1:4180/admin/payment-links/sync > /tmp/payment-link-sync.json
+          jq -e '.ok==true and .count==84' /tmp/payment-link-sync.json
 
-      - name: Exercise restart persistence
+      - name: Verify infrastructure readiness while commerce remains closed
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS http://127.0.0.1:4180/ready > /tmp/franklin-ready.json
+          jq -e '.ok==true and .database==true and .paymentLinkCount==84 and .stripeWebhookConfigured==true and .portalLoginConfigured==true and .commerceEnabled==false and .liveCheckoutEnabled==false and (.missing|length)==0' /tmp/franklin-ready.json
+          STATUS=$(curl -sS -o /tmp/checkout-disabled.json -w '%{http_code}' -H 'content-type: application/json' -d '{"lookupKey":"franklin_legal_individual_monthly_v2","profileId":"FR-PROOF-001"}' http://127.0.0.1:4180/api/membership/start || true)
+          test "$STATUS" = '423'
+          jq -e '.error.code=="COMMERCE_DISABLED"' /tmp/checkout-disabled.json
+          curl -fsS http://127.0.0.1:4180/api/catalog > /tmp/catalog.json
+          jq -e '.selfServiceRecurringPriceCount==84 and .productCount==14 and ([.verticals[].enterprise.quoteOnly]|all)' /tmp/catalog.json
+          jq -e '([.verticals[].plans[]|select(.tier=="ENTERPRISE")]|length)==0' /tmp/catalog.json
+
+      - name: Exercise restart persistence and idempotent records
         shell: bash
         run: |
           set -euo pipefail
@@ -114,51 +150,37 @@ jobs:
           sleep 2
           npm start >/tmp/franklin-commerce-runtime-restart.log 2>&1 &
           echo $! >/tmp/franklin-commerce-runtime.pid
-          for attempt in $(seq 1 40); do
-            if curl -fsS http://127.0.0.1:4180/health >/tmp/franklin-health-after-restart.json; then break; fi
+          for attempt in $(seq 1 45); do
+            if curl -fsS http://127.0.0.1:4180/ready >/tmp/franklin-ready-after-restart.json; then break; fi
             sleep 1
           done
-          cmp <(jq -S 'del(.startedAt,.now,.uptimeSeconds)' /tmp/franklin-health.json) <(jq -S 'del(.startedAt,.now,.uptimeSeconds)' /tmp/franklin-health-after-restart.json) || true
-          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc "select count(*) from information_schema.tables where table_schema='public'" | grep -Eq '^[6-9][0-9]*$|^[1-9][0-9]+$'
+          jq -e '.ok==true and .paymentLinkCount==84 and .commerceEnabled==false' /tmp/franklin-ready-after-restart.json
+          test "$(psql "$DATABASE_URL" -Atc "select count(*) from franklin_accounts where account_id='proof_account'")" = '1'
+          test "$(psql "$DATABASE_URL" -Atc "select count(*) from franklin_payment_links where active=true")" = '84'
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_event_ledger(event_key,source,event_type,payload_sha256,processing_state) values('proof:event','PROOF','invoice.paid',repeat('a',64),'RECEIVED') on conflict(event_key) do nothing"
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_event_ledger(event_key,source,event_type,payload_sha256,processing_state) values('proof:event','PROOF','invoice.paid',repeat('a',64),'RECEIVED') on conflict(event_key) do nothing"
+          test "$(psql "$DATABASE_URL" -Atc "select count(*) from franklin_event_ledger where event_key='proof:event'")" = '1'
 
-      - name: Create signed evidence packet without secrets
+      - name: Create exact non-secret evidence packet
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p /tmp/franklin-commerce-proof/source
-          cp -R server.js lib schema tests package.json package-lock.json README.md render.yaml /tmp/franklin-commerce-proof/source/ 2>/dev/null || true
+          cp -R server.js lib schema test package.json package-lock.json README.md render.yaml evidence /tmp/franklin-commerce-proof/source/
           cp /tmp/franklin-commerce-tables.txt /tmp/franklin-commerce-proof/
           cp /tmp/franklin-health.json /tmp/franklin-commerce-proof/
-          cp /tmp/franklin-health-after-restart.json /tmp/franklin-commerce-proof/
-          COMMIT=$(git rev-parse HEAD)
-          TREE=$(git rev-parse HEAD^{tree})
+          cp /tmp/franklin-ready.json /tmp/franklin-commerce-proof/
+          cp /tmp/franklin-ready-after-restart.json /tmp/franklin-commerce-proof/
           node <<'NODE'
           const fs=require('fs'),crypto=require('crypto'),cp=require('child_process');
-          const commit=cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
-          const tree=cp.execFileSync('git',['rev-parse','HEAD^{tree}'],{encoding:'utf8'}).trim();
-          const schema=fs.readFileSync('schema/001_init.sql');
-          const tables=fs.readFileSync('/tmp/franklin-commerce-tables.txt','utf8').trim().split(/\n+/).filter(Boolean);
           const receipt={
-            schemaVersion:'franklin.commerce.persistent-proof.v1',
-            workOrders:[
-              'WO-20260829-LOCAL-FRANKLIN-R22-COMMERCE-INTEGRATION-022',
-              'WO-20260830-LOCAL-FRANKLIN-R24-PERSISTENT-COMMERCE-AND-PRESELL-023',
-              'WO-20260830-LOCAL-FRANKLIN-R24-LIVE-PAID-MEMBERSHIP-ACTIVATION-024'
-            ],
-            repository:'neutralboardroom/franklin-navigator',branch:'franklin-commerce-runtime',commit,tree,
-            runtime:'Node 22',databaseProof:'PostgreSQL 18 service container',
-            schemaSha256:crypto.createHash('sha256').update(schema).digest('hex'),
-            tableCount:tables.length,tables,
-            testSuite:'PASS',persistentStartup:'PASS',restartPersistence:'PASS',
-            checkoutWithoutActivation:'FAIL_CLOSED_PASS',
-            stripeChargeCreated:false,liveCheckoutActivated:false,
-            productionRemaining:[
-              'Bind the provisioned Franklin-only Render PostgreSQL database to the Franklin runtime service.',
-              'Configure production-only session, SRE event and member assertion secrets.',
-              'Bind the authorized Stripe checkout/event contract without exposing API or webhook secrets.',
-              'Run controlled non-charging then controlled real transaction proof before general checkout.'
-            ],
-            authorityTransfer:false
+            schemaVersion:'franklin.commerce.persistent-proof.v2',
+            workOrders:['WO-20260829-LOCAL-FRANKLIN-R22-COMMERCE-INTEGRATION-022','WO-20260830-LOCAL-FRANKLIN-R24-PERSISTENT-COMMERCE-AND-PRESELL-023','WO-20260830-LOCAL-FRANKLIN-R24-LIVE-PAID-MEMBERSHIP-ACTIVATION-024','WO-20260831-LOCAL-FRANKLIN-R26-RUNTIME-DEPLOY-AND-LIVE-PAYMENT-CUTOVER-025'],
+            repository:'neutralboardroom/franklin-navigator',branch:'franklin-commerce-runtime',commit:cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),tree:cp.execFileSync('git',['rev-parse','HEAD^{tree}'],{encoding:'utf8'}).trim(),
+            runtime:'Node 22',databaseProof:'PostgreSQL 18 service container',schemaSha256:crypto.createHash('sha256').update(fs.readFileSync('schema/001_init.sql')).digest('hex'),
+            tableCount:14,tables:fs.readFileSync('/tmp/franklin-commerce-tables.txt','utf8').trim().split(/\n+/),
+            exact84Mapping:'PASS',enterpriseQuoteOnlyNegativeTest:'PASS',strictFranklinIsolation:'PASS',unitLifecycleTests:'PASS',restartPersistence:'PASS',eventLedgerIdempotency:'PASS',commerceEnabled:false,checkoutWithoutActivation:'FAIL_CLOSED_423_PASS',
+            stripeChargeCreated:false,liveCheckoutActivated:false,authorityTransfer:false
           };
           fs.writeFileSync('/tmp/franklin-commerce-proof/FRANKLIN_COMMERCE_PERSISTENT_PROOF_RECEIPT.json',JSON.stringify(receipt,null,2)+'\n');
           NODE
