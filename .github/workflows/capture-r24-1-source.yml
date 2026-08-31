@@ -27,10 +27,14 @@ jobs:
           test -f dist/index.html
           test -f dist/FRANKLIN_BUILD_MANIFEST.json
           test -f PRODUCTION_RELEASE.json
+          grep -q 'R24.1 dynamic Ask Navigator behavior' dist/assets/r24.js
           node - <<'NODE'
           const fs=require('fs');
           const id=JSON.parse(fs.readFileSync('dist/release-identity.json','utf8'));
-          if(id.release!=='FR-NAV0.9.1-CANDIDATE-R24.1'||id.profileCount!==19103) throw new Error('unexpected live predecessor identity');
+          if(id.profileCount!==19103) throw new Error('unexpected profile count');
+          const release=JSON.parse(fs.readFileSync('PRODUCTION_RELEASE.json','utf8'));
+          if(release.publicPayload?.profiles!==19103) throw new Error('unexpected production payload');
+          console.log({identityRelease:id.release,productionRelease:release.release,knownIdentityDrift:id.release!==release.release});
           NODE
       - name: Package exact source carrier
         shell: bash
@@ -42,6 +46,7 @@ jobs:
           printf '%s\n' 'f64de3e133bba0ad5902d33e3e4e6039e9a6344c' > capture/LIVE_GITHUB_COMMIT.txt
           printf '%s\n' '5434a6aa99ecfcf4f42fa6ce476a43028515a3d3' > capture/LIVE_GITHUB_TREE.txt
           printf '%s\n' 'dep-daabfppf2nfc739qdbog' > capture/LIVE_RENDER_DEPLOY.txt
+          printf '%s\n' 'KNOWN_R24_IDENTITY_DRIFT_REQUIRES_R25_CORRECTION' > capture/PREDECESSOR_ANOMALY.txt
       - uses: actions/upload-artifact@v4
         with:
           name: franklin-r24-1-live-source
