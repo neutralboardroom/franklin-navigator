@@ -1,10 +1,12 @@
 {
-  "schemaVersion": "franklin.release-identity.r26.v1",
-  "release": "FR-NAV1.1.0-CANDIDATE-R26",
-  "exactPredecessor": "FR-NAV1.0.0-CANDIDATE-R25",
+  "schemaVersion": "franklin.release-identity.r27.v1",
+  "release": "FR-NAV1.2.0-CANDIDATE-R27",
+  "exactPredecessor": "FR-NAV1.1.0-CANDIDATE-R26",
   "profileCount": 19103,
-  "publicConstruction": "R25_PLUS_FOUNDING_MEMBER_CONVERSION_AND_FIRST_VALUE_DELTA",
+  "publicConstruction": "R26_PLUS_FOCUSED_ASK_NAVIGATOR_DIALOG_AND_PAYMENT_COORDINATION_EVIDENCE",
+  "homepageAnswerExperience": "FOCUSED_DIALOG_NO_INLINE_LAYOUT_SHIFT",
   "paidCommerceActive": false,
+  "runtimePersistentProof": true,
   "runtimeProductionBound": false,
   "builtAt": "2026-08-31"
 }

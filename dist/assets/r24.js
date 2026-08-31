@@ -43,3 +43,22 @@
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup,{once:true});else setup();
 })();
+
+
+/* R27 focused Ask Navigator answer loader */
+(()=>{
+  if(!document.querySelector('link[data-r27-home]')){
+    const css=document.createElement('link');
+    css.rel='stylesheet';
+    css.href='/assets/r27-home.css';
+    css.dataset.r27Home='true';
+    document.head.append(css);
+  }
+  if(!document.querySelector('script[data-r27-home]')){
+    const script=document.createElement('script');
+    script.src='/assets/r27-home.js';
+    script.async=false;
+    script.dataset.r27Home='true';
+    document.head.append(script);
+  }
+})();

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "franklin.homepage-ux-receipt.r27.v1",
+  "release": "FR-NAV1.2.0-CANDIDATE-R27",
+  "observedProblem": {
+    "source": "OWNER_SCREENSHOTS_2026_08_31",
+    "description": "Selecting Grow my business expanded a multi-section result inside the homepage card and pushed the relevant business actions below the visible viewport.",
+    "severity": "P0_PRIMARY_ACTION_VISIBILITY"
+  },
+  "implementedResolution": {
+    "experience": "ACCESSIBLE_FOCUSED_DIALOG",
+    "businessIntentInterception": true,
+    "genericAnswerDialog": true,
+    "desktop": "CENTERED_SCROLLABLE_DIALOG",
+    "mobile": "FULL_SCREEN_DIALOG",
+    "closeMethods": [
+      "CLOSE_BUTTON",
+      "ESCAPE",
+      "BACKDROP"
+    ],
+    "focusRestored": true,
+    "businessActions": [
+      {
+        "label": "Build my growth plan",
+        "route": "/local-growth-engine/"
+      },
+      {
+        "label": "Find or review my profile",
+        "route": "/claim-profile/"
+      },
+      {
+        "label": "See membership and pricing",
+        "route": "/membership-start/"
+      },
+      {
+        "label": "Open my business dashboard",
+        "route": "/business-dashboard/"
+      }
+    ],
+    "inlineResultLayoutShiftRemoved": true
+  },
+  "files": {
+    "script": "/assets/r27-home.js",
+    "stylesheet": "/assets/r27-home.css",
+    "loader": "/assets/r24.js"
+  },
+  "testing": {
+    "javascriptSyntax": "PASS",
+    "cspCompatibleSelfHostedAssets": true,
+    "noInlineStyleOrInlineExecutableScriptAdded": true,
+    "reducedMotionSupported": true,
+    "responsiveRulesPresent": true
+  },
+  "authorityTransfer": false
+}
