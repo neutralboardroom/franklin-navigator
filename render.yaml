@@ -5,7 +5,32 @@ services:
     region: virginia
     plan: starter
     branch: franklin-commerce-runtime
-    buildCommand: npm install --ignore-scripts --no-audit --no-fund
+    buildCommand: npm ci --ignore-scripts --no-audit --no-fund
     startCommand: npm start
     healthCheckPath: /health
     autoDeploy: false
+    envVars:
+      - key: LOCAL_RELEASE
+        value: FR-NAV1.2.0-CANDIDATE-R27
+      - key: PUBLIC_ORIGIN
+        value: https://franklinnavigator.com
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: LOCAL_ASSERTION_SECRET
+        sync: false
+      - key: SRE_SHARED_SECRET
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_ACCOUNT_ID
+        value: acct_1TZU2TRxNra9nizo
+      - key: STRIPE_PORTAL_LOGIN_URL
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: SESSION_DAYS
+        value: '14'
+      - key: COMMERCE_ENABLED
+        value: 'false'

@@ -1,13 +1,7 @@
-# Franklin Navigator membership runtime
+# Franklin Navigator commerce runtime
 
-Franklin-only persistent account, checkout, subscription, entitlement, onboarding, support, and billing-state service for `FR-NAV1.0.0-CANDIDATE-R25`.
+Franklin-isolated account, session, subscription, entitlement, onboarding and support runtime for **FR-NAV1.2.0-CANDIDATE-R27**.
 
-Key properties:
+The runtime defaults to `COMMERCE_ENABLED=false`. A payment-link mapping, database connection or provider deployment cannot open checkout by itself. The Revenue Engine must accept the exact ready-stage receipt before Local enables the controlled transaction path.
 
-- exact 14-product / 84-price Franklin catalog;
-- checkout redirect never grants access;
-- signed, idempotent Stripe and SRE event ingestion;
-- failure, grace, suspension, recovery, cancellation, termination, refund, and renewal handling;
-- secure sessions, profile authority links, member assertions, first-value onboarding, support, and exception visibility;
-- strict `FRANKLIN_TN` isolation;
-- real checkout remains fail-closed until all 84 Payment Links, the live webhook secret, persistent Postgres, and customer billing portal are configured.
+Production requires the Franklin-only Render Postgres database, all 84 authorized self-service mappings, Enterprise quote-only behavior, signed Stripe/SRE event ingestion, Customer Portal access, restart persistence, backup/rollback evidence and a successful controlled real membership transaction before general checkout opens.

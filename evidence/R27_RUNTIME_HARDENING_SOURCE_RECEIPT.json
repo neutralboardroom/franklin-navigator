@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "franklin.runtime-hardening-source-receipt.v1",
+  "release": "FR-NAV1.2.0-CANDIDATE-R27",
+  "workOrders": [
+    "WO-20260829-LOCAL-FRANKLIN-R22-COMMERCE-INTEGRATION-022",
+    "WO-20260830-LOCAL-FRANKLIN-R24-PERSISTENT-COMMERCE-AND-PRESELL-023",
+    "WO-20260830-LOCAL-FRANKLIN-R24-LIVE-PAID-MEMBERSHIP-ACTIVATION-024",
+    "WO-20260831-LOCAL-FRANKLIN-R26-RUNTIME-DEPLOY-AND-LIVE-PAYMENT-CUTOVER-025"
+  ],
+  "changes": {
+    "packageLockRequired": true,
+    "commerceEnabledDefault": false,
+    "duplicateCookieParserRemoved": true,
+    "readyEvidenceExpanded": true,
+    "environmentNamesNormalized": true,
+    "workflowPathCorrected": "test/**"
+  },
+  "realChargeCreated": false,
+  "authorityTransfer": false
+}
