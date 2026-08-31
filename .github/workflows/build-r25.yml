@@ -1,0 +1,104 @@
+name: Build Franklin Navigator R25 complete site improvement
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - r25-clean-build
+    paths:
+      - .github/workflows/build-r25.yml
+      - scripts/build-r25.mjs
+      - scripts/verify-r25.mjs
+
+permissions:
+  contents: write
+
+jobs:
+  build-verify-stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out isolated clean R25 builder
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use pinned Node runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+
+      - name: Build R25 from exact clean R24.1 predecessor
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git merge-base HEAD cc8620072ba5d774cb505f236f0c98c6f29b7754)" = 'cc8620072ba5d774cb505f236f0c98c6f29b7754'
+          node scripts/build-r25.mjs
+
+      - name: Verify every page, profile, route, canonical, contact block and manifest record
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/verify-r25.mjs
+
+      - name: Seal exact release package and stage clean production tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          RELEASE='FR-NAV0.10.0-CANDIDATE-R25'
+          PACKAGE="FRANKLIN_NAVIGATOR__R25__COMPLETE_SITE_AUDIT_REMEDIATION__RESPONSIVE_NAV__SEO__ACCESSIBILITY__PERFORMANCE__19103_PROFILES__COMMERCE_FAIL_CLOSED__2026-08-31.zip"
+          rm -rf /tmp/franklin-r25-release /tmp/franklin-r25-audit
+          mkdir -p /tmp/franklin-r25-release /tmp/franklin-r25-audit
+          cp -a dist PRODUCTION_RELEASE.json README.md render.yaml /tmp/franklin-r25-release/
+          cp -a audit-output/. /tmp/franklin-r25-audit/
+          (cd /tmp/franklin-r25-release && zip -q -r "/tmp/$PACKAGE" .)
+          sha256sum "/tmp/$PACKAGE" | tee /tmp/franklin-r25-package.sha256
+
+          git checkout -B r25-production-stage
+          rm -rf .github scripts audit-output artifacts .r25-builder
+          test "$(find . -mindepth 1 -maxdepth 1 ! -name .git | wc -l)" -eq 4
+          test -f PRODUCTION_RELEASE.json
+          test -f README.md
+          test -f render.yaml
+          test -d dist
+          test "$(find dist -type f -name '*.html' | wc -l)" -eq 19276
+          test "$(find dist/profiles -mindepth 2 -maxdepth 2 -type f -name index.html | wc -l)" -eq 19103
+          grep -q 'FR-NAV0.10.0-CANDIDATE-R25' PRODUCTION_RELEASE.json
+          grep -q 'FR-NAV0.10.0-CANDIDATE-R25' dist/release-identity.json
+          grep -q 'R25 site-wide experience layer' dist/assets/r25.css
+          grep -q 'r25-menu-toggle' dist/assets/r25.js
+
+          git config user.name 'Franklin Navigator Release Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Stage Franklin Navigator R25 complete site improvement'
+          git push --force origin HEAD:r25-production-stage
+
+          cat > /tmp/franklin-r25-audit/R25_STAGE_RECEIPT.json <<JSON
+          {
+            "schemaVersion": "franklin.r25.stage-receipt.v1",
+            "release": "$RELEASE",
+            "sourceBranch": "r25-clean-build",
+            "stageBranch": "r25-production-stage",
+            "stageCommit": "$(git rev-parse HEAD)",
+            "stageTree": "$(git rev-parse HEAD^{tree})",
+            "package": "$PACKAGE",
+            "packageBytes": $(stat -c%s "/tmp/$PACKAGE"),
+            "packageSha256": "$(sha256sum "/tmp/$PACKAGE" | cut -d' ' -f1)",
+            "htmlPages": 19276,
+            "profiles": 19103,
+            "commercePaidActive": false,
+            "authorityTransfer": false
+          }
+          JSON
+
+      - name: Upload exact R25 product and audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-navigator-r25-exact-release
+          path: |
+            /tmp/FRANKLIN_NAVIGATOR__R25__COMPLETE_SITE_AUDIT_REMEDIATION__RESPONSIVE_NAV__SEO__ACCESSIBILITY__PERFORMANCE__19103_PROFILES__COMMERCE_FAIL_CLOSED__2026-08-31.zip
+            /tmp/franklin-r25-package.sha256
+            /tmp/franklin-r25-audit/
+          if-no-files-found: error
+          retention-days: 14
