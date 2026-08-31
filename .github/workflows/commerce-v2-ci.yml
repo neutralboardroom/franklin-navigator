@@ -1,0 +1,84 @@
+name: Verify Franklin commerce runtime v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - franklin-commerce-runtime-v2
+    paths:
+      - package.json
+      - server_v2.js
+      - lib/**
+      - schema/**
+      - test/**
+      - tests/**
+      - .env.example
+      - render.yaml
+      - README.md
+      - .github/workflows/commerce-v2-ci.yml
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+      - name: Install exact production dependency
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Run complete preserved and v2 test suite
+        run: npm test
+      - name: Verify production contract and secret hygiene
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(node -e "const c=require('./lib/catalog_v2'); process.stdout.write(String(c.LOOKUP_KEYS.length))")" = 84
+          grep -q "FRANKLIN-COMMERCE-2.0.0" server_v2.js
+          grep -q "FRANKLIN_TN" schema/002_live_membership.sql
+          grep -q "commerce_event_ledger" schema/002_live_membership.sql
+          grep -q "commerce_dead_letters" schema/002_live_membership.sql
+          grep -q "account_action_tokens" schema/003_auth_retry.sql
+          grep -q "CHECKOUT_GENERAL_AVAILABILITY=false" .env.example
+          grep -q "LIVE_COMMERCE_ENABLED=false" .env.example
+          grep -q "STRIPE_EVENT_PROCESSING_ENABLED=false" .env.example
+          grep -q "SRE_EVENT_PROCESSING_ENABLED=false" .env.example
+          ! grep -RInE '(sk_live_[A-Za-z0-9]{16,}|whsec_[A-Za-z0-9]{16,}|postgres(ql)?://[^:[:space:]]+:[^@[:space:]]+@)' --exclude='.env.example' --exclude='commerce-v2-ci.yml' .
+          ! grep -RInE '(card_number|\bcvc\b|\bcvv\b)' server_v2.js schema lib
+      - name: Emit deterministic verification receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          SOURCE_TREE="$(git rev-parse HEAD^{tree})"
+          cat > evidence/FRANKLIN_COMMERCE_V2_BUILD_VERIFICATION.json <<JSON
+          {
+            "schemaVersion": "franklin.commerce.v2.build-verification.v1",
+            "release": "FRANKLIN-COMMERCE-2.0.0",
+            "community": "FRANKLIN_TN",
+            "sourceCommit": "${GITHUB_SHA}",
+            "sourceTree": "$SOURCE_TREE",
+            "nodeVersion": "22.18.0",
+            "products": 14,
+            "selfServiceRecurringPrices": 84,
+            "enterprise": "QUOTE_ONLY",
+            "tests": "PASS",
+            "secretScan": "PASS",
+            "productionSensitiveSwitchDefaults": "ALL_FALSE",
+            "databaseIsolationConstraints": "PASS",
+            "paymentCardDataStorage": false,
+            "livePaymentClaimed": false,
+            "authorityTransfer": false
+          }
+          JSON
+          sha256sum package.json server_v2.js lib/catalog_v2.js lib/security_v2.js lib/lifecycle_v2.js schema/002_live_membership.sql schema/003_auth_retry.sql test/v2.test.js > evidence/FRANKLIN_COMMERCE_V2_SOURCE_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: franklin-commerce-v2-verification
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 14
