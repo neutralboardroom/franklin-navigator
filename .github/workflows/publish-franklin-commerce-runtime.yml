@@ -23,9 +23,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # The committed carrier is text and can contain transport whitespace. Decode
-          # while ignoring non-alphabet transport characters, then verify exact bytes.
-          base64 --ignore-garbage --decode artifacts/franklin-commerce-runtime-seed.tar.gz.b64 > /tmp/franklin-commerce-runtime-seed.tar.gz
+          python3 - <<'PY'
+          import base64, hashlib, pathlib, re
+          source = pathlib.Path('artifacts/franklin-commerce-runtime-seed.tar.gz.b64')
+          raw = source.read_text(encoding='utf-8')
+          clean = re.sub(r'[^A-Za-z0-9+/=]', '', raw)
+          clean = clean.rstrip('=') + ('=' * (-len(clean.rstrip('=')) % 4))
+          decoded = base64.b64decode(clean, validate=False)
+          target = pathlib.Path('/tmp/franklin-commerce-runtime-seed.tar.gz')
+          target.write_bytes(decoded)
+          print({'carrier_chars': len(raw), 'clean_chars': len(clean), 'decoded_bytes': len(decoded), 'sha256': hashlib.sha256(decoded).hexdigest()})
+          PY
           echo 'f25b9bd16a49e6a5c45d92c8a4c28781eaadf33f02902261d92ac7766420bafe  /tmp/franklin-commerce-runtime-seed.tar.gz' | sha256sum -c -
           rm -rf /tmp/franklin-commerce-runtime
           mkdir -p /tmp/franklin-commerce-runtime
