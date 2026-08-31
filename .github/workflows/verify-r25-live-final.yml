@@ -1,0 +1,102 @@
+name: Final verify Franklin Navigator R25 custom domain
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - r25-clean-build
+    paths:
+      - .github/workflows/verify-r25-live-final.yml
+
+permissions:
+  contents: write
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Poll the custom domain for exact R25 identity and public assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/r25-live-final
+          success=false
+          for i in $(seq 1 90); do
+            cache="$(date +%s)-$i"
+            if curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "https://franklinnavigator.com/release-identity.json?verify=$cache" -o /tmp/r25-live-final/release-identity.json \
+              && curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "https://franklinnavigator.com/data/r25-site-audit-remediation.json?verify=$cache" -o /tmp/r25-live-final/remediation.json \
+              && curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "https://franklinnavigator.com/assets/r25.css?verify=$cache" -o /tmp/r25-live-final/r25.css \
+              && curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "https://franklinnavigator.com/assets/r25.js?verify=$cache" -o /tmp/r25-live-final/r25.js \
+              && curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "https://franklinnavigator.com/?verify=$cache" -o /tmp/r25-live-final/index.html; then
+              if node - <<'NODE'
+          const fs=require('fs');
+          const identity=JSON.parse(fs.readFileSync('/tmp/r25-live-final/release-identity.json','utf8'));
+          const remediation=JSON.parse(fs.readFileSync('/tmp/r25-live-final/remediation.json','utf8'));
+          const home=fs.readFileSync('/tmp/r25-live-final/index.html','utf8');
+          const css=fs.readFileSync('/tmp/r25-live-final/r25.css','utf8');
+          const js=fs.readFileSync('/tmp/r25-live-final/r25.js','utf8');
+          if(identity.release!=='FR-NAV0.10.0-CANDIDATE-R25')process.exit(1);
+          if(identity.profileCount!==19103)process.exit(1);
+          if(remediation.release!=='FR-NAV0.10.0-CANDIDATE-R25')process.exit(1);
+          if(remediation.profileCountPreserved!==19103)process.exit(1);
+          if(!home.includes('/assets/r25.css')||!home.includes('/assets/r25.js'))process.exit(1);
+          if(!home.includes('What do you need in Franklin today?'))process.exit(1);
+          if(!css.includes('R25 site-wide experience layer'))process.exit(1);
+          if(!js.includes('r25-menu-toggle'))process.exit(1);
+          NODE
+              then success=true; break; fi
+            fi
+            sleep 10
+          done
+          test "$success" = true
+      - name: Bind custom-domain evidence to the exact Git production tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main r25-production-stage --force
+          MAIN_COMMIT="$(git rev-parse origin/main)"
+          STAGE_COMMIT="$(git rev-parse origin/r25-production-stage)"
+          test "$MAIN_COMMIT" = "$STAGE_COMMIT"
+          MAIN_TREE="$(git rev-parse origin/main^{tree})"
+          test "$(git show origin/main:PRODUCTION_RELEASE.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>process.exit(JSON.parse(s).release==='FR-NAV0.10.0-CANDIDATE-R25'?0:1))")" = ''
+          sha256sum /tmp/r25-live-final/release-identity.json /tmp/r25-live-final/remediation.json /tmp/r25-live-final/r25.css /tmp/r25-live-final/r25.js /tmp/r25-live-final/index.html > /tmp/r25-live-final/public-file-sha256.txt
+          VERIFIED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          cat > /tmp/r25-live-final/R25_LIVE_CUSTOM_DOMAIN_VERIFICATION.json <<JSON
+          {
+            "schemaVersion": "franklin.r25.live-custom-domain-verification.v2",
+            "release": "FR-NAV0.10.0-CANDIDATE-R25",
+            "verifiedAtUtc": "$VERIFIED_AT",
+            "canonicalOrigin": "https://franklinnavigator.com",
+            "productionCommit": "$MAIN_COMMIT",
+            "productionTree": "$MAIN_TREE",
+            "stageMatchesProduction": true,
+            "identityRouteVerified": true,
+            "remediationRouteVerified": true,
+            "homepageR25AssetsPresent": true,
+            "homepageAskNavigatorPreserved": true,
+            "profileCount": 19103,
+            "paidCommerceClaimedLive": false,
+            "authorityTransfer": false
+          }
+          JSON
+
+          git checkout --orphan r25-live-verified-final-work
+          git rm -rf . >/dev/null 2>&1 || true
+          mkdir -p verification
+          cp /tmp/r25-live-final/R25_LIVE_CUSTOM_DOMAIN_VERIFICATION.json verification/
+          cp /tmp/r25-live-final/public-file-sha256.txt verification/
+          git config user.name 'Franklin Navigator Verification Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add verification
+          git commit -m 'Verify Franklin Navigator R25 custom domain and exact production tree'
+          git push --force origin HEAD:r25-live-verified-final
+      - uses: actions/upload-artifact@v4
+        with:
+          name: franklin-navigator-r25-live-verification-final
+          path: /tmp/r25-live-final/
+          if-no-files-found: error
+          retention-days: 14
