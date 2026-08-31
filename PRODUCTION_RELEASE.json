@@ -1,81 +1,70 @@
 {
-  "schemaVersion": "smarter.franklin.production-release.v6.1",
+  "schemaVersion": "smarter.franklin.production-release.v8",
   "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
   "editionId": "franklin",
-  "release": "FR-NAV0.9.1-CANDIDATE-R24.1",
+  "release": "FR-NAV1.1.0-CANDIDATE-R26",
   "canonicalOrigin": "https://franklinnavigator.com",
   "exactDirectPredecessor": {
-    "release": "FR-NAV0.9.0-CANDIDATE-R24",
-    "productionGitCommit": "e290fbbf720cdcf95a89d005e9cdc719b1e294a2",
-    "productionGitTree": "4f3fdfc8adbd211ba74763ad2774ffccf2dde583",
-    "productionDeployId": "dep-daaao6on74is73abn6o0",
-    "productionDeployPerformed": true
-  },
-  "sourceArtifact": {
-    "construction": "EXACT_R24_PRODUCTION_TREE_PLUS_VERIFIED_DYNAMIC_INTERACTION_PATCH",
-    "presentationBaselineRelease": "FR-NAV0.9.0-CANDIDATE-R24",
-    "interactionPatchId": "R24_1_DYNAMIC_ASK_NAVIGATOR_2026_08_30",
-    "interactionPatchScriptSha256": "a0fd42a77d8567ed533cea8bed841b098cb0c01018966a20f34ec9258718e628",
-    "finalGitTreeAndDeployBoundByPostDeploymentReceipt": true
+    "release": "FR-NAV1.0.0-CANDIDATE-R25",
+    "artifactBinding": "R25_SEALED_IN_THIS_EXECUTION",
+    "productionDeployPerformed": false
   },
   "publicPayload": {
-    "htmlPages": 19276,
-    "sitemapRoutes": 19274,
     "profiles": 19103,
-    "internalReferencesChecked": 863557,
+    "newMembershipRoutes": [
+      "/membership-enrollment/",
+      "/membership-status/",
+      "/member-support/",
+      "/founding-member-planner/",
+      "/member-first-value/"
+    ],
+    "selfServicePricesMapped": 84,
+    "enterpriseQuoteOnly": true,
+    "htmlPages": 19298,
+    "sitemapRoutes": 19296,
+    "publicLanguageFindings": 0,
     "brokenInternalTargets": 0,
     "brokenAnchors": 0,
     "unsafeScriptLikeLinks": 0,
-    "publicLanguageFindings": 0
+    "sitemapStrategy": "BASELINE_SITEMAP_PLUS_MEMBERSHIP_SUPPLEMENT",
+    "sitemapSupplementRoute": "/sitemap-membership.xml"
   },
-  "visibleHomepage": {
-    "viewportVerified": "1366x768",
-    "shortHero": true,
-    "compactAskNavigator": true,
-    "threeFranklinPhotosAboveFold": true,
-    "aroundFranklinTopPx": 547.65625,
-    "aroundFranklinWithinFirstViewport": true,
-    "currentCardsMaxVisible": 3,
-    "expiredCardsAutoHidden": true,
-    "residentDestinationsBeforeBusiness": true,
-    "askNavigator": {
-      "restingDesktopCardMaxWidthPx": 540,
-      "restingTextareaMinHeightPx": 110,
-      "restingRows": 3,
-      "autoGrowMaximumLines": 6,
-      "overflowAfterMaximum": "INTERNAL_SCROLL",
-      "answerExpansion": "NATURAL_VERTICAL_BELOW_INPUT",
-      "examplePromptsDesktopColumns": 2,
-      "mobileWidth": "FULL_AVAILABLE_WIDTH",
-      "designIntent": "KEEP_THE_BALANCED_RESTING_LAYOUT_AND_EXPAND_ONLY_DURING_ACTIVE_USE"
-    }
+  "runtimeFoundation": {
+    "repository": "neutralboardroom/franklin-navigator",
+    "branch": "franklin-commerce-runtime",
+    "commit": "6cd1ec43326d45df30cb750b1757fbf9902e07a8",
+    "tree": "cc7bb95bac6f015fbf505cc269a5e61553c122bb",
+    "sourceTests": "PASS",
+    "productionWebServiceBound": false
   },
-  "verification": {
-    "coreAssertions": 157,
-    "r24Assertions": 16,
-    "accessibilitySecurityAssertions": 22,
-    "commerceLifecycleScenarios": 11,
-    "visualVerification": "PASS"
+  "databaseFoundation": {
+    "provider": "Render",
+    "databaseId": "dpg-daadpehf2nfc73a0qsg0-a",
+    "name": "franklin-navigator-membership-db",
+    "region": "virginia",
+    "plan": "basic_256mb",
+    "status": "AVAILABLE",
+    "schemaApplied": false
   },
   "commerce": {
-    "products": 14,
-    "selfServiceRecurringPrices": 84,
-    "enterprise": "QUOTE_ONLY",
-    "foundingOffer": "FOUNDING30",
     "paidCommerceActive": false,
     "stripeDownstreamEntitlementProcessingActive": false,
     "productionEntitlementPersistence": false,
-    "codeLifecycleTests": "PASS",
-    "blocker": "FRANKLIN_ISOLATED_PERSISTENT_LOCAL_RUNTIME_NOT_PROVISIONED"
+    "controlledRealTransactionPassed": false,
+    "blocker": "PRODUCTION_RUNTIME_SERVICE_NOT_DEPLOYED_OR_DATABASE_BOUND"
   },
-  "deployment": {
-    "provider": "Render",
-    "serviceId": "srv-da8tg6rbc2fs73crru2g",
-    "serviceName": "franklin-navigator",
-    "repository": "https://github.com/neutralboardroom/franklin-navigator",
-    "branch": "main",
-    "automaticDeploy": false,
-    "scope": "PUBLIC_STATIC_R24_1_DYNAMIC_ASK_NAVIGATOR__COMMERCE_FAIL_CLOSED"
-  },
-  "authorityTransfer": false
+  "status": "SEALED_TESTED_MOST_IMPROVED_SUCCESSOR__PROSPECTING_PRESELL_AND_CONVERSION_READY__REAL_PAYMENTS_FAIL_CLOSED",
+  "authorityTransfer": false,
+  "materialImprovements": [
+    "Founding-member conversation builder for all 14 categories and 84 self-service prices",
+    "Exact regular, Founding30 and annual-value calculations",
+    "Tier-specific first-value path",
+    "No-charge email/copy handoff for human pre-enrollment conversations",
+    "Transparent payment-readiness and support routes"
+  ],
+  "deploymentPredecessor": {
+    "release": "FR-NAV0.9.1-CANDIDATE-R24.1",
+    "commit": "cc8620072ba5d774cb505f236f0c98c6f29b7754",
+    "deployId": "dep-daaqq2qjnfac73a6greg"
+  }
 }

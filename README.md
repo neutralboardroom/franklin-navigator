@@ -1,5 +1,5 @@
-# Franklin Navigator production
+# Franklin Navigator R26
 
-Clean public static production tree for `FR-NAV0.9.1-CANDIDATE-R24.1`.
+`FR-NAV1.1.0-CANDIDATE-R26` is the most improved successor to sealed R25. It preserves all 19,103 profiles and every qualified R25 capability, then adds a founding-member conversation builder, exact price/Founding30/annual-value calculations, and tier-specific first-value guidance.
 
-The Ask Navigator card keeps its balanced resting size, automatically grows the question field up to six lines, and expands answers naturally below the input after submission. All 19,103 profile pages remain preserved. Paid commerce remains fail-closed pending a Franklin-isolated persistent Local runtime.
+Franklin Navigator is ready for prospecting, demonstrations and human pre-enrollment conversations. Real payments remain fail-closed until the dedicated account service is deployed, connected to the Franklin member records, tested end to end and proven by one controlled real transaction.

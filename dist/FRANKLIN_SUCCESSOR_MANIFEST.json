@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "franklin.successor-public-manifest.v2",
+  "release": "FR-NAV1.1.0-CANDIDATE-R26",
+  "exactArtifactPredecessor": "FR-NAV1.0.0-CANDIDATE-R25",
+  "productionDeploymentPredecessor": "FR-NAV0.9.1-CANDIDATE-R24.1",
+  "profiles": 19103,
+  "htmlPages": 19298,
+  "sitemapStrategy": "BASELINE_SITEMAP_PLUS_MEMBERSHIP_SUPPLEMENT",
+  "combinedUniqueSitemapRoutes": 19296,
+  "paidCommerceActive": false,
+  "deltaFileCount": 20,
+  "deltaTreeDigestSha256": "568d21ad894b28e0bf19e57f74d6fa340c629b8a05e8e17e4aa503d7718b4fa1",
+  "files": [
+    {
+      "path": "PRODUCTION_RELEASE.json",
+      "bytes": 2550,
+      "sha256": "3d2e323bfea7e8de0ef433076fc214ee504042853e4f14ee2e26d771ad341c47"
+    },
+    {
+      "path": "README.md",
+      "bytes": 599,
+      "sha256": "2ab1139214158d3eb4dcd83308b1e9e2d61b9e49cce5aef00fb9172d92039097"
+    },
+    {
+      "path": "dist/assets/r25-membership.css",
+      "bytes": 1255,
+      "sha256": "fa973cf2cd07d0129d2f0d281c9f337b7193bcd1d99a774fcc927f0a4e2130a4"
+    },
+    {
+      "path": "dist/assets/r25-membership.js",
+      "bytes": 2427,
+      "sha256": "a67811d6669855800afa0dd59c23a6149c5bffeee8745167f1684659a4428f2f"
+    },
+    {
+      "path": "dist/assets/r26-membership.css",
+      "bytes": 1050,
+      "sha256": "8693acee7c48b2034d02731e898983bd6ebd737b6af6f85b76e56fd77acf2404"
+    },
+    {
+      "path": "dist/assets/r26-membership.js",
+      "bytes": 3121,
+      "sha256": "5c14e28cd7fa42e1fcf8f5135bd4d8cff65a5985f8a94e8af3f8a9305572df0c"
+    },
+    {
+      "path": "dist/business-dashboard/index.html",
+      "bytes": 7293,
+      "sha256": "191705c79c088d6cffd3f2c76e0cd0195791f14f2d7c0bc5e8d9c554756eec60"
+    },
+    {
+      "path": "dist/data/commerce-readiness.json",
+      "bytes": 1328,
+      "sha256": "3a60773707407e2a26a84ba19d693574d10b987c19fde170871eee7701a295c1"
+    },
+    {
+      "path": "dist/data/membership-checkout-catalog.json",
+      "bytes": 10448,
+      "sha256": "eaba329acaf50273b82d7b509de554818fc28884390facb0cb221993b3bc9e6b"
+    },
+    {
+      "path": "dist/data/r26-first-value.json",
+      "bytes": 1070,
+      "sha256": "1ab42f397886cf8fb6d6343f86383883a6629cea45caffb20e899be13beed8a3"
+    },
+    {
+      "path": "dist/founding-member-planner/index.html",
+      "bytes": 4087,
+      "sha256": "3c13b0c764139aa140d39608ae9aa211549c699d9237cc2ad46c4df6db7bd1df"
+    },
+    {
+      "path": "dist/member-first-value/index.html",
+      "bytes": 3391,
+      "sha256": "0756aa5b778d02b275a2ecc0f9fd433be5c5a73c48674f501fb31d5ee9d07dfd"
+    },
+    {
+      "path": "dist/member-support/index.html",
+      "bytes": 3624,
+      "sha256": "34114f5080034841d4bc97e750610b2fd5add48ac68b567dd169c572cb777fcf"
+    },
+    {
+      "path": "dist/membership-enrollment/index.html",
+      "bytes": 4783,
+      "sha256": "01679e626d3792f836011dc8ff459d5ede478f7f16d70ae2c94dcb587272b99f"
+    },
+    {
+      "path": "dist/membership-pricing/index.html",
+      "bytes": 8306,
+      "sha256": "f594f9f340e71d4775f51b25369c65158c7177c15cafae7f952763157aed7c1e"
+    },
+    {
+      "path": "dist/membership-start/index.html",
+      "bytes": 7603,
+      "sha256": "d201bf688d99ceee8db4f5d8410cf71f84deea0006ecd52d30f606f41b794896"
+    },
+    {
+      "path": "dist/membership-status/index.html",
+      "bytes": 4009,
+      "sha256": "abcd862e439423ebadf2169ba7e938504388582f9b1b1b724c0219d3519cd98a"
+    },
+    {
+      "path": "dist/release-identity.json",
+      "bytes": 354,
+      "sha256": "30e2b60e9f0b7ca9013273e5e6757ef9c32731dbb57e534b494e723d0ba53e47"
+    },
+    {
+      "path": "dist/robots.txt",
+      "bytes": 136,
+      "sha256": "a6e8124604e07328770a57310ca174b7fedbb7f4db93301d20dda59b41c3b848"
+    },
+    {
+      "path": "dist/sitemap-membership.xml",
+      "bytes": 483,
+      "sha256": "af310a101d3d61f13a0f1485dc1ea81ef7910ad064137290ad3c23dcd2a5904b"
+    }
+  ]
+}

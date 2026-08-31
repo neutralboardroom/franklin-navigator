@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "franklin.member-first-value.r26.v1",
+  "release": "FR-NAV1.1.0-CANDIDATE-R26",
+  "firstValueByTier": {
+    "INDIVIDUAL": [
+      "Link and review one profile",
+      "Prepare richer description and media",
+      "Choose one Growth Desk priority",
+      "Open member support and cancellation routes"
+    ],
+    "TEAM": [
+      "Link the organization and up to five people",
+      "Assign a team administrator",
+      "Prepare shared profile/media standards",
+      "Create the first 30-day growth plan"
+    ],
+    "OFFICE": [
+      "Link the office and covered profiles",
+      "Prepare offers/events publishing checklist",
+      "Set profile and location consistency rules",
+      "Create the first local visibility campaign plan"
+    ],
+    "ENTERPRISE": [
+      "Schedule scope and location review",
+      "Map administrators and covered identities",
+      "Confirm custom reporting and network needs",
+      "Receive a written quote before any payment"
+    ]
+  },
+  "activationRequiresVerifiedEntitlement": true,
+  "guaranteedOutcomes": false
+}

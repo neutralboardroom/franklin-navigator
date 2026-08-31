@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "franklin.public-payment-readiness.r26.v1",
+  "release": "FR-NAV1.1.0-CANDIDATE-R26",
+  "observedAtUtc": "2026-08-31T17:25:00Z",
+  "status": "MEMBERSHIP_ACTIVATION_IN_PROGRESS__REAL_PAYMENTS_CLOSED",
+  "readyFor": [
+    "PROSPECTING",
+    "DEMONSTRATIONS",
+    "HUMAN_PRE_ENROLLMENT_CONVERSATIONS"
+  ],
+  "notAvailable": [
+    "REAL_CARD_CHARGES",
+    "ACTIVE_PAID_MEMBERSHIP_ACCESS",
+    "SELF_SERVICE_BILLING_PORTAL"
+  ],
+  "product": {
+    "profiles": 19103,
+    "membershipCategories": 14,
+    "selfServicePlanOptions": 84,
+    "enterpriseQuoteOnly": true,
+    "founding30Published": true
+  },
+  "systems": {
+    "dedicatedMemberRecordsReserved": true,
+    "accountAndMembershipServicePrepared": true,
+    "liveConnectionComplete": false,
+    "controlledRealPurchasePassed": false
+  },
+  "paidCommerceActive": false,
+  "canTakeRealPayments": false,
+  "message": "Franklin Navigator can prepare membership choices and hold human enrollment conversations, but checkout remains closed until the live account service, member records, billing changes, cancellation and refunds work together and a controlled real purchase passes.",
+  "conversionExperience": {
+    "foundingMemberPlanner": true,
+    "firstValuePreview": true,
+    "noChargeConversationHandoff": true,
+    "spanishParityComplete": false
+  }
+}
