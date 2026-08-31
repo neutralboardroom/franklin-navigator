@@ -23,7 +23,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base64 -d artifacts/franklin-commerce-runtime-seed.tar.gz.b64 > /tmp/franklin-commerce-runtime-seed.tar.gz
+          # The committed carrier is text and can contain transport whitespace. Decode
+          # while ignoring non-alphabet transport characters, then verify exact bytes.
+          base64 --ignore-garbage --decode artifacts/franklin-commerce-runtime-seed.tar.gz.b64 > /tmp/franklin-commerce-runtime-seed.tar.gz
           echo 'f25b9bd16a49e6a5c45d92c8a4c28781eaadf33f02902261d92ac7766420bafe  /tmp/franklin-commerce-runtime-seed.tar.gz' | sha256sum -c -
           rm -rf /tmp/franklin-commerce-runtime
           mkdir -p /tmp/franklin-commerce-runtime
@@ -34,6 +36,9 @@ jobs:
           test -f /tmp/franklin-commerce-runtime/.github/workflows/commerce-runtime-ci.yml
           node --check /tmp/franklin-commerce-runtime/server.js
           node --check /tmp/franklin-commerce-runtime/test/lifecycle.test.js
+          cd /tmp/franklin-commerce-runtime
+          npm install --ignore-scripts --no-audit --no-fund
+          npm test
       - name: Publish hard-isolated Local runtime branch
         shell: bash
         run: |
@@ -42,6 +47,7 @@ jobs:
           git rm -rf . >/dev/null 2>&1 || true
           find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
           cp -a /tmp/franklin-commerce-runtime/. .
+          rm -rf node_modules
           git config user.name 'Franklin Navigator Release Bot'
           git config user.email 'actions@users.noreply.github.com'
           git add -A
