@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "franklin.r27.production-readiness-fix.v1",
+  "release": "FR-NAV1.2.0-CANDIDATE-R27",
+  "fixes": {
+    "localProofTlsDisabledOnlyInCi": true,
+    "productionTlsDefaultPreserved": true,
+    "healthRequiresDatabase": true,
+    "healthRejectsStartupFailure": true,
+    "paymentLinkArrayTyped": true,
+    "eventLedgerProofUsesAllowedSource": true
+  },
+  "commerceEnabled": false,
+  "liveChargeCreated": false,
+  "authorityTransfer": false
+}
