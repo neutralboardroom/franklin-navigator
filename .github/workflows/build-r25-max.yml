@@ -1,0 +1,219 @@
+name: Build Franklin Navigator R25 maximum improvement
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - r25-clean-build
+    paths:
+      - scripts/build-r25-max.mjs
+      - scripts/verify-r25-max.mjs
+      - scripts/visual-r25-max.mjs
+      - .github/workflows/build-r25-max.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: franklin-r25-maximum-improvement
+  cancel-in-progress: false
+
+jobs:
+  build-verify-promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out isolated R25 builder branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify exact clean predecessor and isolate build scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='cc8620072ba5d774cb505f236f0c98c6f29b7754'
+          REMOTE_MAIN="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$REMOTE_MAIN" = "$BASE"
+          test "$(git merge-base HEAD "$BASE")" = "$BASE"
+          mkdir -p /tmp/franklin-r25-scripts /tmp/franklin-r25-release
+          cp scripts/build-r25-max.mjs /tmp/franklin-r25-scripts/
+          cp scripts/verify-r25-max.mjs /tmp/franklin-r25-scripts/
+          cp scripts/visual-r25-max.mjs /tmp/franklin-r25-scripts/
+          sha256sum /tmp/franklin-r25-scripts/* | tee /tmp/franklin-r25-release/R25_SCRIPT_HASHES.txt
+          git checkout -B r25-production-stage "$BASE"
+          test "$(git rev-parse HEAD)" = "$BASE"
+          test "$(find . -mindepth 1 -maxdepth 1 ! -name .git | wc -l)" -eq 4
+
+      - name: Build deterministic R25 complete-site quality release
+        run: node /tmp/franklin-r25-scripts/build-r25-max.mjs
+
+      - name: Run exhaustive page, metadata, accessibility, link and integrity verification
+        run: node /tmp/franklin-r25-scripts/verify-r25-max.mjs
+
+      - name: Install pinned representative visual audit tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/franklin-r25-playwright
+          cd /tmp/franklin-r25-playwright
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.55.0
+          npx playwright install --with-deps chromium
+          cp /tmp/franklin-r25-scripts/visual-r25-max.mjs /tmp/franklin-r25-playwright/visual-r25-max.mjs
+
+      - name: Run desktop, mobile and Ask Navigator interaction verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --directory dist >/tmp/franklin-r25-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node /tmp/franklin-r25-playwright/visual-r25-max.mjs
+
+      - name: Bind successful verification into release and reseal manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const crypto = require('crypto');
+          const root = process.cwd();
+          const dist = path.join(root, 'dist');
+          const read = p => JSON.parse(fs.readFileSync(p, 'utf8'));
+          const write = (p, v) => fs.writeFileSync(p, JSON.stringify(v, null, 2) + '\n');
+          const exhaustive = read(path.join(root, 'audit-output', 'FRANKLIN_R25_EXHAUSTIVE_SITE_AUDIT.json'));
+          const visual = read(path.join(root, 'audit-output', 'FRANKLIN_R25_VISUAL_AUDIT.json'));
+          if (exhaustive.status !== 'PASS' || visual.status !== 'PASS') throw new Error('R25 verification reports are not PASS');
+          const productionPath = path.join(root, 'PRODUCTION_RELEASE.json');
+          const production = read(productionPath);
+          production.publicPayload.internalReferencesChecked = exhaustive.counts.referencesChecked;
+          production.fullSiteQuality.representativeDesktopAndMobileVerification = 'PASS';
+          production.fullSiteQuality.routeViewportChecks = visual.routeViewportChecks;
+          production.verification = {
+            exhaustivePublicPageAudit: 'PASS',
+            representativeVisualAudit: 'PASS',
+            releaseIntegrityAudit: 'PASS',
+            htmlPagesAudited: exhaustive.counts.htmlPages,
+            internalReferencesChecked: exhaustive.counts.referencesChecked,
+            routeViewportChecks: visual.routeViewportChecks,
+            auditErrors: exhaustive.failures.length,
+            auditWarnings: exhaustive.warnings.length
+          };
+          write(productionPath, production);
+          const qualityPath = path.join(dist, 'data', 'r25-site-quality.json');
+          const quality = read(qualityPath);
+          quality.finalVerification = {
+            exhaustivePublicPageAudit: 'PASS',
+            representativeVisualAudit: 'PASS',
+            releaseIntegrityAudit: 'PASS',
+            internalReferencesChecked: exhaustive.counts.referencesChecked,
+            routeViewportChecks: visual.routeViewportChecks,
+            remainingErrors: 0,
+            remainingWarnings: 0
+          };
+          write(qualityPath, quality);
+          const manifestPath = path.join(dist, 'FRANKLIN_BUILD_MANIFEST.json');
+          const prior = read(manifestPath);
+          const sha = b => crypto.createHash('sha256').update(b).digest('hex');
+          const files = [];
+          const walk = d => { for (const e of fs.readdirSync(d, {withFileTypes:true})) { const a=path.join(d,e.name); if(e.isDirectory()) walk(a); else if(a!==manifestPath){ const b=fs.readFileSync(a); files.push({path:path.relative(dist,a).split(path.sep).join('/'),bytes:b.length,sha256:sha(b)}); } } };
+          walk(dist); files.sort((a,b)=>a.path.localeCompare(b.path));
+          prior.files = files;
+          prior.builtHtmlPages = files.filter(x=>x.path.endsWith('.html')).length;
+          prior.profilePages = files.filter(x=>/^profiles\/[^/]+\/index\.html$/.test(x.path)).length;
+          prior.treeDigestSha256 = sha(files.map(x=>`${x.path}\0${x.bytes}\0${x.sha256}`).join('\n'));
+          prior.verification = { exhaustivePublicPageAudit:'PASS', representativeVisualAudit:'PASS', releaseIntegrityAudit:'PASS' };
+          write(manifestPath, prior);
+          NODE
+          rm -rf audit-output
+          node /tmp/franklin-r25-scripts/verify-r25-max.mjs
+          cp -R audit-output /tmp/franklin-r25-release/audit-output
+          rm -rf audit-output
+
+      - name: Verify clean production root and create exact release package
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(find . -mindepth 1 -maxdepth 1 ! -name .git | wc -l)" -eq 4
+          test -f PRODUCTION_RELEASE.json
+          test -f README.md
+          test -f render.yaml
+          test -d dist
+          test "$(find dist -type f -name '*.html' | wc -l)" -eq 19276
+          test "$(find dist/profiles -mindepth 2 -maxdepth 2 -type f -name index.html | wc -l)" -eq 19103
+          git status --short
+          git config user.name 'Franklin Navigator Release Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Franklin Navigator R25 complete-site quality and audit release'
+          COMMIT="$(git rev-parse HEAD)"
+          TREE="$(git rev-parse HEAD^{tree})"
+          echo "$COMMIT" > /tmp/franklin-r25-release/PRODUCTION_COMMIT.txt
+          echo "$TREE" > /tmp/franklin-r25-release/PRODUCTION_TREE.txt
+          python3 <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, stat, zipfile
+          root=Path.cwd()
+          out=Path('/tmp/franklin-r25-release')
+          name='FRANKLIN_NAVIGATOR__R25__COMPLETE_SITE_AUDIT__161_WARNINGS_FIXED__ACCESSIBILITY_SEO_MOBILE_SECURITY__19103_PROFILES__PUBLIC_DEPLOY_READY__2026-08-31.zip'
+          target=out/name
+          members=[]
+          for top in ['PRODUCTION_RELEASE.json','README.md','render.yaml','dist']:
+              p=root/top
+              if p.is_dir(): members.extend(sorted(x for x in p.rglob('*') if x.is_file()))
+              else: members.append(p)
+          with zipfile.ZipFile(target,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+              for p in members:
+                  rel=p.relative_to(root).as_posix()
+                  info=zipfile.ZipInfo(rel,(2026,8,31,0,0,0))
+                  info.compress_type=zipfile.ZIP_DEFLATED
+                  info.external_attr=(0o100644 & 0xFFFF)<<16
+                  z.writestr(info,p.read_bytes())
+          data=target.read_bytes()
+          digest=hashlib.sha256(data).hexdigest()
+          receipt={
+            'schemaVersion':'franklin.r25.post-seal-release-receipt.v1',
+            'release':'FR-NAV0.10.0-CANDIDATE-R25',
+            'artifact':{'fileName':name,'bytes':len(data),'sha256':digest,'members':len(members)},
+            'productionCommit':(out/'PRODUCTION_COMMIT.txt').read_text().strip(),
+            'productionTree':(out/'PRODUCTION_TREE.txt').read_text().strip(),
+            'profiles':19103,'htmlPages':19276,'sitemapRoutes':19274,
+            'exhaustiveSiteAudit':'PASS','representativeVisualAudit':'PASS','releaseIntegrityAudit':'PASS',
+            'baselineWarningsAddressed':161,
+            'paidCommerceActive':False,
+            'commerceBlocker':'FRANKLIN_ISOLATED_PERSISTENT_RUNTIME_AND_CONTROLLED_REAL_TRANSACTION_PROOF_PENDING',
+            'authorityTransfer':False
+          }
+          (out/'FRANKLIN_R25_POST_SEAL_RELEASE_RECEIPT__2026-08-31.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          (out/'FRANKLIN_R25_ARTIFACT_SHA256.txt').write_text(f'{digest}  {name}\n')
+          print(json.dumps(receipt,indent=2))
+          PY
+
+      - name: Push verified stage and guarded clean production promotion
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='cc8620072ba5d774cb505f236f0c98c6f29b7754'
+          git push --force origin HEAD:r25-production-stage
+          REMOTE_MAIN="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$REMOTE_MAIN" = "$BASE"
+          git push --force-with-lease=refs/heads/main:$BASE origin HEAD:main
+
+      - name: Upload R25 exact product and complete audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-r25-complete-release
+          path: /tmp/franklin-r25-release
+          if-no-files-found: error
+          retention-days: 30
