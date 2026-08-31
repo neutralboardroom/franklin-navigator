@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "franklin.persistent-proof-trigger.v1",
+  "release": "FR-NAV1.2.0-CANDIDATE-R27",
+  "runtimeCommit": "adf71b5b758415dcb8002cb9c169e16cc18e4309",
+  "runtimeTree": "bf05c069affd0e0cabc1ae0fb9b0304225001e33",
+  "packageLockPresent": true,
+  "commerceEnabledDefault": false,
+  "purpose": "Trigger the exact post-bootstrap PostgreSQL lifecycle, isolation, mapping, restart and fail-closed proof required by WO-025.",
+  "realChargeCreated": false,
+  "authorityTransfer": false
+}
