@@ -16,14 +16,6 @@ if(!server.includes(oldCleanup))throw new Error('payment_link_cleanup_anchor_mis
 server=server.replace(oldCleanup,newCleanup);
 fs.writeFileSync(serverPath,server);
 
-const proofPath=path.join(root,'.github','workflows','franklin-commerce-runtime-persistent-proof.yml');
-let proof=fs.readFileSync(proofPath,'utf8');
-const envAnchor="      COMMERCE_ENABLED: 'false'\n";
-if(!proof.includes(envAnchor))throw new Error('proof_env_anchor_missing');
-proof=proof.replace(envAnchor,envAnchor+"      PGSSL_DISABLE: 'true'\n");
-proof=proof.replaceAll("values('proof:event','PROOF','invoice.paid'","values('proof:event','SRE','invoice.paid'");
-fs.writeFileSync(proofPath,proof);
-
 const testPath=path.join(root,'test','r27-production-readiness.test.js');
 fs.writeFileSync(testPath,`'use strict';\nconst test=require('node:test');\nconst assert=require('node:assert/strict');\nconst fs=require('node:fs');\nconst source=fs.readFileSync(require('node:path').join(__dirname,'..','server.js'),'utf8');\ntest('production health rejects an unready database',()=>{assert.match(source,/healthy\\?200:503/);assert.match(source,/await query\\('select 1 ok'\\)/);assert.match(source,/startupReady:!readyError/);});\ntest('payment link cleanup uses explicit text array typing',()=>assert.match(source,/any\\(\\$1::text\\[\\]\\)/));\n`);
 
