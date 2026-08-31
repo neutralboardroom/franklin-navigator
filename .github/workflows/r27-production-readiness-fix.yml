@@ -1,0 +1,45 @@
+name: Franklin R27 production readiness fix
+
+on:
+  push:
+    branches:
+      - franklin-commerce-runtime
+    paths:
+      - scripts/apply-r27-production-readiness-fix.mjs
+      - .github/workflows/r27-production-readiness-fix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Apply readiness fix and verify exact source
+        run: |
+          set -euo pipefail
+          node scripts/apply-r27-production-readiness-fix.mjs
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run check
+          npm test
+          grep -q "PGSSL_DISABLE: 'true'" .github/workflows/franklin-commerce-runtime-persistent-proof.yml
+          grep -q "healthy?200:503" server.js
+          grep -q 'any($1::text\[\])' server.js
+      - name: Commit fixed source and retire one-time carrier
+        run: |
+          set -euo pipefail
+          rm -f scripts/apply-r27-production-readiness-fix.mjs .github/workflows/r27-production-readiness-fix.yml
+          git config user.name 'Franklin Navigator Release Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix Franklin R27 production health and persistent proof environment'
+          git push origin HEAD:franklin-commerce-runtime
