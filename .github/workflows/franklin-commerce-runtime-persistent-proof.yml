@@ -52,6 +52,7 @@ jobs:
       ADMIN_TOKEN: github-actions-test-admin-token-0123456789
       SESSION_DAYS: '14'
       COMMERCE_ENABLED: 'false'
+      PGSSL_DISABLE: 'true'
     steps:
       - name: Check out exact Franklin runtime branch
         uses: actions/checkout@v4
@@ -164,8 +165,8 @@ jobs:
           jq -e '.ok==true and .paymentLinkCount==84 and .commerceEnabled==false' /tmp/franklin-ready-after-restart.json
           test "$(psql "$DATABASE_URL" -Atc "select count(*) from franklin_accounts where account_id='proof_account'")" = '1'
           test "$(psql "$DATABASE_URL" -Atc "select count(*) from franklin_payment_links where active=true")" = '84'
-          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_event_ledger(event_key,source,event_type,payload_sha256,processing_state) values('proof:event','PROOF','invoice.paid',repeat('a',64),'RECEIVED') on conflict(event_key) do nothing"
-          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_event_ledger(event_key,source,event_type,payload_sha256,processing_state) values('proof:event','PROOF','invoice.paid',repeat('a',64),'RECEIVED') on conflict(event_key) do nothing"
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_event_ledger(event_key,source,event_type,payload_sha256,processing_state) values('proof:event','SRE','invoice.paid',repeat('a',64),'RECEIVED') on conflict(event_key) do nothing"
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_event_ledger(event_key,source,event_type,payload_sha256,processing_state) values('proof:event','SRE','invoice.paid',repeat('a',64),'RECEIVED') on conflict(event_key) do nothing"
           test "$(psql "$DATABASE_URL" -Atc "select count(*) from franklin_event_ledger where event_key='proof:event'")" = '1'
 
       - name: Create exact non-secret evidence packet
