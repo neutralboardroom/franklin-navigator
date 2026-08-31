@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// Final source-only repair carrier; workflow authority is handled separately.
 const root=process.cwd();
 const serverPath=path.join(root,'server.js');
 let server=fs.readFileSync(serverPath,'utf8');
