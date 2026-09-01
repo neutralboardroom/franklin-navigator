@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+// R29 V6 generated-runtime patch. This file intentionally triggers the gated patch/test workflow.
 const path='server.js';
 let s=fs.readFileSync(path,'utf8');
 const replacements=[
