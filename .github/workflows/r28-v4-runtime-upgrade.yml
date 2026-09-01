@@ -1,0 +1,45 @@
+name: Apply Franklin R28 V4 runtime upgrade
+on:
+  push:
+    branches: [franklin-commerce-runtime]
+    paths:
+      - artifacts/r28-v4-runtime-patch.part01
+      - artifacts/r28-v4-runtime-patch.part02
+      - .github/workflows/r28-v4-runtime-upgrade.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: franklin-commerce-runtime
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+          cache: npm
+      - name: Decode exact runtime patch
+        run: |
+          cat artifacts/r28-v4-runtime-patch.part* | base64 -d > /tmp/r28-runtime-patch.tar.gz
+          echo "f7e568408a8e8f736a48841fc27871fbe71b3cdb3ec048dd05647b5b267aa651  /tmp/r28-runtime-patch.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/r28-runtime-patch.tar.gz -C .
+      - name: Apply exact V4 source upgrade
+        run: node scripts/apply-r28-v4-runtime.mjs
+      - name: Verify exact dependencies and tests
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run check
+          npm test
+      - name: Commit generated runtime source
+        run: |
+          git config user.name "neutralboardroom"
+          git config user.email "reachrgnow@gmail.com"
+          git add server.js lib test render.yaml evidence scripts/apply-r28-v4-runtime.mjs .github/workflows/franklin-commerce-runtime-persistent-proof.yml
+          if git diff --cached --quiet; then
+            echo "No generated runtime changes."
+            exit 0
+          fi
+          git commit -m "Upgrade Franklin commerce runtime to Community Membership V4"
+          git push origin HEAD:franklin-commerce-runtime
