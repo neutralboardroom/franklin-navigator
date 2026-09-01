@@ -1,0 +1,84 @@
+name: Apply Franklin R28 Community Membership V4
+on:
+  push:
+    branches: [main]
+    paths:
+      - artifacts/r28-community-membership-delta.b64
+      - .github/workflows/apply-r28-community-membership.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+      - name: Decode and verify exact R28 public delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 -d artifacts/r28-community-membership-delta.b64 > /tmp/r28-public-delta.tar.gz
+          echo "d4d543a8c832f90ace2e1663bd706ddf647b81d7d602f51bee64d41cc8dc3fb5  /tmp/r28-public-delta.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/r28-public-delta.tar.gz -C .
+          python - <<'PY'
+          import json,hashlib,pathlib
+          root=pathlib.Path('.')
+          m=json.loads((root/'R28_PUBLIC_DELTA_MANIFEST.json').read_text())
+          assert m['release']=='FR-NAV1.3.0-CANDIDATE-R28'
+          for row in m['files']:
+              p=root/row['path']
+              assert p.is_file(),row['path']
+              data=p.read_bytes()
+              assert len(data)==row['bytes'],row['path']
+              assert hashlib.sha256(data).hexdigest()==row['sha256'],row['path']
+          print('verified',len(m['files']),'delta files')
+          PY
+      - name: Verify syntax, public strategy and fail-closed truth
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check dist/assets/r27-home.js
+          node --check dist/assets/r28-community.js
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json
+          class P(HTMLParser):
+              def __init__(self): super().__init__(); self.ids=set()
+              def handle_starttag(self,t,a):
+                  d=dict(a)
+                  if 'id' in d:
+                      assert d['id'] not in self.ids,d['id']
+                      self.ids.add(d['id'])
+          files=list(Path('dist').rglob('*.html'))
+          for p in files:
+              text=p.read_text(errors='strict')
+              parser=P(); parser.feed(text)
+          pricing=Path('dist/membership-pricing/index.html').read_text()
+          assert '$3.50' in pricing and '$35' in pricing and '$120' in pricing and '$135' in pricing
+          assert '84-price' not in pricing and 'Individual, Team and Office' not in pricing
+          start=Path('dist/membership-start/index.html').read_text()
+          assert 'Show me my member profile' in start
+          release=json.loads(Path('PRODUCTION_RELEASE.json').read_text())
+          assert release['publicPayload']['profiles']==19103
+          assert release['commerce']['publicCheckoutOpen'] is False
+          print('public verification pass')
+          PY
+      - name: Commit exact R28 public successor
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "neutralboardroom"
+          git config user.email "reachrgnow@gmail.com"
+          git add README.md PRODUCTION_RELEASE.json NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_3_0_R28.md R28_PUBLIC_DELTA_MANIFEST.json dist
+          if git diff --cached --quiet; then
+            echo "No generated public changes."
+            exit 0
+          fi
+          git commit -m "Release Franklin R28 Community Membership V4"
+          git push origin HEAD:main
