@@ -1,450 +1,72 @@
 {
-  "schemaVersion": "franklin.public-membership-catalog.r26.v1",
-  "release": "FR-NAV1.1.0-CANDIDATE-R26",
-  "currency": "USD",
-  "products": 14,
-  "selfServiceRecurringPrices": 84,
-  "enterprise": "QUOTE_ONLY",
-  "foundingOffer": {
-    "promotionCode": "FOUNDING30",
-    "couponId": "FRANKLIN_FOUNDING_30_2026",
-    "percentOff": 30,
-    "duration": "FIRST_12_MONTHS",
-    "enrollmentDeadlineLocal": "2026-12-31T23:59:59-06:00",
-    "postDiscountRenewal": "REGULAR_V2_PRICE_UNLESS_CANCELED"
+  "schemaVersion": "franklin.community-membership.v6.live.v1",
+  "release": "FR-NAV1.10.0-CANDIDATE-R35",
+  "community": "FRANKLIN_TN",
+  "status": "LIVE_PAYMENT_LINK_BRIDGE_FULL_RUNTIME_PENDING",
+  "publicIdentity": "Franklin Navigator Community Membership",
+  "localOnlyMessage": "Built specifically for Franklin, Tennessee—not a national directory with a Franklin label.",
+  "freePresence": {
+    "amountUsd": 0,
+    "factualCorrectionsFree": true
   },
-  "verticals": [
+  "choices": [
     {
-      "id": "ACCOUNTING_TAX",
-      "slug": "accounting-tax",
-      "name": "Accounting / Tax",
-      "launchBand": "HIGHER_VALUE_PROFESSIONAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 19,
-          "annualUsd": 190,
-          "annualSavingsUsd": 38
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 39,
-          "annualUsd": 390,
-          "annualSavingsUsd": 78
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 69,
-          "annualUsd": 690,
-          "annualSavingsUsd": 138
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 149,
-        "annualStartingUsd": 1490,
-        "quoteOnly": true
-      }
+      "id": "monthly",
+      "lookupKey": "franklin_community_member_monthly_v5",
+      "stripePriceId": "price_1UAfLPRxNra9nizolEiP5Z2z",
+      "billing": "recurring_monthly",
+      "amountUsd": 5,
+      "autoRenew": true,
+      "checkoutUrl": "https://buy.stripe.com/9B65kFdxt7MP1a1gQHbQY00"
     },
     {
-      "id": "AUTO",
-      "slug": "auto-services",
-      "name": "Auto Services",
-      "launchBand": "SERVICE_PROFESSIONAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 15,
-          "annualUsd": 150,
-          "annualSavingsUsd": 30
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 35,
-          "annualUsd": 350,
-          "annualSavingsUsd": 70
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 59,
-          "annualUsd": 590,
-          "annualSavingsUsd": 118
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 129,
-        "annualStartingUsd": 1290,
-        "quoteOnly": true
-      }
+      "id": "annual",
+      "lookupKey": "franklin_community_member_annual_v5",
+      "stripePriceId": "price_1UAfLXRxNra9nizoW32RIfPG",
+      "billing": "recurring_annually",
+      "amountUsd": 50,
+      "autoRenew": true,
+      "checkoutUrl": "https://buy.stripe.com/eVq7sNdxtffhg4V9ofbQY02"
     },
     {
-      "id": "BEAUTY_FITNESS",
-      "slug": "beauty-fitness",
-      "name": "Beauty / Fitness",
-      "launchBand": "EVERYDAY_LOCAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 10,
-          "annualUsd": 100,
-          "annualSavingsUsd": 20
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 25,
-          "annualUsd": 250,
-          "annualSavingsUsd": 50
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 45,
-          "annualUsd": 450,
-          "annualSavingsUsd": 90
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 99,
-        "annualStartingUsd": 990,
-        "quoteOnly": true
-      }
-    },
-    {
-      "id": "EDUCATION",
-      "slug": "education-tutoring",
-      "name": "Education / Tutoring",
-      "launchBand": "EVERYDAY_LOCAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 10,
-          "annualUsd": 100,
-          "annualSavingsUsd": 20
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 25,
-          "annualUsd": 250,
-          "annualSavingsUsd": 50
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 45,
-          "annualUsd": 450,
-          "annualSavingsUsd": 90
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 99,
-        "annualStartingUsd": 990,
-        "quoteOnly": true
-      }
-    },
-    {
-      "id": "HEALTH",
-      "slug": "health",
-      "name": "Health / Wellness",
-      "launchBand": "HIGHER_VALUE_PROFESSIONAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 19,
-          "annualUsd": 190,
-          "annualSavingsUsd": 38
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 49,
-          "annualUsd": 490,
-          "annualSavingsUsd": 98
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 79,
-          "annualUsd": 790,
-          "annualSavingsUsd": 158
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 169,
-        "annualStartingUsd": 1690,
-        "quoteOnly": true
-      }
-    },
-    {
-      "id": "HOME_SERVICES",
-      "slug": "home-services",
-      "name": "Home Services / Trades",
-      "launchBand": "SERVICE_PROFESSIONAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 15,
-          "annualUsd": 150,
-          "annualSavingsUsd": 30
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 35,
-          "annualUsd": 350,
-          "annualSavingsUsd": 70
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 59,
-          "annualUsd": 590,
-          "annualSavingsUsd": 118
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 129,
-        "annualStartingUsd": 1290,
-        "quoteOnly": true
-      }
-    },
-    {
-      "id": "HOSPITALITY",
-      "slug": "hospitality",
-      "name": "Hospitality",
-      "launchBand": "SERVICE_PROFESSIONAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 15,
-          "annualUsd": 150,
-          "annualSavingsUsd": 30
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 35,
-          "annualUsd": 350,
-          "annualSavingsUsd": 70
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 59,
-          "annualUsd": 590,
-          "annualSavingsUsd": 118
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 129,
-        "annualStartingUsd": 1290,
-        "quoteOnly": true
-      }
-    },
-    {
-      "id": "LEGAL",
-      "slug": "legal",
-      "name": "Legal",
-      "launchBand": "HIGHER_VALUE_PROFESSIONAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 19,
-          "annualUsd": 190,
-          "annualSavingsUsd": 38
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 49,
-          "annualUsd": 490,
-          "annualSavingsUsd": 98
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 79,
-          "annualUsd": 790,
-          "annualSavingsUsd": 158
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 169,
-        "annualStartingUsd": 1690,
-        "quoteOnly": true
-      }
-    },
-    {
-      "id": "PET",
-      "slug": "pet-services",
-      "name": "Pet Services",
-      "launchBand": "EVERYDAY_LOCAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 10,
-          "annualUsd": 100,
-          "annualSavingsUsd": 20
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 25,
-          "annualUsd": 250,
-          "annualSavingsUsd": 50
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 45,
-          "annualUsd": 450,
-          "annualSavingsUsd": 90
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 99,
-        "annualStartingUsd": 990,
-        "quoteOnly": true
-      }
-    },
-    {
-      "id": "PROFESSIONAL_SERVICES",
-      "slug": "professional-services",
-      "name": "Professional Services",
-      "launchBand": "SERVICE_PROFESSIONAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 15,
-          "annualUsd": 150,
-          "annualSavingsUsd": 30
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 35,
-          "annualUsd": 350,
-          "annualSavingsUsd": 70
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 59,
-          "annualUsd": 590,
-          "annualSavingsUsd": 118
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 129,
-        "annualStartingUsd": 1290,
-        "quoteOnly": true
-      }
-    },
-    {
-      "id": "REAL_ESTATE",
-      "slug": "real-estate",
-      "name": "Real Estate / Property",
-      "launchBand": "HIGHER_VALUE_PROFESSIONAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 19,
-          "annualUsd": 190,
-          "annualSavingsUsd": 38
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 39,
-          "annualUsd": 390,
-          "annualSavingsUsd": 78
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 69,
-          "annualUsd": 690,
-          "annualSavingsUsd": 138
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 149,
-        "annualStartingUsd": 1490,
-        "quoteOnly": true
-      },
-    {
-      "id": "RESTAURANTS",
-      "slug": "restaurants",
-      "name": "Restaurants / Food",
-      "launchBand": "EVERYDAY_LOCAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 10,
-          "annualUsd": 100,
-          "annualSavingsUsd": 20
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 25,
-          "annualUsd": 250,
-          "annualSavingsUsd": 50
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 45,
-          "annualUsd": 450,
-          "annualSavingsUsd": 90
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 99,
-        "annualStartingUsd": 990,
-        "quoteOnly": true
-      },
-    {
-      "id": "RETAIL",
-      "slug": "retail-local-commerce",
-      "name": "Retail / Local Commerce",
-      "launchBand": "EVERYDAY_LOCAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 10,
-          "annualUsd": 100,
-          "annualSavingsUsd": 20
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 25,
-          "annualUsd": 250,
-          "annualSavingsUsd": 50
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 45,
-          "annualUsd": 450,
-          "annualSavingsUsd": 90
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 99,
-        "annualStartingUsd": 990,
-        "quoteOnly": true
-      }
-    },
-    {
-      "id": "SENIOR_SERVICES",
-      "slug": "senior-services",
-      "name": "Senior Services",
-      "launchBand": "SERVICE_PROFESSIONAL",
-      "tiers": [
-        {
-          "id": "INDIVIDUAL",
-          "monthlyUsd": 15,
-          "annualUsd": 150,
-          "annualSavingsUsd": 30
-        },
-        {
-          "id": "TEAM",
-          "monthlyUsd": 35,
-          "annualUsd": 350,
-          "annualSavingsUsd": 70
-        },
-        {
-          "id": "OFFICE",
-          "monthlyUsd": 59,
-          "annualUsd": 590,
-          "annualSavingsUsd": 118
-        }
-      ],
-      "enterprise": {
-        "monthlyStartingUsd": 129,
-        "annualStartingUsd": 1290,
-        "quoteOnly": true
-      }
+      "id": "charter",
+      "lookupKey": "franklin_charter_member_36_month_v5",
+      "stripePriceId": "price_1UAfLfRxNra9nizoqd84x8DR",
+      "billing": "one_time_prepaid_36_month_term",
+      "amountUsd": 120,
+      "termMonths": 36,
+      "autoRenew": false,
+      "label": "BEST_LONG_TERM_VALUE",
+      "checkoutUrl": "https://buy.stripe.com/7sY3cx9hd3wz1a12ZRbQY01"
     }
+  ],
+  "checkout": {
+    "paymentCollectionOpen": true,
+    "activationMode": "HUMAN_REVIEWED_UNTIL_RUNTIME_LIVE",
+    "publicPreviewCta": "SHOW ME",
+    "paymentCta": "PAY_SECURELY_WITH_STRIPE",
+    "postVerificationCta": "ACTIVATE MY MEMBERSHIP",
+    "automaticTax": false,
+    "taxConfigurationStatus": "OWNER_REVIEW_REQUIRED"
+  },
+  "runtime": {
+    "serviceUrl": "https://franklin-navigator-membership.onrender.com",
+    "deployed": true,
+    "databaseBound": false,
+    "stripeRuntimeKeyBound": false,
+    "customerPortalBound": false,
+    "commerceEnabled": false
+  },
+  "legacy84": {
+    "publiclySuppressed": true,
+    "retainedAsRollbackEvidence": true
+  },
+  "boundaries": [
+    "FREE_FACTUAL_CORRECTIONS",
+    "NO_PAY_TO_RANK",
+    "NO_ENDORSEMENT",
+    "NO_GUARANTEED_RESULTS",
+    "NO_RAW_CONTACT_EXPORT",
+    "PUBLIC_EMAIL_IS_NOT_CONSENT"
   ]
 }
