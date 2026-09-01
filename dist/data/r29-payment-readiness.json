@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "franklin.payment-readiness.r29.v1",
+  "release": "FR-NAV1.4.0-CANDIDATE-R29",
+  "observedAtUtc": "2026-09-01T02:03:00Z",
+  "provider": {
+    "stripeAccount": "acct_1TZU2TRxNra9nizo",
+    "productId": "prod_VB1O5muUZztY2O",
+    "monthlyPriceId": "price_1UAfLPRxNra9nizolEiP5Z2z",
+    "annualPriceId": "price_1UAfLXRxNra9nizoW32RIfPG",
+    "charterPriceId": "price_1UAfLfRxNra9nizoqd84x8DR",
+    "exactThreePriceProviderBinding": "PASS",
+    "chargesCreatedByBinding": 0,
+    "publicPaymentLinks": 0
+  },
+  "localRuntime": {
+    "sourceBranch": "franklin-commerce-runtime",
+    "sourceCommit": "74338f292aff532ebace2e4200d33b1e0eed5823",
+    "sourceTree": "d794a047b4601e0a2bd1781eaec22d078a6e2cb2",
+    "r29PatchWorkflowRunId": 33460653444,
+    "r29PatchWorkflowResult": "PASS",
+    "productionWebServiceCreated": false,
+    "productionDatabaseBound": false,
+    "providerCapacityAttempt": "BLOCKED_HOBBY_25_SERVICE_LIMIT"
+  },
+  "commerce": {
+    "showMeAvailable": true,
+    "paidCommerceActive": false,
+    "publicCheckoutOpen": false,
+    "readyAcceptedBySre216": false,
+    "controlledRealTransactionPassed": false,
+    "liveAcceptancePassed": false,
+    "canTakeRealPayments": false
+  },
+  "remainingArchitectureGap": "Runtime still persists checkout mappings in the legacy franklin_payment_links table while the V6 provider contract calls for server-created Checkout Sessions from the exact three Price IDs; this must be reconciled before READY.",
+  "authorityTransfer": false
+}
