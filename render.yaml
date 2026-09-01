@@ -4,14 +4,14 @@ services:
     runtime: node
     region: virginia
     plan: starter
-    branch: franklin-commerce-runtime
+    branch: franklin-commerce-runtime-r30
     buildCommand: npm ci --ignore-scripts --no-audit --no-fund
     startCommand: npm start
     healthCheckPath: /health
     autoDeploy: false
     envVars:
       - key: LOCAL_RELEASE
-        value: FR-NAV1.3.0-CANDIDATE-R28
+        value: FR-NAV1.10.0-CANDIDATE-R35
       - key: PUBLIC_ORIGIN
         value: https://franklinnavigator.com
       - key: DATABASE_URL
@@ -23,6 +23,8 @@ services:
       - key: SRE_SHARED_SECRET
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_ACCOUNT_ID
         value: acct_1TZU2TRxNra9nizo
