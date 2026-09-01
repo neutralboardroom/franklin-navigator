@@ -1,10 +1,9 @@
 {
-  "schemaVersion": "franklin.community-membership.v6.live.v1",
-  "release": "FR-NAV1.10.0-CANDIDATE-R35",
+  "schemaVersion": "franklin.community-membership.v4.public.v1",
+  "release": "FR-NAV1.3.0-CANDIDATE-R28",
   "community": "FRANKLIN_TN",
-  "status": "LIVE_PAYMENT_LINK_BRIDGE_FULL_RUNTIME_PENDING",
   "publicIdentity": "Franklin Navigator Community Membership",
-  "localOnlyMessage": "Built specifically for Franklin, Tennessee—not a national directory with a Franklin label.",
+  "localOnlyMessage": "Built specifically for Franklin, Tennessee\u2014not a national directory with a Franklin label.",
   "freePresence": {
     "amountUsd": 0,
     "factualCorrectionsFree": true
@@ -12,54 +11,47 @@
   "choices": [
     {
       "id": "monthly",
-      "lookupKey": "franklin_community_member_monthly_v5",
-      "stripePriceId": "price_1UAfLPRxNra9nizolEiP5Z2z",
+      "lookupKey": "franklin_community_member_monthly_v4",
       "billing": "recurring_monthly",
-      "amountUsd": 5,
-      "autoRenew": true,
-      "checkoutUrl": "https://buy.stripe.com/9B65kFdxt7MP1a1gQHbQY00"
+      "regularUsd": 5,
+      "foundingUsd": 3.5,
+      "foundingDurationMonths": 12,
+      "autoRenew": true
     },
     {
       "id": "annual",
-      "lookupKey": "franklin_community_member_annual_v5",
-      "stripePriceId": "price_1UAfLXRxNra9nizoW32RIfPG",
+      "lookupKey": "franklin_community_member_annual_v4",
       "billing": "recurring_annually",
-      "amountUsd": 50,
+      "regularUsd": 50,
+      "foundingUsd": 35,
+      "foundingDurationMonths": 12,
       "autoRenew": true,
-      "checkoutUrl": "https://buy.stripe.com/eVq7sNdxtffhg4V9ofbQY02"
+      "label": "MOST_POPULAR"
     },
     {
-      "id": "charter",
-      "lookupKey": "franklin_charter_member_36_month_v5",
-      "stripePriceId": "price_1UAfLfRxNra9nizoqd84x8DR",
+      "id": "threeYear",
+      "lookupKeys": {
+        "regular": "franklin_community_member_3year_regular_v4",
+        "founding": "franklin_community_member_3year_founding_v4"
+      },
       "billing": "one_time_prepaid_36_month_term",
-      "amountUsd": 120,
+      "regularUsd": 135,
+      "foundingUsd": 120,
       "termMonths": 36,
       "autoRenew": false,
-      "label": "BEST_LONG_TERM_VALUE",
-      "checkoutUrl": "https://buy.stripe.com/7sY3cx9hd3wz1a12ZRbQY01"
+      "label": "BEST_VALUE",
+      "foundingNonStackable": true
     }
   ],
-  "checkout": {
-    "paymentCollectionOpen": true,
-    "activationMode": "HUMAN_REVIEWED_UNTIL_RUNTIME_LIVE",
-    "publicPreviewCta": "SHOW ME",
-    "paymentCta": "PAY_SECURELY_WITH_STRIPE",
-    "postVerificationCta": "ACTIVATE MY MEMBERSHIP",
-    "automaticTax": false,
-    "taxConfigurationStatus": "OWNER_REVIEW_REQUIRED"
-  },
-  "runtime": {
-    "serviceUrl": "https://franklin-navigator-membership.onrender.com",
-    "deployed": true,
-    "databaseBound": false,
-    "stripeRuntimeKeyBound": false,
-    "customerPortalBound": false,
-    "commerceEnabled": false
-  },
+  "foundingDeadlineLocal": "2026-12-31T23:59:59-06:00",
+  "enterprise": "QUOTE_ONLY_ADD_ON",
   "legacy84": {
     "publiclySuppressed": true,
     "retainedAsRollbackEvidence": true
+  },
+  "checkout": {
+    "publicOpen": false,
+    "realPaymentsReady": false
   },
   "boundaries": [
     "FREE_FACTUAL_CORRECTIONS",
