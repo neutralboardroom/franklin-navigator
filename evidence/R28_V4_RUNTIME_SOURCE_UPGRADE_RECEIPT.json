@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "franklin.r28.runtime-source-upgrade.v1",
+  "release": "FR-NAV1.3.0-CANDIDATE-R28",
+  "priceAuthority": "FRANKLIN_COMMUNITY_MEMBERSHIP_PRICE_AUTHORITY_V4_2026_08_31",
+  "providerPriceCount": 4,
+  "publicChoiceCount": 3,
+  "legacy84PublicSuppressed": true,
+  "threeYearOneTime36Months": true,
+  "threeYearAutoRenew": false,
+  "foundingCouponAppliesOnlyTo": [
+    "monthly",
+    "annual"
+  ],
+  "commerceEnabledDefault": false,
+  "realChargeCreated": false,
+  "authorityTransfer": false
+}
