@@ -26,7 +26,7 @@ jobs:
         run: |
           set -euo pipefail
           cat artifacts/r29-v6-public-overlay.part* | base64 -d > /tmp/r29-public.tar.gz
-          echo "95b7d413d08c7bde7fa0a0eca206e139199649c9a59fb8efc5b434c06a019f56  /tmp/r29-public.tar.gz" | sha256sum -c -
+          echo "4085a3357e89856ae809b84176742b29d5f70de336b3cc24c3fa938ac1c74dce  /tmp/r29-public.tar.gz" | sha256sum -c -
           tar -xzf /tmp/r29-public.tar.gz -C .
           rm -f \
             dist/assets/r25-membership.css dist/assets/r25-membership.js \
@@ -59,10 +59,9 @@ jobs:
                   if 'id' in d:
                       assert d['id'] not in self.ids,(t,d['id'])
                       self.ids.add(d['id'])
-          prohibited=[r'Founding30',r'founding member',r'early adopter',r'just launched',r'new platform',r'coming soon',r'\$3\.50',r'\$35(?:\D|$)',r'\$135(?:\D|$)',r'Most Popular',r'Recommended']
           for p in root.joinpath('dist').rglob('*.html'):
               text=p.read_text(); P().feed(text)
-              for pat in prohibited:
+              for pat in [r'Founding30',r'founding member',r'early adopter',r'just launched',r'new platform',r'coming soon',r'\$3\.50',r'\$35(?:\D|$)',r'\$135(?:\D|$)',r'Most Popular',r'Recommended']:
                   assert not re.search(pat,text,re.I),(p,pat)
           pricing=(root/'dist/membership-pricing/index.html').read_text()
           assert '$5' in pricing and '$50' in pricing and '$120' in pricing
