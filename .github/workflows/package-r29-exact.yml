@@ -1,0 +1,22 @@
+name: Package Franklin R29 exact source
+on: [push]
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 709eccddfd9aca381d97952e468472f37c28acd2
+      - name: Package exact promoted source
+        run: |
+          zip -q -r FRANKLIN_NAVIGATOR__FR-NAV1.4.0-CANDIDATE-R29__EXACT_PROMOTED_SOURCE__2026-09-01.zip . -x '.git/*'
+          sha256sum FRANKLIN_NAVIGATOR__FR-NAV1.4.0-CANDIDATE-R29__EXACT_PROMOTED_SOURCE__2026-09-01.zip > FRANKLIN_NAVIGATOR__FR-NAV1.4.0-CANDIDATE-R29__EXACT_PROMOTED_SOURCE__2026-09-01.zip.sha256
+          find . -type f -not -path './.git/*' | sort | wc -l > R29_SOURCE_FILE_COUNT.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: franklin-r29-exact-source
+          path: |
+            FRANKLIN_NAVIGATOR__FR-NAV1.4.0-CANDIDATE-R29__EXACT_PROMOTED_SOURCE__2026-09-01.zip
+            FRANKLIN_NAVIGATOR__FR-NAV1.4.0-CANDIDATE-R29__EXACT_PROMOTED_SOURCE__2026-09-01.zip.sha256
+            R29_SOURCE_FILE_COUNT.txt
+          if-no-files-found: error
