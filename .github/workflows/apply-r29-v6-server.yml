@@ -1,0 +1,32 @@
+name: Apply Franklin R29 V6 runtime server patch
+on:
+  push:
+    branches: [franklin-commerce-runtime]
+    paths:
+      - scripts/apply-r29-v6-server.mjs
+      - test/catalog.test.js
+      - lib/catalog.js
+jobs:
+  patch-and-test:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: franklin-commerce-runtime
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: node scripts/apply-r29-v6-server.mjs
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm test
+      - name: Commit generated runtime
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add server.js
+          git diff --cached --quiet || git commit -m "Apply Franklin R29 V6 runtime server contract"
+          git push origin HEAD:franklin-commerce-runtime
