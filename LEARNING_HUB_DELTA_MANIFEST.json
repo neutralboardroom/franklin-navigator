@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "franklin.learning-hub-delta-manifest.v1",
+  "createdAt": "2026-09-01T18:49:14Z",
+  "state": "MODULE_BUILT_TESTED_NOT_MERGED_NOT_DEPLOYED",
+  "edition": "FRANKLIN_TN",
+  "workOrder": "WO-20260901-FRANKLIN-AI-EDUCATION-LEARNING-HUB-001",
+  "module": "FRANKLIN_ASSISTANT_LEARNING_MODE_V1",
+  "lineage": {
+    "deltaScaffoldBase": {
+      "release": "FR-NAV1.10.0-CANDIDATE-R35",
+      "commit": "c27f39f79d7e79efc5c000e55db7805131e079f0",
+      "warning": "R35 was committed directly on R29 and is not a complete product-growth successor to sealed R34. This scaffold base is not acceptable as the final release predecessor."
+    },
+    "requiredNoLossMerge": {
+      "sealedProductBase": {
+        "release": "FR-NAV1.9.0-CANDIDATE-R34",
+        "zipSha256": "e7bd5e71bf9da3de03bff838c4a5f577e7b36d7d63d639793ee19ac3f12ff119",
+        "sourceTreeSha256": "352fdc79e5f5944933e1914931fb82bbd194ccea033c2f324c67dc737693bf48"
+      },
+      "paymentBridge": {
+        "release": "FR-NAV1.10.0-CANDIDATE-R35",
+        "commit": "c27f39f79d7e79efc5c000e55db7805131e079f0",
+        "applyExactChangedFilesOnly": true
+      },
+      "learningDelta": "THIS_MANIFEST"
+    }
+  },
+  "publicRoutes": [
+    "/learning/",
+    "/assistant/learning/",
+    "/es/aprendizaje/",
+    "/es/asistente/aprendizaje/"
+  ],
+  "capabilities": [
+    "teacher_and_tutor_planning",
+    "adult_learner_and_parent_supervised_guided_practice",
+    "learning_provider_profile_readiness",
+    "english_and_spanish",
+    "verified_official_and_first_party_resource_catalog",
+    "on_device_privacy_filter",
+    "copy_download_and_print_packets",
+    "coarse_device_only_observed_use_counters",
+    "no_inferred_learning_outcomes"
+  ],
+  "safeguards": {
+    "directUnsupervisedMinorAccounts": false,
+    "directMinorOutreach": false,
+    "persistentMinorProfileOrChat": false,
+    "schoolDataIntegration": false,
+    "automatedHighImpactEducationDecisions": false,
+    "ordinaryPromptStudentRecordsAccepted": false,
+    "externalAiCalled": false,
+    "serverSubmission": false,
+    "promptOrPacketPersistence": false,
+    "affiliationClaimsWithoutEvidence": false,
+    "directoryAppearanceIsEndorsement": false
+  },
+  "commerce": {
+    "liveR35CheckoutTouched": false,
+    "liveR35CheckoutExpectedState": "OPEN_VIA_STRIPE_HOSTED_PAYMENT_LINKS",
+    "educationAddOnCreated": false,
+    "membershipPricesChanged": false,
+    "productionRuntimeChangedOrDeployed": false
+  },
+  "qualification": {
+    "javascriptSyntax": "PASS",
+    "jsonSyntax": "PASS",
+    "htmlValidation": "PASS",
+    "staticReferencePrivacyAndContractChecks": 254,
+    "domInteractionAndPrivacyChecks": 67,
+    "automatedWcagRulePasses": 94,
+    "automatedWcagViolations": 0,
+    "providerSchemaSafeguardChecks": 8,
+    "chromiumE2e": "PENDING_ON_RECONCILED_SUCCESSOR",
+    "chromiumPendingReason": "No local Chromium executable was available and the browser download endpoint timed out. No browser PASS count is claimed.",
+    "requiredBeforeDeployment": [
+      "real_chromium_interaction_suite",
+      "390px_horizontal_overflow_suite",
+      "keyboard_focus_and_return_suite",
+      "fresh_extraction_rerun",
+      "full_internal_reference_audit",
+      "deterministic_packaging"
+    ]
+  },
+  "payload": [
+    {
+      "path": "dist/assets/learning-hub.css",
+      "sha256": "64359250d90182c45484002b7c409a2662c144b774d74aa98d2561aeca4f77f3"
+    },
+    {
+      "path": "dist/assets/learning-hub.js",
+      "sha256": "7b84e39325be7557e5b3fe9ed570a89a063198e51dddde612bf142588d0e53d2"
+    },
+    {
+      "path": "dist/learning/index.html",
+      "sha256": "0685697dcc751eb29c2f4af1c1a173293c11244d85338a2c48a14c95662201f7"
+    },
+    {
+      "path": "dist/assistant/learning/index.html",
+      "sha256": "096efafe561d59ec4a9b6af420e7115273c958fa3f8a84eb93e0b46518be65fd"
+    },
+    {
+      "path": "dist/es/aprendizaje/index.html",
+      "sha256": "f8d7bed204990226a0fd005e54a18cd5b4e45b465db2ab94259a213d98842b24"
+    },
+    {
+      "path": "dist/es/asistente/aprendizaje/index.html",
+      "sha256": "827ac2a10a9712c680bab576768dd69506cda5e7cdfbccfbf6c89e0d71795a8c"
+    },
+    {
+      "path": "dist/data/franklin-learning-hub.json",
+      "sha256": "26906211dd453764761eb08f98798ac3eb663300d4b2a82426c658325eafce19"
+    },
+    {
+      "path": "dist/data/learning-resources.json",
+      "sha256": "32bb553e49794c5e0a45241fc34707430c8c8af7af27c85a689eafbe68dc3f88"
+    },
+    {
+      "path": "dist/data/learning-provider-profile-schema.json",
+      "sha256": "233a0be98347859f13b66b4b8769e2f367fde516cb8ad6eaad502fada3b6c255"
+    },
+    {
+      "path": "scripts/verify-learning-hub.mjs",
+      "sha256": "c9222d37904b05e8e610643bb9c43deddac66c87c009eb7e8d5c624421eaacc3"
+    },
+    {
+      "path": "scripts/verify-learning-hub-dom.cjs",
+      "sha256": "d98bc967eaaddea030d3cca54de8c3fc16c2a485896f77cdeb0248ad5cc07f70"
+    },
+    {
+      "path": "scripts/verify-learning-hub-a11y.cjs",
+      "sha256": "9361f13cd29c1c5cc309554440ee401f23c46585f1f77804592ee0221d972fae"
+    },
+    {
+      "path": "scripts/verify-learning-provider-schema.cjs",
+      "sha256": "d9e2bf7815ddb064514c6a732fd8b09566fd1483156a3fabc4ddde48ce9481ce"
+    }
+  ],
+  "deployment": {
+    "performed": false,
+    "productionChanged": false,
+    "blocker": "EXACT_SEALED_R34_ZIP_REQUIRED_FOR_NO_LOSS_MERGE",
+    "successorIntegrationPending": [
+      "regenerate_sitemap_with_four_learning_routes",
+      "add_learning_mode_to_reconciled_assistant_and_navigation",
+      "regenerate_release_identity_build_manifest_and_content_manifest"
+    ]
+  }
+}

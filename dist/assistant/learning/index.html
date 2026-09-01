@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Franklin Assistant — Learning Mode | Franklin Navigator</title>
+  <meta name="description" content="Build a private teaching, guided-practice or learning-provider preparation packet with Franklin Assistant Learning mode.">
+  <link rel="canonical" href="https://franklinnavigator.com/assistant/learning/">
+  <link rel="alternate" hreflang="en" href="https://franklinnavigator.com/assistant/learning/">
+  <link rel="alternate" hreflang="es" href="https://franklinnavigator.com/es/asistente/aprendizaje/">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/accessibility.css">
+  <link rel="stylesheet" href="/assets/learning-hub.css">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/franklin-icon-192.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#03454b">
+  <meta name="franklin-module" content="LEARNING_HUB_V1">
+  <meta name="franklin-assistant-mode" content="LEARNING">
+  <meta name="franklin-module-state" content="IMPLEMENTATION_DRAFT_NOT_DEPLOYED">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Franklin Assistant — Learning Mode">
+  <meta property="og:description" content="Structured learning preparation on your device—without student records or automated education decisions.">
+  <meta property="og:url" content="https://franklinnavigator.com/assistant/learning/">
+  <meta property="og:image" content="https://franklinnavigator.com/assets/franklin-social.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+</head>
+<body data-community-label="Franklin / Williamson County" data-learning-hub>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header>
+    <div class="wrap top">
+      <a class="brand" href="/" aria-label="Franklin Navigator home">
+        <img src="/assets/franklin-mark.svg" alt="" width="38" height="38">
+        <span class="brand-wordmark"><span class="brand-name">Franklin</span> <span class="brand-subname">Navigator</span></span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/assistant/">Franklin Assistant</a>
+        <a href="/learning/">Learning Hub</a>
+        <a href="/directory/">Find Local</a>
+        <a href="/my-franklin/">My Franklin</a>
+        <a href="/membership-pricing/">Membership</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" data-learning-studio>
+    <section class="learning-studio-hero">
+      <div class="wrap">
+        <div class="eyebrow">Franklin Assistant · Learning mode</div>
+        <h1>Create a useful learning packet without sharing a student record.</h1>
+        <p>Choose broad fields and enter only a short topic or concept. The packet is built in this browser. It is not submitted, stored, or sent to external AI.</p>
+        <div class="actions">
+          <a class="button" href="/learning/">Learning Hub overview</a>
+          <a class="button" href="/es/asistente/aprendizaje/" lang="es">Usar en español</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap learning-studio-shell">
+        <form class="learning-control" data-learning-form novalidate>
+          <div class="eyebrow">Step 1 · Choose the tool</div>
+          <div class="learning-mode-switcher" role="tablist" aria-label="Learning tools">
+            <button id="learning-tab-teacher" type="button" role="tab" aria-controls="learning-panel-teacher" aria-selected="true" data-learning-mode="teacher">Teacher / tutor</button>
+            <button id="learning-tab-learner" type="button" role="tab" aria-controls="learning-panel-learner" aria-selected="false" data-learning-mode="learner" tabindex="-1">Guided practice</button>
+            <button id="learning-tab-provider" type="button" role="tab" aria-controls="learning-panel-provider" aria-selected="false" data-learning-mode="provider" tabindex="-1">Provider readiness</button>
+          </div>
+
+          <section id="learning-panel-teacher" role="tabpanel" aria-labelledby="learning-tab-teacher" tabindex="-1" data-learning-panel="teacher">
+            <div class="eyebrow">Step 2 · Teaching plan</div>
+            <label for="teacher-topic">Broad topic or concept only</label>
+            <input id="teacher-topic" name="teacher-topic" type="text" maxlength="80" autocomplete="off" placeholder="Example: comparing fractions">
+            <p class="meta">Do not enter a student name, assignment text, record, score, diagnosis or account detail.</p>
+
+            <label for="teacher-subject">Subject</label>
+            <select id="teacher-subject" name="teacher-subject">
+              <option value="">Choose one</option>
+              <option>Reading / language arts</option>
+              <option>Writing / communication</option>
+              <option>Math</option>
+              <option>Science</option>
+              <option>Social studies / civics</option>
+              <option>English language learning</option>
+              <option>Career / workforce skill</option>
+              <option>Arts / enrichment</option>
+              <option>Study skill</option>
+            </select>
+
+            <label for="teacher-audience">Broad learner group</label>
+            <select id="teacher-audience" name="teacher-audience">
+              <option value="">Choose one</option>
+              <option>Early learning — adult supervised</option>
+              <option>Elementary — adult supervised</option>
+              <option>Middle grades — adult supervised</option>
+              <option>High school — adult supervised</option>
+              <option>Adult learning</option>
+              <option>Workforce learning</option>
+              <option>Mixed-age community group</option>
+            </select>
+
+            <div class="learning-choice-grid">
+              <div>
+                <label for="teacher-duration">Time</label>
+                <select id="teacher-duration" name="teacher-duration">
+                  <option value="">Choose one</option>
+                  <option>15 minutes</option>
+                  <option>30 minutes</option>
+                  <option>45 minutes</option>
+                  <option>60 minutes</option>
+                  <option>Multi-session sequence</option>
+                </select>
+              </div>
+              <div>
+                <label for="teacher-format">Format</label>
+                <select id="teacher-format" name="teacher-format">
+                  <option value="">Choose one</option>
+                  <option>One-to-one</option>
+                  <option>Small group</option>
+                  <option>Class or large group</option>
+                  <option>Family activity</option>
+                  <option>Independent adult practice</option>
+                </select>
+              </div>
+            </div>
+
+            <fieldset>
+              <legend>Optional supports</legend>
+              <div class="learning-choice-grid">
+                <label class="learning-choice"><input type="checkbox" name="teacher-support[]" value="Plain-language explanation"><span>Plain-language explanation</span></label>
+                <label class="learning-choice"><input type="checkbox" name="teacher-support[]" value="Visual or concrete example"><span>Visual or concrete example</span></label>
+                <label class="learning-choice"><input type="checkbox" name="teacher-support[]" value="Challenge extension"><span>Challenge extension</span></label>
+                <label class="learning-choice"><input type="checkbox" name="teacher-support[]" value="Vocabulary preview"><span>Vocabulary preview</span></label>
+              </div>
+            </fieldset>
+
+            <label for="teacher-standard">Tennessee standards source</label>
+            <select id="teacher-standard" name="teacher-standard">
+              <option value="none">No standards claim</option>
+              <option value="verified">I have verified the current official subject and grade document</option>
+            </select>
+
+            <label for="teacher-family-language">Optional family draft</label>
+            <select id="teacher-family-language" name="teacher-family-language">
+              <option value="none">No family draft</option>
+              <option value="bilingual">English + Spanish</option>
+              <option value="spanish">Spanish</option>
+            </select>
+          </section>
+
+          <section id="learning-panel-learner" role="tabpanel" aria-labelledby="learning-tab-learner" tabindex="-1" data-learning-panel="learner" hidden>
+            <div class="eyebrow">Step 2 · Guided practice</div>
+            <label for="learner-topic">Broad topic or concept only</label>
+            <input id="learner-topic" name="learner-topic" type="text" maxlength="80" autocomplete="off" placeholder="Example: percentages in a budget">
+            <p class="meta">Do not paste an active test, graded assignment, student record or copyrighted worksheet.</p>
+
+            <label for="learner-subject">Learning area</label>
+            <select id="learner-subject" name="learner-subject">
+              <option value="">Choose one</option>
+              <option>Reading</option>
+              <option>Writing</option>
+              <option>Math</option>
+              <option>Science</option>
+              <option>Civics</option>
+              <option>English language learning</option>
+              <option>Digital skill</option>
+              <option>Workforce skill</option>
+              <option>Study skill</option>
+            </select>
+
+            <label for="learner-audience">Who will use the packet?</label>
+            <select id="learner-audience" name="learner-audience">
+              <option value="">Choose one</option>
+              <option>Adult learner</option>
+              <option>Workforce learner</option>
+              <option>Parent-supervised family practice</option>
+              <option>Educator-supervised practice</option>
+            </select>
+
+            <label for="learner-goal">Goal</label>
+            <select id="learner-goal" name="learner-goal">
+              <option value="">Choose one</option>
+              <option>Understand the idea</option>
+              <option>Practice a skill</option>
+              <option>Review before a class or appointment</option>
+              <option>Build study habits</option>
+              <option>Prepare for workforce learning</option>
+            </select>
+
+            <label for="learner-method">Preferred method</label>
+            <select id="learner-method" name="learner-method">
+              <option value="">Choose one</option>
+              <option>Plain-language explanation</option>
+              <option>Worked example</option>
+              <option>Guided questions and hints</option>
+              <option>Short practice and reflection</option>
+            </select>
+          </section>
+
+          <section id="learning-panel-provider" role="tabpanel" aria-labelledby="learning-tab-provider" tabindex="-1" data-learning-panel="provider" hidden>
+            <div class="eyebrow">Step 2 · Public-profile readiness</div>
+            <label for="provider-topic">Broad subject or program focus only</label>
+            <input id="provider-topic" name="provider-topic" type="text" maxlength="80" autocomplete="off" placeholder="Example: adult digital literacy">
+            <p class="meta">Do not enter a student, family or staff member’s personal information.</p>
+
+            <label for="provider-type">Provider type</label>
+            <select id="provider-type" name="provider-type">
+              <option value="">Choose one</option>
+              <option>Teacher or education professional</option>
+              <option>Tutor or tutoring practice</option>
+              <option>Learning or enrichment center</option>
+              <option>Library or museum</option>
+              <option>Education nonprofit or community program</option>
+              <option>Adult or workforce learning provider</option>
+            </select>
+
+            <label for="provider-audience">Broad audience</label>
+            <select id="provider-audience" name="provider-audience">
+              <option value="">Choose one</option>
+              <option>Early learning — adult supervised</option>
+              <option>School-age — adult supervised</option>
+              <option>High school — adult supervised</option>
+              <option>Adult learning</option>
+              <option>Workforce learning</option>
+              <option>Educator professional learning</option>
+              <option>Mixed-age community program</option>
+            </select>
+
+            <label for="provider-format">Primary format</label>
+            <select id="provider-format" name="provider-format">
+              <option value="">Choose one</option>
+              <option>In person</option>
+              <option>Online</option>
+              <option>Hybrid</option>
+              <option>One-to-one</option>
+              <option>Group program</option>
+              <option>Drop-in or scheduled event</option>
+            </select>
+
+            <label for="provider-language">Published language support</label>
+            <select id="provider-language" name="provider-language">
+              <option value="">Choose one</option>
+              <option>English</option>
+              <option>Spanish</option>
+              <option>English and Spanish</option>
+              <option>Another provider-published language</option>
+            </select>
+
+            <label for="provider-evidence">Current evidence state</label>
+            <select id="provider-evidence" name="provider-evidence">
+              <option value="">Choose one</option>
+              <option>Preparing first-party source links</option>
+              <option>First-party sources checked and dated</option>
+              <option>Needs recheck before publication</option>
+            </select>
+          </section>
+
+          <div class="learning-privacy-gate">
+            <strong>Privacy check before generation</strong>
+            <span>No names, contact details, IDs, grades, IEP/504 records, diagnoses, discipline records, credentials or restricted test content.</span>
+            <p class="learning-privacy-status" data-learning-privacy-status aria-live="polite"></p>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" type="submit">Create private packet</button>
+            <button class="button" type="reset">Clear fields</button>
+          </div>
+          <p class="fine-print">This first slice uses structured local templates. It does not call external AI or store the topic. For immediate school, enrollment or service decisions, use the responsible organization.</p>
+        </form>
+
+        <aside class="learning-result" aria-label="Prepared learning packet">
+          <span class="learning-result-status" data-learning-output-status>Not submitted · this device only</span>
+          <h2>Your learning packet</h2>
+          <pre class="learning-output" data-learning-output tabindex="-1">Choose a mode and complete the broad fields to create a packet.</pre>
+          <div class="plan-actions">
+            <button class="button" type="button" data-learning-copy disabled>Copy packet</button>
+            <button class="button" type="button" data-learning-download disabled>Download JSON</button>
+            <button class="button" type="button" data-learning-print disabled>Print</button>
+          </div>
+          <p class="fine-print">Copy, download and print happen only when you choose them. Downloaded files stay under your control.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section alt learning-telemetry-note" data-learning-health-summary>
+      <div class="wrap">
+        <div class="eyebrow">Transparent product health</div>
+        <h2>Observed use and inferred outcomes stay separate.</h2>
+        <p>These optional counters remain on this device and contain only broad action counts—never the topic, packet text, URL, identifier, person or organization. Franklin does not infer a grade, score, mastery level or learning outcome.</p>
+        <div class="learning-metrics">
+          <div class="learning-metric"><strong data-learning-health="packets">0</strong><span>Packets created</span><small>Observed device action</small></div>
+          <div class="learning-metric"><strong data-learning-health="sources">0</strong><span>Official sources opened</span><small>Observed device action</small></div>
+          <div class="learning-metric"><strong data-learning-health="blocks">0</strong><span>Privacy blocks</span><small>Observed device action</small></div>
+          <div class="learning-metric"><strong>None</strong><span>Learning outcomes inferred</span><small>Not measured or claimed</small></div>
+        </div>
+        <div class="actions">
+          <button class="button small" type="button" data-learning-health-clear>Clear device counters</button>
+          <span class="meta" data-learning-health-clear-status aria-live="polite"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section learning-resource-section" data-learning-resources>
+      <div class="wrap">
+        <div class="eyebrow">Verified next step</div>
+        <h2>Open the responsible learning source.</h2>
+        <p>Search Franklin, Williamson County and Tennessee official starting points. Recheck schedules, eligibility, fees, services and contacts before relying on them.</p>
+        <div class="learning-resource-filter">
+          <label>Search by topic
+            <input type="search" data-learning-resource-search autocomplete="off" placeholder="Try adult, library, standards…">
+          </label>
+          <label>Audience
+            <select data-learning-resource-audience>
+              <option value="">All audiences</option>
+              <option value="educator">Educator</option>
+              <option value="parent">Parent / guardian</option>
+              <option value="learner">Learner</option>
+              <option value="adult">Adult learner</option>
+              <option value="provider">Learning provider</option>
+            </select>
+          </label>
+        </div>
+        <p class="directory-summary" data-learning-resource-summary aria-live="polite"></p>
+        <div class="learning-resource-grid" data-learning-resource-grid aria-live="polite"></div>
+        <div class="actions">
+          <a class="button" href="/directory/?q=education%20tutoring%20learning">Search Franklin learning listings</a>
+          <a class="button" href="/local-pathways/education-learning/">Open the education pathway</a>
+        </div>
+        <p class="fine-print">Directory appearance and order are not rankings, referrals or endorsements. Verify services, credentials, availability, accessibility, fees and fit directly.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-brand">Franklin Navigator</div>
+        <div>Learning mode inside Franklin Assistant.</div>
+        <div class="fine-print">General educational preparation only. Linked agencies, schools, organizations and providers are not affiliated with or endorsed by Franklin Navigator unless expressly stated.</div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="/learning/">Learning Hub</a>
+        <a href="/local-pathways/education-learning/">Education pathway</a>
+        <a href="/directory/?q=education%20tutoring%20learning">Find learning providers</a>
+        <a href="/data/learning-provider-profile-schema.json">Provider schema</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+        <a href="/accessibility/">Accessibility</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="/assets/app.js" defer></script>
+  <script src="/assets/learning-hub.js" defer></script>
+</body>
+</html>

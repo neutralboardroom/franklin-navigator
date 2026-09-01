@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "franklin.learning-hub.v1",
+  "state": "IMPLEMENTATION_DRAFT_NOT_DEPLOYED",
+  "edition": "FRANKLIN_TN",
+  "identity": {
+    "masterBrand": "Franklin Navigator",
+    "assistantBrand": "Franklin Assistant",
+    "mode": "Learning",
+    "separateAccountSystem": false,
+    "separatePaymentSystem": false,
+    "educationAddOnRequired": false
+  },
+  "audiences": [
+    "teachers_and_education_professionals",
+    "tutors_and_tutoring_practices",
+    "learning_and_enrichment_centers",
+    "libraries_museums_nonprofits_and_community_programs",
+    "parents_supervising_family_tools",
+    "adult_and_workforce_learners"
+  ],
+  "firstReleaseExclusions": [
+    "direct_unsupervised_minor_accounts",
+    "direct_outreach_to_minors",
+    "school_information_system_integrations",
+    "persistent_minor_profiles_or_chat_history",
+    "automated_grading_placement_discipline_admissions_eligibility_or_credential_decisions"
+  ],
+  "privacy": {
+    "processing": "ON_DEVICE_ONLY",
+    "networkSubmission": false,
+    "externalAi": false,
+    "promptPersistence": false,
+    "planPersistence": false,
+    "fileUpload": false,
+    "minorRecordsAccepted": false,
+    "ordinaryPromptProhibitions": [
+      "student_names",
+      "student_email_or_phone",
+      "student_ids_or_account_credentials",
+      "grades_scores_or_school_records",
+      "iep_or_504_records",
+      "health_disability_or_diagnosis_details",
+      "discipline_records"
+    ]
+  },
+  "telemetry": {
+    "storage": "DEVICE_ONLY_COARSE_COUNTERS",
+    "observedMetricAllowlist": [
+      "hub_open",
+      "mode_teacher_open",
+      "mode_learner_open",
+      "mode_provider_open",
+      "packet_created",
+      "privacy_block",
+      "packet_copied",
+      "packet_downloaded",
+      "packet_printed",
+      "official_source_open"
+    ],
+    "forbiddenDimensions": [
+      "prompt_text",
+      "packet_text",
+      "person_or_organization_name",
+      "url_or_query_string",
+      "identifier",
+      "student_or_family_record",
+      "learning_outcome",
+      "grade_or_score"
+    ],
+    "inferredOutcomesRecorded": false
+  },
+  "currentness": {
+    "resourceCatalog": "/data/learning-resources.json",
+    "providerProfileSchema": "/data/learning-provider-profile-schema.json",
+    "changingFactsRequireOriginalSourceRecheck": true,
+    "affiliationClaimsRequireEvidence": true,
+    "directoryAppearanceIsNotEndorsement": true
+  }
+}

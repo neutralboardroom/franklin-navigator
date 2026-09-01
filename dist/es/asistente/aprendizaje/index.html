@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Franklin Assistant — Modo Aprendizaje | Franklin Navigator</title>
+  <meta name="description" content="Cree un paquete privado de enseñanza, práctica guiada o preparación de proveedor educativo con el modo Aprendizaje de Franklin Assistant.">
+  <link rel="canonical" href="https://franklinnavigator.com/es/asistente/aprendizaje/">
+  <link rel="alternate" hreflang="en" href="https://franklinnavigator.com/assistant/learning/">
+  <link rel="alternate" hreflang="es" href="https://franklinnavigator.com/es/asistente/aprendizaje/">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/accessibility.css">
+  <link rel="stylesheet" href="/assets/learning-hub.css">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/franklin-icon-192.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#03454b">
+  <meta name="franklin-module" content="LEARNING_HUB_V1">
+  <meta name="franklin-assistant-mode" content="LEARNING">
+  <meta name="franklin-module-state" content="IMPLEMENTATION_DRAFT_NOT_DEPLOYED">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Franklin Assistant — Modo Aprendizaje">
+  <meta property="og:description" content="Preparación educativa estructurada en su dispositivo, sin expedientes estudiantiles ni decisiones automatizadas.">
+  <meta property="og:url" content="https://franklinnavigator.com/es/asistente/aprendizaje/">
+  <meta property="og:image" content="https://franklinnavigator.com/assets/franklin-social.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+</head>
+<body data-community-label="Franklin / Condado de Williamson" data-learning-hub>
+  <a class="skip-link" href="#main">Saltar al contenido principal</a>
+  <header>
+    <div class="wrap top">
+      <a class="brand" href="/es/" aria-label="Inicio de Franklin Navigator">
+        <img src="/assets/franklin-mark.svg" alt="" width="38" height="38">
+        <span class="brand-wordmark"><span class="brand-name">Franklin</span> <span class="brand-subname">Navigator</span></span>
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <a href="/assistant/">Franklin Assistant</a>
+        <a href="/es/aprendizaje/">Centro de Aprendizaje</a>
+        <a href="/directory/">Buscar local</a>
+        <a href="/es/mi-franklin/">Mi Franklin</a>
+        <a href="/membership-pricing/">Membresía</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" data-learning-studio>
+    <section class="learning-studio-hero">
+      <div class="wrap">
+        <div class="eyebrow">Franklin Assistant · modo Aprendizaje</div>
+        <h1>Cree un paquete útil sin compartir un expediente estudiantil.</h1>
+        <p>Elija campos generales y escriba únicamente un tema o concepto corto. El paquete se crea en este navegador. No se envía, guarda ni comparte con IA externa.</p>
+        <div class="actions">
+          <a class="button" href="/es/aprendizaje/">Resumen del Centro de Aprendizaje</a>
+          <a class="button" href="/assistant/learning/" lang="en">Use in English</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap learning-studio-shell">
+        <form class="learning-control" data-learning-form novalidate>
+          <div class="eyebrow">Paso 1 · Elija la herramienta</div>
+          <div class="learning-mode-switcher" role="tablist" aria-label="Herramientas de aprendizaje">
+            <button id="learning-tab-teacher" type="button" role="tab" aria-controls="learning-panel-teacher" aria-selected="true" data-learning-mode="teacher">Docente / tutor</button>
+            <button id="learning-tab-learner" type="button" role="tab" aria-controls="learning-panel-learner" aria-selected="false" data-learning-mode="learner" tabindex="-1">Práctica guiada</button>
+            <button id="learning-tab-provider" type="button" role="tab" aria-controls="learning-panel-provider" aria-selected="false" data-learning-mode="provider" tabindex="-1">Preparar proveedor</button>
+          </div>
+
+          <section id="learning-panel-teacher" role="tabpanel" aria-labelledby="learning-tab-teacher" tabindex="-1" data-learning-panel="teacher">
+            <div class="eyebrow">Paso 2 · Plan de enseñanza</div>
+            <label for="teacher-topic">Solo tema o concepto general</label>
+            <input id="teacher-topic" name="teacher-topic" type="text" maxlength="80" autocomplete="off" placeholder="Ejemplo: comparar fracciones">
+            <p class="meta">No escriba el nombre de un estudiante, texto de tarea, expediente, puntaje, diagnóstico ni datos de cuenta.</p>
+
+            <label for="teacher-subject">Materia</label>
+            <select id="teacher-subject" name="teacher-subject">
+              <option value="">Elija una</option>
+              <option>Lectura / lengua</option>
+              <option>Escritura / comunicación</option>
+              <option>Matemáticas</option>
+              <option>Ciencias</option>
+              <option>Estudios sociales / civismo</option>
+              <option>Aprendizaje del inglés</option>
+              <option>Habilidad laboral</option>
+              <option>Arte / enriquecimiento</option>
+              <option>Habilidad de estudio</option>
+            </select>
+
+            <label for="teacher-audience">Grupo general de aprendices</label>
+            <select id="teacher-audience" name="teacher-audience">
+              <option value="">Elija uno</option>
+              <option>Aprendizaje temprano — supervisión adulta</option>
+              <option>Primaria — supervisión adulta</option>
+              <option>Grados intermedios — supervisión adulta</option>
+              <option>Secundaria — supervisión adulta</option>
+              <option>Aprendizaje adulto</option>
+              <option>Capacitación laboral</option>
+              <option>Grupo comunitario de edades mixtas</option>
+            </select>
+
+            <div class="learning-choice-grid">
+              <div>
+                <label for="teacher-duration">Tiempo</label>
+                <select id="teacher-duration" name="teacher-duration">
+                  <option value="">Elija uno</option>
+                  <option>15 minutos</option>
+                  <option>30 minutos</option>
+                  <option>45 minutos</option>
+                  <option>60 minutos</option>
+                  <option>Secuencia de varias sesiones</option>
+                </select>
+              </div>
+              <div>
+                <label for="teacher-format">Formato</label>
+                <select id="teacher-format" name="teacher-format">
+                  <option value="">Elija uno</option>
+                  <option>Uno a uno</option>
+                  <option>Grupo pequeño</option>
+                  <option>Clase o grupo grande</option>
+                  <option>Actividad familiar</option>
+                  <option>Práctica adulta independiente</option>
+                </select>
+              </div>
+            </div>
+
+            <fieldset>
+              <legend>Apoyos opcionales</legend>
+              <div class="learning-choice-grid">
+                <label class="learning-choice"><input type="checkbox" name="teacher-support[]" value="Explicación en lenguaje sencillo"><span>Explicación en lenguaje sencillo</span></label>
+                <label class="learning-choice"><input type="checkbox" name="teacher-support[]" value="Ejemplo visual o concreto"><span>Ejemplo visual o concreto</span></label>
+                <label class="learning-choice"><input type="checkbox" name="teacher-support[]" value="Extensión de desafío"><span>Extensión de desafío</span></label>
+                <label class="learning-choice"><input type="checkbox" name="teacher-support[]" value="Vista previa de vocabulario"><span>Vista previa de vocabulario</span></label>
+              </div>
+            </fieldset>
+
+            <label for="teacher-standard">Fuente de estándares de Tennessee</label>
+            <select id="teacher-standard" name="teacher-standard">
+              <option value="none">Sin afirmación de estándares</option>
+              <option value="verified">Verifiqué el documento oficial vigente de materia y grado</option>
+            </select>
+
+            <label for="teacher-family-language">Borrador opcional para la familia</label>
+            <select id="teacher-family-language" name="teacher-family-language">
+              <option value="none">Sin borrador familiar</option>
+              <option value="bilingual">Inglés + español</option>
+              <option value="spanish">Español</option>
+            </select>
+          </section>
+
+          <section id="learning-panel-learner" role="tabpanel" aria-labelledby="learning-tab-learner" tabindex="-1" data-learning-panel="learner" hidden>
+            <div class="eyebrow">Paso 2 · Práctica guiada</div>
+            <label for="learner-topic">Solo tema o concepto general</label>
+            <input id="learner-topic" name="learner-topic" type="text" maxlength="80" autocomplete="off" placeholder="Ejemplo: porcentajes en un presupuesto">
+            <p class="meta">No pegue una prueba activa, tarea calificada, expediente estudiantil ni hoja con derechos de autor.</p>
+
+            <label for="learner-subject">Área de aprendizaje</label>
+            <select id="learner-subject" name="learner-subject">
+              <option value="">Elija una</option>
+              <option>Lectura</option>
+              <option>Escritura</option>
+              <option>Matemáticas</option>
+              <option>Ciencias</option>
+              <option>Civismo</option>
+              <option>Aprendizaje del inglés</option>
+              <option>Habilidad digital</option>
+              <option>Habilidad laboral</option>
+              <option>Habilidad de estudio</option>
+            </select>
+
+            <label for="learner-audience">¿Quién usará el paquete?</label>
+            <select id="learner-audience" name="learner-audience">
+              <option value="">Elija uno</option>
+              <option>Aprendiz adulto</option>
+              <option>Aprendiz de capacitación laboral</option>
+              <option>Práctica familiar supervisada por padres</option>
+              <option>Práctica supervisada por un educador</option>
+            </select>
+
+            <label for="learner-goal">Meta</label>
+            <select id="learner-goal" name="learner-goal">
+              <option value="">Elija una</option>
+              <option>Comprender la idea</option>
+              <option>Practicar una habilidad</option>
+              <option>Repasar antes de una clase o cita</option>
+              <option>Crear hábitos de estudio</option>
+              <option>Prepararse para capacitación laboral</option>
+            </select>
+
+            <label for="learner-method">Método preferido</label>
+            <select id="learner-method" name="learner-method">
+              <option value="">Elija uno</option>
+              <option>Explicación en lenguaje sencillo</option>
+              <option>Ejemplo resuelto</option>
+              <option>Preguntas y pistas guiadas</option>
+              <option>Práctica corta y reflexión</option>
+            </select>
+          </section>
+
+          <section id="learning-panel-provider" role="tabpanel" aria-labelledby="learning-tab-provider" tabindex="-1" data-learning-panel="provider" hidden>
+            <div class="eyebrow">Paso 2 · Preparación del perfil público</div>
+            <label for="provider-topic">Solo materia o enfoque general del programa</label>
+            <input id="provider-topic" name="provider-topic" type="text" maxlength="80" autocomplete="off" placeholder="Ejemplo: alfabetización digital para adultos">
+            <p class="meta">No escriba información personal de un estudiante, familia o integrante del personal.</p>
+
+            <label for="provider-type">Tipo de proveedor</label>
+            <select id="provider-type" name="provider-type">
+              <option value="">Elija uno</option>
+              <option>Docente o profesional de educación</option>
+              <option>Tutor o práctica de tutoría</option>
+              <option>Centro de aprendizaje o enriquecimiento</option>
+              <option>Biblioteca o museo</option>
+              <option>Organización educativa sin fines de lucro o programa comunitario</option>
+              <option>Proveedor de aprendizaje adulto o laboral</option>
+            </select>
+
+            <label for="provider-audience">Público general</label>
+            <select id="provider-audience" name="provider-audience">
+              <option value="">Elija uno</option>
+              <option>Aprendizaje temprano — supervisión adulta</option>
+              <option>Edad escolar — supervisión adulta</option>
+              <option>Secundaria — supervisión adulta</option>
+              <option>Aprendizaje adulto</option>
+              <option>Capacitación laboral</option>
+              <option>Desarrollo profesional de educadores</option>
+              <option>Programa comunitario de edades mixtas</option>
+            </select>
+
+            <label for="provider-format">Formato principal</label>
+            <select id="provider-format" name="provider-format">
+              <option value="">Elija uno</option>
+              <option>Presencial</option>
+              <option>En línea</option>
+              <option>Híbrido</option>
+              <option>Uno a uno</option>
+              <option>Programa grupal</option>
+              <option>Evento sin cita o programado</option>
+            </select>
+
+            <label for="provider-language">Apoyo de idioma publicado</label>
+            <select id="provider-language" name="provider-language">
+              <option value="">Elija uno</option>
+              <option>Inglés</option>
+              <option>Español</option>
+              <option>Inglés y español</option>
+              <option>Otro idioma publicado por el proveedor</option>
+            </select>
+
+            <label for="provider-evidence">Estado actual de evidencia</label>
+            <select id="provider-evidence" name="provider-evidence">
+              <option value="">Elija uno</option>
+              <option>Preparando enlaces de primera fuente</option>
+              <option>Fuentes de primera parte revisadas y fechadas</option>
+              <option>Necesita nueva verificación antes de publicar</option>
+            </select>
+          </section>
+
+          <div class="learning-privacy-gate">
+            <strong>Revisión de privacidad antes de crear</strong>
+            <span>Sin nombres, contactos, IDs, calificaciones, expedientes IEP/504, diagnósticos, disciplina, credenciales ni contenido de pruebas restringidas.</span>
+            <p class="learning-privacy-status" data-learning-privacy-status aria-live="polite"></p>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" type="submit">Crear paquete privado</button>
+            <button class="button" type="reset">Borrar campos</button>
+          </div>
+          <p class="fine-print">Esta primera versión usa plantillas locales estructuradas. No llama a IA externa ni guarda el tema. Para decisiones inmediatas de escuela, inscripción o servicio, use la organización responsable.</p>
+        </form>
+
+        <aside class="learning-result" aria-label="Paquete de aprendizaje preparado">
+          <span class="learning-result-status" data-learning-output-status>Sin enviar · solo en este dispositivo</span>
+          <h2>Su paquete de aprendizaje</h2>
+          <pre class="learning-output" data-learning-output tabindex="-1">Elija un modo y complete los campos generales para crear un paquete.</pre>
+          <div class="plan-actions">
+            <button class="button" type="button" data-learning-copy disabled>Copiar paquete</button>
+            <button class="button" type="button" data-learning-download disabled>Descargar JSON</button>
+            <button class="button" type="button" data-learning-print disabled>Imprimir</button>
+          </div>
+          <p class="fine-print">Copiar, descargar e imprimir ocurren solo cuando usted lo decide. Los archivos descargados quedan bajo su control.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section alt learning-telemetry-note" data-learning-health-summary>
+      <div class="wrap">
+        <div class="eyebrow">Salud del producto transparente</div>
+        <h2>El uso observado y los resultados inferidos permanecen separados.</h2>
+        <p>Estos contadores opcionales permanecen en este dispositivo y contienen solo conteos generales, nunca el tema, texto del paquete, URL, identificador, persona u organización. Franklin no infiere calificación, puntaje, dominio ni resultado de aprendizaje.</p>
+        <div class="learning-metrics">
+          <div class="learning-metric"><strong data-learning-health="packets">0</strong><span>Paquetes creados</span><small>Acción observada en el dispositivo</small></div>
+          <div class="learning-metric"><strong data-learning-health="sources">0</strong><span>Fuentes oficiales abiertas</span><small>Acción observada en el dispositivo</small></div>
+          <div class="learning-metric"><strong data-learning-health="blocks">0</strong><span>Bloqueos de privacidad</span><small>Acción observada en el dispositivo</small></div>
+          <div class="learning-metric"><strong>Ninguno</strong><span>Resultados inferidos</span><small>No medidos ni afirmados</small></div>
+        </div>
+        <div class="actions">
+          <button class="button small" type="button" data-learning-health-clear>Borrar contadores del dispositivo</button>
+          <span class="meta" data-learning-health-clear-status aria-live="polite"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section learning-resource-section" data-learning-resources>
+      <div class="wrap">
+        <div class="eyebrow">Próximo paso verificado</div>
+        <h2>Abra la fuente educativa responsable.</h2>
+        <p>Busque puntos oficiales de Franklin, el Condado de Williamson y Tennessee. Confirme horarios, requisitos, costos, servicios y contactos antes de depender de ellos.</p>
+        <div class="learning-resource-filter">
+          <label>Buscar por tema
+            <input type="search" data-learning-resource-search autocomplete="off" placeholder="Pruebe adultos, biblioteca, estándares…">
+          </label>
+          <label>Público
+            <select data-learning-resource-audience>
+              <option value="">Todos los públicos</option>
+              <option value="educator">Docente</option>
+              <option value="parent">Padre, madre o tutor</option>
+              <option value="learner">Aprendiz</option>
+              <option value="adult">Aprendiz adulto</option>
+              <option value="provider">Proveedor educativo</option>
+            </select>
+          </label>
+        </div>
+        <p class="directory-summary" data-learning-resource-summary aria-live="polite"></p>
+        <div class="learning-resource-grid" data-learning-resource-grid aria-live="polite"></div>
+        <div class="actions">
+          <a class="button" href="/directory/?q=education%20tutoring%20learning">Buscar listados educativos de Franklin</a>
+          <a class="button" href="/local-pathways/education-learning/">Abrir la ruta educativa</a>
+        </div>
+        <p class="fine-print">La aparición y el orden del directorio no son clasificaciones, referencias ni recomendaciones. Verifique directamente servicios, credenciales, disponibilidad, accesibilidad, tarifas e idoneidad.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-brand">Franklin Navigator</div>
+        <div>Modo Aprendizaje dentro de Franklin Assistant.</div>
+        <div class="fine-print">Preparación educativa general únicamente. Las agencias, escuelas, organizaciones y proveedores enlazados no están afiliados ni recomendados por Franklin Navigator, salvo indicación expresa.</div>
+      </div>
+      <nav class="footer-links" aria-label="Pie de página">
+        <a href="/es/aprendizaje/">Centro de Aprendizaje</a>
+        <a href="/local-pathways/education-learning/">Ruta educativa</a>
+        <a href="/directory/?q=education%20tutoring%20learning">Buscar proveedores</a>
+        <a href="/data/learning-provider-profile-schema.json">Esquema de proveedor</a>
+        <a href="/privacy/">Privacidad</a>
+        <a href="/terms/">Términos</a>
+        <a href="/accessibility/">Accesibilidad</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="/assets/app.js" defer></script>
+  <script src="/assets/learning-hub.js" defer></script>
+</body>
+</html>
