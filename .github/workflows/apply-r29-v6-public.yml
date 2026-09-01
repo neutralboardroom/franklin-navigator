@@ -1,0 +1,92 @@
+name: Apply Franklin R29 Mature Public Offer V6
+on:
+  push:
+    branches: [r29-mature-public-offer-v6-20260901]
+    paths:
+      - artifacts/r29-v6-public-overlay.part00
+      - artifacts/r29-v6-public-overlay.part01
+      - artifacts/r29-v6-public-overlay.part02
+      - artifacts/r29-v6-public-overlay.part03
+      - .github/workflows/apply-r29-v6-public.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: r29-mature-public-offer-v6-20260901
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+      - name: Decode exact R29 overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat artifacts/r29-v6-public-overlay.part* | base64 -d > /tmp/r29-public.tar.gz
+          echo "95b7d413d08c7bde7fa0a0eca206e139199649c9a59fb8efc5b434c06a019f56  /tmp/r29-public.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/r29-public.tar.gz -C .
+          rm -f \
+            dist/assets/r25-membership.css dist/assets/r25-membership.js \
+            dist/assets/r26-membership.css dist/assets/r26-membership.js \
+            dist/assets/r28-community.css dist/assets/r28-community.js \
+            dist/data/commerce-readiness.json dist/data/membership-checkout-catalog.json \
+            dist/data/r26-first-value.json dist/data/community-membership-v4.json \
+            dist/data/r28-community-strategy-receipt.json \
+            NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_3_0_R28.md R28_PUBLIC_DELTA_MANIFEST.json
+      - name: Verify exact manifest, syntax and public truth
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check dist/assets/r27-home.js
+          node --check dist/assets/r29-community.js
+          python - <<'PY'
+          import hashlib,json,pathlib,re
+          from html.parser import HTMLParser
+          root=pathlib.Path('.')
+          manifest=json.loads((root/'R29_PUBLIC_DELTA_MANIFEST.json').read_text())
+          assert manifest['release']=='FR-NAV1.4.0-CANDIDATE-R29'
+          for row in manifest['files']:
+              p=root/row['path']; data=p.read_bytes()
+              assert len(data)==row['bytes'],(row['path'],'bytes')
+              assert hashlib.sha256(data).hexdigest()==row['sha256'],(row['path'],'sha256')
+          class P(HTMLParser):
+              def __init__(self): super().__init__(); self.ids=set()
+              def handle_starttag(self,t,a):
+                  d=dict(a)
+                  if 'id' in d:
+                      assert d['id'] not in self.ids,(t,d['id'])
+                      self.ids.add(d['id'])
+          prohibited=[r'Founding30',r'founding member',r'early adopter',r'just launched',r'new platform',r'coming soon',r'\$3\.50',r'\$35(?:\D|$)',r'\$135(?:\D|$)',r'Most Popular',r'Recommended']
+          for p in root.joinpath('dist').rglob('*.html'):
+              text=p.read_text(); P().feed(text)
+              for pat in prohibited:
+                  assert not re.search(pat,text,re.I),(p,pat)
+          pricing=(root/'dist/membership-pricing/index.html').read_text()
+          assert '$5' in pricing and '$50' in pricing and '$120' in pricing
+          assert 'BEST LONG-TERM VALUE' in pricing
+          assert 'SHOW ME' in pricing
+          release=json.loads((root/'PRODUCTION_RELEASE.json').read_text())
+          assert release['publicPayload']['profiles']==19103
+          assert release['commerce']['publicCheckoutOpen'] is False
+          assert release['publicOffer']['monthlyUsd']==5
+          assert release['publicOffer']['annualUsd']==50
+          assert release['publicOffer']['charterThreeYearUsd']==120
+          assert release['publicOffer']['annualRecommended'] is False
+          print('R29 public verification PASS')
+          PY
+      - name: Commit verified R29 successor
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "neutralboardroom"
+          git config user.email "reachrgnow@gmail.com"
+          git add -A README.md PRODUCTION_RELEASE.json NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_4_0_R29.md R29_PUBLIC_DELTA_MANIFEST.json dist
+          if git diff --cached --quiet; then
+            echo "No generated changes."
+            exit 0
+          fi
+          git commit -m "Release Franklin R29 Mature Public Offer V6"
+          git push origin HEAD:r29-mature-public-offer-v6-20260901
