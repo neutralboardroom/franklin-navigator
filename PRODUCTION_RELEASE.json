@@ -1,64 +1,66 @@
 {
-  "schemaVersion": "smarter.franklin.production-release.v10",
+  "schemaVersion": "smarter.franklin.production-release.v11",
   "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
+  "platformRoleAlias": "NAVIGATOR_PLATFORM_INTERNAL",
   "editionId": "franklin",
-  "release": "FR-NAV1.3.0-CANDIDATE-R28",
+  "activeEdition": "FRANKLIN_TN",
+  "release": "FR-NAV1.4.0-CANDIDATE-R29",
   "canonicalOrigin": "https://franklinnavigator.com",
   "exactDirectPredecessor": {
-    "release": "FR-NAV1.2.0-CANDIDATE-R27",
-    "commit": "32ab8242310f686829b5aea0fde077dd92bc037e",
-    "tree": "5559077e07b970d39935baad03069f290e610ad5",
-    "renderDeployId": "dep-daaufoh5efls7390oj0g",
+    "release": "FR-NAV1.3.0-CANDIDATE-R28",
+    "commit": "f35d156d8149698f63a0000c01ad47e5fecec3ef",
+    "tree": "53b96dfe6271f7c0e91cf640d1c205169b44a817",
+    "renderDeployId": "dep-dab1sas9v7es73bpu4og",
     "productionDeployPerformed": true
   },
   "publicPayload": {
     "profiles": 19103,
-    "htmlPages": 19299,
-    "sitemapRoutes": 19297,
     "communityMembershipPublicChoices": 3,
-    "communityMembershipProviderPricesExpected": 4,
     "legacy84PublicSuppressed": true,
-    "enterpriseQuoteOnlyAddOn": true,
-    "newRoute": "/member-profile-preview/",
-    "primaryPreLiveCta": "SHOW_ME_MY_MEMBER_PROFILE"
+    "canonicalAssistantRoute": "/assistant/",
+    "personalizedPreviewRoute": "/member-profile-preview/",
+    "primaryPreLiveCta": "SHOW_ME",
+    "publicFoundingDiscountActive": false
   },
   "strategy": {
-    "priceAuthority": "FRANKLIN_COMMUNITY_MEMBERSHIP_PRICE_AUTHORITY_V4_2026_08_31",
-    "positioning": "COMMUNITY_CENTERED_INDEPENDENT_FRANKLIN_ONLY",
-    "monthly": {
-      "foundingUsd": 3.5,
-      "regularUsd": 5,
-      "autoRenew": true
-    },
-    "annual": {
-      "foundingUsd": 35,
-      "regularUsd": 50,
-      "autoRenew": true,
-      "recommended": true
-    },
-    "threeYear": {
-      "foundingUsd": 120,
-      "regularUsd": 135,
-      "termMonths": 36,
-      "autoRenew": false,
-      "nonStackable": true
-    }
+    "strategyId": "FRANKLIN_PUBLIC_OFFER_AND_SALES_ACTIVATION_V6_2026_08_31",
+    "priceAuthority": "FRANKLIN_COMMUNITY_MEMBERSHIP_AND_CHARTER_PRICE_AUTHORITY_V5_2026_08_31",
+    "positioning": "MATURE_COMMUNITY_CENTERED_FRANKLIN_SPECIFIC",
+    "masterBrand": "Franklin Navigator",
+    "assistantBrand": "Franklin Assistant",
+    "monthlyUsd": 5,
+    "annualUsd": 50,
+    "annualRecommended": false,
+    "charterUsd": 120,
+    "charterTermMonths": 36,
+    "charterAutoRenew": false,
+    "charterFeaturedBadge": "BEST LONG-TERM VALUE"
   },
-  "sre": {
-    "release": "SRE-OC-CP-2.14.0",
-    "sgeVersion": "SGE-1.14.0",
-    "commit": "9de677a32a9072f9b37f44f4c291c7e5f41dc1e3",
-    "tree": "862a7fce486074795fc9981502413ab7f4e79465",
-    "renderDeployId": "dep-dab0b1ek1f9s738pose0",
-    "providerBindingReady": false,
-    "readyAccepted": false
+  "stripeProvider": {
+    "account": "acct_1TZU2TRxNra9nizo",
+    "productId": "prod_VB1O5muUZztY2O",
+    "monthlyPriceId": "price_1UAfLPRxNra9nizolEiP5Z2z",
+    "annualPriceId": "price_1UAfLXRxNra9nizoW32RIfPG",
+    "charterPriceId": "price_1UAfLfRxNra9nizoqd84x8DR",
+    "providerObjectsVerified": true,
+    "chargesCreatedByProviderBinding": 0,
+    "publicCheckoutOpenedByProviderBinding": false
+  },
+  "revenueEngine": {
+    "release": "SRE-OC-CP-2.16.0",
+    "publicOfferContract": "V6",
+    "readyAccepted": false,
+    "controlledRealTransactionPassed": false,
+    "liveAcceptancePassed": false
   },
   "runtimeFoundation": {
     "repository": "neutralboardroom/franklin-navigator",
     "branch": "franklin-commerce-runtime",
-    "predecessorCommit": "cf6a2b04c1aded053a383259f71cfcfdd4fa84d2",
-    "v4UpgradeQueued": true,
-    "productionWebServiceBound": false
+    "priceCatalogUpgradedToV5V6": true,
+    "threeYearLifecycleSource": true,
+    "expirationReminderDays": [60,30,7],
+    "productionWebServiceBound": false,
+    "productionRuntimeStatus": "SOURCE_UPGRADE_AND_TESTS_IN_PROGRESS_AT_RELEASE_SEAL"
   },
   "databaseFoundation": {
     "provider": "Render",
@@ -68,19 +70,21 @@
     "status": "AVAILABLE",
     "productionSchemaAndRowsVerified": false
   },
+  "handoffConsumers": {
+    "pf158": "HELD_PENDING_CORRECTED_EMBEDDED_SCC_HANDOFF_AND_CONSUMER_ACCEPTANCE",
+    "liV9": "PENDING_POINT_OF_USE_CONSUMER_ACCEPTANCE",
+    "liveProfileCountPreserved": 19103
+  },
   "commerce": {
     "paidCommerceActive": false,
     "stripeDownstreamEntitlementProcessingActive": false,
     "productionEntitlementPersistence": false,
     "controlledRealTransactionPassed": false,
     "publicCheckoutOpen": false,
-    "blocker": "V4_PROVIDER_BINDING_AND_PRODUCTION_RUNTIME_DATABASE_PROOF_NOT_COMPLETE"
+    "preCheckoutActionAvailable": "SHOW_ME",
+    "blocker": "PRODUCTION_MEMBERSHIP_RUNTIME_DATABASE_BINDING_READY_ACCEPTANCE_AND_CONTROLLED_TRANSACTION_NOT_COMPLETE"
   },
-  "dataConsumerWork": {
-    "pf158": "PENDING_REGENERATED_HANDOFF_AND_WO035",
-    "liV9": "PENDING_EXACT_WO036_AND_POINT_OF_USE_VALIDATION"
-  },
-  "status": "COMMUNITY_MEMBERSHIP_V4_PUBLIC_SUCCESSOR__REAL_PAYMENTS_FAIL_CLOSED",
+  "status": "R29_V6_COMMUNITY_AND_CHARTER_PUBLIC_SUCCESSOR__PROVIDER_OBJECTS_VERIFIED__REAL_PAYMENTS_FAIL_CLOSED",
   "authorityTransfer": false,
   "finalGitCommitAndDeployBoundByPostDeploymentReceipt": true
 }
