@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://franklinnavigator.com/membership-start/</loc></url>
+  <url><loc>https://franklinnavigator.com/membership-pricing/</loc></url>
+  <url><loc>https://franklinnavigator.com/member-profile-preview/</loc></url>
   <url><loc>https://franklinnavigator.com/membership-enrollment/</loc></url>
   <url><loc>https://franklinnavigator.com/membership-status/</loc></url>
   <url><loc>https://franklinnavigator.com/member-support/</loc></url>
   <url><loc>https://franklinnavigator.com/founding-member-planner/</loc></url>
   <url><loc>https://franklinnavigator.com/member-first-value/</loc></url>
+  <url><loc>https://franklinnavigator.com/business-dashboard/</loc></url>
+  <url><loc>https://franklinnavigator.com/claim-profile/</loc></url>
+  <url><loc>https://franklinnavigator.com/profile-studio/</loc></url>
+  <url><loc>https://franklinnavigator.com/local-growth-engine/</loc></url>
+  <url><loc>https://franklinnavigator.com/work-with-franklin-navigator/</loc></url>
+  <url><loc>https://franklinnavigator.com/privacy/</loc></url>
+  <url><loc>https://franklinnavigator.com/terms/</loc></url>
 </urlset>

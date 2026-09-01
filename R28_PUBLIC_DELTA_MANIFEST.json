@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "franklin.r28.public-delta-manifest.v1",
+  "release": "FR-NAV1.3.0-CANDIDATE-R28",
+  "fileCount": 24,
+  "files": [
+    {
+      "path": "NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_3_0_R28.md",
+      "bytes": 1509,
+      "sha256": "5b0c654b64017caef1d402cdcc5fb75e428f6cd53d33fe9c6be46146225fb55d"
+    },
+    {
+      "path": "PRODUCTION_RELEASE.json",
+      "bytes": 2904,
+      "sha256": "c9f6132f54ada06e76c779c288b67380d99f13619c476b55ad34e4837bc005bb"
+    },
+    {
+      "path": "README.md",
+      "bytes": 637,
+      "sha256": "dfad554d2261963170bb90c555a9edc03dd36e379fab7cd64c4cab5c7044ffa0"
+    },
+    {
+      "path": "dist/assets/r27-home.js",
+      "bytes": 6527,
+      "sha256": "df5a9b6b8517126cc0e625c27f883701981594c9c5da4dfbc916ae6719f9d909"
+    },
+    {
+      "path": "dist/assets/r28-community.css",
+      "bytes": 5226,
+      "sha256": "745e697a73f7b188d9a97a24c2f4cad4e72acae8fdeb7178c8f36149803d1f8d"
+    },
+    {
+      "path": "dist/assets/r28-community.js",
+      "bytes": 5357,
+      "sha256": "72f589ef4367dd2a1db7a9dcd3cd93f71259b967d345bc6fa3798153e9e602aa"
+    },
+    {
+      "path": "dist/business-dashboard/index.html",
+      "bytes": 7888,
+      "sha256": "2a967d7b104dd55bbddc78ac8295d500cfcf9bc818cb2f0b1e9c764207e4b630"
+    },
+    {
+      "path": "dist/claim-profile/index.html",
+      "bytes": 5619,
+      "sha256": "a1480c73ef01fc30e9ff40e412ecdb69eae1207bf23679115ff6f3837bd715b2"
+    },
+    {
+      "path": "dist/data/community-membership-v4.json",
+      "bytes": 1806,
+      "sha256": "b3aa5dc103385139807cd7c945d664e8c50c359cf255667ed566daf4272bb3f2"
+    },
+    {
+      "path": "dist/data/r28-community-strategy-receipt.json",
+      "bytes": 1286,
+      "sha256": "87d0f6db97d42b8db0fb7955df7e8b73e6e377c9fd9aeae3b5b3205ae171e0e3"
+    },
+    {
+      "path": "dist/founding-member-planner/index.html",
+      "bytes": 5508,
+      "sha256": "6f53a203d70c187d3887797bc302ba3684e0b8d54fa5203f0900732f67339eec"
+    },
+    {
+      "path": "dist/member-first-value/index.html",
+      "bytes": 5051,
+      "sha256": "c73684a0df70a391b5eded3f8c934c7ae2dbbdda3f2d140a344aa220b7993f43"
+    },
+    {
+      "path": "dist/member-profile-preview/index.html",
+      "bytes": 6120,
+      "sha256": "4617967926bc8fcd66087442332d8f1ade9cc5de0add57684841b9e3b25b1c8f"
+    },
+    {
+      "path": "dist/member-support/index.html",
+      "bytes": 5495,
+      "sha256": "ffaa81a2852ab0d1f86684d73896ee5d11979a8d7a0378784e9f4a461f798507"
+    },
+    {
+      "path": "dist/membership-enrollment/index.html",
+      "bytes": 5428,
+      "sha256": "e80a182ec4bd5a6107aff4eeb099518d4c9b2979e07c58914d36515a5c3dd6b2"
+    },
+    {
+      "path": "dist/membership-pricing/index.html",
+      "bytes": 7646,
+      "sha256": "889da3441f3a678605ae741c3c6085423f918f4c420068f7b801fab9c070689a"
+    },
+    {
+      "path": "dist/membership-start/index.html",
+      "bytes": 8479,
+      "sha256": "1af754dd9b066c0e2c78bb41b953957aa731a835c0cd7af64a7eba5c8143923f"
+    },
+    {
+      "path": "dist/membership-status/index.html",
+      "bytes": 5188,
+      "sha256": "7afaa297136698e1c0a537855b65328ed89cbdb81cf9e92dccea30a55c12077a"
+    },
+    {
+      "path": "dist/privacy/index.html",
+      "bytes": 6581,
+      "sha256": "c6c7250dc5955fcb4b2c6ed18bd87471f7fce33369779f64df91292973b4fb5f"
+    },
+    {
+      "path": "dist/profile-studio/index.html",
+      "bytes": 6166,
+      "sha256": "1afda1908993c90f7bd10f9f04d00c8c09ffa4baf43d650c24082a3058d0fe9f"
+    },
+    {
+      "path": "dist/release-identity.json",
+      "bytes": 405,
+      "sha256": "7ac649b7032f4f343abec0efa80842f28ab9bffeb42133b145bf9e7a4b2d4973"
+    },
+    {
+      "path": "dist/sitemap-membership.xml",
+      "bytes": 1203,
+      "sha256": "534b50e80268505c957678fc3e7be919ad8a0c33eadaf757c0006ecd0f23f608"
+    },
+    {
+      "path": "dist/terms/index.html",
+      "bytes": 6806,
+      "sha256": "644075cf4f7b3bf60c9e050db812a395347484a5ab33f069d613ca3b8982d6e3"
+    },
+    {
+      "path": "dist/work-with-franklin-navigator/index.html",
+      "bytes": 6094,
+      "sha256": "921f947c4049f34b84a0b3693c4fe29cf1e487f16ad4c2ed5348b8ec2f79acf8"
+    }
+  ]
+}

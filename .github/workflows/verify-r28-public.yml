@@ -1,0 +1,63 @@
+name: Verify Franklin R28 public Community Membership release
+on:
+  push:
+    branches:
+      - r28-community-membership-public-20260901
+      - main
+    paths:
+      - README.md
+      - PRODUCTION_RELEASE.json
+      - NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_3_0_R28.md
+      - R28_PUBLIC_DELTA_MANIFEST.json
+      - dist/**
+      - .github/workflows/verify-r28-public.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+      - name: Verify exact delta manifest and public release invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check dist/assets/r27-home.js
+          node --check dist/assets/r28-community.js
+          python - <<'PY'
+          import hashlib,json,pathlib
+          from html.parser import HTMLParser
+          root=pathlib.Path('.')
+          manifest=json.loads((root/'R28_PUBLIC_DELTA_MANIFEST.json').read_text())
+          assert manifest['release']=='FR-NAV1.3.0-CANDIDATE-R28'
+          assert manifest['fileCount']==24
+          for row in manifest['files']:
+              path=root/row['path']
+              data=path.read_bytes()
+              assert len(data)==row['bytes'],(row['path'],'bytes',len(data),row['bytes'])
+              assert hashlib.sha256(data).hexdigest()==row['sha256'],(row['path'],'sha256')
+          class Parser(HTMLParser):
+              def __init__(self): super().__init__(); self.ids=set()
+              def handle_starttag(self,tag,attrs):
+                  d=dict(attrs)
+                  if 'id' in d:
+                      assert d['id'] not in self.ids,d['id']
+                      self.ids.add(d['id'])
+          for path in root.joinpath('dist').rglob('*.html'):
+              Parser().feed(path.read_text())
+          release=json.loads((root/'PRODUCTION_RELEASE.json').read_text())
+          assert release['publicPayload']['profiles']==19103
+          assert release['publicPayload']['communityMembershipPublicChoices']==3
+          assert release['publicPayload']['legacy84PublicSuppressed'] is True
+          assert release['commerce']['publicCheckoutOpen'] is False
+          pricing=(root/'dist/membership-pricing/index.html').read_text()
+          assert all(value in pricing for value in ('$3.50','$35','$120','$135'))
+          assert '84-choice public catalog' in pricing
+          assert 'Individual, Team and Office plans' not in pricing
+          assert 'Show me my member profile' in (root/'dist/membership-start/index.html').read_text()
+          print('R28 public verification PASS')
+          PY

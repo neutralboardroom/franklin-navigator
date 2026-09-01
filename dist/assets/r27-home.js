@@ -1,6 +1,6 @@
-/* Franklin R27 focused Ask Navigator answer experience */
+/* Franklin R28 focused Ask Navigator community-participation experience */
 (() => {
-  const BUSINESS_INTENT = /\b(grow my business|business growth|more local customers|market(?:ing)? my business|promote my business|local visibility|business profile|claim my profile|membership plans?)\b/i;
+  const COMMUNITY_INTENT = /\b(grow my business|business growth|more local customers|market(?:ing)? my business|promote my business|local visibility|business profile|claim my profile|membership plans?|community membership|join franklin navigator|participate in franklin)\b/i;
 
   const setup = () => {
     const card = document.querySelector('[data-navigator-bot]');
@@ -56,23 +56,23 @@
       body.append(summary);
     };
 
-    const showBusinessChoices = (question) => {
+    const showCommunityChoices = (question) => {
       moving = true;
-      title.textContent = 'How would you like to grow your Franklin business?';
+      title.textContent = 'How would you like to participate more fully in Franklin?';
       body.replaceChildren();
       addQuestion(question);
       const choice = document.createElement('section');
       choice.className = 'r27-business-choice';
       choice.innerHTML = `
-        <h3>Start with the outcome you need.</h3>
-        <p>Open one focused workspace instead of expanding a long answer below the homepage.</p>
+        <h3>Start with your community presence.</h3>
+        <p>Review the profile, preview the Community Member version, or use a free planning tool. No payment is required.</p>
         <div class="r27-business-actions">
-          <a class="button primary" href="/local-growth-engine/">Build my growth plan</a>
+          <a class="button primary" href="/member-profile-preview/">Show me my member profile</a>
           <a class="button" href="/claim-profile/">Find or review my profile</a>
-          <a class="button" href="/membership-start/">See membership and pricing</a>
-          <a class="button" href="/business-dashboard/">Open my business dashboard</a>
+          <a class="button" href="/membership-start/">Explore Community Membership</a>
+          <a class="button" href="/local-growth-engine/">Build a community growth plan</a>
         </div>
-        <p class="r27-business-note">Membership improves eligible profile and growth tools. It does not guarantee ranking, customers, leads, sales or results.</p>`;
+        <p class="r27-business-note">Basic public profiles and factual corrections remain free. Community Membership supports richer participation and useful tools; it does not buy ranking, endorsement, leads, customers, sales or guaranteed results.</p>`;
       body.append(choice);
       output.hidden = true;
       output.replaceChildren();
@@ -99,11 +99,11 @@
 
     form.addEventListener('submit', (event) => {
       const question = input.value.trim();
-      if (!BUSINESS_INTENT.test(question)) return;
+      if (!COMMUNITY_INTENT.test(question)) return;
       event.preventDefault();
       event.stopImmediatePropagation();
       returnFocus = input;
-      showBusinessChoices(question || 'Grow my business');
+      showCommunityChoices(question || 'Participate in the Franklin community');
     }, true);
 
     card.addEventListener('click', (event) => {
@@ -111,19 +111,22 @@
       if (trigger) returnFocus = trigger;
     }, true);
 
-    const observer = new MutationObserver(() => queueMicrotask(showGeneratedAnswer));
-    observer.observe(output, {
-      attributes: true,
-      attributeFilter: ['hidden'],
-      childList: true,
-      subtree: true,
-      characterData: true
-    });
 
+    const publicSection = document.querySelector('.r24-business-section');
+    if (publicSection) {
+      const heading = publicSection.querySelector('h2');
+      const paragraph = publicSection.querySelector('p');
+      const links = publicSection.querySelectorAll('.actions a');
+      if (heading) heading.textContent = 'Participate more fully in the Franklin community.';
+      if (paragraph) paragraph.textContent = 'Review the public profile, preview the richer Community Member version, and use free local planning tools before deciding whether membership fits.';
+      if (links[0]) { links[0].href = '/member-profile-preview/'; links[0].textContent = 'Show me my member profile'; }
+      if (links[1]) { links[1].href = '/membership-start/'; links[1].textContent = 'Explore Community Membership'; }
+    }
+
+    const observer = new MutationObserver(() => queueMicrotask(showGeneratedAnswer));
+    observer.observe(output, {attributes:true,attributeFilter:['hidden'],childList:true,subtree:true,characterData:true});
     close.addEventListener('click', closeDialog);
-    dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) closeDialog();
-    });
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) closeDialog(); });
     dialog.addEventListener('close', () => {
       document.body.classList.remove('r27-dialog-open');
       if (returnFocus instanceof HTMLElement) requestAnimationFrame(() => returnFocus.focus());

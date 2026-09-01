@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "franklin.r28.community-strategy-receipt.v1",
+  "release": "FR-NAV1.3.0-CANDIDATE-R28",
+  "workOrders": [
+    "WO-20260831-LOCAL-FRANKLIN-R27-NO-BRAINER-MEMBERSHIP-AND-SALES-FUNNEL-032",
+    "WO-20260831-SCC-LOCAL-R27-RUNTIME-ARCHIVE-COMMERCE-COMPLETION-034"
+  ],
+  "publicFrontFace": {
+    "universalThreeChoice": true,
+    "monthlyRegularUsd": 5,
+    "monthlyFoundingUsd": 3.5,
+    "annualRegularUsd": 50,
+    "annualFoundingUsd": 35,
+    "threeYearRegularUsd": 135,
+    "threeYearFoundingUsd": 120,
+    "threeYearAutoRenew": false,
+    "primaryPreLiveCta": "SHOW_ME_MY_MEMBER_PROFILE",
+    "legacy84PublicSuppressed": true,
+    "communityCentered": true,
+    "localOnlyPositioning": true
+  },
+  "preserved": {
+    "profiles": 19103,
+    "r27FocusedAskNavigator": true,
+    "freeCorrections": true,
+    "commerceFailClosed": true
+  },
+  "commerce": {
+    "paidCommerceActive": false,
+    "providerBindingReady": false,
+    "runtimeProductionBound": false,
+    "readyAccepted": false,
+    "controlledRealTransactionPassed": false,
+    "publicCheckoutOpen": false
+  },
+  "pf158ConsumerAcceptance": "PENDING_EXACT_REGENERATED_HANDOFF_AND_WO035_FILE",
+  "liV9ConsumerAcceptance": "PENDING_EXACT_WO036_FILE_AND_POINT_OF_USE_VALIDATION",
+  "authorityTransfer": false
+}

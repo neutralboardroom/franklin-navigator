@@ -1,5 +1,7 @@
-# Franklin Navigator R27
+# Franklin Navigator R28
 
-`FR-NAV1.2.0-CANDIDATE-R27` fixes the homepage Ask Navigator interaction so answers open in an accessible focused dialog rather than pushing primary content below the visible viewport. Business-growth intent now opens four clear action paths.
+`FR-NAV1.3.0-CANDIDATE-R28` is the community-centered successor to R27.
 
-The live Stripe catalog, Founding30 offer, Customer Portal, SRE webhook, dedicated database and non-charging persistent lifecycle proof are verified. Real payments remain fail-closed until the Franklin membership web service is deployed, bound to the dedicated database, accepted by the Revenue Engine and proven through one controlled real transaction.
+It preserves all 19,103 public profiles and the focused Ask Navigator dialog, replaces the legacy public 14-category / 84-price presentation with one Franklin Navigator Community Membership and three clear choices, and adds a personalized **SHOW ME MY MEMBER PROFILE** journey.
+
+Real payments remain fail-closed. The V4 Stripe provider binding, production membership runtime/database evidence, SRE READY acceptance, one explicitly authorized controlled real transaction and final LIVE acceptance are still required before checkout opens.

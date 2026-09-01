@@ -1,12 +1,12 @@
 {
-  "schemaVersion": "franklin.release-identity.r27.v1",
-  "release": "FR-NAV1.2.0-CANDIDATE-R27",
-  "exactPredecessor": "FR-NAV1.1.0-CANDIDATE-R26",
+  "schemaVersion": "franklin.release-identity.r28.v1",
+  "release": "FR-NAV1.3.0-CANDIDATE-R28",
+  "exactPredecessor": "FR-NAV1.2.0-CANDIDATE-R27",
   "profileCount": 19103,
-  "publicConstruction": "R26_PLUS_FOCUSED_ASK_NAVIGATOR_DIALOG_AND_PAYMENT_COORDINATION_EVIDENCE",
-  "homepageAnswerExperience": "FOCUSED_DIALOG_NO_INLINE_LAYOUT_SHIFT",
+  "publicConstruction": "R27_PLUS_COMMUNITY_MEMBERSHIP_V4_FRONT_FACE",
+  "communityCentered": true,
+  "legacy84PublicSuppressed": true,
   "paidCommerceActive": false,
-  "runtimePersistentProof": true,
   "runtimeProductionBound": false,
   "builtAt": "2026-08-31"
 }

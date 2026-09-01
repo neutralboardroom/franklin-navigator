@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "franklin.community-membership.v4.public.v1",
+  "release": "FR-NAV1.3.0-CANDIDATE-R28",
+  "community": "FRANKLIN_TN",
+  "publicIdentity": "Franklin Navigator Community Membership",
+  "localOnlyMessage": "Built specifically for Franklin, Tennessee\u2014not a national directory with a Franklin label.",
+  "freePresence": {
+    "amountUsd": 0,
+    "factualCorrectionsFree": true
+  },
+  "choices": [
+    {
+      "id": "monthly",
+      "lookupKey": "franklin_community_member_monthly_v4",
+      "billing": "recurring_monthly",
+      "regularUsd": 5,
+      "foundingUsd": 3.5,
+      "foundingDurationMonths": 12,
+      "autoRenew": true
+    },
+    {
+      "id": "annual",
+      "lookupKey": "franklin_community_member_annual_v4",
+      "billing": "recurring_annually",
+      "regularUsd": 50,
+      "foundingUsd": 35,
+      "foundingDurationMonths": 12,
+      "autoRenew": true,
+      "label": "MOST_POPULAR"
+    },
+    {
+      "id": "threeYear",
+      "lookupKeys": {
+        "regular": "franklin_community_member_3year_regular_v4",
+        "founding": "franklin_community_member_3year_founding_v4"
+      },
+      "billing": "one_time_prepaid_36_month_term",
+      "regularUsd": 135,
+      "foundingUsd": 120,
+      "termMonths": 36,
+      "autoRenew": false,
+      "label": "BEST_VALUE",
+      "foundingNonStackable": true
+    }
+  ],
+  "foundingDeadlineLocal": "2026-12-31T23:59:59-06:00",
+  "enterprise": "QUOTE_ONLY_ADD_ON",
+  "legacy84": {
+    "publiclySuppressed": true,
+    "retainedAsRollbackEvidence": true
+  },
+  "checkout": {
+    "publicOpen": false,
+    "realPaymentsReady": false
+  },
+  "boundaries": [
+    "FREE_FACTUAL_CORRECTIONS",
+    "NO_PAY_TO_RANK",
+    "NO_ENDORSEMENT",
+    "NO_GUARANTEED_RESULTS",
+    "NO_RAW_CONTACT_EXPORT",
+    "PUBLIC_EMAIL_IS_NOT_CONSENT"
+  ]
+}
