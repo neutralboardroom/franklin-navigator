@@ -3,7 +3,10 @@ on:
   push:
     branches: [main]
     paths:
-      - artifacts/r28-community-membership-delta.b64
+      - artifacts/r28-community-membership-delta.part01
+      - artifacts/r28-community-membership-delta.part02
+      - artifacts/r28-community-membership-delta.part03
+      - artifacts/r28-community-membership-delta.part04
       - .github/workflows/apply-r28-community-membership.yml
   workflow_dispatch:
 permissions:
@@ -22,7 +25,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base64 -d artifacts/r28-community-membership-delta.b64 > /tmp/r28-public-delta.tar.gz
+          cat artifacts/r28-community-membership-delta.part* | base64 -d > /tmp/r28-public-delta.tar.gz
           echo "d4d543a8c832f90ace2e1663bd706ddf647b81d7d602f51bee64d41cc8dc3fb5  /tmp/r28-public-delta.tar.gz" | sha256sum -c -
           tar -xzf /tmp/r28-public-delta.tar.gz -C .
           python - <<'PY'
