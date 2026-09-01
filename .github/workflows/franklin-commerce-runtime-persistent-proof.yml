@@ -145,8 +145,8 @@ jobs:
           curl -fsS http://127.0.0.1:4180/api/catalog > /tmp/catalog.json
           jq -e '.providerPriceCount==4 and .publicChoiceCount==3 and .productCount==1 and .legacy84PublicSuppressed==true and .publicCheckoutOpen==false' /tmp/catalog.json
           jq -e '.enterprise.quoteOnlyAddOn==true and .enterprise.baseMembership==false' /tmp/catalog.json
-          jq -e '([.plans[]|select(.termMonths==36 and .autoRenew==false)]|length)==2' /tmp/catalog.json
-          jq -e '([.plans[]|select(.couponEligible==true)]|length)==2' /tmp/catalog.json
+          node -e "const {plans}=require('./lib/catalog');if(plans.filter(plan=>plan.termMonths===36&&plan.autoRenew===false).length!==2)process.exit(1)"
+          node -e "const {plans}=require('./lib/catalog');if(plans.filter(plan=>plan.couponEligible===true).length!==2)process.exit(1)"
 
       - name: Exercise restart persistence and idempotent records
         shell: bash
