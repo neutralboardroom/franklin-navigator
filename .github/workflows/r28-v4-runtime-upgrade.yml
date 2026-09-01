@@ -36,7 +36,7 @@ jobs:
         run: |
           git config user.name "neutralboardroom"
           git config user.email "reachrgnow@gmail.com"
-          git add server.js lib test render.yaml evidence scripts/apply-r28-v4-runtime.mjs .github/workflows/franklin-commerce-runtime-persistent-proof.yml
+          git add server.js lib test render.yaml evidence scripts/apply-r28-v4-runtime.mjs
           if git diff --cached --quiet; then
             echo "No generated runtime changes."
             exit 0
