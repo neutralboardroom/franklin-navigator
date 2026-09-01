@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "franklin.donor-inheritance.r29.v1",
+  "release": "FR-NAV1.4.0-CANDIDATE-R29",
+  "currentVersionStatus": "VERSION_SLICE_COMPLETE_SOURCE_QUALIFIED_PENDING_PUBLIC_PROMOTION",
+  "overallDonorInheritanceProgramStatus": "IN_PROGRESS",
+  "anchors": {
+    "SMARTER_JUSTICE": {"version":"v2.0.0-pre120 / PRE120","sha256":"1be95fd1ef025ec6d65bbd0c1e67c8814a38ea53b0073066b82cf5a5002e6bd9","use":"READ_ONLY_CAPABILITY_INVENTORY_WITH_STRONGER_PREDECESSOR_RECOVERY_WHERE_NEEDED"},
+    "SMARTER_HEALTH": {"version":"v0.30.0 / H26","sha256":"412264ba3858526aaaeb8c78278da0bca7d836af1fe5de6b658f9c7ad2337e90","use":"READ_ONLY_QUALIFIED_DONOR"},
+    "SMARTER_HOME": {"version":"v0.58.0 / NAV7.2","sha256":"3bdc5334d48917c1f5a1ec808b39137a299a70631d299fe3d20ac8c932f4d154","use":"ROGER_AUTHORIZED_READ_ONLY_QUALIFIED_CANDIDATE"},
+    "SMARTER_AUTO": {"version":"v1.9.0 / A9","sha256":"bee00a9bc70b3409c10cec4da6019794142e49fc44e30d810923cfba736870fd","use":"READ_ONLY_SOURCE_QUALIFIED_DONOR"}
+  },
+  "r29Progress": {
+    "adapted": [
+      "Franklin Assistant canonical whole-situation entry route",
+      "Cross-domain prompts that do not force Legal, Health, Home or Auto categorization before the resident explains the problem",
+      "Business/community intent routed to profile review, member preview and free planning rather than a sales maze"
+    ],
+    "preserved": [
+      "Existing deep Legal, Health, Home and Auto Franklin workbenches and Preparation Studio inheritance",
+      "Existing whole-situation routing accumulated in prior Franklin releases",
+      "Existing free resident and community routes"
+    ],
+    "rejectedWithCause": [],
+    "deferredWithCause": [
+      "Additional donor source-dependent workflow inheritance deferred to the next coherent slice because this release first had to reconcile superseding V6 membership/payment contracts and an active production/payment P0 blocker."
+    ]
+  },
+  "authorityTransfer": false
+}
