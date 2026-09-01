@@ -1,0 +1,51 @@
+name: Verify Franklin R29 V6 public release
+on:
+  push:
+    branches: [r29-v6-community-release]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Required files and routes
+        run: |
+          test -f dist/index.html
+          test -f dist/assistant/index.html
+          test -f dist/membership-start/index.html
+          test -f dist/membership-pricing/index.html
+          test -f dist/member-profile-preview/index.html
+          test -f dist/membership-enrollment/index.html
+          test -f dist/membership-status/index.html
+          test -f dist/member-support/index.html
+          test -f dist/member-first-value/index.html
+          test -f dist/assets/r29-v6.css
+          test -f dist/assets/r28-community.js
+          test -f dist/assets/r27-home.js
+      - name: JavaScript syntax
+        run: |
+          node --check dist/assets/r28-community.js
+          node --check dist/assets/r27-home.js
+      - name: Exact V6 public offer
+        run: |
+          grep -q '\$5' dist/membership-pricing/index.html
+          grep -q '\$50' dist/membership-pricing/index.html
+          grep -q '\$120' dist/membership-pricing/index.html
+          grep -q 'BEST LONG-TERM VALUE' dist/membership-pricing/index.html
+          grep -q 'SHOW ME' dist/member-profile-preview/index.html
+          grep -q 'Franklin Assistant' dist/assistant/index.html
+          ! grep -qi 'Most Popular' dist/membership-pricing/index.html
+          ! grep -qi 'Recommended' dist/membership-pricing/index.html
+          ! grep -qi 'Founding30' dist/membership-pricing/index.html
+          ! grep -q '\$35' dist/membership-pricing/index.html
+          ! grep -q '\$3\.50' dist/membership-pricing/index.html
+          ! grep -q '\$135' dist/membership-pricing/index.html
+      - name: Commerce remains fail-closed
+        run: |
+          grep -q '"publicCheckoutOpen": false' PRODUCTION_RELEASE.json
+          grep -q '"paidCommerceActive": false' PRODUCTION_RELEASE.json
+          grep -q '"controlledRealTransactionPassed": false' PRODUCTION_RELEASE.json
+      - name: Profile no-loss
+        run: grep -q '"profiles": 19103' PRODUCTION_RELEASE.json
