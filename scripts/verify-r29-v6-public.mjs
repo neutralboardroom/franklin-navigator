@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+// R29 V6 verifier trigger after workflow simplification.
 const mustExist=[
 'dist/index.html','dist/assistant/index.html','dist/membership-start/index.html','dist/membership-pricing/index.html','dist/member-profile-preview/index.html','dist/membership-enrollment/index.html','dist/membership-status/index.html','dist/member-support/index.html','dist/member-first-value/index.html','dist/assets/r29-v6.css','dist/assets/r28-community.js','dist/assets/r27-home.js','PRODUCTION_RELEASE.json'];
 for(const f of mustExist){if(!fs.existsSync(f))throw new Error('missing '+f)}
