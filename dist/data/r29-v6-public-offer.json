@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "franklin.public-offer.r29.v1",
+  "release": "FR-NAV1.4.0-CANDIDATE-R29",
+  "community": "FRANKLIN_TN",
+  "masterBrand": "Franklin Navigator",
+  "assistantBrand": "Franklin Assistant",
+  "strategy": "FRANKLIN_PUBLIC_OFFER_AND_SALES_ACTIVATION_V6_2026_08_31",
+  "priceAuthority": "FRANKLIN_COMMUNITY_MEMBERSHIP_AND_CHARTER_PRICE_AUTHORITY_V5_2026_08_31",
+  "freePresence": {
+    "priceUsd": 0,
+    "factualCorrectionsFree": true
+  },
+  "paidChoices": [
+    {"id":"MONTHLY","priceUsd":5,"billing":"RECURRING_MONTHLY","featured":false},
+    {"id":"ANNUAL","priceUsd":50,"billing":"RECURRING_ANNUAL","featured":false,"recommended":false},
+    {"id":"CHARTER","priceUsd":120,"billing":"ONE_TIME_36_MONTHS","featured":true,"badge":"BEST LONG-TERM VALUE","autoRenew":false}
+  ],
+  "preCheckoutPrimaryAction": "SHOW ME",
+  "postVerifiedPrimaryAction": "ACTIVATE MY MEMBERSHIP",
+  "publicFoundingDiscountActive": false,
+  "legacy84ChoicePresentation": false,
+  "publicCheckoutOpen": false,
+  "noPayToRank": true,
+  "noGuaranteedOutcomes": true
+}
