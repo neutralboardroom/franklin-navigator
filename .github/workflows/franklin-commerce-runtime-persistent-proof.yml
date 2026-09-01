@@ -1,4 +1,4 @@
-name: Franklin commerce runtime persistent lifecycle proof
+name: Franklin commerce runtime V4 persistent lifecycle proof
 
 on:
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
     env:
       NODE_ENV: test
       PORT: '4180'
-      LOCAL_RELEASE: FR-NAV1.2.0-CANDIDATE-R27
+      LOCAL_RELEASE: FR-NAV1.3.0-CANDIDATE-R28
       PUBLIC_ORIGIN: http://127.0.0.1:4180
       DATABASE_URL: postgresql://franklin:franklin_test_only@127.0.0.1:5432/franklin_membership
       SESSION_SECRET: github-actions-test-session-secret-0123456789
@@ -60,7 +60,7 @@ jobs:
       - name: Set up Node 22
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '22.18.0'
           cache: npm
 
       - name: Install exact dependencies
@@ -74,6 +74,7 @@ jobs:
           test "$(grep -c '^function parseCookies' server.js)" -eq 1
           grep -q "COMMERCE_ENABLED" server.js
           grep -q "COMMERCE_DISABLED" server.js
+          grep -q "franklin_community_member_3year_founding_v4" lib/catalog.js
 
       - name: Apply canonical schema and verify exact table inventory
         shell: bash
@@ -100,7 +101,8 @@ jobs:
           sed -i 's/^          //' /tmp/expected-tables.txt
           diff -u /tmp/expected-tables.txt /tmp/franklin-commerce-tables.txt
           if psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_accounts(account_id,community,email,email_normalized,password_hash) values('bad_community','OTHER','bad@example.test','bad@example.test','x')"; then
-            echo 'Cross-community insert unexpectedly succeeded'; exit 1
+            echo 'Cross-community insert unexpectedly succeeded'
+            exit 1
           fi
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_accounts(account_id,community,email,email_normalized,password_hash) values('proof_account','FRANKLIN_TN','proof@example.test','proof@example.test','proof_hash') on conflict(account_id) do nothing"
 
@@ -117,38 +119,34 @@ jobs:
           cat /tmp/franklin-commerce-runtime.log
           exit 1
 
-      - name: Synchronize exactly 84 synthetic non-charging mappings
+      - name: Synchronize exactly four V4 synthetic non-charging mappings
         shell: bash
         run: |
           set -euo pipefail
           node <<'NODE' >/tmp/payment-links.json
           const {plans}=require('./lib/catalog');
-          if(plans.length!==84) throw new Error('catalog_not_84');
+          if(plans.length!==4) throw new Error('catalog_not_4');
           const links=plans.map((plan,index)=>({lookupKey:plan.lookupKey,paymentLinkId:'plink_TEST'+String(index+1).padStart(4,'0'),url:'https://buy.stripe.com/test'+String(index+1).padStart(4,'0')}));
           process.stdout.write(JSON.stringify({links}));
           NODE
           STATUS=$(curl -sS -o /tmp/payment-link-sync.json -w '%{http_code}' -H "Authorization: Bearer $ADMIN_TOKEN" -H 'content-type: application/json' --data-binary @/tmp/payment-links.json http://127.0.0.1:4180/admin/payment-links/sync || true)
-          if [ "$STATUS" != '200' ]; then
-            echo "payment-link sync HTTP status: $STATUS"
-            cat /tmp/payment-link-sync.json || true
-            echo '--- runtime log ---'
-            cat /tmp/franklin-commerce-runtime.log || true
-            exit 1
-          fi
-          jq -e '.ok==true and .count==84' /tmp/payment-link-sync.json
+          test "$STATUS" = '200'
+          jq -e '.ok==true and .count==4' /tmp/payment-link-sync.json
 
-      - name: Verify infrastructure readiness while commerce remains closed
+      - name: Verify V4 readiness while commerce remains closed
         shell: bash
         run: |
           set -euo pipefail
           curl -fsS http://127.0.0.1:4180/ready > /tmp/franklin-ready.json
-          jq -e '.ok==true and .database==true and .paymentLinkCount==84 and .stripeWebhookConfigured==true and .portalLoginConfigured==true and .commerceEnabled==false and .liveCheckoutEnabled==false and (.missing|length)==0' /tmp/franklin-ready.json
-          STATUS=$(curl -sS -o /tmp/checkout-disabled.json -w '%{http_code}' -H 'content-type: application/json' -d '{"lookupKey":"franklin_legal_individual_monthly_v2","profileId":"FR-PROOF-001"}' http://127.0.0.1:4180/api/membership/start || true)
+          jq -e '.ok==true and .database==true and .paymentLinkCount==4 and .stripeWebhookConfigured==true and .portalLoginConfigured==true and .commerceEnabled==false and .liveCheckoutEnabled==false and (.missing|length)==0' /tmp/franklin-ready.json
+          STATUS=$(curl -sS -o /tmp/checkout-disabled.json -w '%{http_code}' -H 'content-type: application/json' -d '{"lookupKey":"franklin_community_member_monthly_v4","profileId":"FR-PROOF-001"}' http://127.0.0.1:4180/api/membership/start || true)
           test "$STATUS" = '423'
           jq -e '.error.code=="COMMERCE_DISABLED"' /tmp/checkout-disabled.json
           curl -fsS http://127.0.0.1:4180/api/catalog > /tmp/catalog.json
-          jq -e '.selfServiceRecurringPriceCount==84 and .productCount==14 and ([.verticals[].enterprise.quoteOnly]|all)' /tmp/catalog.json
-          jq -e '([.verticals[].plans[]|select(.tier=="ENTERPRISE")]|length)==0' /tmp/catalog.json
+          jq -e '.providerPriceCount==4 and .publicChoiceCount==3 and .productCount==1 and .legacy84PublicSuppressed==true and .publicCheckoutOpen==false' /tmp/catalog.json
+          jq -e '.enterprise.quoteOnlyAddOn==true and .enterprise.baseMembership==false' /tmp/catalog.json
+          jq -e '([.plans[]|select(.termMonths==36 and .autoRenew==false)]|length)==2' /tmp/catalog.json
+          jq -e '([.plans[]|select(.couponEligible==true)]|length)==2' /tmp/catalog.json
 
       - name: Exercise restart persistence and idempotent records
         shell: bash
@@ -162,14 +160,14 @@ jobs:
             if curl -fsS http://127.0.0.1:4180/ready >/tmp/franklin-ready-after-restart.json; then break; fi
             sleep 1
           done
-          jq -e '.ok==true and .paymentLinkCount==84 and .commerceEnabled==false' /tmp/franklin-ready-after-restart.json
+          jq -e '.ok==true and .paymentLinkCount==4 and .commerceEnabled==false' /tmp/franklin-ready-after-restart.json
           test "$(psql "$DATABASE_URL" -Atc "select count(*) from franklin_accounts where account_id='proof_account'")" = '1'
-          test "$(psql "$DATABASE_URL" -Atc "select count(*) from franklin_payment_links where active=true")" = '84'
+          test "$(psql "$DATABASE_URL" -Atc "select count(*) from franklin_payment_links where active=true")" = '4'
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_event_ledger(event_key,source,event_type,payload_sha256,processing_state) values('proof:event','SRE','invoice.paid',repeat('a',64),'RECEIVED') on conflict(event_key) do nothing"
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "insert into franklin_event_ledger(event_key,source,event_type,payload_sha256,processing_state) values('proof:event','SRE','invoice.paid',repeat('a',64),'RECEIVED') on conflict(event_key) do nothing"
           test "$(psql "$DATABASE_URL" -Atc "select count(*) from franklin_event_ledger where event_key='proof:event'")" = '1'
 
-      - name: Create exact non-secret evidence packet
+      - name: Create exact non-secret V4 evidence packet
         shell: bash
         run: |
           set -euo pipefail
@@ -182,26 +180,26 @@ jobs:
           node <<'NODE'
           const fs=require('fs'),crypto=require('crypto'),cp=require('child_process');
           const receipt={
-            schemaVersion:'franklin.commerce.persistent-proof.v2',
-            workOrders:['WO-20260829-LOCAL-FRANKLIN-R22-COMMERCE-INTEGRATION-022','WO-20260830-LOCAL-FRANKLIN-R24-PERSISTENT-COMMERCE-AND-PRESELL-023','WO-20260830-LOCAL-FRANKLIN-R24-LIVE-PAID-MEMBERSHIP-ACTIVATION-024','WO-20260831-LOCAL-FRANKLIN-R26-RUNTIME-DEPLOY-AND-LIVE-PAYMENT-CUTOVER-025'],
+            schemaVersion:'franklin.commerce.persistent-proof.v3',
+            workOrders:['WO-20260829-LOCAL-FRANKLIN-R22-COMMERCE-INTEGRATION-022','WO-20260830-LOCAL-FRANKLIN-R24-PERSISTENT-COMMERCE-AND-PRESELL-023','WO-20260830-LOCAL-FRANKLIN-R24-LIVE-PAID-MEMBERSHIP-ACTIVATION-024','WO-20260831-LOCAL-FRANKLIN-R27-NO-BRAINER-MEMBERSHIP-AND-SALES-FUNNEL-032','WO-20260831-SCC-LOCAL-R27-RUNTIME-ARCHIVE-COMMERCE-COMPLETION-034'],
             repository:'neutralboardroom/franklin-navigator',branch:'franklin-commerce-runtime',commit:cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),tree:cp.execFileSync('git',['rev-parse','HEAD^{tree}'],{encoding:'utf8'}).trim(),
             runtime:'Node 22',databaseProof:'PostgreSQL 18 service container',schemaSha256:crypto.createHash('sha256').update(fs.readFileSync('schema/001_init.sql')).digest('hex'),
             tableCount:14,tables:fs.readFileSync('/tmp/franklin-commerce-tables.txt','utf8').trim().split(/\n+/),
-            exact84Mapping:'PASS',enterpriseQuoteOnlyNegativeTest:'PASS',strictFranklinIsolation:'PASS',unitLifecycleTests:'PASS',restartPersistence:'PASS',eventLedgerIdempotency:'PASS',commerceEnabled:false,checkoutWithoutActivation:'FAIL_CLOSED_423_PASS',
+            exactV4ProviderMapping:'PASS',legacy84PublicSuppression:'PASS',threeYearNoAutoRenew:'PASS',strictFranklinIsolation:'PASS',unitLifecycleTests:'PASS',restartPersistence:'PASS',eventLedgerIdempotency:'PASS',commerceEnabled:false,checkoutWithoutActivation:'FAIL_CLOSED_423_PASS',
             stripeChargeCreated:false,liveCheckoutActivated:false,authorityTransfer:false
           };
-          fs.writeFileSync('/tmp/franklin-commerce-proof/FRANKLIN_COMMERCE_PERSISTENT_PROOF_RECEIPT.json',JSON.stringify(receipt,null,2)+'\n');
+          fs.writeFileSync('/tmp/franklin-commerce-proof/FRANKLIN_COMMERCE_V4_PERSISTENT_PROOF_RECEIPT.json',JSON.stringify(receipt,null,2)+'\n');
           NODE
-          tar -C /tmp/franklin-commerce-proof -czf /tmp/FRANKLIN_COMMERCE_RUNTIME_PERSISTENT_PROOF__2026-08-31.tar.gz .
-          sha256sum /tmp/FRANKLIN_COMMERCE_RUNTIME_PERSISTENT_PROOF__2026-08-31.tar.gz > /tmp/FRANKLIN_COMMERCE_RUNTIME_PERSISTENT_PROOF__2026-08-31.sha256
+          tar -C /tmp/franklin-commerce-proof -czf /tmp/FRANKLIN_COMMERCE_RUNTIME_V4_PERSISTENT_PROOF__2026-09-01.tar.gz .
+          sha256sum /tmp/FRANKLIN_COMMERCE_RUNTIME_V4_PERSISTENT_PROOF__2026-09-01.tar.gz > /tmp/FRANKLIN_COMMERCE_RUNTIME_V4_PERSISTENT_PROOF__2026-09-01.sha256
 
-      - name: Upload persistent runtime proof
+      - name: Upload V4 persistent runtime proof
         uses: actions/upload-artifact@v4
         with:
-          name: franklin-commerce-runtime-persistent-proof
+          name: franklin-commerce-runtime-v4-persistent-proof
           path: |
             /tmp/franklin-commerce-proof
-            /tmp/FRANKLIN_COMMERCE_RUNTIME_PERSISTENT_PROOF__2026-08-31.tar.gz
-            /tmp/FRANKLIN_COMMERCE_RUNTIME_PERSISTENT_PROOF__2026-08-31.sha256
+            /tmp/FRANKLIN_COMMERCE_RUNTIME_V4_PERSISTENT_PROOF__2026-09-01.tar.gz
+            /tmp/FRANKLIN_COMMERCE_RUNTIME_V4_PERSISTENT_PROOF__2026-09-01.sha256
           if-no-files-found: error
           retention-days: 30
