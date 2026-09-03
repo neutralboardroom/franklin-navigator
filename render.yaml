@@ -15,7 +15,9 @@ services:
       - key: PUBLIC_ORIGIN
         value: https://franklinnavigator.com
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: franklin-navigator-membership-db
+          property: connectionString
       - key: SESSION_SECRET
         sync: false
       - key: LOCAL_ASSERTION_SECRET
@@ -28,8 +30,6 @@ services:
         sync: false
       - key: STRIPE_ACCOUNT_ID
         value: acct_1TZU2TRxNra9nizo
-      - key: STRIPE_PORTAL_LOGIN_URL
-        sync: false
       - key: ADMIN_TOKEN
         sync: false
       - key: SESSION_DAYS
