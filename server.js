@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {Pool} = require('pg');
 const {URL} = require('node:url');
-const {COMMUNITY, PRICE_AUTHORITY, FOUNDING, getPlan, publicCatalog} = require('./lib/catalog');
+const {COMMUNITY, PRICE_AUTHORITY, FOUNDING, getPlan, getPlanByStripePriceId, publicCatalog} = require('./lib/catalog');
 const {sha256, randomToken, hashPassword, verifyPassword, verifySignedRequest, verifyStripeSignature, signAssertion, safeEqual} = require('./lib/security');
 const {initialState, applyEvent, accessAllowed, mapStripeEvent} = require('./lib/lifecycle');
 
@@ -100,6 +100,14 @@ async function stripePost(pathname,params,{idempotencyKey}={}){
   if(!response.ok)throw publicError('STRIPE_API_REQUEST_FAILED','Secure billing could not complete this request. Please try again later.',503);
   return payload;
 }
+async function stripeGet(pathname,params=new URLSearchParams()){
+  if(!stripeKeyConfigured())throw publicError('STRIPE_API_NOT_CONFIGURED','Secure billing is not ready yet.',503);
+  const suffix=params.size?'?'+params.toString():'';
+  const response=await fetch('https://api.stripe.com'+pathname+suffix,{headers:{Authorization:'Bearer '+STRIPE_SECRET_KEY},signal:AbortSignal.timeout(10000)});
+  const payload=await response.json().catch(()=>({}));
+  if(!response.ok)throw publicError('STRIPE_API_REQUEST_FAILED','Secure billing could not complete this request. Please try again later.',503);
+  return payload;
+}
 async function createStripeCheckoutSession({plan,intentId,email,profileId,stripeCustomerId=null}){
   if(!checkoutInfrastructureConfigured())throw publicError('STRIPE_CHECKOUT_NOT_CONFIGURED','Secure checkout is not ready yet.',503);
   const mode=plan.billingMode==='subscription'?'subscription':'payment';
@@ -142,6 +150,27 @@ async function createStripeBillingPortalSession(customerId){
   if(payload.livemode!==true)throw publicError('STRIPE_LIVE_MODE_REQUIRED','Secure live billing is not ready.',503);
   return {id:payload.id,url:payload.url};
 }
+async function reconcileStripeSubscription({accountId,profileId,subscriptionId,reqId}){
+  const safeAccountId=safeText(accountId,90);
+  const safeProfileId=normalizeProfile(profileId);
+  if(!/^sub_[A-Za-z0-9]{12,}$/.test(String(subscriptionId||'')))throw publicError('SUBSCRIPTION_ID_INVALID','Enter a valid Stripe subscription ID.');
+  const authority=await query(`select 1 from franklin_accounts a join franklin_profile_links p on p.account_id=a.account_id where a.account_id=$1 and a.state='ACTIVE' and p.profile_id=$2 and p.authority_state='VERIFIED'`,[safeAccountId,safeProfileId]);
+  if(!authority.rowCount)throw publicError('VERIFIED_PROFILE_LINK_REQUIRED','The account must have a verified link to this Franklin profile before reconciliation.',409);
+  const subscription=await stripeGet('/v1/subscriptions/'+encodeURIComponent(subscriptionId));
+  if(subscription.livemode!==true||!['active','trialing'].includes(String(subscription.status)))throw publicError('ACTIVE_LIVE_SUBSCRIPTION_REQUIRED','The Stripe subscription is not active in live mode.',409);
+  if(subscription.metadata?.community&&subscription.metadata.community!==COMMUNITY)throw publicError('SUBSCRIPTION_COMMUNITY_MISMATCH','The Stripe subscription does not belong to Franklin.',409);
+  const priceIds=[...new Set((subscription.items?.data||[]).map(item=>String(item.price?.id||'')).filter(Boolean))];
+  if(priceIds.length!==1)throw publicError('SUBSCRIPTION_PRICE_INVALID','The Stripe subscription must contain exactly one authorized Franklin price.',409);
+  const plan=getPlanByStripePriceId(priceIds[0]);
+  if(!plan)throw publicError('SUBSCRIPTION_PRICE_UNAUTHORIZED','The Stripe subscription price is not authorized for Franklin membership.',409);
+  if(subscription.metadata?.lookup_key&&subscription.metadata.lookup_key!==plan.lookupKey)throw publicError('SUBSCRIPTION_LOOKUP_KEY_MISMATCH','The Stripe subscription lookup key does not match its authorized price.',409);
+  if(!/^cus_[A-Za-z0-9]{12,}$/.test(String(subscription.customer||'')))throw publicError('SUBSCRIPTION_CUSTOMER_INVALID','The Stripe subscription has no valid customer.',409);
+  const intentId='reconcile_'+sha256(`${safeAccountId}:${safeProfileId}:${subscription.id}`).slice(0,40);
+  await query(`insert into franklin_checkout_intents(intent_id,account_id,profile_id,lookup_key,state,stripe_customer_id,stripe_subscription_id,expires_at) values($1,$2,$3,$4,'RECONCILE_READY',$5,$6,now()+interval '1 hour') on conflict(intent_id) do update set state='RECONCILE_READY',updated_at=now()`,[intentId,safeAccountId,safeProfileId,plan.lookupKey,subscription.customer,subscription.id]);
+  const event={id:'admin_'+subscription.id,type:'customer.subscription.updated',created:Math.floor(Date.now()/1000),livemode:true,data:{object:{...subscription,client_reference_id:intentId}}};
+  const eventKey=`reconcile:${subscription.id}:${safeAccountId}:${safeProfileId}`;
+  return handleEvent({eventKey,source:'ADMIN_STRIPE_RECONCILIATION',event,payloadHash:sha256(JSON.stringify(event)),reqId});
+}
 async function membershipForAccount(accountId){const result=await query(`select m.*,e.access_state,e.growth_desk,e.rich_profile,e.local_visibility_tools from franklin_memberships m left join franklin_entitlements e using(membership_id) where m.account_id=$1 order by m.updated_at desc limit 1`,[accountId]);return result.rows[0]||null;}
 async function resolveEventContext(client,event){const object=event.data?.object||{};const intentId=String(object.client_reference_id||'').trim();if(intentId){const found=await client.query(`select * from franklin_checkout_intents where intent_id=$1`,[intentId]);if(found.rowCount){const intent=found.rows[0];const existing=await client.query(`select * from franklin_memberships where account_id=$1 and profile_id=$2 order by updated_at desc limit 1`,[intent.account_id,intent.profile_id]);return {intent,membership:existing.rows[0]||null};}}
   const subscriptionId=String(object.subscription||(object.object==='subscription'?object.id:object.parent?.subscription_details?.subscription)||'').trim();const customerId=String(object.customer||'').trim();
@@ -172,6 +201,7 @@ async function route(req,res){const reqId=requestId();try{const url=new URL(req.
   if(req.method==='POST'&&url.pathname==='/webhooks/stripe'){const raw=await readBody(req,true);if(!verifyStripeSignature({secret:STRIPE_WEBHOOK_SECRET,header:req.headers['stripe-signature'],rawBody:raw}))throw publicError('STRIPE_SIGNATURE_INVALID','Invalid Stripe signature.',400);const event=JSON.parse(raw.toString('utf8'));if(!event.livemode)throw publicError('LIVE_EVENT_REQUIRED','Only live Stripe events are accepted.',400);if(event.account&&event.account!==STRIPE_ACCOUNT_ID)throw publicError('STRIPE_ACCOUNT_MISMATCH','Stripe account does not match.',400);const result=await handleEvent({eventKey:`stripe:${event.id}`,source:'STRIPE_DIRECT',event,payloadHash:sha256(raw),reqId});return sendJson(req,res,200,{ok:true,...result},reqId);}
   if(req.method==='POST'&&url.pathname==='/internal/sre/events'){const raw=await readBody(req,true);const timestamp=req.headers['x-franklin-timestamp'];const signature=req.headers['x-franklin-signature'];if(!verifySignedRequest({secret:SRE_SHARED_SECRET,timestamp,signature,body:raw.toString('utf8')}))throw publicError('SRE_SIGNATURE_INVALID','Invalid signed event.',401);const envelope=JSON.parse(raw.toString('utf8'));if(envelope.community!==COMMUNITY||!envelope.event?.id)throw publicError('SRE_EVENT_INVALID','Invalid Franklin event envelope.');const eventId=String(envelope.event.id);const eventKey=/^evt_/.test(eventId)?`stripe:${eventId}`:`sre:${eventId}`;const result=await handleEvent({eventKey,source:'SRE_SIGNED',event:envelope.event,payloadHash:sha256(raw),reqId});return sendJson(req,res,200,{ok:true,...result},reqId);}
   if(url.pathname.startsWith('/admin/')){const token=String(req.headers.authorization||'').replace(/^Bearer\s+/i,'');if(!ADMIN_TOKEN||!safeEqual(token,ADMIN_TOKEN))throw publicError('ADMIN_AUTH_REQUIRED','Administrative authorization required.',401);if(req.method==='POST'&&url.pathname==='/admin/payment-links/sync')throw publicError('LEGACY_PAYMENT_LINK_SYNC_RETIRED','Franklin checkout now uses server-created Stripe Checkout Sessions.',410);
+    if(req.method==='POST'&&url.pathname==='/admin/memberships/reconcile'){const body=await readBody(req);const result=await reconcileStripeSubscription({accountId:body.accountId,profileId:body.profileId,subscriptionId:body.subscriptionId,reqId});return sendJson(req,res,200,{ok:true,...result},reqId);}
     if(req.method==='POST'&&url.pathname==='/admin/profile-links/verify'){const body=await readBody(req);const profileId=normalizeProfile(body.profileId);const state=String(body.state||'VERIFIED').toUpperCase();if(!['VERIFIED','DISPUTED','REVOKED'].includes(state))throw publicError('AUTHORITY_STATE_INVALID','Invalid profile authority state.');const result=await query(`update franklin_profile_links set authority_state=$3,verified_at=case when $3='VERIFIED' then now() else verified_at end,updated_at=now() where account_id=$1 and profile_id=$2 returning account_id,profile_id,authority_state,verified_at`,[safeText(body.accountId,90),profileId,state]);if(!result.rowCount)throw publicError('PROFILE_LINK_NOT_FOUND','Profile link not found.',404);return sendJson(req,res,200,{ok:true,link:result.rows[0]},reqId);}
     if(req.method==='GET'&&url.pathname==='/admin/exceptions'){const dead=await query(`select * from franklin_dead_letters where state='OPEN' order by created_at desc limit 100`);const support=await query(`select request_id,account_id,profile_id,category,state,created_at from franklin_support_requests where state='OPEN' order by created_at desc limit 100`);return sendJson(req,res,200,{ok:true,deadLetters:dead.rows,supportRequests:support.rows},reqId);}}
   return sendJson(req,res,404,{ok:false,error:{code:'NOT_FOUND',message:'The requested Franklin membership-service route was not found.'}},reqId);
