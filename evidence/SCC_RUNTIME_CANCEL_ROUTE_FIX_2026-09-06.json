@@ -1,0 +1,10 @@
+{
+  "authority": "SCC",
+  "community": "FRANKLIN_TN",
+  "scope": "membership_runtime_checkout_cancel_return_route",
+  "finding": "The live runtime checkout session builder used /membership-enrollment/ as cancel_url while the public production route is /membership-enroll/.",
+  "change": "Use the existing public /membership-enroll/ route for canceled Stripe Checkout returns.",
+  "paymentEffect": "NONE",
+  "stripeObjectsChanged": false,
+  "secondChargeCreated": false
+}
