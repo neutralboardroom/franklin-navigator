@@ -5,9 +5,9 @@
   "description": "Franklin-isolated account, subscription, and entitlement service",
   "engines": {"node": ">=22.0.0"},
   "scripts": {
-    "start": "node server.js",
+    "start": "node scripts/scc-runtime-route-guard.mjs && node server.js",
     "test": "node --test",
-    "check": "node --check server.js && node --check lib/catalog.js && node --check lib/lifecycle.js && node --check lib/security.js"
+    "check": "node --check server.js && node --check lib/catalog.js && node --check lib/lifecycle.js && node --check lib/security.js && node --check scripts/scc-runtime-route-guard.mjs"
   },
   "dependencies": {"pg": "8.16.3"}
 }
