@@ -1,16 +1,8 @@
-name: Verify Franklin R28 public Community Membership release
+name: Verify Franklin public snapshot and historical R28
 on:
   push:
-    branches:
-      - r28-community-membership-public-20260901
-      - main
-    paths:
-      - README.md
-      - PRODUCTION_RELEASE.json
-      - NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_3_0_R28.md
-      - R28_PUBLIC_DELTA_MANIFEST.json
-      - dist/**
-      - .github/workflows/verify-r28-public.yml
+    branches: [r28-community-membership-public-20260901, main, franklin-r40-exact-launch-recovery-20260907]
+    paths: ['README.md', 'PRODUCTION_RELEASE.json', 'dist/**', 'deploy/**', '.github/workflows/verify-r28-public.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -21,43 +13,50 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.18.0'
-      - name: Verify exact delta manifest and public release invariants
-        shell: bash
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify actual release without applying obsolete price expectations
         run: |
           set -euo pipefail
           node --check dist/assets/r27-home.js
           node --check dist/assets/r28-community.js
           python - <<'PY'
-          import hashlib,json,pathlib
+          import hashlib,json,pathlib,subprocess,sys
           from html.parser import HTMLParser
           root=pathlib.Path('.')
-          manifest=json.loads((root/'R28_PUBLIC_DELTA_MANIFEST.json').read_text())
-          assert manifest['release']=='FR-NAV1.3.0-CANDIDATE-R28'
-          assert manifest['fileCount']==24
-          for row in manifest['files']:
-              path=root/row['path']
-              data=path.read_bytes()
-              assert len(data)==row['bytes'],(row['path'],'bytes',len(data),row['bytes'])
-              assert hashlib.sha256(data).hexdigest()==row['sha256'],(row['path'],'sha256')
-          class Parser(HTMLParser):
-              def __init__(self): super().__init__(); self.ids=set()
-              def handle_starttag(self,tag,attrs):
-                  d=dict(attrs)
-                  if 'id' in d:
-                      assert d['id'] not in self.ids,d['id']
-                      self.ids.add(d['id'])
-          for path in root.joinpath('dist').rglob('*.html'):
-              Parser().feed(path.read_text())
-          release=json.loads((root/'PRODUCTION_RELEASE.json').read_text())
-          assert release['publicPayload']['profiles']==19103
-          assert release['publicPayload']['communityMembershipPublicChoices']==3
-          assert release['publicPayload']['legacy84PublicSuppressed'] is True
-          assert release['commerce']['publicCheckoutOpen'] is False
-          pricing=(root/'dist/membership-pricing/index.html').read_text()
-          assert all(value in pricing for value in ('$3.50','$35','$120','$135'))
-          assert '84-choice public catalog' in pricing
-          assert 'Individual, Team and Office plans' not in pricing
-          assert 'Show me my member profile' in (root/'dist/membership-start/index.html').read_text()
-          print('R28 public verification PASS')
+          current=json.loads((root/'dist/FRANKLIN_BUILD_MANIFEST.json').read_text())['release']
+          if current=='FR-NAV1.15.0-CANDIDATE-R40':
+              subprocess.run([sys.executable,'deploy/recover_exact_r40.py','--verify-only'],check=True)
+          elif current=='FR-NAV1.3.0-CANDIDATE-R28':
+              manifest=json.loads((root/'R28_PUBLIC_DELTA_MANIFEST.json').read_text())
+              assert manifest['release']=='FR-NAV1.3.0-CANDIDATE-R28'
+              assert manifest['fileCount']==24
+              for row in manifest['files']:
+                  data=(root/row['path']).read_bytes()
+                  assert len(data)==row['bytes'],row['path']
+                  assert hashlib.sha256(data).hexdigest()==row['sha256'],row['path']
+              class Parser(HTMLParser):
+                  def __init__(self): super().__init__(); self.ids=set()
+                  def handle_starttag(self,tag,attrs):
+                      d=dict(attrs)
+                      if 'id' in d:
+                          assert d['id'] not in self.ids,d['id']
+                          self.ids.add(d['id'])
+              for path in root.joinpath('dist').rglob('*.html'):
+                  Parser().feed(path.read_text())
+              release=json.loads((root/'PRODUCTION_RELEASE.json').read_text())
+              assert release['publicPayload']['profiles']==19103
+              assert release['publicPayload']['communityMembershipPublicChoices']==3
+              assert release['publicPayload']['legacy84PublicSuppressed'] is True
+              assert release['commerce']['publicCheckoutOpen'] is False
+              pricing=(root/'dist/membership-pricing/index.html').read_text()
+              assert all(value in pricing for value in ('$3.50','$35','$120','$135'))
+              assert '84-choice public catalog' in pricing
+              assert 'Individual, Team and Office plans' not in pricing
+              assert 'Show me my member profile' in (root/'dist/membership-start/index.html').read_text()
+              print('Historical R28 public verification PASS')
+          else:
+              raise SystemExit('No qualified verifier for '+current)
           PY
