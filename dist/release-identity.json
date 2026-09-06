@@ -1,12 +1,14 @@
 {
-  "schemaVersion": "franklin.release-identity.r28.v1",
-  "release": "FR-NAV1.3.0-CANDIDATE-R28",
-  "exactPredecessor": "FR-NAV1.2.0-CANDIDATE-R27",
-  "profileCount": 19103,
-  "publicConstruction": "R27_PLUS_COMMUNITY_MEMBERSHIP_V4_FRONT_FACE",
+  "builtAt": "2026-09-06",
   "communityCentered": true,
-  "legacy84PublicSuppressed": true,
+  "deploymentAuthorization": "OWNER_AUTHORIZED_AFTER_PRODUCT_QUALIFICATION",
+  "exactPredecessor": "FR-NAV1.13.0-CANDIDATE-R38",
   "paidCommerceActive": false,
+  "predecessorArtifactSha256": "c3ff162355548c693a567d7fdb89a367631a76560f3688c47ebc7e631c27ef8d",
+  "predecessorSourceTreeSha256": "9e5c3158ea990dc7d9b8e1695c4f6f3886f899fb9dca798fa3e3462d73da3741",
+  "profileCount": 19103,
+  "publicConstruction": "R38_PLUS_PRIVATE_PORTABLE_ASSISTANT_FOLLOW_THROUGH",
+  "release": "FR-NAV1.14.0-CANDIDATE-R39",
   "runtimeProductionBound": false,
-  "builtAt": "2026-08-31"
+  "schemaVersion": "franklin.release-identity.r39.v1"
 }

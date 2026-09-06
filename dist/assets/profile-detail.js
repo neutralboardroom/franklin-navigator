@@ -18,7 +18,7 @@
       status.hidden=true;body.hidden=false;body.querySelector('[data-profile-name]').textContent=row.n;body.querySelector('[data-profile-category]').textContent=label(row.c||row.t);body.querySelector('[data-profile-location]').textContent=row.l||'Franklin area';body.querySelector('[data-profile-area]').textContent=label(row.g);body.querySelector('[data-profile-checked]').textContent=row.d;
       const website=body.querySelector('[data-profile-website]');if(row.w){website.href=row.w;website.hidden=false}else website.hidden=true;
       const claim=body.querySelector('[data-profile-claim]');claim.href=`/claim-profile/?profile=${encodeURIComponent(row.i)}&chunk=${encodeURIComponent(row.x)}&source=profile-share`;
-      const correction=body.querySelector('[data-profile-correction]');correction.href=`/corrections/?listing=${encodeURIComponent(row.n)}&url=${encodeURIComponent(canonicalUrl)}`;
+      const save=body.querySelector('[data-profile-save]');if(save)save.href=`/my-franklin/?saveProfile=${encodeURIComponent(row.i)}&chunk=${encodeURIComponent(row.x)}`;const correction=body.querySelector('[data-profile-correction]');correction.href=`/corrections/?listing=${encodeURIComponent(row.n)}&url=${encodeURIComponent(canonicalUrl)}`;
       const share=body.querySelector('[data-profile-share]');if(share)share.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(canonicalUrl);share.textContent='Profile link copied'}catch{share.textContent='Copy this URL from your address bar'}});
       return;
     }

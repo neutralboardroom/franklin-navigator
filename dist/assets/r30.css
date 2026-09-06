@@ -1,0 +1,37 @@
+/* Franklin Navigator R30 — whole-situation planning, assistant parity, and focused accessibility */
+.r30-home-bridge{background:#f4faf9;border-top:1px solid #d7e8e5;border-bottom:1px solid #d7e8e5}
+.r30-home-bridge .wrap{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,.8fr);gap:24px;align-items:center;padding-block:28px}
+.r30-home-bridge h2{margin:.15rem 0 .5rem}
+.r30-home-bridge p{max-width:68ch}
+.r30-home-bridge .r30-actions{display:grid;gap:10px}
+.r30-planner-hero{background:linear-gradient(135deg,#eff9f7,#fff9ef);border-bottom:1px solid #d8e7e5}
+.r30-planner-hero .wrap{padding-block:44px}
+.r30-planner-hero h1{max-width:18ch;margin:.2rem 0 .7rem;font-size:clamp(2rem,4vw,3.35rem);line-height:1.02}
+.r30-planner-hero p{max-width:68ch;font-size:1.08rem}
+.r30-planner-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.85fr);gap:24px;align-items:start}
+.r30-panel{border:1px solid #c9dcda;border-radius:18px;background:#fff;padding:22px;box-shadow:0 12px 34px rgba(13,64,70,.06)}
+.r30-panel h2{margin-top:0}
+.r30-field{display:grid;gap:7px;margin-bottom:18px;font-weight:700}
+.r30-field textarea,.r30-field select{width:100%;font:inherit;border:1px solid #9ebbb8;border-radius:10px;padding:12px;background:#fff;color:#13282a}
+.r30-check-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.r30-check{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid #c9dcda;border-radius:12px;background:#f8fbfb;font-weight:650}
+.r30-check input{margin-top:.22rem;accent-color:#0b686e}
+.r30-plan-output{white-space:pre-wrap;border:1px solid #bdd6d3;border-radius:14px;background:#f7fbfa;padding:18px;min-height:220px;line-height:1.55}
+.r30-plan-links{display:grid;gap:10px;margin-top:16px}
+.r30-plan-links a{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 14px;border:1px solid #c8dcda;border-radius:11px;text-decoration:none;background:#fff}
+.r30-plan-links a:hover,.r30-plan-links a:focus-visible{border-color:#0b686e;background:#f0f8f7}
+.r30-urgent{border-left:5px solid #a12727;background:#fff5f4;padding:14px;border-radius:10px;margin-bottom:16px}
+.r30-note{border-left:4px solid #0b686e;background:#eef8f7;padding:13px 14px;border-radius:9px}
+.r30-language-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.r30-mini-steps{display:grid;gap:10px;padding:0;list-style:none;counter-reset:r30}
+.r30-mini-steps li{counter-increment:r30;padding:12px 12px 12px 50px;position:relative;border-bottom:1px solid #e1eceb}
+.r30-mini-steps li::before{content:counter(r30);position:absolute;left:8px;top:8px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#0b686e;color:#fff;font-weight:800}
+.r30-dialog-next{margin-top:18px;padding-top:16px;border-top:1px solid #d8e7e5}
+.r30-dialog-next .button{width:100%;justify-content:center}
+.r30-sr-status{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@media(max-width:760px){
+  .r30-home-bridge .wrap,.r30-planner-grid{grid-template-columns:1fr}
+  .r30-check-grid{grid-template-columns:1fr}
+  .r30-planner-hero .wrap{padding-block:30px}
+}
+@media(prefers-reduced-motion:reduce){.r27-navigator-dialog[open]{animation:none!important}}

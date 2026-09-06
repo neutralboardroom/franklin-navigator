@@ -1,0 +1,12 @@
+/* Franklin Navigator R31 — connected preparation, Spanish parity and privacy-safe product health */
+.r31-prep-hero{background:linear-gradient(135deg,#f0f9f8,#fff8ef);border-bottom:1px solid #d7e6e4}
+.r31-prep-hero .wrap{padding-block:42px}.r31-prep-hero h1{max-width:19ch;margin:.2rem 0 .7rem;font-size:clamp(2rem,4vw,3.2rem);line-height:1.04}.r31-prep-hero p{max-width:70ch}
+.r31-prep-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,.9fr);gap:24px;align-items:start}.r31-card{border:1px solid #c8ddda;border-radius:18px;background:#fff;padding:22px;box-shadow:0 12px 34px rgba(13,64,70,.06)}
+.r31-card h2{margin-top:0}.r31-field{display:grid;gap:7px;margin-bottom:16px;font-weight:700}.r31-field select{width:100%;font:inherit;border:1px solid #9ebbb8;border-radius:10px;padding:12px;background:#fff;color:#13282a}
+.r31-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.r31-check{display:flex;gap:9px;align-items:flex-start;padding:11px;border:1px solid #c9dcda;border-radius:11px;background:#f8fbfb}.r31-check input{margin-top:.2rem;accent-color:#0b686e}
+.r31-packet{border:1px solid #bdd6d3;border-radius:14px;background:#f7fbfa;padding:18px;min-height:280px}.r31-packet h3{margin-top:1.2rem}.r31-packet ul,.r31-packet ol{padding-left:1.3rem}.r31-packet li{margin:.4rem 0}.r31-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.r31-route-list{display:grid;gap:9px;margin-top:10px}.r31-route-list a{display:flex;justify-content:space-between;gap:12px;padding:11px 13px;border:1px solid #c8dcda;border-radius:10px;background:#fff;text-decoration:none}.r31-route-list a:focus-visible,.r31-route-list a:hover{border-color:#0b686e;background:#f0f8f7}
+.r31-safety{border-left:5px solid #a12727;background:#fff5f4;padding:14px;border-radius:10px}.r31-privacy{border-left:4px solid #0b686e;background:#eef8f7;padding:13px 14px;border-radius:9px}.r31-language{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.r31-dialog-language{margin-left:auto}.r31-dialog-language a{font-size:.9rem}.r31-status{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@media(max-width:760px){.r31-prep-grid{grid-template-columns:1fr}.r31-checks{grid-template-columns:1fr}.r31-prep-hero .wrap{padding-block:30px}.r31-actions .button{width:100%;justify-content:center}}
+@media(prefers-reduced-motion:reduce){html:focus-within{scroll-behavior:auto!important}}

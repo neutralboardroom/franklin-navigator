@@ -34,7 +34,7 @@
     const selected=new Set([...form.querySelectorAll('input[name="prepared"]:checked')].map(item=>Number(item.value)));
     const urgency=form.elements.urgency.value;
     const firstAction=urgency==='today'?vertical.todayBoundary:urgency==='soon'?'Confirm changing requirements, deadlines, cost and availability on the official or first-party website before acting.':'Use this packet to organize broad questions before sharing any personal story or document.';
-    return {schemaVersion:'franklin.preparation-packet.device-only.v1',candidate:catalog.candidate,communityId:'FRANKLIN_TN',state:'LOCAL_ONLY_NOT_SUBMITTED',verticalId,verticalLabel:vertical.label,trackId:track.id,title:track.title,urgency,stage:form.elements.stage.value,boundary:vertical.boundary,firstAction,steps:track.steps,checklist:track.checklist.map((item,index)=>({item,status:selected.has(index)?'READY_TO_REVIEW':'TO_PREPARE'})),questions:track.questions,sourceRoutes:track.sourceRoutes,directoryRoute:track.directoryRoute,donorPatterns:track.donorCapabilityIds,privacy:{fixedChoiceOnly:true,narrativeCollected:false,documentUpload:false,browserStorage:false,networkSubmission:false,externalAi:false},externalEffects:{send:false,submit:false,file:false,schedule:false,pay:false},professionalAdvice:false,authorityTransfer:false};
+    return {schemaVersion:'franklin.preparation-packet.device-only.v1',candidate:catalog.candidate,communityId:'FRANKLIN_TN',submissionStatus:'NOT_SENT',verticalId,verticalLabel:vertical.label,trackId:track.id,title:track.title,urgency,stage:form.elements.stage.value,boundary:vertical.boundary,firstAction,steps:track.steps,checklist:track.checklist.map((item,index)=>({item,status:selected.has(index)?'READY_TO_REVIEW':'TO_PREPARE'})),questions:track.questions,sourceRoutes:track.sourceRoutes,directoryRoute:track.directoryRoute,donorPatterns:track.donorCapabilityIds,privacy:{fixedChoiceOnly:true,narrativeCollected:false,documentUpload:false,browserStorage:false,networkSubmission:false,externalAi:false},externalEffects:{send:false,submit:false,file:false,schedule:false,pay:false},professionalAdvice:false,authorityTransfer:false};
   };
   const renderPacket=()=>{
     const ready=packet.checklist.filter(item=>item.status==='READY_TO_REVIEW').length;
@@ -42,7 +42,7 @@
     copyButton.disabled=downloadButton.disabled=printButton.disabled=false;
     output.focus();
   };
-  const textPacket=()=>[packet.title,`Urgency: ${packet.urgency}`,`Stage: ${packet.stage}`,`Start here: ${packet.firstAction}`,'','Preparation steps:',...packet.steps.map((item,index)=>`${index+1}. ${item}`),'','Checklist:',...packet.checklist.map(item=>`- [${item.status==='READY_TO_REVIEW'?'x':' '}] ${item.item}`),'','Questions:',...packet.questions.map(item=>`- ${item}`),'','Boundary:',packet.boundary,'','LOCAL_ONLY_NOT_SUBMITTED'].join('\n');
+  const textPacket=()=>[packet.title,`Urgency: ${packet.urgency}`,`Stage: ${packet.stage}`,`Start here: ${packet.firstAction}`,'','Preparation steps:',...packet.steps.map((item,index)=>`${index+1}. ${item}`),'','Checklist:',...packet.checklist.map(item=>`- [${item.status==='READY_TO_REVIEW'?'x':' '}] ${item.item}`),'','Questions:',...packet.questions.map(item=>`- ${item}`),'','Boundary:',packet.boundary,'','Private on this device — not submitted'].join('\n');
 
   form.addEventListener('submit',event=>{event.preventDefault();packet=buildPacket();if(!packet)return;renderPacket()});
   form.addEventListener('reset',()=>setTimeout(()=>{renderTracks();status.textContent='Cleared. Nothing was saved or submitted.'},0));

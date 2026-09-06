@@ -1,0 +1,284 @@
+{
+  "edition": "FRANKLIN_TN",
+  "notice": {
+    "en": "These are official or first-party starting points, not endorsements. Schedules, eligibility, fees, services and contacts can change; confirm them at the linked source before relying on them.",
+    "es": "Estos son puntos de partida oficiales o de primera fuente, no recomendaciones. Los horarios, requisitos, costos, servicios y contactos pueden cambiar; conf\u00edrmelos en la fuente enlazada antes de depender de ellos."
+  },
+  "release": "FR-NAV1.14.0-CANDIDATE-R39",
+  "resources": [
+    {
+      "affiliationClaimed": false,
+      "area": "Franklin",
+      "audiences": [
+        "parent",
+        "educator"
+      ],
+      "authority": "Franklin Special School District",
+      "changingDetails": [
+        "enrollment",
+        "contacts",
+        "dates",
+        "requirements"
+      ],
+      "id": "fssd-family-resources",
+      "name": "Franklin Special School District \u2014 new family resources",
+      "nameEs": "Distrito Escolar Especial de Franklin \u2014 recursos para familias nuevas",
+      "officialSource": true,
+      "reviewedOn": "2026-09-03",
+      "summary": "Official district starting point for families who are new to FSSD.",
+      "summaryEs": "Punto de partida oficial del distrito para familias nuevas en FSSD.",
+      "topics": [
+        "school",
+        "family",
+        "enrollment"
+      ],
+      "url": "https://www.fssd.org/new-to-fsd"
+    },
+    {
+      "affiliationClaimed": false,
+      "area": "Williamson County",
+      "audiences": [
+        "parent",
+        "educator"
+      ],
+      "authority": "Williamson County Schools",
+      "changingDetails": [
+        "services",
+        "contacts",
+        "dates",
+        "requirements"
+      ],
+      "id": "wcs-family-resources",
+      "name": "Williamson County Schools \u2014 student and family resources",
+      "nameEs": "Escuelas del Condado de Williamson \u2014 recursos para estudiantes y familias",
+      "officialSource": true,
+      "reviewedOn": "2026-09-03",
+      "summary": "Official district collection of student and family resource links.",
+      "summaryEs": "Colecci\u00f3n oficial del distrito de enlaces para estudiantes y familias.",
+      "topics": [
+        "school",
+        "family",
+        "support"
+      ],
+      "url": "https://www.wcs.edu/resources/student-family-resources"
+    },
+    {
+      "affiliationClaimed": false,
+      "area": "Tennessee",
+      "audiences": [
+        "parent",
+        "educator",
+        "learner"
+      ],
+      "authority": "Tennessee Department of Education",
+      "changingDetails": [
+        "resources",
+        "programs",
+        "links"
+      ],
+      "id": "tn-best-for-all",
+      "name": "Tennessee Best for All Central",
+      "nameEs": "Tennessee Best for All Central",
+      "officialSource": true,
+      "reviewedOn": "2026-09-03",
+      "summary": "Tennessee Department of Education family learning resources and supports.",
+      "summaryEs": "Recursos y apoyos de aprendizaje familiar del Departamento de Educaci\u00f3n de Tennessee.",
+      "topics": [
+        "practice",
+        "family",
+        "reading",
+        "math"
+      ],
+      "url": "https://www.tn.gov/education/families/best-for-all-central.html"
+    },
+    {
+      "affiliationClaimed": false,
+      "area": "Tennessee",
+      "audiences": [
+        "educator",
+        "provider"
+      ],
+      "authority": "Tennessee Department of Education",
+      "changingDetails": [
+        "standards",
+        "documents",
+        "effective_dates"
+      ],
+      "id": "tn-academic-standards",
+      "name": "Tennessee academic standards",
+      "nameEs": "Est\u00e1ndares acad\u00e9micos de Tennessee",
+      "officialSource": true,
+      "reviewedOn": "2026-09-03",
+      "summary": "Official standards source. Use only the current subject and grade document supplied or verified at this source.",
+      "summaryEs": "Fuente oficial de est\u00e1ndares. Use \u00fanicamente el documento vigente de materia y grado proporcionado o verificado en esta fuente.",
+      "topics": [
+        "standards",
+        "lesson",
+        "curriculum"
+      ],
+      "url": "https://www.tn.gov/education/districts/academic-standards.html"
+    },
+    {
+      "affiliationClaimed": false,
+      "area": "Williamson County",
+      "audiences": [
+        "parent",
+        "adult",
+        "learner",
+        "educator",
+        "provider"
+      ],
+      "authority": "Williamson County Government",
+      "changingDetails": [
+        "hours",
+        "events",
+        "services",
+        "contacts"
+      ],
+      "id": "wc-library",
+      "name": "Williamson County Public Library",
+      "nameEs": "Biblioteca P\u00fablica del Condado de Williamson",
+      "officialSource": true,
+      "reviewedOn": "2026-09-03",
+      "summary": "Official library starting point for current services, learning resources and branch information.",
+      "summaryEs": "Punto de partida oficial para servicios vigentes, recursos de aprendizaje e informaci\u00f3n de las sucursales.",
+      "topics": [
+        "library",
+        "reading",
+        "community",
+        "technology"
+      ],
+      "url": "https://www.williamsoncounty-tn.gov/478/Library"
+    },
+    {
+      "affiliationClaimed": false,
+      "area": "Franklin",
+      "audiences": [
+        "adult",
+        "learner",
+        "educator"
+      ],
+      "authority": "Columbia State Community College",
+      "changingDetails": [
+        "programs",
+        "admissions",
+        "fees",
+        "hours",
+        "services"
+      ],
+      "id": "columbia-state-williamson",
+      "name": "Columbia State Community College \u2014 Williamson Campus",
+      "nameEs": "Columbia State Community College \u2014 campus de Williamson",
+      "officialSource": true,
+      "reviewedOn": "2026-09-03",
+      "summary": "Official campus starting point for current programs and student services in Franklin.",
+      "summaryEs": "Punto de partida oficial para programas y servicios estudiantiles vigentes en Franklin.",
+      "topics": [
+        "college",
+        "workforce",
+        "adult",
+        "career"
+      ],
+      "url": "https://www.columbiastate.edu/campuses/williamson.html"
+    },
+    {
+      "affiliationClaimed": false,
+      "area": "Tennessee",
+      "audiences": [
+        "adult",
+        "learner",
+        "educator"
+      ],
+      "authority": "Tennessee Department of Labor and Workforce Development",
+      "changingDetails": [
+        "programs",
+        "eligibility",
+        "locations",
+        "contacts"
+      ],
+      "id": "tn-adult-education",
+      "name": "Tennessee Adult Education",
+      "nameEs": "Educaci\u00f3n para adultos de Tennessee",
+      "officialSource": true,
+      "reviewedOn": "2026-09-03",
+      "summary": "Official state overview for adult basic education, high-school equivalency, English literacy and workforce learning.",
+      "summaryEs": "Resumen oficial del estado sobre educaci\u00f3n b\u00e1sica para adultos, equivalencia de secundaria, alfabetizaci\u00f3n en ingl\u00e9s y aprendizaje laboral.",
+      "topics": [
+        "adult",
+        "literacy",
+        "english",
+        "math",
+        "workforce",
+        "equivalency"
+      ],
+      "url": "https://www.tn.gov/workforce/jobs-and-education/ae.html"
+    },
+    {
+      "affiliationClaimed": false,
+      "area": "Tennessee",
+      "audiences": [
+        "adult",
+        "learner"
+      ],
+      "authority": "Tennessee Department of Labor and Workforce Development",
+      "changingDetails": [
+        "providers",
+        "service_areas",
+        "contacts",
+        "locations"
+      ],
+      "id": "tn-adult-program-finder",
+      "name": "Tennessee Adult Education \u2014 find a program",
+      "nameEs": "Educaci\u00f3n para adultos de Tennessee \u2014 busque un programa",
+      "officialSource": true,
+      "reviewedOn": "2026-09-03",
+      "summary": "Official program finder for current adult education providers serving Tennessee counties.",
+      "summaryEs": "Buscador oficial de proveedores vigentes de educaci\u00f3n para adultos que sirven a los condados de Tennessee.",
+      "topics": [
+        "adult",
+        "program",
+        "workforce",
+        "equivalency",
+        "english"
+      ],
+      "url": "https://www.tn.gov/workforce/jobs-and-education/ae/aer/find-your-program.html"
+    },
+    {
+      "affiliationClaimed": false,
+      "area": "Williamson County",
+      "audiences": [
+        "parent",
+        "adult",
+        "learner",
+        "educator",
+        "provider"
+      ],
+      "authority": "University of Tennessee Extension",
+      "changingDetails": [
+        "classes",
+        "events",
+        "registration",
+        "fees",
+        "contacts"
+      ],
+      "id": "ut-extension-williamson",
+      "name": "UT\u2013TSU Extension Williamson County",
+      "nameEs": "Extensi\u00f3n UT\u2013TSU del Condado de Williamson",
+      "officialSource": true,
+      "reviewedOn": "2026-09-03",
+      "summary": "Official local Extension starting point for current educational programs and community learning.",
+      "summaryEs": "Punto de partida oficial de Extensi\u00f3n local para programas educativos y aprendizaje comunitario vigentes.",
+      "topics": [
+        "community",
+        "family",
+        "agriculture",
+        "hands_on",
+        "workforce"
+      ],
+      "url": "https://williamson.tennessee.edu/"
+    }
+  ],
+  "reviewedOn": "2026-09-03",
+  "schemaVersion": "franklin.learning-resources.v1",
+  "state": "CANDIDATE_SOURCE_QUALIFIED_NOT_DEPLOYED"
+}

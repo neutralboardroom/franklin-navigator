@@ -1,63 +1,45 @@
 {
-  "schemaVersion": "franklin.successor-public-manifest.r27.v1",
-  "release": "FR-NAV1.2.0-CANDIDATE-R27",
-  "exactPredecessor": {
-    "release": "FR-NAV1.1.0-CANDIDATE-R26",
-    "commit": "a9d3be1d3d3dd3f4e46b516aa8d39b8bcb871e81",
-    "tree": "48a6127346f562fcf956e732ef4ad5c0031ffbbf",
-    "deployId": "dep-daara7ek1f9s73e7mbvg"
+  "acceptedAnchor": {
+    "artifactSha256": "e7bd5e71bf9da3de03bff838c4a5f577e7b36d7d63d639793ee19ac3f12ff119",
+    "release": "FR-NAV1.9.0-CANDIDATE-R34"
   },
-  "profilesPreserved": 19103,
-  "htmlPagesPreserved": 19298,
-  "deltaFileCount": 9,
-  "deltaTreeDigestSha256": "74dfe5a810b5d6c78e0a2faf2cac5bd133dafbcaebb64beed4b89459f0bd7d86",
-  "files": [
-    {
-      "path": "NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_2_0_R27.md",
-      "bytes": 1361,
-      "sha256": "10e9ce7b5e0bb92ec47c8a30403877c53451d0d7d2b931c3a7075bcae34794e7"
-    },
-    {
-      "path": "PRODUCTION_RELEASE.json",
-      "bytes": 3606,
-      "sha256": "4dd6355dc568948122d57342793e1abb5590cc5fb06006c9ebb384cae6616bb2"
-    },
-    {
-      "path": "README.md",
-      "bytes": 624,
-      "sha256": "5b2ef1f3c253f178b3a54c9dbfa3e72883bb3911d5abb767b3a3a1942736c58f"
-    },
-    {
-      "path": "dist/assets/r24.js",
-      "bytes": 3446,
-      "sha256": "709b45bd844b525f981f07b874f766312db56f70984abbf90c82018b8beb33a2"
-    },
-    {
-      "path": "dist/assets/r27-home.css",
-      "bytes": 3471,
-      "sha256": "cda2264b17e1d2f5932cda0efe5ad321bec7e3d6b03b119a71a188e398305fc1"
-    },
-    {
-      "path": "dist/assets/r27-home.js",
-      "bytes": 5513,
-      "sha256": "4b71f4ad6cd830826832f9e5ff0d8519ab829455aace42ab2bbc70bdad041751"
-    },
-    {
-      "path": "dist/data/r27-homepage-ux-receipt.json",
-      "bytes": 1602,
-      "sha256": "e7ff513464e3e0f929e8afe9f7228e3848a32be9e1a2ee613e91693ffa01e18f"
-    },
-    {
-      "path": "dist/data/r27-payment-coordination-status.json",
-      "bytes": 2020,
-      "sha256": "0fe4e495cdf2eb5c542e5ea4767b73233cad8d859f83657d8932eeb1712aadbe"
-    },
-    {
-      "path": "dist/release-identity.json",
-      "bytes": 473,
-      "sha256": "263cf1b2701da769b7cd89b92b696173eaf0cfb09733069303ad57f318c6a26e"
-    }
+  "activityStartingPoints": 65,
+  "authorityTransfer": false,
+  "communityRoutes": 50,
+  "existingControlledMembershipActive": true,
+  "learningResources": 9,
+  "newCapabilities": [
+    "FULL_PUBLIC_EN_ES_RUNTIME",
+    "PERSISTENT_LANGUAGE_CONTROL",
+    "52_REBUILT_SPANISH_DEEP_LINKS",
+    "1432_PROFILE_CATEGORY_TRANSLATIONS",
+    "HUMAN_PROFILE_SEARCH_AND_HIDDEN_IDS",
+    "CONSOLIDATED_MEMBER_ACCOUNT_HUB",
+    "PUBLIC_LANGUAGE_FIREWALL",
+    "CURRENT_MEMBERSHIP_EXISTING_VS_NEW_CHECKOUT_TRUTH",
+    "BILINGUAL_CONNECTED_NEED_ASSISTANT",
+    "PRIVATE_DEVICE_ONLY_ASSISTANT_NEXT_STEP_PLANS",
+    "MY_FRANKLIN_ASSISTANT_PLAN_FOLLOW_THROUGH",
+    "RAW_QUESTION_NOT_PERSISTED",
+    "PRIVATE_PORTABLE_ASSISTANT_CHECKLIST",
+    "LOCAL_ICS_FOLLOW_UP_REMINDER",
+    "PRINTABLE_SANITIZED_ASSISTANT_PLAN",
+    "PORTABLE_EXPORT_NO_RAW_QUESTION_OR_PLAN_ID"
   ],
-  "paidCommerceActive": false,
-  "authorityTransfer": false
+  "newPublicPaidEnrollmentOpen": false,
+  "productionDeployPerformed": false,
+  "profileDataChunksPreservedAndHashVerified": true,
+  "profileHtmlImprovedForPublicLanguageAndBilingualParity": true,
+  "profilesPreserved": 19103,
+  "publicCheckoutOpen": false,
+  "release": "FR-NAV1.14.0-CANDIDATE-R39",
+  "schemaVersion": "franklin.successor-public-manifest.r39.v1",
+  "sourcePredecessor": {
+    "artifactBytes": 71015003,
+    "artifactSha256": "c3ff162355548c693a567d7fdb89a367631a76560f3688c47ebc7e631c27ef8d",
+    "canonicalSourceTreeSha256": "9e5c3158ea990dc7d9b8e1695c4f6f3886f899fb9dca798fa3e3462d73da3741",
+    "release": "FR-NAV1.13.0-CANDIDATE-R38",
+    "state": "SOURCE_QUALIFIED_NOT_DEPLOYED_NOT_SCC_ACCEPTED"
+  },
+  "state": "SOURCE_QUALIFIED_DEPLOYMENT_AUTHORIZED_NOT_YET_DEPLOYED"
 }

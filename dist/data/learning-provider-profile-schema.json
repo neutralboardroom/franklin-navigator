@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://franklinnavigator.com/data/learning-provider-profile-schema.json",
+  "title": "Franklin Learning Provider Profile",
+  "description": "A public, evidence-backed profile schema for an educator, tutor, learning center, library, museum, nonprofit or community education program. Student-level or minor-level records are prohibited.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "publicProfileId",
+    "displayName",
+    "providerType",
+    "subjects",
+    "audienceBands",
+    "formats",
+    "languages",
+    "serviceArea",
+    "sourceEvidence",
+    "verificationState",
+    "affiliationClaim"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "franklin.learning-provider-profile.v1"
+    },
+    "publicProfileId": {
+      "type": "string",
+      "pattern": "^FR-ORG-[a-f0-9]{16}$",
+      "description": "Existing Franklin public profile identifier; never a student or household identifier."
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "providerType": {
+      "enum": [
+        "teacher_or_education_professional",
+        "tutor_or_tutoring_practice",
+        "learning_or_enrichment_center",
+        "library_or_museum",
+        "education_nonprofit_or_community_program",
+        "adult_or_workforce_learning_provider"
+      ]
+    },
+    "subjects": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "maxLength": 80
+      }
+    },
+    "audienceBands": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "early_learning_parent_supervised",
+          "elementary_parent_or_educator_supervised",
+          "middle_grades_parent_or_educator_supervised",
+          "high_school_parent_or_educator_supervised",
+          "adult_learning",
+          "workforce_learning",
+          "educator_professional_learning"
+        ]
+      }
+    },
+    "formats": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": ["in_person", "online", "hybrid", "group", "one_to_one", "drop_in", "scheduled_program"]
+      }
+    },
+    "languages": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "maxLength": 60
+      }
+    },
+    "accessibility": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "maxLength": 120
+      },
+      "description": "Only provider-published accessibility facts; never a learner diagnosis or accommodation record."
+    },
+    "scheduleSummary": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Public summary only. Mark changing details for direct recheck."
+    },
+    "serviceArea": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "sourceEvidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "sourceUrl", "reviewedOn"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "sourceUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "reviewedOn": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    },
+    "verificationState": {
+      "enum": ["unverified", "source_checked"]
+    },
+    "affiliationClaim": {
+      "enum": ["none", "documented"]
+    },
+    "affiliationEvidenceUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "currentnessNotice": {
+      "type": "string",
+      "maxLength": 240
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "affiliationClaim": {
+            "const": "documented"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "affiliationEvidenceUrl": {}
+        },
+        "required": ["affiliationEvidenceUrl"]
+      }
+    }
+  ],
+  "x-franklin-prohibitedFields": [
+    "student_name",
+    "student_email",
+    "student_phone",
+    "student_id",
+    "birth_date",
+    "grade_or_score",
+    "iep_or_504_record",
+    "health_or_disability_record",
+    "discipline_record",
+    "account_credential"
+  ],
+  "x-franklin-publicationRules": {
+    "directoryAppearanceIsEndorsement": false,
+    "paidStatusMayChangeFactsOrRanking": false,
+    "changingDetailsRequireOriginalSourceRecheck": true,
+    "studentDataPermitted": false
+  }
+}

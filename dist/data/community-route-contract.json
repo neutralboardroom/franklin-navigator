@@ -1,0 +1,325 @@
+{
+  "edition": "FRANKLIN_TN",
+  "learningRoutes": [
+    "/learning/",
+    "/assistant/learning/",
+    "/es/aprendizaje/",
+    "/es/asistente/aprendizaje/"
+  ],
+  "release": "FR-NAV1.14.0-CANDIDATE-R39",
+  "reviewedOn": "2026-09-03",
+  "routes": [
+    {
+      "alternate": "/es/actividades/",
+      "language": "en",
+      "route": "/activities/",
+      "scope": "all"
+    },
+    {
+      "alternate": "/activities/",
+      "language": "es",
+      "route": "/es/actividades/",
+      "scope": "all"
+    },
+    {
+      "alternate": "/es/deportes/",
+      "language": "en",
+      "route": "/sports/",
+      "scope": "sports"
+    },
+    {
+      "alternate": "/sports/",
+      "language": "es",
+      "route": "/es/deportes/",
+      "scope": "sports"
+    },
+    {
+      "alternate": "/es/deportes/ligas-juveniles/",
+      "language": "en",
+      "route": "/sports/youth-leagues/",
+      "scope": "youth-leagues"
+    },
+    {
+      "alternate": "/sports/youth-leagues/",
+      "language": "es",
+      "route": "/es/deportes/ligas-juveniles/",
+      "scope": "youth-leagues"
+    },
+    {
+      "alternate": "/es/deportes/ligas-adultos/",
+      "language": "en",
+      "route": "/sports/adult-leagues/",
+      "scope": "adult-leagues"
+    },
+    {
+      "alternate": "/sports/adult-leagues/",
+      "language": "es",
+      "route": "/es/deportes/ligas-adultos/",
+      "scope": "adult-leagues"
+    },
+    {
+      "alternate": "/es/jovenes-familias/",
+      "language": "en",
+      "route": "/youth-family/",
+      "scope": "youth-family"
+    },
+    {
+      "alternate": "/youth-family/",
+      "language": "es",
+      "route": "/es/jovenes-familias/",
+      "scope": "youth-family"
+    },
+    {
+      "alternate": "/es/artes-entretenimiento/",
+      "language": "en",
+      "route": "/arts-entertainment/",
+      "scope": "arts-entertainment"
+    },
+    {
+      "alternate": "/arts-entertainment/",
+      "language": "es",
+      "route": "/es/artes-entretenimiento/",
+      "scope": "arts-entertainment"
+    },
+    {
+      "alternate": "/es/aire-libre/",
+      "language": "en",
+      "route": "/outdoors/",
+      "scope": "outdoors"
+    },
+    {
+      "alternate": "/outdoors/",
+      "language": "es",
+      "route": "/es/aire-libre/",
+      "scope": "outdoors"
+    },
+    {
+      "alternate": "/es/equipos-clubes/",
+      "language": "en",
+      "route": "/teams-clubs/",
+      "scope": "teams-clubs"
+    },
+    {
+      "alternate": "/teams-clubs/",
+      "language": "es",
+      "route": "/es/equipos-clubes/",
+      "scope": "teams-clubs"
+    },
+    {
+      "alternate": "/es/actividades-escolares/",
+      "language": "en",
+      "route": "/school-activities/",
+      "scope": "schools"
+    },
+    {
+      "alternate": "/school-activities/",
+      "language": "es",
+      "route": "/es/actividades-escolares/",
+      "scope": "schools"
+    },
+    {
+      "alternate": "/es/deportes/softbol-adultos/",
+      "language": "en",
+      "route": "/sports/adult-softball/",
+      "scope": "adult-sport:softball"
+    },
+    {
+      "alternate": "/sports/adult-softball/",
+      "language": "es",
+      "route": "/es/deportes/softbol-adultos/",
+      "scope": "adult-sport:softball"
+    },
+    {
+      "alternate": "/es/deportes/boliche/",
+      "language": "en",
+      "route": "/sports/bowling/",
+      "scope": "sport:bowling"
+    },
+    {
+      "alternate": "/sports/bowling/",
+      "language": "es",
+      "route": "/es/deportes/boliche/",
+      "scope": "sport:bowling"
+    },
+    {
+      "alternate": "/es/deportes/tenis/",
+      "language": "en",
+      "route": "/sports/tennis/",
+      "scope": "sport:tennis"
+    },
+    {
+      "alternate": "/sports/tennis/",
+      "language": "es",
+      "route": "/es/deportes/tenis/",
+      "scope": "sport:tennis"
+    },
+    {
+      "alternate": "/es/deportes/golf/",
+      "language": "en",
+      "route": "/sports/golf/",
+      "scope": "sport:golf"
+    },
+    {
+      "alternate": "/sports/golf/",
+      "language": "es",
+      "route": "/es/deportes/golf/",
+      "scope": "sport:golf"
+    },
+    {
+      "alternate": "/es/deportes/pickleball/",
+      "language": "en",
+      "route": "/sports/pickleball/",
+      "scope": "sport:pickleball"
+    },
+    {
+      "alternate": "/sports/pickleball/",
+      "language": "es",
+      "route": "/es/deportes/pickleball/",
+      "scope": "sport:pickleball"
+    },
+    {
+      "alternate": "/es/deportes/baloncesto/",
+      "language": "en",
+      "route": "/sports/basketball/",
+      "scope": "sport:basketball"
+    },
+    {
+      "alternate": "/sports/basketball/",
+      "language": "es",
+      "route": "/es/deportes/baloncesto/",
+      "scope": "sport:basketball"
+    },
+    {
+      "alternate": "/es/deportes/futbol/",
+      "language": "en",
+      "route": "/sports/soccer/",
+      "scope": "sport:soccer"
+    },
+    {
+      "alternate": "/sports/soccer/",
+      "language": "es",
+      "route": "/es/deportes/futbol/",
+      "scope": "sport:soccer"
+    },
+    {
+      "alternate": "/es/deportes/voleibol/",
+      "language": "en",
+      "route": "/sports/volleyball/",
+      "scope": "sport:volleyball"
+    },
+    {
+      "alternate": "/sports/volleyball/",
+      "language": "es",
+      "route": "/es/deportes/voleibol/",
+      "scope": "sport:volleyball"
+    },
+    {
+      "alternate": "/es/deportes/carreras/",
+      "language": "en",
+      "route": "/sports/running/",
+      "scope": "sport:running"
+    },
+    {
+      "alternate": "/sports/running/",
+      "language": "es",
+      "route": "/es/deportes/carreras/",
+      "scope": "sport:running"
+    },
+    {
+      "alternate": "/es/deportes/ciclismo/",
+      "language": "en",
+      "route": "/sports/cycling/",
+      "scope": "sport-group:cycling,mountain-biking"
+    },
+    {
+      "alternate": "/sports/cycling/",
+      "language": "es",
+      "route": "/es/deportes/ciclismo/",
+      "scope": "sport-group:cycling,mountain-biking"
+    },
+    {
+      "alternate": "/es/deportes/adaptados/",
+      "language": "en",
+      "route": "/sports/adaptive/",
+      "scope": "feature:adaptive"
+    },
+    {
+      "alternate": "/sports/adaptive/",
+      "language": "es",
+      "route": "/es/deportes/adaptados/",
+      "scope": "feature:adaptive"
+    },
+    {
+      "alternate": "/es/deportes/amateur/",
+      "language": "en",
+      "route": "/sports/amateur/",
+      "scope": "feature:amateur"
+    },
+    {
+      "alternate": "/sports/amateur/",
+      "language": "es",
+      "route": "/es/deportes/amateur/",
+      "scope": "feature:amateur"
+    },
+    {
+      "alternate": "/es/deportes/torneos/",
+      "language": "en",
+      "route": "/sports/tournaments/",
+      "scope": "feature:tournament"
+    },
+    {
+      "alternate": "/sports/tournaments/",
+      "language": "es",
+      "route": "/es/deportes/torneos/",
+      "scope": "feature:tournament"
+    },
+    {
+      "alternate": "/es/deportes/instalaciones/",
+      "language": "en",
+      "route": "/sports/facilities/",
+      "scope": "feature:facility"
+    },
+    {
+      "alternate": "/sports/facilities/",
+      "language": "es",
+      "route": "/es/deportes/instalaciones/",
+      "scope": "feature:facility"
+    },
+    {
+      "alternate": "/es/deportes/entrenamiento/",
+      "language": "en",
+      "route": "/sports/coaching/",
+      "scope": "feature:coaching"
+    },
+    {
+      "alternate": "/sports/coaching/",
+      "language": "es",
+      "route": "/es/deportes/entrenamiento/",
+      "scope": "feature:coaching"
+    },
+    {
+      "alternate": "/es/deportes/inscripcion/",
+      "language": "en",
+      "route": "/sports/registration/",
+      "scope": "feature:registration"
+    },
+    {
+      "alternate": "/sports/registration/",
+      "language": "es",
+      "route": "/es/deportes/inscripcion/",
+      "scope": "feature:registration"
+    }
+  ],
+  "safeguards": {
+    "directMinorMarketing": false,
+    "minorAccounts": false,
+    "nationalProfessionalLeaguesPresented": false,
+    "pointOfUseRecheckRequired": true,
+    "privateSelectionsInUrl": false,
+    "rankingOrEndorsement": false,
+    "serverSubmission": false,
+    "studentRecordsCollected": false
+  },
+  "schemaVersion": "franklin.community-route-contract.v1",
+  "state": "SOURCE_QUALIFIED_NOT_DEPLOYED"
+}
