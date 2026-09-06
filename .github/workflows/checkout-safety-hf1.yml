@@ -1,0 +1,117 @@
+name: Franklin checkout safety HF1 qualification
+on:
+  push:
+    branches: [franklin-checkout-safety-hf1]
+    paths:
+      - 'lib/purchase-reservations.js'
+      - 'schema/002_purchase_reservations.sql'
+      - 'scripts/apply-checkout-safety-hf1.py'
+      - 'test/purchase-reservations.integration.cjs'
+      - '.github/workflows/checkout-safety-hf1.yml'
+permissions:
+  contents: write
+concurrency:
+  group: franklin-checkout-safety-hf1
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: fixture
+          POSTGRES_PASSWORD: isolated_test_only
+          POSTGRES_DB: franklin_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgres://fixture:isolated_test_only@127.0.0.1:5432/franklin_test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install locked runtime dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Apply correction to exact pinned runtime source
+        run: |
+          python3 scripts/apply-checkout-safety-hf1.py
+          node --check server.js
+          node --check lib/purchase-reservations.js
+      - name: Inherited runtime regression tests
+        run: npm test
+      - name: Real Postgres concurrency and actual customer router integration
+        run: node test/purchase-reservations.integration.cjs
+      - name: Full startup and closed-commerce HTTP smoke
+        run: |
+          python3 - <<'PY'
+          import subprocess,os,json,time,urllib.request,urllib.error
+          env={**os.environ,'DATABASE_URL':os.environ['TEST_DATABASE_URL'],'PGSSL_DISABLE':'true','PORT':'10999','COMMERCE_ENABLED':'false'}
+          for key in ['SESSION_SECRET','LOCAL_ASSERTION_SECRET','SRE_SHARED_SECRET','ADMIN_TOKEN']:
+              env[key]='synthetic-only-'+('x'*40)
+          env['STRIPE_SECRET_KEY']='_'.join(['sk','live','0'*32])
+          env['STRIPE_WEBHOOK_SECRET']='_'.join(['whsec','0'*32])
+          log=open('evidence/CHECKOUT_SAFETY_STARTUP.log','w')
+          p=subprocess.Popen(['node','server.js'],env=env,stdout=log,stderr=subprocess.STDOUT)
+          try:
+              for attempt in range(30):
+                  try:
+                      with urllib.request.urlopen('http://127.0.0.1:10999/ready',timeout=2) as r:
+                          state=json.load(r)
+                      break
+                  except Exception: time.sleep(1)
+              else: raise RuntimeError('Startup did not become ready')
+              assert state['ok'] and state['database']
+              assert state['checkoutSafetyVersion']=='FRANKLIN_CHECKOUT_SAFETY_1'
+              assert state['commerceEnabled'] is False and state['liveCheckoutEnabled'] is False
+              request=urllib.request.Request('http://127.0.0.1:10999/api/membership/start',data=b'{}',headers={'Content-Type':'application/json'},method='POST')
+              try: urllib.request.urlopen(request); raise AssertionError('Closed checkout unexpectedly allowed')
+              except urllib.error.HTTPError as e:
+                  assert e.code==423
+                  assert json.load(e)['error']['code']=='COMMERCE_DISABLED'
+              with open('evidence/CHECKOUT_SAFETY_STARTUP_RESULTS.json','w') as f:
+                  json.dump({'result':'PASS','environment':'ISOLATED_POSTGRES','startupReady':True,'commerceEnabled':False,'checkoutSafetyVersion':state['checkoutSafetyVersion'],'newProviderCalls':0},f,indent=2)
+          finally:
+              p.terminate();p.wait(timeout=10);log.close()
+          PY
+      - name: Commit qualified corrected source to staging branch only
+        run: |
+          git fetch origin franklin-checkout-safety-hf1
+          test "$(git rev-parse origin/franklin-checkout-safety-hf1)" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add server.js evidence/CHECKOUT_SAFETY_SOURCE_BINDING.json evidence/CHECKOUT_SAFETY_INTEGRATION_RESULTS.json evidence/CHECKOUT_SAFETY_STARTUP_RESULTS.json
+          git diff --cached --quiet || git commit -m 'Qualify Franklin checkout safety HF1 source and real Postgres test evidence [skip ci]'
+          git push origin HEAD:franklin-checkout-safety-hf1
+          git rev-parse HEAD > evidence/CHECKOUT_SAFETY_QUALIFIED_COMMIT.txt
+      - name: Export complete corrected runtime source
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import pathlib,subprocess,zipfile,hashlib,json
+          names=set(subprocess.check_output(['git','ls-files'],text=True).splitlines())
+          names.update(str(p) for p in pathlib.Path('evidence').glob('CHECKOUT_SAFETY_*') if p.suffix!='.log')
+          names=sorted(n for n in names if not n.startswith(('artifacts/','.git/','node_modules/')) and n!='.env')
+          with zipfile.ZipFile('FRANKLIN_CHECKOUT_SAFETY_HF1.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for n in names:
+                  p=pathlib.Path(n)
+                  if p.is_file(): z.write(p,n)
+          p=pathlib.Path('FRANKLIN_CHECKOUT_SAFETY_HF1.zip')
+          print(json.dumps({'file':p.name,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}))
+          PY
+      - name: Preserve qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-checkout-safety-hf1
+          path: |
+            FRANKLIN_CHECKOUT_SAFETY_HF1.zip
+            evidence/CHECKOUT_SAFETY_*
+          if-no-files-found: warn
+          retention-days: 30
