@@ -1,0 +1,65 @@
+name: Franklin deployed HF1 pair read-only verification
+on:
+  push:
+    branches: [franklin-hf1-final-live-verification]
+    paths: ['.github/workflows/hf1-final-live-verification.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned browser runner
+        run: |
+          python -m pip install 'playwright==1.57.0'
+          python -m playwright install --with-deps chromium
+      - name: Bind audit to exact deployed public and runtime source
+        run: |
+          git diff --exit-code e0ea8625343f6ec0e2eb2f0e55ec6457ec762bf1 -- dist
+          git show 10ff7061f1dde80547a23f2fa692896f26698a86:scripts/audit-r40-live.py > scripts/audit-hf1-live.py
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          p=Path('scripts/audit-hf1-live.py');s=p.read_text()
+          old="if route in ['/membership-status/','/membership-enroll/','/membership-enrollment/']:"
+          assert s.count(old)==1
+          s=s.replace(old,"if route=='/membership-enrollment/':\n                        page.locator('a[href=\"/membership-enroll/\"]').first.click()\n                        page.wait_for_url('**/membership-enroll/**')\n                        page.locator('[data-membership-live-root] form').first.wait_for(timeout=20000)\n                    if route in ['/membership-status/','/membership-enroll/']:")
+          s=s.replace("'sourceCommit':'9d90aadcae37c132b5ea6204cbda81273609089f'","'sourceCommit':'e0ea8625343f6ec0e2eb2f0e55ec6457ec762bf1','runtimeCommit':'808709426ebc65efed7b74920e89c5fd49b60483','publicClassification':'R40_PLUS_HASH_BOUND_UI_SAFETY_HF1_NOT_ORIGINAL_R40_BYTES'")
+          s=s.replace("['ok','release','community','database'","['ok','release','checkoutSafetyVersion','community','database'")
+          files=sorted((p for p in Path('dist').rglob('*') if p.is_file()),key=lambda p:p.as_posix())
+          records=''.join(f'{p.as_posix()}\0{p.stat().st_size}\0{hashlib.sha256(p.read_bytes()).hexdigest()}\n' for p in files)
+          assert len(files)==19481
+          digest=hashlib.sha256(records.encode()).hexdigest()
+          s=s.replace('f18dfb9b29c5d9b912870dab212a6b438c7b79a4202bd11b7317b4e511775f4b',digest)
+          old="report['runtimeInfrastructurePass']=report['runtime']['/ready']['status']==200"
+          assert s.count(old)==1
+          s=s.replace(old,"report['runtimeInfrastructurePass']=report['runtime']['/ready']['payload'].get('checkoutSafetyVersion')=='FRANKLIN_CHECKOUT_SAFETY_1' and report['runtime']['/ready']['payload'].get('commerceEnabled') is False and report['runtime']['/ready']['status']==200")
+          p.write_text(s)
+          print('AUDIT_BOUND_TO_DEPLOYED_PUBLIC_TREE',digest)
+          PY
+      - name: Verify actual public pages, corrected claim script, EN ES, bridge destination and runtime
+        run: python scripts/audit-hf1-live.py
+      - name: Export immutable actually deployed source pair
+        if: always()
+        run: |
+          mkdir -p audit-output
+          git archive --format=zip --output=audit-output/FRANKLIN_PUBLIC_E0EA_HF1_SOURCE.zip e0ea8625343f6ec0e2eb2f0e55ec6457ec762bf1
+          git archive --format=zip --output=audit-output/FRANKLIN_RUNTIME_8087_HF1_SOURCE.zip 808709426ebc65efed7b74920e89c5fd49b60483
+          sha256sum audit-output/*SOURCE.zip > audit-output/DEPLOYED_SOURCE_SHA256.txt
+          cp scripts/audit-hf1-live.py audit-output/AUDIT_SOURCE.py
+      - name: Preserve live evidence and exact source pair
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-hf1-deployed-pair-verification
+          path: audit-output/
+          retention-days: 30
+          if-no-files-found: warn
