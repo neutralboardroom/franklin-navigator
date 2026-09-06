@@ -1,0 +1,55 @@
+name: Restore and verify exact sealed Franklin R40
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/restore-r40-verified.yml'
+      - 'deploy/restore_exact_r40.py'
+      - 'deploy/r40-delta-*.txt'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: franklin-exact-publication
+  cancel-in-progress: false
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore exact qualified R40 bytes with full-tree verification
+        run: python3 deploy/restore_exact_r40.py
+      - name: Verify saved tree independently
+        run: |
+          python3 - <<'PY'
+          import pathlib, hashlib, json
+          files = sorted(p for p in pathlib.Path('dist').rglob('*') if p.is_file())
+          records = ''.join(f'{p.as_posix()}\0{p.stat().st_size}\0{hashlib.sha256(p.read_bytes()).hexdigest()}\n' for p in files)
+          assert len(files) == 19481
+          assert hashlib.sha256(records.encode()).hexdigest() == 'f18dfb9b29c5d9b912870dab212a6b438c7b79a4202bd11b7317b4e511775f4b'
+          manifest = json.loads(pathlib.Path('dist/FRANKLIN_BUILD_MANIFEST.json').read_text())
+          assert manifest['release'] == 'FR-NAV1.15.0-CANDIDATE-R40'
+          assert manifest['commerce']['publicCheckoutOpen'] is False
+          assert json.loads(pathlib.Path('PRODUCTION_RELEASE.json').read_text())['release'] == manifest['release']
+          print('INDEPENDENT_SAVED_R40_TREE_PASS: 19481 exact files, checkout closed')
+          PY
+      - name: Publish verified public tree without overwriting concurrent work
+        run: |
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A dist PRODUCTION_RELEASE.json README.md deploy/R40_EXACT_RESTORATION_RECEIPT.json
+          if git diff --cached --quiet; then
+            echo 'Exact R40 public tree is already present.'
+          else
+            git commit -m 'Publish exact source-qualified Franklin R40 public tree [skip ci]'
+            git push origin HEAD:main
+          fi
+          git rev-parse HEAD
