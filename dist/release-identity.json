@@ -1,14 +1,27 @@
 {
+  "acceptedAnchor": {
+    "artifactSha256": "e7bd5e71bf9da3de03bff838c4a5f577e7b36d7d63d639793ee19ac3f12ff119",
+    "release": "FR-NAV1.9.0-CANDIDATE-R34"
+  },
+  "authorityTransfer": false,
   "builtAt": "2026-09-06",
   "communityCentered": true,
-  "deploymentAuthorization": "OWNER_AUTHORIZED_AFTER_PRODUCT_QUALIFICATION",
-  "exactPredecessor": "FR-NAV1.13.0-CANDIDATE-R38",
-  "paidCommerceActive": false,
-  "predecessorArtifactSha256": "c3ff162355548c693a567d7fdb89a367631a76560f3688c47ebc7e631c27ef8d",
-  "predecessorSourceTreeSha256": "9e5c3158ea990dc7d9b8e1695c4f6f3886f899fb9dca798fa3e3462d73da3741",
+  "deploymentAuthorization": "OWNER_AND_WO056_AUTHORIZED_AFTER_PRODUCT_QUALIFICATION",
+  "exactSourcePredecessor": "FR-NAV1.14.0-CANDIDATE-R39",
+  "liveObservationBeforeBuild": {
+    "classification": "R39_DERIVED_POST_SEAL_PATCH",
+    "commit": "b254b3d83f03935e4337ff2d19f6f7e773c16158",
+    "deployId": "dep-daem2kv40ujc73fprnfg",
+    "exactSealedR39Binding": false,
+    "providerLive": true
+  },
+  "predecessorArtifactSha256": "1f40073f442877e1f5be7ff06f0517a82a96a0e97098cde40d1de199fcf9d151",
+  "predecessorSourceTreeSha256": "2c5a9f14f345604575dd5173e0a25d47325ab94bf8eaba23fff77756eb77e88c",
   "profileCount": 19103,
-  "publicConstruction": "R38_PLUS_PRIVATE_PORTABLE_ASSISTANT_FOLLOW_THROUGH",
-  "release": "FR-NAV1.14.0-CANDIDATE-R39",
-  "runtimeProductionBound": false,
-  "schemaVersion": "franklin.release-identity.r39.v1"
+  "publicCheckoutOpen": false,
+  "publicConstruction": "R39_PLUS_CANONICAL_LIVE_HOTFIX_PLUS_WO056_CUSTOMER_LANGUAGE_AND_SHORTLIST_UX",
+  "release": "FR-NAV1.15.0-CANDIDATE-R40",
+  "schemaVersion": "franklin.release-identity.r40.v1",
+  "sourceQualified": true,
+  "status": "SOURCE_QUALIFIED_DEPLOYMENT_AUTHORIZED_PENDING_EXECUTION"
 }

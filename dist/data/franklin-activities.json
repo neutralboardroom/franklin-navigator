@@ -7,11 +7,11 @@
     "source": "https://www.wcparksandrec.com/facilities_and_parks/recreation_centers/franklin_recreation_complex/index.php"
   },
   "consumerCurrentness": {
-    "cause": "Producer-qualified V22 has consumerAcceptance UNKNOWN and acceptedHeadAdvance NOT_EXECUTED; no dynamic V22 facts were silently promoted into R39.",
+    "cause": "Producer-qualified V22 has consumerAcceptance UNKNOWN and acceptedHeadAdvance NOT_EXECUTED; dated/quarantined facts are not silently promoted.",
     "newestProducerCandidate": "SLI-FRANKLIN-HANDOFF-20260906-022",
     "newestProducerCandidateSha256": "37e420583262d93f269c96267a75073076c850e6bab5d9481392bf848568837d",
     "newestProducerConsumerDisposition": "DEFER_WITH_CAUSE",
-    "retainedActivityEvidence": "SLI-FRANKLIN-HANDOFF-20260903-015 / R36 qualified local activity set"
+    "retainedActivityEvidence": "R39 accepted Local activity projection; no V22 dynamic facts silently promoted"
   },
   "coverage": {
     "notIncluded": [
@@ -383,7 +383,7 @@
     "shortListStorage": "PAGE_MEMORY_ONLY_UNTIL_NAVIGATION",
     "studentOrMinorRecordsCollected": false
   },
-  "release": "FR-NAV1.14.0-CANDIDATE-R39",
+  "release": "FR-NAV1.15.0-CANDIDATE-R40",
   "reviewedOn": "2026-09-03",
   "schemaVersion": "franklin.activities.v1",
   "startingPoints": [

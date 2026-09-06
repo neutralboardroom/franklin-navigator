@@ -33,7 +33,7 @@
     }
   ],
   "publicCta": "SHOW ME",
-  "release": "FR-NAV1.14.0-CANDIDATE-R39",
+  "release": "FR-NAV1.15.0-CANDIDATE-R40",
   "schemaVersion": "franklin.community-membership.compatibility-pointer.v1",
   "status": "V4_COMPATIBILITY_POINTER_TO_R37_CURRENT_MEMBERSHIP_CATALOG"
 }

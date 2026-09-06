@@ -430,7 +430,7 @@ header .top{background:#fff}
 @media(prefers-reduced-motion:reduce){.r24-ask textarea[data-autogrow]{transition:none}}
 
 
-/* R39 live readability hotfix — owner feedback 2026-09-06 */
+/* R40 canonical light/readability rules — owner live feedback 2026-09-06 */
 :root{color-scheme:only light!important}
 html,body{background:#fff!important;color:#172126!important;color-scheme:only light!important}
 main{background:#fff!important;color:#172126!important}

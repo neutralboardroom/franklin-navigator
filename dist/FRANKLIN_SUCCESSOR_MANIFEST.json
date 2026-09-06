@@ -24,7 +24,11 @@
     "PRIVATE_PORTABLE_ASSISTANT_CHECKLIST",
     "LOCAL_ICS_FOLLOW_UP_REMINDER",
     "PRINTABLE_SANITIZED_ASSISTANT_PLAN",
-    "PORTABLE_EXPORT_NO_RAW_QUESTION_OR_PLAN_ID"
+    "PORTABLE_EXPORT_NO_RAW_QUESTION_OR_PLAN_ID",
+    "WO056_PUBLIC_LANGUAGE_REMEDIATION",
+    "CANONICAL_LIGHT_ONLY_READABILITY",
+    "ZERO_SELECTION_SHORTLIST_HIDDEN",
+    "EN_ES_CUSTOMER_LANGUAGE_PARITY"
   ],
   "newPublicPaidEnrollmentOpen": false,
   "productionDeployPerformed": false,
@@ -32,14 +36,16 @@
   "profileHtmlImprovedForPublicLanguageAndBilingualParity": true,
   "profilesPreserved": 19103,
   "publicCheckoutOpen": false,
-  "release": "FR-NAV1.14.0-CANDIDATE-R39",
-  "schemaVersion": "franklin.successor-public-manifest.r39.v1",
+  "release": "FR-NAV1.15.0-CANDIDATE-R40",
+  "schemaVersion": "franklin.successor-public-manifest.r40.v1",
   "sourcePredecessor": {
-    "artifactBytes": 71015003,
-    "artifactSha256": "c3ff162355548c693a567d7fdb89a367631a76560f3688c47ebc7e631c27ef8d",
-    "canonicalSourceTreeSha256": "9e5c3158ea990dc7d9b8e1695c4f6f3886f899fb9dca798fa3e3462d73da3741",
-    "release": "FR-NAV1.13.0-CANDIDATE-R38",
-    "state": "SOURCE_QUALIFIED_NOT_DEPLOYED_NOT_SCC_ACCEPTED"
+    "artifactBytes": 71292499,
+    "artifactSha256": "1f40073f442877e1f5be7ff06f0517a82a96a0e97098cde40d1de199fcf9d151",
+    "canonicalSourceTreeSha256": "2c5a9f14f345604575dd5173e0a25d47325ab94bf8eaba23fff77756eb77e88c",
+    "release": "FR-NAV1.14.0-CANDIDATE-R39",
+    "state": "SOURCE_QUALIFIED_PROVIDER_DEPLOYED_POST_SEAL_PATCH_NOT_SCC_ACCEPTED"
   },
-  "state": "SOURCE_QUALIFIED_DEPLOYMENT_AUTHORIZED_NOT_YET_DEPLOYED"
+  "sourceQualified": true,
+  "state": "SOURCE_CANDIDATE_BUILDING_QUALIFICATION_DEPLOYMENT_AUTHORIZED",
+  "status": "SOURCE_QUALIFIED_DEPLOYMENT_AUTHORIZED_PENDING_EXECUTION"
 }

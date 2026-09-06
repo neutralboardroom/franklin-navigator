@@ -39,6 +39,13 @@
   "deploymentState": "AUTHORIZED_PENDING_POST_QUALIFICATION_DEPLOYMENT",
   "generatedAtUtc": "2026-09-06T11:27:00Z",
   "learningResources": 9,
+  "liveObservationBeforeBuild": {
+    "classification": "R39_DERIVED_POST_SEAL_PATCH",
+    "commit": "b254b3d83f03935e4337ff2d19f6f7e773c16158",
+    "deployId": "dep-daem2kv40ujc73fprnfg",
+    "exactSealedR39Binding": false,
+    "providerLive": true
+  },
   "memberExperience": {
     "billingPortalEntry": true,
     "canonicalIdsHiddenFromNormalUser": true,
@@ -51,52 +58,66 @@
   "productionDeployPerformed": false,
   "profileDataRecords": 19103,
   "profilePages": 19103,
-  "release": "FR-NAV1.14.0-CANDIDATE-R39",
-  "schemaVersion": "franklin.build-manifest.r39.v1",
+  "r40Corrective": {
+    "canonicalizesLiveReadabilityHotfix": true,
+    "customerLanguageRemediation": true,
+    "fullEnglishSpanishParityRequired": true,
+    "lightOnlyPublicRendering": true,
+    "noRefundOrCancellationAsTest": true,
+    "noSecondCharge": true,
+    "publicCheckoutOpen": false,
+    "shortlistHiddenAtZeroSelection": true,
+    "visibleLanguageLabelRemoved": true,
+    "workOrder": "WO-20260906-SCC-LOCAL-FRANKLIN-R39-LIVE-PUBLIC-LANGUAGE-AND-READINESS-CORRECTION-056"
+  },
+  "release": "FR-NAV1.15.0-CANDIDATE-R40",
+  "releaseStatus": "SOURCE_QUALIFIED_DEPLOYMENT_AUTHORIZED_PENDING_EXECUTION",
+  "schemaVersion": "franklin.build-manifest.r40.v1",
   "smarterJusticeDonorUse": "SMARTER_JUSTICE_DONOR_NOT_USED",
   "sourcePredecessor": {
-    "artifactBytes": 71015003,
-    "artifactSha256": "c3ff162355548c693a567d7fdb89a367631a76560f3688c47ebc7e631c27ef8d",
-    "canonicalSourceTreeSha256": "9e5c3158ea990dc7d9b8e1695c4f6f3886f899fb9dca798fa3e3462d73da3741",
-    "release": "FR-NAV1.13.0-CANDIDATE-R38",
-    "state": "SOURCE_QUALIFIED_NOT_DEPLOYED_NOT_SCC_ACCEPTED"
+    "artifactBytes": 71292499,
+    "artifactSha256": "1f40073f442877e1f5be7ff06f0517a82a96a0e97098cde40d1de199fcf9d151",
+    "canonicalSourceTreeSha256": "2c5a9f14f345604575dd5173e0a25d47325ab94bf8eaba23fff77756eb77e88c",
+    "release": "FR-NAV1.14.0-CANDIDATE-R39",
+    "state": "SOURCE_QUALIFIED_PROVIDER_DEPLOYED_POST_SEAL_PATCH_NOT_SCC_ACCEPTED"
   },
+  "sourceQualified": true,
   "upstream": {
     "localInvestigator": {
+      "acceptedHeadObserved": "SLI-21M-0.19.0",
+      "artifactSha256": "37e420583262d93f269c96267a75073076c850e6bab5d9481392bf848568837d",
       "candidate": "SLI-FRANKLIN-HANDOFF-20260906-022",
-      "cause": "Producer-qualified V22 has consumerAcceptance UNKNOWN and acceptedHeadAdvance NOT_EXECUTED; quarantined/recheck-debt research is not silently canonized.",
-      "disposition": "DEFER_WITH_CAUSE",
-      "sha256": "37e420583262d93f269c96267a75073076c850e6bab5d9481392bf848568837d"
+      "cause": "Producer-qualified V22 has consumerAcceptance UNKNOWN and acceptedHeadAdvance NOT_EXECUTED; dated/quarantined facts are not silently promoted.",
+      "disposition": "DEFER_WITH_CAUSE"
     },
     "profileFactory": {
-      "candidate": "FR-PF-PLATFORM-15.15",
-      "cause": "Producer-qualified but external consumer/current-pointer acceptance remains pending; PF74 unchanged.",
+      "artifactSha256": "5dca5998572ee89ee0c4c2118285d99c35deef22d50068f33af30203a714827f",
+      "candidate": "FR-PF-PLATFORM-15.16",
+      "cause": "Producer-qualified but consumer/external acceptance is pending; current pointer PF74 is unchanged, so R40 preserves the accepted 19,103-profile Local projection.",
+      "currentPointer": "PF74_UNCHANGED",
       "disposition": "DEFER_WITH_CAUSE",
-      "sha256": "291a183ad2a981b12c1a96009cd3255829fa56d70ac39d78cc41c48890d800c6"
+      "readyProfiles": 22824
     },
     "scc": {
-      "builder": "SCCC36.0",
+      "builder": "SCCC37.0",
       "publicCheckoutOpen": false,
-      "release": "v0.36.0",
-      "sha256": "0d14cc16d23f3a301f18df2c7d5ab6c2fde16467460fd56804d36e291e6ca882",
-      "standard": "UEC-1.34"
+      "release": "v0.37.0",
+      "standard": "UEC-1.35",
+      "status": "CURRENT_PUBLISHED_LIBRARY_VERIFIED_SURFACE",
+      "workOrder": "WO-20260906-SCC-LOCAL-FRANKLIN-R39-LIVE-PUBLIC-LANGUAGE-AND-READINESS-CORRECTION-056"
+    },
+    "smarterJusticeDonor": {
+      "reason": "R40 scope is public/member/account/readability correction; Local legal-module donor review is not required.",
+      "state": "NOT_USED"
     },
     "sre": {
       "artifactSha256": "52616bf73714b7d1606b823843946a470e5a3e8b1cb92862bcb0be8845d211a0",
-      "commercialPricesPreserved": [
-        5,
-        50,
-        120
-      ],
-      "noExternalSendOrCommerceReopenByLocal": true,
-      "observedProducerReceipt": "SRE-OC-CP-2.34.0",
+      "publicCheckoutAccepted": false,
+      "release": "SRE-OC-CP-2.34.0",
+      "sge": "SGE-1.34.0",
       "sourceCommit": "37cfee161362d6d071600401550cd9ec9ad3755b",
       "sourceTree": "d41ee9f2ddcdb051725f1664b270c22db7318a13",
-      "tests": "139/139 PASS",
-      "workOrders": [
-        "WO-20260906-SRE-LOCAL-FRANKLIN-SELLING-READINESS-CLOSEOUT-054",
-        "WO-20260906-SRE-SCC-FRANKLIN-SELLING-READINESS-CONVERGENCE-055"
-      ]
+      "tests": "139/139 PASS"
     }
   },
   "version": "1.12.0",

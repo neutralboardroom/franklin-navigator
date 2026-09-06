@@ -47,12 +47,14 @@
     }
   ],
   "community": "FRANKLIN_TN",
+  "coordinationCurrentness": "SCCC37.0_UEC1.35",
   "currentness": {
     "controlledExistingMembership": "ACTIVE_RESTART_PERSISTENT_ACCOUNT_BOUND_BILLING_PORTAL",
-    "coordinationBuilder": "SCCC36.0",
-    "coordinationRelease": "v0.36.0",
-    "coordinationStandard": "UEC-1.34",
-    "publicCheckoutOpen": false
+    "coordinationBuilder": "SCCC37.0",
+    "coordinationRelease": "v0.37.0",
+    "coordinationStandard": "UEC-1.35",
+    "publicCheckoutOpen": false,
+    "workOrder": "WO056"
   },
   "freePresence": {
     "amountUsd": 0,
@@ -73,7 +75,7 @@
     "workOrder": "WO-20260903-SCC-LOCAL-FRANKLIN-RUNTIME-BIND-RECONCILE-AND-READY-050"
   },
   "publicIdentity": "Franklin Navigator Community Membership",
-  "release": "FR-NAV1.14.0-CANDIDATE-R39",
+  "release": "FR-NAV1.15.0-CANDIDATE-R40",
   "schemaVersion": "franklin.community-membership.v7.currentness.v1",
   "status": "EXISTING_MEMBERSHIP_ACTIVE_NEW_PUBLIC_CHECKOUT_CLOSED"
 }

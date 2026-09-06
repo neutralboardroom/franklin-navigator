@@ -1,0 +1,13 @@
+{
+  "release": "FR-NAV1.15.0-CANDIDATE-R40",
+  "sourceArchiveSha256": "8cbadeeb187386e2825098fe28c395035e5ef00fe1e9be6a2181657be14cfefc",
+  "sourceTreeSha256": "f0ffaa860b8e0f81737a8bc2f71eb8c64edd8043cfebd1c14ed5e18f15663de9",
+  "publicTreeSha256": "f18dfb9b29c5d9b912870dab212a6b438c7b79a4202bd11b7317b4e511775f4b",
+  "files": 19481,
+  "profiles": 19103,
+  "result": "PASS_EXACT_SEALED_PUBLIC_BYTES",
+  "publicCheckoutOpen": false,
+  "deploymentPerformed": false,
+  "liveAcceptance": "NOT_CLAIMED",
+  "restorationMethod": "PINNED_R39_CARRIER_WITH_HASH_VERIFIED_BYTE_DELTA"
+}

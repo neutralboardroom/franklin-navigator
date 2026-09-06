@@ -2,7 +2,7 @@
 'use strict';
 (()=>{
   const STORE='franklinNavigator.assistantPlans.v1';
-  const RELEASE='FR-NAV1.14.0-CANDIDATE-R39';
+  const RELEASE='FR-NAV1.15.0-CANDIDATE-R40';
   const MAX_PLANS=20;
   const lang=()=>document.documentElement.lang==='es'?'es':'en';
   const tx=(en,es)=>lang()==='es'?es:en;
