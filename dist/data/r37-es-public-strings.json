@@ -1,5 +1,5 @@
 {
-  "count": 4631,
+  "count": 4635,
   "schemaVersion": "franklin.r37.en-es-public-strings.v1",
   "sourceCatalogSha256": "404f52a790fcb91fe8424d68023554ab2268d011911e2d115a6a3c2dcf4f3c10",
   "sourceCount": 4459,
@@ -4634,8 +4634,16 @@
     "Source-backed options — recheck before you act": "Opciones respaldadas por fuentes — vuelva a comprobar antes de actuar",
     "Details change by season. Use the official or first-party link before you register or participate.": "Los detalles cambian según la temporada. Use el enlace oficial o de primera fuente antes de inscribirse o participar.",
     "Public source details and contact options.": "Detalles de fuentes públicas y opciones de contacto.",
-    "Membership sign-in is available.": "El inicio de sesión de membresía está disponible."
+    "Membership sign-in is available.": "El inicio de sesión de membresía está disponible.",
+    "We could not confirm the payment outcome. Do not pay again. Check membership status or contact support.": "No pudimos confirmar el resultado del pago. No vuelva a pagar. Revise el estado de su membresía o contacte con soporte.",
+    "Checkout is not open. Check membership status for any earlier payment.": "El pago no está disponible. Revise el estado de su membresía para consultar cualquier pago anterior.",
+    "Check membership status": "Revisar el estado de la membresía",
+    "We could not complete this request. Please try again or contact support.": "No pudimos completar esta solicitud. Inténtelo de nuevo o contacte con soporte."
   },
   "release": "FR-NAV1.15.0-CANDIDATE-R40",
-  "r40CustomerLanguageRemediation": true
+  "r40CustomerLanguageRemediation": true,
+  "checkoutSafetyHotfix": {
+    "version": "FRANKLIN_PUBLIC_CHECKOUT_SAFETY_HF1",
+    "scope": "Unknown-outcome recovery copy; no pricing or entitlement changes"
+  }
 }

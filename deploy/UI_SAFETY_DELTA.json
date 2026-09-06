@@ -1,0 +1,14 @@
+{
+  "dist/assets/app.js": {
+    "before": "62b4b1f9b9853dc90fb57bf928cbdbe830a758b03533bf454ca1e5b080e346b6",
+    "after": "c88899356fdee9192fb54c3b33d460c736defbccab996a618b9ae701d73f90df"
+  },
+  "dist/assets/membership-live.js": {
+    "before": "881e8ab8693fe322492e794e1af316078228a82a91c1fd9654a3c0dcba3a7c9c",
+    "after": "92e8906e48fefe0225efb5c57c170186db41b0d948f5153d295fa0da43b7c07a"
+  },
+  "dist/data/r37-es-public-strings.json": {
+    "before": "6a092b630cc5609967037a4f1b14df0166bff546cd7210e7ebb3638a08b90e9c",
+    "after": "6b5c5c52a8addf1fd7f3932190bed18146103197e9e1a83cf97623ba88c26432"
+  }
+}

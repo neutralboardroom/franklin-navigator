@@ -1,0 +1,105 @@
+{
+  "result": "PASS",
+  "tests": [
+    {
+      "test": "claim_search_en_baseline_reproduced",
+      "pass": true,
+      "pageErrors": [
+        "Cannot read properties of null (reading 'addEventListener')"
+      ]
+    },
+    {
+      "test": "claim_search_en_corrected",
+      "pass": true,
+      "pageErrors": []
+    },
+    {
+      "test": "network_failure_en",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    },
+    {
+      "test": "provider_502_en",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    },
+    {
+      "test": "server_500_en",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    },
+    {
+      "test": "unknown_409_en",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    },
+    {
+      "test": "unsafe_redirect_en",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    },
+    {
+      "test": "closed_checkout_en",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    },
+    {
+      "test": "claim_search_es_baseline_reproduced",
+      "pass": true,
+      "pageErrors": [
+        "Cannot read properties of null (reading 'addEventListener')"
+      ]
+    },
+    {
+      "test": "claim_search_es_corrected",
+      "pass": true,
+      "pageErrors": []
+    },
+    {
+      "test": "network_failure_es",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    },
+    {
+      "test": "provider_502_es",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    },
+    {
+      "test": "server_500_es",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    },
+    {
+      "test": "unknown_409_es",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    },
+    {
+      "test": "unsafe_redirect_es",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    },
+    {
+      "test": "closed_checkout_es",
+      "pass": true,
+      "simulatedCheckoutRequests": 1,
+      "realProviderCalls": 0
+    }
+  ],
+  "testCount": 16,
+  "environment": "ISOLATED_CHROMIUM_REAL_R40_PAGES_SYNTHETIC_API",
+  "realProviderCalls": 0,
+  "productionDeployment": false
+}
