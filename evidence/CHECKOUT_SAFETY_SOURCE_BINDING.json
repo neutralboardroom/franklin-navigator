@@ -1,0 +1,8 @@
+{
+  "patch": "FRANKLIN_CHECKOUT_SAFETY_1",
+  "baseCommit": "6d4f87fc975ae0201351060c69f0d3ab05d8236c",
+  "baseServerGitBlob": "66a7f15f0f9607292683a8fbf8e338586a8c074b",
+  "correctedServerSha256": "8d4e73e2563db4a2eef6e51915e281a3be7df5493bab8a6ed50731b41204f7a6",
+  "publicCheckoutOpened": false,
+  "deployment": "NOT_CLAIMED"
+}

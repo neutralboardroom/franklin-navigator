@@ -1,0 +1,8 @@
+{
+  "result": "PASS",
+  "environment": "ISOLATED_POSTGRES",
+  "startupReady": true,
+  "commerceEnabled": false,
+  "checkoutSafetyVersion": "FRANKLIN_CHECKOUT_SAFETY_1",
+  "newProviderCalls": 0
+}

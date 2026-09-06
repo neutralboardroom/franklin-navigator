@@ -1,0 +1,115 @@
+{
+  "result": "PASS",
+  "testCount": 23,
+  "tests": [
+    {
+      "name": "migration_is_additive_and_repeatable",
+      "result": "PASS"
+    },
+    {
+      "name": "sequential_retry_reuses_one_intent_and_session",
+      "result": "PASS"
+    },
+    {
+      "name": "twenty_parallel_requests_create_at_most_one_session",
+      "result": "PASS"
+    },
+    {
+      "name": "unknown_response_retries_same_key_and_frozen_parameters",
+      "result": "PASS"
+    },
+    {
+      "name": "unknown_outcome_beyond_retention_is_held",
+      "result": "PASS"
+    },
+    {
+      "name": "crash_recovery_reuses_original_provider_operation",
+      "result": "PASS"
+    },
+    {
+      "name": "separate_process_reuses_persisted_purchase",
+      "result": "PASS"
+    },
+    {
+      "name": "plan_switch_cannot_create_second_purchase",
+      "result": "PASS"
+    },
+    {
+      "name": "legacy_unknown_intent_blocks_new_key",
+      "result": "PASS"
+    },
+    {
+      "name": "representation_and_active_guards_run_before_reservation",
+      "result": "PASS"
+    },
+    {
+      "name": "cross_community_purchase_is_rejected",
+      "result": "PASS"
+    },
+    {
+      "name": "fulfilled_event_state_survives_checkout_response_storage",
+      "result": "PASS"
+    },
+    {
+      "name": "unsafe_checkout_redirect_is_rejected",
+      "result": "PASS"
+    },
+    {
+      "name": "new_customer_registers_and_representation_stays_pending",
+      "result": "PASS"
+    },
+    {
+      "name": "only_authorized_review_allows_new_customer_to_resume",
+      "result": "PASS"
+    },
+    {
+      "name": "corrected_router_reuses_purchase_and_approved_price",
+      "result": "PASS"
+    },
+    {
+      "name": "unsigned_provider_event_cannot_activate_member",
+      "result": "PASS"
+    },
+    {
+      "name": "signed_simulated_payment_activates_once_and_replay_is_safe",
+      "result": "PASS"
+    },
+    {
+      "name": "active_customer_cannot_create_second_purchase",
+      "result": "PASS"
+    },
+    {
+      "name": "billing_portal_is_bound_to_current_account",
+      "result": "PASS"
+    },
+    {
+      "name": "simulated_cancellation_preserves_access_until_term_end",
+      "result": "PASS"
+    },
+    {
+      "name": "account_logout_ends_session",
+      "result": "PASS"
+    },
+    {
+      "name": "commerce_disabled_guard_remains_first",
+      "result": "PASS"
+    }
+  ],
+  "database": "REAL_ISOLATED_POSTGRES",
+  "provider": "SIMULATED_TRANSPORT_NO_REAL_API_CALLS",
+  "runtime": "ACTUAL_CORRECTED_ROUTER",
+  "sourceSha256": "8d4e73e2563db4a2eef6e51915e281a3be7df5493bab8a6ed50731b41204f7a6",
+  "realProviderCalls": 0,
+  "realCharges": 0,
+  "realRefunds": 0,
+  "realCancellations": 0,
+  "publicCommerceEnabled": false,
+  "productionDeployment": "NOT_CLAIMED",
+  "liveCustomerAcceptance": "NOT_CLAIMED",
+  "limitations": [
+    "Review authorization tested with synthetic authority; actual staff coverage is separate.",
+    "No live customer payment or in-browser cancellation exercised.",
+    "Paid profile editing, publication and first-value fulfillment are not proven.",
+    "Expired or uncertain purchases stay held for reconciliation rather than creating a new key."
+  ]
+}
