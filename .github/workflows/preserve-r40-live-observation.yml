@@ -1,0 +1,54 @@
+name: Preserve completed Franklin live audit evidence
+
+on:
+  push:
+    branches: [franklin-r40-exact-launch-recovery-20260907]
+    paths: ['.github/workflows/preserve-r40-live-observation.yml']
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  preserve:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Retrieve this repository's exact completed audit artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download 34065778637 --repo neutralboardroom/franklin-navigator --name franklin-r40-live-read-only-observations --dir /tmp/franklin-r40-observation
+      - name: Produce bounded observation receipt without private data or acceptance claims
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, hashlib
+          path = Path('/tmp/franklin-r40-observation/LIVE_R40_READ_ONLY_AUDIT.json')
+          data = path.read_bytes()
+          r = json.loads(data)
+          assert r['release'] == 'FR-NAV1.15.0-CANDIDATE-R40'
+          assert r['observedPublicCommitToBind'] == '9d90aadcae37c132b5ea6204cbda81273609089f'
+          assert r['routeSummary']['failed'] == 0
+          assert r['charges'] == r['refunds'] == r['cancellations'] == r['accountsCreated'] == 0
+          summary = {k: v for k, v in r.items() if k not in ('routes', 'home')}
+          summary['auditArtifactId'] = 9137562062
+          summary['auditRunId'] = 34065778637
+          summary['auditReportSha256'] = hashlib.sha256(data).hexdigest()
+          summary['publicDeploymentPerformedByThisAudit'] = False
+          summary['publicCheckoutEnabledByThisAudit'] = False
+          summary['scopeLimitation'] = 'Read-only public route and source evidence. No authenticated member session, payment, billing action, or independent SRE/SCC acceptance was exercised.'
+          Path('deploy/R40_LIVE_READ_ONLY_SUMMARY.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2) + '\n')
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          PY
+      - name: Commit only the bounded diagnostic receipt to the recovery branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add deploy/R40_LIVE_READ_ONLY_SUMMARY.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record live R40 route evidence; authenticated paid fulfillment not yet accepted'
+            git push origin HEAD:franklin-r40-exact-launch-recovery-20260907
+          fi
