@@ -2,7 +2,7 @@ services:
   - type: web
     runtime: static
     name: franklin-navigator
-    buildCommand: test -f dist/FRANKLIN_BUILD_MANIFEST.json && test -f dist/index.html && test -f PRODUCTION_RELEASE.json
+    buildCommand: python deploy/apply_r39_deployment_payload.py && test -f dist/FRANKLIN_BUILD_MANIFEST.json && test -f dist/index.html
     staticPublishPath: ./dist
     autoDeployTrigger: "off"
     previews:
@@ -13,7 +13,7 @@ services:
     headers:
       - path: /*
         name: Content-Security-Policy
-        value: "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"
+        value: "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://franklin-navigator-membership.onrender.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"
       - path: /*
         name: Referrer-Policy
         value: strict-origin-when-cross-origin
