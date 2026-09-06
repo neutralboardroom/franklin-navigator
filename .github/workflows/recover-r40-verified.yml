@@ -1,0 +1,52 @@
+name: Recover and verify exact Franklin R40
+
+on:
+  push:
+    branches: [franklin-r40-exact-launch-recovery-20260907]
+    paths:
+      - 'deploy/recover_exact_r40.py'
+      - 'deploy/r40-recovery-parts/**'
+      - '.github/workflows/recover-r40-verified.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: franklin-r40-verified-recovery
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply checksum-verified exact R40 delta
+        run: python deploy/recover_exact_r40.py
+      - name: Verify all public JavaScript parses
+        run: find dist/assets -name '*.js' -type f -print0 | xargs -0 -n1 node --check
+      - name: Verify fresh disk snapshot and internal route targets
+        run: python deploy/recover_exact_r40.py --verify-only
+      - name: Verify exact Git public tree and commit isolated recovery
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm --ignore-unmatch deploy/r40-exact-recovery.b64
+          git add -A dist
+          git add PRODUCTION_RELEASE.json README.md deploy/R40_EXACT_RECOVERY_RESULT.json
+          TREE=$(git write-tree)
+          ACTUAL=$(git rev-parse "$TREE:dist")
+          test "$ACTUAL" = '7ed9927f8a1ab18ece9b640e5bde3e3348a430fa'
+          echo "EXACT_R40_GIT_DIST_TREE=$ACTUAL"
+          if ! git diff --cached --quiet; then
+            git commit -m 'Recover exact qualified Franklin R40 public snapshot; checkout remains closed'
+            git push origin HEAD:franklin-r40-exact-launch-recovery-20260907
+          fi
