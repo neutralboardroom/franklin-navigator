@@ -1,0 +1,54 @@
+name: Apply exact Franklin R39 static payload
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'deploy/R39_GITHUB_DEPLOYMENT_PAYLOAD.zip'
+      - 'deploy/apply_r39_deployment_payload.py'
+      - '.github/workflows/apply-r39-exact-dist.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: franklin-r39-exact-dist
+  cancel-in-progress: false
+
+jobs:
+  apply-r39:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify and apply exact sealed R39 payload
+        run: python deploy/apply_r39_deployment_payload.py
+      - name: Confirm exact public release identity
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          root = pathlib.Path('dist')
+          manifest = json.loads((root/'FRANKLIN_BUILD_MANIFEST.json').read_text())
+          assert manifest['release'] == 'FR-NAV1.14.0-CANDIDATE-R39'
+          assert manifest['commerce']['publicCheckoutOpen'] is False
+          files = [p for p in root.rglob('*') if p.is_file()]
+          assert len(files) == 19481, len(files)
+          print('R39_EXACT_DIST_READY', len(files))
+          PY
+      - name: Commit exact R39 dist to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A dist
+          if git diff --cached --quiet; then
+            echo 'R39 dist already exact; no commit required.'
+          else
+            git commit -m 'Publish exact Franklin R39 static dist [skip ci]'
+            git push origin HEAD:main
+          fi

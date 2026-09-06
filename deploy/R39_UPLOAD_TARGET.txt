@@ -1,0 +1,10 @@
+R39 deployment upload target
+
+Branch: r39-deploy-20260906
+Path: deploy/R39_GITHUB_DEPLOYMENT_PAYLOAD.zip
+Bytes: 12183258
+SHA-256: 89ca122f543c330bbd9bc09f6f0465149b589bb78fa6ed82d1ffa9e022e5e664
+Expected Git blob SHA-1: ea2e000f1837dad423f162d43077662b2300fddb
+Sealed R39 release ZIP SHA-256: 1f40073f442877e1f5be7ff06f0517a82a96a0e97098cde40d1de199fcf9d151
+
+Upload the ZIP exactly as-is. Do not extract or rename it. The Render bootstrap fails closed unless the exact payload hash, embedded tarball hash, release identity, file count, and all 19,481 dist file hashes match.
