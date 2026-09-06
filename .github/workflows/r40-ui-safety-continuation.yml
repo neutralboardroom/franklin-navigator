@@ -1,0 +1,62 @@
+name: Qualify Franklin R40 UI safety continuation
+on:
+  push:
+    branches: [franklin-r40-ui-safety-continuation]
+    paths:
+      - 'deploy/apply_r40_ui_safety.py'
+      - 'deploy/test_r40_ui_safety.py'
+      - '.github/workflows/r40-ui-safety-continuation.yml'
+permissions:
+  contents: write
+concurrency:
+  group: franklin-r40-ui-safety-continuation
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply pinned minimal correction
+        run: |
+          python deploy/apply_r40_ui_safety.py
+          node --check dist/assets/app.js
+          node --check dist/assets/membership-live.js
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Browser regression without real account or provider calls
+        run: python deploy/test_r40_ui_safety.py
+      - name: Commit tested source only to this isolated hotfix branch
+        run: |
+          git fetch origin franklin-r40-ui-safety-continuation
+          test "$(git rev-parse origin/franklin-r40-ui-safety-continuation)" = "$GITHUB_SHA"
+          test "$(git diff --name-only -- dist/ | wc -l)" -eq 3
+          test -z "$(git diff --name-only -- dist/profiles/)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add dist/assets/app.js dist/assets/membership-live.js dist/data/r37-es-public-strings.json deploy/UI_SAFETY_DELTA.json ui-safety-evidence/UI_HF1_BROWSER_RESULTS.json
+          git commit -m 'Qualify R40 claim and payment-uncertainty UI hotfix; no commerce enablement [skip ci]'
+          git push origin HEAD:franklin-r40-ui-safety-continuation
+          git rev-parse HEAD > ui-safety-evidence/QUALIFIED_COMMIT.txt
+          python - <<'PY'
+          import pathlib,zipfile
+          files=['dist/assets/app.js','dist/assets/membership-live.js','dist/data/r37-es-public-strings.json','deploy/UI_SAFETY_DELTA.json','deploy/apply_r40_ui_safety.py','deploy/test_r40_ui_safety.py']
+          files += [str(p) for p in pathlib.Path('ui-safety-evidence').glob('*') if p.is_file()]
+          with zipfile.ZipFile('FRANKLIN_R40_UI_SAFETY_HF1.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for f in sorted(files):z.write(f,f)
+          PY
+      - name: Preserve results and source patch
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-r40-ui-safety-continuation
+          path: |
+            ui-safety-evidence/
+            FRANKLIN_R40_UI_SAFETY_HF1.zip
+            deploy/UI_SAFETY_DELTA.json
+          retention-days: 30
