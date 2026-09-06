@@ -16,12 +16,13 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
           styles = Path('dist/assets/styles.css').read_text()
           explorer = Path('dist/assets/community-explorer.css').read_text()
           language = Path('dist/assets/r37.css').read_text()
           assert 'color-scheme:only light!important' in styles
           assert 'r22-compare-tray,.explorer-shortlist{position:static!important' in styles
           assert '.explorer-shortlist{position:static!important' in explorer
-          assert '.r37-language-switch span{display:none!important}' in language
+          assert re.search(r'\.r37-language-switch\s+span\s*\{[^}]*display\s*:\s*none\s*!important', language)
           print('Franklin light readability, non-sticky trays and language labels PASS')
           PY
