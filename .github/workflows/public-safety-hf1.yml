@@ -1,0 +1,88 @@
+name: Franklin public safety R40.1 qualification
+on:
+  push:
+    branches: [franklin-public-safety-hf1]
+    paths:
+      - 'scripts/apply-public-safety-hf1.py'
+      - 'acceptance/public-safety-hf1.py'
+      - '.github/workflows/public-safety-hf1.yml'
+permissions:
+  contents: write
+concurrency:
+  group: franklin-public-safety-hf1
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install browser qualification tools
+        run: |
+          python -m pip install 'playwright==1.57.0'
+          python -m playwright install --with-deps chromium
+      - name: Apply narrow exact-byte correction
+        run: |
+          python scripts/apply-public-safety-hf1.py
+          node --check dist/assets/app.js
+          node --check dist/assets/membership-live.js
+      - name: Test real page navigation and payment uncertainty in both languages
+        run: python acceptance/public-safety-hf1.py
+      - name: Verify no-loss scope and bind qualified hotfix identity
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,subprocess
+          changed=set(subprocess.check_output(['git','diff','--name-only','--','dist'],text=True).splitlines())
+          assert changed=={'dist/assets/app.js','dist/assets/membership-live.js','dist/data/r37-es-public-strings.json'},changed
+          result=json.loads(Path('evidence/public_safety_hf1/BROWSER_RESULTS.json').read_text())
+          assert result['result']=='PASS' and result['assertionGroups']==40
+          profiles=list(Path('dist/profiles').glob('*/index.html'));assert len(profiles)==19103
+          release='FR-NAV1.15.1-CANDIDATE-R40.1'
+          for name in ['dist/FRANKLIN_BUILD_MANIFEST.json','PRODUCTION_RELEASE.json']:
+              p=Path(name);m=json.loads(p.read_text());m['release']=release
+              if 'version' in m:m['version']='1.15.1'
+              m['patchRevision']='R40.1'
+              m['predecessorRelease']='FR-NAV1.15.0-CANDIDATE-R40'
+              m['hotfixQualification']={'scope':'CLAIM_PAGE_AND_UNKNOWN_PURCHASE_EN_ES','browserGroups':40,'profilePagesPreserved':19103,'paidLaunchAccepted':False,'deploymentPerformed':False,'inheritedMetrics':'FROZEN_R40_PREDECESSOR_NOT_NEW_MEASUREMENTS'}
+              if 'commerce' in m:assert m['commerce']['publicCheckoutOpen'] is False
+              p.write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n')
+          files=sorted((p for p in Path('dist').rglob('*') if p.is_file()),key=lambda p:p.as_posix())
+          assert len(files)==19481
+          records=''.join(f'{p.as_posix()}\0{p.stat().st_size}\0{hashlib.sha256(p.read_bytes()).hexdigest()}\n' for p in files)
+          changes=[]
+          for n in sorted(changed|{'dist/FRANKLIN_BUILD_MANIFEST.json','PRODUCTION_RELEASE.json'}):
+              old=subprocess.check_output(['git','show','HEAD:'+n]);new=Path(n).read_bytes()
+              changes.append({'path':n,'beforeSha256':hashlib.sha256(old).hexdigest(),'afterSha256':hashlib.sha256(new).hexdigest(),'bytes':len(new)})
+          receipt={'release':release,'baseStaticCommit':'9d90aadcae37c132b5ea6204cbda81273609089f','baseSourceArchiveSha256':'8cbadeeb187386e2825098fe28c395035e5ef00fe1e9be6a2181657be14cfefc','publicTreeSha256':hashlib.sha256(records.encode()).hexdigest(),'publicFiles':len(files),'profiles':len(profiles),'changedFiles':changes,'qualified':True,'publicCheckoutOpen':False,'sourceOnly':True,'independentSreSccAcceptance':'NOT_CLAIMED'}
+          Path('evidence/PUBLIC_SAFETY_HF1_SOURCE_BINDING.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          print(json.dumps(receipt,indent=2))
+          PY
+      - name: Commit qualified source to staging branch only
+        run: |
+          git fetch origin franklin-public-safety-hf1
+          test "$(git rev-parse origin/franklin-public-safety-hf1)" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add dist/assets/app.js dist/assets/membership-live.js dist/data/r37-es-public-strings.json dist/FRANKLIN_BUILD_MANIFEST.json PRODUCTION_RELEASE.json evidence/public_safety_hf1/BROWSER_RESULTS.json evidence/PUBLIC_SAFETY_HF1_SOURCE_BINDING.json
+          git commit -m 'Qualify Franklin R40.1 claim-page and payment-uncertainty repair [skip ci]'
+          git push origin HEAD:franklin-public-safety-hf1
+          git rev-parse HEAD > evidence/PUBLIC_SAFETY_HF1_COMMIT.txt
+          git archive --format=zip --output=FRANKLIN_R40_1_PUBLIC_SAFETY_SOURCE.zip HEAD
+          sha256sum FRANKLIN_R40_1_PUBLIC_SAFETY_SOURCE.zip
+      - name: Preserve qualification evidence and source
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-public-safety-hf1
+          path: |
+            FRANKLIN_R40_1_PUBLIC_SAFETY_SOURCE.zip
+            evidence/public_safety_hf1/
+            evidence/PUBLIC_SAFETY_HF1_*
+          retention-days: 30
+          if-no-files-found: warn
