@@ -428,3 +428,18 @@ header .top{background:#fff}
 .r24-ask.has-answer .r24-navigator-output{max-height:none;overflow:visible}
 .r24-navigator-output[hidden]{display:none!important}
 @media(prefers-reduced-motion:reduce){.r24-ask textarea[data-autogrow]{transition:none}}
+
+
+/* R39 live readability hotfix — owner feedback 2026-09-06 */
+:root{color-scheme:only light!important}
+html,body{background:#fff!important;color:#172126!important;color-scheme:only light!important}
+main{background:#fff!important;color:#172126!important}
+header,header .top,.r37-language-switch{background:#fff!important;color:#172126!important}
+.section{color:#172126}
+.card,.r22-card,.r22-profile-result,.r22-dashboard-card,.r22-member-preview-mini,.feature-list-card,.navigator-bot,.r37-member-step,.r37-plan,.r37-search-result,.r34-card,.r33-card,.r32-org-card{background:#fff!important;color:#172126!important}
+.section.alt,.section.tint,.r24-destinations,.r24-business-section{background:#f6faf9!important;color:#172126!important}
+.hero,.r22-hero,.r27-hero,.r34-hero,.today-hero,.my-franklin-hero,.business-dashboard-hero{color:#172126}
+input,textarea,select{background:#fff!important;color:#172126!important}
+.button:not(.primary){background:#fff!important;color:#03454b!important}
+.r22-compare-tray,.explorer-shortlist{position:static!important;bottom:auto!important;box-shadow:none!important}
+[hidden]{display:none!important}

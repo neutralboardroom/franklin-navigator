@@ -54,3 +54,7 @@
 @media (max-width:1000px){.explorer-jump-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.explorer-grid,.explorer-current-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.explorer-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:720px){.explorer-hero-grid{grid-template-columns:1fr}.explorer-jump-grid,.explorer-grid,.explorer-current-grid,.explorer-coverage,.explorer-controls{grid-template-columns:1fr}.explorer-shortlist{position:static}.explorer-summary{align-items:flex-start}.explorer-hero-card{padding:1rem}.explorer-address{grid-template-columns:1fr}}
 @media print{header,.explorer-controls,.explorer-shortlist,.footer,.explorer-jump-grid,[data-explorer-current-section],.actions{display:none!important}.explorer-plan{border:0;padding:0}.explorer-card{break-inside:avoid;box-shadow:none}}
+
+
+/* R39 live readability hotfix: shortlist remains in document flow. */
+.explorer-shortlist{position:static!important;bottom:auto!important;box-shadow:none!important}
