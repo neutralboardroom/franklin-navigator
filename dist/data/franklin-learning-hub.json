@@ -48,7 +48,7 @@
     "processing": "ON_DEVICE_ONLY",
     "promptPersistence": false
   },
-  "release": "FR-NAV1.14.0-CANDIDATE-R39",
+  "release": "FR-NAV1.15.0-CANDIDATE-R40",
   "schemaVersion": "franklin.learning-hub.v1",
   "state": "CANDIDATE_SOURCE_QUALIFIED_NOT_DEPLOYED",
   "telemetry": {

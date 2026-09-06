@@ -1,7 +1,27 @@
-# Franklin Navigator R29
+# Franklin Navigator FR-NAV1.15.0-CANDIDATE-R40
 
-`FR-NAV1.4.0-CANDIDATE-R29` is the V6 community-centered successor to R28.
+Status: **SOURCE-QUALIFIED SUCCESSOR — DEPLOYMENT AUTHORIZED, NOT YET DEPLOYED AT SEAL**.
 
-It preserves the 19,103-profile Franklin product and focused answer dialog, names the AI helper **Franklin Assistant**, adds the canonical `/assistant/` whole-situation route, and adopts the mature Community Membership offer: **$5/month**, **$50/year**, or **$120 once for three years — BEST LONG-TERM VALUE**. Annual carries no pressure badge, public Founding30/newness language is retired, and the pre-checkout action is simply **SHOW ME**.
+R40 is the corrective successor to exact source-qualified R39. It canonicalizes the current Franklin light/readability behavior into source, executes SCC WO056, removes public control-plane language in English and Spanish, simplifies the language control to **English | Español**, and fixes the teams/clubs shortlist so no inactive `0 selected` tray obstructs normal browsing.
 
-The exact V5 Stripe product and three prices are provider-verified, but real payments remain fail-closed until Franklin's persistent membership runtime and database are production-bound, the Revenue Engine accepts READY, one controlled real transaction proves entitlement/first value/support/cancellation or refund reconciliation, and final LIVE acceptance passes.
+R40 preserves all 19,103 public profiles, 52 Spanish deep links, 50 community routes, 65 activity starting points, the R37 member/account journey, R38 device-only Assistant follow-through, R39 sanitized checklist/calendar/print portability, free factual corrections, no-pay-to-rank policy, and fail-closed checkout.
+
+## Governance at seal
+
+- SCC: `v0.37.0 / SCCC37.0 / UEC-1.35`
+- Active corrective order: `WO-20260906-SCC-LOCAL-FRANKLIN-R39-LIVE-PUBLIC-LANGUAGE-AND-READINESS-CORRECTION-056`
+- SRE: `SRE-OC-CP-2.34.0 / SGE-1.34.0`
+- PF15.16: `DEFER_WITH_CAUSE` — producer-qualified, consumer/current-pointer acceptance pending, `PF74_UNCHANGED`
+- LI V22: `DEFER_WITH_CAUSE` — consumer acceptance unknown; accepted head not advanced
+- Smarter Justice donor: **NOT USED**
+- Public checkout: **CLOSED** pending Local → SRE → SCC acceptance
+
+## Qualification
+
+Run the packaged one-command validator from a clean extraction:
+
+```bash
+python scripts/verify_r40_release.py
+```
+
+Provider-live state and SCC acceptance are separate from source qualification; deployment/live evidence is recorded after the sealed artifact is deployed.

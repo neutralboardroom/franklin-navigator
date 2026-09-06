@@ -1,0 +1,16 @@
+{
+  "htmlPages": 19356,
+  "profiles": 19103,
+  "localReferences": 866997,
+  "brokenInternalTargets": 0,
+  "result": "PASS_EXACT_R40_PUBLIC_SNAPSHOT",
+  "release": "FR-NAV1.15.0-CANDIDATE-R40",
+  "qualifiedReleaseZipSha256": "8cbadeeb187386e2825098fe28c395035e5ef00fe1e9be6a2181657be14cfefc",
+  "staticSha256": "f18dfb9b29c5d9b912870dab212a6b438c7b79a4202bd11b7317b4e511775f4b",
+  "expectedGitDistTree": "7ed9927f8a1ab18ece9b640e5bde3e3348a430fa",
+  "staticFiles": 19481,
+  "publicCheckoutOpen": false,
+  "deploymentPerformed": false,
+  "independentCommercialAcceptance": "NOT_CLAIMED",
+  "authorityTransfer": false
+}

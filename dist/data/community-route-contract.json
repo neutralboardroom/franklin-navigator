@@ -6,7 +6,7 @@
     "/es/aprendizaje/",
     "/es/asistente/aprendizaje/"
   ],
-  "release": "FR-NAV1.14.0-CANDIDATE-R39",
+  "release": "FR-NAV1.15.0-CANDIDATE-R40",
   "reviewedOn": "2026-09-03",
   "routes": [
     {

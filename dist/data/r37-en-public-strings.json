@@ -2,16 +2,6 @@
   "count": 4459,
   "strings": [
     {
-      "en": "Language / Idioma",
-      "uses": 402,
-      "examples": [
-        "404.html",
-        "404.html@aria-label",
-        "about/index.html",
-        "about/index.html@aria-label"
-      ]
-    },
-    {
       "en": "Find Local",
       "uses": 352,
       "examples": [
@@ -119,6 +109,16 @@
         "about/index.html",
         "accessibility/index.html",
         "action-center/index.html"
+      ]
+    },
+    {
+      "en": "Language / Idioma",
+      "uses": 201,
+      "examples": [
+        "404.html@aria-label",
+        "about/index.html@aria-label",
+        "accessibility/index.html@aria-label",
+        "action-center/index.html@aria-label"
       ]
     },
     {
@@ -942,16 +942,6 @@
       ]
     },
     {
-      "en": "Currentness queue",
-      "uses": 25,
-      "examples": [
-        "activities/index.html",
-        "arts-entertainment/index.html",
-        "outdoors/index.html",
-        "school-activities/index.html"
-      ]
-    },
-    {
       "en": "Date-sensitive opportunities that have not expired",
       "uses": 25,
       "examples": [
@@ -1382,6 +1372,16 @@
       ]
     },
     {
+      "en": "What to recheck",
+      "uses": 25,
+      "examples": [
+        "activities/index.html",
+        "arts-entertainment/index.html",
+        "outdoors/index.html",
+        "school-activities/index.html"
+      ]
+    },
+    {
       "en": "Youth",
       "uses": 25,
       "examples": [
@@ -1752,7 +1752,7 @@
       ]
     },
     {
-      "en": "Source-backed options with currentness limits",
+      "en": "Source-backed options — recheck before you act",
       "uses": 16,
       "examples": [
         "sports/adaptive/index.html",
@@ -8691,13 +8691,6 @@
       ]
     },
     {
-      "en": "Activation boundary:",
-      "uses": 1,
-      "examples": [
-        "member-first-value/index.html"
-      ]
-    },
-    {
       "en": "Activation is not complete until the member can use the correct profile and member tools and can reach support and billing/cancellation controls.",
       "uses": 1,
       "examples": [
@@ -8817,13 +8810,6 @@
       ]
     },
     {
-      "en": "After authority verification, add richer descriptions, services, images, contact routes, accessibility and language information.",
-      "uses": 1,
-      "examples": [
-        "membership-start/index.html"
-      ]
-    },
-    {
       "en": "age band",
       "uses": 1,
       "examples": [
@@ -8908,7 +8894,7 @@
       ]
     },
     {
-      "en": "an existing paid Community Membership has been reconciled to the correct verified account and profile, is active, and persists through restart. Existing members can use their member tools and account-bound billing controls. New public enrollment remains closed until the remaining launch checks are complete.",
+      "en": "an existing paid Community Membership is connected to the correct account and profile, is active, and stays active after restart. Existing members can use their member tools and secure billing and cancellation. New public enrollment remains closed until the remaining launch checks are complete.",
       "uses": 1,
       "examples": [
         "member-first-value/index.html"
@@ -8957,7 +8943,7 @@
       ]
     },
     {
-      "en": "Anyone can suggest a factual correction for free. Authority verification and member-provided content are separate from the public-source profile.",
+      "en": "Anyone can suggest a factual correction for free. Confirming that you represent a profile is separate from the public-source profile and from member-provided content.",
       "uses": 1,
       "examples": [
         "claim-profile/index.html"
@@ -9276,13 +9262,6 @@
       "uses": 1,
       "examples": [
         "preparation-studio/index.html"
-      ]
-    },
-    {
-      "en": "Authority-verified richer profile management",
-      "uses": 1,
-      "examples": [
-        "membership-pricing/index.html"
       ]
     },
     {
@@ -13759,13 +13738,6 @@
       ]
     },
     {
-      "en": "Currentness changes by season. Use the official or first-party link for the actual registration or participation decision.",
-      "uses": 1,
-      "examples": [
-        "sports/adult-leagues/index.html"
-      ]
-    },
-    {
       "en": "Date",
       "uses": 1,
       "examples": [
@@ -14008,6 +13980,13 @@
       "uses": 1,
       "examples": [
         "about/index.html"
+      ]
+    },
+    {
+      "en": "Details change by season. Use the official or first-party link before you register or participate.",
+      "uses": 1,
+      "examples": [
+        "sports/adult-leagues/index.html"
       ]
     },
     {
@@ -15467,7 +15446,7 @@
       ]
     },
     {
-      "en": "Explore responsible collaborations, resource sharing, currentness support, workshops or community information projects without implying endorsement.",
+      "en": "Explore responsible collaborations, resource sharing, help keeping community information up to date, workshops or community information projects without implying endorsement.",
       "uses": 1,
       "examples": [
         "work-with-franklin-navigator/index.html"
@@ -16748,6 +16727,13 @@
       ]
     },
     {
+      "en": "Finding a public profile, reviewing facts, suggesting corrections, viewing source details and ordinary source-backed visibility stay free whether or not you become a member.",
+      "uses": 1,
+      "examples": [
+        "membership-start/index.html"
+      ]
+    },
+    {
       "en": "Finishing a listing check or draft is useful progress. It does not prove that you gained a lead, customer or revenue.",
       "uses": 1,
       "examples": [
@@ -17959,7 +17945,7 @@
       ]
     },
     {
-      "en": "Franklin Navigator may maintain source-backed public business and official-work contact evidence. Public contactability is not consent. Point-of-use currentness, suppression, opt-out, duplication, regulated-vertical and language-evidence controls remain required. Members do not receive an unrestricted raw email database.",
+      "en": "Franklin Navigator may maintain source-backed public business and official-work contact information. A public contact route is not permission to contact someone for marketing. Before any outreach, current source checks, do-not-contact preferences, duplicate checks, regulated-field rules and language evidence still apply. Members do not receive an unrestricted raw email database.",
       "uses": 1,
       "examples": [
         "privacy/index.html"
@@ -21207,7 +21193,7 @@
       ]
     },
     {
-      "en": "Learn how Franklin Navigator builds factual local profiles, handles currentness and keeps membership separate from ordinary directory results.",
+      "en": "Learn how Franklin Navigator builds factual local profiles, shows when information was checked and keeps membership separate from ordinary directory results.",
       "uses": 1,
       "examples": [
         "directory-method/index.html@meta"
@@ -22173,13 +22159,6 @@
       ]
     },
     {
-      "en": "Manage member-provided descriptions, services, images, contact routes, accessibility and language information after authority verification.",
-      "uses": 1,
-      "examples": [
-        "business-dashboard/index.html"
-      ]
-    },
-    {
       "en": "Map benefits and caregiving needs",
       "uses": 1,
       "examples": [
@@ -22453,6 +22432,13 @@
       ]
     },
     {
+      "en": "Membership status:",
+      "uses": 1,
+      "examples": [
+        "member-first-value/index.html"
+      ]
+    },
+    {
       "en": "Membership stays separate",
       "uses": 1,
       "examples": [
@@ -22579,7 +22565,7 @@
       ]
     },
     {
-      "en": "Monthly and annual members can use secure account-bound billing tools to manage payment methods, view billing information and cancel future renewals.",
+      "en": "Monthly and annual members can use secure billing tools to manage payment methods, view billing information and cancel future renewals.",
       "uses": 1,
       "examples": [
         "member-support/index.html"
@@ -22831,14 +22817,14 @@
       ]
     },
     {
-      "en": "new public membership checkout is closed. An existing paid Community Membership is active and can use secure account-bound billing controls. Franklin will not reopen new enrollment until the remaining launch checks are complete.",
+      "en": "new public membership checkout is closed. An existing paid Community Membership is active and can use secure billing and cancellation. Franklin will not reopen new enrollment until the remaining launch checks are complete.",
       "uses": 1,
       "examples": [
         "membership-pricing/index.html"
       ]
     },
     {
-      "en": "New public membership checkout remains closed. An existing paid Community Membership has been reconciled to the correct verified account and profile, is active, and can use account-bound billing controls. Do not make another payment for an existing membership while Franklin completes the remaining launch checks for new enrollment.",
+      "en": "New public membership checkout remains closed. An existing paid Community Membership is connected to the correct account and profile, is active, and can use secure billing and cancellation. Do not make another payment for an existing membership while Franklin completes the remaining launch checks for new enrollment.",
       "uses": 1,
       "examples": [
         "terms/index.html"
@@ -23521,6 +23507,20 @@
       "uses": 1,
       "examples": [
         "learning/index.html"
+      ]
+    },
+    {
+      "en": "Once Franklin confirms you represent the profile, add richer descriptions, services, images, contact routes, accessibility and language information.",
+      "uses": 1,
+      "examples": [
+        "membership-start/index.html"
+      ]
+    },
+    {
+      "en": "Once Franklin confirms you represent the profile, manage member-provided descriptions, services, images, contact routes, accessibility and language information.",
+      "uses": 1,
+      "examples": [
+        "business-dashboard/index.html"
       ]
     },
     {
@@ -24378,7 +24378,7 @@
       ]
     },
     {
-      "en": "Payment failure, recovery, cancellation, refund and membership access must stay accurate and consistent. New public checkout remains closed while Franklin completes the remaining launch checks. Existing active members can use their account-bound billing controls.",
+      "en": "Payment failure, recovery, cancellation, refunds and membership access must stay accurate and consistent. New public checkout remains closed while Franklin completes the remaining launch checks. Existing active members can use secure billing and cancellation.",
       "uses": 1,
       "examples": [
         "member-support/index.html"
@@ -26401,13 +26401,6 @@
       ]
     },
     {
-      "en": "Public profile discovery, factual review, corrections, source/currentness information and ordinary source-backed visibility stay free whether or not you become a member.",
-      "uses": 1,
-      "examples": [
-        "membership-start/index.html"
-      ]
-    },
-    {
       "en": "Public profiles and factual corrections",
       "uses": 1,
       "examples": [
@@ -26450,7 +26443,7 @@
       ]
     },
     {
-      "en": "Public-source profiles, member-provided content and authority verification are separate. Factual corrections remain free. Location, credentials, services, availability and other changing information must be verified directly.",
+      "en": "Public-source profiles, member-provided content and confirmation that someone represents a profile are separate. Factual corrections remain free. Location, credentials, services, availability and other changing information must be confirmed directly.",
       "uses": 1,
       "examples": [
         "terms/index.html"
@@ -27472,6 +27465,13 @@
       ]
     },
     {
+      "en": "Richer profile management after your profile is confirmed",
+      "uses": 1,
+      "examples": [
+        "membership-pricing/index.html"
+      ]
+    },
+    {
       "en": "Ride Franklin Transit",
       "uses": 1,
       "examples": [
@@ -28032,7 +28032,7 @@
       ]
     },
     {
-      "en": "Secure member accounts will require limited identity, session, profile-authority, subscription and support information. Payment card details are expected to be processed by Stripe rather than stored directly by Franklin Navigator. Account and billing features are used only for authenticated membership activity. Payment card details are processed by Stripe rather than stored directly by Franklin Navigator.",
+      "en": "Secure member accounts use only the limited information needed to sign in, confirm which profile you manage, maintain your membership and provide support. Payment card details are processed by Stripe rather than stored directly by Franklin Navigator. Account and billing features are used only for signed-in membership activity.",
       "uses": 1,
       "examples": [
         "privacy/index.html"

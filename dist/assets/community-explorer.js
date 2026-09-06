@@ -63,6 +63,7 @@
   const selectedCount = q('[data-explorer-selected-count]');
   const buildButton = q('[data-explorer-build]');
   const clearButton = q('[data-explorer-clear]');
+  const shortlist = root.querySelector('.explorer-shortlist');
   const output = q('[data-explorer-output]');
   const copyButton = q('[data-explorer-copy]');
   const downloadButton = q('[data-explorer-download]');
@@ -107,6 +108,7 @@
 
   const updateSelection = () => {
     selectedCount.textContent = text.selected(selected.size);
+    if (shortlist) shortlist.hidden = selected.size === 0;
     buildButton.disabled = selected.size === 0;
     clearButton.disabled = selected.size === 0;
     for (const checkbox of root.querySelectorAll('[data-explorer-select]')) checkbox.checked = selected.has(checkbox.value);

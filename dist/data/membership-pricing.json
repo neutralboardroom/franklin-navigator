@@ -1,6 +1,6 @@
 {
   "community": "FRANKLIN_TN",
-  "coordinationCurrentness": "SCCC36.0_UEC1.34",
+  "coordinationCurrentness": "SCCC37.0_UEC1.35",
   "currency": "USD",
   "existingPaidMembershipActive": true,
   "factualCorrectionsFree": true,
@@ -36,7 +36,7 @@
   "preCheckoutPrimaryAction": "START_MEMBERSHIP_FLOW_CHECKOUT_FAILS_CLOSED_UNTIL_ACCEPTED",
   "publicCheckoutOpen": false,
   "publicFoundingDiscountActive": false,
-  "release": "FR-NAV1.14.0-CANDIDATE-R39",
+  "release": "FR-NAV1.15.0-CANDIDATE-R40",
   "schemaVersion": "franklin.public-membership-pricing.v7.currentness.v1",
   "status": "EXACT_PRICES_PUBLISHED_EXISTING_MEMBER_ACTIVE_NEW_CHECKOUT_CLOSED"
 }
