@@ -1,5 +1,7 @@
-name: Verify Franklin R29 V6 public release
+name: Verify Franklin qualified public release
 on: [push]
+permissions:
+  contents: read
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -7,7 +9,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-      - run: node --check dist/assets/r28-community.js
-      - run: node --check dist/assets/r27-home.js
-      - run: node scripts/verify-r29-v6-public.mjs
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check all public JavaScript syntax
+        run: find dist/assets -name '*.js' -type f -print0 | xargs -0 -n1 node --check
+      - name: Execute verifier for the actual qualified release
+        run: |
+          RELEASE=$(python -c "import json; print(json.load(open('dist/FRANKLIN_BUILD_MANIFEST.json'))['release'])")
+          case "$RELEASE" in
+            FR-NAV1.4.0-CANDIDATE-R29) node scripts/verify-r29-v6-public.mjs ;;
+            FR-NAV1.15.0-CANDIDATE-R40) python deploy/recover_exact_r40.py --verify-only ;;
+            *) echo "No qualified current verifier for $RELEASE"; exit 1 ;;
+          esac
