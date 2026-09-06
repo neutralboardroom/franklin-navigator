@@ -1,6 +1,7 @@
 {
   "result": "PASS",
   "environment": "ISOLATED_POSTGRES",
+  "startCommand": "npm start",
   "startupReady": true,
   "commerceEnabled": false,
   "checkoutSafetyVersion": "FRANKLIN_CHECKOUT_SAFETY_1",
