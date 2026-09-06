@@ -29,10 +29,12 @@ jobs:
         run: |
           python3 - <<'PY'
           import pathlib, hashlib, json
-          files = sorted(p for p in pathlib.Path('dist').rglob('*') if p.is_file())
+          # Match the sealed digest's full relative-path lexicographic ordering.
+          files = sorted((p for p in pathlib.Path('dist').rglob('*') if p.is_file()), key=lambda p: p.as_posix())
           records = ''.join(f'{p.as_posix()}\0{p.stat().st_size}\0{hashlib.sha256(p.read_bytes()).hexdigest()}\n' for p in files)
           assert len(files) == 19481
-          assert hashlib.sha256(records.encode()).hexdigest() == 'f18dfb9b29c5d9b912870dab212a6b438c7b79a4202bd11b7317b4e511775f4b'
+          actual = hashlib.sha256(records.encode()).hexdigest()
+          assert actual == 'f18dfb9b29c5d9b912870dab212a6b438c7b79a4202bd11b7317b4e511775f4b', actual
           manifest = json.loads(pathlib.Path('dist/FRANKLIN_BUILD_MANIFEST.json').read_text())
           assert manifest['release'] == 'FR-NAV1.15.0-CANDIDATE-R40'
           assert manifest['commerce']['publicCheckoutOpen'] is False
