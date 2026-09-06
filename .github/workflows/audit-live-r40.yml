@@ -1,0 +1,42 @@
+name: Observe live Franklin R40 routes and membership readiness
+
+on:
+  push:
+    branches: [franklin-r40-exact-launch-recovery-20260907]
+    paths:
+      - 'deploy/audit_live_r40.py'
+      - '.github/workflows/audit-live-r40.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  observe-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify the exact saved R40 comparison snapshot
+        run: python deploy/recover_exact_r40.py --verify-only
+      - name: Read live pages and public readiness without account or money operations
+        run: python deploy/audit_live_r40.py
+      - name: Preserve actual observations, not commercial acceptance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-r40-live-read-only-observations
+          path: launch-audit/
+          retention-days: 14
+      - name: Check observed public route integrity
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path('launch-audit/LIVE_R40_READ_ONLY_AUDIT.json').read_text())
+          assert r['routeSummary']['failed'] == 0, r['routeSummary']
+          assert r['routeSummary']['checked'] > 200, r['routeSummary']
+          print('Observed public route integrity PASS. Paid-member fulfillment and independent acceptance are separate and not claimed.')
+          PY
