@@ -25,9 +25,7 @@ jobs:
           POSTGRES_PASSWORD: isolated_test_only
           POSTGRES_DB: franklin_test
         ports: ['5432:5432']
-        options: >-
-          --health-cmd 'pg_isready -U fixture -d franklin_test' --health-interval 5s
-          --health-timeout 5s --health-retries 10
+        options: --health-cmd "pg_isready -U fixture -d franklin_test" --health-interval 5s --health-timeout 5s --health-retries 10
     env:
       TEST_DATABASE_URL: postgres://fixture:isolated_test_only@127.0.0.1:5432/franklin_test
     steps:
@@ -69,7 +67,7 @@ jobs:
               assert state['ok'] and state['database']
               assert state['checkoutSafetyVersion']=='FRANKLIN_CHECKOUT_SAFETY_1'
               assert state['commerceEnabled'] is False and state['liveCheckoutEnabled'] is False
-              request=urllib.request.Request('http://127.0.0.1:10999/api/membership/start',data=b'{}',headers={'Content-Type':'application/json'},method='POST')
+              request=urllib.request.Request('http://127.0.0.1:10999/api/membership/start',data=b'{}',headers={'Content-Type':'application/json','Origin':'https://franklinnavigator.com'},method='POST')
               try: urllib.request.urlopen(request); raise AssertionError('Closed checkout unexpectedly allowed')
               except urllib.error.HTTPError as e:
                   assert e.code==423
@@ -92,18 +90,8 @@ jobs:
       - name: Export complete corrected runtime source
         if: success()
         run: |
-          python3 - <<'PY'
-          import pathlib,subprocess,zipfile,hashlib,json
-          names=set(subprocess.check_output(['git','ls-files'],text=True).splitlines())
-          names.update(str(p) for p in pathlib.Path('evidence').glob('CHECKOUT_SAFETY_*') if p.suffix!='.log')
-          names=sorted(n for n in names if not n.startswith(('artifacts/','.git/','node_modules/')) and n!='.env')
-          with zipfile.ZipFile('FRANKLIN_CHECKOUT_SAFETY_HF1.zip','w',zipfile.ZIP_DEFLATED) as z:
-              for n in names:
-                  p=pathlib.Path(n)
-                  if p.is_file(): z.write(p,n)
-          p=pathlib.Path('FRANKLIN_CHECKOUT_SAFETY_HF1.zip')
-          print(json.dumps({'file':p.name,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}))
-          PY
+          git archive --format=zip --output=FRANKLIN_CHECKOUT_SAFETY_HF1.zip HEAD
+          sha256sum FRANKLIN_CHECKOUT_SAFETY_HF1.zip
       - name: Preserve qualification evidence
         if: always()
         uses: actions/upload-artifact@v4
