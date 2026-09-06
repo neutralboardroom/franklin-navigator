@@ -1,5 +1,5 @@
 {
-  "count": 4631,
+  "count": 4636,
   "schemaVersion": "franklin.r37.en-es-public-strings.v1",
   "sourceCatalogSha256": "404f52a790fcb91fe8424d68023554ab2268d011911e2d115a6a3c2dcf4f3c10",
   "sourceCount": 4459,
@@ -4634,8 +4634,14 @@
     "Source-backed options — recheck before you act": "Opciones respaldadas por fuentes — vuelva a comprobar antes de actuar",
     "Details change by season. Use the official or first-party link before you register or participate.": "Los detalles cambian según la temporada. Use el enlace oficial o de primera fuente antes de inscribirse o participar.",
     "Public source details and contact options.": "Detalles de fuentes públicas y opciones de contacto.",
-    "Membership sign-in is available.": "El inicio de sesión de membresía está disponible."
+    "Membership sign-in is available.": "El inicio de sesión de membresía está disponible.",
+    "We could not confirm this purchase. Check your membership status before trying again. Do not pay again while we check.": "No pudimos confirmar esta compra. Consulta el estado de tu membresía antes de intentarlo de nuevo. No vuelvas a pagar mientras la revisamos.",
+    "We could not complete this request. Please check your account or contact Franklin Navigator support.": "No pudimos completar esta solicitud. Revisa tu cuenta o contacta al equipo de ayuda de Franklin Navigator.",
+    "Check membership status": "Consultar el estado de la membresía",
+    "Resume the same checkout": "Continuar con la misma compra",
+    "Resuming continues the same purchase. Do not start a different payment while its status is uncertain.": "Al continuar, retomas la misma compra. No inicies otro pago mientras no se haya confirmado su estado."
   },
   "release": "FR-NAV1.15.0-CANDIDATE-R40",
-  "r40CustomerLanguageRemediation": true
+  "r40CustomerLanguageRemediation": true,
+  "r40_1PaymentSafetyStrings": 5
 }

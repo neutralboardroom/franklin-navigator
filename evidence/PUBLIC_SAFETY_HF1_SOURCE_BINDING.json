@@ -1,0 +1,44 @@
+{
+  "release": "FR-NAV1.15.1-CANDIDATE-R40.1",
+  "baseStaticCommit": "9d90aadcae37c132b5ea6204cbda81273609089f",
+  "baseSourceArchiveSha256": "8cbadeeb187386e2825098fe28c395035e5ef00fe1e9be6a2181657be14cfefc",
+  "publicTreeSha256": "a9e302d50efa08ef9e75da15ece1cb3046476ac7d6e9d8d30e740d69282daede",
+  "publicFiles": 19481,
+  "profiles": 19103,
+  "changedFiles": [
+    {
+      "path": "PRODUCTION_RELEASE.json",
+      "beforeSha256": "8404f1a7877faa10078f88b3e7961dcfcb2785f573179e71626bc8f55d245f43",
+      "afterSha256": "09836e0aa1c02279bd6e3f45e29627b2459be2ab5d2fc4cbff8b41c68edc03de",
+      "bytes": 4742
+    },
+    {
+      "path": "dist/FRANKLIN_BUILD_MANIFEST.json",
+      "beforeSha256": "f9f6b6919028ef929c8785305faa97ce89814a3315913afa4398ea6871cbdb69",
+      "afterSha256": "24d2fbaaa24010c4fd4f2aa6a8e25ca01ef00ed8858d2dd28ca17812905fe011",
+      "bytes": 5378
+    },
+    {
+      "path": "dist/assets/app.js",
+      "beforeSha256": "62b4b1f9b9853dc90fb57bf928cbdbe830a758b03533bf454ca1e5b080e346b6",
+      "afterSha256": "52b9738fcc3fed719cc15ac1f4893fe5923d7c0fa40e0b84ff5107e5ed5c326b",
+      "bytes": 41861
+    },
+    {
+      "path": "dist/assets/membership-live.js",
+      "beforeSha256": "881e8ab8693fe322492e794e1af316078228a82a91c1fd9654a3c0dcba3a7c9c",
+      "afterSha256": "229c982f55e4ef20e9c616fc0497f2abf0d88ca8d46b92e33fc9446a8188c9b4",
+      "bytes": 15348
+    },
+    {
+      "path": "dist/data/r37-es-public-strings.json",
+      "beforeSha256": "6a092b630cc5609967037a4f1b14df0166bff546cd7210e7ebb3638a08b90e9c",
+      "afterSha256": "3b4f3779447c4a56fdd3d53365aa74d1246ef6aee5db459eff58cfcbb9671bc2",
+      "bytes": 627895
+    }
+  ],
+  "qualified": true,
+  "publicCheckoutOpen": false,
+  "sourceOnly": true,
+  "independentSreSccAcceptance": "NOT_CLAIMED"
+}

@@ -1,0 +1,237 @@
+{
+  "result": "PASS",
+  "assertionGroups": 40,
+  "groups": [
+    {
+      "test": "route_and_customer_destination",
+      "route": "/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/claim-profile/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/membership-start/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/membership-pricing/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/membership-enroll/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/membership-status/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/member-first-value/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/member-support/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/profile-request/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/profile-studio/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/member-growth-workspace/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/business-dashboard/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/member-profile-preview/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/my-franklin/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/membership-enrollment/",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/claim-profile/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/membership-start/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/membership-pricing/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/membership-enroll/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/membership-status/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/member-first-value/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/member-support/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/profile-request/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/profile-studio/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/member-growth-workspace/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/business-dashboard/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/member-profile-preview/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/my-franklin/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "route_and_customer_destination",
+      "route": "/membership-enrollment/",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "unknown_network_outcome_no_false_reassurance",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "resume_retains_same_profile_and_plan",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "reload_preserves_unknown_purchase_hold",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "closed_commerce_keeps_status_and_support_no_purchase",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "confirmed_active_member_clears_pending_without_payment",
+      "language": "en",
+      "result": "PASS"
+    },
+    {
+      "test": "unknown_network_outcome_no_false_reassurance",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "resume_retains_same_profile_and_plan",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "reload_preserves_unknown_purchase_hold",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "closed_commerce_keeps_status_and_support_no_purchase",
+      "language": "es",
+      "result": "PASS"
+    },
+    {
+      "test": "confirmed_active_member_clears_pending_without_payment",
+      "language": "es",
+      "result": "PASS"
+    }
+  ],
+  "provider": "MOCKED_NO_REAL_API_OR_ACCOUNT_MUTATIONS"
+}

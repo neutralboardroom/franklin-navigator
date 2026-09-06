@@ -70,7 +70,7 @@
     "visibleLanguageLabelRemoved": true,
     "workOrder": "WO-20260906-SCC-LOCAL-FRANKLIN-R39-LIVE-PUBLIC-LANGUAGE-AND-READINESS-CORRECTION-056"
   },
-  "release": "FR-NAV1.15.0-CANDIDATE-R40",
+  "release": "FR-NAV1.15.1-CANDIDATE-R40.1",
   "releaseStatus": "SOURCE_QUALIFIED_DEPLOYMENT_AUTHORIZED_PENDING_EXECUTION",
   "schemaVersion": "franklin.build-manifest.r40.v1",
   "smarterJusticeDonorUse": "SMARTER_JUSTICE_DONOR_NOT_USED",
@@ -120,6 +120,16 @@
       "tests": "139/139 PASS"
     }
   },
-  "version": "1.12.0",
-  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN"
+  "version": "1.15.1",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "patchRevision": "R40.1",
+  "predecessorRelease": "FR-NAV1.15.0-CANDIDATE-R40",
+  "hotfixQualification": {
+    "scope": "CLAIM_PAGE_AND_UNKNOWN_PURCHASE_EN_ES",
+    "browserGroups": 40,
+    "profilePagesPreserved": 19103,
+    "paidLaunchAccepted": false,
+    "deploymentPerformed": false,
+    "inheritedMetrics": "FROZEN_R40_PREDECESSOR_NOT_NEW_MEASUREMENTS"
+  }
 }

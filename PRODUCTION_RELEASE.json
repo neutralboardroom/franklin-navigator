@@ -44,7 +44,7 @@
     "r40CustomerLanguageCorrective": true
   },
   "qualifiedAtUtc": "2026-09-06T14:12:29Z",
-  "release": "FR-NAV1.15.0-CANDIDATE-R40",
+  "release": "FR-NAV1.15.1-CANDIDATE-R40.1",
   "releaseEngineering": {
     "acceptedAnchor": "FR-NAV1.9.0-CANDIDATE-R34",
     "liveRollbackGovernedExternally": true,
@@ -101,5 +101,15 @@
       "tests": "139/139 PASS"
     }
   },
-  "version": "1.15.0"
+  "version": "1.15.1",
+  "patchRevision": "R40.1",
+  "predecessorRelease": "FR-NAV1.15.0-CANDIDATE-R40",
+  "hotfixQualification": {
+    "scope": "CLAIM_PAGE_AND_UNKNOWN_PURCHASE_EN_ES",
+    "browserGroups": 40,
+    "profilePagesPreserved": 19103,
+    "paidLaunchAccepted": false,
+    "deploymentPerformed": false,
+    "inheritedMetrics": "FROZEN_R40_PREDECESSOR_NOT_NEW_MEASUREMENTS"
+  }
 }
