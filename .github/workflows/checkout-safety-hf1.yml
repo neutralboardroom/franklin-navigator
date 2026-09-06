@@ -6,7 +6,7 @@ on:
       - 'lib/purchase-reservations.js'
       - 'schema/002_purchase_reservations.sql'
       - 'scripts/apply-checkout-safety-hf1.py'
-      - 'test/purchase-reservations.integration.cjs'
+      - 'acceptance/purchase-reservations.integration.cjs'
       - '.github/workflows/checkout-safety-hf1.yml'
 permissions:
   contents: write
@@ -26,7 +26,7 @@ jobs:
           POSTGRES_DB: franklin_test
         ports: ['5432:5432']
         options: >-
-          --health-cmd pg_isready --health-interval 5s
+          --health-cmd 'pg_isready -U fixture -d franklin_test' --health-interval 5s
           --health-timeout 5s --health-retries 10
     env:
       TEST_DATABASE_URL: postgres://fixture:isolated_test_only@127.0.0.1:5432/franklin_test
@@ -47,7 +47,7 @@ jobs:
       - name: Inherited runtime regression tests
         run: npm test
       - name: Real Postgres concurrency and actual customer router integration
-        run: node test/purchase-reservations.integration.cjs
+        run: node acceptance/purchase-reservations.integration.cjs
       - name: Full startup and closed-commerce HTTP smoke
         run: |
           python3 - <<'PY'
@@ -62,8 +62,7 @@ jobs:
           try:
               for attempt in range(30):
                   try:
-                      with urllib.request.urlopen('http://127.0.0.1:10999/ready',timeout=2) as r:
-                          state=json.load(r)
+                      with urllib.request.urlopen('http://127.0.0.1:10999/ready',timeout=2) as r: state=json.load(r)
                       break
                   except Exception: time.sleep(1)
               else: raise RuntimeError('Startup did not become ready')
