@@ -1,0 +1,9 @@
+{
+  "commerceOpenedByBuild": false,
+  "component": "runtime",
+  "parent": "808709426ebc65efed7b74920e89c5fd49b60483",
+  "publicDistSha256": "d472fdbb97734a6c28cbd7e4e9acd9eb1446ea559371e2b58b4c272ca208c2b2",
+  "release": "FR-NAV1.15.0-HF2.1-CANDIDATE",
+  "sourceArchiveSha256": "19faa14046ca8e9148970d2ac7df5ca04dfbc192ef06d61452a6c09569faa45c",
+  "sourceState": "TESTED_SOURCE_NOT_FINAL_COMMERCIAL_ACCEPTANCE"
+}
