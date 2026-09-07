@@ -48,30 +48,42 @@ jobs:
           python - <<'PY'
           import pathlib,json,lzma,hashlib,subprocess
           base=pathlib.Path('candidate').resolve()
+          sha=lambda b:hashlib.sha256(b).hexdigest()
           raw=b''.join((pathlib.Path('transport/hf2-transfer')/f'source.part{i:02d}').read_bytes() for i in range(1,4))
-          assert len(raw)==22644
-          assert hashlib.sha256(raw).hexdigest()=='a43b30c946ba37ecb9d4aff1cb1284a9dd15d82c7851731a85db22846fb215fd'
+          assert len(raw)==22644 and sha(raw)=='a43b30c946ba37ecb9d4aff1cb1284a9dd15d82c7851731a85db22846fb215fd'
           d=json.loads(lzma.decompress(raw))
           assert d['schema']=='local.hf2.strict-delta.v1'
           assert d['publicBase']=='e0ea8625343f6ec0e2eb2f0e55ec6457ec762bf1'
           assert d['runtimeBase']=='808709426ebc65efed7b74920e89c5fd49b60483'
-          for name,o in d['files'].items():
-              p=(base/name).resolve()
-              assert p.is_relative_to(base) and not p.is_symlink()
-              if 'baseSha256' in o:
-                  assert hashlib.sha256(p.read_bytes()).hexdigest()==o['baseSha256'],name
-                  text=p.read_text()
-                  for start,end,replacement in reversed(o['replacements']):
-                      assert 0<=start<=end<=len(text)
-                      text=text[:start]+replacement+text[end:]
-              else:
-                  assert not p.exists(),name
-                  text=o['text']
-              assert hashlib.sha256(text.encode()).hexdigest()==o['sha256'],name
-              p.parent.mkdir(parents=True,exist_ok=True)
-              p.write_text(text)
+          def apply(files):
+              for name,o in files.items():
+                  p=(base/name).resolve()
+                  assert p.is_relative_to(base) and not p.is_symlink()
+                  if 'baseSha256' in o:
+                      assert sha(p.read_bytes())==o['baseSha256'],name
+                      text=p.read_text()
+                      for start,end,replacement in reversed(o['replacements']):
+                          assert 0<=start<=end<=len(text)
+                          text=text[:start]+replacement+text[end:]
+                  else:
+                      assert not p.exists(),name
+                      text=o['text']
+                  assert sha(text.encode())==o['sha256'],name
+                  p.parent.mkdir(parents=True,exist_ok=True)
+                  p.write_text(text)
+          apply(d['files'])
           subprocess.run(['python',str(base/'validation/apply_hf2_transport.py')],check=True)
-          (base/'evidence/CI_SOURCE_RECONSTRUCTION.json').write_text(json.dumps({'sourceTransportSha256':hashlib.sha256(raw).hexdigest(),'result':'PASS_EXACT_TARGET_HASHES','productionMutations':0},indent=2))
+          refinement=pathlib.Path('transport/hf2-transfer/ui-refinement.json').read_bytes()
+          u=json.loads(refinement)
+          assert u['schema']=='local.hf2.ui-refinement.v1'
+          assert set(u['files'])=={'public/dist/assets/member-profile-live.js','validation/browser_member.py'}
+          apply(u['files'])
+          dist=base/'public/dist';h=hashlib.sha256()
+          for p in sorted(dist.rglob('*')):
+              if p.is_file(): h.update((p.relative_to(dist).as_posix()+'\0'+str(p.stat().st_size)+'\0'+sha(p.read_bytes())+'\n').encode())
+          assert h.hexdigest()==u['publicDistSha256']
+          target=base/'validation/HF2_SOURCE_TARGETS.json';t=json.loads(target.read_text());t['publicDistSha256']=h.hexdigest();t['files'].update({n:o['sha256'] for n,o in u['files'].items()});target.write_text(json.dumps(t,indent=2,sort_keys=True)+'\n')
+          (base/'evidence/CI_SOURCE_RECONSTRUCTION.json').write_text(json.dumps({'sourceTransportSha256':sha(raw),'uiRefinementSha256':sha(refinement),'publicDistSha256':h.hexdigest(),'result':'PASS_EXACT_TARGET_HASHES','productionMutations':0},indent=2))
           PY
       - name: Install locked runtime dependencies
         working-directory: candidate/runtime
