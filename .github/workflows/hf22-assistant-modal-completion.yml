@@ -1,0 +1,51 @@
+name: HF22 complete Assistant modal and destinations
+on:
+  push:
+    branches: [local-franklin-live-closeout-20260907]
+    paths: [.github/workflows/hf22-assistant-modal-completion.yml, hf22-modal-refinement.b64]
+permissions:
+  contents: write
+jobs:
+  assistant:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {path: transport, persist-credentials: false}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {path: candidate/public, ref: 65fb0dbccacc923f55c8383e2c563aed0cf4959d, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.13'}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: {node-version: '22'}
+      - run: python -m pip install playwright==1.57.0 PyYAML==6.0.2 && python -m playwright install --with-deps chromium
+      - name: Reconstruct, exercise and prepare exact public source
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          python - <<'PY'
+          import pathlib,json,hashlib,base64,zlib,yaml,subprocess,os
+          cfg=yaml.safe_load(pathlib.Path('transport/.github/workflows/hf22-assistant-qualification.yml').read_text())
+          steps=cfg['jobs']['assistant']['steps']
+          reconstruct=next(s['run'] for s in steps if s.get('name')=='Reconstruct exact verified Local repair delta')
+          subprocess.run(['bash','-euo','pipefail','-c',reconstruct],check=True)
+          raw=pathlib.Path('transport/hf22-modal-refinement.b64').read_text().strip()
+          assert hashlib.sha256(raw.encode()).hexdigest()=='b4a9dee673d2269dff49ec7700a9c2e5bd112281199086ddb2144a545bcccd03'
+          data=json.loads(zlib.decompress(base64.b64decode(raw)));assert data['schema']=='franklin.hf22.modal-refinement.v1'
+          root=pathlib.Path('candidate').resolve()
+          for name,o in data['files'].items():
+              p=(root/name).resolve();assert p.is_relative_to(root) and not p.is_symlink()
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==o['base'],name
+              text=p.read_text()
+              for a,b,repl in reversed(o['replacements']):text=text[:a]+repl+text[b:]
+              assert hashlib.sha256(text.encode()).hexdigest()==o['sha256'],name
+              p.write_text(text)
+          (root/'evidence/ASSISTANT_MODAL_REFINEMENT.json').write_text(json.dumps({'result':'PASS','files':{n:o['sha256'] for n,o in data['files'].items()},'productionMutations':0},indent=2))
+          subprocess.run(['node','candidate/validation/hf22/assistant-rank.cjs'],stdout=open('candidate/evidence/ASSISTANT_RANK.json','w'),check=True)
+          subprocess.run(['python','candidate/validation/hf22/browser_assistant.py'],check=True)
+          prepare=next(s['run'] for s in steps if s.get('name')=='Prepare exact public component without promotion')
+          prepare=prepare.replace("root/'dist/assets/navigator-bot.js']","root/'dist/assets/navigator-bot.js',root/'dist/assets/r27-home.js']")
+          subprocess.run(['bash','-euo','pipefail','-c',prepare],check=True,env=os.environ)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with: {name: hf22-assistant-modal-qualified, path: candidate/evidence/, retention-days: 14, if-no-files-found: error}
