@@ -1,0 +1,54 @@
+/* Scope all new presentation to native discovery and device follow-through surfaces. */
+[data-franklin-discovery] { min-width:0; }
+[data-franklin-discovery] [hidden], [data-my-franklin] [hidden] { display:none!important; }
+[data-franklin-discovery] :is(button,input,select),[data-my-franklin] :is(button,input,select) { min-height:44px; }
+[data-franklin-discovery] :focus-visible,[data-my-franklin] :focus-visible,[data-profile-detail] :focus-visible { outline:3px solid #09645e;outline-offset:3px; }
+.discovery-share { padding:.65rem 0 1rem; }
+.discovery-share p { max-width:75ch;font-size:.95rem;margin:.3rem 0 .65rem; }
+.discovery-share-output { display:block;width:100%;max-width:100%;margin-top:.65rem;box-sizing:border-box; }
+[data-dir-results] { scroll-margin-top:7rem; }
+[data-dir-results] .result-title { text-decoration:none; }
+[data-dir-results] .result-title h3 { color:#163e3c;line-height:1.35; }
+[data-dir-results] .result-title:hover { text-decoration:underline; }
+[data-dir-results] .result-facts { display:flex;gap:.5rem 1rem;flex-wrap:wrap; }
+[data-dir-results] .result-facts span:before { content:'✓ '; }
+[data-dir-results] .result-actions { display:flex;flex-wrap:wrap;gap:.5rem; }
+[data-dir-results] :is(h3,p,a,button) { overflow-wrap:anywhere; }
+.discovery-selected-list { display:grid;gap:.6rem;padding:0;list-style:none; }
+.discovery-selected-list li { display:flex;justify-content:space-between;align-items:center;gap:1rem;border-bottom:1px solid #dce5e4;padding:.4rem 0; }
+.discovery-selected-list li>span { overflow-wrap:anywhere; }
+.compare-table-wrap { max-width:100%;overflow-x:auto;margin:1.25rem 0; }
+.compare-table { width:100%;min-width:560px;border-collapse:collapse;table-layout:fixed;text-align:left; }
+.compare-table caption { text-align:left;font-size:1.1rem;font-weight:700;margin-bottom:.8rem; }
+.compare-table th,.compare-table td { padding:.85rem;vertical-align:top;border-bottom:1px solid #dce5e4;overflow-wrap:anywhere; }
+.compare-table th:first-child { width:7rem; }
+.compare-table thead th { background:#edf5f3; }
+.discovery-contact-prep { max-width:80ch; }
+.discovery-contact-prep li { margin:.7rem 0; }
+.device-reset-panel { margin-top:1rem; }
+.device-reset-panel button { margin:.3rem .5rem .3rem 0; }
+[data-device-recovery] { margin-bottom:1rem; }
+[data-device-recovery] button { white-space:normal; }
+[data-saved-profiles] :is(h3,p,a),[data-franklin-reminders] :is(h3,p,a) { overflow-wrap:anywhere; }
+[data-dir-results]> .empty-state { grid-column:1/-1; }
+@media(max-width:720px) {
+ [data-franklin-discovery] .r22-directory-toolbar { display:grid;grid-template-columns:1fr; }
+ [data-franklin-discovery] .r22-directory-meta { align-items:flex-start;flex-direction:column;gap:.6rem; }
+ [data-franklin-discovery] .r22-directory-grid { grid-template-columns:1fr; }
+ [data-franklin-discovery] .r22-directory-toolbar :is(input,select) { width:100%;min-width:0;box-sizing:border-box; }
+ [data-franklin-discovery] .r22-compare-tray { padding:1rem; }
+ [data-franklin-discovery] .r22-directory-pager { gap:.5rem;flex-wrap:wrap; }
+ [data-my-franklin] .r22-dashboard-grid { grid-template-columns:1fr; }
+ [data-my-franklin] .r22-reminder-form { display:grid;grid-template-columns:1fr; }
+ [data-my-franklin] input { min-width:0;width:100%;box-sizing:border-box; }
+ [data-my-franklin] input[type=checkbox] { width:auto; }
+}
+@media print {
+ body[data-franklin-print=comparison] :is(header,footer,nav,.r22-hero,.r22-directory-toolbar,.r22-fact-filters,.r22-directory-meta,.discovery-share,[data-dir-results],.r22-directory-pager,[data-dir-status],[data-dir-retry]) { display:none!important; }
+ body[data-franklin-print=comparison] .r22-compare-tray { display:block!important;border:0;box-shadow:none;padding:0; }
+ body[data-franklin-print=comparison] :is(button,.discovery-selected-list,.discovery-contact-prep .actions) { display:none!important; }
+ body[data-franklin-print=comparison] .compare-table-wrap { overflow:visible; }
+ body[data-franklin-print=comparison] .compare-table { min-width:0;font-size:10pt; }
+ body[data-franklin-print=comparison] .wrap { max-width:none;width:auto; }
+ body[data-franklin-print=comparison] a[href^=https]:after { content:' (' attr(href) ')';font-size:9pt;overflow-wrap:anywhere; }
+}

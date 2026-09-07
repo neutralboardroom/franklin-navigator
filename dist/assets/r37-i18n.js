@@ -30,7 +30,7 @@
     return translations[n]??special(n);
   }
   function applyText(node){
-    if(!node?.parentElement||SKIP.has(node.parentElement.tagName))return;
+    if(!node?.parentElement||SKIP.has(node.parentElement.tagName)||node.parentElement.closest('[data-franklin-native-locale]'))return;
     if(!textOriginal.has(node))textOriginal.set(node,node.nodeValue);
     const en=textOriginal.get(node);
     const t=language==='en'?en:(translated(en)??en);
@@ -40,6 +40,7 @@
   }
   function attrMap(el){let m=attrOriginal.get(el);if(!m){m=new Map();attrOriginal.set(el,m)}return m}
   function applyAttr(el,name){
+    if(el.closest?.('[data-franklin-native-locale]'))return;
     const value=el.getAttribute(name);if(value==null)return;const map=attrMap(el);if(!map.has(name))map.set(name,value);const en=map.get(name);
     if(language==='en'){if(el.getAttribute(name)!==en)el.setAttribute(name,en);return}
     const t=translated(en);if(t!=null)el.setAttribute(name,t);
@@ -48,18 +49,19 @@
   function walk(root=document){
     processing=true;
     try{
+      if(root.nodeType===Node.ELEMENT_NODE&&root.closest('[data-franklin-native-locale]'))return;
       if(root.nodeType===Node.TEXT_NODE){applyText(root);return}
       if(root.nodeType!==Node.ELEMENT_NODE&&root.nodeType!==Node.DOCUMENT_NODE&&root.nodeType!==Node.DOCUMENT_FRAGMENT_NODE)return;
       if(root.nodeType===Node.ELEMENT_NODE){for(const a of ['title','aria-label','placeholder','alt'])applyAttr(root,a);applyMeta(root)}
-      const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT,{acceptNode(n){if(n.nodeType===Node.ELEMENT_NODE&&SKIP.has(n.tagName))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT}});
+      const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT,{acceptNode(n){if(n.nodeType===Node.ELEMENT_NODE&&(SKIP.has(n.tagName)||n.hasAttribute('data-franklin-native-locale')))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT}});
       let n;while((n=walker.nextNode())){if(n.nodeType===Node.TEXT_NODE)applyText(n);else{for(const a of ['title','aria-label','placeholder','alt'])applyAttr(n,a);applyMeta(n)}}
       if(root===document||root===document.documentElement){document.documentElement.lang=language;document.title=language==='es'?(translated(document.title)||document.title):(attrOriginal.get(document.querySelector('title'))?.get('textContent')||document.title)}
     }finally{processing=false}
   }
   function setPressed(){document.querySelectorAll('[data-r37-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.r37Lang===language)))}
   function counterpart(lang){if(!document.body)return null;return lang==='es'?document.body.dataset.r37EsPath:document.body.dataset.r37EnPath}
-  function preserveSuffix(path){return path+location.search+location.hash}
-  function setLanguage(lang,{save=true,navigate=true}={}){language=lang==='es'?'es':'en';if(save){try{localStorage.setItem(STORAGE_KEY,language)}catch{}}const target=counterpart(language);if(navigate&&target&&target!==location.pathname){location.assign(preserveSuffix(target));return}document.documentElement.lang=language;setPressed();withObserverPaused(()=>{walk(document.body);applyHead()});window.dispatchEvent(new CustomEvent('franklinlanguagechange',{detail:{language}}))}
+  function preserveSuffix(path){const p=new URLSearchParams(location.search);if(p.has('lang'))p.set('lang',language);return path+(p.toString()?'?'+p:'')+location.hash}
+  function setLanguage(lang,{save=true,navigate=true}={}){language=lang==='es'?'es':'en';if(save){try{localStorage.setItem(STORAGE_KEY,language)}catch{}}const target=counterpart(language);if(navigate&&target&&target!==location.pathname){location.assign(preserveSuffix(target));return}if(save&&new URLSearchParams(location.search).has('lang')){try{history.replaceState(history.state,'',preserveSuffix(location.pathname))}catch{}}document.documentElement.lang=language;setPressed();withObserverPaused(()=>{walk(document.body);applyHead()});window.dispatchEvent(new CustomEvent('franklinlanguagechange',{detail:{language}}))}
   function applyHead(){
     const title=document.querySelector('title');if(title){if(!title.dataset.r37En)title.dataset.r37En=title.textContent;title.textContent=language==='es'?(translated(title.dataset.r37En)||title.dataset.r37En):title.dataset.r37En}
     document.querySelectorAll('meta[name="description"],meta[property="og:description"],meta[property="og:title"]').forEach(el=>applyAttr(el,'content'));
@@ -81,7 +83,7 @@
     bindControls();
     let saved=null;try{saved=localStorage.getItem(STORAGE_KEY)}catch{}
     const legacyEs=location.pathname==='/es/'||location.pathname.startsWith('/es/');
-    language=saved==='en'||saved==='es'?saved:(legacyEs?'es':'en');setPressed();
+    const explicit=new URLSearchParams(location.search).get('lang');language=explicit==='en'||explicit==='es'?explicit:(saved==='en'||saved==='es'?saved:(legacyEs?'es':'en'));document.documentElement.lang=language;setPressed();
     const route=counterpart(language);if(route&&route!==location.pathname){location.replace(preserveSuffix(route));return}
     try{await load();setLanguage(language,{save:false,navigate:false});observeBody()}
     catch{document.documentElement.lang=language;setPressed()}

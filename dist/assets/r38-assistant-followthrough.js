@@ -82,14 +82,17 @@
     // A specific service already supplies the safe comparison step; don't replace it with generic health.
     return rows.filter(x=>!(x.intent.id==='membership'&&rows[0]?.intent.id==='member-billing')).slice(0,3);
   };
-  const readPlans=()=>{try{const v=JSON.parse(localStorage.getItem(STORE)||'[]');return Array.isArray(v)?v.filter(p=>p&&p.schemaVersion==='franklin.r38.assistant-follow-through.v1').slice(0,MAX_PLANS):[]}catch{return []}};
-  const writePlans=plans=>{try{localStorage.setItem(STORE,JSON.stringify(plans.slice(0,MAX_PLANS)));return true}catch{return false}};
+  let storageIssue=false;
+  const validDate=value=>{if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))return '';const d=new Date(value+'T12:00:00Z');return Number.isFinite(d.getTime())&&d.toISOString().slice(0,10)===value&&+value.slice(0,4)>=1900&&+value.slice(0,4)<=9998?value:''};
+  const readPlans=()=>{storageIssue=false;try{const raw=localStorage.getItem(STORE)||'[]';if(raw.length>500000)throw Error('Unreadable');const v=JSON.parse(raw);if(!Array.isArray(v))throw Error('Unreadable');const seen=new Set();const rows=v.filter(p=>p&&p.schemaVersion==='franklin.r38.assistant-follow-through.v1'&&p.community==='FRANKLIN_TN'&&typeof p.id==='string'&&/^ap-[A-Za-z0-9-]{1,100}$/.test(p.id)&&Array.isArray(p.steps)&&!seen.has(p.id)&&seen.add(p.id)).slice(0,MAX_PLANS).map(p=>({schemaVersion:'franklin.r38.assistant-follow-through.v1',release:RELEASE,community:'FRANKLIN_TN',id:p.id,savedAt:typeof p.savedAt==='string'&&p.savedAt.length<=40&&Number.isFinite(Date.parse(p.savedAt))?p.savedAt:'',privacy:{rawQuestionStored:false,freeNarrativeStored:false,networkSubmission:false},steps:cleanPlan(p).steps.map(s=>({intentId:s.intent.id,href:s.href})),followUpDate:validDate(p.followUpDate),completedAt:typeof p.completedAt==='string'&&p.completedAt.length<=40&&Number.isFinite(Date.parse(p.completedAt))?p.completedAt:null})).filter(p=>p.steps.length);storageIssue=rows.length!==v.length;return rows}catch{storageIssue=true;return []}};
+  const writePlans=plans=>{if(storageIssue)return false;try{const text=JSON.stringify(plans.slice(0,MAX_PLANS));localStorage.setItem(STORE,text);return localStorage.getItem(STORE)===text}catch{return false}};
   const intentById=id=>INTENTS.find(x=>x.id===id);
   const canonicalUrl=href=>safeInternal(href)?`https://franklinnavigator.com${href}`:'';
   const cleanPlan=plan=>({
-    followUpDate:/^\d{4}-\d{2}-\d{2}$/.test(String(plan?.followUpDate||''))?String(plan.followUpDate):'',
-    steps:(Array.isArray(plan?.steps)?plan.steps:[]).map(step=>{const intent=intentById(step?.intentId);const href=safeInternal(step?.href)?step.href:'';return intent&&href?{intent,href}:null}).filter(Boolean).slice(0,3)
+    followUpDate:validDate(plan?.followUpDate),
+    steps:(Array.isArray(plan?.steps)?plan.steps:[]).map(step=>{const intent=intentById(step?.intentId);const href=safeInternal(step?.href)&&intent?.links.some(link=>link[2]===step.href)?step.href:'';return intent&&href?{intent,href}:null}).filter(Boolean).slice(0,3)
   });
+  const storageMessage=root=>{const p=document.createElement('p');p.setAttribute('role','status');p.dataset.franklinNativeLocale='';p.textContent=tx('Some saved plan data could not be read or changed. Nothing has been deleted. Keep any readable plans before resetting My Franklin.','No se pudieron leer o cambiar algunos datos de planes guardados. No se ha eliminado nada. Conserve los planes legibles antes de restablecer Mi Franklin.');root.append(p)};
   const portableLines=(plan,language=lang())=>{
     const es=language==='es',clean=cleanPlan(plan),lines=[es?'Franklin Navigator — próximos pasos':'Franklin Navigator — next steps'];
     if(clean.followUpDate)lines.push(es?`Seguimiento: ${clean.followUpDate}`:`Follow up: ${clean.followUpDate}`);
@@ -101,8 +104,8 @@
   const planText=(plan,language=lang())=>portableLines(plan,language).join('\n');
   const icsEscape=s=>String(s||'').replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
   const calendarText=(plan,language=lang())=>{
-    const clean=cleanPlan(plan);if(!clean.followUpDate)return'';const es=language==='es',date=clean.followUpDate.replace(/-/g,''),desc=portableLines(plan,language).slice(2).join('\n');
-    return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Franklin Navigator//Portable Follow-Through//EN','CALSCALE:GREGORIAN','BEGIN:VEVENT',`DTSTART;VALUE=DATE:${date}`,`SUMMARY:${icsEscape(es?'Revisar mis próximos pasos de Franklin Navigator':'Review my Franklin Navigator next steps')}`,`DESCRIPTION:${icsEscape(desc)}`,'END:VEVENT','END:VCALENDAR',''].join('\r\n');
+    const clean=cleanPlan(plan);if(!clean.followUpDate)return'';const es=language==='es',date=clean.followUpDate.replace(/-/g,''),desc=portableLines(plan,language).slice(2).join('\n');const end=new Date(clean.followUpDate+'T12:00:00Z');end.setUTCDate(end.getUTCDate()+1);const uid=/^ap-[A-Za-z0-9-]{1,100}$/.test(plan?.id||'')?plan.id:'ap-follow-up';
+    return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Franklin Navigator//Portable Follow-Through//EN','CALSCALE:GREGORIAN','BEGIN:VEVENT',`UID:${uid}@franklinnavigator.com`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}`,`DTSTART;VALUE=DATE:${date}`,`DTEND;VALUE=DATE:${end.toISOString().slice(0,10).replace(/-/g,'')}`,'TRANSP:TRANSPARENT',`SUMMARY:${icsEscape(es?'Revisar mis próximos pasos de Franklin Navigator':'Review my Franklin Navigator next steps')}`,`DESCRIPTION:${icsEscape(desc)}`,'END:VEVENT','END:VCALENDAR',''].join('\r\n');
   };
   const safeFilename=(kind,ext)=>`franklin-navigator-${kind}.${ext}`;
   const downloadText=(filename,mime,text)=>{try{const blob=new Blob([text],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.hidden=true;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),0);return true}catch{return false}};
@@ -122,7 +125,8 @@
   };
   const savePlan=(ranked,date)=>{
     const plans=readPlans();
-    const cleanDate=/^\d{4}-\d{2}-\d{2}$/.test(String(date||''))?String(date):'';
+    if(storageIssue||plans.length>=MAX_PLANS)return false;
+    const cleanDate=validDate(date);
     plans.unshift({schemaVersion:'franklin.r38.assistant-follow-through.v1',release:RELEASE,community:'FRANKLIN_TN',id:`ap-${Date.now()}-${Math.random().toString(16).slice(2,8)}`,steps:ranked.map(x=>safeStep(x.intent)),followUpDate:cleanDate,savedAt:new Date().toISOString(),completedAt:null,privacy:{rawQuestionStored:false,freeNarrativeStored:false,networkSubmission:false}});
     return writePlans(plans);
   };
@@ -171,7 +175,7 @@
   }
   function renderSaved(){
     document.querySelectorAll('[data-r38-assistant-plans]').forEach(root=>{
-      root.replaceChildren();const plans=readPlans();
+      root.replaceChildren();const plans=readPlans();if(storageIssue)storageMessage(root);
       if(!plans.length){const p=document.createElement('p');p.className='empty-state';p.textContent=tx('No Assistant next-step plans saved yet.','Todavía no hay planes de próximos pasos del Asistente guardados.');root.append(p);return}
       const summary=document.createElement('p');const done=plans.filter(p=>p.completedAt).length;summary.className='r38-assistant-summary';summary.textContent=tx(`${done} completed · ${plans.length-done} in progress`,`${done} completados · ${plans.length-done} en progreso`);root.append(summary);
       const grid=document.createElement('div');grid.className='grid three r38-assistant-plan-grid';
@@ -182,14 +186,14 @@
         for(const step of plan.steps||[]){const intent=intentById(step.intentId);if(!intent||!safeInternal(step.href))continue;const li=document.createElement('li');const a=document.createElement('a');a.href=step.href;a.textContent=intent.title[lang()==='es'?1:0];li.append(a);ul.append(li)}
         const meta=document.createElement('p');meta.className='fine-print';meta.textContent=plan.followUpDate?tx(`Follow up: ${plan.followUpDate}`,`Seguimiento: ${plan.followUpDate}`):tx('No follow-up date selected.','No se eligió una fecha de seguimiento.');
         const actions=document.createElement('div');actions.className='actions';
-        const complete=document.createElement('button');complete.type='button';complete.className='button small';complete.textContent=plan.completedAt?tx('Reopen','Reabrir'):tx('Mark done','Marcar como hecho');complete.addEventListener('click',()=>{writePlans(readPlans().map(p=>p.id===plan.id?{...p,completedAt:p.completedAt?null:new Date().toISOString()}:p));renderSaved()});
-        const remove=document.createElement('button');remove.type='button';remove.className='button small';remove.textContent=tx('Remove','Quitar');remove.addEventListener('click',()=>{writePlans(readPlans().filter(p=>p.id!==plan.id));renderSaved()});actions.append(complete,remove);card.append(h,ul,meta,actions,portableActions(plan));grid.append(card)
+        const complete=document.createElement('button');complete.type='button';complete.className='button small';complete.textContent=plan.completedAt?tx('Reopen','Reabrir'):tx('Mark done','Marcar como hecho');complete.addEventListener('click',()=>{if(writePlans(readPlans().map(p=>p.id===plan.id?{...p,completedAt:p.completedAt?null:new Date().toISOString()}:p)))renderSaved();else storageMessage(root)});
+        const remove=document.createElement('button');remove.type='button';remove.className='button small';remove.textContent=tx('Remove','Quitar');remove.addEventListener('click',()=>{if(writePlans(readPlans().filter(p=>p.id!==plan.id)))renderSaved();else storageMessage(root)});actions.append(complete,remove);card.append(h,ul,meta,actions,portableActions(plan));grid.append(card)
       });root.append(grid)
     })
   }
   document.addEventListener('DOMContentLoaded',()=>{
     document.querySelectorAll('[data-navigator-bot]').forEach(bindBot);renderSaved();
-    document.querySelectorAll('[data-my-franklin-clear]').forEach(b=>b.addEventListener('click',()=>{try{localStorage.removeItem(STORE)}catch{};setTimeout(renderSaved,0)}));
+    document.querySelectorAll('[data-my-franklin-clear]:not([data-franklin-confirm-reset])').forEach(b=>b.addEventListener('click',()=>{try{localStorage.removeItem(STORE)}catch{};setTimeout(renderSaved,0)}));
   });
   window.addEventListener('franklinlanguagechange',renderSaved);
   window.FranklinR38Assistant=Object.freeze({rank,readPlans,renderSaved,render:renderResults,version:RELEASE});window.FranklinR39Portable=Object.freeze({planText,calendarText,portableLines,cleanPlan});

@@ -36,7 +36,7 @@
 
   // R22 directory: fast factual discovery without ranking/score semantics.
   const dir=qs('[data-r22-directory]');
-  if(dir){
+  if(dir&&!dir.hasAttribute('data-franklin-discovery')){
     const search=qs('[data-dir-search]',dir),category=qs('[data-dir-category]',dir),type=qs('[data-dir-type]',dir),area=qs('[data-dir-area]',dir),sort=qs('[data-dir-sort]',dir),facts=qsa('[data-dir-fact]',dir),results=qs('[data-dir-results]',dir),count=qs('[data-dir-count]',dir),pageEl=qs('[data-dir-page]',dir),prev=qs('[data-dir-prev]',dir),next=qs('[data-dir-next]',dir),clear=qs('[data-dir-clear]',dir),tray=qs('[data-dir-compare]',dir),trayCount=qs('[data-dir-compare-count]',dir),trayBody=qs('[data-dir-compare-body]',dir),compareOpen=qs('[data-dir-compare-open]',dir),compareClear=qs('[data-dir-compare-clear]',dir);
     const selected=new Map();let rows=[],filtered=[],page=0;const perPage=24;
     const label=v=>String(v||'').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim().replace(/\b\w/g,c=>c.toUpperCase());
