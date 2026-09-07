@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "description": "Franklin-isolated account, subscription, and entitlement service",
-  "engines": {"node": ">=22.0.0"},
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
-    "start": "node scripts/scc-runtime-route-guard.mjs && node server.js",
+    "start": "node scripts/scc-runtime-route-guard.mjs && node scripts/owner-review-preflight.cjs && node server.js",
     "test": "node --test",
     "check": "node --check server.js && node --check lib/catalog.js && node --check lib/lifecycle.js && node --check lib/security.js && node --check scripts/scc-runtime-route-guard.mjs"
   },
-  "dependencies": {"pg": "8.16.3"}
+  "dependencies": {
+    "pg": "8.16.3"
+  }
 }

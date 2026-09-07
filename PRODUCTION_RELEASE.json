@@ -1,9 +1,1 @@
-{
-  "commerceOpenedByBuild": false,
-  "component": "runtime",
-  "parent": "808709426ebc65efed7b74920e89c5fd49b60483",
-  "publicDistSha256": "d472fdbb97734a6c28cbd7e4e9acd9eb1446ea559371e2b58b4c272ca208c2b2",
-  "release": "FR-NAV1.15.0-HF2.1-CANDIDATE",
-  "sourceArchiveSha256": "19faa14046ca8e9148970d2ac7df5ca04dfbc192ef06d61452a6c09569faa45c",
-  "sourceState": "TESTED_SOURCE_NOT_FINAL_COMMERCIAL_ACCEPTANCE"
-}
+{"release":"FR-NAV1.15.0-HF2.2-CANDIDATE","component":"runtime","parentCommit":"29590299288b404b627d5f3bd5ff944b636df203","baseSourceArchiveSha256":"19faa14046ca8e9148970d2ac7df5ca04dfbc192ef06d61452a6c09569faa45c","baseBehavior":"HF21_MEMBER_AND_REVIEWER_WORKFLOW","qualifiedOverlay":{"scripts/owner-review-preflight.cjs":"0e9e91384e6982781216d1632800cca565a7413708a65ce77b0f48039ad2a9c5","package.json":"4f66cbd5ad2600d8905ea59bf4736a46ec077eb024c8afe4d3dd815bbde1aa30"},"overlayBehavior":"OPTIONAL_READ_ONLY_ACCOUNT_BINDING_PREFLIGHT_NO_ROLE_OR_SESSION_CHANGE","commercialAcceptance":false,"checkoutOpenedByBuild":false,"originalServerSha256":"7061fe7a66a68b5aabbdfdb4cac9a4374c0ff2bcdb11b15aa755b6a7c470d6c7"}
