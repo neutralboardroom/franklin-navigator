@@ -37,22 +37,29 @@ jobs:
           assert sha(raw)=='1469c14b615f43ce564ab712702461e3f02dd9c6697d770252985a30a4d3ca33'
           d=json.loads(lzma.decompress(raw));assert d['base']=='da45cc2a81e2232861a7419d81fc78d16674a5c0'
           root=pathlib.Path('candidate/public').resolve()
-          for n,o in d['files'].items():
-            p=(root/n).resolve();assert p.is_relative_to(root) and not p.is_symlink()
+          def apply(p,o):
+            if 'baseSha256' in o:assert sha(p.read_bytes())==o['baseSha256'],str(p)
+            else:assert not p.exists(),str(p)
             if 'replacements' in o:
-              assert sha(p.read_bytes())==o['baseSha256'],n
               text=p.read_text()
               for a,b,c in reversed(o['replacements']):text=text[:a]+c+text[b:]
-            else:
-              assert not p.exists(),n
-              text=o['text']
-            assert sha(text.encode())==o['sha256'],n
+            else:text=o['text']
+            assert sha(text.encode())==o['sha256'],str(p)
             p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text)
+          for n,o in d['files'].items():
+            p=(root/n).resolve();assert p.is_relative_to(root) and not p.is_symlink();apply(p,o)
           v=pathlib.Path('candidate/validation');v.mkdir(exist_ok=True)
           for n,o in d['tests'].items():
-            p=(v/n).resolve();assert p.is_relative_to(v.resolve()) and sha(o['text'].encode())==o['sha256'];p.write_text(o['text'])
+            p=(v/n).resolve();assert p.is_relative_to(v.resolve());apply(p,o)
+          correctionHashes={}
+          for f in sorted(pathlib.Path('transport/.github/hf23').glob('correction-*.json')):
+            correctionHashes[f.name]=sha(f.read_bytes());patch=json.loads(f.read_text())
+            for group,basepath in [('files',root),('tests',v.resolve())]:
+              for n,o in patch.get(group,{}).items():
+                assert n in d[group],n
+                p=(basepath/n).resolve();assert p.is_relative_to(basepath);apply(p,o);d[group][n]['sha256']=o['sha256']
           e=pathlib.Path('candidate/evidence');e.mkdir(exist_ok=True)
-          (e/'SOURCE.json').write_text(json.dumps({'base':d['base'],'deltaSha256':sha(raw),'files':{n:sha((root/n).read_bytes()) for n in d['files']},'tests':{n:o['sha256'] for n,o in d['tests'].items()},'runtimeChanged':False,'canonicalProfileFactsChanged':False,'productionPromotion':False},indent=2)+'\n')
+          (e/'SOURCE.json').write_text(json.dumps({'base':d['base'],'deltaSha256':sha(raw),'correctionHashes':correctionHashes,'files':{n:sha((root/n).read_bytes()) for n in d['files']},'tests':{n:sha((v/n).read_bytes()) for n in d['tests']},'runtimeChanged':False,'canonicalProfileFactsChanged':False,'productionPromotion':False},indent=2)+'\n')
           PY
       - name: Deterministic derivation and exact factual round-trip
         run: |
