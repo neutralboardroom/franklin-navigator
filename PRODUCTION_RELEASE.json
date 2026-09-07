@@ -1,1 +1,39 @@
-{"release":"FR-NAV1.15.0-HF2.2-CANDIDATE","component":"runtime","parentCommit":"29590299288b404b627d5f3bd5ff944b636df203","baseSourceArchiveSha256":"19faa14046ca8e9148970d2ac7df5ca04dfbc192ef06d61452a6c09569faa45c","baseBehavior":"HF21_MEMBER_AND_REVIEWER_WORKFLOW","qualifiedOverlay":{"scripts/owner-review-preflight.cjs":"0e9e91384e6982781216d1632800cca565a7413708a65ce77b0f48039ad2a9c5","package.json":"4f66cbd5ad2600d8905ea59bf4736a46ec077eb024c8afe4d3dd815bbde1aa30"},"overlayBehavior":"OPTIONAL_READ_ONLY_ACCOUNT_BINDING_PREFLIGHT_NO_ROLE_OR_SESSION_CHANGE","commercialAcceptance":false,"checkoutOpenedByBuild":false,"originalServerSha256":"7061fe7a66a68b5aabbdfdb4cac9a4374c0ff2bcdb11b15aa755b6a7c470d6c7"}
+{
+  "baseBehavior": "HF21_MEMBER_AND_REVIEWER_WORKFLOW",
+  "baseSourceArchiveSha256": "19faa14046ca8e9148970d2ac7df5ca04dfbc192ef06d61452a6c09569faa45c",
+  "checkoutOpenedByBuild": false,
+  "commerceOpenedByBuild": false,
+  "commercialAcceptance": false,
+  "component": "runtime",
+  "originalServerSha256": "7061fe7a66a68b5aabbdfdb4cac9a4374c0ff2bcdb11b15aa755b6a7c470d6c7",
+  "overlayBehavior": "OPTIONAL_READ_ONLY_ACCOUNT_BINDING_PREFLIGHT_NO_ROLE_OR_SESSION_CHANGE",
+  "ownerVerifiedByBuild": false,
+  "parent": "e975b9541e7c98c75a93a02513a5ec97cb09d3e9",
+  "parentCommit": "29590299288b404b627d5f3bd5ff944b636df203",
+  "qualifiedOverlay": {
+    "package.json": "4f66cbd5ad2600d8905ea59bf4736a46ec077eb024c8afe4d3dd815bbde1aa30",
+    "scripts/owner-review-preflight.cjs": "0e9e91384e6982781216d1632800cca565a7413708a65ce77b0f48039ad2a9c5"
+  },
+  "release": "FR-NAV1.15.0-HF2.2-CANDIDATE",
+  "reviewerEmailConfirmation": {
+    "base": "e975b9541e7c98c75a93a02513a5ec97cb09d3e9",
+    "deltaSha256": "c7e98a9d9f648a5b129a1d1873d7bbcb1782955dc806045c496257a071ecf387",
+    "files": {
+      "acceptance/owner-review-browser-fixture.cjs": "6ca893e91a65dcb336e63eeda063e3c8e358ce5ade832db08bf9d3e3d93f6287",
+      "acceptance/owner-review-setup.integration.cjs": "fb60020d5647f60f4e7aab76a3d936af450de63c286cc09dc54a418e366e606b",
+      "lib/owner-review-setup.js": "f059344389befb53d782181d21aa038d863e0605a9717d2f20b50708f1b1a39c",
+      "lib/reviewer-console.js": "b2045ebaa51583ab9619360c815c90c7b8712785fd8bf198cd9ae343a01ea3b0",
+      "review/app.js": "23c9bcd3a0d743f36dfa3808f8d07c0cf133b2d5fb55238310da4b150398648a",
+      "review/index.html": "5998b45b7963b1ec0cc6d872f2c8482a34d0193e46d9b2f92f34b63e8f3a699a",
+      "server.js": "d6dd71f5978459b9bb21f4ce262f23ea7d6a2166d6b29daed11cffa311bd3e3a",
+      "test/owner-review-setup.test.js": "1f2afd17b7e6f73d787ff225ad70c160dc7ddd2c408dd0337208b25eb99d5a4f"
+    },
+    "productionMutations": 0,
+    "restoredFrozenTestFiles": {
+      "runtime/acceptance/member-test-provider.cjs": "aa9a9f11efaee8cade6c584a4bfdd52d850532f16e5726762d663684ded7a7bf",
+      "runtime/acceptance/prepare-browser-fixture.cjs": "106e4155b656bee6a3a0707138d0c05677e6c8c62f7221629d2c48b2b2a75ff3",
+      "runtime/acceptance/reviewer-browser-fixture.cjs": "dd102586feb558090ae27edd6225c537615cbdadd6f219c927f952a4c29d1438",
+      "runtime/acceptance/reviewer-console.integration.cjs": "24a916575b8966ed424dc6d922bae3617580524a5cce2fea280a65729272f3d5"
+    }
+  }
+}
