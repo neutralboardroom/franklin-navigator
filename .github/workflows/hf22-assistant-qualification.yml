@@ -1,0 +1,82 @@
+name: HF22 Assistant repair and actual destination clicks
+on:
+  push:
+    branches: [local-franklin-live-closeout-20260907]
+    paths: [.github/workflows/hf22-assistant-qualification.yml, hf22-transfer/**]
+permissions:
+  contents: write
+concurrency:
+  group: franklin-hf22-assistant-source
+  cancel-in-progress: false
+jobs:
+  assistant:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {path: transport, persist-credentials: false}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {path: candidate/public, ref: 65fb0dbccacc923f55c8383e2c563aed0cf4959d, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.13'}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: {node-version: '22'}
+      - name: Reconstruct exact verified Local repair delta
+        run: |
+          python - <<'PY'
+          import pathlib,json,zlib,base64,hashlib
+          encoded=pathlib.Path('transport/hf22-transfer/assistant-delta.b64').read_text().strip()
+          # Correct the explicitly identified transport omission, never relax target checks.
+          encoded=encoded.replace('O00554/a8/kWsK5','O00554/a8/kSMq52seZhjeczQetwbDrz8WsK5')
+          assert hashlib.sha256(encoded.encode()).hexdigest()=='c814b2196c56e33eb56a9f45960925f54d3ce0a526ec11d60cee7fc2f94b2ee6'
+          data=json.loads(zlib.decompress(base64.b64decode(encoded)))
+          assert data['schema']=='franklin.hf22.assistant-strict-delta.v1'
+          base=pathlib.Path('candidate').resolve()
+          for name,o in data['files'].items():
+              p=(base/name).resolve();assert p.is_relative_to(base) and not p.is_symlink()
+              if 'baseSha256' in o:
+                  assert hashlib.sha256(p.read_bytes()).hexdigest()==o['baseSha256'],name
+                  text=p.read_text()
+                  for start,end,repl in reversed(o['replacements']):text=text[:start]+repl+text[end:]
+              else:
+                  assert not p.exists();text=o['text']
+              assert hashlib.sha256(text.encode()).hexdigest()==o['sha256'],name
+              p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text)
+          (base/'evidence').mkdir(exist_ok=True)
+          (base/'evidence/ASSISTANT_RECONSTRUCTION.json').write_text(json.dumps({'schema':'franklin.assistant.exact-source.v1','result':'PASS','files':{n:o['sha256'] for n,o in data['files'].items()},'transportNormalizedSha256':hashlib.sha256(encoded.encode()).hexdigest(),'productionMutations':0},indent=2))
+          PY
+      - name: Exact exported-function cases and actual browser behavior
+        run: |
+          set -euo pipefail
+          node candidate/validation/hf22/assistant-rank.cjs > candidate/evidence/ASSISTANT_RANK.json
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+          python candidate/validation/hf22/browser_assistant.py
+      - name: Prepare exact public component without promotion
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          python - <<'PY'
+          import pathlib,subprocess,json,os,base64,urllib.request,hashlib
+          root=pathlib.Path('candidate/public');repo='neutralboardroom/franklin-navigator';parent='65fb0dbccacc923f55c8383e2c563aed0cf4959d'
+          req=urllib.request.Request('https://api.github.com/repos/'+repo+'/git/ref/heads/main',headers={'Authorization':'Bearer '+os.environ['GH_TOKEN']})
+          assert json.load(urllib.request.urlopen(req))['object']['sha']==parent,'Production source changed'
+          files={p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in [root/'dist/assets/r38-assistant-followthrough.js',root/'dist/assets/navigator-bot.js']}
+          meta={'release':'FR-NAV1.15.0-HF2.2-CANDIDATE','component':'public','parentCommit':parent,'baseSourceArchiveSha256':'19faa14046ca8e9148970d2ac7df5ca04dfbc192ef06d61452a6c09569faa45c','assistantOverlay':files,'commerceOpenedByBuild':False}
+          (root/'PRODUCTION_RELEASE.json').write_text(json.dumps(meta,indent=2,sort_keys=True)+'\n')
+          def git(*args):return subprocess.check_output(['git','-C',str(root),*args],text=True).strip()
+          git('config','user.name','Franklin Local Builder');git('config','user.email','franklin-local-builder@users.noreply.github.com')
+          git('add','-A');git('commit','-m','Repair Franklin Assistant intent and bilingual entry parity from exact qualified source [skip ci]')
+          commit=git('rev-parse','HEAD');tree=git('rev-parse','HEAD^{tree}')
+          auth=base64.b64encode(('x-access-token:'+os.environ['GH_TOKEN']).encode()).decode()
+          env={**os.environ,'GIT_CONFIG_COUNT':'1','GIT_CONFIG_KEY_0':'http.https://github.com/.extraheader','GIT_CONFIG_VALUE_0':'AUTHORIZATION: basic '+auth}
+          branch='local-franklin-hf22-assistant-prepared-20260907'
+          subprocess.run(['git','-C',str(root),'push','origin','HEAD:refs/heads/'+branch],env=env,check=True)
+          pathlib.Path('candidate/evidence/ASSISTANT_PREPARED_COMPONENT.json').write_text(json.dumps({'parent':parent,'commit':commit,'tree':tree,'branch':branch,'files':files,'productionRefWrites':0,'checkoutOpened':False},indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: hf22-assistant-qualification
+          path: candidate/evidence/
+          retention-days: 14
+          if-no-files-found: error
