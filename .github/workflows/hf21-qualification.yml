@@ -23,24 +23,24 @@ jobs:
     env:
       TEST_DATABASE_URL: postgresql://fixture:isolated_test_only@127.0.0.1:5432/franklin_test
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           path: transport
           persist-credentials: false
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           ref: e0ea8625343f6ec0e2eb2f0e55ec6457ec762bf1
           path: candidate/public
           persist-credentials: false
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           ref: 808709426ebc65efed7b74920e89c5fd49b60483
           path: candidate/runtime
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22'
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.13'
       - name: Reconstruct and verify exact HF2 and HF21 source
@@ -103,8 +103,13 @@ jobs:
               assert sha(text.encode())==o['sha256'],name
               p.parent.mkdir(parents=True,exist_ok=True)
               p.write_text(text)
+          refinement21=pathlib.Path('transport/hf21-transfer/refinement.json').read_bytes()
+          r=json.loads(refinement21)
+          assert r['schema']=='franklin.hf21.refinement.v1'
+          assert set(r['files']).issubset(set(v['files']))
+          apply(r['files'])
           ev=base/'evidence';ev.mkdir(exist_ok=True)
-          (ev/'HF21_CI_SOURCE_RECONSTRUCTION.json').write_text(json.dumps({'result':'PASS_EXACT_TARGET_HASHES','hf2SourceTransportSha256':sha(raw),'hf2UiRefinementSha256':sha(refinement),'hf21DeltaSha256':sha(raw21),'publicDistSha256':h.hexdigest(),'files':{n:sha((base/n).read_bytes()) for n in v['files']},'productionMutations':0},indent=2)+'\n')
+          (ev/'HF21_CI_SOURCE_RECONSTRUCTION.json').write_text(json.dumps({'result':'PASS_EXACT_TARGET_HASHES','hf2SourceTransportSha256':sha(raw),'hf2UiRefinementSha256':sha(refinement),'hf21DeltaSha256':sha(raw21),'hf21RefinementSha256':sha(refinement21),'publicDistSha256':h.hexdigest(),'files':{n:sha((base/n).read_bytes()) for n in v['files']},'productionMutations':0},indent=2)+'\n')
           PY
       - name: Install locked runtime dependencies
         working-directory: candidate/runtime
@@ -134,7 +139,7 @@ jobs:
           python candidate/validation/browser_member.py
       - name: Preserve bounded test evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: hf21-source-bound-qualification
           path: |
