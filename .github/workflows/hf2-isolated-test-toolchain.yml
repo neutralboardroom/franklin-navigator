@@ -1,0 +1,43 @@
+name: HF2 isolated test toolchain
+on:
+  push:
+    branches: [local-franklin-member-fulfillment-hf2-20260907]
+    paths: [.github/workflows/hf2-isolated-test-toolchain.yml]
+permissions:
+  contents: read
+jobs:
+  toolchain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install exact locked runtime dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Export isolated PostgreSQL 16 and runtime dependencies
+        run: |
+          set -euo pipefail
+          mkdir -p hf2-toolchain
+          cp -a node_modules hf2-toolchain/
+          docker pull postgres:16-bookworm
+          docker image inspect postgres:16-bookworm --format '{{index .RepoDigests 0}}' > hf2-toolchain/POSTGRES_IMAGE_DIGEST.txt
+          cid=$(docker create postgres:16-bookworm)
+          mkdir -p hf2-toolchain/postgres/lib hf2-toolchain/postgres/share hf2-toolchain/system
+          docker cp "$cid:/usr/lib/postgresql" hf2-toolchain/postgres/lib/
+          docker cp "$cid:/usr/share/postgresql" hf2-toolchain/postgres/share/
+          docker cp "$cid:/usr/lib/x86_64-linux-gnu" hf2-toolchain/system/
+          docker rm "$cid"
+          cp package-lock.json hf2-toolchain/INPUT_PACKAGE_LOCK.json
+          printf '%s\n' 'TEST TOOLCHAIN ONLY. No production state, credentials, deployment or acceptance.' > hf2-toolchain/README.txt
+          tar -czf HF2_ISOLATED_TEST_TOOLCHAIN.tar.gz hf2-toolchain
+          sha256sum HF2_ISOLATED_TEST_TOOLCHAIN.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hf2-isolated-test-toolchain
+          path: HF2_ISOLATED_TEST_TOOLCHAIN.tar.gz
+          retention-days: 3
+          if-no-files-found: error
