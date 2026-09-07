@@ -1,0 +1,129 @@
+name: Local HF21 exact deployment components
+on:
+  push:
+    branches: [local-franklin-live-closeout-20260907]
+    paths: [.github/workflows/local-live-closeout-components.yml]
+permissions:
+  contents: write
+concurrency:
+  group: franklin-local-closeout-source-20260907
+  cancel-in-progress: false
+jobs:
+  components:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16-bookworm@sha256:bb3e1a57e5407e0a5280b4211980a5e537f4abd234a87014ac979849a78dd825
+        env:
+          POSTGRES_PASSWORD: isolated_test_only
+          POSTGRES_USER: fixture
+          POSTGRES_DB: franklin_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U fixture -d franklin_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://fixture:isolated_test_only@127.0.0.1:5432/franklin_test
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          path: transport
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: e0ea8625343f6ec0e2eb2f0e55ec6457ec762bf1
+          path: candidate/public
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 808709426ebc65efed7b74920e89c5fd49b60483
+          path: candidate/runtime
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Reconstruct the pinned HF21 source
+        run: |
+          python - <<'PY'
+          import pathlib,textwrap,subprocess
+          source=subprocess.check_output(['git','-C','transport','show','HEAD:.github/workflows/hf21-qualification.yml'],text=True)
+          code=source.split("          python - <<'PY'\n",1)[1].split('\n          PY\n',1)[0]
+          exec(compile(textwrap.dedent(code),'pinned-hf21-source-reconstruction','exec'))
+          PY
+      - name: Install locked dependencies and run unit and real database regressions
+        working-directory: candidate/runtime
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          node --test | tee ../evidence/CONTINUATION_UNIT.tap
+          node acceptance/member-fulfillment.integration.cjs | tee ../evidence/CONTINUATION_MEMBER.log
+          node acceptance/run-inherited-hf1.cjs | tee ../evidence/CONTINUATION_CHECKOUT.log
+          TEST_REPORT_DIR="$GITHUB_WORKSPACE/candidate/evidence/continuation-reviewer" node acceptance/reviewer-console.integration.cjs
+      - name: Exercise exact reviewer and member browsers
+        run: |
+          set -euo pipefail
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+          export CHROMIUM_PATH=$(python -c "from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()")
+          python candidate/validation/browser_reviewer.py
+          python candidate/validation/browser_member.py
+      - name: Prepare isolated component commits with exact executable hashes and expected parents
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import pathlib,json,hashlib,os,subprocess,shutil,base64,urllib.request
+          repo='neutralboardroom/franklin-navigator'
+          targets={'public':('main','e0ea8625343f6ec0e2eb2f0e55ec6457ec762bf1','local-franklin-hf21-public-prepared-20260907'),'runtime':('franklin-commerce-runtime-r30','808709426ebc65efed7b74920e89c5fd49b60483','local-franklin-hf21-runtime-prepared-20260907')}
+          expected={"server.js":"7061fe7a66a68b5aabbdfdb4cac9a4374c0ff2bcdb11b15aa755b6a7c470d6c7","package.json":"062cb9a5873526886400ca1a83bfa556eb81a82396e7c028fa6eef4ccde435b6","package-lock.json":"74adccefea0b340bf35f0c9d2c9a2fa35ca6d0755b3ce2aa6b64d8707ddb8bf7","scripts/scc-runtime-route-guard.mjs":"2f020bbee9e35cf98efd6f7a4d114744ee49e8fb1087c29211ddac2540da463e","data/member-profile-scope.json":"08bea70a2f8055434289129bfc569e9083d998dca200d80673bda45924a6f35b","lib/catalog.js":"2bac98dc35cfcd3c5afee8bb410c6ef0481d55b197ddd195995267bd5d27f634","lib/lifecycle.js":"d26e3dee4017e5103442d38d2dfb34a72430aa2f91b56231160cc313049b22f2","lib/member-fulfillment.js":"51fb0dd145dd94781972091181f673cf37a64a40965f94a6b3251ee657e4e61b","lib/purchase-reservations.js":"f1c154b7c39da8cf34f2a62a1ab921bd1a1fe12cdecf33532107f609780d3ddd","lib/reviewer-console.js":"05afea72b65b3d8b367c8ee745ff4051c585cc699fd36fb30be008562e56478c","lib/security.js":"15d55717bc6a9f4dd3dfc803399f7941f10c3dbd90565b9df59e355a3a39f5a4","schema/001_init.sql":"2e2e37979eca98a1e963821d864acc45efac07c11e3e21c951b6685774bd0244","schema/002_purchase_reservations.sql":"a595b4d3f71658424b6d74d628a93b4b75fa5652b221c19df7cb62c488f6dbf5","schema/003_member_fulfillment.sql":"2e64a706f092c9faa737c5fb20caf19f2b35c65807c9743a8c87f57a3fc49c83","schema/004_reviewer_console.sql":"76254d41fdcd59b5473d683288ba1e4a53dc6eb2ddc480904457f933ff9ba5b2","review/app.js":"998fae5c47d5ac4dd1ae0d79772d395b81716fdedb98a66e155db2a896554e84","review/index.html":"02d8a7b7e86d74496df150f51b24f52d1335661a1b5cf1d8236eceaac662b8ae","review/style.css":"27204ca4c137c1218937015dda2aaef92214d1a543df4c9dedc9faf553d74daa"}
+          sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+          runtime=pathlib.Path('candidate/runtime')
+          for n,h in expected.items():assert sha(runtime/n)==h,n
+          dist=pathlib.Path('candidate/public/dist');h=hashlib.sha256()
+          for p in sorted(dist.rglob('*')):
+              if p.is_file():h.update((p.relative_to(dist).as_posix()+'\0'+str(p.stat().st_size)+'\0'+sha(p)+'\n').encode())
+          assert h.hexdigest()=='d472fdbb97734a6c28cbd7e4e9acd9eb1446ea559371e2b58b4c272ca208c2b2'
+          def api(path):
+              req=urllib.request.Request('https://api.github.com/repos/'+repo+path,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+              return json.load(urllib.request.urlopen(req,timeout=30))
+          auth=base64.b64encode(('x-access-token:'+os.environ['GH_TOKEN']).encode()).decode()
+          authenv={**os.environ,'GIT_CONFIG_COUNT':'1','GIT_CONFIG_KEY_0':'http.https://github.com/.extraheader','GIT_CONFIG_VALUE_0':'AUTHORIZATION: basic '+auth}
+          report={'schema':'franklin.hf21.prepared-component-commits.v1','sourceArchiveSha256':'19faa14046ca8e9148970d2ac7df5ca04dfbc192ef06d61452a6c09569faa45c','publicDistSha256':h.hexdigest(),'runtimeExecutableHashes':expected,'productionRefWrites':0,'productionDeployments':0,'commerceOpened':False,'components':{}}
+          for kind,(prod,parent,branch) in targets.items():
+              assert api('/git/ref/heads/'+prod)['object']['sha']==parent,'Production ref changed'
+              root=pathlib.Path('candidate')/kind
+              shutil.rmtree(root/'.github',ignore_errors=True)
+              shutil.rmtree(root/'node_modules',ignore_errors=True)
+              if kind=='runtime':
+                  for name in ['test','acceptance','evidence']:shutil.rmtree(root/name,ignore_errors=True)
+                  # Test-only material stays in the full source ZIP, never in the operating component.
+              metadata={'release':'FR-NAV1.15.0-HF2.1-CANDIDATE','component':kind,'sourceArchiveSha256':report['sourceArchiveSha256'],'sourceState':'TESTED_SOURCE_NOT_FINAL_COMMERCIAL_ACCEPTANCE','commerceOpenedByBuild':False,'publicDistSha256':report['publicDistSha256'],'parent':parent}
+              (root/'PRODUCTION_RELEASE.json').write_text(json.dumps(metadata,indent=2,sort_keys=True)+'\n')
+              def git(*args):return subprocess.check_output(['git','-C',str(root),*args],text=True).strip()
+              assert git('rev-parse','HEAD')==parent
+              git('config','user.name','Franklin Local Builder');git('config','user.email','franklin-local-builder@users.noreply.github.com')
+              git('add','-A');git('commit','-m','Prepare exact tested HF21 '+kind+' component; commerce unchanged [skip ci]')
+              commit=git('rev-parse','HEAD');tree=git('rev-parse','HEAD^{tree}')
+              subprocess.run(['git','-C',str(root),'push','origin','HEAD:refs/heads/'+branch],env=authenv,check=True)
+              report['components'][kind]={'commit':commit,'tree':tree,'parent':parent,'preparedBranch':branch}
+          pathlib.Path('candidate/evidence/PREPARED_COMPONENTS.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(report['components'],indent=2))
+          PY
+      - name: Save source-bound verification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: franklin-hf21-prepared-components
+          path: |
+            candidate/evidence/PREPARED_COMPONENTS.json
+            candidate/evidence/CONTINUATION_*
+            candidate/evidence/continuation-reviewer/
+            candidate/evidence/hf21/browser/
+            candidate/evidence/browser/
+            candidate/evidence/HF21_CI_SOURCE_RECONSTRUCTION.json
+          retention-days: 14
+          if-no-files-found: error
