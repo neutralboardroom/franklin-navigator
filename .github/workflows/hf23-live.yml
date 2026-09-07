@@ -1,0 +1,122 @@
+name: HF23 live HTTPS resident and preservation verification
+on:
+  push:
+    branches: [local-franklin-hf23-discovery-followthrough-20260907]
+    paths: [.github/workflows/hf23-live.yml]
+permissions:
+  contents: read
+concurrency:
+  group: franklin-hf23-live-verification
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 14b200fc16edd6794b2ce694440d2dbe962c820f
+          path: transport
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: b53ec209ac74c0e9906c5045c3140a4a653c44db
+          path: public
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: a9c918b656ced6386b1af604fde51d4a7e88d3b9
+          path: runtime
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Verify and restore exact qualified browser tests
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,lzma,base64,hashlib
+          sha=lambda b:hashlib.sha256(b).hexdigest()
+          raw=base64.b64decode(''.join(Path(f'transport/.github/hf23/source-{i}.b64').read_text().strip() for i in range(1,6)),validate=True)
+          assert sha(raw)=='1469c14b615f43ce564ab712702461e3f02dd9c6697d770252985a30a4d3ca33'
+          d=json.loads(lzma.decompress(raw));v=Path('validation');v.mkdir();e=Path('evidence');e.mkdir()
+          for n,o in d['tests'].items():
+            assert (v/n).resolve().is_relative_to(v.resolve()) and sha(o['text'].encode())==o['sha256'];(v/n).write_text(o['text'])
+          for f in sorted(Path('transport/.github/hf23').glob('correction-*.json')):
+            for n,o in json.loads(f.read_text()).get('tests',{}).items():
+              assert n in d['tests'];p=v/n;assert sha(p.read_bytes())==o['baseSha256'];t=p.read_text()
+              for a,b,c in reversed(o['replacements']):t=t[:a]+c+t[b:]
+              assert sha(t.encode())==o['sha256'];p.write_text(t)
+          source=json.loads(Path('public/PRODUCTION_RELEASE.json').read_text())['sourceQualification']
+          for n,digest in source['tests'].items():assert sha((v/n).read_bytes())==digest,n
+          for n,digest in source['files'].items():assert sha((Path('public')/n).read_bytes())==digest,n
+          (e/'BINDING.json').write_text(json.dumps({'publicCommit':'b53ec209ac74c0e9906c5045c3140a4a653c44db','runtimeCommit':'a9c918b656ced6386b1af604fde51d4a7e88d3b9','sourceQualifiedRun':34157675579,'tests':source['tests'],'publicSourceFiles':source['files'],'transportCommit':'14b200fc16edd6794b2ce694440d2dbe962c820f','ownerAuthentication':False,'commerceEnablement':False},indent=2)+'\n')
+          PY
+      - name: Exact public HTTP readback and bounded runtime checks
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,urllib.request,concurrent.futures,datetime,time
+          E=Path('evidence');root=Path('public/dist');sha=lambda b:hashlib.sha256(b).hexdigest();origin='https://franklinnavigator.com';runtime='https://franklin-navigator-membership.onrender.com'
+          def get(url):
+            req=urllib.request.Request(url,headers={'User-Agent':'FranklinLocal-HF23-Readback/1.0','Cache-Control':'no-cache'})
+            with urllib.request.urlopen(req,timeout=30) as r:return r.status,r.read(),dict(r.headers)
+          paths=sorted(p for p in root.rglob('*.html') if 'profiles' not in p.relative_to(root).parts)+sorted((root/'profiles').rglob('*.html'))[::765]
+          paths+=sorted(p for p in (root/'assets').iterdir() if p.suffix in ['.js','.css'])+sorted((root/'data/discovery').glob('*.json'))
+          def one(p):
+            n=p.relative_to(root).as_posix();url=origin+'/'+(n[:-10] if n.endswith('index.html') else n)
+            try:
+              status,b,headers=get(url);expected=sha(p.read_bytes());actual=sha(b)
+              return {'path':n,'url':url,'status':status,'expectedSha256':expected,'actualSha256':actual,'bytes':len(b),'pass':status==200 and expected==actual}
+            except Exception as ex:return {'path':n,'url':url,'pass':False,'error':type(ex).__name__}
+          with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:rows=list(pool.map(one,paths))
+          public={'schemaVersion':'franklin.hf23.live-http.v1','at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'publicCommit':'b53ec209ac74c0e9906c5045c3140a4a653c44db','pass':sum(r['pass'] for r in rows),'fail':sum(not r['pass'] for r in rows),'results':rows,'fullProfileSetSampled':False,'productWrites':0};(E/'LIVE_PUBLIC_HTTP.json').write_text(json.dumps(public,indent=2)+'\n')
+          rr=[]
+          for route,n in [('/review/','review/index.html'),('/review/app.js','review/app.js')]:
+            status,b,_=get(runtime+route);rr.append({'route':route,'path':n,'pass':status==200 and sha(b)==sha((Path('runtime')/n).read_bytes()),'status':status,'actualSha256':sha(b),'expectedSha256':sha((Path('runtime')/n).read_bytes())})
+          for route in ['/health','/ready']:
+            status,b,_=get(runtime+route);d=json.loads(b);(E/(route[1:]+'.json')).write_text(json.dumps(d,indent=2)+'\n');rr.append({'route':route,'pass':status==200 and d.get('ok') is True and d.get('database') is True and d.get('commerceEnabled') is False and d.get('reviewerConsoleConfigured') is True,'status':status})
+          result={'at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'runtimeCommit':'a9c918b656ced6386b1af604fde51d4a7e88d3b9','pass':sum(r['pass'] for r in rr),'fail':sum(not r['pass'] for r in rr),'results':rr,'ownerSignInObserved':False,'authenticatedMemberLifecycleAccepted':False,'productWrites':0};(E/'LIVE_RUNTIME_HTTP.json').write_text(json.dumps(result,indent=2)+'\n')
+          assert public['fail']==0 and result['fail']==0, 'Exact live byte or closed-commerce readiness mismatch'
+          print(json.dumps({'publicPass':public['pass'],'runtimePass':result['pass'],'fail':0}))
+          PY
+      - name: Install real browser
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Exercise actual live discovery, recovery and preserved Assistant
+        run: |
+          set -euo pipefail
+          export CHROMIUM_PATH=$(python -c "from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()")
+          HF23_ORIGIN=https://franklinnavigator.com HF23_EVIDENCE="$GITHUB_WORKSPACE/evidence/discovery" python validation/browser_hf23.py
+          ASSISTANT_ORIGIN=https://franklinnavigator.com ASSISTANT_EVIDENCE="$GITHUB_WORKSPACE/evidence/assistant" python validation/browser_assistant.py
+      - name: Navigation and top-of-page viewport inspection
+        run: |
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+          from pathlib import Path
+          import json
+          rows=[];E=Path('evidence/navigation');E.mkdir();origin='https://franklinnavigator.com'
+          with sync_playwright() as p:
+            b=p.chromium.launch()
+            for language in ['en','es']:
+              for width in [390,1280]:
+                c=b.new_context(viewport={'width':width,'height':900});page=c.new_page();page.goto(origin+('/es/directorio/' if language=='es' else '/directory/')+'?q=dentist',wait_until='networkidle');page.locator('[data-franklin-discovery][data-loaded="true"]').wait_for();page.evaluate('window.scrollTo(0,0)');page.wait_for_timeout(200)
+                rows.append({'id':f'{language}-{width}-brand-visible','pass':page.locator('header a.brand').is_visible()})
+                page.screenshot(path=str(E/f'{language}-{width}-top.png'))
+                if width<720:
+                  toggle=page.locator('button.menu-toggle');toggle.click();rows.append({'id':f'{language}-{width}-menu-opens','pass':page.locator('header nav').is_visible() and toggle.get_attribute('aria-expanded')=='true'});toggle.click()
+                else:rows.append({'id':f'{language}-{width}-navigation-visible','pass':page.locator('header nav').is_visible()})
+                rows.append({'id':f'{language}-{width}-search-has-accessible-name','pass':page.locator('[data-dir-search]').evaluate('(x)=>x.labels.length>0')})
+                rows.append({'id':f'{language}-{width}-main-heading-present','pass':page.locator('main h1').count()==1})
+                c.close()
+            b.close()
+          report={'result':'PASS' if all(x['pass'] for x in rows) else 'FAIL','pass':sum(x['pass'] for x in rows),'fail':sum(not x['pass'] for x in rows),'results':rows,'mode':'ACTUAL_LIVE_HTTPS_NO_AUTHENTICATION'};(E/'NAVIGATION.json').write_text(json.dumps(report,indent=2)+'\n');assert report['fail']==0
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: hf23-live-https-evidence
+          path: evidence/
+          retention-days: 14
+          if-no-files-found: error
