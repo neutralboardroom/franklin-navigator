@@ -1,9 +1,19 @@
 {
+  "assistantCorrection": {
+    "base": "65fb0dbccacc923f55c8383e2c563aed0cf4959d",
+    "deltaSha256": "4488113c9938e15d8e81a6304cf975990bd499a81da8846d206c15eeee9e850b",
+    "files": {
+      "dist/assets/navigator-bot.js": "856a55527dc2315d8ee28505856cf10505a32904f71237303dda3b2c96c35f2f",
+      "dist/assets/r27-home.js": "e22791c07b6e001a74f14dab563fdf756b5a9e4020df40e65150ca3d51c8eb29",
+      "dist/assets/r38-assistant-followthrough.js": "a64d982359885fd55a240f8b487c1b979e4d13e680f9c638287cb6c569cb99bb"
+    },
+    "productionMutations": 0
+  },
   "commerceOpenedByBuild": false,
   "component": "public",
-  "parent": "e0ea8625343f6ec0e2eb2f0e55ec6457ec762bf1",
-  "publicDistSha256": "d472fdbb97734a6c28cbd7e4e9acd9eb1446ea559371e2b58b4c272ca208c2b2",
-  "release": "FR-NAV1.15.0-HF2.1-CANDIDATE",
+  "parent": "65fb0dbccacc923f55c8383e2c563aed0cf4959d",
+  "publicDistSha256": "9335d1126653dcb784fdb7c8a35f35931ed9db1ed3762bf8267b60817296d4e8",
+  "release": "FR-NAV1.15.0-HF2.2-CANDIDATE",
   "sourceArchiveSha256": "19faa14046ca8e9148970d2ac7df5ca04dfbc192ef06d61452a6c09569faa45c",
   "sourceState": "TESTED_SOURCE_NOT_FINAL_COMMERCIAL_ACCEPTANCE"
 }

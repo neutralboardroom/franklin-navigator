@@ -2,9 +2,9 @@
 'use strict';
 (()=>{
   const STORE='franklinNavigator.assistantPlans.v1';
-  const RELEASE='FR-NAV1.15.0-CANDIDATE-R40';
+  const RELEASE='FR-NAV1.15.0-HF2.2-CANDIDATE';
   const MAX_PLANS=20;
-  const lang=()=>document.documentElement.lang==='es'?'es':'en';
+  const lang=()=>String(document.documentElement.lang||'').toLowerCase().startsWith('es')?'es':'en';
   const tx=(en,es)=>lang()==='es'?es:en;
   const normalize=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9\s'-]/g,' ').replace(/\s+/g,' ').trim();
   const safeInternal=href=>typeof href==='string'&&href.startsWith('/')&&!href.startsWith('//')&&!/[<>\"\\]/.test(href);
@@ -39,13 +39,48 @@
     {id:'start-business',terms:['start business','open a business','business license','new business','opening a','startup','iniciar negocio','abrir un negocio','licencia comercial','nuevo negocio','emprendimiento'],title:['Start or license a Franklin business','Iniciar o licenciar un negocio en Franklin'],text:['Work through licensing, zoning, permits and local business-support starting points in the right order.','Avanza por licencias, zonificación, permisos y puntos de apoyo empresarial local en el orden correcto.'],links:[['Start & Run a Business pathway','Ruta para iniciar y operar un negocio','/local-pathways/start-run-business/'],['Get It Done: business license','Hacerlo: licencia comercial','/get-it-done/#business-license']]},
     {id:'grow-business',terms:['more customers','grow my business','business growth','marketing','visibility','my business','customers','local seo','mas clientes','crecer mi negocio','crecimiento empresarial','mercadeo','marketing','visibilidad','mi negocio','clientes'],title:['Grow a Franklin business','Hacer crecer un negocio en Franklin'],text:['Check your public presence, choose one goal and get a practical weekly or 90-day plan.','Revisa tu presencia pública, elige una meta y crea un plan práctico semanal o de 90 días.'],links:[['Business Growth Planner','Planificador de crecimiento empresarial','/local-growth-engine/'],['Business Growth Guides','Guías de crecimiento empresarial','/navigator-growth-desk/'],['My business dashboard','Mi panel de negocio','/business-dashboard/']]}
   ];
+
+  // Whole-word matching prevents "bus" in "business" and "car" in "caregiver".
+  const contains=(text,term)=>(' '+text+' ').includes(' '+normalize(term)+' ');
+  INTENTS.find(x=>x.id==='start-business').terms.push('start a business','starting a business','starting my business','set up a business','setting up a business','launch a business','abrir un negocio','iniciar un negocio','empezar un negocio','licencia comercial','licencia de negocio');
+  INTENTS.find(x=>x.id==='emergency').terms.push('cannot breathe',"can't breathe",'chest pain','gas leak','no puedo respirar','dolor de pecho','fuga de gas');
+  INTENTS.find(x=>x.id==='learning').terms.push('plan a lesson','planificar una leccion','preparar una clase');
+  INTENTS.push(
+    {id:'member-billing',terms:['manage my billing','membership billing','member billing','cancel my membership','cancel membership','cancel my subscription','cancel subscription','my subscription','already a member','membership receipt','membership payment','facturacion','cancelar mi membresia','cancelar membresia','cancelar mi suscripcion','ya soy miembro','mi suscripcion','pago de membresia'],title:['Manage your membership and billing','Administra tu membresía y facturación'],text:['Sign in to your existing membership account. Open billing to review your plan or cancel renewal. If a payment is still processing, do not pay again. The Assistant does not change your subscription.','Inicia sesión en tu cuenta de membresía existente. Abre facturación para revisar tu plan o cancelar la renovación. Si un pago sigue procesándose, no vuelvas a pagar. El Asistente no cambia tu suscripción.'],links:[['Open my membership account','Abrir mi cuenta de membresía','/membership-status/'],['Get member support','Obtener ayuda para miembros','/member-support/']]},
+    {id:'membership',terms:['membership','community member','become a member','join franklin navigator','membresia','hacerme miembro','ser miembro'],title:['Join Franklin Community Membership','Únete a la Membresía Comunitaria de Franklin'],text:['Start with the benefits and current enrollment status. Find your profile, sign in or create an account, and submit your connection to the profile for review. Already a member? Use your existing account rather than paying again.','Empieza con los beneficios y el estado actual de inscripción. Busca tu perfil, inicia sesión o crea una cuenta y solicita la revisión de tu relación con el perfil. ¿Ya eres miembro? Usa tu cuenta existente en vez de volver a pagar.'],links:[['Explore Community Membership','Explorar la Membresía Comunitaria','/membership-start/'],['Find or claim my profile','Buscar o reclamar mi perfil','/claim-profile/'],['Already a member? Sign in','¿Ya eres miembro? Inicia sesión','/membership-status/']]},
+    {id:'member-profile',terms:['edit my profile','update my profile','manage my profile','claim my profile','claim my business','correction to my profile','editar mi perfil','actualizar mi perfil','reclamar mi perfil','reclamar mi negocio','corregir mi perfil'],title:['Manage or correct your profile','Administra o corrige tu perfil'],text:['Find the right listing before requesting access. Approved members can save and submit profile additions for review. Factual corrections stay free, and paying does not prove ownership or credentials.','Busca el perfil correcto antes de solicitar acceso. Los miembros autorizados pueden guardar y enviar información del perfil para revisión. Las correcciones de datos siguen siendo gratuitas y pagar no demuestra propiedad ni credenciales.'],links:[['Find or claim my profile','Buscar o reclamar mi perfil','/claim-profile/'],['Open my account','Abrir mi cuenta','/membership-status/'],['Manage member profile','Administrar el perfil de miembro','/profile-studio/']]}
+  );
   const SERVICES=[
     ['plumber','plomero','plumber'],['plumbing','plomeria','plumber'],['electrician','electricista','electrician'],['hvac','aire acondicionado','hvac'],['roofer','techador','roofing'],['roofing','techo','roofing'],['landscaper','jardinero','landscaping'],['lawn','jardineria','landscaping'],['salon','salon','salon'],['restaurant','restaurante','restaurant'],['accountant','contador','accounting'],['bookkeeper','contabilidad','accounting'],['tax preparer','preparador de impuestos','tax'],['realtor','agente inmobiliario','real estate'],['insurance agent','agente de seguros','insurance'],['tutor','tutor','tutoring'],['daycare','guarderia','child care'],['dentist','dentista','dentist'],['doctor','medico','doctor'],['vet','veterinario','veterinary'],['mechanic','mecanico','auto repair'],['tow truck','grua','towing'],['cleaner','limpieza','cleaning'],['house cleaning','limpieza de casa','cleaning']
   ];
   const score=(text,intent)=>{const tokens=new Set(text.split(/\s+/).filter(Boolean));return intent.terms.reduce((sum,term)=>{const t=normalize(term);const hit=t.includes(' ')?text.includes(t):tokens.has(t);return sum+(hit?(t.includes(' ')?4:2):0)},0)};
+  const serviceSynonyms={dentist:['dental','dentists','dentistas','odontologo','odontologa'],plumber:['plumbing','plomero','fontanero'],doctor:['physician','doctors','medico','medica'],veterinary:['vet','veterinarian','veterinario','veterinaria'],accounting:['bookkeeper','bookkeeping','contador','contabilidad'],'auto repair':['mechanic','mecanico','reparacion de auto']};
+  for(const [en,es,query] of SERVICES){
+    const id='service-'+query.replace(/[^a-z0-9]+/g,'-');
+    const existing=INTENTS.find(x=>x.id===id);if(existing){existing.terms.push(en,es);continue;}
+    const dental=query==='dentist';
+    INTENTS.push({id,terms:[en,es,...(serviceSynonyms[query]||[])],title:[`Find a local ${en} option`,`Busca una opción local de ${es}`],text:dental?['Compare dental offices by location and services. Before booking, ask about new-patient availability, insurance or payment options, accessibility and cost. A listing is not an endorsement or a confirmed appointment.','Compara consultorios dentales por ubicación y servicios. Antes de reservar, pregunta si aceptan pacientes nuevos, sobre seguro u opciones de pago, accesibilidad y costo. Un perfil no es un aval ni una cita confirmada.']:['Open the matching Franklin-area listings. Compare services and location, then confirm availability, credentials where relevant and the total price directly before booking.','Abre los perfiles correspondientes del área de Franklin. Compara servicios y ubicación, y confirma directamente disponibilidad, credenciales cuando correspondan y precio total antes de reservar.'],links:[['Search matching local listings','Buscar perfiles locales correspondientes','/directory/?q='+encodeURIComponent(query)]]});
+  }
   const rank=raw=>{
-    const text=normalize(raw);
-    return INTENTS.map(intent=>({intent,score:score(text,intent)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score||a.intent.id.localeCompare(b.intent.id)).slice(0,3);
+    const text=normalize(raw);if(!text)return [];
+    const isMembership=/\b(membership|member|members|membresia|miembro|miembros|suscripcion|facturacion)\b/.test(text);
+    const nonUrgent=text.replace(/\b(no emergency|not an emergency|non emergency|sin emergencia|no es una emergencia)\b/g,'');
+    const explicitUrgent=/\b(911|immediate danger|not breathing|cannot breathe|can't breathe|chest pain|overdose|gas leak|peligro inmediato|no respira|no puedo respirar|dolor de pecho|sobredosis|fuga de gas)\b/.test(text);
+    const urgent=explicitUrgent || /\b(emergency|emergencia|incendio)\b/.test(nonUrgent) || /\bfire\b/.test(nonUrgent)&&! /\b(fire permit|fire inspection|fire code|fire department job)\b/.test(text);
+    const rows=INTENTS.map(intent=>{
+      let score=intent.terms.reduce((n,t)=>n+(contains(text,t)?(t.includes(' ')?4:2):0),0);
+      if(intent.id==='emergency')score=urgent?10000:0;
+      if(intent.id==='crisis'&&score)score+=9000;
+      if(intent.id==='school'&&isMembership&&!/\b(school|escuela|kindergarten|kinder|student|estudiante)\b/.test(text))score=0;
+      if(score&&intent.id==='member-billing')score+=400;
+      if(score&&intent.id==='member-profile')score+=350;
+      if(score&&intent.id==='membership')score+=300;
+      if(score&&intent.id.startsWith('service-'))score+=200;
+      if(score&&intent.id==='start-business')score+=100;
+      return{intent,score};
+    }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score||a.intent.id.localeCompare(b.intent.id));
+    // A specific service already supplies the safe comparison step; don't replace it with generic health.
+    return rows.filter(x=>!(x.intent.id==='membership'&&rows[0]?.intent.id==='member-billing')).slice(0,3);
   };
   const readPlans=()=>{try{const v=JSON.parse(localStorage.getItem(STORE)||'[]');return Array.isArray(v)?v.filter(p=>p&&p.schemaVersion==='franklin.r38.assistant-follow-through.v1').slice(0,MAX_PLANS):[]}catch{return []}};
   const writePlans=plans=>{try{localStorage.setItem(STORE,JSON.stringify(plans.slice(0,MAX_PLANS)));return true}catch{return false}};
@@ -92,15 +127,14 @@
     return writePlans(plans);
   };
   function renderResults(root,raw){
-    const text=normalize(raw);if(!text)return false;
-    const ranked=rank(raw);if(!ranked.length){
-      const svc=SERVICES.find(([en,es])=>text.includes(normalize(en))||text.includes(normalize(es)));
-      if(!svc)return false;
-      const q=encodeURIComponent(svc[2]);
-      root.replaceChildren();
-      const h=document.createElement('h3');h.textContent=tx(`Find a local ${svc[0]} option`,`Buscar una opción local de ${svc[1]}`);
-      const p=document.createElement('p');p.textContent=tx('Compare the public facts and confirm current availability, price, credentials or fit directly with the provider.','Compara los datos públicos y confirma directamente con el proveedor la disponibilidad, el precio, las credenciales o la opción adecuada.');
-      const a=document.createElement('a');a.className='button primary';a.href=`/directory/?q=${q}`;a.textContent=tx('Search local listings','Buscar perfiles locales');root.append(h,p,a);root.hidden=false;return true;
+    const text=normalize(raw),ranked=rank(raw);
+    if(!ranked.length){
+      root.replaceChildren();root.hidden=false;
+      const h=document.createElement('h3');h.textContent=tx('Let’s narrow it down.','Vamos a precisar lo que necesitas.');
+      const p=document.createElement('p');p.textContent=text?tx('I did not find a close match. Tell me the goal: start a business, manage membership, find a dentist, get transportation, or find help with housing. Do not include private account or medical details.','No encontré una coincidencia cercana. Dime tu objetivo: iniciar un negocio, administrar tu membresía, buscar un dentista, conseguir transporte o ayuda con vivienda. No incluyas datos privados de cuentas ni información médica.'):tx('Tell me what you need in a few words. You can also browse these Franklin starting points.','Dime lo que necesitas en pocas palabras. También puedes explorar estos puntos de partida de Franklin.');
+      root.append(h,p);
+      for(const [en,es,href] of [['Open the Help Center','Abrir el centro de ayuda','/community-help-center/'],['Search local listings','Buscar perfiles locales','/directory/'],['Browse practical tasks','Explorar tareas prácticas','/get-it-done/']]){const a=document.createElement('a');a.className='button';a.href=href;a.textContent=tx(en,es);root.append(a)}
+      return true;
     }
     root.replaceChildren();root.hidden=false;
     ranked.forEach(({intent},index)=>{
@@ -111,6 +145,7 @@
       intent.links.forEach(([en,es,href],i)=>{const a=document.createElement('a');a.className=`button${index===0&&i===0?' primary':''}`;a.href=href;a.textContent=lang()==='es'?es:en;if(/^https?:/.test(href)){a.target='_blank';a.rel='noopener'}actions.append(a)});
       card.append(h,p,actions);root.append(card);
     });
+    if(['emergency','crisis'].includes(ranked[0].intent.id))return true;
     const save=document.createElement('section');save.className='r38-assistant-save';
     const h=document.createElement('h3');h.textContent=tx('Keep these next steps','Guardar estos próximos pasos');
     const p=document.createElement('p');p.textContent=tx('Save only the matched topics and safe Franklin links on this device. Your question is not saved.','Guarda solo los temas encontrados y enlaces seguros de Franklin en este dispositivo. Tu pregunta no se guarda.');
@@ -127,9 +162,12 @@
   function bindBot(bot){
     const form=bot.querySelector('form'),input=bot.querySelector('[data-navigator-input]'),output=bot.querySelector('[data-navigator-output]');if(!form||!input||!output)return;
     const run=()=>renderResults(output,input.value);
-    form.addEventListener('submit',()=>{setTimeout(run,0)});
-    bot.querySelectorAll('[data-navigator-example]').forEach(b=>b.addEventListener('click',()=>setTimeout(run,0)));
-    window.addEventListener('franklinlanguagechange',()=>{if(!output.hidden&&input.value.trim())run()});
+    // navigator-bot owns every entry point. This fallback is only for pages without that controller.
+    if(!bot.dataset.canonicalAssistantEntry){
+      form.addEventListener('submit',e=>{e.preventDefault();run()});
+      bot.querySelectorAll('[data-navigator-example]').forEach(b=>b.addEventListener('click',()=>{input.value=b.dataset.navigatorExample||b.textContent;run()}));
+      window.addEventListener('franklinlanguagechange',()=>{if(input.value.trim()&&!output.hidden)run()});
+    }
   }
   function renderSaved(){
     document.querySelectorAll('[data-r38-assistant-plans]').forEach(root=>{
@@ -154,5 +192,5 @@
     document.querySelectorAll('[data-my-franklin-clear]').forEach(b=>b.addEventListener('click',()=>{try{localStorage.removeItem(STORE)}catch{};setTimeout(renderSaved,0)}));
   });
   window.addEventListener('franklinlanguagechange',renderSaved);
-  window.FranklinR38Assistant=Object.freeze({rank,readPlans,renderSaved});window.FranklinR39Portable=Object.freeze({planText,calendarText,portableLines,cleanPlan});
+  window.FranklinR38Assistant=Object.freeze({rank,readPlans,renderSaved,render:renderResults,version:RELEASE});window.FranklinR39Portable=Object.freeze({planText,calendarText,portableLines,cleanPlan});
 })();

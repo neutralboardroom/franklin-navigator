@@ -37,7 +37,10 @@
   const serviceTerms=[['plumber','plumber'],['plumbing','plumber'],['electrician','electrician'],['hvac','hvac'],['air conditioning','hvac'],['roofer','roofing'],['roofing','roofing'],['landscaper','landscaping'],['lawn','landscaping'],['salon','salon'],['haircut','salon'],['restaurant','restaurant'],['accountant','accounting'],['bookkeeper','accounting'],['tax preparer','tax'],['realtor','real estate'],['real estate agent','real estate'],['insurance agent','insurance'],['tutor','tutoring'],['daycare','child care'],['dentist','dentist'],['doctor','doctor'],['vet','veterinary'],['veterinarian','veterinary'],['mechanic','auto repair'],['tow truck','towing'],['cleaner','cleaning'],['house cleaning','cleaning']];
   const normalize=s=>String(s||'').toLowerCase().replace(/[^a-z0-9\s'-]/g,' ').replace(/\s+/g,' ').trim();
   const score=(text,intent)=>intent.terms.reduce((sum,term)=>sum+(text.includes(term)?(term.includes(' ')?4:2):0),0);
-  const render=(raw)=>{output.hidden=false;
+  root.dataset.canonicalAssistantEntry='1';
+  const isEs=()=>String(document.documentElement.lang||'').toLowerCase().startsWith('es');
+  const tr=(en,es)=>isEs()?es:en;
+  const render=(raw)=>{if(window.FranklinR38Assistant?.render)return window.FranklinR38Assistant.render(output,raw);output.hidden=false;
     const text=normalize(raw); if(!text){output.innerHTML='<p>Tell me what you need in a few words. I will point you to the best Franklin starting place.</p>';return;}
     const ranked=intents.map(intent=>({intent,score:score(text,intent)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,3);
     if(!ranked.length){const service=serviceTerms.find(([term])=>text.includes(term));if(service){const query=encodeURIComponent(service[1]);output.innerHTML=`<h3>Find a local ${service[1]} option</h3><p>I can take you directly to Franklin-area listings. Compare the public facts and confirm current availability, price, credentials or fit directly with the provider.</p><div class="actions"><a class="button primary" href="/directory/?q=${query}">Search local listings</a><a class="button" href="/profile/">How local profiles work</a></div>`;return}output.innerHTML='<h3>Let’s narrow it down.</h3><p>I did not find a close match yet. Try the goal instead of the agency name—for example “I need help with rent,” “I need a permit,” “find a plumber,” or “I want more customers.”</p><div class="actions"><a class="button primary" href="/community-help-center/">Open the Help Center</a><a class="button" href="/directory/">Search local listings</a><a class="button" href="/get-it-done/">Browse Get It Done</a></div>';return;}
@@ -52,13 +55,14 @@
     const recognition=new SpeechRecognition();
     recognition.lang=document.documentElement.lang==='es'?'es-US':'en-US';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;
     const setVoiceStatus=message=>{if(voiceStatus)voiceStatus.textContent=message};
-    recognition.addEventListener('start',()=>{listening=true;voiceButton.textContent='Listening…';voiceButton.setAttribute('aria-pressed','true');setVoiceStatus('Listening. Speak a short Franklin question or goal.')});
-    recognition.addEventListener('result',event=>{const transcript=String(event.results?.[0]?.[0]?.transcript||'').trim();if(transcript){input.value=transcript;render(transcript);output.focus()}setVoiceStatus('Voice input captured. Review the words before using any outside link.')});
-    recognition.addEventListener('error',event=>{setVoiceStatus(event.error==='not-allowed'?'Voice permission was not granted. You can keep typing instead.':'Voice input did not finish. You can try again or keep typing.')});
-    recognition.addEventListener('end',()=>{listening=false;voiceButton.textContent='Speak';voiceButton.setAttribute('aria-pressed','false')});
-    voiceButton.addEventListener('click',()=>{if(listening){recognition.stop();return}recognition.lang=document.documentElement.lang==='es'?'es-US':'en-US';try{recognition.start()}catch{setVoiceStatus('Voice input is already starting.')}});
+    recognition.addEventListener('start',()=>{listening=true;voiceButton.textContent=tr('Listening…','Escuchando…');voiceButton.setAttribute('aria-pressed','true');setVoiceStatus(tr('Listening. Speak a short Franklin question or goal.','Escuchando. Di una pregunta u objetivo breve sobre Franklin.'))});
+    recognition.addEventListener('result',event=>{const transcript=String(event.results?.[0]?.[0]?.transcript||'').trim();if(transcript){input.value=transcript;render(transcript);output.focus()}setVoiceStatus(tr('Voice input captured. Review the words before using any outside link.','Voz recibida. Revisa las palabras antes de usar un enlace externo.'))});
+    recognition.addEventListener('error',event=>{setVoiceStatus(event.error==='not-allowed'?tr('Voice permission was not granted. You can keep typing instead.','No se concedió permiso para usar la voz. Puedes seguir escribiendo.'):tr('Voice input did not finish. You can try again or keep typing.','La entrada de voz no terminó. Puedes intentarlo de nuevo o escribir.'))});
+    recognition.addEventListener('end',()=>{listening=false;voiceButton.textContent=tr('Speak','Hablar');voiceButton.setAttribute('aria-pressed','false')});
+    voiceButton.addEventListener('click',()=>{if(listening){recognition.stop();return}recognition.lang=document.documentElement.lang==='es'?'es-US':'en-US';try{recognition.start()}catch{setVoiceStatus(tr('Voice input is already starting.','La entrada de voz ya está iniciándose.'))}});
   }
 
+  window.addEventListener('franklinlanguagechange',()=>{if(input.value.trim()&&!output.hidden)render(input.value)});
   form.addEventListener('submit',e=>{e.preventDefault();render(input.value);output.focus()});
   examples.forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.navigatorExample||button.textContent;render(input.value)}));
 })();
