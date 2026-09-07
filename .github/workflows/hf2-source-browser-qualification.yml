@@ -1,0 +1,103 @@
+name: HF2 source-bound browser qualification
+on:
+  push:
+    branches: [local-franklin-member-fulfillment-hf2-20260907]
+    paths: [.github/workflows/hf2-source-browser-qualification.yml, hf2-transfer/**]
+permissions:
+  contents: read
+jobs:
+  qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16-bookworm@sha256:bb3e1a57e5407e0a5280b4211980a5e537f4abd234a87014ac979849a78dd825
+        env:
+          POSTGRES_PASSWORD: isolated_test_only
+          POSTGRES_USER: fixture
+          POSTGRES_DB: franklin_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U fixture -d franklin_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://fixture:isolated_test_only@127.0.0.1:5432/franklin_test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: transport
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: e0ea8625343f6ec0e2eb2f0e55ec6457ec762bf1
+          path: candidate/public
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 808709426ebc65efed7b74920e89c5fd49b60483
+          path: candidate/runtime
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Reconstruct and verify exact Local source
+        run: |
+          python - <<'PY'
+          import pathlib,json,lzma,hashlib,subprocess
+          base=pathlib.Path('candidate').resolve()
+          raw=b''.join((pathlib.Path('transport/hf2-transfer')/f'source.part{i:02d}').read_bytes() for i in range(1,4))
+          assert len(raw)==22644
+          assert hashlib.sha256(raw).hexdigest()=='a43b30c946ba37ecb9d4aff1cb1284a9dd15d82c7851731a85db22846fb215fd'
+          d=json.loads(lzma.decompress(raw))
+          assert d['schema']=='local.hf2.strict-delta.v1'
+          assert d['publicBase']=='e0ea8625343f6ec0e2eb2f0e55ec6457ec762bf1'
+          assert d['runtimeBase']=='808709426ebc65efed7b74920e89c5fd49b60483'
+          for name,o in d['files'].items():
+              p=(base/name).resolve()
+              assert p.is_relative_to(base) and not p.is_symlink()
+              if 'baseSha256' in o:
+                  assert hashlib.sha256(p.read_bytes()).hexdigest()==o['baseSha256'],name
+                  text=p.read_text()
+                  for start,end,replacement in reversed(o['replacements']):
+                      assert 0<=start<=end<=len(text)
+                      text=text[:start]+replacement+text[end:]
+              else:
+                  assert not p.exists(),name
+                  text=o['text']
+              assert hashlib.sha256(text.encode()).hexdigest()==o['sha256'],name
+              p.parent.mkdir(parents=True,exist_ok=True)
+              p.write_text(text)
+          subprocess.run(['python',str(base/'validation/apply_hf2_transport.py')],check=True)
+          (base/'evidence/CI_SOURCE_RECONSTRUCTION.json').write_text(json.dumps({'sourceTransportSha256':hashlib.sha256(raw).hexdigest(),'result':'PASS_EXACT_TARGET_HASHES','productionMutations':0},indent=2))
+          PY
+      - name: Install locked runtime dependencies
+        working-directory: candidate/runtime
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Runtime unit regression
+        working-directory: candidate/runtime
+        run: |
+          set -o pipefail
+          node --test | tee ../evidence/CI_UNIT_TESTS.tap
+      - name: Install browser test dependencies
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Actual bilingual member browser workflow
+        run: |
+          export CHROMIUM_PATH=$(python -c "from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()")
+          python candidate/validation/browser_member.py
+      - name: Preserve bounded test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hf2-source-bound-browser
+          path: |
+            candidate/evidence/browser/
+            candidate/evidence/CI_UNIT_TESTS.tap
+            candidate/evidence/CI_SOURCE_RECONSTRUCTION.json
+            candidate/validation/HF2_SOURCE_TARGETS.json
+          retention-days: 7
+          if-no-files-found: error
