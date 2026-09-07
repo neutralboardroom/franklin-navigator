@@ -1,0 +1,120 @@
+name: HF23 exact discovery and private follow-through
+on:
+  push:
+    branches: [local-franklin-hf23-discovery-followthrough-20260907]
+    paths: [.github/hf23/**, .github/workflows/hf23-discovery.yml]
+permissions:
+  contents: write
+concurrency:
+  group: franklin-hf23-discovery-qualification
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          path: transport
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: da45cc2a81e2232861a7419d81fc78d16674a5c0
+          path: candidate/public
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Reconstruct hash-bound public source without modifying runtime or profiles
+        run: |
+          python - <<'PY'
+          import pathlib,base64,lzma,json,hashlib
+          sha=lambda b:hashlib.sha256(b).hexdigest()
+          raw=base64.b64decode(''.join(pathlib.Path(f'transport/.github/hf23/source-{i}.b64').read_text().strip() for i in range(1,6)),validate=True)
+          assert sha(raw)=='1469c14b615f43ce564ab712702461e3f02dd9c6697d770252985a30a4d3ca33'
+          d=json.loads(lzma.decompress(raw));assert d['base']=='da45cc2a81e2232861a7419d81fc78d16674a5c0'
+          root=pathlib.Path('candidate/public').resolve()
+          for n,o in d['files'].items():
+            p=(root/n).resolve();assert p.is_relative_to(root) and not p.is_symlink()
+            if 'replacements' in o:
+              assert sha(p.read_bytes())==o['baseSha256'],n
+              text=p.read_text()
+              for a,b,c in reversed(o['replacements']):text=text[:a]+c+text[b:]
+            else:
+              assert not p.exists(),n
+              text=o['text']
+            assert sha(text.encode())==o['sha256'],n
+            p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text)
+          v=pathlib.Path('candidate/validation');v.mkdir(exist_ok=True)
+          for n,o in d['tests'].items():
+            p=(v/n).resolve();assert p.is_relative_to(v.resolve()) and sha(o['text'].encode())==o['sha256'];p.write_text(o['text'])
+          e=pathlib.Path('candidate/evidence');e.mkdir(exist_ok=True)
+          (e/'SOURCE.json').write_text(json.dumps({'base':d['base'],'deltaSha256':sha(raw),'files':{n:sha((root/n).read_bytes()) for n in d['files']},'tests':{n:o['sha256'] for n,o in d['tests'].items()},'runtimeChanged':False,'canonicalProfileFactsChanged':False,'productionPromotion':False},indent=2)+'\n')
+          PY
+      - name: Deterministic derivation and exact factual round-trip
+        run: |
+          set -euo pipefail
+          python candidate/public/scripts/build-hf23-discovery.py | tee candidate/evidence/DERIVED_INDEX.json
+          test "$(sha256sum candidate/public/dist/data/discovery/manifest.json | cut -d' ' -f1)" = d97640231d541f5a4f67ac26782806fc933237a39566e6e59561ea82e894e225
+          node --test candidate/validation/test_hf23.cjs | tee candidate/evidence/CORE_TESTS.tap
+          node candidate/validation/test_assistant_rank.cjs candidate/public/dist/assets/r38-assistant-followthrough.js candidate/validation/assistant_cases.json > candidate/evidence/ASSISTANT_ROUTING.json
+      - name: Install browser toolchain
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Exercise inherited Assistant and all clicked destinations
+        run: |
+          set -euo pipefail
+          python -m http.server 8873 --bind 127.0.0.1 --directory candidate/public/dist > candidate/evidence/HTTP.log 2>&1 &
+          echo $! > candidate/evidence/HTTP.pid
+          export CHROMIUM_PATH=$(python -c "from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()")
+          ASSISTANT_ORIGIN=http://127.0.0.1:8873 ASSISTANT_EVIDENCE="$GITHUB_WORKSPACE/candidate/evidence/assistant" python candidate/validation/browser_assistant.py
+      - name: Exercise discovery, compare, saved profiles, reminders and failure recovery
+        run: |
+          set -euo pipefail
+          export CHROMIUM_PATH=$(python -c "from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()")
+          HF23_ORIGIN=http://127.0.0.1:8873 HF23_EVIDENCE="$GITHUB_WORKSPACE/candidate/evidence/discovery" python candidate/validation/browser_hf23.py
+      - name: Prepare qualified public commit only, never promote main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import pathlib,json,hashlib,subprocess,os,urllib.request,base64,zipfile
+          root=pathlib.Path('candidate/public');e=pathlib.Path('candidate/evidence');base='da45cc2a81e2232861a7419d81fc78d16674a5c0';repo='neutralboardroom/franklin-navigator'
+          def api(p):
+            req=urllib.request.Request('https://api.github.com/repos/'+repo+p,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+            with urllib.request.urlopen(req,timeout=30) as r:return json.load(r)
+          assert api('/git/ref/heads/main')['object']['sha']==base,'Public base changed; do not overwrite'
+          assert api('/git/ref/heads/franklin-commerce-runtime-r30')['object']['sha']=='a9c918b656ced6386b1af604fde51d4a7e88d3b9','Runtime changed; requalify pair'
+          source=json.loads((e/'SOURCE.json').read_text())
+          def digest_tree(p):
+            h=hashlib.sha256()
+            for f in sorted(p.rglob('*')):
+              if f.is_file():h.update(f.relative_to(p).as_posix().encode()+b'\0'+hashlib.sha256(f.read_bytes()).hexdigest().encode()+b'\n')
+            return h.hexdigest()
+          metadata={'release':'FR-NAV1.15.0-HF2.3-CANDIDATE','component':'public','parent':base,'runtimePair':'a9c918b656ced6386b1af604fde51d4a7e88d3b9','baseSourceArchiveSha256':'6e2eba3b7e634173355beae38d0acba15ee7f3fea3fa6017b9b5aef902b15f27','publicDistSha256':digest_tree(root/'dist'),'publicDistDigestRule':'sorted path + NUL + file sha256 hex + LF','sourceQualification':source,'commerceOpenedByBuild':False,'commercialAcceptance':False,'profileCount':19103,'profileFactsChanged':False,'sourceState':'PUBLIC_SOURCE_BROWSER_QUALIFIED_NOT_PAID_LAUNCH_ACCEPTANCE'}
+          (root/'PRODUCTION_RELEASE.json').write_text(json.dumps(metadata,indent=2,sort_keys=True)+'\n')
+          names=sorted(list(source['files'])+['PRODUCTION_RELEASE.json']+[f.relative_to(root).as_posix() for f in (root/'dist/data/discovery').glob('*.json')])
+          def git(*a,**kw):return subprocess.check_output(['git','-C',str(root),*a],text=True,**kw).strip()
+          branch='local-franklin-hf23-qualified-'+os.environ['GITHUB_RUN_ID']
+          git('checkout','-b',branch);git('config','user.name','neutralboardroom');git('config','user.email','reachrgnow@gmail.com');git('add','--',*names)
+          staged=git('diff','--cached','--name-only').splitlines();assert set(staged)==set(names),(set(staged)-set(names),set(names)-set(staged))
+          git('commit','-m','Qualify Franklin factual discovery, contact comparison and private follow-through recovery; commerce held [skip ci]')
+          assert git('rev-parse','HEAD^')==base
+          env=os.environ.copy();env['GIT_CONFIG_COUNT']='1';env['GIT_CONFIG_KEY_0']='http.https://github.com/.extraheader';env['GIT_CONFIG_VALUE_0']='AUTHORIZATION: basic '+base64.b64encode(('x-access-token:'+env['GH_TOKEN']).encode()).decode()
+          git('push','origin','HEAD:refs/heads/'+branch,env=env)
+          prepared={'commit':git('rev-parse','HEAD'),'tree':git('rev-parse','HEAD^{tree}'),'parent':base,'branch':branch,'files':{n:hashlib.sha256((root/n).read_bytes()).hexdigest() for n in names},'productionPromotion':False,'commerceOpened':False,'runId':os.environ['GITHUB_RUN_ID']}
+          (e/'PREPARED_PUBLIC.json').write_text(json.dumps(prepared,indent=2)+'\n')
+          with zipfile.ZipFile(e/'EXACT_CHANGED_PUBLIC_SOURCE.zip','w',zipfile.ZIP_DEFLATED) as z:
+            for n in names:z.write(root/n,n)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: hf23-source-and-browser-qualification
+          path: candidate/evidence/
+          retention-days: 14
+          if-no-files-found: error
