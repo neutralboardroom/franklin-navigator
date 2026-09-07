@@ -1,0 +1,84 @@
+name: HF22 live reviewer and membership verification
+on:
+  push:
+    branches: [local-franklin-hf22-assistant-20260907]
+    paths: [.github/workflows/hf22-live-reviewer.yml]
+permissions:
+  contents: read
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: a9c918b656ced6386b1af604fde51d4a7e88d3b9
+          path: runtime
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Read-only live source, health and protected access checks
+        run: |
+          python - <<'PY'
+          import pathlib,urllib.request,urllib.error,hashlib,json,datetime
+          origin='https://franklin-navigator-membership.onrender.com';out=pathlib.Path('evidence');out.mkdir()
+          results=[]
+          def get(path,headers={}):
+            req=urllib.request.Request(origin+path,headers=headers)
+            try:
+              with urllib.request.urlopen(req,timeout=30) as r:return r.status,dict(r.headers),r.read()
+            except urllib.error.HTTPError as e:return e.code,dict(e.headers),e.read()
+          def check(name,ok,detail=None):results.append({'name':name,'pass':bool(ok),'detail':detail});assert ok,name
+          try:
+            for path,file in [('/review/','index.html'),('/review/app.js','app.js'),('/review/style.css','style.css')]:
+              status,headers,body=get(path);h={k.lower():v for k,v in headers.items()};expected=pathlib.Path('runtime/review')/file
+              check(path+'_exact_bytes',status==200 and body==expected.read_bytes(),{'status':status,'sha256':hashlib.sha256(body).hexdigest()})
+              check(path+'_private_cache','no-store' in h.get('cache-control',''))
+              check(path+'_noindex','noindex' in h.get('x-robots-tag',''))
+            for path in ['/health','/ready']:
+              status,headers,body=get(path);d=json.loads(body);(out/(path[1:]+'.json')).write_text(json.dumps(d,indent=2)+'\n')
+              check(path+'_database_and_infrastructure',status==200 and d['database'] is True and d['ok'] is True)
+              check(path+'_reviewer_configured',d['reviewerConsoleConfigured'] is True and d['reviewCoverageConfigured'] is True)
+              check(path+'_commerce_still_closed',d['commerceEnabled'] is False)
+            for path in ['/api/reviewer/session','/api/reviewer/queue','/api/reviewer/history']:
+              status,headers,body=get(path,{'Origin':origin});check(path+'_unauthenticated_denied',status in [401,403],{'status':status})
+              check(path+'_no_private_data',not any(s in body for s in [b'password_hash',b'email_normalized',b'account_id',b'private_notes']))
+          finally:
+            report={'atUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'runtimeCommit':'a9c918b656ced6386b1af604fde51d4a7e88d3b9','origin':origin,'mode':'LIVE_HTTPS_NO_PRIVATE_CREDENTIALS_NO_FINANCIAL_WRITES','pass':sum(x['pass'] for x in results),'fail':sum(not x['pass'] for x in results),'results':results,'ownerAuthenticationPerformed':False,'financialWrites':0,'reviewDecisions':0}
+            (out/'LIVE_RUNTIME_HTTP.json').write_text(json.dumps(report,indent=2)+'\n')
+          PY
+      - name: Browser dependencies
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Real live reviewer sign-in screen in English and Spanish
+        run: |
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright,expect
+          import pathlib,json,datetime
+          out=pathlib.Path('evidence');results=[];errors=[]
+          def check(name,ok):results.append({'name':name,'pass':bool(ok)});assert ok,name
+          try:
+            with sync_playwright() as p:
+              b=p.chromium.launch();page=b.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
+              response=page.goto('https://franklin-navigator-membership.onrender.com/review/',wait_until='networkidle');check('live_review_page',response.status==200)
+              for lang in ['en','es']:
+                if lang=='es':page.locator('#language').click()
+                for name,w,h in [('phone',390,844),('tablet',768,1024),('desktop',1440,1000)]:
+                  page.set_viewport_size({'width':w,'height':h});expect(page.locator('#login-button')).to_be_visible()
+                  check(lang+'_'+name+'_no_overflow',page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'))
+                  check(lang+'_'+name+'_email_proof_label',page.locator('#email-code').evaluate('(x)=>x.labels.length===1 && x.autocomplete==="one-time-code"'))
+                  check(lang+'_'+name+'_private_queue_hidden',page.locator('#workspace').is_hidden() and not page.locator('#queue').inner_text())
+                  page.screenshot(path=str(out/(lang+'-'+name+'-live-review-login.png')),full_page=True)
+              check('no_live_page_errors',not errors);b.close()
+          finally:
+            (out/'LIVE_REVIEW_BROWSER.json').write_text(json.dumps({'atUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'pass':sum(x['pass'] for x in results),'fail':sum(not x['pass'] for x in results),'results':results,'pageErrors':errors,'actualOwnerSignIn':False,'financialWrites':0},indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: hf22-live-reviewer-readiness
+          path: evidence/
+          retention-days: 14
+          if-no-files-found: error
