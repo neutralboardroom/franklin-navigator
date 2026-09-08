@@ -29,7 +29,7 @@ function activeMembership(row,now=Date.now()){
   return true;
 }
 function realBenefit(row){return Boolean(row&&(row.rich_profile===true||row.growth_desk===true||row.local_visibility_tools===true));}
-async function stripeRequest(cfg,pathname,{method='GET',params,idempotencyKey}={}){
+async function stripeRequest(cfg,pathname,{method='GET',params,idempotencyKey,errorCode='FIRST_VALUE_PROVIDER_REQUEST_FAILED'}={}){
   const headers={Authorization:'Bearer '+cfg.stripeKey};
   let body;
   if(method==='POST'){
@@ -37,22 +37,23 @@ async function stripeRequest(cfg,pathname,{method='GET',params,idempotencyKey}={
     if(idempotencyKey)headers['Idempotency-Key']=idempotencyKey;
     body=(params||new URLSearchParams()).toString();
   }
-  const response=await fetch('https://api.stripe.com'+pathname,{method,headers,body,signal:AbortSignal.timeout(10000)});
+  let response;
+  try{response=await fetch('https://api.stripe.com'+pathname,{method,headers,body,signal:AbortSignal.timeout(10000)});}catch{fail(errorCode);}
   const payload=await response.json().catch(()=>({}));
-  if(!response.ok)fail('FIRST_VALUE_PROVIDER_REQUEST_FAILED');
+  if(!response.ok)fail(errorCode);
   return payload;
 }
 function provider(cfg){return{
   async verifyAndCreatePortal(row){
-    const customer=await stripeRequest(cfg,'/v1/customers/'+encodeURIComponent(row.stripe_customer_id));
+    const customer=await stripeRequest(cfg,'/v1/customers/'+encodeURIComponent(row.stripe_customer_id),{errorCode:'FIRST_VALUE_PROVIDER_CUSTOMER_READ_FAILED'});
     if(customer.deleted||customer.id!==row.stripe_customer_id||customer.livemode!==true)fail('FIRST_VALUE_CUSTOMER_NOT_LIVE');
-    const subscription=await stripeRequest(cfg,'/v1/subscriptions/'+encodeURIComponent(row.stripe_subscription_id));
+    const subscription=await stripeRequest(cfg,'/v1/subscriptions/'+encodeURIComponent(row.stripe_subscription_id),{errorCode:'FIRST_VALUE_PROVIDER_SUBSCRIPTION_READ_FAILED'});
     if(subscription.id!==row.stripe_subscription_id||subscription.livemode!==true||!['active','trialing','past_due'].includes(String(subscription.status||'')))fail('FIRST_VALUE_SUBSCRIPTION_NOT_ACTIVE');
-    const configs=await stripeRequest(cfg,'/v1/billing_portal/configurations?active=true&is_default=true&limit=10');
+    const configs=await stripeRequest(cfg,'/v1/billing_portal/configurations?active=true&is_default=true&limit=10',{errorCode:'FIRST_VALUE_PROVIDER_PORTAL_CONFIG_READ_FAILED'});
     const portalConfig=(configs.data||[]).find(x=>x&&x.active===true&&x.is_default===true);
     if(!portalConfig?.features?.subscription_cancel?.enabled)fail('FIRST_VALUE_DIRECT_CANCELLATION_NOT_AVAILABLE');
     const params=new URLSearchParams({customer:row.stripe_customer_id,return_url:cfg.publicOrigin+'/membership-status/'});
-    const session=await stripeRequest(cfg,'/v1/billing_portal/sessions',{method:'POST',params,idempotencyKey:'franklin-first-value-'+sha256(row.membership_id).slice(0,40)});
+    const session=await stripeRequest(cfg,'/v1/billing_portal/sessions',{method:'POST',params,idempotencyKey:'franklin-first-value-'+sha256(row.membership_id).slice(0,40),errorCode:'FIRST_VALUE_PROVIDER_PORTAL_SESSION_CREATE_FAILED'});
     if(!/^bps_/.test(String(session.id||''))||!/^https:\/\/billing\.stripe\.com\//.test(String(session.url||'')))fail('FIRST_VALUE_PORTAL_SESSION_INVALID');
     return{customerLive:true,subscriptionLive:true,directCancellationAccess:true,portalSessionCreated:true};
   }
