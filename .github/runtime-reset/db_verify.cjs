@@ -1,5 +1,8 @@
 'use strict';
-const fs=require('node:fs'),{Pool}=require('pg'),{verifyPassword}=require('../../lib/security');
+const path=require('node:path'),fs=require('node:fs');
+const root=process.cwd();
+const {Pool}=require(path.join(root,'node_modules/pg'));
+const {verifyPassword}=require(path.join(root,'lib/security'));
 (async()=>{
  const fixture=JSON.parse(fs.readFileSync(process.argv[2]));
  const outPath=process.argv[3];
