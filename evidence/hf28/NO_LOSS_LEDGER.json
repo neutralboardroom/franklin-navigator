@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "franklin.hf28.no-loss-ledger.v1",
+  "baseCommit": "9f74b2acbac62a9cab4436a2733e71f524e673e9",
+  "activeEdition": "FRANKLIN_TN",
+  "capabilities": [
+    {"id":"PUBLIC_CHECKOUT_OPEN","state":"RETAINED","proofTarget":"separate membership runtime /ready"},
+    {"id":"PUBLIC_PROFILE_COUNT_19103","state":"RETAINED","proofTarget":"directory/profile manifest and live UI"},
+    {"id":"PROFILE_FACTS_AND_PROVENANCE","state":"RETAINED","proofTarget":"no profile data files changed"},
+    {"id":"FIND_LOCAL_TEXT_SEARCH","state":"IMPROVED","proofTarget":"search remains primary and usable"},
+    {"id":"FIND_LOCAL_CATEGORY_FILTER","state":"RETAINED","proofTarget":"category remains visible primary filter"},
+    {"id":"FIND_LOCAL_TYPE_AREA_SORT_FACT_FILTERS","state":"IMPROVED","proofTarget":"all retained under accessible More filters disclosure"},
+    {"id":"FIND_LOCAL_SHAREABLE_SEARCH_STATE","state":"RETAINED","proofTarget":"query/search parameters remain shareable"},
+    {"id":"FIND_LOCAL_COMPARE_UP_TO_THREE","state":"RETAINED","proofTarget":"Compare remains visible result action and compare tray unchanged"},
+    {"id":"FIND_LOCAL_SAVE_PROFILE","state":"RETAINED","proofTarget":"Save remains available under result More actions"},
+    {"id":"FIND_LOCAL_LISTED_WEBSITE","state":"RETAINED","proofTarget":"website remains available under result More actions when present"},
+    {"id":"FIND_LOCAL_OPEN_PROFILE","state":"IMPROVED","proofTarget":"single obvious primary result action retained"},
+    {"id":"EN_ES_PARITY","state":"RETAINED","proofTarget":"English and Spanish directory behavior and labels"},
+    {"id":"MOBILE_KEYBOARD_ACCESSIBILITY","state":"IMPROVED","proofTarget":"details/summary focus, touch targets, narrow viewport layout"},
+    {"id":"RANKING_NEUTRALITY","state":"RETAINED","proofTarget":"membership does not change ordinary directory ranking"},
+    {"id":"HF27_GLOBAL_NAVIGATION_HIERARCHY","state":"RETAINED","proofTarget":"6 core desktop links + More"},
+    {"id":"FRANKLIN_ASSISTANT","state":"RETAINED","proofTarget":"homepage/assistant source unchanged"},
+    {"id":"FRANKLIN_THROUGH_TIME_9_IMAGE_GALLERY","state":"RETAINED","proofTarget":"photo credits source unchanged"}
+  ],
+  "silentDropsAllowed": false
+}
