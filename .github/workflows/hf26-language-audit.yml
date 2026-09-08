@@ -1,0 +1,113 @@
+name: HF26 full public-language audit
+on:
+  push:
+    branches: [local-franklin-hf26-public-language-20260908]
+    paths: [.github/workflows/hf26-language-audit.yml]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 01aecafbfe16202d9d5a80eb6b97443c9ee305ad
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.13'}
+      - name: Extract and score all public-facing language
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from collections import defaultdict,Counter
+          import json,re,html
+          root=Path('dist');e=Path('evidence');e.mkdir(exist_ok=True)
+          hidden={'script','style','noscript','template','svg','path','meta','link'}
+          attrs={'title','aria-label','placeholder','alt','value'}
+          records=[]
+          class P(HTMLParser):
+            def __init__(self,path):super().__init__(convert_charrefs=True);self.path=path;self.stack=[];self.skip=0;self.title=False;self.meta=[]
+            def handle_starttag(self,tag,a):
+              self.stack.append(tag)
+              if tag in hidden:self.skip+=1
+              d=dict(a)
+              if tag=='title':self.title=True
+              if tag=='meta' and d.get('name')=='description' and d.get('content'):records.append({'kind':'meta','file':self.path,'tag':'meta','text':d['content'].strip()})
+              if not self.skip:
+                for k in attrs:
+                  v=d.get(k)
+                  if v and re.search(r'[A-Za-zÁ-ÿ]',v):records.append({'kind':'attr','file':self.path,'tag':tag,'attr':k,'text':re.sub(r'\s+',' ',v).strip()})
+            def handle_endtag(self,tag):
+              if tag in hidden and self.skip:self.skip-=1
+              if tag=='title':self.title=False
+              if self.stack:self.stack.pop()
+            def handle_data(self,data):
+              if self.skip:return
+              t=re.sub(r'\s+',' ',data).strip()
+              if t and re.search(r'[A-Za-zÁ-ÿ]',t):records.append({'kind':'title' if self.title else 'text','file':self.path,'tag':self.stack[-1] if self.stack else '', 'text':t})
+          html_files=sorted(root.rglob('*.html'))
+          for p in html_files:
+            rel=p.relative_to(root).as_posix();parser=P(rel)
+            try:parser.feed(p.read_text(errors='ignore'))
+            except Exception as ex:records.append({'kind':'parse_error','file':rel,'text':type(ex).__name__})
+          # Public JS string literals likely shown to customers. Exclude minified libraries and build scripts.
+          js_files=[p for p in sorted((root/'assets').glob('*.js')) if p.stat().st_size<800000]
+          lit=re.compile(r"(?<![A-Za-z0-9_$])(['\"])(.{2,500}?)(?<!\\)\1")
+          for p in js_files:
+            rel=p.relative_to(root).as_posix();src=p.read_text(errors='ignore')
+            for m in lit.finditer(src):
+              s=m.group(2).replace('\\n',' ').replace('\\t',' ')
+              if re.search(r'[A-Za-zÁ-ÿ]{3}',s) and '://' not in s and not re.fullmatch(r'[A-Za-z0-9_.:/?#=&%+-]+',s):
+                records.append({'kind':'js','file':rel,'tag':'string','text':re.sub(r'\s+',' ',s).strip()})
+          # Preserve source counts, but collapse identical wording for editorial review.
+          by=defaultdict(list)
+          for r in records:by[r['text']].append(r)
+          internal=re.compile(r'\b(canonical|runtime|schema|entitlement|lookup key|lookupKey|webhook|ADMIN_TOKEN|reconciliation|receipt|hash|sha-?256|debug|developer|deployment|candidate release|source state|authority state|internal state|gate [A-Z0-9]|SCC|SRE|Profile Factory|Local Investigator)\b',re.I)
+          tentative=re.compile(r'\b(coming soon|not yet|will be|will become|planned|preview|beta|before .*available|when .*available|later phase|future release|currently closed|remains closed)\b',re.I)
+          jargon=re.compile(r'\b(representation|provenance|qualified source|source-backed|first-party source|currentness|suppression|canonical facts|projection|enrichment|operational state|artifact)\b',re.I)
+          cold=re.compile(r'\b(user|users|utilize|leverage|facilitate|initiate|navigate to|proceed to|in order to|please be advised|thereof|herein)\b',re.I)
+          editorial=[]
+          for text,uses in by.items():
+            kinds=Counter(x['kind'] for x in uses);files=sorted(set(x['file'] for x in uses));flags=[]
+            if internal.search(text):flags.append('INTERNAL_TECHNICAL')
+            if tentative.search(text):flags.append('STALE_OR_FUTURE')
+            if jargon.search(text):flags.append('JARGON')
+            if cold.search(text):flags.append('FORMAL_OR_COLD')
+            if len(text)>180:flags.append('LONG')
+            if len(text)>90 and text.count(',')>=3:flags.append('DENSE')
+            if re.search(r'\b[A-Z]{5,}\b',text) and not re.search(r'\b(FAQ|IRS|USDA|FEMA|ADA|TDEC|TDOT|NPI|HIPAA|Tennessee|Franklin)\b',text):flags.append('ALL_CAPS')
+            if re.search(r'\b(click here|learn more here|go here)\b',text,re.I):flags.append('WEAK_LINK_LABEL')
+            if re.search(r'\b(we cannot|we can’t|not responsible|no guarantee|at your own risk)\b',text,re.I):flags.append('NEGATIVE_TONE_REVIEW')
+            if flags:editorial.append({'text':text,'uses':len(uses),'files':files[:30],'fileCount':len(files),'kinds':dict(kinds),'flags':flags})
+          editorial.sort(key=lambda x:(-len(x['flags']),-x['uses'],-len(x['text'])))
+          # Profile wording is repeated; list repeated profile strings separately so all 19,103 pages remain covered.
+          profile_strings=[]
+          for text,uses in by.items():
+            prof=[u for u in uses if u['file'].startswith('profiles/')]
+            if len(prof)>=25:profile_strings.append({'text':text,'profileUses':len(prof),'exampleFiles':sorted({u['file'] for u in prof})[:5]})
+          profile_strings.sort(key=lambda x:-x['profileUses'])
+          # Most-used non-profile phrases expose inconsistent terminology.
+          common=[]
+          for text,uses in by.items():
+            non=[u for u in uses if not u['file'].startswith('profiles/')]
+            if len(non)>=3:common.append({'text':text,'uses':len(non),'files':sorted({u['file'] for u in non})[:20]})
+          common.sort(key=lambda x:-x['uses'])
+          summary={'schemaVersion':'franklin.hf26.public-language-audit.v1','baseCommit':'01aecafbfe16202d9d5a80eb6b97443c9ee305ad','htmlPages':len(html_files),'profilePages':sum(1 for p in html_files if p.relative_to(root).as_posix().startswith('profiles/')),'nonProfilePages':sum(1 for p in html_files if not p.relative_to(root).as_posix().startswith('profiles/')),'publicJsFiles':len(js_files),'rawRecords':len(records),'uniqueStrings':len(by),'flaggedUniqueStrings':len(editorial),'parseErrors':sum(1 for r in records if r['kind']=='parse_error')}
+          (e/'LANGUAGE_AUDIT_SUMMARY.json').write_text(json.dumps(summary,indent=2)+'\n')
+          (e/'FLAGGED_PUBLIC_LANGUAGE.json').write_text(json.dumps(editorial,ensure_ascii=False,indent=2)+'\n')
+          (e/'REPEATED_PROFILE_LANGUAGE.json').write_text(json.dumps(profile_strings,ensure_ascii=False,indent=2)+'\n')
+          (e/'COMMON_NONPROFILE_LANGUAGE.json').write_text(json.dumps(common,ensure_ascii=False,indent=2)+'\n')
+          # Export every unique string with locations for full editorial traceability.
+          all_strings=[{'text':t,'uses':len(us),'files':sorted({u['file'] for u in us}),'kinds':dict(Counter(u['kind'] for u in us))} for t,us in by.items()]
+          all_strings.sort(key=lambda x:(x['files'][0] if x['files'] else '',x['text']))
+          (e/'ALL_PUBLIC_STRINGS.json').write_text(json.dumps(all_strings,ensure_ascii=False,indent=2)+'\n')
+          print(json.dumps(summary))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hf26-full-language-audit
+          path: evidence/
+          retention-days: 14
+          if-no-files-found: error
