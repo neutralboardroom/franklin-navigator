@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "franklin.hf28.role-authority-no-drift.v1",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "authorityTransfer": false,
+  "sixRoleRouting": {
+    "SRE_OWNER_CONSOLE": "Commercial intent, approved pricing/offers and commercial contracts only; HF2.8 does not invent or mutate them.",
+    "SCC_INTERNAL": "Coordination/currentness/gates/accepted lineage; HF2.8 does not self-issue SCC acceptance or mutate SCC pointers.",
+    "NATIONAL_HOME_PLATFORM": "Separate product; not read, edited, packaged or deployed.",
+    "LOCAL_COMMUNITY_PLATFORM": "Owns HF2.8 Local source/UI/copy/product behavior/tests/package/deployment/rollback in Franklin lane.",
+    "PROFILE_FACTORY": "Sole canonical profile fact authority; HF2.8 changes zero profile facts and retains 19,103 accepted Local projection.",
+    "LOCAL_INVESTIGATOR": "Sole qualified dynamic local-research authority; HF2.8 publishes no new LI facts."
+  },
+  "smarterJustice": {
+    "operationalRelationship": false,
+    "runtimeConnection": false,
+    "dataTransfer": false,
+    "writeback": false,
+    "deepLinkOrReferral": false,
+    "donorUsed": false,
+    "reason": "Generic Local directory usability is outside the legal-module-only donor exception."
+  },
+  "commercialIntegrity": {
+    "pricesChanged": false,
+    "offersChanged": false,
+    "checkoutChanged": false,
+    "paymentStateChanged": false,
+    "memberOrEntitlementStateChanged": false,
+    "outreachAuthorizedOrExecuted": false
+  },
+  "profileIntegrity": {
+    "profileDataFilesChanged": false,
+    "canonicalFactsCreated": false,
+    "identityResolutionPerformed": false,
+    "acceptedPublicProjectionCount": 19103,
+    "pf1518CandidateImported": false
+  },
+  "localResearchIntegrity": {
+    "li26CandidateImported": false,
+    "newEventOrDynamicFactPublished": false
+  },
+  "result": "PASS_NO_AUTHORITY_DRIFT"
+}
