@@ -89,6 +89,15 @@
     section.dataset.r41Ready='1';
   }
 
+  function enhanceHistoryLink(){
+    if(location.pathname!=='/'&&location.pathname!=='/es/')return;
+    const link=q('.r22-history a[href="/photo-credits/"]');
+    if(!link)return;
+    link.dataset.r41En='See all Franklin Through Time images';
+    link.dataset.r41Es='Ver todas las imágenes de Franklin a través del tiempo';
+    link.textContent=text(link.dataset.r41En,link.dataset.r41Es);
+  }
+
   function markPrimarySections(){
     qa('main section .actions').forEach(group=>{
       const primary=q('.primary',group);
@@ -101,12 +110,24 @@
     qa('[data-r41-en]').forEach(el=>{el.textContent=text(el.dataset.r41En,el.dataset.r41Es)});
   }
 
+  function bindEscape(){
+    document.addEventListener('keydown',event=>{
+      if(event.key!=='Escape')return;
+      const open=q('.r41-nav-more[open],.r41-more-actions[open],.r41-home-routes[open]');
+      if(!open)return;
+      open.open=false;
+      q(':scope > summary',open)?.focus();
+    });
+  }
+
   function init(){
     simplifyHeader();
     simplifyActions();
     simplifyHomeRoutes();
+    enhanceHistoryLink();
     markPrimarySections();
     syncLabels();
+    bindEscape();
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
