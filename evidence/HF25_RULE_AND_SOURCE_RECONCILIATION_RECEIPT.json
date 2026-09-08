@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "franklin.local.rule-source-reconciliation.v1",
+  "receiptId": "LOCAL-FRANKLIN-HF25-RULE-SOURCE-RECONCILIATION-20260908-001",
+  "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "authorityTransfer": false,
+  "ownerCommand": {
+    "name": "UNIVERSAL SMARTER LOCAL COMMUNITY PLATFORM NEXT MOST IMPROVED REASONABLY POSSIBLE VERSION — PERMANENT BUILD COMMAND",
+    "revision": "2026-09-03-R2",
+    "executionMode": "BUILD",
+    "latestOwnerInstruction": "Execute the uploaded standing next-version command after Franklin launch closeout"
+  },
+  "assignedWorkOrder": null,
+  "sourceTruth": {
+    "newestGitHubMain": "9e8195d9c3939f791795ab38add326402b5d55c8",
+    "mainTree": "712da99d0c7c1c5cc2af8703e415ff7e842f2df5",
+    "mainDifferenceFromLivePublic": "Contains post-live source/coordination cleanup; current public Render service remains on the accepted HF2.4 behavior commit",
+    "currentLivePublicCommit": "1a289026f981f89b8c9077b99cc076c21b50221d",
+    "currentLivePublicDeploy": "dep-dafnjeou01pc73b6fca0",
+    "publicService": "srv-da8tg6rbc2fs73crru2g",
+    "currentRuntimeCommit": "44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8",
+    "currentRuntimeDeploy": "dep-dafq07on74is73b4sp00",
+    "runtimeService": "srv-dabgvefqj5pc739vr4h0",
+    "runtimeBranch": "franklin-commerce-runtime-r30",
+    "latestDurableCompleteLocalZip": {
+      "name": "FRANKLIN_NAVIGATOR__HF2_3__LIVE_DISCOVERY_AND_PRIVATE_FOLLOWTHROUGH__CHECKOUT_CLOSED__2026-09-08.zip",
+      "libraryFileId": "file_00000000db6881f592d4a844c4a224a4",
+      "bytes": 112545787
+    },
+    "reconciliationDecision": "Build the successor from newest GitHub main while preserving and re-verifying the current live HF2.4 behavior and exact current runtime. Do not pretend the older Library ZIP equals the current live pair."
+  },
+  "acceptedCommercialTruth": {
+    "localReadyReceipt": "LOCAL-FRANKLIN-MEMBER-BENEFIT-PORTAL-READY-20260908-001",
+    "sreWO051": "SRE-WO051-FINAL-ACCEPTANCE-20260908-001",
+    "sreWO053": "ACCEPTED_FINAL",
+    "sccWO055": "SCC-WO055-FRANKLIN-FINAL-PASS-20260908-001",
+    "checkoutAuthorized": true,
+    "checkoutOpen": true,
+    "pricesUsd": [5, 50, 120],
+    "rollback": "COMMERCE_ENABLED=false"
+  },
+  "upstreamDispositions": {
+    "profileFactory": {
+      "latestObserved": "FR-PF-PLATFORM-15.17",
+      "canonicalDataImport": "DEFER_WITH_CAUSE",
+      "reason": "No newer accepted Local-consumable canonical profile handoff was established in fresh reconciliation."
+    },
+    "localInvestigator": {
+      "latestObserved": "SLI-FRANKLIN-HANDOFF-20260908-025",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "Producer-qualified candidate remains AWAITING_SCC_GATE with consumer acceptance unknown and no real Local consumer runtime integration."
+    },
+    "smarterJusticeDonor": {
+      "disposition": "NOT_USED",
+      "reason": "No bounded Local legal-module donor capability question is needed for this successor."
+    }
+  },
+  "priorityQueue": [
+    {
+      "priority": "P0",
+      "candidate": "POST_LAUNCH_PUBLIC_COMMERCE_TRUTH_CONSISTENCY",
+      "status": "QUALIFIED_NOW",
+      "evidence": "Static membership-pricing and membership-start pages still state checkout is closed while accepted runtime/catalog are open.",
+      "scope": "Public copy, EN/ES translation parity, open-state enrollment messaging; no price, payment, eligibility or idempotency changes."
+    },
+    {
+      "priority": "P1",
+      "candidate": "POST_LAUNCH_MEMBER_VALUE_OR_RESIDENT_WORKFLOW_IMPROVEMENTS",
+      "status": "REASSESS_AFTER_P0"
+    },
+    {
+      "priority": "P2",
+      "candidate": "PF15.17_OR_LI25_DATA_ADOPTION",
+      "status": "DEFER_WITH_CAUSE",
+      "reason": "Acceptance/currentness gates not established."
+    }
+  ],
+  "noLossBaseline": {
+    "publicProfiles": 19103,
+    "checkoutMustRemainOpen": true,
+    "existingMemberAccessMustRemain": true,
+    "franklinAssistantMustRemain": true,
+    "reviewerToolsMustRemain": true,
+    "freeFactualCorrectionsMustRemain": true,
+    "serverCreatedCheckoutMustRemain": true,
+    "verifiedProfileEligibilityMustRemain": true,
+    "noSecondChargeProtectionMustRemain": true,
+    "accountBoundBillingAndCancellationMustRemain": true,
+    "hardCommunityIsolationMustRemain": true
+  },
+  "releaseReservation": {
+    "successor": "FR-NAV1.15.0-HF2.5-CANDIDATE",
+    "branch": "local-franklin-hf25-postlaunch-truth-20260908",
+    "base": "9e8195d9c3939f791795ab38add326402b5d55c8",
+    "globalLeaseCapability": "NOT_AVAILABLE_AS_A_LOCAL_ATOMIC_TOOL",
+    "collisionCheck": "No existing hf25 branch found before reservation",
+    "failClosedOnParentChangeBeforePromotion": true
+  }
+}
