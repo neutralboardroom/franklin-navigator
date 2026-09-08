@@ -13,7 +13,7 @@ ALLOWED={
  'evidence/hf29/LIVE_VISUAL_VERIFICATION.json','evidence/hf29/NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT.json',
  'evidence/hf29/PRE_SEAL_CURRENTNESS_RECEIPT.json','evidence/hf29/ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT.json',
  'PRODUCTION_RELEASE.json','NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_18_0_HF29.md',
- 'scripts/build-hf29-release.py','scripts/validate-hf29-release.py','.github/workflows/hf29-seal.yml'
+ 'scripts/build-hf29-release.py','scripts/validate-hf29-release.py','scripts/verify-hf29-design.mjs','.github/workflows/hf29-seal.yml'
 }
 
 def fail(msg):
@@ -46,7 +46,8 @@ for needle in [
  '.r41-more-actions-menu{', 'position:absolute', '.r27-navigator-dialog{width:min(640px',
  '.r24-destinations,.r41-home-routes{display:none!important}', '.hf29-footer-more-menu', '.hf29-today-filter',
  '.navigator-examples.r24-chips{display:none!important}', '.hf29-example-select', '.hf29-dialog-more',
- '.device-reset-panel .hf29-safe-choice'
+ '.device-reset-panel .hf29-safe-choice', '[data-today-grid]{grid-template-columns:repeat(2,minmax(0,1fr))!important',
+ '.hf29-card-more{position:relative', '.hf29-card-more-menu{position:absolute'
 ]:
  if needle not in css: fail('missing CSS gate '+needle)
 
@@ -64,7 +65,7 @@ for disallowed in ['activities','sports','learning']:
 if "p==='/directory/'" not in core_body or "p==='/get-it-done/'" not in core_body or "p==='/today/'" not in core_body:
  fail('required core header routes missing')
 if "section.hidden=true" not in nav: fail('duplicate homepage route chooser not suppressed')
-for needle in ['simplifyAssistantExamples','simplifyTodayFilters','simplifyFooter','simplifyMyFranklin','simplifyDialogActions']:
+for needle in ['simplifyAssistantExamples','simplifyTodayFilters','simplifyTodayCardActions','simplifyFooter','simplifyMyFranklin','simplifyDialogActions']:
  if needle not in design: fail('missing rendered simplifier '+needle)
 if "@import url('/assets/hf29-design.css');" not in r37: fail('HF29 CSS not loaded before paint')
 if "data-hf29-design" not in i18n: fail('HF29 JS loader missing')
@@ -96,5 +97,6 @@ print(json.dumps({
  'staticNonProfileDisclosuresAudited':static_disclosures,
  'maxStaticButtonCountBeforeRenderedSimplification':max_buttons,
  'heroExampleButtonsRendered':0,'heroExampleSelectorRendered':1,
+ 'todayCategoryFilter':'SINGLE_SELECT','todayDesktopColumns':2,'todayDirectCardActionsMax':1,
  'assistantPrimaryButtonsVisibleMax':1,'profileFactsChanged':False,'runtimeChanged':False,'checkoutChanged':False
 },indent=2))
