@@ -79,6 +79,28 @@
     }
   }
 
+  function simplifyDialogActions(root=document){
+    qa('.r27-business-actions,.r27-navigator-body .actions',root).forEach(group=>{
+      if(group.dataset.hf29DialogReady==='1')return;
+      const items=[...group.children].filter(el=>el.matches('a,button'));
+      if(items.length<=2){group.dataset.hf29DialogReady='1';return}
+      const primary=items.find(el=>el.classList.contains('primary'))||items[0];
+      group.append(primary);
+      const rest=items.filter(el=>el!==primary);
+      const details=document.createElement('details');
+      details.className='hf29-dialog-more';
+      details.dataset.hf29SummaryEn='Other options';
+      details.dataset.hf29SummaryEs='Otras opciones';
+      const summary=document.createElement('summary');
+      summary.textContent=tx('Other options','Otras opciones');
+      const menu=document.createElement('div');
+      menu.className='hf29-dialog-more-menu';
+      rest.forEach(item=>menu.append(item));
+      details.append(summary,menu);group.append(details);
+      group.dataset.hf29DialogReady='1';
+    });
+  }
+
   function closeCompactMenusOnEscape(){
     document.addEventListener('keydown',event=>{
       if(event.key!=='Escape')return;
@@ -93,9 +115,11 @@
     const select=q('.hf29-today-filter select');if(select)select.setAttribute('aria-label',tx('Filter what matters now','Filtrar lo que importa ahora'));
   }
 
-  function init(){simplifyTodayFilters();simplifyFooter();refineHome();syncLanguage()}
+  function init(){simplifyTodayFilters();simplifyFooter();refineHome();simplifyDialogActions();syncLanguage()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   window.addEventListener('load',init,{once:true});
   window.addEventListener('franklinlanguagechange',()=>{syncLanguage();setTimeout(init,0)});
   closeCompactMenusOnEscape();
+  const observer=new MutationObserver(records=>{for(const record of records){for(const node of record.addedNodes){if(node.nodeType===1)simplifyDialogActions(node)}}});
+  if(document.body)observer.observe(document.body,{childList:true,subtree:true});else document.addEventListener('DOMContentLoaded',()=>observer.observe(document.body,{childList:true,subtree:true}),{once:true});
 })();
