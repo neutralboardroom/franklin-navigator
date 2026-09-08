@@ -1,0 +1,41 @@
+name: HF28 Find Local qualification
+on:
+  push:
+    branches:
+      - hf28-find-local-simplification-20260909
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: JavaScript syntax
+        run: |
+          node --check dist/assets/hf27-navigation.js
+          node --check dist/assets/hf28-directory.js
+          node --check dist/assets/local-discovery.js
+      - name: Find Local source qualification
+        run: node scripts/verify-hf28-find-local.mjs
+      - name: JSON integrity for HF2.8 evidence
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          files=list(pathlib.Path('evidence/hf28').glob('*.json'))
+          assert files
+          for path in files:
+              json.loads(path.read_text('utf-8'))
+          print({'result':'PASS','evidenceJson':len(files)})
+          PY
+      - name: No nested release archives in candidate additions
+        run: |
+          python - <<'PY'
+          import pathlib
+          banned=[p.as_posix() for p in pathlib.Path('evidence/hf28').rglob('*') if p.is_file() and p.suffix.lower() in {'.zip','.tar','.gz','.tgz','.7z'}]
+          assert not banned, banned
+          print({'result':'PASS','nestedArchives':0})
+          PY
