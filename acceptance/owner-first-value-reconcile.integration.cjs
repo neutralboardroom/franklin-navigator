@@ -1,0 +1,26 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict'),{Pool}=require('pg');
+const {reconcile,sha256}=require('../scripts/owner-first-value-reconcile.cjs');
+const db=process.env.TEST_DATABASE_URL||'';const u=new URL(db||'https://invalid');assert(['127.0.0.1','localhost'].includes(u.hostname)&&u.pathname.includes('test'),'Dedicated loopback test DB required');
+(async()=>{
+ const root=path.resolve(__dirname,'..'),schema='fv_'+crypto.randomUUID().replaceAll('-','');const init=new Pool({connectionString:u.href,ssl:false});await init.query('create schema '+schema);await init.end();u.searchParams.set('options','-c search_path='+schema+',public');const pool=new Pool({connectionString:u.href,ssl:false});const client=await pool.connect();
+ try{
+  await client.query(fs.readFileSync(path.join(root,'schema/001_init.sql'),'utf8'));
+  const account='acct_SYNTHETICFIRSTVALUE12345',profile='FR-ORG-SYNTHETIC-FIRSTVALUE',membership='member_SYNTHETICFIRSTVALUE';
+  await client.query("insert into franklin_accounts(account_id,community,email,email_normalized,password_hash,display_name,email_verified_at) values($1,'FRANKLIN_TN','owner@example.invalid','owner@example.invalid',$2,'Synthetic Owner',now())",[account,'x'.repeat(64)]);
+  await client.query("insert into franklin_sessions(session_hash,account_id,expires_at) values('session_synthetic',$1,now()+interval '1 day')",[account]);
+  await client.query("insert into franklin_profile_links(link_id,account_id,profile_id,authority_state,verified_at) values('link_synthetic',$1,$2,'VERIFIED',now())",[account,profile]);
+  await client.query("insert into franklin_memberships(membership_id,account_id,profile_id,lookup_key,stripe_customer_id,stripe_subscription_id,status,current_period_end) values($1,$2,$3,'franklin_community_member_monthly_v5','cus_SYNTHETICFIRSTVALUE','sub_SYNTHETICFIRSTVALUE','ACTIVE',now()+interval '30 days')",[membership,account,profile]);
+  await client.query("insert into franklin_entitlements(membership_id,access_state,growth_desk,rich_profile,local_visibility_tools,expires_at) values($1,'ACTIVE',true,true,true,now()+interval '30 days')",[membership]);
+  await client.query("insert into franklin_audit_log(audit_id,actor_type,actor_ref_hash,action_type,target_type,target_ref_hash,safe_context) values('audit_auth_synthetic','ACCOUNT',$1,'REVIEW_SESSION_CREATED','ACCOUNT',$1,'{}'::jsonb)",[sha256(account)]);
+  let providerCalls=0;const provider={verifyAndCreatePortal:async row=>{providerCalls++;assert.equal(row.stripe_customer_id,'cus_SYNTHETICFIRSTVALUE');assert.equal(row.stripe_subscription_id,'sub_SYNTHETICFIRSTVALUE');return{customerLive:true,subscriptionLive:true,directCancellationAccess:true,portalSessionCreated:true};}};
+  const cfg={accountId:account,db:u.href,stripeKey:'sk_live_'+'a'.repeat(32),publicOrigin:'https://franklinnavigator.com'};
+  const first=await reconcile(client,cfg,provider);assert.equal(first.result,'PASS_RECORDED');assert.equal(providerCalls,1);assert.equal(first.financialMutations,0);assert.equal(first.profileOrContentMutations,0);
+  const state=(await client.query('select first_value_completed_at from franklin_memberships where membership_id=$1',[membership])).rows[0];assert(state.first_value_completed_at);
+  const receipts=await client.query("select safe_context from franklin_audit_log where action_type='MEMBER_FIRST_VALUE_EXISTING_BENEFIT_RECONCILED'");assert.equal(receipts.rowCount,1);assert.equal(receipts.rows[0].safe_context.memberPublicationRequired,false);assert.equal(receipts.rows[0].safe_context.directCancellationAccess,true);assert.equal(receipts.rows[0].safe_context.chargeCreated,false);assert.equal(receipts.rows[0].safe_context.cancellationExecuted,false);
+  assert.equal((await client.query('select count(*)::int n from franklin_memberships')).rows[0].n,1);assert.equal((await client.query('select count(*)::int n from franklin_profile_links')).rows[0].n,1);assert.equal((await client.query('select count(*)::int n from franklin_checkout_intents')).rows[0].n,0);
+  const second=await reconcile(client,cfg,provider);assert.equal(second.result,'ALREADY_RECORDED');assert.equal(providerCalls,1);assert.equal((await client.query("select count(*)::int n from franklin_audit_log where action_type='MEMBER_FIRST_VALUE_EXISTING_BENEFIT_RECONCILED'")).rows[0].n,1);
+  await client.query('update franklin_memberships set first_value_completed_at=null');await client.query("delete from franklin_audit_log where action_type in ('MEMBER_FIRST_VALUE_EXISTING_BENEFIT_RECONCILED','REVIEW_SESSION_CREATED')");let failed=false;try{await reconcile(client,cfg,provider);}catch(e){failed=e.code==='FIRST_VALUE_PASSWORD_AUTH_REQUIRED';}assert.equal(failed,true);assert.equal(providerCalls,1);assert.equal((await client.query('select first_value_completed_at from franklin_memberships where membership_id=$1',[membership])).rows[0].first_value_completed_at,null);
+  console.log(JSON.stringify({result:'PASS',actualPostgres:true,provider:'STUB_NO_NETWORK',firstValueReceipt:true,idempotent:true,authGuard:true,financialMutations:0,profileOrContentMutations:0}));
+ }finally{client.release();await pool.end();}
+})().catch(e=>{console.error(e);process.exit(1)});
