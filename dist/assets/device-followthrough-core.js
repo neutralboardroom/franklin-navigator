@@ -7,7 +7,7 @@
 })(typeof window === 'undefined' ? null : window, function () {
   'use strict';
   const EDITION = 'FRANKLIN_TN';
-  const KEYS = Object.freeze({preferences: 'franklinNavigator.myFranklin.v1', reminders: 'franklinNavigator.reminders.v1', profiles: 'franklinNavigator.savedProfiles.v1', actions: 'franklinNavigator.savedActionPlans.v1', assistant: 'franklinNavigator.assistantPlans.v1'});
+  const KEYS = Object.freeze({preferences: 'franklinNavigator.myFranklin.v1', reminders: 'franklinNavigator.reminders.v1', profiles: 'franklinNavigator.savedProfiles.v1', actions: 'franklinNavigator.savedActionPlans.v1', assistant: 'franklinNavigator.assistantPlans.v1', assistantPractical: 'franklinNavigator.assistantPractical.v1'});
   const ALLOWED_KEYS = new Set(Object.values(KEYS));
   const INTERESTS = new Set(['newcomer', 'homeowner', 'renter', 'children', 'caregiver', 'transit', 'business', 'civic', 'events', 'jobs', 'parks']);
   const PROFILE_ID = /^FR-(?:ORG|PER|NPI|IRS|TDHS|GOV|HLT|EDU|CIV|NPO|PRO)-[A-Za-z0-9._~-]{1,170}$/;
