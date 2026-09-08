@@ -40,6 +40,7 @@ for (const marker of [
 ]) need(css.includes(marker), `missing CSS marker ${marker}`);
 
 for (const fn of [
+  'ensureLateCss',
   'simplifyAssistantExamples',
   'simplifyTodayFilters',
   'simplifyTodayCardActions',
@@ -47,6 +48,8 @@ for (const fn of [
   'simplifyMyFranklin',
   'simplifyDialogActions'
 ]) need(design.includes(fn), `missing design function ${fn}`);
+need(design.includes("link.href='/assets/hf29-design.css'"), 'late HF2.9 CSS reapplication missing');
+need(design.includes("link.dataset.hf29DesignLate='1'"), 'late HF2.9 CSS marker missing');
 
 need(nav.includes('function canonicalHeaderItems'), 'canonical universal header missing');
 need(nav.includes('normalizeHeaderLinks'), 'runtime header normalization missing');
@@ -75,6 +78,7 @@ console.log(JSON.stringify({
   todayDirectCardActionsMax: 1,
   assistantPrimaryButtonsVisibleMax: 1,
   businessMembershipPremiumPolish: true,
+  lateCssOverrideProtection: true,
   profileCount: release.profileCount,
   profileFactsChanged: false,
   runtimeChanged: false,
