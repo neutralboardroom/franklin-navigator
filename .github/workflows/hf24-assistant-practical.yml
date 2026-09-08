@@ -2,7 +2,7 @@ name: HF24 practical Assistant qualification
 on:
   push:
     branches: [local-franklin-hf24-assistant-practical-20260908]
-    paths: [dist/assets/r40-assistant-practical.js, dist/assets/r37-i18n.js, .github/workflows/hf24-assistant-practical.yml]
+    paths: [dist/assets/r40-assistant-practical.js, dist/assets/r37-i18n.js, dist/assets/device-followthrough-core.js, .github/workflows/hf24-assistant-practical.yml]
 permissions:
   contents: read
 jobs:
@@ -26,12 +26,15 @@ jobs:
           node --check dist/assets/r37-i18n.js
           node --check dist/assets/r38-assistant-followthrough.js
           node --check dist/assets/navigator-bot.js
+          node --check dist/assets/device-followthrough-core.js
           python - <<'PY'
           from pathlib import Path
           p=Path('dist/assets/r40-assistant-practical.js').read_text()
+          core=Path('dist/assets/device-followthrough-core.js').read_text()
           assert "rawQuestionStored:false" in p and "networkSubmission:false" in p
           assert "localStorage" in p and "fetch(" not in p and "XMLHttpRequest" not in p
           assert "Smarter Justice" not in p and "smarterjustice" not in p.lower()
+          assert "franklinNavigator.assistantPractical.v1" in core
           assert "tel:911" in Path('dist/assets/r38-assistant-followthrough.js').read_text()
           assert Path('dist/assistant/index.html').exists() and Path('dist/es/asistente/index.html').exists()
           assert Path('dist/my-franklin/index.html').exists() and Path('dist/es/mi-franklin/index.html').exists()
@@ -61,12 +64,10 @@ jobs:
               page.locator('form.navigator-form button[type=submit]').click()
               page.locator('[data-r40-practical] h3').wait_for()
               ok(locale+' targeted clarification',page.locator('[data-r40-practical] button').count()>=3)
-              labels=page.locator('[data-r40-practical] button').all_text_contents()
               choice='Home-based' if locale=='en' else 'Desde casa'
               page.get_by_role('button',name=choice,exact=True).click()
               ok(locale+' ordered checklist',page.locator('[data-r40-practical] ol li').count()>=4)
               ok(locale+' links safe',all(h.startswith('/') for h in page.locator('[data-r40-practical] ol a').evaluate_all('(xs)=>xs.map(x=>x.getAttribute("href"))')))
-              # Second turn refines the same task even when the short follow-up omits the task name.
               inp.fill('new leased location' if locale=='en' else 'local nuevo alquilado')
               page.locator('form.navigator-form button[type=submit]').click();page.wait_for_timeout(150)
               text=page.locator('[data-r40-practical]').inner_text()
@@ -79,7 +80,9 @@ jobs:
               page.goto(origin+href,wait_until='networkidle');page.locator('[data-r40-practical] ol').wait_for();ok(locale+' reopened actionable checklist',page.locator('[data-r40-practical] ol li').count()>=4)
               my='/my-franklin/' if locale=='en' else '/es/mi-franklin/'
               page.goto(origin+my,wait_until='networkidle');page.locator('[data-r40-practical-saved]').wait_for();ok(locale+' My Franklin saved checklist',page.locator('[data-r40-practical-saved] article').count()==1)
-              # Existing urgent behavior still wins and detailed business task is not added to an emergency question.
+              # Device core owns this new minimized store, so the existing My Franklin reset removes it too.
+              cleared=page.evaluate("()=>{const s=window.FranklinDeviceCore.createStore(()=>localStorage);return s.clear()}" )
+              ok(locale+' reset owns detailed checklist key',cleared['ok'] and page.evaluate("localStorage.getItem('franklinNavigator.assistantPractical.v1')===null"))
               page.goto(origin+path,wait_until='networkidle');inp=page.locator('[data-navigator-input]');inp.fill('911 immediate danger');page.locator('form.navigator-form button[type=submit]').click();page.wait_for_timeout(100)
               ok(locale+' urgent route preserved','911' in page.locator('[data-navigator-output]').inner_text())
               ok(locale+' no practical business overlay for urgent',page.locator('[data-r40-practical]').is_hidden())
