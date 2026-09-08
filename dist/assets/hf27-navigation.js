@@ -30,6 +30,10 @@
     return details;
   }
 
+  function closeOtherDisclosures(current){
+    qa('.r41-nav-more[open],.r41-more-actions[open]').forEach(open=>{if(open!==current)open.open=false});
+  }
+
   function simplifyHeader(){
     const nav=q('header .nav');
     if(!nav||nav.dataset.r41Ready==='1')return;
@@ -38,8 +42,8 @@
     if(!extras.length){nav.dataset.r41Ready='1';return}
     const more=buildDisclosure({summaryEn:'More',summaryEs:'Más',items:extras,className:'r41-nav-more'});
     nav.append(more);
+    q(':scope > summary',more)?.addEventListener('click',()=>closeOtherDisclosures(more));
     more.addEventListener('click',event=>{if(event.target.closest('a'))more.open=false});
-    document.addEventListener('click',event=>{if(more.open&&!more.contains(event.target))more.open=false});
     nav.dataset.r41Ready='1';
   }
 
@@ -56,8 +60,9 @@
     });
     const overflow=ordered.slice(visible.length);
     if(overflow.length){
-      const more=buildDisclosure({summaryEn:'More options',summaryEs:'Más opciones',items:overflow,className:'r41-more-actions'});
+      const more=buildDisclosure({summaryEn:'More',summaryEs:'Más',items:overflow,className:'r41-more-actions'});
       group.append(more);
+      q(':scope > summary',more)?.addEventListener('click',()=>closeOtherDisclosures(more));
       more.addEventListener('click',event=>{if(event.target.closest('a,button'))more.open=false});
     }
     group.dataset.r41Ready='1';
@@ -99,7 +104,10 @@
     qa('[data-r41-en]').forEach(el=>{el.textContent=text(el.dataset.r41En,el.dataset.r41Es)});
   }
 
-  function bindEscape(){
+  function bindDismissal(){
+    document.addEventListener('click',event=>{
+      qa('.r41-nav-more[open],.r41-more-actions[open]').forEach(open=>{if(!open.contains(event.target))open.open=false});
+    });
     document.addEventListener('keydown',event=>{
       if(event.key!=='Escape')return;
       const open=q('.r41-nav-more[open],.r41-more-actions[open],.r41-home-routes[open]');
@@ -116,7 +124,7 @@
     enhanceHistoryLink();
     markPrimarySections();
     syncLabels();
-    bindEscape();
+    bindDismissal();
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
