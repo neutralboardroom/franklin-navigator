@@ -97,3 +97,12 @@
   });
 
 })();
+
+/* HF2.7 shared navigation and next-action hierarchy loader. */
+(()=>{
+  const load=()=>{
+    if(!document.querySelector('link[data-hf27-navigation]')){const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/hf27-navigation.css';css.dataset.hf27Navigation='1';document.head.append(css)}
+    if(!document.querySelector('script[data-hf27-navigation]')){const js=document.createElement('script');js.src='/assets/hf27-navigation.js';js.defer=true;js.dataset.hf27Navigation='1';document.head.append(js)}
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
+})();
