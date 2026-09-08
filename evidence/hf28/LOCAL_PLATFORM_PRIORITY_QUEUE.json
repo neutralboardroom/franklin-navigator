@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "franklin.hf28.priority-queue.v1",
+  "activeEdition": "FRANKLIN_TN",
+  "ranked": [
+    {"priority":"P1","id":"FIND_LOCAL_DECISION_LOAD","state":"QUALIFIED_NOW","value":"High resident/profile discovery task-completion value; no upstream authority dependency","action":"Implement this release"},
+    {"priority":"P1","id":"FIRST_GENUINE_NONMEMBER_CHECKOUT_SESSION_PROOF","state":"BLOCKED_EXTERNAL_CONDITION","value":"Post-open commercial assurance","reason":"Requires first genuine eligible verified nonmember; fake eligibility is prohibited","owner":"LOCAL_COMMUNITY_PLATFORM at genuine point of use; SCC/SRE consume evidence"},
+    {"priority":"P1","id":"PF1518_PROFILE_EXPANSION","state":"DEFER_WITH_CAUSE","value":"Potential 22,826-profile projection and link/email enrichment","reason":"PF74 pointer unchanged; candidate not consumer-accepted","owner":"PROFILE_FACTORY + SCC acceptance before Local consumption"},
+    {"priority":"P1","id":"LI26_NEAR_TERM_CURRENTNESS","state":"DEFER_WITH_CAUSE","value":"Fresh civic/library/transport/access intelligence","reason":"V26 consumer acceptance unknown, handoff not dispatched, package-specific SCC gates pending","owner":"LOCAL_INVESTIGATOR + SCC acceptance before Local consumption"},
+    {"priority":"P2","id":"STATIC_FIRST_PAINT_NAV_TEMPLATE","state":"QUALIFIED_LATER_AFTER_HF28","value":"Reduce runtime layout shift from HF2.7 enhancement layer","reason":"Broader 19k-page regeneration should follow exact packaged-source workflow after the current focused directory slice is sealed","owner":"LOCAL_COMMUNITY_PLATFORM"},
+    {"priority":"P2","id":"SRE242_CANDIDATE_CONSUMPTION","state":"DEFER_WITH_CAUSE","value":"Newer commercial engine candidate","reason":"SRE 2.42 candidate consumerAccepted=false and deployed=false; Local current checkout contract is already accepted/open","owner":"SRE_OWNER_CONSOLE + SCC"},
+    {"priority":"P3","id":"ADDITIONAL_HISTORY_IMAGES","state":"DEFER_WITH_CAUSE","value":"Local visual differentiation","reason":"Current documented set is 9 and no additional rights-qualified accepted imagery is presently bound","owner":"LOCAL_COMMUNITY_PLATFORM after qualified rights/source evidence"}
+  ]
+}
