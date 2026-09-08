@@ -1,0 +1,59 @@
+name: HF26 exact mobile overflow comparison
+on:
+  push:
+    branches: [local-franklin-hf26-public-language-20260908]
+    paths: [.github/workflows/hf26-overflow-compare.yml]
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {path: transport, persist-credentials: false}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {ref: 01aecafbfe16202d9d5a80eb6b97443c9ee305ad, path: base, persist-credentials: false}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {ref: 01aecafbfe16202d9d5a80eb6b97443c9ee305ad, path: candidate, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.13'}
+      - name: Reconstruct exact HF2.6 candidate
+        run: |
+          set -euo pipefail
+          cp transport/.github/hf26/public_language_patch.py ./public_language_patch.py
+          python public_language_patch.py
+          python transport/.github/hf26/public_language_refine_v5.py
+      - name: Measure exact profile on base and candidate at 390px
+        run: |
+          set -euo pipefail
+          command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser
+          python - <<'PY'
+          from pathlib import Path
+          rel=Path('dist/profiles/FR-NPI-818439aa9937bb66/index.html')
+          marker="""<script>window.addEventListener('load',()=>setTimeout(()=>{document.documentElement.setAttribute('data-hf26-scroll',String(document.documentElement.scrollWidth));document.documentElement.setAttribute('data-hf26-client',String(document.documentElement.clientWidth));document.documentElement.setAttribute('data-hf26-overflow',String(document.documentElement.scrollWidth>document.documentElement.clientWidth+2));},250));</script>"""
+          for root in ['base','candidate']:
+            p=Path(root)/rel;t=p.read_text();p.write_text(t.replace('</body>',marker+'</body>'))
+          PY
+          python -m http.server 8890 --bind 127.0.0.1 --directory base/dist >/tmp/base.log 2>&1 &
+          python -m http.server 8891 --bind 127.0.0.1 --directory candidate/dist >/tmp/cand.log 2>&1 &
+          CHROME=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser)
+          "$CHROME" --headless --no-sandbox --disable-gpu --window-size=390,900 --virtual-time-budget=1800 --dump-dom http://127.0.0.1:8890/profiles/FR-NPI-818439aa9937bb66/ >/tmp/base.html 2>/tmp/base.err
+          "$CHROME" --headless --no-sandbox --disable-gpu --window-size=390,900 --virtual-time-budget=1800 --dump-dom http://127.0.0.1:8891/profiles/FR-NPI-818439aa9937bb66/ >/tmp/cand.html 2>/tmp/cand.err
+          python - <<'PY'
+          import re,json
+          out={}
+          for name in ['base','cand']:
+            t=open('/tmp/'+name+'.html').read()
+            def attr(k):
+              m=re.search('data-hf26-'+k+'="([^"]+)"',t);return m.group(1) if m else None
+            out[name]={'scrollWidth':attr('scroll'),'clientWidth':attr('client'),'overflow':attr('overflow')}
+          open('HF26_OVERFLOW_COMPARISON.json','w').write(json.dumps(out,indent=2)+'\n');print(json.dumps(out));assert out['base']['overflow']==out['cand']['overflow'],out
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: hf26-overflow-comparison
+          path: HF26_OVERFLOW_COMPARISON.json
+          retention-days: 14
+          if-no-files-found: error
