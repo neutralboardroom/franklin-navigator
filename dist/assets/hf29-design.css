@@ -60,6 +60,9 @@ header{box-shadow:0 2px 14px rgba(17,49,52,.035)}
 .r24-around .r22-inline-actions a{font-weight:740;text-decoration-thickness:.07em}
 .r24-around .r22-section-head>.button{background:var(--brand-dark);border-color:var(--brand-dark);color:#fff}
 .r24-around .r22-section-head>.button:hover{background:var(--brand);border-color:var(--brand)}
+.navigator-examples.r24-chips{display:none!important}
+.hf29-example-select{display:grid;gap:5px;margin-top:12px;max-width:310px;color:#53666a;font-size:.88rem;font-weight:700}
+.hf29-example-select select{width:100%;min-height:42px;padding:8px 34px 8px 11px;border:1px solid #b9c8c7;border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-weight:580}
 .hf29-today-filter{display:grid;gap:6px;min-width:220px;font-weight:720;color:#40565b}
 .hf29-today-filter select{min-height:44px;padding:9px 36px 9px 11px;border:1px solid #b8c7c6;border-radius:10px;background:#fff;color:var(--ink);font:inherit}
 .hf29-today-filter-ready .r22-filter-chips{display:none!important}
@@ -123,6 +126,6 @@ details.r22-dashboard-card[open]>summary::after{content:" −"}
   .hf29-footer-more{width:100%}
   .hf29-footer-more-menu{position:static;width:100%;margin-top:8px;box-shadow:none}
   .r27-navigator-dialog{width:100vw;border-radius:0}
-  .hf29-today-filter{width:100%;min-width:0}
+  .hf29-today-filter,.hf29-example-select{width:100%;max-width:none;min-width:0}
 }
 @media(prefers-reduced-motion:reduce){.card,.r22-card,.r22-profile-result{transition:none!important}}
