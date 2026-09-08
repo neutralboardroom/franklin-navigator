@@ -1,0 +1,35 @@
+name: HF25 dynamic live readback
+on:
+  push:
+    branches: [local-franklin-hf25-dynamic-truth-20260908]
+    paths: [.github/workflows/hf25-dynamic-live-readback.yml]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 01aecafbfe16202d9d5a80eb6b97443c9ee305ad
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.13'}
+      - name: Exact live byte readback and continuity
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import urllib.request,hashlib,json,datetime
+          sha=lambda b:hashlib.sha256(b).hexdigest();origin='https://franklinnavigator.com';rows=[]
+          for rel in ['assets/membership-live.js','data/r37-es-public-strings.json']:
+            req=urllib.request.Request(origin+'/'+rel,headers={'User-Agent':'Franklin-HF25-dynamic-live/1.0','Cache-Control':'no-cache'})
+            with urllib.request.urlopen(req,timeout=30) as r:b=r.read();status=r.status
+            expected=sha((Path('dist')/rel).read_bytes());actual=sha(b);rows.append({'path':rel,'status':status,'expectedSha256':expected,'actualSha256':actual,'pass':status==200 and expected==actual});assert rows[-1]['pass'],rows[-1]
+          def get(u):return json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'Franklin-HF25-dynamic-live/1.0','Cache-Control':'no-cache'}),timeout=30))
+          ready=get('https://franklin-navigator-membership.onrender.com/ready');catalog=get('https://franklin-navigator-membership.onrender.com/api/catalog');assert ready['database'] and ready['commerceEnabled'] and ready['liveCheckoutEnabled'] and ready['startupError'] is None;assert catalog['publicCheckoutOpen'] and [x['priceUsd'] for x in catalog['choices']]==[5,50,120]
+          with urllib.request.urlopen(urllib.request.Request(origin+'/membership-enroll/',headers={'Cache-Control':'no-cache'}),timeout=30) as r:assert r.status==200
+          report={'schemaVersion':'franklin.hf25.dynamic-live-readback.v1','atUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'publicCommit':'01aecafbfe16202d9d5a80eb6b97443c9ee305ad','publicDeploy':'dep-dafsgtvqj5pc7387j6v0','runtimeCommit':'44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8','runtimeDeploy':'dep-dafq07on74is73b4sp00','files':rows,'ready':{'database':ready['database'],'commerceEnabled':ready['commerceEnabled'],'liveCheckoutEnabled':ready['liveCheckoutEnabled'],'startupError':ready['startupError']},'catalog':{'publicCheckoutOpen':catalog['publicCheckoutOpen'],'pricesUsd':[x['priceUsd'] for x in catalog['choices']]},'financialMutations':0};Path('HF25_DYNAMIC_LIVE_READBACK.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with: {name: hf25-dynamic-live-readback, path: HF25_DYNAMIC_LIVE_READBACK.json, retention-days: 14, if-no-files-found: error}
