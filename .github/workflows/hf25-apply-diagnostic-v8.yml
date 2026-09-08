@@ -1,0 +1,48 @@
+name: HF25 apply diagnostic v8
+on:
+  push:
+    branches: [local-franklin-hf25-postlaunch-truth-20260908]
+    paths: [.github/workflows/hf25-apply-diagnostic-v8.yml]
+permissions:
+  contents: read
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {path: transport, persist-credentials: false}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {ref: 9e8195d9c3939f791795ab38add326402b5d55c8, path: candidate/public, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.13'}
+      - name: Apply all exact variants and complete Spanish parity
+        run: |
+          python - <<'PY'
+          import json,pathlib,subprocess,sys
+          d=json.loads(pathlib.Path('transport/.github/hf25/postlaunch_truth_patch.json').read_text())
+          for x in d['replacements']:x['min']=1
+          d['replacements'] += [
+            {'old':'new public membership checkout is closed.','new':'Franklin Community Membership enrollment is open for eligible verified profiles.','min':1},
+            {'old':'Franklin will not reopen new enrollment until the remaining launch checks are complete.','new':'Eligible verified profiles can start membership setup now after representation is confirmed.','min':1},
+            {'old':'New public membership checkout remains closed while Franklin completes the remaining launch checks.','new':'Franklin Community Membership enrollment is open for eligible verified profiles.','min':1},
+            {'old':'Franklin Community Membership enrollment is open for eligible verified profiles. An existing paid Community Membership is connected to the correct account and profile, is active, and can use secure billing and cancellation. Do not make another payment for an existing membership while Franklin completes the remaining launch checks for new enrollment.','new':'Franklin Community Membership enrollment is open for eligible verified profiles. An existing paid Community Membership is connected to the correct account and profile, is active, and can use secure billing and cancellation. Existing active members should not make another payment for the same membership.','min':1}
+          ]
+          d['newSpanishTranslations'].update({
+            'Eligible verified profiles can start membership setup now after representation is confirmed.':'Los perfiles verificados elegibles pueden iniciar la configuración de la membresía ahora después de confirmar la representación.',
+            'Checking your basic listing and preparing a factual correction are free. The Business Growth Planner and these guides are also free to use today. Community Membership enrollment is open for eligible verified profiles. Free planning tools remain available. If sponsored placements are offered later, they will be clearly labeled and will not change ordinary directory placement. No guide or plan can guarantee leads, customers or revenue.':'Revisar tu listado básico y preparar una corrección factual es gratuito. El Planificador de Crecimiento Empresarial y estas guías también son gratuitos hoy. La inscripción a la Membresía Comunitaria está abierta para perfiles verificados elegibles. Las herramientas gratuitas de planificación siguen disponibles. Si más adelante se ofrecen ubicaciones patrocinadas, estarán claramente identificadas y no cambiarán la ubicación normal en el directorio. Ninguna guía ni plan puede garantizar contactos, clientes ni ingresos.',
+            'Community Membership enrollment and secure payment are open for eligible verified profiles. Basic listings, factual corrections and the current business planning tools remain free.':'La inscripción a la Membresía Comunitaria y el pago seguro están abiertos para perfiles verificados elegibles. Los listados básicos, las correcciones factuales y las herramientas actuales de planificación empresarial siguen siendo gratuitos.',
+            'Community Membership enrollment is open for eligible verified profiles. You can use these planning guides without paying.':'La inscripción a la Membresía Comunitaria está abierta para perfiles verificados elegibles. Puedes usar estas guías de planificación sin pagar.',
+            'For new enrollment, the approved choices are $5 monthly, $50 annual and $120 once for a prepaid 36-month Franklin Charter Membership. Public checkout is open for eligible verified profiles. Monthly and annual memberships renew until canceled; Charter does not automatically renew. Renewal behavior and cancellation access must be shown before payment.':'Para nuevas inscripciones, las opciones aprobadas son $5 mensuales, $50 anuales y $120 una sola vez por una Membresía Charter de Franklin prepagada por 36 meses. El pago público está abierto para perfiles verificados elegibles. Las membresías mensual y anual se renuevan hasta que se cancelen; Charter no se renueva automáticamente. Las condiciones de renovación y el acceso a la cancelación deben mostrarse antes del pago.',
+            'Franklin Community Membership enrollment is open for eligible verified profiles. An existing paid Community Membership is active and can use secure billing and cancellation. Eligible verified profiles can start membership setup now after representation is confirmed.':'La inscripción a la Membresía Comunitaria de Franklin está abierta para perfiles verificados elegibles. Una Membresía Comunitaria de pago existente está activa y puede usar facturación y cancelación seguras. Los perfiles verificados elegibles pueden iniciar la configuración de la membresía ahora después de confirmar la representación.',
+            'Franklin Community Membership enrollment is open for eligible verified profiles. An existing paid Community Membership is connected to the correct account and profile, is active, and can use secure billing and cancellation. Existing active members should not make another payment for the same membership.':'La inscripción a la Membresía Comunitaria de Franklin está abierta para perfiles verificados elegibles. Una Membresía Comunitaria de pago existente está conectada a la cuenta y al perfil correctos, está activa y puede usar facturación y cancelación seguras. Los miembros activos no deben realizar otro pago por la misma membresía.',
+            'Franklin Navigator keeps the basic listing free. Paid membership adds access to richer reviewed profile details, practical growth tools and a stronger local community presence—not paid control of factual accuracy or ordinary directory results.':'Franklin Navigator mantiene gratuito el listado básico. La membresía de pago da acceso a detalles de perfil revisados más completos, herramientas prácticas de crecimiento y una presencia comunitaria local más sólida; no compra control sobre la exactitud factual ni sobre los resultados normales del directorio.',
+            'Free listing review and factual correction preparation remain separate. Community Membership enrollment and secure payment are open for eligible verified profiles.':'La revisión gratuita del listado y la preparación de correcciones factuales permanecen separadas. La inscripción a la Membresía Comunitaria y el pago seguro están abiertos para perfiles verificados elegibles.',
+            'You can review membership value and prepare your profile now. An existing paid Community Membership is active and can manage billing securely. Franklin Community Membership enrollment is open for eligible verified profiles.':'Puedes revisar el valor de la membresía y preparar tu perfil ahora. Una Membresía Comunitaria de pago existente está activa y puede administrar la facturación de forma segura. La inscripción a la Membresía Comunitaria de Franklin está abierta para perfiles verificados elegibles.',
+            'You can use this guide now for free. Community Membership enrollment is open for eligible verified profiles, and no plan can guarantee leads, customers or revenue.':'Puedes usar esta guía gratis ahora. La inscripción a la Membresía Comunitaria está abierta para perfiles verificados elegibles y ningún plan puede garantizar contactos, clientes ni ingresos.',
+            'an existing paid Community Membership is connected to the correct account and profile, is active, and stays active after restart. Existing members can use their member tools and secure billing and cancellation. New public enrollment is open for eligible verified profiles.':'una Membresía Comunitaria de pago existente está conectada a la cuenta y al perfil correctos, está activa y permanece activa después de un reinicio. Los miembros existentes pueden usar sus herramientas de miembro y la facturación y cancelación seguras. La nueva inscripción pública está abierta para perfiles verificados elegibles.'
+          })
+          tmp=pathlib.Path('/tmp/hf25-patch.json');tmp.write_text(json.dumps(d,ensure_ascii=False))
+          subprocess.run([sys.executable,'transport/.github/hf25/apply_postlaunch_truth.py','candidate/public',str(tmp)],check=True)
+          print('APPLY_AND_ES_PARITY_PASS')
+          PY
