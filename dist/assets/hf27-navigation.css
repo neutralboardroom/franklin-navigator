@@ -1,4 +1,5 @@
 /* Franklin Navigator HF2.7 — navigation hierarchy, progressive disclosure, and responsive overflow protection */
+.r41-nav-more:not([open])>.r41-nav-more-menu,.r41-more-actions:not([open])>.r41-more-actions-menu,.r41-home-routes:not([open])>.r24-destination-grid{display:none!important}
 .r41-nav-more{position:relative;flex:0 0 auto}
 .r41-nav-more>summary{list-style:none;cursor:pointer;color:#344248;font-weight:700;padding:8px 0;border-bottom:2px solid transparent;white-space:nowrap}
 .r41-nav-more>summary::-webkit-details-marker{display:none}
