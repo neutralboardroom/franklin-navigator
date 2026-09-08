@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "franklin.hf28.no-loss-community-isolation.v1",
+  "activeEdition": "FRANKLIN_TN",
+  "baseCommit": "9f74b2acbac62a9cab4436a2733e71f524e673e9",
+  "profileCount": 19103,
+  "profileFactsChanged": false,
+  "heldProfilesPromoted": 0,
+  "crossCommunityContentAdded": false,
+  "crossCommunityProfilesAdded": false,
+  "crossCommunityAccountsOrStateAdded": false,
+  "crossCommunityAnalyticsAdded": false,
+  "crossCommunitySecretsAdded": false,
+  "crossCommunityDeploymentMutation": false,
+  "retained": [
+    "Search and Category filtering",
+    "Type, Area, Sort and available-fact filters",
+    "Shareable search-state links",
+    "Compare up to three profiles",
+    "Save profile",
+    "Listed website when available",
+    "Profile provenance and source dates",
+    "English/Spanish directory behavior",
+    "Pagination and 19,103-profile scale",
+    "Membership-neutral ordinary directory ordering",
+    "HF2.7 global navigation hierarchy",
+    "Franklin Assistant",
+    "Franklin Through Time nine-image gallery",
+    "Open public checkout runtime"
+  ],
+  "improved": [
+    "Search and Category are the only always-visible primary directory filters",
+    "Advanced filters remain fully available under More filters / Más filtros",
+    "Open profile and Compare are direct result actions; Save and website move under More / Más",
+    "Mobile layout stacks primary filters and avoids horizontal overflow",
+    "Active advanced-filter count is surfaced without reopening the filter panel"
+  ],
+  "authorizedReplacement": [],
+  "silentCapabilityDrops": 0,
+  "result": "PASS_NO_LOSS_FRANKLIN_ISOLATION_PRESERVED"
+}
