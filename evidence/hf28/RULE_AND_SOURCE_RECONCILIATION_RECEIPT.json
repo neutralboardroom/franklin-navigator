@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "franklin.hf28.rule-source-reconciliation.v1",
+  "recordedForBuildDate": "2026-09-09",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "authorityTransfer": false,
+  "ownerCommand": {
+    "name": "UNIVERSAL_SMARTER_LOCAL_COMMUNITY_PLATFORM_NEXT_VERSION_BUILD_COMMAND",
+    "revision": "2026-09-03-R2",
+    "executionMode": "BUILD"
+  },
+  "proposedSuccessor": "FR-NAV1.17.0-HF2.8-CANDIDATE",
+  "effectiveLocalBuildBase": {
+    "repository": "neutralboardroom/franklin-navigator",
+    "branch": "main",
+    "commit": "9f74b2acbac62a9cab4436a2733e71f524e673e9",
+    "state": "DEPLOYED_AND_LIVE_VERIFIED_PUBLIC_SOURCE; NOT_RELABELED_AS_SCC_ACCEPTED_CANONICAL_RELEASE",
+    "staticService": "srv-da8tg6rbc2fs73crru2g",
+    "lastObservedDeploy": "dep-dafvjs67bikc73dpcj50",
+    "reasonUsedAsNoLossBase": "It is the current Local-owned deployed source and contains qualified HF2.5-HF2.7 public corrections. Reverting to an older persisted archive would knowingly lose live product behavior."
+  },
+  "lastDurableLocalArtifactObserved": {
+    "artifact": "FRANKLIN_NAVIGATOR__HF2_3__LIVE_DISCOVERY_AND_PRIVATE_FOLLOWTHROUGH__CHECKOUT_CLOSED__2026-09-08.zip",
+    "bytes": 112545787,
+    "sha256": "46d72af61fede988941e5748292a7af61af7766b9d0c125dee67bcf83417a96e",
+    "state": "LIBRARY_PERSISTED_AND_DEPLOYED_BOUNDED_AT_THAT_TIME; OUTCOME_BLOCKED; NOT_SCC_ACCEPTED",
+    "profilePages": 19103
+  },
+  "scc": {
+    "latestAcceptedSuccessorObserved": "v0.39.0 R8",
+    "currentCanonicalPointerObserved": "v0.38.0",
+    "wo055": "ACCEPTED_CLOSED_FINAL",
+    "publicPaidAcquisitionAuthorization": "AUTHORIZED_NOW",
+    "checkoutShouldRemainOpen": true,
+    "d2PointerWrite": "BLOCKED_GUARDED_WRITE_CAPABILITY",
+    "franklinDependencyOnD2": false,
+    "manualDispatchRequired": true
+  },
+  "commerceAndRuntime": {
+    "runtimeCommit": "44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8",
+    "runtimeDeploy": "dep-dafq07on74is73b4sp00",
+    "runtimeService": "srv-dabgvefqj5pc739vr4h0",
+    "commerceEnabled": true,
+    "liveCheckoutEnabled": true,
+    "database": true,
+    "stripeCheckoutSessionConfigured": true,
+    "stripeWebhookConfigured": true,
+    "portalSessionConfigured": true,
+    "startupError": null,
+    "approvedObservedPrices": ["$5/month", "$50/year", "$120 once for 36 months"],
+    "mutationAuthorizedByHF28": false
+  },
+  "profileFactory": {
+    "canonicalPointer": "PF74_UNCHANGED",
+    "currentPublicProjectionCount": 19103,
+    "newerCandidate": "FR-PF-PLATFORM-15.18",
+    "candidateReadyProfiles": 22826,
+    "candidateState": "TESTED_AND_LIBRARY_PERSISTED_QUALIFIED_SUCCESSOR_CANDIDATE_NOT_SELF_ACCEPTED",
+    "consumerImportDisposition": "DEFER_WITH_CAUSE_PENDING_ACCEPTED_PROFILE_HANDOFF_POINTER",
+    "outreachAuthorized": false
+  },
+  "localInvestigator": {
+    "newerCandidate": "SLI-FRANKLIN-HANDOFF-20260908-026",
+    "candidateSha256": "4d89006d9c030a37643ef3e6a01a8890f014269d1f17c16e16e3f14234fb8b48",
+    "candidateState": "QUALIFIED_RESEARCH_HANDOFF_WITH_QUARANTINED_ITEMS",
+    "consumerAcceptance": "UNKNOWN",
+    "acceptedHeadAdvance": "NOT_EXECUTED",
+    "dispatch": "NOT_DISPATCHED",
+    "consumerImportDisposition": "DEFER_WITH_CAUSE_PENDING_PACKAGE_SPECIFIC_SCC_GATES_AND_CONSUMER_ACCEPTANCE"
+  },
+  "sre": {
+    "newerCandidate": "SRE-OC-CP-2.42.0",
+    "candidateState": "TESTED_SOURCE_CANDIDATE_NOT_DEPLOYED",
+    "candidateConsumerAccepted": false,
+    "localCommercialMutationDisposition": "NO_CHANGE; PRESERVE_CURRENT_ACCEPTED_OPEN_CHECKOUT CONTRACT"
+  },
+  "smarterJustice": {
+    "donorUsed": false,
+    "reason": "HF2.8 scope is generic Local Find Local usability and profile discovery. The legal-module-only frozen donor exception is not applicable."
+  },
+  "releaseLease": {
+    "globalSccLeaseClaimed": false,
+    "guard": "UNIQUE_GIT_BRANCH_PLUS_PINNED_BASE_PLUS_PRE_PROMOTION_COMPARE_AND_SET_RECHECK",
+    "branch": "hf28-find-local-simplification-20260909",
+    "baseCommit": "9f74b2acbac62a9cab4436a2733e71f524e673e9"
+  },
+  "qualifiedNowScope": [
+    "Reduce Find Local filter decision load while retaining full filtering power",
+    "Make each result card expose one obvious primary action plus one comparison action and place secondary utilities under progressive disclosure",
+    "Preserve bilingual behavior, shareable search state, device-only comparison, profile provenance, ranking neutrality, accessibility and mobile behavior"
+  ],
+  "explicitNonScope": [
+    "profile fact creation or canonical profile import",
+    "Local Investigator fact publication",
+    "pricing or offer changes",
+    "checkout/runtime/payment/member state changes",
+    "outreach or campaign execution",
+    "Smarter Justice donor inspection or connection",
+    "SCC pointer mutation"
+  ]
+}
