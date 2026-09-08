@@ -1,0 +1,27 @@
+/* Franklin Navigator HF2.8 — calmer Find Local filters and result actions. */
+[data-franklin-discovery] .hf28-primary-toolbar{grid-template-columns:minmax(0,2fr) minmax(220px,1fr)!important;align-items:end}
+[data-franklin-discovery] .hf28-more-filters{margin:.2rem 0 1rem;border:1px solid #cbdad8;border-radius:12px;background:#fff}
+[data-franklin-discovery] .hf28-more-filters-summary{cursor:pointer;list-style:none;padding:.8rem 1rem;font-weight:800;color:#075f66;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+[data-franklin-discovery] .hf28-more-filters-summary::-webkit-details-marker{display:none}
+[data-franklin-discovery] .hf28-more-filters-summary::after{content:'▾';font-size:.82em}
+[data-franklin-discovery] .hf28-more-filters[open]>.hf28-more-filters-summary::after{content:'▴'}
+[data-franklin-discovery] .hf28-more-filters.has-active-filters>.hf28-more-filters-summary{background:#eef8f6}
+[data-franklin-discovery] .hf28-more-filters-panel{padding:0 1rem 1rem;border-top:1px solid #e0e9e8}
+[data-franklin-discovery] .hf28-secondary-filter-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;padding:1rem 0 .4rem}
+[data-franklin-discovery] .hf28-secondary-filter-grid label{font-weight:700}
+[data-franklin-discovery] .hf28-secondary-filter-grid select{display:block;width:100%;min-width:0;margin-top:.35rem}
+[data-franklin-discovery] .hf28-more-filters .r22-fact-filters{margin:0;padding-top:.65rem;border-top:1px solid #e6edec}
+[data-dir-results] .result-actions{align-items:center}
+[data-dir-results] .hf28-result-more{position:relative}
+[data-dir-results] .hf28-result-more>summary{cursor:pointer;list-style:none;color:#075f66;font-weight:760;padding:.42rem .2rem;text-decoration:underline;text-underline-offset:.18em;white-space:nowrap}
+[data-dir-results] .hf28-result-more>summary::-webkit-details-marker{display:none}
+[data-dir-results] .hf28-result-more>summary::after{content:' ▾';font-size:.78em}
+[data-dir-results] .hf28-result-more-menu{position:absolute;z-index:15;right:0;top:calc(100% + .35rem);min-width:190px;display:grid;gap:.4rem;padding:.55rem;background:#fff;border:1px solid #cbdad8;border-radius:10px;box-shadow:0 12px 28px rgba(17,49,52,.12)}
+[data-dir-results] .hf28-result-more-menu .button{width:100%;justify-content:flex-start;text-align:left;white-space:normal}
+@media(max-width:720px){
+ [data-franklin-discovery] .hf28-primary-toolbar{grid-template-columns:1fr!important}
+ [data-franklin-discovery] .hf28-secondary-filter-grid{grid-template-columns:1fr}
+ [data-dir-results] .hf28-result-more{position:static}
+ [data-dir-results] .hf28-result-more-menu{position:static;min-width:0;margin-top:.35rem;box-shadow:none}
+}
+@media print{[data-franklin-discovery] .hf28-more-filters,[data-dir-results] .hf28-result-more{display:none!important}}
