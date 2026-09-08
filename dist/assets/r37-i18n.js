@@ -88,4 +88,9 @@
     try{await load();setLanguage(language,{save:false,navigate:false});observeBody()}
     catch{document.documentElement.lang=language;setPressed()}
   });
+  document.addEventListener('DOMContentLoaded',()=>{
+    if(!document.querySelector('[data-navigator-bot],[data-r38-assistant-plans]'))return;
+    if(document.querySelector('script[data-r40-assistant-practical]'))return;
+    const script=document.createElement('script');script.src='/assets/r40-assistant-practical.js';script.defer=true;script.dataset.r40AssistantPractical='1';document.head.append(script);
+  });
 })();
