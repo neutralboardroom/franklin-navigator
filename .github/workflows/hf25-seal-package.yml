@@ -1,0 +1,181 @@
+name: HF25 seal deterministic release package
+on:
+  push:
+    branches: [local-franklin-hf25-dynamic-truth-20260908]
+    paths: [.github/workflows/hf25-seal-package.yml]
+permissions:
+  contents: read
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {ref: 01aecafbfe16202d9d5a80eb6b97443c9ee305ad, path: source-public, persist-credentials: false}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {ref: 44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8, path: source-runtime, persist-credentials: false}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: {node-version: '22'}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.13'}
+      - name: Fresh exact-parent and live-open pre-seal currentness check
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          python - <<'PY'
+          import urllib.request,json,os,hashlib,pathlib,datetime
+          repo='neutralboardroom/franklin-navigator';pub='01aecafbfe16202d9d5a80eb6b97443c9ee305ad';runtime='44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8'
+          def api(p):return json.load(urllib.request.urlopen(urllib.request.Request('https://api.github.com/repos/'+repo+p,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'}),timeout=30))
+          assert api('/git/ref/heads/main')['object']['sha']==pub,'public main advanced; package blocked'
+          assert api('/git/ref/heads/franklin-commerce-runtime-r30')['object']['sha']==runtime,'runtime advanced; package blocked'
+          def get(u):return json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'Franklin-HF25-seal/1.0','Cache-Control':'no-cache'}),timeout=30))
+          ready=get('https://franklin-navigator-membership.onrender.com/ready');catalog=get('https://franklin-navigator-membership.onrender.com/api/catalog')
+          assert ready['database'] and ready['commerceEnabled'] and ready['liveCheckoutEnabled'] and ready['stripeCheckoutSessionConfigured'] and ready['stripeWebhookConfigured'] and ready['portalSessionConfigured'] and ready['startupError'] is None
+          assert catalog['publicCheckoutOpen'] and [x['priceUsd'] for x in catalog['choices']]==[5,50,120]
+          out={'schemaVersion':'franklin.hf25.preseal-currentness.v1','atUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'role':'LOCAL_COMMUNITY_PLATFORM','activeEdition':'FRANKLIN_TN','writableLane':'LOCAL_COMMUNITY_EDITION:FRANKLIN_TN','publicCommit':pub,'runtimeCommit':runtime,'checkoutOpen':True,'pricesUsd':[5,50,120],'sccLatestConsumed':'SCCC039-R8-FRANKLIN-POST-OPEN-RESULT-20260908','sccCheckoutPolicy':'KEEP_OPEN','profileFactoryDisposition':'DEFER_WITH_CAUSE_NO_NEW_ACCEPTED_LOCAL_CONSUMER_HANDOFF','localInvestigatorV25Disposition':'DEFER_WITH_CAUSE_AWAITING_SCC_GATE_AND_CONSUMER_ACCEPTANCE','smarterJusticeDonorUsed':False,'firstGenuineNonmemberCheckoutSession':'DEFER_EXTERNAL_TRIGGER_DO_NOT_FABRICATE_IDENTITY','generalMemberPasswordRecovery':'DEFER_WITH_CAUSE_NO_ACCEPTED_GENERAL_LOCAL_TRANSACTIONAL_RECOVERY_CONTRACT','furtherQualifiedNow':False,'authorityTransfer':False}
+          pathlib.Path('PRE_SEAL_CURRENTNESS_RECEIPT.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))
+          PY
+      - name: Build clean staging root and required release evidence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil,json,hashlib,datetime,subprocess,re,os
+          stage=Path('stage');shutil.rmtree(stage,ignore_errors=True);(stage/'public').mkdir(parents=True);(stage/'runtime').mkdir();(stage/'evidence').mkdir()
+          def copytree(src,dst):
+            src=Path(src)
+            for p in sorted(src.rglob('*')):
+              rel=p.relative_to(src)
+              if '.git' in rel.parts:continue
+              q=dst/rel
+              if p.is_symlink():raise SystemExit('symlink rejected '+str(rel))
+              if p.is_dir():q.mkdir(parents=True,exist_ok=True)
+              elif p.is_file():q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
+          copytree('source-public',stage/'public');copytree('source-runtime',stage/'runtime')
+          shutil.copy2('PRE_SEAL_CURRENTNESS_RECEIPT.json',stage/'evidence/PRE_SEAL_CURRENTNESS_RECEIPT.json')
+          now=datetime.datetime.now(datetime.timezone.utc).isoformat();public='01aecafbfe16202d9d5a80eb6b97443c9ee305ad';runtime='44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8'
+          role={'schemaVersion':'franklin.hf25.role-scope-authority-no-drift.v1','atUtc':now,'stableRoleId':'LOCAL_COMMUNITY_PLATFORM','activeEdition':'FRANKLIN_TN','writableProductLane':'LOCAL_COMMUNITY_EDITION:FRANKLIN_TN','authorityTransfer':False,'localOwns':['public product','UI/copy','accounts','member/payment/entitlement implementation','runtime','deployment','rollback'],'doesNotOriginate':['Profile Factory canonical facts','Local Investigator dynamic facts','SRE prices/offers/outreach','SCC acceptance'],'smarterJusticeDonorUsed':False}
+          (stage/'evidence/ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT.json').write_text(json.dumps(role,indent=2)+'\n')
+          no_loss={'schemaVersion':'franklin.hf25.no-loss-isolation.v1','atUtc':now,'community':'FRANKLIN_TN','profilePages':19103,'profileFactsChanged':False,'runtimePair':runtime,'pricesUsd':[5,50,120],'checkoutMustRemainOpen':True,'franklinAssistantRetained':True,'reviewerToolsRetained':True,'freeFactualCorrectionsRetained':True,'serverCreatedCheckoutRetained':True,'verifiedProfileEligibilityRetained':True,'noSecondChargeRetained':True,'billingCancellationRetained':True,'crossCommunityContaminationDetected':False,'smarterJusticeConnectionDetected':False}
+          (stage/'evidence/NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT.json').write_text(json.dumps(no_loss,indent=2)+'\n')
+          nextlist={'schemaVersion':'franklin.hf25.next-version-improvement-list.v1','generatedAtUtc':now,'items':[{'priority':'P1','improvement':'Observe first genuine eligible non-member reaching a server-created live Stripe Checkout Session without completing a smoke purchase','disposition':'DEFER_WITH_CAUSE','dependency':'Genuine eligible non-member with verified representation; do not manufacture identity/profile/claim','owner':'LOCAL_COMMUNITY_PLATFORM','resumeCondition':'First lawful eligible user reaches membership term selection'},{'priority':'P1','improvement':'General paid-member password recovery from ordinary member sign-in','disposition':'DEFER_WITH_CAUSE','dependency':'Accepted Local transactional recovery/email proof contract and provider configuration for all member accounts','owner':'LOCAL_COMMUNITY_PLATFORM','resumeCondition':'Qualified transactional recovery contract and provider route available'},{'priority':'P2','improvement':'Consume newer Franklin Profile Factory projection','disposition':'DEFER_WITH_CAUSE','dependency':'Newest accepted schema-qualified Local-consumable PF handoff','owner':'PROFILE_FACTORY + LOCAL_COMMUNITY_PLATFORM consumer','resumeCondition':'Accepted PF handoff arrives'},{'priority':'P2','improvement':'Consume Local Investigator V25 dynamic research','disposition':'DEFER_WITH_CAUSE','dependency':'SCC gate + Local consumer acceptance/currentness validation','owner':'LOCAL_INVESTIGATOR + SCC + LOCAL consumer','resumeCondition':'V25 accepted for Local consumption'}]}
+          (stage/'evidence/NEXT_VERSION_IMPROVEMENT_LIST.json').write_text(json.dumps(nextlist,indent=2)+'\n')
+          history={'schemaVersion':'franklin.hf25.failure-history.v1','keptAsEvidence':True,'attempts':[{'class':'SOURCE_ASSERTION','disposition':'FIXED_AND_RERUN','detail':'Exact stale-copy variants and translation gaps discovered by strict underflow/global gates; gates were not weakened.'},{'class':'LIVE_EVIDENCE_HARNESS','disposition':'FIXED_AND_RERUN','detail':'Initial live continuity workflow passed product assertions then failed evidence write because Path import was missing.'},{'class':'DYNAMIC_PREPARED_RECEIPT_PATH','disposition':'NON_PRODUCT_HARNESS_FAILURE_AFTER_COMMIT_PUSH','detail':'Dynamic open/closed EN/ES browser assertions passed 16/16 and prepared direct-child commit was pushed; receipt write used wrong path after push.'}]}
+          (stage/'evidence/HISTORICAL_FAILED_ASSERTIONS_RECEIPT.json').write_text(json.dumps(history,indent=2)+'\n')
+          tests={'schemaVersion':'franklin.hf25.test-summary.v1','sourceQualification':{'runId':34197442159,'profilePages':19103,'runtimeTests':'20/20 PASS','changedHtmlPages':43,'browserAssertions':'602/602 PASS','staleStaticClaims':0,'brokenInternalLinks':0},'liveQualification':{'runId':34198347410,'exactHttpReadback':'50/50 PASS','browserAssertions':'602/602 PASS','continuityAssertions':'PASS; harness evidence-write failure later corrected'},'liveContinuityRetry':{'runId':34198606757,'result':'PASS'},'dynamicTruth':{'runId':34204909271,'static':'PASS','browserOpenClosedEnEs':'16/16 PASS','liveOpenPreserved':'PASS','workflowConclusion':'FAIL only after prepared commit push due evidence path'},'dynamicLiveReadback':{'runId':34205357375,'result':'PASS'},'financialMutationsByQualification':0}
+          (stage/'evidence/TEST_SUMMARY.json').write_text(json.dumps(tests,indent=2)+'\n')
+          release={'schemaVersion':'franklin.local.release-receipt.v1','status':'QUALIFIED_SUCCESSOR','release':'FR-NAV1.15.0-HF2.5','builderRole':'LOCAL_COMMUNITY_PLATFORM','activeEdition':'FRANKLIN_TN','writableLane':'LOCAL_COMMUNITY_EDITION:FRANKLIN_TN','ownerCommandRevision':'2026-09-03-R2','publicCommit':public,'publicTree':subprocess.check_output(['git','-C','source-public','rev-parse','HEAD^{tree}'],text=True).strip(),'runtimeCommit':runtime,'runtimeTree':subprocess.check_output(['git','-C','source-runtime','rev-parse','HEAD^{tree}'],text=True).strip(),'publicDeploy':'dep-dafsgtvqj5pc7387j6v0','runtimeDeploy':'dep-dafq07on74is73b4sp00','deploymentState':'LIVE_VERIFIED','checkoutState':'OPEN','pricesUsd':[5,50,120],'profileCount':19103,'profileFactsChanged':False,'changedOutcome':['Corrected stale pre-launch membership/checkout copy across public English and Spanish surfaces','Updated current paid-member capability descriptions without claiming planned features operational','Corrected verified-profile dynamic enrollment message to reflect open checkout while preserving closed rollback behavior','Preserved open commerce, verified-profile gate, idempotency, no-second-charge, billing/cancellation, Assistant, reviewer tools and free corrections'],'upstream':{'profileFactory':'DEFER_WITH_CAUSE','localInvestigatorV25':'DEFER_WITH_CAUSE','smarterJusticeDonor':'NOT_USED'},'knownLimitation':'No fabricated eligible non-member was created solely to generate a live Checkout Session; first genuine eligible user remains external-trigger evidence.','sccAcceptanceOfThisSuccessor':'NOT_YET_CLAIMED','authorityTransfer':False,'generatedAtUtc':now}
+          (stage/'evidence/RELEASE_RECEIPT.json').write_text(json.dumps(release,indent=2)+'\n')
+          # Record changed HTML set used by fresh extraction browser qualification.
+          changed=subprocess.check_output(['git','-C','source-public','diff','--name-only','9e8195d9c3939f791795ab38add326402b5d55c8..'+public],text=True).splitlines()
+          html=sorted(x[5:] for x in changed if x.startswith('dist/') and x.endswith('.html'))
+          (stage/'evidence/HF25_CHANGED_HTML.json').write_text(json.dumps({'count':len(html),'paths':html},indent=2)+'\n')
+          PY
+      - name: Add one-command package validator
+        run: |
+          cat > stage/VALIDATE_RELEASE.py <<'PY'
+          from pathlib import Path
+          import json,hashlib,re,sys
+          root=Path(sys.argv[1] if len(sys.argv)>1 else '.').resolve();manifest=json.loads((root/'CONTENT_MANIFEST.json').read_text());entries=manifest['members'];expected=set(entries);actual=set()
+          for p in root.rglob('*'):
+            if p.is_symlink():raise SystemExit('symlink:'+str(p))
+            if p.is_file():
+              rel=p.relative_to(root).as_posix()
+              if rel=='CONTENT_MANIFEST.json':continue
+              actual.add(rel)
+              if rel.lower().endswith(('.zip','.tar','.tgz','.gz','.7z','.rar')):raise SystemExit('nested archive:'+rel)
+          if actual!=expected:raise SystemExit('manifest set mismatch missing='+str(sorted(expected-actual)[:10])+' extra='+str(sorted(actual-expected)[:10]))
+          for rel,meta in entries.items():
+            b=(root/rel).read_bytes()
+            if len(b)!=meta['bytes'] or hashlib.sha256(b).hexdigest()!=meta['sha256']:raise SystemExit('hash mismatch:'+rel)
+          profiles=list((root/'public/dist/profiles').rglob('index.html'))
+          if len(profiles)!=19103:raise SystemExit('profile count '+str(len(profiles)))
+          receipt=json.loads((root/'evidence/RELEASE_RECEIPT.json').read_text());assert receipt['publicCommit']=='01aecafbfe16202d9d5a80eb6b97443c9ee305ad';assert receipt['runtimeCommit']=='44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8';assert receipt['checkoutState']=='OPEN'
+          banned=['new public membership checkout is closed','new public membership checkout remains closed','new public checkout is currently closed','new public checkout remains closed','membership checkout is not open yet','membership enrollment is currently closed','membership enrollment and payment are not open yet','paid business membership is not open yet','while enrollment remains closed','before checkout is available','membership comes later','before new checkout opens:','franklin will not reopen new enrollment','profile verified. you can continue when checkout is available.']
+          for p in (root/'public/dist').rglob('*.html'):
+            low=p.read_text(errors='ignore').lower()
+            for phrase in banned:
+              if phrase in low:raise SystemExit('stale public phrase '+phrase+' in '+str(p))
+          js=(root/'public/dist/assets/membership-live.js').read_text();assert "state.ready?.liveCheckoutEnabled?'Profile verified. You can continue to membership.'" in js;assert 'MEMBERSHIP_ALREADY_ACTIVE' in js and 'CHECKOUT_PENDING_MESSAGE' in js
+          for p in [root/'public/dist/assets/membership-live.js',root/'runtime/server.js']:
+            t=p.read_text(errors='ignore');assert not re.search(r'\bsk_live_[A-Za-z0-9]{16,}',t);assert not re.search(r'\bwhsec_[A-Za-z0-9]{16,}',t)
+          print(json.dumps({'result':'PASS','members':len(entries),'profiles':len(profiles),'publicCommit':receipt['publicCommit'],'runtimeCommit':receipt['runtimeCommit'],'checkoutState':receipt['checkoutState']}))
+          PY
+      - name: Generate complete self-excluding content manifest
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,hashlib
+          root=Path('stage');members={}
+          for p in sorted(root.rglob('*')):
+            if p.is_file() and p.name!='CONTENT_MANIFEST.json':
+              b=p.read_bytes();members[p.relative_to(root).as_posix()]={'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}
+          m={'schemaVersion':'franklin.release-content-manifest.v1','selfHashRule':'CONTENT_MANIFEST.json is intentionally excluded from its own member map; every other packaged file is covered.','memberCount':len(members),'members':members};(root/'CONTENT_MANIFEST.json').write_text(json.dumps(m,indent=2,sort_keys=True)+'\n');print(json.dumps({'members':len(members)}))
+          PY
+      - name: Build two deterministic byte-identical archives
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile,hashlib,json,stat
+          root=Path('stage');name='FRANKLIN_NAVIGATOR__FR-NAV1.15.0-HF2.5__POST_LAUNCH_TRUTH__LIVE_VERIFIED__2026-09-08.zip'
+          def build(out):
+            with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9,strict_timestamps=True) as z:
+              for p in sorted(x for x in root.rglob('*') if x.is_file()):
+                rel=p.relative_to(root).as_posix();info=zipfile.ZipInfo(rel,date_time=(1980,1,1,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;info.external_attr=(0o100644 & 0xFFFF)<<16;info.create_system=3;z.writestr(info,p.read_bytes(),compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
+          build('build1.zip');build('build2.zip');a=Path('build1.zip').read_bytes();b=Path('build2.zip').read_bytes();assert a==b,'archives not byte-identical';Path(name).write_bytes(a);att={'schemaVersion':'franklin.hf25.external-release-attestation.v1','artifact':name,'bytes':len(a),'sha256':hashlib.sha256(a).hexdigest(),'deterministicDoubleBuild':True,'build1Sha256':hashlib.sha256(a).hexdigest(),'build2Sha256':hashlib.sha256(b).hexdigest()};Path('RELEASE_ATTESTATION.json').write_text(json.dumps(att,indent=2)+'\n');print(json.dumps(att))
+          PY
+      - name: Fresh extraction one-command validator
+        run: |
+          rm -rf fresh && mkdir fresh
+          unzip -q FRANKLIN_NAVIGATOR__FR-NAV1.15.0-HF2.5__POST_LAUNCH_TRUTH__LIVE_VERIFIED__2026-09-08.zip -d fresh
+          python fresh/VALIDATE_RELEASE.py fresh | tee FRESH_VALIDATION.log
+      - name: Fresh extraction runtime test suite
+        working-directory: fresh/runtime
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run check
+          npm test
+      - name: Install Chromium for fresh extraction browser tests
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Fresh extraction full changed-page EN/ES browser suite and dynamic open/closed suite
+        run: |
+          set -euo pipefail
+          python -m http.server 8878 --bind 127.0.0.1 --directory fresh/public/dist >/tmp/hf25-fresh-http.log 2>&1 &
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+          from pathlib import Path
+          import json,hashlib
+          root=Path('fresh');paths=json.loads((root/'evidence/HF25_CHANGED_HTML.json').read_text())['paths'];banned=['new public membership checkout is closed','new public membership checkout remains closed','new public checkout is currently closed','new public checkout remains closed','membership checkout is not open yet','membership enrollment is currently closed','membership enrollment and payment are not open yet','paid business membership is not open yet','while enrollment remains closed','before checkout is available','membership comes later','before new checkout opens:','franklin will not reopen new enrollment'];rows=[]
+          def ok(i,v,d=''):rows.append({'id':i,'pass':bool(v),'detail':d});assert v,(i,d)
+          with sync_playwright() as p:
+            browser=p.chromium.launch()
+            for rel in paths:
+              route='/'+rel;route=route[:-10] if route.endswith('index.html') else route
+              for width in [390,1280]:
+                c=browser.new_context(viewport={'width':width,'height':900});page=c.new_page();errs=[];page.on('pageerror',lambda e:errs.append(str(e)));r=page.goto('http://127.0.0.1:8878'+route,wait_until='networkidle');body=page.locator('body').inner_text();low=body.lower();ok(rel+':'+str(width)+':http',r is not None and r.status==200);ok(rel+':'+str(width)+':h1',page.locator('main h1').count()==1);ok(rel+':'+str(width)+':stale',not any(x in low for x in banned));ok(rel+':'+str(width)+':overflow',page.evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth+2'));ok(rel+':'+str(width)+':js',not errs,' | '.join(errs[:3]));
+                if page.locator('[data-r37-lang="es"]').count():page.locator('[data-r37-lang="es"]').click();page.wait_for_timeout(180);ok(rel+':'+str(width)+':es',page.locator('html').get_attribute('lang')=='es')
+                c.close()
+            # Dynamic verified-profile open/closed proof using a real source profile fixture but no real account/payment mutation.
+            dist=root/'public/dist';man=json.loads((dist/'data/franklin-profiles-manifest.json').read_text());chunk=json.loads((dist/man['chunks'][0]['file'].lstrip('/')).read_text());pid=chunk['records'][0]['i']
+            for open_state in [True,False]:
+              c=browser.new_context(viewport={'width':390,'height':900});page=c.new_page();page.route('https://franklin-navigator-membership.onrender.com/ready',lambda route:route.fulfill(status=200,content_type='application/json',body=json.dumps({'ok':True,'liveCheckoutEnabled':open_state})));page.route('https://franklin-navigator-membership.onrender.com/api/accounts/me',lambda route:route.fulfill(status=200,content_type='application/json',body=json.dumps({'ok':True,'account':{'email':'fixture@example.invalid'},'profileLinks':[{'profile_id':pid,'authority_state':'VERIFIED'}],'membership':None})));page.goto('http://127.0.0.1:8878/membership-enroll/',wait_until='networkidle');page.wait_for_timeout(700);body=page.locator('body').inner_text();ok('dynamic-'+str(open_state),'Profile verified. You can continue to membership.' in body if open_state else 'Profile verified. Checkout is not open.' in body);c.close()
+            browser.close()
+          report={'schemaVersion':'franklin.hf25.fresh-browser.v1','result':'PASS','changedHtmlPages':len(paths),'assertions':len(rows),'pass':sum(x['pass'] for x in rows),'fail':sum(not x['pass'] for x in rows),'financialMutations':0};Path('FRESH_BROWSER.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({'pages':len(paths),'assertions':len(rows),'fail':0}))
+          PY
+      - name: Final archive unchanged after extraction tests
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,hashlib
+          a=json.loads(Path('RELEASE_ATTESTATION.json').read_text());b=Path(a['artifact']).read_bytes();assert len(b)==a['bytes'] and hashlib.sha256(b).hexdigest()==a['sha256'];a['freshExtractionValidator']='PASS';a['freshExtractionRuntimeTests']='PASS';a['freshExtractionBrowserTests']='PASS';Path('RELEASE_ATTESTATION.json').write_text(json.dumps(a,indent=2)+'\n');print(json.dumps(a))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: franklin-hf25-final-release
+          path: |
+            FRANKLIN_NAVIGATOR__FR-NAV1.15.0-HF2.5__POST_LAUNCH_TRUTH__LIVE_VERIFIED__2026-09-08.zip
+            RELEASE_ATTESTATION.json
+            FRESH_VALIDATION.log
+            FRESH_BROWSER.json
+          retention-days: 30
+          if-no-files-found: error
