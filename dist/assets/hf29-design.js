@@ -6,6 +6,13 @@
   const tx=(en,es)=>isEs()?es:en;
   const pathOf=a=>new URL(a.href,location.href).pathname;
 
+  function ensureLateCss(){
+    if(document.querySelector('link[data-hf29-design-late]'))return;
+    const link=document.createElement('link');
+    link.rel='stylesheet';link.href='/assets/hf29-design.css';link.dataset.hf29DesignLate='1';
+    document.head.append(link);
+  }
+
   function simplifyAssistantExamples(){
     const group=q('.navigator-examples.r24-chips');
     if(!group||group.dataset.hf29Ready==='1')return;
@@ -107,7 +114,7 @@
     const example=q('.hf29-example-select select');if(example)example.setAttribute('aria-label',tx('Choose an example question','Elegir una pregunta de ejemplo'));
   }
 
-  function init(){simplifyAssistantExamples();simplifyTodayFilters();simplifyTodayCardActions();simplifyFooter();refineHome();simplifyMyFranklin();simplifyDialogActions();syncLanguage()}
+  function init(){ensureLateCss();simplifyAssistantExamples();simplifyTodayFilters();simplifyTodayCardActions();simplifyFooter();refineHome();simplifyMyFranklin();simplifyDialogActions();syncLanguage()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   window.addEventListener('load',init,{once:true});window.addEventListener('franklinlanguagechange',()=>{syncLanguage();setTimeout(init,0)});closeCompactMenusOnEscape();
   const observer=new MutationObserver(records=>{for(const record of records){for(const node of record.addedNodes){if(node.nodeType===1)simplifyDialogActions(node)}}});
