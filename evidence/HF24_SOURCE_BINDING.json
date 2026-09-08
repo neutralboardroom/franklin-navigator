@@ -1,0 +1,13 @@
+{
+  "parent": "b53ec209ac74c0e9906c5045c3140a4a653c44db",
+  "runtimePair": "a9c918b656ced6386b1af604fde51d4a7e88d3b9",
+  "files": {
+    "dist/assets/r40-assistant-practical.js": "5fd2c8dff56629698b967dd29efb1ba288e555e395ec7519afc6d239fcc4e626",
+    "dist/assets/r40-assistant-safety-guard.js": "6b152b30eb36c343c9215987ab7b5db5bc9140bcb78e5155dc627b37e642f715",
+    "dist/assets/device-followthrough-core.js": "51e291ac29176ee43abfb6af6461239668ba75066adf597f225815e44d5abee7",
+    "dist/assets/r37-i18n.js": "20d060b7c859e52b5d5c352f92779999c5fd448c9da948f72d30b56f7f3c9def"
+  },
+  "profileFactsChanged": false,
+  "commerceOpened": false,
+  "ownerAuthenticationObserved": false
+}

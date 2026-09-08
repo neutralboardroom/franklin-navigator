@@ -88,4 +88,12 @@
     try{await load();setLanguage(language,{save:false,navigate:false});observeBody()}
     catch{document.documentElement.lang=language;setPressed()}
   });
+  document.addEventListener('DOMContentLoaded',()=>{
+    if(!document.querySelector('[data-navigator-bot],[data-r38-assistant-plans]'))return;
+    if(document.querySelector('script[data-r40-assistant-practical]'))return;
+    const practical=document.createElement('script');practical.src='/assets/r40-assistant-practical.js';practical.defer=true;practical.dataset.r40AssistantPractical='1';
+    practical.addEventListener('load',()=>{if(document.querySelector('script[data-r40-assistant-safety-guard]'))return;const guard=document.createElement('script');guard.src='/assets/r40-assistant-safety-guard.js';guard.defer=true;guard.dataset.r40AssistantSafetyGuard='1';document.head.append(guard)});
+    document.head.append(practical);
+  });
+
 })();

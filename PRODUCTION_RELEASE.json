@@ -1,52 +1,28 @@
 {
   "baseSourceArchiveSha256": "6e2eba3b7e634173355beae38d0acba15ee7f3fea3fa6017b9b5aef902b15f27",
+  "changedFiles": {
+    "dist/assets/device-followthrough-core.js": "51e291ac29176ee43abfb6af6461239668ba75066adf597f225815e44d5abee7",
+    "dist/assets/r37-i18n.js": "20d060b7c859e52b5d5c352f92779999c5fd448c9da948f72d30b56f7f3c9def",
+    "dist/assets/r40-assistant-practical.js": "5fd2c8dff56629698b967dd29efb1ba288e555e395ec7519afc6d239fcc4e626",
+    "dist/assets/r40-assistant-safety-guard.js": "6b152b30eb36c343c9215987ab7b5db5bc9140bcb78e5155dc627b37e642f715"
+  },
   "commerceOpenedByBuild": false,
   "commercialAcceptance": false,
   "component": "public",
-  "parent": "da45cc2a81e2232861a7419d81fc78d16674a5c0",
+  "generatedAtUtc": "2026-09-08T02:56:59.392952+00:00",
+  "parent": "b53ec209ac74c0e9906c5045c3140a4a653c44db",
   "profileCount": 19103,
   "profileFactsChanged": false,
   "publicDistDigestRule": "sorted path + NUL + file sha256 hex + LF",
-  "publicDistSha256": "3c0e29dfa18c2d42f80a149ae498f295d0856d874ff85e3a8625901c5de4e30f",
-  "release": "FR-NAV1.15.0-HF2.3-CANDIDATE",
-  "runtimePair": "a9c918b656ced6386b1af604fde51d4a7e88d3b9",
-  "sourceQualification": {
-    "base": "da45cc2a81e2232861a7419d81fc78d16674a5c0",
-    "canonicalProfileFactsChanged": false,
-    "correctionHashes": {
-      "correction-001.json": "dd89bd273dc53783532175ce9a44952a2c9a042c9ec1b801fee15221c259074f",
-      "correction-002.json": "a4b31ad1603ae6c495a234bd4aac4e5cad40f26577a6cca154b88024c40c7a4d"
-    },
-    "deltaSha256": "1469c14b615f43ce564ab712702461e3f02dd9c6697d770252985a30a4d3ca33",
-    "files": {
-      "dist/assets/device-followthrough-core.js": "10ab1f3822badec88d909689d8fea7d40eaf415a7e1243c73e0688738121473c",
-      "dist/assets/local-discovery-core.js": "723f6f68c3b655f4de11b4e140650cce5157632756bf1a9347c33d89c14a0d9c",
-      "dist/assets/local-discovery-data.js": "d6fccf564839bea66cab8c802f467832fe25faa934c456073c29d635dea40578",
-      "dist/assets/local-discovery.js": "3ac7345ba1d0b254b0768d7d769d090c0d62e268f538085559c3820dd431cd65",
-      "dist/assets/local-followthrough.css": "13afb1501bbfea207e91c3b2dec9ec292454779c3618ae43c6c792f97042443b",
-      "dist/assets/my-franklin.js": "24ceabaf07caf7d18891bed8f6f7bb36613cd9de4ce5594f6e6b3ac3293b9f37",
-      "dist/assets/profile-detail.js": "6484f608fe01cdb1c882db47c713bccb7c7adc3301dcb0f55d740a2694b2f1a5",
-      "dist/assets/r23.js": "cd257dba7b7a5b5b4b573c928d8f6d550c3b3ab43601b463c0b4072648c187e0",
-      "dist/assets/r34-growth.js": "d07812963228150b322032e93ab36971b8b8fef7f9aee37c05e8d768d96daf22",
-      "dist/assets/r37-i18n.js": "7d13178320c82ec1fb68399a892f53d1b03ff3a672734d77955452ad76981b81",
-      "dist/assets/r38-assistant-followthrough.js": "9c58cde4a45259ebd3aa149b6e70a44c03e0ecfd22c6461e9964fa7248e168a4",
-      "dist/directory/index.html": "3c646cbceb86352f66c176d78ed50119a17b86b5501291aa6c4df52be745ac0f",
-      "dist/es/directorio/index.html": "51ada765b48c1e7f6aee9c093477cdcbb305cfc1ef7510ad391b3d76ed4d8929",
-      "dist/es/mi-franklin/index.html": "02afc4b3d0e57c13ce9f86efb2659e3db70d533e9edb645e17a36ef5d3144ff2",
-      "dist/my-franklin/index.html": "b3ee737f0957b6b48e552038819f2f4475bb43ea81e86f6293da453a284cf641",
-      "dist/profile/index.html": "884f4541862a174f9a58d2437ddd021148198bcda3f46e633a3c5603c380d47e",
-      "lib/profile-link-consumer.cjs": "8717713906384a209bb2d9d48cc7a46827f943992bb32c46924d5b75086fb40b",
-      "scripts/build-hf23-discovery.py": "81a1c5949319ac35c259623423f0d535c83fcd826d58c92f7385dcbf15a54b45"
-    },
-    "productionPromotion": false,
-    "runtimeChanged": false,
-    "tests": {
-      "assistant_cases.json": "334a4bbd9d43b2033b8e0d0163ff03165eabb621c2d8cadbf47b189f87030a3f",
-      "browser_assistant.py": "d3a6fdda5ee9cb004f3eb63df75460f9b581b6a7a5d53fc662ecf3c1925b8f89",
-      "browser_hf23.py": "5cd08e3ad349c3c75975ffdc4233c53985b7a5f26c7613e53efecbdc2e4a48ab",
-      "test_assistant_rank.cjs": "3434c7cfa82820df560839fe6ae5a8ee1b6da996bd112ae4265a47b8e3185a42",
-      "test_hf23.cjs": "1d6746fa57216c4ddbf59a9b1e0f4584518fcf4997241e00b099b318b6fa1324"
-    }
+  "publicDistSha256": "8a64328aa4d9e569ea00f538f1cd3cc93b858df221acacc00315baa1de6801ed",
+  "qualification": {
+    "browserFail": 0,
+    "browserPass": 24,
+    "ownerAuthenticationObserved": false,
+    "paidLifecycleAccepted": false,
+    "runId": 34181758655
   },
+  "release": "FR-NAV1.15.0-HF2.4-CANDIDATE",
+  "runtimePair": "a9c918b656ced6386b1af604fde51d4a7e88d3b9",
   "sourceState": "PUBLIC_SOURCE_BROWSER_QUALIFIED_NOT_PAID_LAUNCH_ACCEPTANCE"
 }

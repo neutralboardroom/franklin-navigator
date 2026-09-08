@@ -1,0 +1,103 @@
+{
+  "result": "PASS",
+  "pass": 24,
+  "fail": 0,
+  "results": [
+    {
+      "id": "en practical loaded",
+      "pass": true
+    },
+    {
+      "id": "en guard loaded",
+      "pass": true
+    },
+    {
+      "id": "en targeted clarification",
+      "pass": true
+    },
+    {
+      "id": "en ordered checklist",
+      "pass": true
+    },
+    {
+      "id": "en second turn",
+      "pass": true
+    },
+    {
+      "id": "en minimized save",
+      "pass": true
+    },
+    {
+      "id": "en reopen href",
+      "pass": true
+    },
+    {
+      "id": "en urgent output",
+      "pass": true
+    },
+    {
+      "id": "en same-session practical cleared",
+      "pass": true
+    },
+    {
+      "id": "en reopened checklist",
+      "pass": true
+    },
+    {
+      "id": "en My Franklin projection",
+      "pass": true
+    },
+    {
+      "id": "en reset clears practical",
+      "pass": true
+    },
+    {
+      "id": "es practical loaded",
+      "pass": true
+    },
+    {
+      "id": "es guard loaded",
+      "pass": true
+    },
+    {
+      "id": "es targeted clarification",
+      "pass": true
+    },
+    {
+      "id": "es ordered checklist",
+      "pass": true
+    },
+    {
+      "id": "es second turn",
+      "pass": true
+    },
+    {
+      "id": "es minimized save",
+      "pass": true
+    },
+    {
+      "id": "es reopen href",
+      "pass": true
+    },
+    {
+      "id": "es urgent output",
+      "pass": true
+    },
+    {
+      "id": "es same-session practical cleared",
+      "pass": true
+    },
+    {
+      "id": "es reopened checklist",
+      "pass": true
+    },
+    {
+      "id": "es My Franklin projection",
+      "pass": true
+    },
+    {
+      "id": "es reset clears practical",
+      "pass": true
+    }
+  ]
+}
