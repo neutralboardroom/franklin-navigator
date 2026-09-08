@@ -1,0 +1,45 @@
+name: HF25 post-launch public truth audit
+on:
+  push:
+    branches: [local-franklin-hf25-postlaunch-truth-20260908]
+    paths: [.github/workflows/hf25-postlaunch-truth-audit.yml, evidence/HF25_RULE_AND_SOURCE_RECONCILIATION_RECEIPT.json]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Scan post-launch public truth surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re,json
+          patterns=[
+            r'new public membership checkout is closed',
+            r'checkout remains closed',
+            r'before checkout is available',
+            r'will not reopen new enrollment',
+            r'new checkout is currently closed',
+            r'checkout is not open',
+            r'new public membership checkout remains closed',
+            r'nuevo pago de membresía pública está cerrado',
+            r'antes de que esté disponible el pago',
+            r'nueva inscripción.*cerrad',
+          ]
+          findings=[]
+          root=Path('dist')
+          for p in sorted(root.rglob('*')):
+            if not p.is_file() or p.suffix.lower() not in {'.html','.js','.json','.txt','.md'}: continue
+            try:t=p.read_text(errors='strict')
+            except:continue
+            for pat in patterns:
+              for m in re.finditer(pat,t,re.I|re.S):
+                line=t.count('\n',0,m.start())+1
+                start=max(0,m.start()-160);end=min(len(t),m.end()+220)
+                findings.append({'path':p.as_posix(),'line':line,'pattern':pat,'context':re.sub(r'\s+',' ',t[start:end])})
+          print(json.dumps({'count':len(findings),'findings':findings},indent=2,ensure_ascii=False))
+          # Audit only: do not fail on findings; later qualification must prove zero stale static claims.
+          PY
