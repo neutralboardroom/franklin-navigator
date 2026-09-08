@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "franklin.hf28.direct-asset-injection.v1",
+  "workflowRunId": 34286212886,
+  "workflowJobId": 102262313177,
+  "workflowConclusion": "success",
+  "injectedCommit": "6de30fbe1e737e5891ad05ccff705cc4bd19e0bb",
+  "files": [
+    "dist/directory/index.html",
+    "dist/es/directorio/index.html"
+  ],
+  "requiredCss": "/assets/hf28-directory.css",
+  "requiredJs": "/assets/hf28-directory.js",
+  "reason": "Avoid stale cached predecessor loader preventing first-session HF2.8 behavior; unique HF2.8 asset URLs are now referenced directly by the affected HTML pages.",
+  "checkoutRuntimeChanged": false,
+  "profileFactsChanged": false,
+  "result": "PASS"
+}
