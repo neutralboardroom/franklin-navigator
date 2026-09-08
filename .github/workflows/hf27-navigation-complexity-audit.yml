@@ -1,0 +1,65 @@
+name: HF27 navigation complexity audit
+on:
+  push:
+    branches: [local-franklin-hf25-dynamic-truth-20260908]
+    paths: [.github/workflows/hf27-navigation-complexity-audit.yml]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 01aecafbfe16202d9d5a80eb6b97443c9ee305ad
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.13'}
+      - name: Measure navigation and CTA density on every public page
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json,re,collections
+          root=Path('dist');ev=Path('navigation-audit');ev.mkdir()
+          class P(HTMLParser):
+            def __init__(self):
+              super().__init__();self.stack=[];self.actions=[];self.nav_actions=[];self.sections=[];self.current_section='page';self.h=[];self.primary=[]
+            def handle_starttag(self,tag,attrs):
+              a=dict(attrs);self.stack.append((tag,a));
+              if tag in ('section','article'):
+                self.current_section=(a.get('id') or a.get('data-section') or a.get('class') or f'{tag}-{len(self.sections)+1}')[:100];self.sections.append(self.current_section)
+              if tag in ('a','button'):
+                classes=(a.get('class') or '').split();is_button=tag=='button' or 'button' in classes;is_nav=any(x[0]=='nav' for x in self.stack[:-1]);is_primary='primary' in classes
+                self.actions.append({'tag':tag,'href':a.get('href'),'class':a.get('class',''),'section':self.current_section,'isButtonStyle':is_button,'isNav':is_nav,'isPrimary':is_primary,'text':''})
+                if is_nav:self.nav_actions.append(self.actions[-1])
+                if is_primary:self.primary.append(self.actions[-1])
+            def handle_data(self,d):
+              if self.actions and self.stack and self.stack[-1][0] in ('a','button'):
+                self.actions[-1]['text']=(self.actions[-1]['text']+' '+re.sub(r'\s+',' ',d).strip()).strip()
+            def handle_endtag(self,tag):
+              for i in range(len(self.stack)-1,-1,-1):
+                if self.stack[i][0]==tag:self.stack=self.stack[:i];break
+              if tag in ('section','article'):self.current_section='page'
+          rows=[];over=[]
+          for p in sorted(root.rglob('*.html')):
+            rel=p.relative_to(root).as_posix();parser=P();parser.feed(p.read_text(errors='ignore'))
+            acts=[a for a in parser.actions if a['text'] and not (a['href'] or '').startswith('#skip')]
+            bysec=collections.Counter(a['section'] for a in acts if a['isButtonStyle'])
+            overloaded=[{'section':s,'buttonLike':n} for s,n in bysec.items() if n>=5]
+            row={'path':rel,'profile':rel.startswith('profiles/'),'actions':len(acts),'buttonLike':sum(a['isButtonStyle'] for a in acts),'primary':sum(a['isPrimary'] for a in acts),'headerNav':len(parser.nav_actions),'overloadedClusters':overloaded,'sampleActions':[a['text'] for a in acts[:25]]};rows.append(row)
+            if row['buttonLike']>=12 or row['primary']>=4 or overloaded:over.append(row)
+          non=[r for r in rows if not r['profile']];profiles=[r for r in rows if r['profile']]
+          def avg(xs,k):return round(sum(x[k] for x in xs)/max(1,len(xs)),2)
+          report={'schemaVersion':'franklin.navigation-complexity-audit.v1','sourceCommit':'01aecafbfe16202d9d5a80eb6b97443c9ee305ad','pages':len(rows),'nonProfilePages':len(non),'profilePages':len(profiles),'summary':{'avgNonProfileActions':avg(non,'actions'),'avgNonProfileButtonLike':avg(non,'buttonLike'),'avgProfileActions':avg(profiles,'actions'),'avgProfileButtonLike':avg(profiles,'buttonLike'),'pagesWith12PlusButtonLike':sum(r['buttonLike']>=12 for r in rows),'pagesWith4PlusPrimary':sum(r['primary']>=4 for r in rows),'pagesWithOverloadedClusters':sum(bool(r['overloadedClusters']) for r in rows)},'topOverloaded':sorted(over,key=lambda x:(x['buttonLike'],x['actions']),reverse=True)[:150]}
+          (ev/'NAVIGATION_COMPLEXITY_AUDIT.json').write_text(json.dumps(report,indent=2)+'\n')
+          (ev/'TOP_OVERLOADED.txt').write_text('\n'.join(f"{r['path']}\tactions={r['actions']}\tbuttonLike={r['buttonLike']}\tprimary={r['primary']}\tclusters={r['overloadedClusters']}\t{r['sampleActions']}" for r in report['topOverloaded'])+'\n')
+          print(json.dumps(report['summary'],indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hf27-navigation-complexity-audit
+          path: navigation-audit/
+          retention-days: 14
+          if-no-files-found: error
