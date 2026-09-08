@@ -79,8 +79,23 @@
     }
   }
 
+  function simplifyMyFranklin(){
+    if(!/^(?:\/my-franklin\/|\/es\/mi-franklin\/)$/.test(location.pathname))return;
+    const prefs=q('details.r22-dashboard-card[open]');
+    if(prefs&&!prefs.dataset.hf29PrefsTouched){prefs.open=false;prefs.dataset.hf29PrefsTouched='1'}
+    const reset=q('[data-device-reset-confirm]');
+    if(reset){
+      const keep=q('[data-device-reset-no]',reset),remove=q('[data-device-reset-yes]',reset);
+      keep?.classList.add('primary','hf29-safe-choice');
+      remove?.classList.add('hf29-destructive-choice');
+    }
+  }
+
   function simplifyDialogActions(root=document){
-    qa('.r27-business-actions,.r27-navigator-body .actions',root).forEach(group=>{
+    const groups=[];
+    if(root.nodeType===1&&root.matches?.('.r27-business-actions,.r27-navigator-body .actions'))groups.push(root);
+    groups.push(...qa('.r27-business-actions,.r27-navigator-body .actions',root));
+    groups.forEach(group=>{
       if(group.dataset.hf29DialogReady==='1')return;
       const items=[...group.children].filter(el=>el.matches('a,button'));
       if(items.length<=2){group.dataset.hf29DialogReady='1';return}
@@ -104,7 +119,7 @@
   function closeCompactMenusOnEscape(){
     document.addEventListener('keydown',event=>{
       if(event.key!=='Escape')return;
-      const open=q('.hf29-footer-more[open]');
+      const open=q('.hf29-footer-more[open],.hf29-dialog-more[open]');
       if(open){open.open=false;q(':scope > summary',open)?.focus()}
     });
   }
@@ -115,7 +130,7 @@
     const select=q('.hf29-today-filter select');if(select)select.setAttribute('aria-label',tx('Filter what matters now','Filtrar lo que importa ahora'));
   }
 
-  function init(){simplifyTodayFilters();simplifyFooter();refineHome();simplifyDialogActions();syncLanguage()}
+  function init(){simplifyTodayFilters();simplifyFooter();refineHome();simplifyMyFranklin();simplifyDialogActions();syncLanguage()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   window.addEventListener('load',init,{once:true});
   window.addEventListener('franklinlanguagechange',()=>{syncLanguage();setTimeout(init,0)});
