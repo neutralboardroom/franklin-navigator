@@ -1,0 +1,41 @@
+name: HF25 broad commerce HTML truth audit
+on:
+  push:
+    branches: [local-franklin-hf25-postlaunch-truth-20260908]
+    paths: [.github/workflows/hf25-commerce-html-audit.yml]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {persist-credentials: false}
+      - name: Find stale public commerce claims
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re,json
+          qualifiers=re.compile(r'''(?ix)
+            (?:
+              (?:membership|checkout|enrollment|payment|billing|paid\s+business|paid\s+membership|member\s+access).{0,100}(?:closed|not\s+open|not\s+active|not\s+available|disabled|future|planned|comes\s+later|when\s+.*?open|until\s+.*?open|before\s+.*?available)
+              |
+              (?:when|until|before).{0,80}(?:membership|checkout|enrollment).{0,80}(?:open|available|active)
+              |
+              (?:will\s+not\s+expose|will\s+not\s+reopen).{0,80}(?:checkout|enrollment)
+            )
+          ''')
+          findings=[]
+          for p in sorted(Path('dist').rglob('*.html')):
+            t=p.read_text(errors='ignore')
+            plain=re.sub(r'<[^>]+>',' ',t)
+            plain=re.sub(r'\s+',' ',plain)
+            for m in qualifiers.finditer(plain):
+              findings.append({'path':p.as_posix(),'match':m.group(0)[:240],'context':plain[max(0,m.start()-120):min(len(plain),m.end()+180)]})
+          # de-duplicate same page/context
+          seen=set();out=[]
+          for x in findings:
+            k=(x['path'],x['context']);
+            if k not in seen: seen.add(k);out.append(x)
+          print(json.dumps({'count':len(out),'findings':out},indent=2,ensure_ascii=False))
+          PY
