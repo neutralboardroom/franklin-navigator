@@ -1,0 +1,89 @@
+name: HF24 practical Assistant qualification
+on:
+  push:
+    branches: [local-franklin-hf24-assistant-practical-20260908]
+    paths: [dist/assets/r40-assistant-practical.js, dist/assets/r37-i18n.js, .github/workflows/hf24-assistant-practical.yml]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Static safety and no-loss checks
+        run: |
+          set -euo pipefail
+          node --check dist/assets/r40-assistant-practical.js
+          node --check dist/assets/r37-i18n.js
+          node --check dist/assets/r38-assistant-followthrough.js
+          node --check dist/assets/navigator-bot.js
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('dist/assets/r40-assistant-practical.js').read_text()
+          assert "rawQuestionStored:false" in p and "networkSubmission:false" in p
+          assert "localStorage" in p and "fetch(" not in p and "XMLHttpRequest" not in p
+          assert "Smarter Justice" not in p and "smarterjustice" not in p.lower()
+          assert "tel:911" in Path('dist/assets/r38-assistant-followthrough.js').read_text()
+          assert Path('dist/assistant/index.html').exists() and Path('dist/es/asistente/index.html').exists()
+          assert Path('dist/my-franklin/index.html').exists() and Path('dist/es/mi-franklin/index.html').exists()
+          print('static PASS')
+          PY
+      - name: Install browser
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Real browser EN/ES multi-turn and device recovery
+        run: |
+          set -euo pipefail
+          python -m http.server 8874 --bind 127.0.0.1 --directory dist > /tmp/hf24-http.log 2>&1 &
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+          import json
+          origin='http://127.0.0.1:8874'
+          rows=[]
+          def ok(name,value): rows.append({'id':name,'pass':bool(value)}); assert value,name
+          with sync_playwright() as p:
+            browser=p.chromium.launch()
+            for locale,path in [('en','/assistant/'),('es','/es/asistente/')]:
+              c=browser.new_context(viewport={'width':390,'height':900})
+              page=c.new_page(); page.goto(origin+path,wait_until='networkidle')
+              ok(locale+' practical loaded',page.evaluate("typeof window.FranklinR40Practical==='object'"))
+              inp=page.locator('[data-navigator-input]'); inp.fill('I need help starting a business in Franklin' if locale=='en' else 'Necesito ayuda para iniciar un negocio en Franklin')
+              page.locator('form.navigator-form button[type=submit]').click()
+              page.locator('[data-r40-practical] h3').wait_for()
+              ok(locale+' targeted clarification',page.locator('[data-r40-practical] button').count()>=3)
+              labels=page.locator('[data-r40-practical] button').all_text_contents()
+              choice='Home-based' if locale=='en' else 'Desde casa'
+              page.get_by_role('button',name=choice,exact=True).click()
+              ok(locale+' ordered checklist',page.locator('[data-r40-practical] ol li').count()>=4)
+              ok(locale+' links safe',all(h.startswith('/') for h in page.locator('[data-r40-practical] ol a').evaluate_all('(xs)=>xs.map(x=>x.getAttribute("href"))')))
+              # Second turn refines the same task even when the short follow-up omits the task name.
+              inp.fill('new leased location' if locale=='en' else 'local nuevo alquilado')
+              page.locator('form.navigator-form button[type=submit]').click();page.wait_for_timeout(150)
+              text=page.locator('[data-r40-practical]').inner_text()
+              ok(locale+' second turn refinement',('New or leased location' in text) if locale=='en' else ('Local nuevo o alquilado' in text))
+              save='Save this checklist on this device' if locale=='en' else 'Guardar esta lista en este dispositivo'
+              page.get_by_role('button',name=save,exact=True).click();page.wait_for_timeout(100)
+              stored=page.evaluate("JSON.parse(localStorage.getItem('franklinNavigator.assistantPractical.v1'))")
+              ok(locale+' minimized save',len(stored)==1 and stored[0]['taskId']=='business' and stored[0]['variant']=='location' and 'question' not in stored[0] and stored[0]['privacy']['rawQuestionStored'] is False)
+              saved=page.locator('[data-r40-practical-saved] a').first;href=saved.get_attribute('href');ok(locale+' reopen link',bool(href and 'reopen=' in href))
+              page.goto(origin+href,wait_until='networkidle');page.locator('[data-r40-practical] ol').wait_for();ok(locale+' reopened actionable checklist',page.locator('[data-r40-practical] ol li').count()>=4)
+              my='/my-franklin/' if locale=='en' else '/es/mi-franklin/'
+              page.goto(origin+my,wait_until='networkidle');page.locator('[data-r40-practical-saved]').wait_for();ok(locale+' My Franklin saved checklist',page.locator('[data-r40-practical-saved] article').count()==1)
+              # Existing urgent behavior still wins and detailed business task is not added to an emergency question.
+              page.goto(origin+path,wait_until='networkidle');inp=page.locator('[data-navigator-input]');inp.fill('911 immediate danger');page.locator('form.navigator-form button[type=submit]').click();page.wait_for_timeout(100)
+              ok(locale+' urgent route preserved','911' in page.locator('[data-navigator-output]').inner_text())
+              ok(locale+' no practical business overlay for urgent',page.locator('[data-r40-practical]').is_hidden())
+              c.close()
+            browser.close()
+          print(json.dumps({'pass':sum(x['pass'] for x in rows),'fail':sum(not x['pass'] for x in rows),'results':rows},indent=2))
+          PY
