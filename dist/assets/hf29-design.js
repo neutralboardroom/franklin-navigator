@@ -4,6 +4,31 @@
   const qa=(s,r=document)=>[...r.querySelectorAll(s)];
   const isEs=()=>document.documentElement.lang==='es';
   const tx=(en,es)=>isEs()?es:en;
+  const pathOf=a=>new URL(a.href,location.href).pathname;
+
+  function simplifyAssistantExamples(){
+    const group=q('.navigator-examples.r24-chips');
+    if(!group||group.dataset.hf29Ready==='1')return;
+    const buttons=qa('button[data-navigator-example]',group);
+    if(!buttons.length)return;
+    const label=document.createElement('label');
+    label.className='hf29-example-select';
+    label.dataset.hf29LabelEn='Try an example';
+    label.dataset.hf29LabelEs='Probar un ejemplo';
+    const span=document.createElement('span');span.textContent=tx('Try an example','Probar un ejemplo');
+    const select=document.createElement('select');
+    select.setAttribute('aria-label',tx('Choose an example question','Elegir una pregunta de ejemplo'));
+    select.append(new Option(tx('Choose one…','Elija una…'),''));
+    buttons.forEach((button,index)=>select.append(new Option(button.textContent.trim(),String(index))));
+    select.addEventListener('change',()=>{
+      if(select.value==='')return;
+      buttons[Number(select.value)]?.click();
+      select.value='';
+    });
+    label.append(span,select);
+    group.after(label);
+    group.dataset.hf29Ready='1';
+  }
 
   function simplifyTodayFilters(){
     const group=q('[data-today-filters]');
@@ -14,8 +39,7 @@
     label.className='hf29-today-filter';
     label.dataset.hf29LabelEn='Show';
     label.dataset.hf29LabelEs='Mostrar';
-    const span=document.createElement('span');
-    span.textContent=tx('Show','Mostrar');
+    const span=document.createElement('span');span.textContent=tx('Show','Mostrar');
     const select=document.createElement('select');
     select.setAttribute('aria-label',tx('Filter what matters now','Filtrar lo que importa ahora'));
     buttons.forEach((button,index)=>{
@@ -40,29 +64,30 @@
     const nav=q('.footer .footer-links');
     if(!nav||nav.dataset.hf29Ready==='1')return;
     const links=[...nav.children].filter(el=>el.matches('a'));
-    if(links.length<=8){nav.dataset.hf29Ready='1';nav.classList.add('hf29-footer-ready');return}
+    if(links.length<=7){nav.dataset.hf29Ready='1';nav.classList.add('hf29-footer-ready');return}
     const priorities=[
       /community-help-center|centro-de-ayuda/,
       /updates\//,
       /business-dashboard|\/es\/negocios\//,
       /privacy|privacidad/,
-      /terms/,
       /accessibility|accesibilidad/
     ];
     const keep=[];
-    priorities.forEach(re=>{const found=links.find(a=>re.test(new URL(a.href,location.href).pathname)&&!keep.includes(a));if(found)keep.push(found)});
-    for(const a of links){if(keep.length>=6)break;if(!keep.includes(a))keep.push(a)}
-    const extras=links.filter(a=>!keep.includes(a));
+    priorities.forEach(re=>{const found=links.find(a=>re.test(pathOf(a))&&!keep.includes(a));if(found)keep.push(found)});
+    const redundantPrimary=a=>{
+      const p=pathOf(a),h=new URL(a.href,location.href).hash;
+      return h==='#ask-navigator'||p==='/today/'||p==='/es/hoy/'||p==='/get-it-done/'||p==='/es/hacerlo/'||p==='/directory/'||p==='/es/directorio/';
+    };
+    links.filter(a=>redundantPrimary(a)).forEach(a=>a.remove());
+    const extras=links.filter(a=>!keep.includes(a)&&!redundantPrimary(a));
     keep.forEach(a=>nav.append(a));
     if(extras.length){
       const details=document.createElement('details');
       details.className='hf29-footer-more';
       details.dataset.hf29SummaryEn='More links';
       details.dataset.hf29SummaryEs='Más enlaces';
-      const summary=document.createElement('summary');
-      summary.textContent=tx('More links','Más enlaces');
-      const menu=document.createElement('div');
-      menu.className='hf29-footer-more-menu';
+      const summary=document.createElement('summary');summary.textContent=tx('More links','Más enlaces');
+      const menu=document.createElement('div');menu.className='hf29-footer-more-menu';
       extras.forEach(a=>menu.append(a));
       details.append(summary,menu);nav.append(details);
       document.addEventListener('click',event=>{if(details.open&&!details.contains(event.target))details.open=false});
@@ -106,10 +131,8 @@
       details.className='hf29-dialog-more';
       details.dataset.hf29SummaryEn='Other options';
       details.dataset.hf29SummaryEs='Otras opciones';
-      const summary=document.createElement('summary');
-      summary.textContent=tx('Other options','Otras opciones');
-      const menu=document.createElement('div');
-      menu.className='hf29-dialog-more-menu';
+      const summary=document.createElement('summary');summary.textContent=tx('Other options','Otras opciones');
+      const menu=document.createElement('div');menu.className='hf29-dialog-more-menu';
       rest.forEach(item=>menu.append(item));
       details.append(summary,menu);group.append(details);
       group.dataset.hf29DialogReady='1';
@@ -127,10 +150,11 @@
   function syncLanguage(){
     qa('[data-hf29-summary-en]').forEach(d=>{const s=q(':scope > summary',d);if(s)s.textContent=tx(d.dataset.hf29SummaryEn,d.dataset.hf29SummaryEs)});
     qa('[data-hf29-label-en]').forEach(el=>{const span=q(':scope > span',el);if(span)span.textContent=tx(el.dataset.hf29LabelEn,el.dataset.hf29LabelEs)});
-    const select=q('.hf29-today-filter select');if(select)select.setAttribute('aria-label',tx('Filter what matters now','Filtrar lo que importa ahora'));
+    const today=q('.hf29-today-filter select');if(today)today.setAttribute('aria-label',tx('Filter what matters now','Filtrar lo que importa ahora'));
+    const example=q('.hf29-example-select select');if(example)example.setAttribute('aria-label',tx('Choose an example question','Elegir una pregunta de ejemplo'));
   }
 
-  function init(){simplifyTodayFilters();simplifyFooter();refineHome();simplifyMyFranklin();simplifyDialogActions();syncLanguage()}
+  function init(){simplifyAssistantExamples();simplifyTodayFilters();simplifyFooter();refineHome();simplifyMyFranklin();simplifyDialogActions();syncLanguage()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   window.addEventListener('load',init,{once:true});
   window.addEventListener('franklinlanguagechange',()=>{syncLanguage();setTimeout(init,0)});
