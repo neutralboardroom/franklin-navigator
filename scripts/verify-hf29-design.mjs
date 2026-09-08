@@ -31,7 +31,12 @@ for (const marker of [
   '.hf29-dialog-more',
   '.hf29-footer-more-menu',
   '.device-reset-panel .hf29-safe-choice',
-  '.r27-navigator-dialog{width:min(640px'
+  '.r27-navigator-dialog{width:min(640px',
+  '.r29-hero{padding:72px 0 58px!important',
+  '.r29-local-card{',
+  '.r29-plan{position:relative',
+  '.r29-plan.featured{',
+  '.r34-growth-band{'
 ]) need(css.includes(marker), `missing CSS marker ${marker}`);
 
 for (const fn of [
@@ -43,14 +48,13 @@ for (const fn of [
   'simplifyDialogActions'
 ]) need(design.includes(fn), `missing design function ${fn}`);
 
-need(nav.includes("p==='/today/'"), 'Today missing from direct navigation');
-need(nav.includes("p==='/get-it-done/'"), 'Get It Done missing from direct navigation');
-need(nav.includes("p==='/directory/'"), 'Find Local missing from direct navigation');
-const core = nav.split('function coreHeaderLink', 2)[1].split('function globalOverflowLink', 1)[0];
-const overflow = nav.split('function globalOverflowLink', 2)[1].split('function buildDisclosure', 1)[0];
-need(!core.includes('community') && !core.includes('my-franklin') && !core.includes('business-dashboard'), 'secondary route leaked into direct header');
-for (const route of ['community', 'my-franklin', 'business-dashboard']) need(overflow.includes(route), `missing header More route ${route}`);
-for (const route of ['activities', 'sports', 'learning']) need(!overflow.includes(route), `subtopic leaked into header More: ${route}`);
+need(nav.includes('function canonicalHeaderItems'), 'canonical universal header missing');
+need(nav.includes('normalizeHeaderLinks'), 'runtime header normalization missing');
+const canonical = nav.split('function canonicalHeaderItems', 2)[1].split('function currentPathMatches', 1)[0];
+for (const route of ['#ask-navigator', 'today', 'get-it-done', 'directory', 'community', 'my-franklin', 'business-dashboard']) {
+  need(canonical.includes(route), `canonical header missing ${route}`);
+}
+for (const route of ['activities', 'sports', 'learning']) need(!canonical.includes(route), `subtopic leaked into canonical header: ${route}`);
 need(nav.includes('section.hidden=true'), 'duplicate homepage route chooser not suppressed');
 need(nav.includes("summaryEn:'More',summaryEs:'Más'"), 'compact bilingual More label missing');
 need(nav.includes('closeOtherDisclosures'), 'mutually-exclusive disclosure behavior missing');
@@ -61,14 +65,16 @@ console.log(JSON.stringify({
   result: 'PASS',
   release: release.release,
   edition: release.activeEdition,
-  directHeaderDestinationsMax: 4,
-  headerMoreDestinationsMax: 3,
+  universalDirectHeaderDestinations: 4,
+  universalHeaderMoreDestinations: 3,
   ordinaryPrimaryActionsMax: 1,
   ordinaryVisibleSecondaryActionsMax: 1,
   heroExampleButtonsRendered: 0,
+  heroExampleSelectorRendered: 1,
   todayCategoryControl: 'SINGLE_SELECT',
   todayDirectCardActionsMax: 1,
   assistantPrimaryButtonsVisibleMax: 1,
+  businessMembershipPremiumPolish: true,
   profileCount: release.profileCount,
   profileFactsChanged: false,
   runtimeChanged: false,
