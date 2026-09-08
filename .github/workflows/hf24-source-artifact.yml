@@ -1,0 +1,29 @@
+name: HF24 exact changed source export
+on:
+  push:
+    branches: [local-franklin-hf24-assistant-practical-20260908]
+    paths: [.github/workflows/hf24-source-artifact.yml]
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 1a289026f981f89b8c9077b99cc076c21b50221d
+          persist-credentials: false
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hf24-exact-changed-public-source
+          path: |
+            dist/assets/r40-assistant-practical.js
+            dist/assets/r40-assistant-safety-guard.js
+            dist/assets/r37-i18n.js
+            dist/assets/device-followthrough-core.js
+            PRODUCTION_RELEASE.json
+            evidence/HF24_SOURCE_BINDING.json
+            evidence/HF24_BROWSER.json
+            evidence/HF24_RULE_AND_SOURCE_RECONCILIATION_RECEIPT.json
+          retention-days: 14
+          if-no-files-found: error
