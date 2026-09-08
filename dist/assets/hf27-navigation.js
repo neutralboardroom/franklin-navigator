@@ -23,6 +23,50 @@
       p==='/business-dashboard/'||p==='/es/negocios/';
   }
 
+  function canonicalHeaderItems(){
+    const es=isEs();
+    return [
+      {kind:'core',href:es?'/es/#ask-navigator':'/#ask-navigator',label:es?'Preguntar a Franklin Assistant':'Ask Franklin Assistant'},
+      {kind:'core',href:es?'/es/hoy/':'/today/',label:es?'Hoy':'Today'},
+      {kind:'core',href:es?'/es/hacerlo/':'/get-it-done/',label:es?'Resolver tareas':'Get It Done'},
+      {kind:'core',href:es?'/es/directorio/':'/directory/',label:es?'Buscar en Franklin':'Find Local'},
+      {kind:'more',href:'/community/',label:es?'Comunidad':'Community'},
+      {kind:'more',href:es?'/es/mi-franklin/':'/my-franklin/',label:es?'Mi Franklin':'My Franklin'},
+      {kind:'more',href:es?'/es/negocios/':'/business-dashboard/',label:es?'Negocios':'For businesses'}
+    ];
+  }
+
+  function currentPathMatches(href){
+    const target=new URL(href,location.href);
+    if(target.hash==='#ask-navigator')return false;
+    return location.pathname===target.pathname;
+  }
+
+  function normalizeHeaderLinks(nav){
+    const existing=[...nav.children].filter(el=>el.matches('a'));
+    const byPath=new Map();
+    for(const link of existing){
+      const u=new URL(link.getAttribute('href')||'',location.href);
+      const key=(u.hash==='#ask-navigator'?'ASK:':u.pathname);
+      if(!byPath.has(key))byPath.set(key,link);
+    }
+    const normalized=[];
+    for(const item of canonicalHeaderItems()){
+      const u=new URL(item.href,location.href);
+      const key=(u.hash==='#ask-navigator'?'ASK:':u.pathname);
+      let link=byPath.get(key);
+      if(!link){link=document.createElement('a')}
+      link.href=item.href;
+      link.textContent=item.label;
+      if(currentPathMatches(item.href))link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');
+      link.dataset.r41CanonicalKind=item.kind;
+      normalized.push(link);
+    }
+    existing.filter(link=>!normalized.includes(link)).forEach(link=>link.remove());
+    normalized.forEach(link=>nav.append(link));
+    return normalized;
+  }
+
   function buildDisclosure({summaryEn,summaryEs,items,className}){
     const details=document.createElement('details');
     details.className=className;
@@ -44,17 +88,16 @@
   function simplifyHeader(){
     const nav=q('header .nav');
     if(!nav||nav.dataset.r41Ready==='1')return;
-    const links=[...nav.children].filter(el=>el.matches('a'));
-    const extras=links.filter(link=>!coreHeaderLink(link)&&globalOverflowLink(link));
-    // Activities, Sports and Learning are useful content routes, not global navigation.
-    // They remain discoverable in page content and the footer, but are removed from the
-    // universal header so a first-time user sees one small, stable navigation system.
-    links.filter(link=>!coreHeaderLink(link)&&!globalOverflowLink(link)).forEach(link=>link.remove());
-    if(!extras.length){nav.dataset.r41Ready='1';return}
-    const more=buildDisclosure({summaryEn:'More',summaryEs:'Más',items:extras,className:'r41-nav-more'});
-    nav.append(more);
-    q(':scope > summary',more)?.addEventListener('click',()=>closeOtherDisclosures(more));
-    more.addEventListener('click',event=>{if(event.target.closest('a'))more.open=false});
+    const links=normalizeHeaderLinks(nav);
+    const core=links.filter(link=>link.dataset.r41CanonicalKind==='core');
+    const extras=links.filter(link=>link.dataset.r41CanonicalKind==='more');
+    core.forEach(link=>nav.append(link));
+    if(extras.length){
+      const more=buildDisclosure({summaryEn:'More',summaryEs:'Más',items:extras,className:'r41-nav-more'});
+      nav.append(more);
+      q(':scope > summary',more)?.addEventListener('click',()=>closeOtherDisclosures(more));
+      more.addEventListener('click',event=>{if(event.target.closest('a'))more.open=false});
+    }
     nav.dataset.r41Ready='1';
   }
 
