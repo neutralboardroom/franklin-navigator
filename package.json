@@ -7,9 +7,9 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "start": "node scripts/scc-runtime-route-guard.mjs && node scripts/owner-review-preflight.cjs && node server.js",
+    "start": "node scripts/scc-runtime-route-guard.mjs && node scripts/owner-first-value-reconcile.cjs && node scripts/owner-review-preflight.cjs && node server.js",
     "test": "node --test",
-    "check": "node --check server.js && node --check lib/catalog.js && node --check lib/lifecycle.js && node --check lib/security.js && node --check scripts/scc-runtime-route-guard.mjs"
+    "check": "node --check server.js && node --check lib/catalog.js && node --check lib/lifecycle.js && node --check lib/security.js && node --check scripts/scc-runtime-route-guard.mjs && node --check scripts/owner-first-value-reconcile.cjs"
   },
   "dependencies": {
     "pg": "8.16.3"
