@@ -1,0 +1,64 @@
+name: HF26 final editorial longform review
+on:
+  push:
+    branches: [local-franklin-hf26-public-language-20260908]
+    paths: [.github/workflows/hf26-editorial-longform-review.yml]
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {path: transport, persist-credentials: false}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {ref: 01aecafbfe16202d9d5a80eb6b97443c9ee305ad, path: candidate, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.13'}
+      - name: Reconstruct exact final-intent wording
+        run: |
+          set -euo pipefail
+          cp transport/.github/hf26/public_language_patch.py ./public_language_patch.py
+          python public_language_patch.py
+          python transport/.github/hf26/public_language_refine_v5.py
+      - name: Export long/dense/common non-profile copy
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from collections import defaultdict
+          import json,re
+          root=Path('candidate/dist');uses=defaultdict(list)
+          hidden={'script','style','noscript','template','svg','path','meta','link'}
+          class P(HTMLParser):
+            def __init__(self,path):super().__init__(convert_charrefs=True);self.path=path;self.stack=[];self.skip=0
+            def handle_starttag(self,tag,a):
+              self.stack.append(tag)
+              if tag in hidden:self.skip+=1
+              d=dict(a)
+              if tag=='meta' and d.get('name')=='description' and d.get('content'):uses[d['content'].strip()].append({'file':self.path,'kind':'meta'})
+              if not self.skip:
+                for k in ['title','aria-label','placeholder','alt']:
+                  if d.get(k):uses[re.sub(r'\s+',' ',d[k]).strip()].append({'file':self.path,'kind':k})
+            def handle_endtag(self,tag):
+              if tag in hidden and self.skip:self.skip-=1
+              if self.stack:self.stack.pop()
+            def handle_data(self,data):
+              if self.skip:return
+              t=re.sub(r'\s+',' ',data).strip()
+              if t and re.search(r'[A-Za-zÁ-ÿ]',t):uses[t].append({'file':self.path,'kind':self.stack[-1] if self.stack else 'text'})
+          pages=sorted(p for p in root.rglob('*.html') if not p.relative_to(root).as_posix().startswith('profiles/'))
+          for p in pages:P(p.relative_to(root).as_posix()).feed(p.read_text(errors='ignore'))
+          rows=[{'text':t,'chars':len(t),'words':len(t.split()),'uses':len(u),'files':sorted({x['file'] for x in u})[:20],'kinds':sorted({x['kind'] for x in u})} for t,u in uses.items() if len(t)>=80]
+          longest=sorted(rows,key=lambda x:(-x['chars'],-x['uses']))[:250]
+          dense=sorted([x for x in rows if x['words']>=22 or x['text'].count(',')>=3],key=lambda x:(-x['uses'],-x['chars']))[:250]
+          common=sorted([x for x in rows if x['uses']>=3],key=lambda x:(-x['uses'],-x['chars']))[:250]
+          out={'schemaVersion':'franklin.hf26.editorial-longform.v1','nonProfilePages':len(pages),'uniqueStrings':len(uses),'longest':longest,'dense':dense,'commonLong':common};Path('HF26_EDITORIAL_LONGFORM.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'nonProfilePages':len(pages),'uniqueStrings':len(uses),'longest':len(longest),'dense':len(dense),'commonLong':len(common)}))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hf26-editorial-longform-review
+          path: HF26_EDITORIAL_LONGFORM.json
+          retention-days: 14
+          if-no-files-found: error
