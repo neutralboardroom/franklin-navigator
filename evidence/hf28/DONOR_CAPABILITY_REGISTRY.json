@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "franklin.hf28.donor-registry.v1",
+  "activeEdition": "FRANKLIN_TN",
+  "records": [
+    {"donor":"Smarter Justice","capability":"Find Local simplification","disposition":"REJECT_WITH_CAUSE","reason":"Strict donor authority is legal-module-only; HF2.8 is generic Local profile discovery. No inspection performed, no runtime connection, no data transfer, no writeback."},
+    {"donor":"Smarter Health","capability":"Find Local simplification","disposition":"DEFER_WITH_CAUSE","reason":"No donor dependency is needed to complete the current generic directory usability slice safely and natively."},
+    {"donor":"Smarter Home / Smarter Navigator","capability":"Find Local simplification","disposition":"DEFER_WITH_CAUSE","reason":"No immutable donor snapshot is necessary for the current native Local directory slice; avoid unnecessary donor review."},
+    {"donor":"Smarter Auto","capability":"Find Local simplification","disposition":"DEFER_WITH_CAUSE","reason":"No donor dependency is needed for this generic profile-discovery workflow."}
+  ],
+  "smarterJusticeDonorSnapshotReceiptRequired": false,
+  "smarterJusticeReason": "DONOR_NOT_USED"
+}
