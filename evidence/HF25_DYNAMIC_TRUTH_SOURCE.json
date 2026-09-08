@@ -1,0 +1,10 @@
+{
+  "parent": "eaff996669a0c432e2ebd40773a86bc869310f42",
+  "changedFiles": {
+    "dist/assets/membership-live.js": "2d1da5fb4caa79452bf7f06e33f3a32643cac7c51db9d6157a7c28b1a6a2bd58",
+    "dist/data/r37-es-public-strings.json": "9e8f1431fbc14b9d7e15dea77003fa86efcbde950e366d393ac2937c2c966b13"
+  },
+  "runtimeChanged": false,
+  "pricesChanged": false,
+  "financialMutations": 0
+}

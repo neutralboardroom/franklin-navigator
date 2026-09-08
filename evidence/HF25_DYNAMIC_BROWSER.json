@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "franklin.hf25.dynamic-browser.v1",
+  "result": "PASS",
+  "profileFixtureIdHashed": "9966511552e64d53023802610506a198673a0ff9dc012ac3a245e4b14f98c2c3",
+  "assertions": 16,
+  "pass": 16,
+  "fail": 0,
+  "financialMutations": 0,
+  "results": [
+    {
+      "id": "open-en",
+      "pass": true,
+      "detail": "elected: 12-Point SignWorks\nRequest or check representation review\nProfile verified. You can continue to membership.\nCommunity Membership\nProfile verified. Choose the membership term that fits your organization.\nMonthly Community Membership\n\n$5/month\n\nContinue with $5/month\nAnnual Community Membership\n\n$50/year\n\nRecommended for simple yearly billing.\n\nContinue with $50/year\nCharter Community Membership\n\n$120 for 36 months\n\nPrepaid for 36 months. No automatic renewal.\n\nContinue with $120 for 36 months\n\nMonthly and annual memberships renew until canceled. Charter is prepaid for 36 months and does not automatically renew. Membership does not buy factual accuracy, ranking, endorsement, credentials, leads or guaranteed results.\n\nFranklin Navigator\nAn independent, community-centered platform built specifically for Franklin, Tennessee.\n\ncommunity@franklinnavigator.com \u00b7 (615) 656-7020\n2020 Fieldstone Pkwy, Ste 900, Franklin, TN 37069\n\nPricing\nMember account\nSupport\nPrivacy\nTerms\nAccessibility"
+    },
+    {
+      "id": "open-en-no-stale",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "True-en-no-js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "True-en-no-overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "open-es",
+      "pass": true,
+      "detail": "des continuar con la membres\u00eda.\nMembres\u00eda Comunitaria\nPerfil verificado. Elija el plazo de membres\u00eda que mejor se adapte a su organizaci\u00f3n.\nMembres\u00eda Comunitaria Mensual\n\n$5/mes\n\nContinuar con $5/mes\nMembres\u00eda Comunitaria Anual\n\n$50/a\u00f1o\n\nRecomendado para una facturaci\u00f3n anual sencilla.\n\nContinuar con $50/a\u00f1o\nMembres\u00eda Comunitaria Charter\n\n$120 por 36 meses\n\nPrepagada por 36 meses. Sin renovaci\u00f3n autom\u00e1tica.\n\nContinuar con $120 for 36 months\n\nLas membres\u00edas mensuales y anuales se renuevan hasta que se cancelen. Charter se prepaga por 36 meses y no se renueva autom\u00e1ticamente. La membres\u00eda no compra exactitud de los datos, posici\u00f3n, recomendaci\u00f3n, credenciales, prospectos ni resultados garantizados.\n\nFranklin Navigator\nUna plataforma independiente y centrada en la comunidad, creada espec\u00edficamente para Franklin, Tennessee.\n\ncommunity@franklinnavigator.com \u00b7 (615) 656-7020\n2020 Fieldstone Pkwy, Ste 900, Franklin, TN 37069\n\nPrecios\nCuenta de miembro\nSoporte\nPrivacidad\nT\u00e9rminos\nAccesibilidad"
+    },
+    {
+      "id": "open-es-no-en",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "True-es-no-js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "True-es-no-overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "closed-en",
+      "pass": true,
+      "detail": "e the matching listing, then create or sign in to your account.\n\n1 \u00b7 Find profile\n2 \u00b7 Account\n3 \u00b7 Confirm representation\n4 \u00b7 Membership\n5 \u00b7 Benefits & billing\nMembership accounts are available; new checkout is currently closed.\nYour account\n\nSigned in as verified-member-fixture@example.invalid.\n\nSign out\nFind your profile\n\nSearch by business, professional practice, organization, category or location, then choose the matching listing.\n\nBusiness, professional or organization\nSearch\nSelected: 12-Point SignWorks\nRequest or check representation review\nProfile verified. Checkout is not open. Check membership status for any earlier payment.\nCommunity Membership\nCheckout is not open. Check membership status for any earlier payment.\nFranklin Navigator\nAn independent, community-centered platform built specifically for Franklin, Tennessee.\n\ncommunity@franklinnavigator.com \u00b7 (615) 656-7020\n2020 Fieldstone Pkwy, Ste 900, Franklin, TN 37069\n\nPricing\nMember account\nSupport\nPrivacy\nTerms\nAccessibility"
+    },
+    {
+      "id": "closed-en-no-payment",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "False-en-no-js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "False-en-no-overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "closed-es",
+      "pass": true,
+      "detail": "embres\u00eda\n5 \u00b7 Beneficios y facturaci\u00f3n\nLas cuentas de membres\u00eda est\u00e1n disponibles; el nuevo pago est\u00e1 cerrado actualmente.\nSu cuenta\n\nSesi\u00f3n iniciada como verified-member-fixture@example.invalid.\n\nCerrar sesi\u00f3n\nBusque su perfil\n\nBusque por negocio, pr\u00e1ctica profesional, organizaci\u00f3n, categor\u00eda o ubicaci\u00f3n y luego elija el listado correspondiente.\n\nNegocio, profesional u organizaci\u00f3n\nBuscar\nSeleccionado: 12-Point SignWorks\nSolicitar o consultar la revisi\u00f3n de representaci\u00f3n\nPerfil verificado. El pago no est\u00e1 abierto. Revisa el estado de la membres\u00eda para cualquier pago anterior.\nMembres\u00eda Comunitaria\nEl pago no est\u00e1 disponible. Revise el estado de su membres\u00eda para consultar cualquier pago anterior.\nFranklin Navigator\nUna plataforma independiente y centrada en la comunidad, creada espec\u00edficamente para Franklin, Tennessee.\n\ncommunity@franklinnavigator.com \u00b7 (615) 656-7020\n2020 Fieldstone Pkwy, Ste 900, Franklin, TN 37069\n\nPrecios\nCuenta de miembro\nSoporte\nPrivacidad\nT\u00e9rminos\nAccesibilidad"
+    },
+    {
+      "id": "closed-es-no-en",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "False-es-no-js",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "False-es-no-overflow",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}
