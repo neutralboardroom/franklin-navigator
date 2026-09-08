@@ -1,0 +1,39 @@
+name: HF26 language diagnostic v7
+on:
+  push:
+    branches: [local-franklin-hf26-public-language-20260908]
+    paths: [.github/hf26/language_zero_audit.py, .github/workflows/hf26-language-diagnostic-v7.yml]
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {path: transport, persist-credentials: false}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {ref: 01aecafbfe16202d9d5a80eb6b97443c9ee305ad, path: candidate, persist-credentials: false}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: {node-version: '22'}
+      - name: Reconstruct final v7 wording
+        run: |
+          set -euo pipefail
+          cp transport/.github/hf26/public_language_patch.py ./public_language_patch.py
+          python public_language_patch.py
+          python transport/.github/hf26/public_language_refine_v7.py
+          python - <<'PY' >/tmp/js
+          import json
+          for p in json.load(open('candidate/evidence/HF26_LANGUAGE_PATCH_SCOPE.json'))['changedFiles']:
+            if p.endswith('.js'):print('candidate/'+p)
+          PY
+          while IFS= read -r f; do node --check "$f"; done </tmp/js
+      - name: Zero-defect auditor
+        run: python transport/.github/hf26/language_zero_audit.py candidate
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: hf26-language-diagnostic-v7
+          path: candidate/evidence/
+          retention-days: 14
+          if-no-files-found: error
