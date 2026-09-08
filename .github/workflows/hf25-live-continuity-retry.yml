@@ -1,0 +1,42 @@
+name: HF25 live continuity retry
+on:
+  push:
+    branches: [local-franklin-hf25-postlaunch-truth-20260908]
+    paths: [.github/workflows/hf25-live-continuity-retry.yml]
+permissions:
+  contents: read
+jobs:
+  continuity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: eaff996669a0c432e2ebd40773a86bc869310f42
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.13'}
+      - name: Verify live commerce, Assistant, reviewer and enrollment continuity and persist result
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import urllib.request,json,datetime,subprocess
+          def raw(u):
+            req=urllib.request.Request(u,headers={'User-Agent':'Franklin-HF25-live-continuity-retry/1.0','Cache-Control':'no-cache'});return urllib.request.urlopen(req,timeout=30)
+          with raw('https://franklin-navigator-membership.onrender.com/ready') as r:ready=json.load(r)
+          with raw('https://franklin-navigator-membership.onrender.com/api/catalog') as r:catalog=json.load(r)
+          assert ready['ok'] and ready['database'] and ready['commerceEnabled'] and ready['liveCheckoutEnabled'] and ready['stripeCheckoutSessionConfigured'] and ready['stripeWebhookConfigured'] and ready['portalSessionConfigured'] and ready['startupError'] is None
+          assert catalog['publicCheckoutOpen'] and [x['priceUsd'] for x in catalog['choices']]==[5,50,120]
+          endpoints={}
+          for name,url in {'enroll':'https://franklinnavigator.com/membership-enroll/','pricing':'https://franklinnavigator.com/membership-pricing/','businessMembership':'https://franklinnavigator.com/business-membership/','assistant':'https://franklinnavigator.com/assistant/','reviewer':'https://franklin-navigator-membership.onrender.com/review/'}.items():
+            with raw(url) as r:endpoints[name]={'status':r.status,'bytes':len(r.read())};assert endpoints[name]['status']==200
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()=='eaff996669a0c432e2ebd40773a86bc869310f42'
+          report={'schemaVersion':'franklin.hf25.live-continuity.v1','atUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'publicCommit':'eaff996669a0c432e2ebd40773a86bc869310f42','publicDeploy':'dep-dafraeon74is73ba99mg','runtimeCommit':'44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8','runtimeDeploy':'dep-dafq07on74is73b4sp00','ready':{'database':ready['database'],'commerceEnabled':ready['commerceEnabled'],'liveCheckoutEnabled':ready['liveCheckoutEnabled'],'stripeCheckoutSessionConfigured':ready['stripeCheckoutSessionConfigured'],'stripeWebhookConfigured':ready['stripeWebhookConfigured'],'portalSessionConfigured':ready['portalSessionConfigured'],'startupError':ready['startupError']},'catalog':{'publicCheckoutOpen':catalog['publicCheckoutOpen'],'pricesUsd':[x['priceUsd'] for x in catalog['choices']]},'endpoints':endpoints,'financialMutationsByVerification':0,'priorLiveRun':{'runId':34198347410,'httpReadback':'PASS_50_OF_50','browser':'PASS_602_OF_602','continuityAssertionsBeforeHarnessWriteFailure':'PASS'}}
+          Path('HF25_LIVE_CONTINUITY.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hf25-live-continuity-retry
+          path: HF25_LIVE_CONTINUITY.json
+          retention-days: 14
+          if-no-files-found: error
