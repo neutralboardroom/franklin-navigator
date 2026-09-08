@@ -1,0 +1,49 @@
+/* Franklin Navigator HF2.7 — navigation hierarchy, progressive disclosure, and responsive overflow protection */
+.r41-nav-more{position:relative;flex:0 0 auto}
+.r41-nav-more>summary{list-style:none;cursor:pointer;color:#344248;font-weight:700;padding:8px 0;border-bottom:2px solid transparent;white-space:nowrap}
+.r41-nav-more>summary::-webkit-details-marker{display:none}
+.r41-nav-more>summary::after{content:" ▾";font-size:.78em}
+.r41-nav-more[open]>summary{color:var(--brand-dark);border-bottom-color:var(--accent)}
+.r41-nav-more-menu{position:absolute;right:0;top:calc(100% + 10px);z-index:40;display:grid;min-width:220px;padding:8px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+.r41-nav-more-menu a{display:block;padding:10px 12px!important;border:0!important;border-radius:7px;white-space:nowrap}
+.r41-nav-more-menu a:hover,.r41-nav-more-menu a:focus-visible{background:var(--soft)}
+.r41-more-actions{display:inline-block;position:relative;vertical-align:middle}
+.r41-more-actions>summary{list-style:none;cursor:pointer;font-weight:750;color:var(--brand-dark);padding:9px 4px;text-decoration:underline;text-underline-offset:.18em}
+.r41-more-actions>summary::-webkit-details-marker{display:none}
+.r41-more-actions>summary::after{content:" ▾";font-size:.78em}
+.r41-more-actions-menu{display:grid;gap:8px;min-width:230px;margin-top:8px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+.r41-more-actions-menu .button,.r41-more-actions-menu a,.r41-more-actions-menu button{width:100%;justify-content:flex-start;text-align:left}
+.actions>.r41-secondary-action.button,.r30-actions>.r41-secondary-action.button{background:transparent;border-color:transparent;min-height:auto;padding:9px 4px;text-decoration:underline;text-underline-offset:.18em}
+.actions>.r41-secondary-action.button:hover,.r30-actions>.r41-secondary-action.button:hover{background:transparent;color:var(--brand)}
+.r41-home-routes{margin-top:16px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:0 16px}
+.r41-home-routes>summary{cursor:pointer;font-weight:800;color:var(--brand-dark);padding:14px 0}
+.r41-home-routes>.r24-destination-grid{padding:4px 0 18px}
+.r41-photo-credit-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.r41-photo-credit-card{overflow:hidden;padding:0}
+.r41-photo-credit-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--soft)}
+.r41-photo-credit-copy{padding:18px 20px 20px}
+.r22-profile-layout,.r22-profile-layout article,.r22-profile-layout aside,.r22-profile-hero-grid,.profile-facts-grid,.profile-primary-actions,.profile-utility-actions,.source-list{min-width:0}
+.r22-profile-layout p,.r22-profile-layout li,.r22-profile-layout a,.profile-location,.profile-facts-grid strong,.profile-facts-grid span{overflow-wrap:anywhere;word-break:normal}
+@media(min-width:721px){
+  header .top{flex-wrap:nowrap!important;align-items:center!important;padding-block:0!important}
+  header .brand{flex:0 0 auto}
+  header .nav{width:auto!important;order:initial!important;padding-bottom:0!important;flex-wrap:nowrap!important;gap:6px 12px!important;white-space:nowrap}
+  header .nav>a{font-size:clamp(.78rem,.92vw,.9rem)}
+}
+@media(min-width:721px) and (max-width:1080px){
+  header .top{gap:14px}
+  header .nav{gap:5px 9px!important}
+  header .nav>a,.r41-nav-more>summary{font-size:.8rem}
+}
+@media(max-width:720px){
+  .r41-nav-more{grid-column:1/-1;position:static}
+  .r41-nav-more>summary{padding:11px 0}
+  .r41-nav-more-menu{position:static;min-width:0;box-shadow:none;border:0;border-top:1px solid var(--line);border-radius:0;padding:4px 0 0;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px;background:transparent}
+  .r41-nav-more-menu a{padding:11px 0!important;border-radius:0}
+  .r41-more-actions{display:block;width:100%}
+  .r41-more-actions-menu{min-width:0;box-shadow:none}
+  .r41-home-routes{padding-inline:14px}
+  .r41-photo-credit-grid{grid-template-columns:1fr}
+  .r22-profile-layout,.r22-profile-hero-grid{grid-template-columns:1fr!important}
+}
+@media print{.r41-nav-more,.r41-more-actions{display:none!important}}
