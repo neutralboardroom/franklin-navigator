@@ -1,0 +1,107 @@
+name: HF26 whole-site public language audit
+on:
+  push:
+    branches: [local-franklin-hf25-dynamic-truth-20260908]
+    paths: [.github/workflows/hf26-public-language-audit.yml]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 01aecafbfe16202d9d5a80eb6b97443c9ee305ad
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.13'}
+      - name: Extract and audit every public-facing string
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json,re,html,collections,hashlib
+          root=Path('dist'); evidence=Path('language-audit'); evidence.mkdir()
+          class P(HTMLParser):
+            def __init__(self):
+              super().__init__();self.stack=[];self.text=[];self.attrs=[];self.title=[];self.meta=[];self.h1=[];self.interactive=[];self.skip=0
+            def handle_starttag(self,tag,attrs):
+              a=dict(attrs);self.stack.append(tag)
+              if tag in ('script','style','noscript','svg'):self.skip+=1
+              if tag=='meta' and a.get('name')=='description' and a.get('content'):self.meta.append(a['content'])
+              for k in ('title','aria-label','placeholder','alt'):
+                if a.get(k):self.attrs.append((tag,k,a[k]))
+            def handle_endtag(self,tag):
+              if tag in ('script','style','noscript','svg') and self.skip:self.skip-=1
+              if self.stack:
+                for i in range(len(self.stack)-1,-1,-1):
+                  if self.stack[i]==tag:self.stack=self.stack[:i];break
+            def handle_data(self,data):
+              if self.skip:return
+              t=re.sub(r'\s+',' ',data).strip()
+              if not t:return
+              self.text.append(t)
+              if 'title' in self.stack:self.title.append(t)
+              if 'h1' in self.stack:self.h1.append(t)
+              if any(x in self.stack for x in ('button','a','label')):self.interactive.append(t)
+          internal=re.compile(r'\b(?:ADMIN_TOKEN|canonical (?:id|profile)|lookup key|entitlement(?: key)?|webhook(?: event)? id|runtime service|schema version|receipt hash|sha-?256|deployment id|debug|developer|internal gate|SCC|SRE|Profile Factory|Local Investigator|AUTHORITY_TRANSFER|candidate release|source state)\b',re.I)
+          stale=re.compile(r'\b(?:before launch|pre-launch|coming soon|not open yet|checkout (?:is|remains) closed|membership (?:is|remains) closed|before checkout|when checkout is available|will reopen|once checkout opens)\b',re.I)
+          weak=re.compile(r'\b(?:click here|learn more here|please be advised|utilize|in order to|at this time|currently available at this time|kindly)\b',re.I)
+          rawtime=re.compile(r'\b20\d\d-\d\d-\d\dT\d\d:\d\d(?::\d\d(?:\.\d+)?)?Z\b')
+          findings=[];pages=[];all_strings=[]
+          for p in sorted(root.rglob('*.html')):
+            rel=p.relative_to(root).as_posix();src=p.read_text(errors='ignore');parser=P()
+            try:parser.feed(src)
+            except Exception as e:findings.append({'severity':'high','kind':'HTML_PARSE','path':rel,'text':type(e).__name__});continue
+            visible=' '.join(parser.text);lang='es' if re.search(r'<html[^>]+lang=["\']es',src,re.I) or rel.startswith('es/') else 'en'
+            title=' '.join(parser.title).strip();meta=' '.join(parser.meta).strip();h1=' '.join(parser.h1).strip()
+            pages.append({'path':rel,'lang':lang,'title':title,'meta':meta,'h1':h1,'visibleChars':len(visible),'interactiveCount':len(parser.interactive)})
+            if not title:findings.append({'severity':'high','kind':'MISSING_TITLE','path':rel,'text':''})
+            if not meta and rel!='404.html':findings.append({'severity':'medium','kind':'MISSING_META_DESCRIPTION','path':rel,'text':''})
+            if not h1:findings.append({'severity':'medium','kind':'MISSING_H1','path':rel,'text':''})
+            if len(title)>70:findings.append({'severity':'low','kind':'LONG_TITLE','path':rel,'text':title[:220]})
+            if meta and (len(meta)<50 or len(meta)>180):findings.append({'severity':'low','kind':'META_LENGTH','path':rel,'text':meta[:220]})
+            # User-visible/internal-language scans.
+            for kind,rx,sev in [('INTERNAL_JARGON',internal,'high'),('STALE_LAUNCH_COPY',stale,'high'),('WEAK_WORDING',weak,'medium'),('RAW_TIMESTAMP',rawtime,'medium')]:
+              for m in rx.finditer(visible):findings.append({'severity':sev,'kind':kind,'path':rel,'text':visible[max(0,m.start()-110):m.end()+150]})
+            # Spanish pages: flag high-confidence English UI fragments, not proper nouns/business names.
+            if lang=='es':
+              english_markers=re.findall(r'\b(?:Sign in|Create account|Membership|Find your|Search|Continue|Manage billing|Get support|Save|Remove|Open this|No matching|Try again|Checkout|Payment|Profile verified|Member account)\b',visible,re.I)
+              if english_markers:findings.append({'severity':'high','kind':'SPANISH_ENGLISH_UI_LEAK','path':rel,'text':', '.join(sorted(set(english_markers))[:20])})
+            for t in parser.text+ [x[2] for x in parser.attrs]:
+              t=re.sub(r'\s+',' ',t).strip()
+              if t and len(t)<=500:all_strings.append((rel,lang,t))
+          # Audit JS literals likely to be visible to users. Exclude test/evidence scripts by limiting to dist/assets.
+          js_find=[]
+          literal_rx=re.compile(r"(?<![A-Za-z0-9_])(['\"])([^'\"\\\n]{3,260})\1")
+          ui_cues=re.compile(r'\b(?:account|profile|membership|checkout|payment|billing|support|search|find|save|review|continue|error|sorry|please|open|sign|password|email|verified|member|business|organization|help)\b',re.I)
+          for p in sorted((root/'assets').glob('*.js')):
+            src=p.read_text(errors='ignore');rel=p.relative_to(root).as_posix()
+            for m in literal_rx.finditer(src):
+              t=m.group(2).strip()
+              if not ui_cues.search(t):continue
+              if re.fullmatch(r'[A-Za-z0-9_./:#?=&${}\-]+',t) and ' ' not in t:continue
+              flags=[]
+              if internal.search(t):flags.append('INTERNAL_JARGON')
+              if stale.search(t):flags.append('STALE_LAUNCH_COPY')
+              if weak.search(t):flags.append('WEAK_WORDING')
+              if rawtime.search(t):flags.append('RAW_TIMESTAMP')
+              js_find.append({'path':rel,'text':t,'flags':flags})
+              for f in flags:findings.append({'severity':'high' if f in ('INTERNAL_JARGON','STALE_LAUNCH_COPY') else 'medium','kind':'JS_'+f,'path':rel,'text':t})
+          counts=collections.Counter((x['severity'],x['kind']) for x in findings)
+          by_kind=collections.Counter(x['kind'] for x in findings);by_path=collections.Counter(x['path'] for x in findings)
+          # Repetition can expose clunky boilerplate. Count nontrivial public strings.
+          freq=collections.Counter(t for _,_,t in all_strings if len(t)>=30)
+          repeated=[{'text':t,'count':c} for t,c in freq.most_common(200) if c>=4]
+          report={'schemaVersion':'franklin.whole-site-language-audit.v1','sourceCommit':'01aecafbfe16202d9d5a80eb6b97443c9ee305ad','htmlPages':len(pages),'profilePages':sum(1 for x in pages if x['path'].startswith('profiles/')),'nonProfilePages':sum(1 for x in pages if not x['path'].startswith('profiles/')),'findings':len(findings),'countsByKind':dict(by_kind),'topPaths':by_path.most_common(100),'pages':pages,'issues':findings,'repeatedStrings':repeated,'jsCandidateStrings':js_find}
+          (evidence/'WHOLE_SITE_LANGUAGE_AUDIT.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+          (evidence/'TOP_ISSUES.txt').write_text('\n'.join(f"{x['severity']}\t{x['kind']}\t{x['path']}\t{x['text']}" for x in findings[:400])+'\n')
+          print(json.dumps({'htmlPages':report['htmlPages'],'profilePages':report['profilePages'],'nonProfilePages':report['nonProfilePages'],'findings':report['findings'],'countsByKind':report['countsByKind'],'topPaths':report['topPaths'][:20]},ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hf26-whole-site-language-audit
+          path: language-audit/
+          retention-days: 14
+          if-no-files-found: error
