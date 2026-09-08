@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "franklin.hf28.pre-seal-currentness.v1",
+  "checkedAtUtc": "2026-09-08T22:40:00Z",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "recordedBaseCommit": "9f74b2acbac62a9cab4436a2733e71f524e673e9",
+  "currentMainObservedBeforeFinalPromotion": "353dd7f94dd2ed7df16c7f3bdad59746a59ab6ef",
+  "currentCandidateBranchObserved": "3fbc0cd6beaa69e33b1d592774384fb7bb895b46",
+  "concurrencyAssessment": "Candidate is a linear fast-forward descendant of the recorded base and current main. No competing main release was observed during the pre-seal check.",
+  "libraryRecheck": {
+    "createdAfterUtc": "2026-09-08T22:00:00Z",
+    "newProductReleaseArtifactsObserved": false,
+    "newAcceptedSccPointerObserved": false,
+    "newAcceptedProfileFactoryHandoffObserved": false,
+    "newAcceptedLocalInvestigatorHandoffObserved": false,
+    "newAcceptedSreCommercialContractObserved": false,
+    "newFilesObserved": [
+      "UNIVERSAL_SMARTER_SCC_MAXIMUM_NEXT_VERSION_BUILD_PROMPT (3)(20260908-222212).md",
+      "UNIVERSAL_SMARTER_OWNER_CONSOLE_REVENUE_ENGINE_NEXT_VERSION_BUILD_COMMAND_2026-09-03(20260908-222140).md",
+      "UNIVERSAL SMARTER PROFILE FACTORY (1)(6).md",
+      "UNIVERSAL_SMARTER_LOCAL_COMMUNITY_PLATFORM_NEXT_VERSION_BUILD_COMMAND_2026-09-03 (1)(20260908-221627).md"
+    ],
+    "disposition": "No late-arriving accepted release or handoff supersedes the recorded build inputs. New prompt files do not by themselves constitute acceptance or promotion."
+  },
+  "sccTruthRetained": {
+    "wo055": "ACCEPTED_CLOSED_FINAL",
+    "checkoutAuthorization": "AUTHORIZED_NOW",
+    "newestAcceptedSuccessorObserved": "v0.39.0 R8",
+    "canonicalPointerObserved": "v0.38.0",
+    "pointerWriteBlocker": "D2 guarded write capability",
+    "franklinReleaseBlockedByPointer": false
+  },
+  "upstreamCandidatesRetainedAsCandidates": {
+    "profileFactory": "FR-PF-PLATFORM-15.18; PF74 pointer unchanged; not consumed",
+    "localInvestigator": "SLI-FRANKLIN-HANDOFF-20260908-026; consumer acceptance UNKNOWN; not consumed",
+    "sre": "SRE-OC-CP-2.42.0; tested candidate, not accepted/deployed; not consumed"
+  },
+  "smarterJusticeDonorUsed": false,
+  "qualifiedNowReassessment": {
+    "remainingQualifiedNowMaterialSlice": false,
+    "reason": "The focused Find Local decision-load slice is complete and live-behavior verified. Remaining high-value items require accepted upstream promotion, a genuine eligible nonmember, broad translation validation, or a later exact packaged-source regeneration; doing them now would violate authority/currentness/safety gates rather than create a complete qualified slice."
+  },
+  "result": "PASS_READY_FOR_FINAL_RECEIPTS_SEAL_AND_FINAL_SOURCE_CARRIER_DEPLOY"
+}
