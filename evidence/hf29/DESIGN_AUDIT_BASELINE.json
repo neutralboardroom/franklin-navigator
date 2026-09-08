@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "franklin.design-audit.hf29.v1",
+  "activeEdition": "FRANKLIN_TN",
+  "baseCommit": "14af3042df4c7a31102a587183c3ed850758a595",
+  "auditScope": "FULL_PUBLIC_VISUAL_SYSTEM_PRIMARY_JOURNEYS_POPUPS_DISCLOSURES_INTERACTION_DENSITY",
+  "ownerScreenshotReview": {
+    "count": 2,
+    "finding": "Expanded secondary-choice surfaces were confusing because progressive disclosure opened into large multi-choice panels rather than compact secondary menus."
+  },
+  "staticInventory": {
+    "nonProfileHtmlPagesAudited": 252,
+    "actionGroupsAudited": 540,
+    "sourceActionGroupsWithMoreThanTwoDirectActions": 159,
+    "pagesWithSevenDirectHeaderLinksBeforeRenderedSimplification": 214,
+    "pagesWithTenDirectHeaderLinksBeforeRenderedSimplification": 6,
+    "pagesWithMoreThanTwentyStaticButtons": 4
+  },
+  "renderedRepresentativePagesAudited": [
+    "/",
+    "/today/",
+    "/get-it-done/",
+    "/directory/",
+    "/community/",
+    "/my-franklin/",
+    "/business-dashboard/",
+    "/membership-start/"
+  ],
+  "highestImpactFindings": [
+    "Header still exposed too many direct destinations for a universal local front door.",
+    "Section-level More options disclosures could expand into visually large panels.",
+    "Assistant modal could present several large equal-weight buttons at once.",
+    "Homepage repeated navigation via an Optional shortcuts route chooser and displayed six current-item cards with per-card save actions.",
+    "Today used six equal filter buttons rather than one simple category control.",
+    "Community presented multiple equal-weight participation choices.",
+    "Footer repeated a large site map as always-visible links.",
+    "Cards and sections were credible but somewhat box-heavy and functional rather than premium."
+  ],
+  "hf29DesignRules": {
+    "desktopDirectHeaderDestinationsMax": 4,
+    "primaryActionPerOrdinarySection": 1,
+    "visibleSecondaryActionPerOrdinarySectionMax": 1,
+    "overflowBehavior": "COMPACT_DISCLOSURE_NOT_PAGE_SIZED_PANEL",
+    "assistantPopupPrimaryButtonsMax": 1,
+    "homepageCurrentCardsMax": 3,
+    "homepagePerCardSaveButtons": 0,
+    "todayCategoryFilter": "SINGLE_SELECT",
+    "footerAlwaysVisibleUtilityLinksMax": 6
+  },
+  "protectedState": {
+    "profileFactsChanged": false,
+    "pricingChanged": false,
+    "runtimeChanged": false,
+    "checkoutChanged": false,
+    "safetyActionsMayCollapse": false
+  }
+}
