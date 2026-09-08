@@ -6,6 +6,7 @@
   const text=(en,es)=>isEs()?es:en;
   const safetySelector='.urgent-section,.urgent-card,.urgent-callout,.r30-urgent,[data-urgent],[data-safety],#urgent-help';
 
+  function pathOf(link){return new URL(link.getAttribute('href')||'',location.href).pathname}
   function coreHeaderLink(link){
     const u=new URL(link.getAttribute('href')||'',location.href);
     const p=u.pathname;
@@ -14,6 +15,12 @@
       p==='/today/'||p==='/es/hoy/' ||
       p==='/get-it-done/'||p==='/es/hacerlo/' ||
       p==='/directory/'||p==='/es/directorio/';
+  }
+  function globalOverflowLink(link){
+    const p=pathOf(link);
+    return p==='/community/' ||
+      p==='/my-franklin/'||p==='/es/mi-franklin/' ||
+      p==='/business-dashboard/'||p==='/es/negocios/';
   }
 
   function buildDisclosure({summaryEn,summaryEs,items,className}){
@@ -38,7 +45,11 @@
     const nav=q('header .nav');
     if(!nav||nav.dataset.r41Ready==='1')return;
     const links=[...nav.children].filter(el=>el.matches('a'));
-    const extras=links.filter(link=>!coreHeaderLink(link));
+    const extras=links.filter(link=>!coreHeaderLink(link)&&globalOverflowLink(link));
+    // Activities, Sports and Learning are useful content routes, not global navigation.
+    // They remain discoverable in page content and the footer, but are removed from the
+    // universal header so a first-time user sees one small, stable navigation system.
+    links.filter(link=>!coreHeaderLink(link)&&!globalOverflowLink(link)).forEach(link=>link.remove());
     if(!extras.length){nav.dataset.r41Ready='1';return}
     const more=buildDisclosure({summaryEn:'More',summaryEs:'Más',items:extras,className:'r41-nav-more'});
     nav.append(more);
@@ -77,8 +88,6 @@
     if(location.pathname!=='/'&&location.pathname!=='/es/')return;
     const section=q('.r24-destinations');
     if(!section||section.dataset.r41Ready==='1')return;
-    // The same destinations already exist in the primary navigation. Keeping a second
-    // expandable route chooser added decision load without adding capability.
     section.hidden=true;
     section.dataset.r41Ready='1';
   }
