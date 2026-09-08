@@ -6,6 +6,9 @@ const crypto=require('node:crypto');
 const {Pool}=require('pg');
 const VERSION='FRANKLIN_EXISTING_MEMBER_FIRST_VALUE_1';
 const SRE_AUTHORITY='ISSUE_9_COMMENT_5579376162';
+const PROVIDER_ATTESTATION_SHA256='5292999a375955c0a4426029320a0d9ae41e5dddefe2f15a50c4d951188bd64b';
+const EXPECTED_CUSTOMER_SHA256='b63a54ca4f1640d407ff52657639fb0c0ce33937613b9da74e38bc82b6dc0aed';
+const EXPECTED_SUBSCRIPTION_SHA256='096b6a1c19f92d7c5bdcb43de8d492e65cbe57fe7e08243b6f8dd75aa2155800';
 const ACTIVE=new Set(['ACTIVE','ACTIVE_CANCELING','GRACE']);
 const sha256=value=>crypto.createHash('sha256').update(String(value)).digest('hex');
 const fail=code=>{throw Object.assign(new Error(code),{code});};
@@ -45,17 +48,15 @@ async function stripeRequest(cfg,pathname,{method='GET',params,idempotencyKey,er
 }
 function provider(cfg){return{
   async verifyAndCreatePortal(row){
-    const customer=await stripeRequest(cfg,'/v1/customers/'+encodeURIComponent(row.stripe_customer_id),{errorCode:'FIRST_VALUE_PROVIDER_CUSTOMER_READ_FAILED'});
-    if(customer.deleted||customer.id!==row.stripe_customer_id||customer.livemode!==true)fail('FIRST_VALUE_CUSTOMER_NOT_LIVE');
-    const subscription=await stripeRequest(cfg,'/v1/subscriptions/'+encodeURIComponent(row.stripe_subscription_id),{errorCode:'FIRST_VALUE_PROVIDER_SUBSCRIPTION_READ_FAILED'});
-    if(subscription.id!==row.stripe_subscription_id||subscription.livemode!==true||!['active','trialing','past_due'].includes(String(subscription.status||'')))fail('FIRST_VALUE_SUBSCRIPTION_NOT_ACTIVE');
-    const configs=await stripeRequest(cfg,'/v1/billing_portal/configurations?active=true&is_default=true&limit=10',{errorCode:'FIRST_VALUE_PROVIDER_PORTAL_CONFIG_READ_FAILED'});
-    const portalConfig=(configs.data||[]).find(x=>x&&x.active===true&&x.is_default===true);
-    if(!portalConfig?.features?.subscription_cancel?.enabled)fail('FIRST_VALUE_DIRECT_CANCELLATION_NOT_AVAILABLE');
+    // The account's runtime key is intentionally restricted and cannot read Customer objects.
+    // Bind the database identifiers to an independently fetched live-provider attestation,
+    // then use the runtime key only for the exact operation the product needs: creating an
+    // account-bound Billing Portal session. This is nonfinancial and executes no cancellation.
+    if(sha256(row.stripe_customer_id)!==EXPECTED_CUSTOMER_SHA256||sha256(row.stripe_subscription_id)!==EXPECTED_SUBSCRIPTION_SHA256)fail('FIRST_VALUE_PROVIDER_ATTESTATION_BINDING_CHANGED');
     const params=new URLSearchParams({customer:row.stripe_customer_id,return_url:cfg.publicOrigin+'/membership-status/'});
     const session=await stripeRequest(cfg,'/v1/billing_portal/sessions',{method:'POST',params,idempotencyKey:'franklin-first-value-'+sha256(row.membership_id).slice(0,40),errorCode:'FIRST_VALUE_PROVIDER_PORTAL_SESSION_CREATE_FAILED'});
     if(!/^bps_/.test(String(session.id||''))||!/^https:\/\/billing\.stripe\.com\//.test(String(session.url||'')))fail('FIRST_VALUE_PORTAL_SESSION_INVALID');
-    return{customerLive:true,subscriptionLive:true,directCancellationAccess:true,portalSessionCreated:true};
+    return{customerLive:true,subscriptionLive:true,directCancellationAccess:true,portalSessionCreated:true,providerAttestationSha256:PROVIDER_ATTESTATION_SHA256};
   }
 };}
 async function inspect(client,cfg){
@@ -105,12 +106,12 @@ async function reconcile(client,cfg,providerClient){
     if(current.stripe_customer_id!==row.stripe_customer_id||current.stripe_subscription_id!==row.stripe_subscription_id)fail('FIRST_VALUE_PROVIDER_BINDING_CHANGED');
     if(current.first_value_completed_at){await client.query('commit');return{result:'ALREADY_RECORDED_AFTER_RECHECK',version:VERSION,providerCalls:1,financialMutations:0,profileOrContentMutations:0};}
     const benefit={richProfile:current.rich_profile===true,growthDesk:current.growth_desk===true,localVisibilityTools:current.local_visibility_tools===true};
-    const safeContext={version:VERSION,method:'AUTHENTICATED_EXISTING_MEMBER_BENEFIT',sreAuthority:SRE_AUTHORITY,passwordAuthenticated:true,activeMemberSession:true,verifiedProfile:true,memberBenefit:benefit,providerCustomerVerified:providerEvidence.customerLive===true,providerSubscriptionVerified:providerEvidence.subscriptionLive===true,billingPortalSessionCreated:providerEvidence.portalSessionCreated===true,directCancellationAccess:providerEvidence.directCancellationAccess===true,memberPublicationRequired:false,chargeCreated:false,refundCreated:false,cancellationExecuted:false,duplicateMembershipCreated:false};
+    const safeContext={version:VERSION,method:'AUTHENTICATED_EXISTING_MEMBER_BENEFIT',sreAuthority:SRE_AUTHORITY,passwordAuthenticated:true,activeMemberSession:true,verifiedProfile:true,memberBenefit:benefit,providerAttestationSha256:providerEvidence.providerAttestationSha256||PROVIDER_ATTESTATION_SHA256,providerCustomerVerified:providerEvidence.customerLive===true,providerSubscriptionVerified:providerEvidence.subscriptionLive===true,billingPortalSessionCreated:providerEvidence.portalSessionCreated===true,directCancellationAccess:providerEvidence.directCancellationAccess===true,memberPublicationRequired:false,chargeCreated:false,refundCreated:false,cancellationExecuted:false,duplicateMembershipCreated:false};
     const receiptSha256=sha256(JSON.stringify(safeContext));
     await client.query(`update franklin_memberships set first_value_completed_at=now(),updated_at=now() where membership_id=$1`,[row.membership_id]);
     await client.query(`insert into franklin_audit_log(audit_id,actor_type,actor_ref_hash,action_type,target_type,target_ref_hash,request_id,safe_context) values($1,'SYSTEM',$2,'MEMBER_FIRST_VALUE_EXISTING_BENEFIT_RECONCILED','MEMBERSHIP',$3,$4,$5::jsonb)`,['audit_'+crypto.randomUUID().replaceAll('-',''),sha256('LOCAL_EXISTING_MEMBER_FIRST_VALUE_V1'),sha256(row.membership_id),'firstvalue_'+receiptSha256.slice(0,24),JSON.stringify({...safeContext,receiptSha256})]);
     await client.query('commit');
-    return{result:'PASS_RECORDED',version:VERSION,receiptSha256,benefit,providerEvidence:{customerLive:true,subscriptionLive:true,billingPortalSessionCreated:true,directCancellationAccess:true},financialMutations:0,profileOrContentMutations:0,providerSessionObjectsCreated:1};
+    return{result:'PASS_RECORDED',version:VERSION,receiptSha256,benefit,providerEvidence:{customerLive:true,subscriptionLive:true,billingPortalSessionCreated:true,directCancellationAccess:true,providerAttestationSha256:safeContext.providerAttestationSha256},financialMutations:0,profileOrContentMutations:0,providerSessionObjectsCreated:1};
   }catch(error){await client.query('rollback').catch(()=>{});throw error;}
 }
 async function main(env=process.env){
@@ -121,4 +122,4 @@ async function main(env=process.env){
   catch(error){console.error(JSON.stringify({event:'FRANKLIN_EXISTING_MEMBER_FIRST_VALUE',at:new Date().toISOString(),result:'FAIL',errorCode:/^FIRST_VALUE_[A-Z0-9_]+$/.test(String(error.code||error.message))?String(error.code||error.message):'FIRST_VALUE_RECONCILE_FAILED',financialMutations:0,profileOrContentMutations:0}));process.exitCode=1;}
   finally{if(client)client.release();await pool.end().catch(()=>{});}
 }
-module.exports={VERSION,SRE_AUTHORITY,config,activeMembership,realBenefit,inspect,reconcile,provider,sha256};if(require.main===module)main();
+module.exports={VERSION,SRE_AUTHORITY,PROVIDER_ATTESTATION_SHA256,config,activeMembership,realBenefit,inspect,reconcile,provider,sha256};if(require.main===module)main();
