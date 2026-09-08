@@ -1,0 +1,37 @@
+name: Franklin catalog checkout truth qualification
+on:
+  push:
+    branches: [local-franklin-runtime-catalog-open-truth-20260908]
+    paths: [lib/catalog.js, .github/workflows/catalog-open-truth.yml]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Full runtime checks
+        run: |
+          npm run check
+          npm test
+      - name: Catalog truth follows commerce flag without changing prices
+        run: |
+          node - <<'NODE'
+          const c=require('./lib/catalog');
+          process.env.COMMERCE_ENABLED='false';
+          let x=c.publicCatalog();
+          if(x.publicCheckoutOpen!==false) throw Error('closed catalog mismatch');
+          process.env.COMMERCE_ENABLED='true';
+          x=c.publicCatalog();
+          if(x.publicCheckoutOpen!==true) throw Error('open catalog mismatch');
+          if(x.publicChoiceCount!==3 || x.choices.map(v=>v.priceUsd).join(',')!=='5,50,120') throw Error('price/catalog regression');
+          if(c.getPlan('franklin_community_member_monthly_v5')?.stripePriceId!=='price_1UAfLPRxNra9nizolEiP5Z2z') throw Error('monthly binding regression');
+          console.log(JSON.stringify({result:'PASS',closed:false,open:true,prices:[5,50,120],financialMutations:0}));
+          NODE
