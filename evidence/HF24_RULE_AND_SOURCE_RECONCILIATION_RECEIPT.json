@@ -1,0 +1,16 @@
+{
+  "role": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "predecessor": "b53ec209ac74c0e9906c5045c3140a4a653c44db",
+  "runtimePair": "a9c918b656ced6386b1af604fde51d4a7e88d3b9",
+  "successor": "FR-NAV1.15.0-HF2.4-CANDIDATE",
+  "commandRevision": "2026-09-03-R2",
+  "sccR5Observed": true,
+  "liV25Imported": false,
+  "pf1517FactsImportedByHf24": false,
+  "smarterJusticeDonorUsed": false,
+  "commerceOpened": false,
+  "ownerSigninDeferred": true,
+  "authorityTransfer": false
+}
