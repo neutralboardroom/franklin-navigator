@@ -1,0 +1,30 @@
+name: HF29 full design qualification
+on:
+  push:
+    branches:
+      - hf29-full-design-simplification-20260909
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install audit parser
+        run: python -m pip install --disable-pip-version-check beautifulsoup4==4.12.3
+      - name: Run HF2.9 design gates
+        run: python scripts/validate-hf29-design.py
+      - name: Confirm no product-data or runtime mutation
+        run: |
+          changed="$(git diff --name-only 14af3042df4c7a31102a587183c3ed850758a595...HEAD)"
+          echo "$changed"
+          if echo "$changed" | grep -E '^(dist/data/|dist/profiles/|server/|runtime/)'; then
+            echo 'Disallowed product-data/runtime mutation' >&2
+            exit 1
+          fi
