@@ -1,0 +1,41 @@
+name: HF28 deterministic seal
+on:
+  push:
+    branches:
+      - hf28-find-local-simplification-20260909
+    paths:
+      - .github/workflows/hf28-seal.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf28-find-local-simplification-20260909
+          fetch-depth: 1
+      - name: Final source syntax and Find Local gate
+        run: |
+          node --check dist/assets/hf27-navigation.js
+          node --check dist/assets/hf28-directory.js
+          node --check dist/assets/local-discovery.js
+          node scripts/verify-hf28-find-local.mjs
+      - name: Build deterministic successor twice and validate fresh extraction
+        run: python3 scripts/build-hf28-release.py --out release-output
+      - name: Show external release attestation
+        run: cat release-output/HF28_EXTERNAL_RELEASE_ATTESTATION.json
+      - name: Upload exact sealed successor and external attestation
+        uses: actions/upload-artifact@v4
+        with:
+          name: HF28_SEALED_RELEASE
+          path: |
+            release-output/FRANKLIN_NAVIGATOR__HF2_8__FIND_LOCAL_SIMPLIFIED__2026-09-09.zip
+            release-output/HF28_EXTERNAL_RELEASE_ATTESTATION.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
