@@ -106,3 +106,16 @@
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
 })();
+
+/* HF2.9 visual polish and interaction-density simplification loader. */
+(()=>{
+  const load=()=>{
+    if(document.querySelector('script[data-hf29-design]'))return;
+    const js=document.createElement('script');
+    js.src='/assets/hf29-design.js';
+    js.defer=true;
+    js.dataset.hf29Design='1';
+    document.head.append(js);
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
+})();
