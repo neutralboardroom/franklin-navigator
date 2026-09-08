@@ -1,6 +1,6 @@
 {
   "authorityTransfer": false,
-  "changedFiles": 7,
+  "changedFiles": 8,
   "checkoutRemainsOpen": true,
   "component": "public",
   "desktopCoreNavigationLinks": 6,
@@ -14,7 +14,8 @@
   "release": "FR-NAV1.16.0-HF2.7-CANDIDATE",
   "runtimeChanged": false,
   "runtimePair": "44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8",
-  "scope": "NAVIGATION_HIERARCHY_HOMEPAGE_HISTORY_GALLERY",
-  "sourceBranch": "hf27-navigation-homepage-20260908",
+  "scope": "NAVIGATION_HIERARCHY_HOMEPAGE_HISTORY_GALLERY_AND_SPANISH_RUNTIME_COPY",
+  "sourceBranch": "hf27-spanish-runtime-copy-20260908",
+  "spanishRuntimeCopyQualification": "SOURCE_READY_PENDING_LIVE_VERIFY",
   "staticSiteService": "srv-da8tg6rbc2fs73crru2g"
 }
