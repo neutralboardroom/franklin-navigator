@@ -1,28 +1,24 @@
 {
-  "baseSourceArchiveSha256": "6e2eba3b7e634173355beae38d0acba15ee7f3fea3fa6017b9b5aef902b15f27",
-  "changedFiles": {
-    "dist/assets/device-followthrough-core.js": "51e291ac29176ee43abfb6af6461239668ba75066adf597f225815e44d5abee7",
-    "dist/assets/r37-i18n.js": "20d060b7c859e52b5d5c352f92779999c5fd448c9da948f72d30b56f7f3c9def",
-    "dist/assets/r40-assistant-practical.js": "5fd2c8dff56629698b967dd29efb1ba288e555e395ec7519afc6d239fcc4e626",
-    "dist/assets/r40-assistant-safety-guard.js": "6b152b30eb36c343c9215987ab7b5db5bc9140bcb78e5155dc627b37e642f715"
-  },
   "commerceOpenedByBuild": false,
-  "commercialAcceptance": false,
+  "commercePreservedOpen": true,
+  "commercialContractChanged": false,
   "component": "public",
-  "generatedAtUtc": "2026-09-08T02:56:59.392952+00:00",
-  "parent": "b53ec209ac74c0e9906c5045c3140a4a653c44db",
+  "generatedAtUtc": "2026-09-08T07:07:27.117953+00:00",
+  "parent": "9e8195d9c3939f791795ab38add326402b5d55c8",
   "profileCount": 19103,
   "profileFactsChanged": false,
   "publicDistDigestRule": "sorted path + NUL + file sha256 hex + LF",
-  "publicDistSha256": "8a64328aa4d9e569ea00f538f1cd3cc93b858df221acacc00315baa1de6801ed",
+  "publicDistSha256": "fc925f435e9f8ccdee492ad94431ed1b97131183e40e150704e67b462d4ae0b2",
   "qualification": {
-    "browserFail": 0,
-    "browserPass": 24,
-    "ownerAuthenticationObserved": false,
-    "paidLifecycleAccepted": false,
-    "runId": 34181758655
+    "financialMutations": 0,
+    "runId": 34197442159,
+    "sourceState": "PUBLIC_SOURCE_BROWSER_QUALIFIED"
   },
-  "release": "FR-NAV1.15.0-HF2.4-CANDIDATE",
-  "runtimePair": "a9c918b656ced6386b1af604fde51d4a7e88d3b9",
-  "sourceState": "PUBLIC_SOURCE_BROWSER_QUALIFIED_NOT_PAID_LAUNCH_ACCEPTANCE"
+  "release": "FR-NAV1.15.0-HF2.5-CANDIDATE",
+  "rollback": {
+    "publicCommit": "9e8195d9c3939f791795ab38add326402b5d55c8",
+    "runtimeCommerceKillSwitch": "COMMERCE_ENABLED=false"
+  },
+  "runtimePair": "44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8",
+  "smarterJusticeDonorUsed": false
 }
