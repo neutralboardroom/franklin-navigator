@@ -90,6 +90,17 @@ header{box-shadow:0 2px 14px rgba(17,49,52,.035)}
 .hf29-dialog-more-menu .button,.hf29-dialog-more-menu a,.hf29-dialog-more-menu button{padding:7px 2px!important;border:0!important;background:transparent!important;color:var(--brand-dark)!important;text-decoration:underline!important;text-underline-offset:.2em;box-shadow:none!important;min-height:0!important;justify-content:flex-start!important;text-align:left!important}
 .r27-business-choice{padding:16px;border-color:#d7e4e2;background:#fbfdfd}
 .r30-dialog-next .button{width:auto!important;min-height:0!important;padding:7px 2px!important;border:0!important;background:transparent!important;color:var(--brand-dark)!important;text-decoration:underline!important;box-shadow:none!important}
+.r22-disclosure>summary{list-style:none!important;cursor:pointer;font-size:1rem!important;font-weight:760!important;padding:12px 0!important;color:var(--brand-dark)}
+.r22-disclosure>summary::-webkit-details-marker{display:none}
+.r22-disclosure>summary::after{content:" +";color:#718487;font-weight:700}
+.r22-disclosure[open]>summary::after{content:" −"}
+details.r22-dashboard-card>summary{list-style:none;cursor:pointer;font-size:1rem;padding:2px 0;color:var(--brand-dark)}
+details.r22-dashboard-card>summary::-webkit-details-marker{display:none}
+details.r22-dashboard-card>summary::after{content:" +";color:#718487;font-weight:700}
+details.r22-dashboard-card[open]>summary::after{content:" −"}
+.device-reset-panel{border-left:3px solid #cfb26a!important;background:#fffaf0!important;border-radius:10px!important}
+.device-reset-panel .hf29-safe-choice{background:var(--brand-dark)!important;border-color:var(--brand-dark)!important;color:#fff!important}
+.device-reset-panel .hf29-destructive-choice{border:0!important;background:transparent!important;box-shadow:none!important;color:#873e35!important;padding-inline:2px!important;text-decoration:underline!important;text-underline-offset:.2em}
 .footer{padding-top:38px;background:#fcfdfd}
 .footer-grid{gap:36px}
 .footer-links.hf29-footer-ready{align-items:flex-start;align-content:flex-start}
