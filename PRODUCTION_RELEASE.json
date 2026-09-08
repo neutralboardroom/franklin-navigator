@@ -1,17 +1,20 @@
 {
   "authorityTransfer": false,
-  "changedFiles": 19383,
+  "changedFiles": 7,
   "checkoutRemainsOpen": true,
   "component": "public",
-  "languageAuditRunId": 34217056903,
-  "overflowComparisonRunId": 34216103881,
-  "parent": "01aecafbfe16202d9d5a80eb6b97443c9ee305ad",
+  "desktopCoreNavigationLinks": 6,
+  "emergencyActionsRemainVisible": true,
+  "historyGalleryImages": 9,
+  "navigationQualification": "PASS",
+  "parent": "2d4a9d3bb46151d0a93c32318fedf6b2e7812a68",
   "pricesChanged": false,
   "profileCount": 19103,
   "profileFactsChanged": false,
-  "qualificationRunId": 34217260224,
-  "release": "FR-NAV1.15.0-HF2.6-CANDIDATE",
+  "release": "FR-NAV1.16.0-HF2.7-CANDIDATE",
   "runtimeChanged": false,
   "runtimePair": "44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8",
-  "scope": "FULL_PUBLIC_LANGUAGE_REFINEMENT"
+  "scope": "NAVIGATION_HIERARCHY_HOMEPAGE_HISTORY_GALLERY",
+  "sourceBranch": "hf27-navigation-homepage-20260908",
+  "staticSiteService": "srv-da8tg6rbc2fs73crru2g"
 }
