@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "franklin.hf28.source-qualification.v1",
+  "workflowRunId": 34285766452,
+  "workflowHead": "b3ac3085c9a522602d494fac96ec8573ae2c49d5",
+  "workflow": "HF28 Find Local qualification",
+  "conclusion": "success",
+  "jobId": 102260876178,
+  "steps": {
+    "javascriptSyntax": "PASS",
+    "findLocalSourceQualification": "PASS",
+    "evidenceJsonIntegrity": "PASS",
+    "candidateAdditionNestedArchives": "PASS_ZERO"
+  },
+  "profileCountAsserted": 19103,
+  "profileDataChanged": false,
+  "networkCallsAddedByHF28Overlay": 0,
+  "smarterJusticeConnectionAdded": false,
+  "checkoutRuntimeChanged": false,
+  "result": "PASS_SOURCE_GATE_PENDING_LIVE_RENDERED_VERIFICATION"
+}
