@@ -1,0 +1,67 @@
+name: HF24 seal qualified public candidate
+on:
+  push:
+    branches: [local-franklin-hf24-assistant-practical-20260908]
+    paths: [.github/workflows/hf24-seal.yml]
+permissions:
+  contents: write
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ebb75fc79119761de450addda4b8faa3ac69cfef
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Bind exact passing run, source bases and write release truth
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import pathlib,hashlib,json,urllib.request,os,subprocess,datetime
+          repo='neutralboardroom/franklin-navigator';base='b53ec209ac74c0e9906c5045c3140a4a653c44db';runtime='a9c918b656ced6386b1af604fde51d4a7e88d3b9';qualified='ebb75fc79119761de450addda4b8faa3ac69cfef';run_id=34181495683
+          headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'}
+          def api(path):
+            req=urllib.request.Request('https://api.github.com/repos/'+repo+path,headers=headers)
+            with urllib.request.urlopen(req,timeout=30) as r:return json.load(r)
+          assert api('/git/ref/heads/main')['object']['sha']==base,'public main advanced; rebase required'
+          assert api('/git/ref/heads/franklin-commerce-runtime-r30')['object']['sha']==runtime,'runtime advanced; pair must be requalified'
+          run=api('/actions/runs/'+str(run_id));assert run['head_sha']==qualified and run['status']=='completed' and run['conclusion']=='success',run
+          def tree_digest(root):
+            h=hashlib.sha256();root=pathlib.Path(root)
+            for f in sorted(root.rglob('*')):
+              if f.is_file():h.update(f.relative_to(root).as_posix().encode()+b'\0'+hashlib.sha256(f.read_bytes()).hexdigest().encode()+b'\n')
+            return h.hexdigest()
+          changed=['dist/assets/r40-assistant-practical.js','dist/assets/r37-i18n.js','dist/assets/device-followthrough-core.js']
+          metadata={
+            'release':'FR-NAV1.15.0-HF2.4-CANDIDATE','component':'public','parent':base,'runtimePair':runtime,
+            'baseSourceArchiveSha256':'6e2eba3b7e634173355beae38d0acba15ee7f3fea3fa6017b9b5aef902b15f27',
+            'publicDistSha256':tree_digest('dist'),'publicDistDigestRule':'sorted path + NUL + file sha256 hex + LF',
+            'profileCount':19103,'profileFactsChanged':False,'commerceOpenedByBuild':False,'commercialAcceptance':False,
+            'sourceState':'PUBLIC_SOURCE_BROWSER_QUALIFIED_NOT_PAID_LAUNCH_ACCEPTANCE',
+            'qualification':{'runId':run_id,'headSha':qualified,'conclusion':'success','staticSafety':'PASS','browserEnEsMultiTurnDevice':'PASS','ownerAuthenticationObserved':False,'paidLifecycleAccepted':False},
+            'improvements':['task-specific Assistant business-start and permit checklists','targeted clarification','same-tab second-turn refinement','minimized device-only detailed checklist save/reopen','My Franklin detailed checklist projection','device reset coverage for detailed checklists'],
+            'changedFiles':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in changed},
+            'lateInputs':{'scc':'v0.39.0-R5 D1 accepted; v0.38 D2 pointer remains guarded','localInvestigatorV25':'QUALIFIED_CANDIDATE_AWAITING_SCC_GATE_NOT_IMPORTED','profileFactoryLatestObserved':'FR-PF-PLATFORM-15.17','smarterJusticeDonorUsed':False},
+            'generatedAtUtc':datetime.datetime.now(datetime.timezone.utc).isoformat()
+          }
+          pathlib.Path('PRODUCTION_RELEASE.json').write_text(json.dumps(metadata,indent=2,sort_keys=True)+'\n')
+          pathlib.Path('evidence/HF24_RULE_AND_SOURCE_RECONCILIATION_RECEIPT.json').parent.mkdir(exist_ok=True)
+          receipt={'role':'LOCAL_COMMUNITY_PLATFORM','activeEdition':'FRANKLIN_TN','writableLane':'LOCAL_COMMUNITY_EDITION:FRANKLIN_TN','predecessor':base,'runtimePair':runtime,'successor':'FR-NAV1.15.0-HF2.4-CANDIDATE','commandRevision':'2026-09-03-R2','sccR5Observed':True,'liV25Imported':False,'pf1517FactsImportedByHf24':False,'smarterJusticeDonorUsed':False,'commerceOpened':False,'ownerSigninDeferred':True,'authorityTransfer':False}
+          pathlib.Path('evidence/HF24_RULE_AND_SOURCE_RECONCILIATION_RECEIPT.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+      - name: Commit exact qualified metadata on a prepared branch
+        run: |
+          set -euo pipefail
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git checkout -b local-franklin-hf24-qualified-34181495683
+          git add PRODUCTION_RELEASE.json evidence/HF24_RULE_AND_SOURCE_RECONCILIATION_RECEIPT.json
+          git commit -m 'Seal HF2.4 practical Assistant candidate after exact EN/ES browser qualification; checkout held [skip ci]'
+          test "$(git rev-parse HEAD^)" = ebb75fc79119761de450addda4b8faa3ac69cfef
+          git push origin HEAD:refs/heads/local-franklin-hf24-qualified-34181495683
