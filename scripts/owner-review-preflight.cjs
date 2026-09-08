@@ -34,6 +34,9 @@ async function inspect(client,cfg){
           count(*) FILTER (WHERE l.authority_state='VERIFIED')::integer AS verified_profile_links,
           count(*) FILTER (WHERE m.stripe_customer_id IS NOT NULL)::integer AS customer_bound_memberships,
           count(*) FILTER (WHERE m.stripe_subscription_id IS NOT NULL)::integer AS recurring_subscription_bound_memberships,
+          count(*) FILTER (WHERE e.rich_profile=true)::integer AS rich_profile_entitlements,
+          count(*) FILTER (WHERE e.growth_desk=true)::integer AS growth_desk_entitlements,
+          count(*) FILTER (WHERE e.local_visibility_tools=true)::integer AS local_visibility_entitlements,
           count(*) FILTER (WHERE p.profile_id IS NOT NULL AND p.removed_at IS NULL)::integer AS active_reviewed_publications,
           count(*) FILTER (WHERE m.first_value_completed_at IS NOT NULL)::integer AS membership_first_value_flags,
           count(*) FILTER (WHERE v.membership_id IS NOT NULL AND p.profile_id IS NOT NULL AND p.removed_at IS NULL AND v.profile_id=m.profile_id AND v.revision=p.revision AND v.fields_sha256=p.fields_sha256)::integer AS exact_public_readback_receipts
@@ -44,23 +47,24 @@ async function inspect(client,cfg){
         LEFT JOIN franklin_member_value_receipts v ON v.membership_id=m.membership_id
         WHERE m.account_id=$1`,[cfg.accountId]);
       const workflow=await client.query(`
-        SELECT m.profile_id,l.authority_state,d.state AS draft_state,d.revision AS draft_revision,
+        SELECT m.profile_id,l.authority_state,e.growth_desk,e.rich_profile,e.local_visibility_tools,d.state AS draft_state,d.revision AS draft_revision,
                (d.rights_confirmed_at IS NOT NULL) AS rights_confirmed,r.state AS representation_state,r.revision AS representation_revision,
                (SELECT count(*)::integer FROM franklin_member_review_history h WHERE h.account_id=m.account_id AND h.profile_id=m.profile_id) AS review_decisions,
                (SELECT count(*)::integer FROM franklin_member_publications p WHERE p.account_id=m.account_id AND p.profile_id=m.profile_id AND p.removed_at IS NULL) AS active_publications,
                (SELECT count(*)::integer FROM franklin_member_value_receipts v WHERE v.membership_id=m.membership_id) AS value_receipts
         FROM franklin_memberships m
+        LEFT JOIN franklin_entitlements e USING(membership_id)
         LEFT JOIN franklin_profile_links l ON l.account_id=m.account_id AND l.profile_id=m.profile_id
         LEFT JOIN franklin_member_drafts d ON d.account_id=m.account_id AND d.profile_id=m.profile_id
         LEFT JOIN franklin_representation_reviews r ON r.account_id=m.account_id AND r.profile_id=m.profile_id
         WHERE m.account_id=$1 ORDER BY m.created_at LIMIT 5`,[cfg.accountId]);
       const rs=reviewSession.rows[0],ra=recentAuth.rows[0],acctSession=regularSession.rows[0],lc=lifecycle.rows[0];
       reviewHistory={reviewerSchemaAvailable:schemas.reviewer_schema_available===true,publicationSchemaAvailable:schemas.publication_schema_available===true,valueSchemaAvailable:schemas.value_schema_available===true,draftSchemaAvailable:schemas.draft_schema_available===true,representationSchemaAvailable:schemas.representation_schema_available===true,activeReviewerSessions:Number(rs.active_sessions||0),latestReviewerSessionCreatedAt:rs.latest_created_at||null,latestReviewerSessionExpiresAt:rs.latest_expires_at||null,recentPasswordAuthenticatedReviewerEvents:Number(ra.recent_auth_events||0),latestPasswordAuthenticatedReviewerAt:ra.latest_auth_at||null};
-      authenticatedLifecycle={activeRegularAccountSessions:Number(acctSession.active_sessions||0),latestRegularAccountSessionSeenAt:acctSession.latest_seen_at||null,activeMemberships:Number(lc.active_memberships||0),verifiedProfileLinks:Number(lc.verified_profile_links||0),customerBoundMemberships:Number(lc.customer_bound_memberships||0),recurringSubscriptionBoundMemberships:Number(lc.recurring_subscription_bound_memberships||0),activeReviewedPublications:Number(lc.active_reviewed_publications||0),membershipFirstValueFlags:Number(lc.membership_first_value_flags||0),exactPublicReadbackReceipts:Number(lc.exact_public_readback_receipts||0)};
-      memberWorkflow=workflow.rows.map(row=>({profileReferenceSha256:digest(row.profile_id),authorityState:row.authority_state||null,draftState:row.draft_state||null,draftRevision:row.draft_revision==null?null:Number(row.draft_revision),rightsConfirmed:row.rights_confirmed===true,representationState:row.representation_state||null,representationRevision:row.representation_revision==null?null:Number(row.representation_revision),reviewDecisions:Number(row.review_decisions||0),activePublications:Number(row.active_publications||0),valueReceipts:Number(row.value_receipts||0)}));
+      authenticatedLifecycle={activeRegularAccountSessions:Number(acctSession.active_sessions||0),latestRegularAccountSessionSeenAt:acctSession.latest_seen_at||null,activeMemberships:Number(lc.active_memberships||0),verifiedProfileLinks:Number(lc.verified_profile_links||0),customerBoundMemberships:Number(lc.customer_bound_memberships||0),recurringSubscriptionBoundMemberships:Number(lc.recurring_subscription_bound_memberships||0),richProfileEntitlements:Number(lc.rich_profile_entitlements||0),growthDeskEntitlements:Number(lc.growth_desk_entitlements||0),localVisibilityEntitlements:Number(lc.local_visibility_entitlements||0),activeReviewedPublications:Number(lc.active_reviewed_publications||0),membershipFirstValueFlags:Number(lc.membership_first_value_flags||0),exactPublicReadbackReceipts:Number(lc.exact_public_readback_receipts||0)};
+      memberWorkflow=workflow.rows.map(row=>({profileReferenceSha256:digest(row.profile_id),authorityState:row.authority_state||null,memberBenefits:{richProfile:row.rich_profile===true,growthDesk:row.growth_desk===true,localVisibilityTools:row.local_visibility_tools===true},draftState:row.draft_state||null,draftRevision:row.draft_revision==null?null:Number(row.draft_revision),rightsConfirmed:row.rights_confirmed===true,representationState:row.representation_state||null,representationRevision:row.representation_revision==null?null:Number(row.representation_revision),reviewDecisions:Number(row.review_decisions||0),activePublications:Number(row.active_publications||0),valueReceipts:Number(row.value_receipts||0)}));
     }
     await client.query('COMMIT');
-    return{event:'FRANKLIN_OWNER_REVIEW_PREFLIGHT',schemaVersion:'franklin.readonly-owner-preflight.v3',at:new Date().toISOString(),mode:'READ_ONLY_NO_SESSION_OR_ROLE_CHANGE',accountReferenceSha256:digest(cfg.accountId),assignmentSha256:cfg.assignmentSha256,checks,eligibleForExplicitReviewerBinding:ok,memberships,reviewHistory,authenticatedLifecycle,memberWorkflow,actualPasswordAuthenticationPerformed:Boolean(reviewHistory&&reviewHistory.recentPasswordAuthenticatedReviewerEvents>0),providerPaymentVerificationPerformed:false,productMutations:0};
+    return{event:'FRANKLIN_OWNER_REVIEW_PREFLIGHT',schemaVersion:'franklin.readonly-owner-preflight.v4',at:new Date().toISOString(),mode:'READ_ONLY_NO_SESSION_OR_ROLE_CHANGE',accountReferenceSha256:digest(cfg.accountId),assignmentSha256:cfg.assignmentSha256,checks,eligibleForExplicitReviewerBinding:ok,memberships,reviewHistory,authenticatedLifecycle,memberWorkflow,actualPasswordAuthenticationPerformed:Boolean(reviewHistory&&reviewHistory.recentPasswordAuthenticatedReviewerEvents>0),providerPaymentVerificationPerformed:false,productMutations:0};
   }catch(error){await client.query('ROLLBACK').catch(()=>{});throw error;}
 }
 async function main(env=process.env){
