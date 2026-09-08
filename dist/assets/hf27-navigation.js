@@ -133,3 +133,25 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   window.addEventListener('franklinlanguagechange',syncLabels);
 })();
+
+/* HF2.8 — load the native Find Local hierarchy only on the Franklin discovery surface. */
+(()=>{
+  function load(){
+    if(!document.querySelector('[data-franklin-discovery]'))return;
+    if(!document.querySelector('link[data-hf28-directory]')){
+      const css=document.createElement('link');
+      css.rel='stylesheet';
+      css.href='/assets/hf28-directory.css';
+      css.dataset.hf28Directory='1';
+      document.head.append(css);
+    }
+    if(!document.querySelector('script[data-hf28-directory]')){
+      const js=document.createElement('script');
+      js.src='/assets/hf28-directory.js';
+      js.defer=true;
+      js.dataset.hf28Directory='1';
+      document.head.append(js);
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
+})();
