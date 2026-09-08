@@ -1,0 +1,39 @@
+name: HF28 inject direct directory assets
+on:
+  push:
+    branches:
+      - hf28-find-local-simplification-20260909
+    paths:
+      - scripts/inject-hf28-directory-tags.py
+      - .github/workflows/hf28-inject-directory-tags.yml
+
+permissions:
+  contents: write
+
+jobs:
+  inject:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf28-find-local-simplification-20260909
+      - name: Inject direct HF2.8 assets in EN and ES directory HTML
+        run: python3 scripts/inject-hf28-directory-tags.py
+      - name: Verify tags
+        run: |
+          grep -q 'data-hf28-directory="1" href="/assets/hf28-directory.css"' dist/directory/index.html
+          grep -q 'data-hf28-directory="1" defer="" src="/assets/hf28-directory.js"' dist/directory/index.html
+          grep -q 'data-hf28-directory="1" href="/assets/hf28-directory.css"' dist/es/directorio/index.html
+          grep -q 'data-hf28-directory="1" defer="" src="/assets/hf28-directory.js"' dist/es/directorio/index.html
+      - name: Commit injected HTML if changed
+        run: |
+          if git diff --quiet -- dist/directory/index.html dist/es/directorio/index.html; then
+            echo 'No HTML changes required.'
+            exit 0
+          fi
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist/directory/index.html dist/es/directorio/index.html
+          git commit -m 'Load HF2.8 Find Local assets directly in EN/ES pages'
+          git push origin HEAD:hf28-find-local-simplification-20260909
