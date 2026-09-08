@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "franklin.hf28.live-verification.v1",
+  "activeEdition": "FRANKLIN_TN",
+  "behavioralSourceCommitLive": "353dd7f94dd2ed7df16c7f3bdad59746a59ab6ef",
+  "behavioralStaticDeploy": "dep-dag8pcu7bikc738anoq0",
+  "behavioralStaticDeployStatus": "live",
+  "behavioralStaticDeployFinishedAtUtc": "2026-09-08T22:32:38.156681Z",
+  "finalBranchHeadAtReceipt": "3fbc0cd6beaa69e33b1d592774384fb7bb895b46",
+  "finalBranchAdditionalChange": "Directory release meta marker updated from HF2.6 to HF2.8; no behavior, profile fact, price, commerce, member, or runtime change.",
+  "english": {
+    "url": "https://franklinnavigator.com/directory/",
+    "status": 200,
+    "profileCountText": "19,103 results",
+    "visiblePrimaryFilters": ["Search", "Category"],
+    "progressiveDisclosure": "More filters",
+    "advancedControlsRetained": ["Type", "Area", "Sort", "Website", "Phone", "Public email", "Exact address", "Clear all"],
+    "firstResultDirectActions": ["Open profile", "Compare", "More"],
+    "secondaryActionsUnderMore": ["Save", "Listed website when present"],
+    "compareTrayRetained": true,
+    "shareableSearchStateRetained": true,
+    "paginationObserved": "Page 1 of 796"
+  },
+  "spanish": {
+    "url": "https://franklinnavigator.com/es/directorio/",
+    "status": 200,
+    "profileCountText": "19.103 resultados",
+    "visiblePrimaryFilters": ["Buscar", "Categoría"],
+    "progressiveDisclosure": "Más filtros",
+    "advancedControlsRetained": ["Tipo", "Área", "Ordenar", "Sitio web", "Teléfono", "Correo electrónico público", "Dirección exacta", "Borrar todo"],
+    "firstResultDirectActions": ["Abrir perfil", "Comparar", "Más"],
+    "secondaryActionsUnderMore": ["Guardar", "Sitio web indicado cuando está disponible"],
+    "compareTrayRetained": true,
+    "paginationObserved": "Página 1 de 796",
+    "renderScrapeId": "01a08329-a0e1-76d9-940f-9161bfc40676"
+  },
+  "advancedFilterState": {
+    "testUrl": "https://franklinnavigator.com/directory/?type=nonprofit&facts=website,phone&sort=website",
+    "summaryObserved": "4 active",
+    "typeApplied": true,
+    "websiteFactApplied": true,
+    "phoneFactApplied": true,
+    "sortApplied": true,
+    "closedDisclosurePreserved": true,
+    "scrapeId": "01a0832b-a60e-754b-a0fb-8b42551b2752"
+  },
+  "mobile": {
+    "viewport": "390x844",
+    "searchAndCategoryStackedOneColumn": true,
+    "moreFiltersCollapsed": true,
+    "firstResultActionsFit": ["Open profile", "Compare", "More"],
+    "secondaryActionsRemainUnderMore": true,
+    "horizontalOverflowObserved": false,
+    "contentCutoffObserved": false,
+    "scrapeId": "01a0832b-4147-76c4-bf0e-bf456c23c1de"
+  },
+  "commerceRuntime": {
+    "url": "https://franklin-navigator-membership.onrender.com/ready",
+    "status": 200,
+    "commerceEnabled": true,
+    "liveCheckoutEnabled": true,
+    "database": true,
+    "stripeCheckoutSessionConfigured": true,
+    "stripeWebhookConfigured": true,
+    "portalSessionConfigured": true,
+    "startupError": null,
+    "runtimeChangedByHF28": false,
+    "scrapeId": "01a0832b-fb0d-769b-9789-23d498ddc1fc"
+  },
+  "result": "PASS_BEHAVIOR_LIVE_VERIFIED_FINAL_SOURCE_DEPLOY_PENDING_SEAL"
+}
