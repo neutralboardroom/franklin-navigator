@@ -3,7 +3,7 @@
   const norm=v=>String(v||'').toLowerCase().normalize('NFKD').replace(/[^a-z0-9@.+\s-]/g,' ').replace(/\s+/g,' ').trim();
   const html=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // Homepage Ask Navigator helper: routes the typed question into the existing deterministic bot field.
+  // Homepage Ask Franklin Assistant helper: routes the typed question into the existing deterministic bot field.
   const homeQ=qs('#r22-home-question');
   qsa('[data-r22-question]').forEach(btn=>btn.addEventListener('click',()=>{if(homeQ){homeQ.value=btn.dataset.r22Question||'';homeQ.focus()}}));
   qs('[data-r22-ask-submit]')?.addEventListener('click',()=>{const q=homeQ?.value.trim();if(!q)return homeQ?.focus();location.href=`/?ask=${encodeURIComponent(q)}#ask-navigator`});

@@ -10,7 +10,7 @@
   const language = () => document.documentElement.lang.toLowerCase().startsWith('es') ? 'es' : 'en';
   const tx = (en, es) => language() === 'es' ? es : en;
   const routeMap = {
-    newcomer: ['New to Franklin', 'Nuevo en Franklin', '/new-to-franklin/'], homeowner: ['Home & property', 'Casa y propiedad', '/home-property-help/'], renter: ['Housing & renter starting help', 'Vivienda y alquiler', '/housing/'], children: ['Schools & family', 'Escuelas y familia', '/school-enrollment/'], caregiver: ['Senior & caregiving', 'Personas mayores y cuidado', '/local-pathways/seniors-caregiving/'], transit: ['Transportation & mobility', 'Transporte y movilidad', '/getting-around/'], business: ['For Business', 'Para negocios', '/business-dashboard/'], civic: ['Civic & neighborhood', 'Vida cívica y vecindario', '/local-pathways/civic-neighborhood/'], events: ['Today & local events', 'Hoy y eventos locales', '/today/'], jobs: ['Jobs & career', 'Empleo y carrera', '/local-pathways/jobs-career/'], parks: ['Parks & community', 'Parques y comunidad', '/community/']
+    newcomer: ['New to Franklin', 'Nuevo en Franklin', '/new-to-franklin/'], homeowner: ['Home & property', 'Casa y propiedad', '/home-property-help/'], renter: ['Housing & renter starting help', 'Vivienda y alquiler', '/housing/'], children: ['Schools & family', 'Escuelas y familia', '/school-enrollment/'], caregiver: ['Senior & caregiving', 'Personas mayores y cuidado', '/local-pathways/seniors-caregiving/'], transit: ['Transportation & mobility', 'Transporte y movilidad', '/getting-around/'], business: ['For businesses', 'Para negocios', '/business-dashboard/'], civic: ['Civic & neighborhood', 'Vida cívica y vecindario', '/local-pathways/civic-neighborhood/'], events: ['Today & local events', 'Hoy y eventos locales', '/today/'], jobs: ['Jobs & career', 'Empleo y carrera', '/local-pathways/jobs-career/'], parks: ['Parks & community', 'Parques y comunidad', '/community/']
   };
   const readPrefs = () => store.read(C.KEYS.preferences, null, C.preferences);
   const readReminders = () => store.read(C.KEYS.reminders, [], C.reminders);
@@ -53,7 +53,7 @@
     const grid = el('div', null, 'grid three');
     prefs.interests.forEach(id => { const r = routeMap[id]; if (!r) return; const card = el('article', null, 'card'); card.append(el('h3', r[language() === 'es' ? 1 : 0]), el('p', tx('Keep this Franklin topic close at hand.', 'Mantenga este tema de Franklin a mano.')), link(tx('Open', 'Abrir'), r[2])); grid.append(card); });
     output.append(grid);
-    const links = el('div', null, 'actions'); links.append(link(tx('See what matters today', 'Ver lo importante hoy'), language() === 'es' ? '/es/hoy/' : '/today/'), link(tx('Ask Navigator', 'Preguntar al Navegador'), '/assistant/')); output.append(links);
+    const links = el('div', null, 'actions'); links.append(link(tx('See what matters today', 'Ver lo importante hoy'), language() === 'es' ? '/es/hoy/' : '/today/'), link(tx('Ask Franklin Assistant', 'Preguntar al Navegador'), '/assistant/')); output.append(links);
   }
   function renderProfiles() {
     keepFocus(savedList, () => {
@@ -66,7 +66,7 @@
         card.append(el('h3', row?.n || item.name || tx('Saved profile', 'Perfil guardado')));
         const meta = el('p');
         if (row) meta.textContent = [window.FranklinI18n?.category?.(row.c) || row.c, row.l || row.g, tx('Source date: ', 'Fecha de la fuente: ') + Q.dateLabel(row.d, language())].filter(Boolean).join(' · ');
-        else meta.textContent = result?.state === 'missing' ? tx('This profile is no longer in the current directory. Your bookmark has not been silently replaced.', 'Este perfil ya no está en el directorio actual. Su marcador no se ha sustituido por otro.') : result?.state === 'error' ? tx('Saved copy. The current listing could not be checked. Retry before relying on its details.', 'Copia guardada. No se pudo comprobar el perfil actual. Vuelva a intentarlo antes de confiar en sus datos.') : tx('Checking the current public listing…', 'Comprobando el perfil público actual…');
+        else meta.textContent = result?.state === 'missing' ? tx('This profile is no longer in the current directory. Your bookmark has not been silently replaced.', 'Este perfil ya no está en el directorio actual. Su marcador no se ha sustituido por otro.') : result?.state === 'error' ? tx('Saved copy. The current listing could not be checked. Retry before relying on its details.', 'Copie guardada. No se pudo comprobar el perfil actual. Vuelva a intentarlo antes de confiar en sus datos.') : tx('Checking the current public listing…', 'Comprobando el perfil público actual…');
         const actions = el('div', null, 'actions');
         if (row) actions.append(link(tx('View profile', 'Ver perfil'), Q.canonicalProfile(row.i, language())), link(tx('Prepare before contacting', 'Preparar antes de contactar'), '/preparation-studio/?source=saved-profile'));
         else if (result?.state === 'error') actions.append(action(tx('Retry listing check', 'Volver a comprobar el perfil'), () => hydrateProfiles(true), 'retry-' + item.id));
@@ -108,8 +108,8 @@
         body.append(el('p', item.completedAt ? tx('Done', 'Hecho') : item.date ? Q.dateLabel(item.date, language()) : tx('No follow-up date selected', 'No se eligió una fecha de seguimiento'), 'fine-print'));
         const actions = el('div', null, 'actions');
         const change = updater => { const before = readReminders(); if (!writable(C.KEYS.reminders, before)) return; if (write(C.KEYS.reminders, updater(before.value))) { renderReminders(); announce('Reminder updated on this device only.', 'Recordatorio actualizado solo en este dispositivo.'); } };
-        const done = action(item.completedAt ? tx('Reopen', 'Reabrir') : tx('Mark done', 'Marcar como hecho'), () => change(rows => rows.map(r => r.id === item.id ? {...r, completedAt: r.completedAt ? '' : new Date().toISOString()} : r)), 'done-' + item.id);
-        done.setAttribute('aria-pressed', String(!!item.completedAt)); done.setAttribute('aria-label', (item.completedAt ? tx('Reopen ', 'Reabrir ') : tx('Mark done: ', 'Marcar como hecho: ')) + item.label);
+        const done = action(item.completedAt ? tx('Reopen', 'Reabrir') : tx('Mark as done', 'Marcar como hecho'), () => change(rows => rows.map(r => r.id === item.id ? {...r, completedAt: r.completedAt ? '' : new Date().toISOString()} : r)), 'done-' + item.id);
+        done.setAttribute('aria-pressed', String(!!item.completedAt)); done.setAttribute('aria-label', (item.completedAt ? tx('Reopen ', 'Reabrir ') : tx('Mark as done: ', 'Marcar como hecho: ')) + item.label);
         actions.append(done);
         if (item.date) actions.append(action(tx('Add date to calendar', 'Agregar fecha al calendario'), () => downloadCalendar(item), 'calendar-' + item.id));
         const remove = action(tx('Remove', 'Quitar'), () => change(rows => rows.filter(r => r.id !== item.id)), 'remove-' + item.id); remove.setAttribute('aria-label', tx('Remove reminder: ', 'Quitar recordatorio: ') + item.label); actions.append(remove);

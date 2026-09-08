@@ -20,7 +20,7 @@
 
   const text = {
     en: {
-      source: 'Official or first-party source',
+      source: 'Official or original source',
       reviewed: 'Catalog reviewed',
       recheck: 'Recheck changing details at the source',
       open: 'Open official source',
@@ -319,13 +319,13 @@
       if (planLanguage === 'spanish') {
         return [
           '',
-          'BORRADOR BREVE PARA LA FAMILIA',
+          'Borrador breve para la familia',
           'Hoy practicamos una idea general con ejemplos y una verificación breve. Pregunte al aprendiz qué estrategia usó y qué le gustaría practicar después. Confirme las instrucciones o fechas vigentes directamente con el docente o programa.'
         ];
       }
       return [
         '',
-        'BILINGUAL FAMILY DRAFT / BORRADOR BILINGÜE PARA LA FAMILIA',
+        'Bilingual family draft / Borrador bilingüe para la familia',
         'EN: Today we practiced one broad idea with examples and a short check. Ask the learner which strategy helped and what they want to practice next.',
         'ES: Hoy practicamos una idea general con ejemplos y una verificación breve. Pregunte al aprendiz qué estrategia le ayudó y qué quiere practicar después.',
         'Confirm current instructions or dates directly with the teacher or program. / Confirme las instrucciones o fechas vigentes directamente con el docente o programa.'
@@ -343,11 +343,11 @@
       if (!subject || !audience || !duration || !format) return null;
       const lines = pageLanguage === 'es'
         ? [
-            'PAQUETE DE PLANIFICACIÓN PARA DOCENTE / TUTOR', '',
+            'Paquete de planificación para docente / tutor', '',
             `Tema general: ${topic}`, `Materia: ${subject}`, `Público general: ${audience}`, `Duración: ${duration}`, `Formato: ${format}`, '',
-            'OBJETIVO BORRADOR',
+            'Objetivo del borrador',
             `Al terminar, el grupo podrá explicar ${topic}, practicarlo con un ejemplo nuevo y describir la estrategia utilizada.`, '',
-            'SECUENCIA SUGERIDA',
+            'Secuencia sugerida',
             '1. Activación: conecte el tema con conocimiento previo sin pedir historias privadas.',
             '2. Enseñanza breve: modele una explicación clara y un ejemplo original.',
             '3. Práctica guiada: ofrezca una pista a la vez y pida que el aprendiz explique su razonamiento.',
@@ -356,26 +356,26 @@
             '6. Cierre: anote qué volver a enseñar y qué comprobar con la fuente responsable.'
           ]
         : [
-            'TEACHER / TUTOR PLANNING PACKET', '',
+            'Teacher / tutor planning packet', '',
             `Broad topic: ${topic}`, `Subject: ${subject}`, `Broad audience: ${audience}`, `Time: ${duration}`, `Format: ${format}`, '',
-            'DRAFT OBJECTIVE',
+            'Draft objective',
             `By the end, learners can explain ${topic}, practice it with a new example, and describe the strategy they used.`, '',
-            'SUGGESTED SEQUENCE',
+            'Suggested sequence',
             '1. Activate: connect the topic to prior knowledge without asking for private stories.',
             '2. Teach briefly: model a plain-language explanation and one original example.',
             '3. Guide practice: give one hint at a time and ask the learner to explain their reasoning.',
             '4. Practice independently or together: use a new prompt, not a restricted assessment.',
             '5. Check understanding: ask for an explanation, example, or short reflection; do not turn this into an automated grade.',
-            '6. Close: note what to reteach and what to verify with the responsible source.'
+            '6. Close: note what to reteach and what to verify with the relevant source.'
           ];
-      lines.push('', pageLanguage === 'es' ? 'APOYOS SELECCIONADOS' : 'SELECTED SUPPORTS');
+      lines.push('', pageLanguage === 'es' ? 'Apoyos seleccionados' : 'Selected supports');
       (supports.length ? supports : [pageLanguage === 'es' ? 'Ninguno seleccionado' : 'None selected']).forEach(item => lines.push(`- ${item}`));
-      lines.push('', pageLanguage === 'es' ? 'VERIFICACIONES Y LÍMITES' : 'CHECKS AND LIMITS');
+      lines.push('', pageLanguage === 'es' ? 'Verificaciones y límites' : 'Checks and limits');
       lines.push(
         standardState === 'verified'
           ? pageLanguage === 'es'
             ? '- El usuario indicó que tiene una fuente vigente de estándares de Tennessee. Cite el código y texto exactos desde esa fuente; Franklin no infiere alineación.'
-            : '- The user indicated they have a current Tennessee standards source. Cite its exact code and wording from that source; Franklin does not infer alignment.'
+            : '- If you have a current Tennessee standards source, use its exact code and wording. Franklin Navigator does not infer standards alignment.'
           : pageLanguage === 'es'
             ? '- No se afirmó alineación con estándares. Verifique el documento vigente de Tennessee si necesita esa afirmación.'
             : '- No standards alignment is claimed. Verify the current Tennessee document if that claim is needed.',
@@ -398,9 +398,9 @@
       if (!subject || !audience || !goal || !method) return null;
       const lines = pageLanguage === 'es'
         ? [
-            'PAQUETE DE PRÁCTICA GUIADA', '',
+            'Paquete de práctica guiada', '',
             `Tema general: ${topic}`, `Área: ${subject}`, `Uso: ${audience}`, `Meta: ${goal}`, `Método preferido: ${method}`, '',
-            'CICLO DE APRENDIZAJE',
+            'Ciclo de aprendizaje',
             `1. Enseñar: explique ${topic} en palabras sencillas y defina una idea clave.`,
             '2. Mostrar: cree un ejemplo nuevo y explique cada paso.',
             '3. Intentar: resuelva una práctica parecida sin usar una evaluación activa.',
@@ -414,9 +414,9 @@
             '- Verifique fechas, requisitos, programas y recursos directamente en la fuente responsable.'
           ]
         : [
-            'GUIDED PRACTICE PACKET', '',
+            'Guided practice packet', '',
             `Broad topic: ${topic}`, `Area: ${subject}`, `Use: ${audience}`, `Goal: ${goal}`, `Preferred method: ${method}`, '',
-            'LEARNING LOOP',
+            'Learning loop',
             `1. Teach: explain ${topic} in plain language and define one key idea.`,
             '2. Show: create one new example and talk through each step.',
             '3. Try: work a similar practice prompt that is not an active assessment.',
@@ -427,7 +427,7 @@
             '- This teaches and guides practice; it does not complete graded work, exams, or restricted tests.',
             '- No learner profile, history, grade, score, or outcome is stored.',
             '- For minors, a parent, guardian, or adult educator must supervise use.',
-            '- Verify dates, requirements, programs, and resources directly with the responsible source.'
+            '- Verify dates, requirements, programs, and resources directly with the relevant source.'
           ];
       return { lines, selections: { subject, audience, goal, method } };
     };
@@ -441,16 +441,16 @@
       if (!providerType || !audience || !format || !language || !evidence) return null;
       const lines = pageLanguage === 'es'
         ? [
-            'PAQUETE DE PREPARACIÓN DEL PERFIL EDUCATIVO', '',
+            'Paquete de preparación del perfil educativo', '',
             `Enfoque general: ${topic}`, `Tipo de proveedor: ${providerType}`, `Público general: ${audience}`, `Formato: ${format}`, `Idioma: ${language}`, '',
-            'CAMPOS PÚBLICOS PARA PREPARAR',
+            'Campos públicos para preparar',
             '1. Vincule el ID de perfil público existente de Franklin; no cree un ID de estudiante o familia.',
             '2. Confirme el nombre público y tipo de proveedor desde una fuente de primera parte.',
             '3. Enumere materias, grupos de edad generales, formato, idiomas y área de servicio.',
             '4. Publique únicamente datos de accesibilidad que el proveedor haya hecho públicos; no publique diagnósticos ni adaptaciones de un aprendiz.',
             '5. Marque horarios, disponibilidad, tarifas y contactos para volver a confirmarlos en la fuente original.',
             '6. Adjunte una URL HTTPS y fecha de revisión para cada afirmación material.', '',
-            'EVIDENCIA Y AFILIACIÓN',
+            'Evidencia y afiliación',
             `- Estado de evidencia elegido: ${evidence}.`,
             '- No afirme relación con una escuela, distrito, biblioteca, gobierno u otra organización sin una fuente directa que la documente.',
             '- La aparición en el directorio, el orden y el pago no son recomendaciones, clasificaciones ni prueba de idoneidad.',
@@ -459,22 +459,22 @@
             '- Revise el esquema público de perfil educativo de Franklin y prepare únicamente hechos verificables. Nada se envió desde esta herramienta.'
           ]
         : [
-            'LEARNING PROVIDER PROFILE READINESS PACKET', '',
+            'Learning-provider profile readiness packet', '',
             `Broad focus: ${topic}`, `Provider type: ${providerType}`, `Broad audience: ${audience}`, `Format: ${format}`, `Language: ${language}`, '',
-            'PUBLIC FIELDS TO PREPARE',
+            'Public profile fields to prepare',
             '1. Link the existing Franklin public profile ID; never create a student or household identifier.',
-            '2. Confirm the public display name and provider type from a first-party source.',
+            '2. Confirm the public display name and provider type using the organization’s own source.',
             '3. List subjects, broad age bands, format, languages, and service area.',
             '4. Publish only accessibility facts the provider has made public; never publish a learner diagnosis or accommodation record.',
             '5. Mark schedules, availability, fees, and contacts for recheck at the original source.',
-            '6. Attach an HTTPS source URL and review date for every material claim.', '',
-            'EVIDENCE AND AFFILIATION',
+            '6. For each important statement, add the public HTTPS source URL and the date you checked it.', '',
+            'Evidence and affiliation',
             `- Selected evidence state: ${evidence}.`,
             '- Do not claim a relationship with a school, district, library, government, or other organization without a direct source documenting it.',
             '- Directory appearance, order, and payment are not endorsements, rankings, or proof of fit.',
             '- Do not include student names, enrollment, grades, records, outcomes, or minor testimonials.', '',
             'NEXT STEP',
-            '- Review the public Franklin learning-provider schema and prepare verifiable facts only. Nothing was submitted from this tool.'
+            '- Review the public learning-provider fields and prepare only information you can verify. Nothing is submitted from this tool.'
           ];
       return { lines, selections: { providerType, audience, format, language, evidence } };
     };

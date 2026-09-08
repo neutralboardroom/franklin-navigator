@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "franklin.hf26.dynamic-smoke.v2",
+  "pass": 7,
+  "fail": 0,
+  "financialMutations": 0,
+  "results": [
+    {
+      "id": "/membership-enroll/ 200",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "/membership-enroll/ no errors",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "/membership-enroll/ h1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "/es/ 200",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "/es/ no errors",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "/es/ h1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "assistant urgent 911",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

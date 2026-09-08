@@ -1,24 +1,17 @@
 {
-  "commerceOpenedByBuild": false,
-  "commercePreservedOpen": true,
-  "commercialContractChanged": false,
+  "authorityTransfer": false,
+  "changedFiles": 19383,
+  "checkoutRemainsOpen": true,
   "component": "public",
-  "generatedAtUtc": "2026-09-08T07:07:27.117953+00:00",
-  "parent": "9e8195d9c3939f791795ab38add326402b5d55c8",
+  "languageAuditRunId": 34217056903,
+  "overflowComparisonRunId": 34216103881,
+  "parent": "01aecafbfe16202d9d5a80eb6b97443c9ee305ad",
+  "pricesChanged": false,
   "profileCount": 19103,
   "profileFactsChanged": false,
-  "publicDistDigestRule": "sorted path + NUL + file sha256 hex + LF",
-  "publicDistSha256": "fc925f435e9f8ccdee492ad94431ed1b97131183e40e150704e67b462d4ae0b2",
-  "qualification": {
-    "financialMutations": 0,
-    "runId": 34197442159,
-    "sourceState": "PUBLIC_SOURCE_BROWSER_QUALIFIED"
-  },
-  "release": "FR-NAV1.15.0-HF2.5-CANDIDATE",
-  "rollback": {
-    "publicCommit": "9e8195d9c3939f791795ab38add326402b5d55c8",
-    "runtimeCommerceKillSwitch": "COMMERCE_ENABLED=false"
-  },
+  "qualificationRunId": 34217260224,
+  "release": "FR-NAV1.15.0-HF2.6-CANDIDATE",
+  "runtimeChanged": false,
   "runtimePair": "44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8",
-  "smarterJusticeDonorUsed": false
+  "scope": "FULL_PUBLIC_LANGUAGE_REFINEMENT"
 }

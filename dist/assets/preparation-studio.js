@@ -45,7 +45,7 @@
   const textPacket=()=>[packet.title,`Urgency: ${packet.urgency}`,`Stage: ${packet.stage}`,`Start here: ${packet.firstAction}`,'','Preparation steps:',...packet.steps.map((item,index)=>`${index+1}. ${item}`),'','Checklist:',...packet.checklist.map(item=>`- [${item.status==='READY_TO_REVIEW'?'x':' '}] ${item.item}`),'','Questions:',...packet.questions.map(item=>`- ${item}`),'','Boundary:',packet.boundary,'','Private on this device — not submitted'].join('\n');
 
   form.addEventListener('submit',event=>{event.preventDefault();packet=buildPacket();if(!packet)return;renderPacket()});
-  form.addEventListener('reset',()=>setTimeout(()=>{renderTracks();status.textContent='Cleared. Nothing was saved or submitted.'},0));
+  form.addEventListener('reset',()=>setTimeout(()=>{renderTracks();status.textContent='Cleared. Nothing was saved or sent.'},0));
   verticalSelect.addEventListener('change',renderTracks);
   trackSelect.addEventListener('change',renderChecklist);
   copyButton.addEventListener('click',async()=>{if(!packet)return;await navigator.clipboard.writeText(textPacket());status.textContent='Preparation packet copied. Nothing was submitted.'});

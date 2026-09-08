@@ -29,7 +29,7 @@
     output.focus();
   };
   form.addEventListener('submit',event=>{event.preventDefault();packet=build();if(packet)render()});
-  form.addEventListener('reset',()=>setTimeout(()=>{packet=null;output.innerHTML='<p class="empty-state">Your private preparation packet will appear here.</p>';copy.disabled=download.disabled=print.disabled=true;status.textContent='Cleared. Nothing was saved or submitted.'},0));
+  form.addEventListener('reset',()=>setTimeout(()=>{packet=null;output.innerHTML='<p class="empty-state">Your private preparation packet will appear here.</p>';copy.disabled=download.disabled=print.disabled=true;status.textContent='Cleared. Nothing was saved or sent.'},0));
   copy.addEventListener('click',async()=>{if(!packet)return;await navigator.clipboard.writeText(JSON.stringify(packet,null,2));status.textContent='Packet copied. Nothing was submitted.'});
   download.addEventListener('click',()=>{if(!packet)return;const blob=new Blob([JSON.stringify(packet,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=`franklin-${packet.trackId}-home-rights-packet.json`;link.click();URL.revokeObjectURL(url);status.textContent='Packet downloaded to your device.'});
   print.addEventListener('click',()=>packet&&window.print());

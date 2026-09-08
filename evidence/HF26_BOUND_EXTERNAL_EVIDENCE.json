@@ -1,0 +1,21 @@
+{
+  "zeroDefectLanguageAudit": {
+    "runId": 34217056903,
+    "headSha": "dcd461e8a0a5acb51480d4bad22c8c6cc771796d",
+    "conclusion": "success"
+  },
+  "playwrightBeforeAfterOverflow": {
+    "runId": 34216103881,
+    "headSha": "1bb0055653cb583462b956856d2d4206d8a9c600",
+    "conclusion": "success"
+  },
+  "overflowFinding": {
+    "profile": "FR-NPI-818439aa9937bb66",
+    "viewportWidth": 390,
+    "baseOverflow": true,
+    "candidateOverflow": true,
+    "baseScrollWidth": 455,
+    "candidateScrollWidth": 455,
+    "finding": "PRE_EXISTING_IDENTICAL_NOT_LANGUAGE_REGRESSION"
+  }
+}

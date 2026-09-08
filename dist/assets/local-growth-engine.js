@@ -83,7 +83,7 @@
 
   const renderLedger=()=>{ledger.replaceChildren();(workspace?.ledger||[]).forEach(item=>{const row=make('li','');row.append(make('strong','','Done: '),document.createTextNode(item.label));ledger.append(row)})};
   const packetText=()=>workspace?[
-    'FRANKLIN BUSINESS GROWTH PLAN','Prepared by Franklin Navigator','',
+    'Franklin business growth plan','Prepared by Franklin Navigator','',
     `Business type: ${workspace.verticalLabel}`,`Goal: ${workspace.goalLabel}`,`Time available: ${workspace.capacityLabel}`,`Customers you want to reach: ${workspace.audience}`,`Main roadblock: ${workspace.constraint||'None selected'}`,'',
     `Listing checklist: ${workspace.audit.score}/100`,'Top actions:',...workspace.actions.map((item,index)=>`${index+1}. ${item.title} — ${permissionLabel[item.permission]||item.permission}`),'',
     'Safety: Drafts require review. Nothing was submitted, saved, sent, published, purchased or billed. No result is guaranteed.'

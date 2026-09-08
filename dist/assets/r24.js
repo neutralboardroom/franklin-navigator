@@ -6,7 +6,7 @@
 })();
 
 
-/* R24.1 dynamic Ask Navigator behavior */
+/* R24.1 dynamic Ask Franklin Assistant behavior */
 (()=>{
   const setup=()=>{
     const card=document.querySelector('[data-navigator-bot]');
@@ -45,7 +45,7 @@
 })();
 
 
-/* R27 focused Ask Navigator answer loader */
+/* R27 focused Ask Franklin Assistant answer loader */
 (()=>{
   if(!document.querySelector('link[data-r27-home]')){
     const css=document.createElement('link');

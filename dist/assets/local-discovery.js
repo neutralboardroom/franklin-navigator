@@ -132,7 +132,7 @@
     trayBody.append(mini);
     if (!comparisonOpen) return;
     const wrap = el('div', null, 'compare-table-wrap'); wrap.tabIndex = 0; wrap.setAttribute('role', 'region'); wrap.setAttribute('aria-label', tx('Scrollable factual comparison', 'Comparación de datos desplazable'));
-    const table = el('table', null, 'compare-table'); table.append(el('caption', tx('Compare listed facts — confirm changing details directly', 'Compare los datos indicados — confirme los detalles cambiantes directamente')));
+    const table = el('table', null, 'compare-table'); table.append(el('caption', tx('Compare listed information — confirm changing details directly', 'Compare los datos indicados — confirme los detalles cambiantes directamente')));
     const head = el('thead'), hrow = el('tr'); const factHead = el('th', tx('Fact', 'Dato')); factHead.scope = 'col'; hrow.append(factHead);
     selected.forEach(r => { const th = el('th'); th.scope = 'col'; th.append(link(r.n, C.canonicalProfile(r.i, language()))); hrow.append(th); }); head.append(hrow);
     const body = el('tbody'), no = () => el('span', tx('Not listed', 'No indicado'));

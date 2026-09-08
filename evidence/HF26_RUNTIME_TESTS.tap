@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: reconciliation is disabled unless explicitly enabled
+ok 1 - reconciliation is disabled unless explicitly enabled
+  ---
+  duration_ms: 0.933091
+  type: 'test'
+  ...
+# Subtest: enabled reconciliation requires exact account, database, live key and Franklin origin
+ok 2 - enabled reconciliation requires exact account, database, live key and Franklin origin
+  ---
+  duration_ms: 0.643275
+  type: 'test'
+  ...
+# Subtest: active membership requires active account/email/profile/entitlement and unexpired access
+ok 3 - active membership requires active account/email/profile/entitlement and unexpired access
+  ---
+  duration_ms: 0.632039
+  type: 'test'
+  ...
+# Subtest: real benefit requires at least one genuine member entitlement
+ok 4 - real benefit requires at least one genuine member entitlement
+  ---
+  duration_ms: 0.190316
+  type: 'test'
+  ...
+# Subtest: absent owner assignment creates no permission
+ok 5 - absent owner assignment creates no permission
+  ---
+  duration_ms: 1.571779
+  type: 'test'
+  ...
+# Subtest: explicit complete owner assignment is retained
+ok 6 - explicit complete owner assignment is retained
+  ---
+  duration_ms: 1.284778
+  type: 'test'
+  ...
+# Subtest: invalid owner binding fails {"accountId":"reviewer@example.invalid"}
+ok 7 - invalid owner binding fails {"accountId":"reviewer@example.invalid"}
+  ---
+  duration_ms: 0.416395
+  type: 'test'
+  ...
+# Subtest: invalid owner binding fails {"admin":true}
+ok 8 - invalid owner binding fails {"admin":true}
+  ---
+  duration_ms: 0.187
+  type: 'test'
+  ...
+# Subtest: invalid owner binding fails {"evidenceReceipt":"unproved"}
+ok 9 - invalid owner binding fails {"evidenceReceipt":"unproved"}
+  ---
+  duration_ms: 0.342104
+  type: 'test'
+  ...
+# Subtest: invalid owner binding fails {"reviewerId":"../x"}
+ok 10 - invalid owner binding fails {"reviewerId":"../x"}
+  ---
+  duration_ms: 0.150897
+  type: 'test'
+  ...
+# Subtest: valid limited confirmation config is accepted
+ok 11 - valid limited confirmation config is accepted
+  ---
+  duration_ms: 0.489545
+  type: 'test'
+  ...
+# Subtest: invalid confirmation config rejected {"expiresAt":"2026-01-02T00:00:01Z"}
+ok 12 - invalid confirmation config rejected {"expiresAt":"2026-01-02T00:00:01Z"}
+  ---
+  duration_ms: 0.23329
+  type: 'test'
+  ...
+# Subtest: invalid confirmation config rejected {"expiresAt":"2026-01-01T00:00:00Z"}
+ok 13 - invalid confirmation config rejected {"expiresAt":"2026-01-01T00:00:00Z"}
+  ---
+  duration_ms: 0.410686
+  type: 'test'
+  ...
+# Subtest: invalid confirmation config rejected {"issuedAt":"invalid"}
+ok 14 - invalid confirmation config rejected {"issuedAt":"invalid"}
+  ---
+  duration_ms: 0.461673
+  type: 'test'
+  ...
+# Subtest: invalid confirmation config rejected {"nonce":"short"}
+ok 15 - invalid confirmation config rejected {"nonce":"short"}
+  ---
+  duration_ms: 0.223736
+  type: 'test'
+  ...
+# Subtest: invalid confirmation config rejected {"code":"not allowed"}
+ok 16 - invalid confirmation config rejected {"code":"not allowed"}
+  ---
+  duration_ms: 0.164097
+  type: 'test'
+  ...
+# Subtest: invalid confirmation config rejected {"codeSha256":"xyz"}
+ok 17 - invalid confirmation config rejected {"codeSha256":"xyz"}
+  ---
+  duration_ms: 0.112259
+  type: 'test'
+  ...
+# Subtest: proof digest binds nonce, account and exact email
+ok 18 - proof digest binds nonce, account and exact email
+  ---
+  duration_ms: 2.252952
+  type: 'test'
+  ...
+# Subtest: owner assignment supplements but does not replace existing reviewers
+ok 19 - owner assignment supplements but does not replace existing reviewers
+  ---
+  duration_ms: 1.908534
+  type: 'test'
+  ...
+# Subtest: conflicting owner and existing assignments fail closed
+ok 20 - conflicting owner and existing assignments fail closed
+  ---
+  duration_ms: 0.402624
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 153.153635
