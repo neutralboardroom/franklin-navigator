@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "franklin.hf30.role-product-scope-authority.v1",
+  "release": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "authorityTransfer": false,
+  "scope": "PUBLIC_RELEASE_METADATA_TRUTH_AND_DATED_SOURCE_REFRESH_WORDING",
+  "localOwnedChanges": [
+    "public page release metadata",
+    "homepage dated source-refresh wording",
+    "Today dated source-refresh wording",
+    "English/Spanish presentation of those Local-owned public surfaces",
+    "release validation and packaging evidence"
+  ],
+  "notMutated": {
+    "profileFactoryCanonicalFacts": true,
+    "localInvestigatorResearchTruth": true,
+    "sreCommercialIntentOrPricing": true,
+    "sccAcceptedLineageOrPointer": true,
+    "smarterJusticeSourceOrState": true,
+    "otherCommunityEditionState": true,
+    "membershipRuntime": true,
+    "paymentProviderState": true,
+    "customerMemberEntitlementState": true
+  },
+  "sccAcceptanceSelfAsserted": false,
+  "profileCandidateSelfPromoted": false,
+  "localInvestigatorCandidateSelfPublished": false,
+  "sreCandidateSelfAccepted": false,
+  "smarterJusticeDonorUsed": false,
+  "crossCommunityContamination": false,
+  "result": "PASS_ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT"
+}
