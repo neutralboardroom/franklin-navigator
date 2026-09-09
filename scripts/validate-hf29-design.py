@@ -83,8 +83,8 @@ for needle in [
 ]:
  if needle not in design: fail('missing rendered simplifier '+needle)
 for needle in [
- "items.length<=1", "r38-assistant-save", "r30-dialog-next", "hf29-assistant-extra", "data.hf29SafetyPinned='1'",
- "popup.href='/assets/hf29-popup.css'", "data.hf29PopupLate='1'"
+ "items.length<=1", "r38-assistant-save", "r30-dialog-next", "hf29-assistant-extra", "dataset.hf29SafetyPinned='1'",
+ "popup.href='/assets/hf29-popup.css'", "dataset.hf29PopupLate='1'"
 ]:
  if needle not in design: fail('missing popup behavior gate '+needle)
 if "@import url('/assets/hf29-design.css');" not in r37: fail('HF29 CSS not loaded before paint')
