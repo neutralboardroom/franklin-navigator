@@ -22,7 +22,7 @@ for(const marker of ['function canonicalHeaderItems','normalizeHeaderLinks','sec
 for(const route of ['#ask-navigator','today','get-it-done','directory','community','my-franklin','business-dashboard'])need(nav.includes(route),`missing canonical route ${route}`);
 for(const marker of ['simplifyAssistantExamples','simplifyTodayFilters','simplifyTodayCardActions','simplifyFooter','simplifyMyFranklin','simplifyAssistantDialogStructure','compactDialogActionGroup','isSafetyResult'])need(design.includes(marker),`design behavior regression ${marker}`);
 for(const marker of ['hf29-primary-result','hf29-assistant-extra','data-hf29-safety-pinned','hf29-dialog-more-menu'])need(popup.includes(marker),`popup style regression ${marker}`);
-for(const marker of ['More filters','Open profile','Compare'])need(directory.includes(marker),`Find Local regression ${marker}`);
+for(const marker of ['hf28-more-filters','data-dir-type','data-dir-area','data-dir-sort','data-compare-id','hf28-result-more'])need(directory.includes(marker),`Find Local regression ${marker}`);
 need(i18n.includes('franklinlanguagechange'),'language switching regression');
 
 console.log(JSON.stringify({
