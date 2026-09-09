@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "franklin.hf30.source-qualification.v1",
+  "release": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "sourceQualificationRunId": 34418661353,
+  "sourceQualificationWorkflow": "HF30 fast final source qualification",
+  "sourceQualificationHead": "4a86fdc4b1ece5b13e4d9c90de4a18f48a0ab0ad",
+  "conclusion": "success",
+  "gates": {
+    "noDistMutationAfterExhaustiveTransformProofCommit": "PASS",
+    "all19355PublicReleaseMarkersExact": "PASS",
+    "immutable19103ProfileNoLossProofBinding": "PASS",
+    "releaseInvariants": "PASS",
+    "retainedUserExperienceAndSafety": "PASS",
+    "javascriptSyntax": "PASS"
+  },
+  "immutableTransformProof": {
+    "commit": "a3138d2e2c1bab15f3ba9b58f0d6ca6d5d77cdb4",
+    "workflowRunId": 34417558975,
+    "publicIndexPages": 19355,
+    "profilePagesComparedBeyondReleaseMarker": 19103,
+    "profileFactsChanged": false
+  },
+  "pricesChanged": false,
+  "runtimeChanged": false,
+  "checkoutChanged": false,
+  "result": "PASS_SOURCE_QUALIFIED"
+}
