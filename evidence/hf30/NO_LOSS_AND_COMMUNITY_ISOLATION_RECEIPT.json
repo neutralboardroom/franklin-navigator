@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "franklin.hf30.no-loss-community-isolation.v1",
+  "release": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "authorityTransfer": false,
+  "predecessorCommit": "abd9caf86b9fb46d42711c5aa12e5f8664bac238",
+  "immutableTransformProofCommit": "a3138d2e2c1bab15f3ba9b58f0d6ca6d5d77cdb4",
+  "immutableTransformProofRunId": 34417558975,
+  "finalSourceQualificationRunId": 34418661353,
+  "checks": {
+    "publicIndexPages": 19355,
+    "publicReleaseMarkersExact": 19355,
+    "profilePagesComparedToPredecessorBeyondMarker": 19103,
+    "profilePageMemberSetChanged": false,
+    "profileFactsChanged": false,
+    "distChangedAfterImmutableProofCommit": false,
+    "dataDirectoriesChanged": false,
+    "serverOrRuntimeChanged": false,
+    "pricesChanged": false,
+    "checkoutChanged": false,
+    "communityBrandOrGeographyChanged": false,
+    "crossCommunityDataIntroduced": false,
+    "otherEditionStateChanged": false,
+    "smarterJusticeDataOrCodeIntroduced": false
+  },
+  "retainedProduct": {
+    "profileCount": 19103,
+    "universalNavigation": "4_DIRECT_PLUS_3_MORE",
+    "assistantOrdinaryHierarchy": "ONE_PRIMARY_RESULT_AND_ONE_PRIMARY_DESTINATION_WITH_SECONDARY_DISCLOSURE",
+    "assistantEmergencyActionsRemainVisible": true,
+    "todayCategoryControl": "SINGLE_SELECT",
+    "findLocalInitialFilters": ["Search", "Category"],
+    "findLocalAdvancedFiltersProgressiveDisclosure": true,
+    "englishSpanishParityRetained": true,
+    "historyGalleryImages": 9,
+    "checkoutRemainsOpen": true
+  },
+  "changedPublicMeaning": {
+    "releaseMetadata": "IMPROVED_TO_MATCH_ACTUAL_SUCCESSOR_ON_ALL_PUBLIC_PAGES",
+    "datedSourceRefreshWording": "IMPROVED_TO_AVOID_IMPLYING_CURRENT_CONDITION_GUARANTEE",
+    "underlyingLocalFactsChanged": false
+  },
+  "result": "PASS_NO_LOSS_AND_FRANKLIN_ISOLATION_PRESERVED"
+}
