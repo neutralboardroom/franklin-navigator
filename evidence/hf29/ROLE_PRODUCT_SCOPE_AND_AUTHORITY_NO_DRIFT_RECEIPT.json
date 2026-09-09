@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "franklin.hf29.role-product-scope-authority.v1",
+  "release": "FR-NAV1.18.0-HF2.9-CANDIDATE",
+  "role": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "authorityTransfer": false,
+  "scope": "PUBLIC_UI_VISUAL_HIERARCHY_NAVIGATION_PROGRESSIVE_DISCLOSURE_AND_ASSISTANT_POPUP_PRESENTATION",
+  "ownedAndChanged": [
+    "Franklin public presentation CSS",
+    "Franklin shared navigation presentation",
+    "Franklin ordinary action hierarchy",
+    "Franklin Assistant dialog presentation and progressive disclosure",
+    "Franklin public-page visual polish"
+  ],
+  "notOwnedAndNotMutated": {
+    "canonicalProfileTruth": true,
+    "profileFactoryAuthority": true,
+    "localInvestigatorResearchAuthority": true,
+    "revenueCommercialIntentAuthority": true,
+    "sccAcceptanceAuthority": true,
+    "smarterJusticeProductAuthority": true,
+    "otherCommunityEditionState": true,
+    "runtimeCommerceImplementation": true,
+    "paymentProviderState": true
+  },
+  "crossCommunityContamination": false,
+  "profileTruthCanonizedByPlatform": false,
+  "researchCandidateSelfPublished": false,
+  "commercialCandidateSelfAccepted": false,
+  "sccAcceptanceSelfAsserted": false,
+  "result": "PASS_ROLE_AND_AUTHORITY_NO_DRIFT"
+}
