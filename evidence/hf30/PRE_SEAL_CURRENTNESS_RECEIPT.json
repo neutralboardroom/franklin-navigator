@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "franklin.hf30.pre-seal-currentness.v1",
+  "release": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "authorityTransfer": false,
+  "effectivePredecessor": {
+    "release": "FR-NAV1.18.0-HF2.9-CANDIDATE",
+    "sourceCommit": "abd9caf86b9fb46d42711c5aa12e5f8664bac238",
+    "artifactSha256": "631ab0777ba28aecae63cb013a40cebeac1f1d146d1febeac7a62f651b545366",
+    "state": "QUALIFIED_SUCCESSOR_DEPLOYED_LIVE_VERIFIED; SCC_ACCEPTANCE_NOT_SELF_ASSERTED"
+  },
+  "publicSuccessor": {
+    "release": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+    "publicDistCommit": "4a86fdc4b1ece5b13e4d9c90de4a18f48a0ab0ad",
+    "sourceQualificationRunId": 34418661353,
+    "sourceQualification": "PASS",
+    "staticDeploy": "dep-dagv29bl550s73ct8gi0",
+    "staticDeployStatus": "live",
+    "staticDeployFinishedAtUtc": "2026-09-09T23:53:18.238713Z",
+    "liveVerification": "PASS"
+  },
+  "coordinationRecheck": {
+    "newestAcceptedSccSuccessorObserved": "v0.39.0 R8",
+    "canonicalSccPointerObserved": "v0.38.0",
+    "guardedPointerReplacement": "BLOCKED_GUARDED_WRITE_CAPABILITY",
+    "workOrder": "WO-20260906-SRE-SCC-FRANKLIN-SELLING-READINESS-CONVERGENCE-055",
+    "workOrderState": "ACCEPTED_CLOSED_FINAL",
+    "newerAcceptedLocalPredecessorObserved": false,
+    "concurrencyDecision": "NO_NEWER_ACCEPTED_OR_MAIN_SOURCE_PREDECESSOR_OBSERVED_BEFORE_PROMOTION"
+  },
+  "upstreamRecheck": {
+    "profileFactory": {
+      "newestObserved": "FR-PF-PLATFORM-15.19",
+      "readyProfiles": 22847,
+      "pf74CanonicalUnchanged": true,
+      "consumed": false,
+      "disposition": "DEFER_WITH_CAUSE"
+    },
+    "localInvestigator": {
+      "newestObserved": "SLI-FRANKLIN-HANDOFF-20260908-026",
+      "status": "QUALIFIED_RESEARCH_HANDOFF_WITH_QUARANTINED_ITEMS",
+      "consumerAcceptance": "PENDING_OR_UNKNOWN",
+      "consumed": false,
+      "disposition": "DEFER_WITH_CAUSE"
+    },
+    "sreOwnerConsole": {
+      "newestObserved": "SRE-OC-CP-2.42.0 / SGE-1.42.0",
+      "candidateDeploymentState": "NOT_DEPLOYED",
+      "consumed": false,
+      "disposition": "DEFER_WITH_CAUSE"
+    },
+    "smarterJustice": {
+      "used": false,
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "No Local legal-module donor question was in scope."
+    }
+  },
+  "liveRuntimeRecheck": {
+    "scrapeId": "01a08898-e4a2-72a6-a50c-b545250c59bc",
+    "commerceEnabled": true,
+    "liveCheckoutEnabled": true,
+    "database": true,
+    "stripeCheckoutSessionConfigured": true,
+    "stripeWebhookConfigured": true,
+    "portalSessionConfigured": true,
+    "startupError": null,
+    "changedByHF30": false
+  },
+  "remainingQualifiedNow": false,
+  "remainingMaterialItems": "Require upstream consumer acceptance, a genuine eligible checkout event, or SCC-owned guarded pointer write capability; no additional evidence-backed independent Local mutation is justified now.",
+  "result": "PASS_READY_TO_SEAL_WITH_SCC_ACCEPTANCE_NOT_SELF_ASSERTED"
+}
