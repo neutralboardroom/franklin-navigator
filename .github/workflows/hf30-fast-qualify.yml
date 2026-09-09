@@ -1,0 +1,43 @@
+name: HF30 fast final source qualification
+on:
+  push:
+    branches:
+      - hf30-public-truth-release-integrity-20260910
+    paths:
+      - .github/workflows/hf30-fast-qualify.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify no product tree changed after exhaustive transform proof
+        run: |
+          git diff --quiet a3138d2e2c1bab15f3ba9b58f0d6ca6d5d77cdb4...HEAD -- dist
+      - name: Verify HF3.0 public truth and immutable profile proof binding
+        run: python3 scripts/validate-hf30-public-truth.py
+      - name: Verify release invariants
+        run: python3 scripts/validate-hf30-release.py
+      - name: Verify retained user experience and safety
+        run: node scripts/verify-hf30-retained.mjs
+      - name: Syntax checks
+        run: |
+          node --check dist/assets/hf27-navigation.js
+          node --check dist/assets/hf29-design.js
+          node --check dist/assets/r37-i18n.js
+          node --check dist/assets/hf28-directory.js
+          node --check dist/assets/navigator-bot.js
+          node --check dist/assets/r38-assistant-followthrough.js
+          node --check dist/assets/r40-assistant-safety-guard.js
