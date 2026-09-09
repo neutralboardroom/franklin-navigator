@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "franklin.hf30.live-verification.v1",
+  "release": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "publicDistCommit": "4a86fdc4b1ece5b13e4d9c90de4a18f48a0ab0ad",
+  "staticService": "srv-da8tg6rbc2fs73crru2g",
+  "staticDeploy": "dep-dagv29bl550s73ct8gi0",
+  "staticDeployStatus": "live",
+  "staticDeployFinishedAtUtc": "2026-09-09T23:53:18.238713Z",
+  "checks": {
+    "homepage": {
+      "result": "PASS_LIVE_RENDER",
+      "scrapeId": "01a08897-4662-72b5-af9b-cc21b853bc5a",
+      "releaseMetadata": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+      "sourceRefreshWordingObserved": "Sources were last refreshed September 3, 2026.",
+      "sourceRefreshMeaning": "DATED_SOURCE_REFRESH_NOT_CURRENT_CONDITION_GUARANTEE",
+      "exampleQuestionsRenderedAsSingleSelector": true,
+      "pageSizedSecondaryMenuObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    "today": {
+      "result": "PASS_LIVE_RELEASE_AND_COPY_PLUS_RETAINED_BEHAVIOR_PROOF",
+      "scrapeId": "01a08897-7800-70c2-b2f9-625b0cdd5552",
+      "releaseMetadata": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+      "sourceRefreshWording": "Sources last refreshed September 3, 2026 · confirm changing details at the original source",
+      "singleCategorySelectorRetainedByExactDistNoMutationProof": true,
+      "compactPerEventMoreRetainedByExactDistNoMutationProof": true,
+      "officialSourcesCollapsedByDefaultRetainedByExactDistNoMutationProof": true
+    },
+    "spanishHome": {
+      "result": "PASS_LIVE_RENDER",
+      "scrapeId": "01a08897-ac6a-75ec-a8b7-23dbdfb917c7",
+      "releaseMetadata": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+      "sourceRefreshWordingObserved": "Fuentes revisadas por última vez el 3 de septiembre de 2026.",
+      "primaryControlsRemainSpanish": true,
+      "horizontalOverflowObserved": false
+    },
+    "spanishToday": {
+      "result": "PASS_LIVE_RELEASE_AND_COPY_PLUS_RETAINED_BEHAVIOR_PROOF",
+      "scrapeId": "01a08897-d079-763e-89a0-607aaff25b3e",
+      "releaseMetadata": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+      "sourceRefreshWording": "Fuentes revisadas por última vez el 3 de septiembre de 2026 · confirme los datos cambiantes en la fuente original",
+      "singleCategorySelectorRetainedByExactDistNoMutationProof": true,
+      "compactSecondaryMasRetainedByExactDistNoMutationProof": true
+    },
+    "sampleProfile": {
+      "result": "PASS_LIVE_RENDER",
+      "scrapeId": "01a08897-f02e-7056-8d74-79aa609fb504",
+      "route": "/profiles/FR-ORG-0002-12-point-signworks/",
+      "profileName": "12-Point SignWorks",
+      "releaseMetadata": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+      "profileContentPresent": true,
+      "horizontalOverflowObserved": false
+    },
+    "findLocal": {
+      "result": "PASS_LIVE_RENDER_AND_EXACT_RETAINED_SOURCE_PROOF",
+      "scrapeId": "01a08898-b621-73cc-8be2-305c15ddacc1",
+      "releaseMetadata": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+      "profileCount": 19103,
+      "primaryFilterModel": "SEARCH_AND_CATEGORY_WITH_ADVANCED_FILTERS_UNDER_MORE",
+      "resultActionModel": "OPEN_PROFILE_AND_COMPARE_WITH_SECONDARY_UTILITIES_UNDER_COMPACT_MORE",
+      "comparisonTrayRetained": true
+    },
+    "assistantOrdinary": {
+      "result": "PASS_LIVE_RENDER",
+      "scrapeId": "01a08898-163c-77ca-a607-487e50dc0d02",
+      "query": "My mother is a senior and cannot drive",
+      "releaseMetadata": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+      "primaryResult": "Senior and caregiver support",
+      "initialMatchedResultsVisible": 1,
+      "primaryDirectDestinationVisible": 1,
+      "secondaryDestinationUnderCompactMore": true,
+      "relatedResultsSaveAndConnectedNeedsBehindSingleOtherUsefulOptionsDisclosure": true,
+      "giantButtonWallVisible": false,
+      "horizontalOverflowObserved": false
+    },
+    "assistantEmergency": {
+      "result": "PASS_LIVE_RENDER_DOM_VERIFIED",
+      "scrapeId": "01a08898-8af8-7033-97aa-bcc3724589fb",
+      "query": "There is an emergency someone is not breathing",
+      "releaseMetadata": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+      "urgentResultFirst": true,
+      "call911DirectlyVisible": true,
+      "directEmergencyActionsVisible": 2,
+      "emergencyActionsHiddenBehindMore": false,
+      "nonDispatchDisclaimerVisible": true,
+      "safetyPinnedAttributePresent": true
+    },
+    "commerceRuntime": {
+      "result": "PASS_HEALTHY_UNCHANGED",
+      "scrapeId": "01a08898-e4a2-72a6-a50c-b545250c59bc",
+      "community": "FRANKLIN_TN",
+      "database": true,
+      "stripeCheckoutSessionConfigured": true,
+      "stripeWebhookConfigured": true,
+      "portalSessionConfigured": true,
+      "commerceEnabled": true,
+      "liveCheckoutEnabled": true,
+      "startupError": null,
+      "changedByHF30": false
+    }
+  },
+  "result": "PASS_LIVE_VERIFIED",
+  "ownerActionRequired": "NONE"
+}
