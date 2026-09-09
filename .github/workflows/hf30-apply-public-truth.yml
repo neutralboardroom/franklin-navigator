@@ -1,0 +1,35 @@
+name: HF30 apply public truth
+on:
+  push:
+    branches:
+      - hf30-public-truth-release-integrity-20260910
+    paths:
+      - .github/workflows/hf30-apply-public-truth.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf30-public-truth-release-integrity-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply deterministic public truth transform
+        run: python3 scripts/apply-hf30-public-truth.py
+      - name: Validate transformed public tree
+        run: python3 scripts/validate-hf30-public-truth.py
+      - name: Commit transformed public tree
+        run: |
+          git config user.name "neutralboardroom"
+          git config user.email "reachrgnow@gmail.com"
+          git add dist
+          test -n "$(git status --porcelain)"
+          git commit -m "Normalize HF3.0 public release truth across all pages"
+          git push origin HEAD:hf30-public-truth-release-integrity-20260910
