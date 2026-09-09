@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "franklin.hf30.rule-source-reconciliation.v1",
+  "recordedAtUtc": "2026-09-09T23:30:00Z",
+  "ownerCommand": {
+    "revision": "2026-09-03-R2",
+    "mode": "BUILD",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "authorityTransfer": false
+  },
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "releaseIntent": "PUBLIC_TRUTH_RELEASE_METADATA_AND_FRESHNESS_WORDING_INTEGRITY",
+  "proposedSuccessor": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+  "effectiveNoLossBase": {
+    "release": "FR-NAV1.18.0-HF2.9-CANDIDATE",
+    "sourceCommit": "abd9caf86b9fb46d42711c5aa12e5f8664bac238",
+    "artifact": "FRANKLIN_NAVIGATOR__HF2_9__FULL_DESIGN_SIMPLIFIED__2026-09-09.zip",
+    "artifactBytes": 68241007,
+    "artifactSha256": "631ab0777ba28aecae63cb013a40cebeac1f1d146d1febeac7a62f651b545366",
+    "manifestSha256": "737f249fae95f48c5178a0dbd7b3ff306519e25cf8bf71a21723545dbdcefdb0",
+    "libraryPath": "/SMARTER_COMMUNITY_NAVIGATOR_PLATFORM/Recovery/Franklin/HF29_FULL_DESIGN_SIMPLIFICATION__2026-09-09/FRANKLIN_NAVIGATOR__HF2_9__FULL_DESIGN_SIMPLIFIED__2026-09-09.zip",
+    "state": "QUALIFIED_SUCCESSOR_DEPLOYED_LIVE_VERIFIED; SCC_ACCEPTANCE_NOT_SELF_ASSERTED",
+    "selectionReason": "Newest exact sealed Franklin Local artifact and current repository head; using it prevents rollback or loss while preserving the distinction from SCC acceptance."
+  },
+  "coordination": {
+    "newestAcceptedSccSuccessorObserved": "v0.39.0 R8",
+    "sccReceipt": "SCCC039_R8_FINAL_RESULT_RECEIPT.json",
+    "canonicalSccPointerObserved": "v0.38.0",
+    "pointerD2": "BLOCKED_GUARDED_WRITE_CAPABILITY",
+    "workOrder": "WO-20260906-SRE-SCC-FRANKLIN-SELLING-READINESS-CONVERGENCE-055",
+    "workOrderState": "ACCEPTED_CLOSED_FINAL",
+    "newActiveWorkOrderObserved": false,
+    "manualDispatchRequired": true,
+    "releaseLease": {
+      "mode": "ISOLATED_GITHUB_BRANCH_PLUS_PRE_SEAL_MAIN_HEAD_CAS",
+      "branch": "hf30-public-truth-release-integrity-20260910",
+      "baseCommit": "abd9caf86b9fb46d42711c5aa12e5f8664bac238",
+      "externalSccLeaseHandleAvailable": false,
+      "reason": "Current SCC pointer replacement remains blocked on guarded write capability; Local source mutation is isolated to a dedicated branch and will fail closed if main changes before promotion."
+    }
+  },
+  "upstreamTruth": {
+    "profileFactory": {
+      "newestObservedCandidate": "FR-PF-PLATFORM-15.19",
+      "readyProfiles": 22847,
+      "pf74CanonicalUnchanged": true,
+      "consumerAcceptedForThisLocalRelease": false,
+      "disposition": "DEFER_WITH_CAUSE"
+    },
+    "localInvestigator": {
+      "newestObservedCandidate": "SLI-FRANKLIN-HANDOFF-20260908-026",
+      "status": "QUALIFIED_RESEARCH_HANDOFF_WITH_QUARANTINED_ITEMS",
+      "consumerAcceptance": "PENDING_OR_UNKNOWN",
+      "disposition": "DEFER_WITH_CAUSE"
+    },
+    "sreOwnerConsole": {
+      "newestObservedCandidate": "SRE-OC-CP-2.42.0",
+      "candidateConsumerAccepted": false,
+      "candidateDeployed": false,
+      "disposition": "DEFER_WITH_CAUSE"
+    },
+    "smarterJustice": {
+      "donorUsed": false,
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "HF3.0 does not modify the Local legal module and therefore has no authorized donor question."
+    }
+  },
+  "liveTruth": {
+    "publicMainCommitAtStart": "abd9caf86b9fb46d42711c5aa12e5f8664bac238",
+    "publicRuntimePair": "44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8",
+    "checkoutOpen": true,
+    "commerceEnabled": true,
+    "liveCheckoutEnabled": true,
+    "profileCount": 19103,
+    "assistantEndToEndDeepLinkSmoke": {
+      "query": "My mother is a senior and cannot drive",
+      "result": "PASS_LIVE_RENDER",
+      "primaryMatchedSectionsVisible": 1,
+      "primaryOrdinaryActionsVisible": 1,
+      "relatedAndSaveControlsBehindSingleDisclosure": true,
+      "giantButtonWallVisible": false,
+      "horizontalOverflow": false
+    }
+  },
+  "qualifiedNowPriority": {
+    "problem": "Every packaged public index page contains a franklin-release metadata marker, but the HF2.9 exact artifact still carries older HF2.6/HF2.7/HF2.8 values on all 19,355 pages; the homepage and Today freshness labels also use wording that can be mistaken for stronger currentness than the dated source refresh proves.",
+    "userAndOperationalValue": "Make public release-state metadata internally truthful and make dated currentness wording more explicit without changing any local fact, profile fact, price, payment, membership, or runtime state.",
+    "classification": "P0_RELEASE_INTEGRITY_PLUS_P1_PUBLIC_TRUST",
+    "qualifiedNow": true
+  },
+  "result": "PASS_READY_FOR_BOUNDED_IMPLEMENTATION"
+}
