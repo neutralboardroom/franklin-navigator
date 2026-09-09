@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "franklin.hf30.ai-product-audit.v1",
+  "release": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "aiCodeChanged": false,
+  "auditReason": "Standing Local Platform rule requires AI-assisted tools to be audited in every material release even when the release slice does not modify AI logic.",
+  "ordinaryTaskSmoke": {
+    "query": "My mother is a senior and cannot drive",
+    "scrapeId": "01a08884-2949-70bc-a5f1-5cbdf9254f6b",
+    "result": "PASS_LIVE_RENDER",
+    "primaryResult": "Senior and caregiver support",
+    "initialMatchedResultsVisible": 1,
+    "initialOrdinaryPrimaryActionsVisible": 1,
+    "relatedTransportationResultBehindDisclosure": true,
+    "saveFollowupBehindDisclosure": true,
+    "connectedNeedsBehindDisclosure": true,
+    "pageSizedSecondaryPanel": false,
+    "horizontalOverflow": false
+  },
+  "urgentSafetySmoke": {
+    "query": "There is an emergency someone is not breathing",
+    "scrapeId": "01a0888a-40f3-702d-a363-19c1c3b9c959",
+    "result": "PASS_LIVE_RENDER",
+    "urgentResultFirst": true,
+    "call911DirectlyVisible": true,
+    "directEmergencyActionsVisible": 2,
+    "emergencyActionHiddenBehindDisclosure": false,
+    "nonDispatchDisclaimerVisible": true,
+    "pageSizedSecondaryPanel": false,
+    "horizontalOverflow": false
+  },
+  "groundingAndBoundaries": {
+    "editionScopedLocalRoutesRetained": true,
+    "nonAIPathsRetained": true,
+    "legalAdviceClaimAdded": false,
+    "medicalDiagnosisClaimAdded": false,
+    "paymentOrMemberInferenceAdded": false,
+    "crossCommunityStateAdded": false,
+    "sensitiveDataCollectionAdded": false,
+    "smarterJusticeConnectionAdded": false
+  },
+  "qualifiedUnmetNeeds": [
+    {
+      "item": "Consume newer Local Investigator dynamic evidence only after consumer acceptance and point-of-use currentness gates.",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "V26 is producer-qualified but consumer acceptance/publication approval remains pending or unknown."
+    },
+    {
+      "item": "Expand profile-grounded Assistant options from Profile Factory 15.19.",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "PF74 canonical pointer is unchanged; Local may not self-promote candidate profile truth."
+    }
+  ],
+  "result": "PASS_CURRENT_AI_RETAINED_AND_LIVE_SAFETY_SMOKED"
+}
