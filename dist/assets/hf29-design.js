@@ -8,10 +8,12 @@
   const safetyWords=/\b(urgent|emergency|crisis|911|988|urgente|emergencia|crisis|peligro)\b/i;
 
   function ensureLateCss(){
-    if(document.querySelector('link[data-hf29-design-late]'))return;
-    const link=document.createElement('link');
-    link.rel='stylesheet';link.href='/assets/hf29-design.css';link.dataset.hf29DesignLate='1';
-    document.head.append(link);
+    if(!document.querySelector('link[data-hf29-design-late]')){
+      const link=document.createElement('link');link.rel='stylesheet';link.href='/assets/hf29-design.css';link.dataset.hf29DesignLate='1';document.head.append(link);
+    }
+    if(!document.querySelector('link[data-hf29-popup-late]')){
+      const popup=document.createElement('link');popup.rel='stylesheet';popup.href='/assets/hf29-popup.css';popup.dataset.hf29PopupLate='1';document.head.append(popup);
+    }
   }
 
   function simplifyAssistantExamples(){
