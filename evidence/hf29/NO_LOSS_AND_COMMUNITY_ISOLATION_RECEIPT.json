@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "franklin.hf29.no-loss-community-isolation.v1",
+  "release": "FR-NAV1.18.0-HF2.9-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "authorityTransfer": false,
+  "baseCommit": "14af3042df4c7a31102a587183c3ed850758a595",
+  "publicDistCommit": "5069ebc0b0b1f27f9336776a3884e3bce3228b4f",
+  "sourceQualificationRunId": 34416030064,
+  "sourceQualification": "PASS",
+  "protectedState": {
+    "profileCountBefore": 19103,
+    "profileCountAfter": 19103,
+    "profileFactsChanged": false,
+    "profileFilesChanged": false,
+    "profileDataDirectoriesChanged": false,
+    "pricesChanged": false,
+    "runtimeChanged": false,
+    "serverFilesChanged": false,
+    "checkoutChanged": false,
+    "checkoutRemainsOpen": true,
+    "communityIdentityChanged": false,
+    "crossCommunityDataIntroduced": false,
+    "safetyActionsMayCollapse": false
+  },
+  "scopeChanged": [
+    "shared public navigation hierarchy",
+    "shared visual polish",
+    "homepage choice density",
+    "Today filter and event-card choice density",
+    "Find Local presentation hierarchy without profile-fact mutation",
+    "footer hierarchy",
+    "My Franklin progressive disclosure presentation",
+    "business/member visual presentation",
+    "Assistant dialog and popup presentation"
+  ],
+  "assistantSafety": {
+    "urgentEmergencyCrisisDetectionPreserved": true,
+    "911And988ActionsExplicitlyExemptFromCollapse": true,
+    "safetyPinnedActionsRemainDisplayFlex": true
+  },
+  "validation": {
+    "unexpectedChangedFiles": 0,
+    "disallowedDataProfileRuntimeMutation": false,
+    "qualifiedByWorkflow": true,
+    "workflowRunId": 34416030064
+  },
+  "result": "PASS_NO_LOSS_AND_FRANKLIN_ISOLATION_PRESERVED"
+}
