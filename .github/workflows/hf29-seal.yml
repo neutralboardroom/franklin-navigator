@@ -1,0 +1,50 @@
+name: HF29 deterministic seal
+on:
+  push:
+    branches:
+      - hf29-full-design-simplification-20260909
+    paths:
+      - .github/workflows/hf29-seal.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf29-full-design-simplification-20260909
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install design audit parser
+        run: python -m pip install --disable-pip-version-check beautifulsoup4==4.12.3
+      - name: Re-run final HF2.9 source and popup gates
+        run: |
+          python scripts/validate-hf29-design.py
+          node scripts/verify-hf29-design.mjs
+          node --check dist/assets/hf29-design.js
+          node --check dist/assets/hf27-navigation.js
+          node --check dist/assets/r37-i18n.js
+      - name: Build deterministic successor twice and validate fresh extraction
+        run: python3 scripts/build-hf29-release.py --out release-output
+      - name: Show external release attestation
+        run: cat release-output/HF29_EXTERNAL_RELEASE_ATTESTATION.json
+      - name: Upload exact sealed successor and external attestation
+        uses: actions/upload-artifact@v4
+        with:
+          name: HF29_SEALED_RELEASE
+          path: |
+            release-output/FRANKLIN_NAVIGATOR__HF2_9__FULL_DESIGN_SIMPLIFIED__2026-09-09.zip
+            release-output/HF29_EXTERNAL_RELEASE_ATTESTATION.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
