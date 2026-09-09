@@ -60,12 +60,12 @@ for needle in ['simplifyAssistantExamples','simplifyTodayFilters','simplifyToday
     if needle not in design: fail('design regression '+needle)
 for needle in ['hf29-primary-result','hf29-assistant-extra','data-hf29-safety-pinned','hf29-dialog-more-menu']:
     if needle not in popup: fail('popup regression '+needle)
-for needle in ['More filters','Open profile','Compare']:
+for needle in ['hf28-more-filters','data-dir-type','data-dir-area','data-dir-sort','data-compare-id','hf28-result-more']:
     if needle not in directory: fail('Find Local regression '+needle)
 
 print(json.dumps({
     'status':'PASS','release':RELEASE,'activeEdition':'FRANKLIN_TN',
     'publicIndexPages':len(htmls),'profilePages':profiles,'releaseMarkersExact':len(htmls),
     'freshnessCopyPages':len(EXPECTED_COPY),'profileFactsChanged':False,'pricesChanged':False,'runtimeChanged':False,
-    'checkoutRemainsOpen':True,'retainedDesignAndAssistantStaticGates':'PASS'
+    'checkoutRemainsOpen':True,'retainedDesignAssistantAndFindLocalStaticGates':'PASS'
 },sort_keys=True))
