@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "franklin.hf30.donor-capability-registry.v1",
+  "release": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "boundedCapabilityQuestion": "Public release-state truth and dated source-refresh wording integrity",
+  "donors": [
+    {
+      "donor":"SMARTER_JUSTICE",
+      "disposition":"DEFER_WITH_CAUSE",
+      "inspected":false,
+      "reason":"No Local legal-module capability question is in scope. Standing authority forbids routine/general Smarter Justice donor review. No frozen donor snapshot was needed or accessed."
+    },
+    {
+      "donor":"SMARTER_HEALTH",
+      "disposition":"DEFER_WITH_CAUSE",
+      "inspected":false,
+      "reason":"No health-domain capability is modified by HF3.0; donor inspection would not materially improve the bounded release-truth slice."
+    },
+    {
+      "donor":"SMARTER_HOME_OR_NATIONAL_HOME_PLATFORM",
+      "disposition":"DEFER_WITH_CAUSE",
+      "inspected":false,
+      "reason":"No home-domain or national-platform capability is modified by HF3.0; product authorities remain separate."
+    },
+    {
+      "donor":"SMARTER_AUTO",
+      "disposition":"DEFER_WITH_CAUSE",
+      "inspected":false,
+      "reason":"No auto-domain capability is modified by HF3.0."
+    }
+  ],
+  "donorCodeCopied": false,
+  "donorFactsImported": false,
+  "donorStateImported": false,
+  "donorRuntimeConnectionCreated": false,
+  "authorityTransfer": false,
+  "result": "PASS_NO_IRRELEVANT_DONOR_USE"
+}
