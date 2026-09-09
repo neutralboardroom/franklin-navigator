@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 DIST=ROOT/'dist'
 BASE='14af3042df4c7a31102a587183c3ed850758a595'
 ALLOWED={
- 'dist/assets/hf27-navigation.js','dist/assets/hf29-design.css','dist/assets/hf29-design.js',
+ 'dist/assets/hf27-navigation.js','dist/assets/hf29-design.css','dist/assets/hf29-design.js','dist/assets/hf29-popup.css',
  'dist/assets/r37.css','dist/assets/r37-i18n.js','scripts/validate-hf29-design.py',
  '.github/workflows/hf29-design-qualify.yml','evidence/hf29/DESIGN_AUDIT_BASELINE.json',
  'evidence/hf29/LIVE_VISUAL_VERIFICATION.json','evidence/hf29/NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT.json',
@@ -30,7 +30,7 @@ unexpected=sorted(changed-ALLOWED)
 if unexpected: fail('unexpected changed files: '+', '.join(unexpected))
 if any(p.startswith(('dist/data/','dist/profiles/','server/','runtime/')) for p in changed): fail('data/profile/runtime scope changed')
 
-for p in ['dist/assets/hf29-design.css','dist/assets/hf29-design.js','dist/assets/hf27-navigation.js','dist/assets/r37.css','dist/assets/r37-i18n.js']:
+for p in ['dist/assets/hf29-design.css','dist/assets/hf29-popup.css','dist/assets/hf29-design.js','dist/assets/hf27-navigation.js','dist/assets/r37.css','dist/assets/r37-i18n.js']:
  if not (ROOT/p).is_file(): fail('missing '+p)
 
 subprocess.check_call(['node','--check',str(ROOT/'dist/assets/hf29-design.js')])
@@ -38,6 +38,7 @@ subprocess.check_call(['node','--check',str(ROOT/'dist/assets/hf27-navigation.js
 subprocess.check_call(['node','--check',str(ROOT/'dist/assets/r37-i18n.js')])
 
 css=(ROOT/'dist/assets/hf29-design.css').read_text('utf-8')
+popup=(ROOT/'dist/assets/hf29-popup.css').read_text('utf-8')
 design=(ROOT/'dist/assets/hf29-design.js').read_text('utf-8')
 nav=(ROOT/'dist/assets/hf27-navigation.js').read_text('utf-8')
 r37=(ROOT/'dist/assets/r37.css').read_text('utf-8')
@@ -52,6 +53,13 @@ for needle in [
  '.r29-local-card{', '.r34-growth-band{'
 ]:
  if needle not in css: fail('missing CSS gate '+needle)
+for needle in [
+ '.hf29-assistant-extra{', '.hf29-dialog-more-menu{',
+ '.hf29-assistant-extra-body>.r38-assistant-save',
+ '.hf29-assistant-extra-body>.r30-dialog-next',
+ '.r27-navigator-body .actions[data-hf29-safety-pinned="1"]'
+]:
+ if needle not in popup: fail('missing popup CSS gate '+needle)
 
 try:
  core_body=nav.split('function coreHeaderLink',1)[1].split('function globalOverflowLink',1)[0]
@@ -69,8 +77,16 @@ for disallowed in ['activities','sports','learning']:
  if disallowed in canonical_body: fail('subtopic leaked into canonical global header: '+disallowed)
 if 'normalizeHeaderLinks' not in nav: fail('universal header normalization missing')
 if "section.hidden=true" not in nav: fail('duplicate homepage route chooser not suppressed')
-for needle in ['simplifyAssistantExamples','simplifyTodayFilters','simplifyTodayCardActions','simplifyFooter','simplifyMyFranklin','simplifyDialogActions']:
+for needle in [
+ 'simplifyAssistantExamples','simplifyTodayFilters','simplifyTodayCardActions','simplifyFooter','simplifyMyFranklin','simplifyDialogActions',
+ 'compactDialogActionGroup','simplifyAssistantDialogStructure','simplifyDialogLooseChoices','isSafetyResult'
+]:
  if needle not in design: fail('missing rendered simplifier '+needle)
+for needle in [
+ "items.length<=1", "r38-assistant-save", "r30-dialog-next", "hf29-assistant-extra", "data.hf29SafetyPinned='1'",
+ "popup.href='/assets/hf29-popup.css'", "data.hf29PopupLate='1'"
+]:
+ if needle not in design: fail('missing popup behavior gate '+needle)
 if "@import url('/assets/hf29-design.css');" not in r37: fail('HF29 CSS not loaded before paint')
 if "data-hf29-design" not in i18n: fail('HF29 JS loader missing')
 
@@ -95,6 +111,11 @@ print(json.dumps({
  'maxStaticButtonCountBeforeRenderedSimplification':max_buttons,
  'heroExampleButtonsRendered':0,'heroExampleSelectorRendered':1,
  'todayCategoryFilter':'SINGLE_SELECT','todayDesktopColumns':2,'todayDirectCardActionsMax':1,
- 'assistantPrimaryButtonsVisibleMax':1,'businessMembershipPremiumPolish':'PRESENT',
+ 'assistantPrimaryButtonsVisibleMax':1,
+ 'assistantInitialMatchedResultsVisibleMax':1,
+ 'assistantNonSafetyDirectActionsPerResultMax':1,
+ 'assistantSecondaryContentDisclosure':'OTHER_USEFUL_OPTIONS',
+ 'assistantSafetyActionsHidden':False,
+ 'businessMembershipPremiumPolish':'PRESENT',
  'profileFactsChanged':False,'runtimeChanged':False,'checkoutChanged':False
 },indent=2))
