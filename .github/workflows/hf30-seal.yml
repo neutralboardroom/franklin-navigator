@@ -1,0 +1,69 @@
+name: HF30 deterministic seal
+on:
+  push:
+    branches:
+      - hf30-public-truth-release-integrity-20260910
+    paths:
+      - .github/workflows/hf30-seal.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf30-public-truth-release-integrity-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prove product tree did not change after the exhaustive HF3.0 transform proof
+        run: git diff --quiet a3138d2e2c1bab15f3ba9b58f0d6ca6d5d77cdb4...HEAD -- dist
+      - name: Require final evidence and owner follow-up list
+        run: |
+          test -f evidence/hf30/RULE_AND_SOURCE_RECONCILIATION_RECEIPT.json
+          test -f evidence/hf30/SOURCE_QUALIFICATION_RECEIPT.json
+          test -f evidence/hf30/LIVE_VERIFICATION.json
+          test -f evidence/hf30/PRE_SEAL_CURRENTNESS_RECEIPT.json
+          test -f evidence/hf30/ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT.json
+          test -f evidence/hf30/NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT.json
+          test -f evidence/hf30/NO_LOSS_LEDGER.json
+          test -f evidence/hf30/LOCAL_PLATFORM_PRIORITY_QUEUE.json
+          test -f evidence/hf30/DONOR_CAPABILITY_REGISTRY.json
+          test -f evidence/hf30/AI_PRODUCT_AUDIT.json
+          test -f NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_19_0_HF30.md
+      - name: Re-run HF3.0 release and retained-behavior gates
+        run: |
+          python3 scripts/validate-hf30-public-truth.py
+          python3 scripts/validate-hf30-release.py
+          node scripts/verify-hf30-retained.mjs
+          node --check dist/assets/hf27-navigation.js
+          node --check dist/assets/hf29-design.js
+          node --check dist/assets/r37-i18n.js
+          node --check dist/assets/hf28-directory.js
+          node --check dist/assets/local-discovery.js
+          node --check dist/assets/navigator-bot.js
+          node --check dist/assets/r38-assistant-followthrough.js
+          node --check dist/assets/r40-assistant-safety-guard.js
+      - name: Build deterministic successor twice and validate fresh extraction
+        run: python3 scripts/build-hf30-release.py --out release-output
+      - name: Show external release attestation
+        run: cat release-output/HF30_EXTERNAL_RELEASE_ATTESTATION.json
+      - name: Upload exact sealed successor and external attestation
+        uses: actions/upload-artifact@v4
+        with:
+          name: HF30_SEALED_RELEASE
+          path: |
+            release-output/FRANKLIN_NAVIGATOR__HF3_0__PUBLIC_TRUTH_RELEASE_INTEGRITY__2026-09-10.zip
+            release-output/HF30_EXTERNAL_RELEASE_ATTESTATION.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
