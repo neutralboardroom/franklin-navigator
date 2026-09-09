@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "franklin.hf29.pre-seal-currentness.v1",
+  "release": "FR-NAV1.18.0-HF2.9-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "authorityTransfer": false,
+  "effectivePredecessor": {
+    "release": "FR-NAV1.17.0-HF2.8-CANDIDATE",
+    "sourceCommit": "14af3042df4c7a31102a587183c3ed850758a595",
+    "reason": "Newest exact deployed and sealed Franklin public-source predecessor available when HF2.9 design work began."
+  },
+  "currentPublicDist": {
+    "commit": "5069ebc0b0b1f27f9336776a3884e3bce3228b4f",
+    "qualificationRunId": 34416030064,
+    "qualification": "PASS",
+    "deployId": "dep-daguhcpt0dsc73fs9k20",
+    "deployStatus": "live",
+    "finishedAtUtc": "2026-09-09T23:17:28.723724Z"
+  },
+  "upstreamCandidateReview": {
+    "profileFactory": {
+      "newestObservedCandidate": "FR-PF-PLATFORM-15.19",
+      "observedArtifact": "SMARTER_PROFILE_FACTORY__FRANKLIN__FR-PF-PLATFORM-15.19__22847_READY__21_NEW__405_CHAMBER_REVIEWED__7_TDHS_REFRESHED__PF74_UNCHANGED__2026-09-09.zip",
+      "consumedByHF29": false,
+      "reason": "PF74 remained unchanged; this visual-simplification release does not self-promote new canonical profile truth."
+    },
+    "localInvestigator": {
+      "newestObservedCandidate": "SLI-FRANKLIN-HANDOFF-20260908-026",
+      "observedStatus": "QUALIFIED_RESEARCH_HANDOFF_WITH_QUARANTINED_ITEMS_AWAITING_SCC_GATE",
+      "consumedByHF29": false,
+      "reason": "Consumer acceptance/publication approval was not established for this design-only successor."
+    },
+    "revenueOwnerConsole": {
+      "newestObservedCandidate": "SRE-OC-CP-2.42.0",
+      "observedArtifact": "SMARTER_OWNER_CONSOLE__SRE-2.42.0__TESTED_SOURCE_CANDIDATE.zip",
+      "consumedByHF29": false,
+      "reason": "Candidate commercial/control-plane work was not accepted as a dependency for this public design-only successor."
+    },
+    "smarterJustice": {
+      "usedAsDonor": false,
+      "reason": "No legal-product donor work was required for HF2.9."
+    }
+  },
+  "liveRuntimeCurrentness": {
+    "membershipRuntimeScrapeId": "01a08878-cda8-77ed-8468-93f8af21f0b3",
+    "commerceEnabled": true,
+    "liveCheckoutEnabled": true,
+    "database": true,
+    "stripeCheckoutSessionConfigured": true,
+    "stripeWebhookConfigured": true,
+    "portalSessionConfigured": true,
+    "startupError": null,
+    "changedByHF29": false
+  },
+  "result": "PASS_CURRENTNESS_RECONCILED_FOR_DESIGN_ONLY_SEAL",
+  "ownerActionRequired": "NONE"
+}
