@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "franklin.hf29.live-visual-verification.v1",
+  "release": "FR-NAV1.18.0-HF2.9-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "publicDistCommit": "5069ebc0b0b1f27f9336776a3884e3bce3228b4f",
+  "sourceQualificationRunId": 34416030064,
+  "sourceQualification": "PASS",
+  "staticService": "srv-da8tg6rbc2fs73crru2g",
+  "staticDeploy": "dep-daguhcpt0dsc73fs9k20",
+  "staticDeployStatus": "live",
+  "staticDeployFinishedAtUtc": "2026-09-09T23:17:28.723724Z",
+  "checks": {
+    "homepage": {
+      "result": "PASS_LIVE_RENDER_AND_ASSET",
+      "scrapeId": "01a08876-d8be-768e-ab64-1079fa4cd272",
+      "canonicalDirectHeaderDestinations": 4,
+      "headerMoreDestinations": 3,
+      "assistantExampleControl": "SINGLE_SELECT",
+      "duplicateRouteChooserRendered": false,
+      "lateDesignCssPresent": true,
+      "latePopupCssPresent": true,
+      "horizontalOverflowObserved": false
+    },
+    "assistantPopup": {
+      "result": "PASS_LIVE_ASSET_CONTRACT_AND_SOURCE_QUALIFICATION",
+      "deployedJavascriptScrapeId": "01a08877-5df7-75de-967c-416ecf0e5795",
+      "deployedPopupCssScrapeId": "01a08877-80ab-7768-b596-e05926d494b7",
+      "initialMatchedResultsVisibleMax": 1,
+      "nonSafetyDirectActionsPerResultMax": 1,
+      "secondaryMatchedResults": "BEHIND_SINGLE_OTHER_USEFUL_OPTIONS_DISCLOSURE",
+      "saveFollowupBlock": "BEHIND_SINGLE_OTHER_USEFUL_OPTIONS_DISCLOSURE",
+      "connectedNeedsBlock": "BEHIND_SINGLE_OTHER_USEFUL_OPTIONS_DISCLOSURE",
+      "perResultSecondaryActions": "COMPACT_MORE_POPOVER",
+      "urgentEmergency911And988ActionsRemainVisible": true,
+      "englishAndSpanishDisclosureLabelsPresent": true,
+      "desktopMoreWidthPx": 240,
+      "mobileMoreConstrainedToViewport": true,
+      "directInteractiveSubmitByVerificationScraper": "UNAVAILABLE_IN_SAFE_MODE",
+      "qualificationBasis": "The exact deployed JS/CSS assets were fetched live and the source qualification gates passed. The safe scraper could not submit a live Assistant question, so no synthetic end-to-end answer interaction is claimed."
+    },
+    "today": {
+      "result": "PASS_LIVE_RENDER",
+      "scrapeId": "01a08877-ebad-77da-8694-a6a4323a61f9",
+      "categoryControl": "SINGLE_SELECT",
+      "eventDirectSourceActionMax": 1,
+      "rememberActionUnderCompactMore": true,
+      "officialSourcesCollapsedByDefault": true,
+      "pageSizedSecondarySurfaceObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    "findLocal": {
+      "result": "PASS_LIVE_RENDER",
+      "scrapeId": "01a08878-4c6c-76c8-ae33-af94fb82caf1",
+      "profileCount": 19103,
+      "visiblePrimaryFilters": ["Search", "Category"],
+      "advancedFiltersCollapsed": true,
+      "directResultActions": ["Open profile", "Compare"],
+      "secondaryUtilitiesUnderCompactMore": true,
+      "comparisonTrayRetained": true,
+      "horizontalOverflowObserved": false
+    },
+    "spanishHome": {
+      "result": "PASS_LIVE_RENDER",
+      "scrapeId": "01a08878-76eb-73f7-bfc9-6c7174437142",
+      "primaryControlEnglishLeakageIntroducedByHF29": false,
+      "assistantExampleControl": "SINGLE_SPANISH_SELECT",
+      "compactDisclosureSpanishLabels": true,
+      "pageSizedSecondarySurfaceObserved": false
+    },
+    "myFranklin": {
+      "result": "PASS_SOURCE_RENDER_CONTRACT_NO_HIGH_IMPACT_OVERLOAD_OBSERVED",
+      "scrapeId": "01a08878-19b1-77f8-9c44-4ea5c9718bf6",
+      "editPreferencesForcedClosedByHF29WhenInheritedOpen": true,
+      "keepDataIsSafePrimary": true,
+      "destructiveResetIsQuieter": true
+    },
+    "business": {
+      "result": "PASS_NO_HIGH_IMPACT_REGRESSION_OBSERVED",
+      "scrapeId": "01a08878-a91b-73cb-9dc2-75e9da387ca0"
+    },
+    "commerceRuntime": {
+      "result": "PASS_UNCHANGED_HEALTHY",
+      "scrapeId": "01a08878-cda8-77ed-8468-93f8af21f0b3",
+      "commerceEnabled": true,
+      "liveCheckoutEnabled": true,
+      "database": true,
+      "stripeCheckoutSessionConfigured": true,
+      "stripeWebhookConfigured": true,
+      "portalSessionConfigured": true,
+      "startupError": null,
+      "changedByHF29": false
+    }
+  },
+  "highImpactChoiceOverloadRemaining": false,
+  "knownVerificationLimitation": "No synthetic live Assistant form submission was performed because the available safe scraper exposes no interaction actions. Deployed popup assets and their exact behavior contract were verified live, and source qualification passed.",
+  "ownerActionRequired": "NONE"
+}
