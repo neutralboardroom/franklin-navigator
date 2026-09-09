@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "franklin.hf30.no-loss-ledger.v1",
+  "release": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+  "predecessor": "FR-NAV1.18.0-HF2.9-CANDIDATE",
+  "predecessorCommit": "abd9caf86b9fb46d42711c5aa12e5f8664bac238",
+  "activeEdition": "FRANKLIN_TN",
+  "authorityTransfer": false,
+  "capabilities": [
+    {"capability":"Universal Franklin navigation: four direct destinations plus three-item More","status":"RETAINED"},
+    {"capability":"One obvious next action and compact progressive disclosure on ordinary sections","status":"RETAINED"},
+    {"capability":"Assistant ordinary answer: one initial matched result and one direct primary action","status":"RETAINED"},
+    {"capability":"Assistant related matches/save/follow-up/connected needs behind compact secondary disclosure","status":"RETAINED"},
+    {"capability":"Emergency and crisis actions remain directly visible, including 911/988 safeguards","status":"RETAINED"},
+    {"capability":"Today single category selector and compact per-event secondary actions","status":"RETAINED"},
+    {"capability":"Find Local Search + Category primary controls, advanced filters under disclosure, Open profile + Compare hierarchy","status":"RETAINED"},
+    {"capability":"19,103 public profile projection and all profile facts","status":"RETAINED"},
+    {"capability":"English/Spanish public experience and shared language switching","status":"RETAINED"},
+    {"capability":"My Franklin device-local saved-state experience","status":"RETAINED"},
+    {"capability":"Business/member public value presentation","status":"RETAINED"},
+    {"capability":"Nine-image Franklin Through Time gallery","status":"RETAINED"},
+    {"capability":"Live membership checkout/runtime pair and existing prices","status":"RETAINED"},
+    {"capability":"Every public page carries one release metadata marker matching the actual successor","status":"IMPROVED"},
+    {"capability":"Homepage/Today source-refresh language distinguishes dated source refresh from current-condition guarantee","status":"IMPROVED"}
+  ],
+  "profileFactsChanged": false,
+  "pricesChanged": false,
+  "runtimeChanged": false,
+  "checkoutChanged": false,
+  "communityIsolationChanged": false,
+  "result": "PASS_NO_ACCEPTED_CAPABILITY_SILENTLY_REMOVED"
+}
