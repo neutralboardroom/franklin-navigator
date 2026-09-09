@@ -1,0 +1,50 @@
+name: HF30 public truth qualification
+on:
+  push:
+    branches:
+      - hf30-public-truth-release-integrity-20260910
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify only public index HTML changed in dist
+        run: |
+          git diff --name-only abd9caf86b9fb46d42711c5aa12e5f8664bac238...HEAD > /tmp/hf30-changed.txt
+          if grep '^dist/' /tmp/hf30-changed.txt | grep -vE '(^|/)index\.html$'; then
+            echo 'HF30 changed non-index dist content' >&2
+            exit 1
+          fi
+          if grep -E '^(dist/data/|server/|runtime/)' /tmp/hf30-changed.txt; then
+            echo 'HF30 changed protected data/runtime scope' >&2
+            exit 1
+          fi
+      - name: Prove all release markers and all 19,103 profile pages preserve content beyond marker
+        run: python3 scripts/validate-hf30-public-truth.py
+      - name: Validate fresh-extraction-compatible product invariants
+        run: python3 scripts/validate-hf30-release.py
+      - name: Verify retained design Assistant Find Local language and checkout truth
+        run: node scripts/verify-hf30-retained.mjs
+      - name: Syntax check retained public JavaScript
+        run: |
+          node --check dist/assets/hf27-navigation.js
+          node --check dist/assets/hf29-design.js
+          node --check dist/assets/r37-i18n.js
+          node --check dist/assets/hf28-directory.js
+          node --check dist/assets/local-discovery.js
+          node --check dist/assets/navigator-bot.js
+          node --check dist/assets/r38-assistant-followthrough.js
+          node --check dist/assets/r40-assistant-safety-guard.js
