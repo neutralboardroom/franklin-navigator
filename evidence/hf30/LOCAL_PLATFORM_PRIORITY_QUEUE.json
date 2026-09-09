@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "franklin.hf30.local-platform-priority-queue.v1",
+  "release": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "refreshedAtStage": "POST_HF30_IMPLEMENTATION_PRE_DEPLOY",
+  "items": [
+    {
+      "priority":"P0",
+      "item":"Normalize stale public release metadata across all public pages and prove profile content did not change beyond that marker.",
+      "disposition":"COMPLETED_AND_SOURCE_QUALIFIED",
+      "evidence":"19,355/19,355 markers normalized; 19,103 profile pages compared to predecessor beyond marker; PASS."
+    },
+    {
+      "priority":"P1",
+      "item":"Clarify dated homepage/Today currentness language so source refresh date is not mistaken for a guarantee of current conditions.",
+      "disposition":"COMPLETED_AND_SOURCE_QUALIFIED",
+      "evidence":"Four exact English/Spanish surfaces changed; no underlying event/profile/local fact changed."
+    },
+    {
+      "priority":"P1",
+      "item":"Exercise the simplified Franklin Assistant with the user's senior-transportation example and an urgent 911 case.",
+      "disposition":"COMPLETED_LIVE_ON_RETAINED_HF29_BEHAVIOR",
+      "evidence":"Ordinary and emergency deep-link auto-submit smokes passed; no button wall or horizontal overflow; emergency actions remain direct."
+    },
+    {
+      "priority":"P1",
+      "item":"Consume Profile Factory FR-PF-PLATFORM-15.19 canonical profile growth.",
+      "disposition":"DEFER_WITH_CAUSE",
+      "dependency":"Accepted Profile Factory consumer handoff/current canonical PF pointer; PF74 remains unchanged.",
+      "responsibleAuthority":"PROFILE_FACTORY + SCC_INTERNAL",
+      "resumeCondition":"Exact edition-scoped handoff is accepted and current for Local consumption."
+    },
+    {
+      "priority":"P1",
+      "item":"Consume Local Investigator V26 current Franklin research into public dynamic surfaces.",
+      "disposition":"DEFER_WITH_CAUSE",
+      "dependency":"Consumer acceptance/publication approval and point-of-use currentness; V26 remains AWAITING_SCC_GATE/PENDING_OR_UNKNOWN.",
+      "responsibleAuthority":"LOCAL_INVESTIGATOR + SCC_INTERNAL",
+      "resumeCondition":"Accepted Local consumer packet with applicable rechecks and publication authorization."
+    },
+    {
+      "priority":"P1",
+      "item":"Apply SRE 2.42 commercial/reply behavior to Local product.",
+      "disposition":"DEFER_WITH_CAUSE",
+      "dependency":"SRE 2.42 is a tested source candidate but not consumer-accepted or deployed; no Local mutation authority is transferred.",
+      "responsibleAuthority":"SRE_OWNER_CONSOLE + SCC_INTERNAL",
+      "resumeCondition":"Accepted commercial contract explicitly requiring Local implementation."
+    },
+    {
+      "priority":"P1",
+      "item":"Observe first genuine eligible non-member server-created Stripe Checkout Session without a purchase.",
+      "disposition":"DEFER_WITH_CAUSE",
+      "dependency":"A genuine eligible non-member event; do not manufacture identity or payment eligibility.",
+      "responsibleAuthority":"LOCAL_COMMUNITY_PLATFORM when real event occurs",
+      "resumeCondition":"A genuine eligible non-member reaches checkout."
+    },
+    {
+      "priority":"P2",
+      "item":"Advance SCC canonical pointer from v0.38 to accepted v0.39 successor.",
+      "disposition":"BLOCKED_EXTERNAL_TO_LOCAL",
+      "dependency":"Guarded compare-and-swap pointer replacement capability; D2 remains blocked.",
+      "responsibleAuthority":"SCC_INTERNAL",
+      "resumeCondition":"SCC has a safe guarded write capability."
+    }
+  ],
+  "remainingQualifiedNowAfterCurrentSlice": false,
+  "assessment":"After HF3.0 source truth correction and live/deploy qualification, remaining material items depend on upstream acceptance, a genuine external event, or SCC-owned pointer capability. No additional independent high-value Local mutation is currently supported by accepted evidence without manufacturing facts or cosmetic churn."
+}
