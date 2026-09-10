@@ -1,0 +1,63 @@
+name: HF32 materialize approved simplification
+
+on:
+  push:
+    branches:
+      - hf32-owner-approved-simplification-20260910
+    paths:
+      - .github/workflows/hf32-materialize.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf32-owner-approved-simplification-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Materialize HF3.2 assets
+        run: python scripts/materialize-hf32-assets.py
+      - name: Verify generated assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check dist/assets/hf32-public.js
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          expected={
+            'dist/assets/hf32-public.js':'11f104253eb55bfb38d880f313fa60008e7097626526aefa355e6945a2eadf5c',
+            'dist/assets/hf32-public.css':'485946a5cea4faa19acc9ca8a2addd342246b4cd7c59e8811b2e33ffb61d38c0',
+          }
+          for p,want in expected.items():
+              got=hashlib.sha256(Path(p).read_bytes()).hexdigest()
+              assert got==want,(p,got,want)
+          text=Path('dist/assets/r37-i18n.js').read_text(encoding='utf-8')
+          assert text.count('/* HF3.2 — owner-approved simplification layer. */')==1
+          assert text.count("js.src='/assets/hf32-public.js'")==1
+          print('HF3.2 generated assets verified')
+          PY
+      - name: Commit generated assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist/assets/hf32-public.js dist/assets/hf32-public.css dist/assets/r37-i18n.js
+          if git diff --cached --quiet; then
+            echo 'No generated changes to commit.'
+          else
+            git commit -m 'Materialize HF3.2 owner-approved simplification assets'
+            git push origin HEAD:hf32-owner-approved-simplification-20260910
+          fi
