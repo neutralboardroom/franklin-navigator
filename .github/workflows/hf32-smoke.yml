@@ -1,0 +1,87 @@
+name: HF32 lightweight rendered smoke
+on:
+  push:
+    branches:
+      - hf32-owner-approved-simplification-20260910
+    paths:
+      - .github/workflows/hf32-smoke.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf32-owner-approved-simplification-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Static release and no-loss gate
+        run: |
+          node --check dist/assets/hf32-public.js
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          pages=list(Path('dist').rglob('index.html'))
+          assert len(pages)==19355,len(pages)
+          assert all('FR-NAV1.21.0-HF3.2-CANDIDATE' in p.read_text(encoding='utf-8') for p in pages)
+          assert all(p.read_text(encoding='utf-8').count('data-hf32-direct="1"')==1 for p in pages)
+          assert len(list(Path('dist/profiles').glob('*/index.html')))==19103
+          changed=subprocess.check_output(['git','diff','--name-only','50bf87535d7cd9bb5aabaaf5b1b93f4602549fa2...HEAD'],text=True).splitlines()
+          assert not [x for x in changed if x.startswith(('server/','dist/data/'))]
+          print('STATIC_NO_LOSS_PASS')
+          PY
+      - name: Install Playwright Chromium
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.55.0
+          python -m playwright install chromium
+      - name: Lightweight rendered smoke at owner laptop size
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8765 --directory dist >/tmp/hf32-http.log 2>&1 &
+          server=$!
+          trap 'kill $server || true' EXIT
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+          BASE='http://127.0.0.1:8765'
+          def load(page,path,cls):
+              page.goto(BASE+path,wait_until='domcontentloaded',timeout=15000)
+              page.wait_for_function("c=>document.body&&document.body.classList.contains(c)",arg=cls,timeout=10000)
+              page.wait_for_timeout(250)
+          def header(page):
+              assert page.locator('header .nav > a').count()==4
+              assert page.locator('header .nav > details .r41-nav-more-menu > a').count()==3
+          with sync_playwright() as p:
+              b=p.chromium.launch(headless=True)
+              page=b.new_page(viewport={'width':1366,'height':768})
+              load(page,'/','hf32-home'); header(page)
+              assert page.get_by_role('heading',name='Grow your visibility in the Franklin community.').count()==1
+              assert 'skyline.webp' in page.locator('.hf32-history img').nth(2).get_attribute('src')
+              load(page,'/today/','hf32-today'); header(page)
+              assert page.locator('main > .r22-hero .actions').count()==0
+              assert page.get_by_text('How we keep Today current',exact=True).count()==1
+              load(page,'/get-it-done/','hf32-tasks'); header(page)
+              assert page.get_by_role('heading',name='Choose what you want to get done').count()==1
+              assert page.get_by_role('button',name='See all tasks').count()==1
+              load(page,'/directory/','hf32-directory'); header(page)
+              assert page.get_by_role('heading',name='Search or choose a category').count()==1
+              load(page,'/profiles/FR-ORG-5d72d3ee4e9961c5/','hf32-profile'); header(page)
+              assert page.get_by_role('heading',name='Contact & links').count()==1
+              assert page.get_by_text('Own or manage this business?',exact=True).count()==1
+              load(page,'/sports/','hf32-sports'); header(page)
+              assert page.get_by_role('heading',name='Find sports in Franklin.').count()==1
+              assert page.locator('.hf32-sport-select').count()==1
+              load(page,'/sports/bowling/','hf32-sports'); header(page)
+              assert 'bowling' in page.locator('h1').first.inner_text().lower()
+              assert page.locator('.explorer-hero').evaluate("e=>e.nextElementSibling&&e.nextElementSibling.id")=='finder'
+              assert page.locator('[data-explorer-grid] .explorer-card').count()>=1
+              load(page,'/es/deportes/','hf32-sports'); header(page)
+              assert page.get_by_role('heading',name='Encuentre deportes en Franklin.').count()==1
+              b.close()
+          print('HF32_LIGHTWEIGHT_RENDERED_SMOKE_PASS')
+          PY
