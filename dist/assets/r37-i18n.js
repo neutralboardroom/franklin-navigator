@@ -144,3 +144,16 @@
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
 })();
+
+/* HF3.2 — owner-approved simplification layer. */
+(()=>{
+  function load(){
+    if(document.querySelector('script[data-hf32-public]'))return;
+    const js=document.createElement('script');
+    js.src='/assets/hf32-public.js';
+    js.defer=true;
+    js.dataset.hf32Public='1';
+    document.head.append(js);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
+})();
