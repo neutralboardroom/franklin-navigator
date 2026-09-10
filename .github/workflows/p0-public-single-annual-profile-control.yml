@@ -51,6 +51,7 @@ jobs:
           python scripts/p0-closeout-apply-on-repo.py
           rm scripts/p0-closeout-apply-on-repo.py
           python scripts/p0-closeout-post.py
+          python scripts/p0-closeout-catalog-scrub.py
       - name: Syntax and qualification
         run: |
           node --check dist/assets/membership-live.js
@@ -58,7 +59,7 @@ jobs:
           node --check dist/assets/member-public.js
           node --check dist/assets/local-discovery.js
           node --check dist/assets/r37-i18n.js
-          python -m py_compile scripts/apply-profile-suppressions.py scripts/build-hf31-release.py scripts/review-public-profile-suppression.py scripts/p0-closeout-post.py
+          python -m py_compile scripts/apply-profile-suppressions.py scripts/build-hf31-release.py scripts/review-public-profile-suppression.py scripts/p0-closeout-post.py scripts/p0-closeout-catalog-scrub.py
           python scripts/p0-closeout-qualify.py
       - name: Commit qualified public closeout
         run: |
