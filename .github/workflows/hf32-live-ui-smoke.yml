@@ -1,0 +1,123 @@
+name: Franklin HF3.2 deployed UI smoke
+'on':
+  push:
+    branches:
+      - p0-live-smoke-single-annual-profile-control-20260910
+permissions:
+  contents: read
+jobs:
+  live-ui-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Confirm live production source markers
+        run: |
+          set -euo pipefail
+          PUBLIC=https://franklinnavigator.com
+          RUNTIME=https://franklin-navigator-membership.onrender.com
+          curl -fsS --retry 5 --retry-delay 2 "$PUBLIC/member-profile-preview/" -o /tmp/preview.html
+          curl -fsS --retry 5 --retry-delay 2 "$PUBLIC/assets/hf32-site-cleanup.js" -o /tmp/hf32.js
+          curl -fsS --retry 5 --retry-delay 2 "$PUBLIC/assets/hf32-site-cleanup.css" -o /tmp/hf32.css
+          curl -fsS --retry 5 --retry-delay 2 "$RUNTIME/api/catalog" -o /tmp/catalog.json
+          grep -F 'Manage or improve your Franklin profile.' /tmp/preview.html
+          grep -F 'Join for $35/year' /tmp/preview.html
+          grep -F 'Correct or remove a profile' /tmp/preview.html
+          grep -F 'Ask Franklin Assistant' /tmp/hf32.js
+          grep -F 'Get It Done' /tmp/hf32.js
+          grep -F 'Find Local' /tmp/hf32.js
+          grep -F 'Help Center' /tmp/hf32.js
+          ! grep -E '\$5/month|\$50/year|\$90|\$120' /tmp/preview.html
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/catalog.json'))
+          assert x['publicChoiceCount']==1 and len(x['choices'])==1
+          p=x['choices'][0]
+          assert p['id']=='ANNUAL' and p['priceUsd']==35 and p['autoRenew'] is True and p['renewal']=='ANNUAL_UNTIL_CANCELED'
+          assert x['retiredPlansSelectableForNewSale'] is False
+          assert x['historicalPlanRecognition'] is True
+          print('LIVE_SINGLE_ANNUAL_CATALOG_PASS')
+          PY
+      - name: Install browser driver
+        run: |
+          set -euo pipefail
+          CHROME=$(which google-chrome || which chromium || which chromium-browser)
+          test -n "$CHROME"
+          echo "CHROME=$CHROME" >> "$GITHUB_ENV"
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null 2>&1
+          npm install --no-save --ignore-scripts playwright-core@1.55.0 >/dev/null 2>&1
+      - name: Verify universal navigation and cleaned high-traffic pages
+        env:
+          NODE_PATH: /tmp/pw/node_modules
+        run: |
+          node - <<'NODE'
+          const {chromium}=require('playwright-core');
+          const assert=require('node:assert/strict');
+          const PUBLIC='https://franklinnavigator.com';
+          const pages=['/','/today/','/get-it-done/','/directory/','/sports/','/member-profile-preview/','/corrections/','/business-membership/'];
+          (async()=>{
+            const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME,args:['--no-sandbox','--disable-dev-shm-usage']});
+            const result={desktopPages:0,mobilePages:0,universalNavigation:true,memberPreviewForm:true,todaySimplified:true,tasksSimplified:true,sportsSimplified:true};
+            try{
+              for(const viewport of [{name:'desktop',width:1365,height:768},{name:'mobile',width:390,height:844}]){
+                for(const route of pages){
+                  const page=await browser.newPage({viewport:{width:viewport.width,height:viewport.height}});
+                  await page.goto(PUBLIC+route,{waitUntil:'networkidle',timeout:60000});
+                  await page.locator('header .nav.hf32-universal-nav').waitFor({timeout:15000});
+                  const direct=await page.locator('header .nav.hf32-universal-nav > a').allTextContents();
+                  assert.deepEqual(direct.map(x=>x.trim()),['Ask Franklin Assistant','Today','Get It Done','Find Local']);
+                  const more=page.locator('header details.hf32-nav-more');
+                  await more.locator('summary').click();
+                  const extra=await more.locator('.hf32-nav-more-menu a').allTextContents();
+                  for(const expected of ['Activities','Community','My Franklin','For businesses','Help Center']) assert.ok(extra.map(x=>x.trim()).includes(expected),`${route} missing ${expected}`);
+                  await page.keyboard.press('Escape');
+                  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+                  assert.ok(overflow<=2,`${viewport.name} ${route} horizontal overflow ${overflow}`);
+                  if(viewport.name==='desktop')result.desktopPages++;else result.mobilePages++;
+
+                  if(route==='/member-profile-preview/'){
+                    const body=await page.locator('body').innerText();
+                    assert.match(body,/Manage or improve your Franklin profile/i);
+                    assert.match(body,/Join for \$35\/year/i);
+                    assert.match(body,/Correct or remove a profile/i);
+                    assert.doesNotMatch(body,/Accurate geography matters|Turn the preview into a first-value checklist|Membership adds tools—not truth for sale/i);
+                    const widths=await page.locator('[data-r28-preview-form] input,[data-r28-preview-form] textarea').evaluateAll(els=>els.map(e=>e.getBoundingClientRect().width));
+                    assert.ok(widths.length>=5 && widths.every(w=>w>=280),`profile form controls too narrow: ${widths}`);
+                    const formOverflow=await page.locator('[data-r28-preview-form]').evaluate(form=>[...form.querySelectorAll('input,textarea')].some(el=>{const a=el.getBoundingClientRect(),b=form.getBoundingClientRect();return a.left<b.left-1||a.right>b.right+1}));
+                    assert.equal(formOverflow,false);
+                  }
+                  if(route==='/today/'){
+                    const text=await page.locator('body').innerText();
+                    assert.doesNotMatch(text,/Sources last refreshed September 3, 2026|Personalize My Franklin/i);
+                    assert.match(text,/Today in Franklin/i);
+                  }
+                  if(route==='/get-it-done/'&&viewport.name==='desktop'){
+                    const visible=await page.locator('[data-task-grid] > .task-card:visible').count();
+                    assert.equal(visible,6);
+                    await page.getByRole('button',{name:'See all tasks'}).click();
+                    assert.ok((await page.locator('[data-task-grid] > .task-card:visible').count())>=12);
+                  }
+                  if(route==='/sports/'){
+                    const text=await page.locator('body').innerText();
+                    assert.match(text,/Find sports in Franklin/i);
+                    assert.doesNotMatch(text,/responsible index/i);
+                  }
+                  await page.close();
+                }
+              }
+              console.log(JSON.stringify({result:'PASS',...result,financialMutations:0}));
+            } finally { await browser.close(); }
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Verify Spanish navigation path and profile-control access
+        env:
+          NODE_PATH: /tmp/pw/node_modules
+        run: |
+          node - <<'NODE'
+          const {chromium}=require('playwright-core');
+          const assert=require('node:assert/strict');
+          (async()=>{const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME,args:['--no-sandbox']});try{const page=await browser.newPage({viewport:{width:390,height:844}});await page.goto('https://franklinnavigator.com/member-profile-preview/?lang=es',{waitUntil:'networkidle',timeout:60000});await page.locator('header .nav.hf32-universal-nav').waitFor({timeout:15000});const summary=(await page.locator('header details.hf32-nav-more summary').innerText()).trim();assert.equal(summary,'Más');const body=await page.locator('body').innerText();assert.match(body,/Administre o mejore su perfil de Franklin|Su perfil de Franklin/i);await page.goto('https://franklinnavigator.com/es/correcciones/',{waitUntil:'networkidle',timeout:60000});assert.ok(await page.locator('[data-profile-control-form]').isVisible());console.log(JSON.stringify({result:'PASS',spanishNavigation:true,spanishProfileControl:true,mobile:true}));}finally{await browser.close()}})().catch(e=>{console.error(e);process.exit(1)});
+          NODE
