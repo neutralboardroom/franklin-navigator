@@ -241,7 +241,7 @@
     const manage=qa(':scope>section',article).find(s=>/Manage or correct|Suggest a correction|Administrar o corregir/i.test(q('h2',s)?.textContent||''));
     if(manage){
       const mh=q('h2',manage),mp=q('p',manage),actions=q('.actions',manage);
-      const typeText=facts?(q('div:nth-child(2) strong',facts)?.textContent||''):'';
+      const typeText=facts?(facts.textContent||''):'';
       if(mh)markNative(mh,/business/i.test(typeText)?'Own or manage this business?':'Own or manage this profile?',/negocio/i.test(typeText)?'¿Es dueño o administra este negocio?':'¿Es dueño o administra este perfil?');
       if(mp)markNative(mp,'See something incorrect? Corrections are free.','¿Ve algo incorrecto? Las correcciones son gratuitas.');
       if(actions){
