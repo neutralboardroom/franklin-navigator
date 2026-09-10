@@ -20,7 +20,8 @@ runtime = (
     f'<script src="/assets/hf32-explorer-hotfix.js?v={VERSION}" defer data-hf32-explorer-hotfix="1"></script>'
 )
 
-community_script_re = re.compile(r'<script\s+src="/assets/community-explorer\.js(?:\?[^\"]*)?"\s+defer></script>')
+# English and Spanish pages serialize script attributes in different orders.
+community_script_re = re.compile(r'<script\b[^>]*\bsrc="/assets/community-explorer\.js(?:\?[^\"]*)?"[^>]*></script>', re.I)
 
 
 def add_body_classes(text: str) -> str:
@@ -33,7 +34,7 @@ def add_body_classes(text: str) -> str:
             for name in wanted:
                 if name not in classes:
                     classes.append(name)
-            attrs2 = attrs[:class_match.start()] + f'class="{" ".join(classes)}"' + attrs[class_match.end():]
+            attrs2 = attrs[:class_match.start()] + 'class="' + ' '.join(classes) + '"' + attrs[class_match.end():]
             return '<body' + attrs2 + '>'
         return '<body class="' + ' '.join(wanted) + '"' + attrs + '>'
     return re.sub(r'<body([^>]*)>', repl, text, count=1, flags=re.I)
