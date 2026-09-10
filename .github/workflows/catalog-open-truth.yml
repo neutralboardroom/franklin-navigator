@@ -1,8 +1,12 @@
-name: Franklin catalog checkout truth qualification
+name: Franklin final single-annual catalog qualification
 on:
   push:
-    branches: [local-franklin-runtime-catalog-open-truth-20260908]
-    paths: [lib/catalog.js, .github/workflows/catalog-open-truth.yml]
+    branches: [franklin-commerce-runtime-r30]
+    paths:
+      - lib/catalog.js
+      - lib/purchase-reservations.js
+      - test/final-single-annual-closeout.test.js
+      - .github/workflows/catalog-open-truth.yml
 permissions:
   contents: read
 jobs:
@@ -21,7 +25,7 @@ jobs:
         run: |
           npm run check
           npm test
-      - name: Catalog truth follows commerce flag without changing prices
+      - name: Exact new-sale catalog truth
         run: |
           node - <<'NODE'
           const c=require('./lib/catalog');
@@ -31,7 +35,13 @@ jobs:
           process.env.COMMERCE_ENABLED='true';
           x=c.publicCatalog();
           if(x.publicCheckoutOpen!==true) throw Error('open catalog mismatch');
-          if(x.publicChoiceCount!==3 || x.choices.map(v=>v.priceUsd).join(',')!=='5,50,120') throw Error('price/catalog regression');
-          if(c.getPlan('franklin_community_member_monthly_v5')?.stripePriceId!=='price_1UAfLPRxNra9nizolEiP5Z2z') throw Error('monthly binding regression');
-          console.log(JSON.stringify({result:'PASS',closed:false,open:true,prices:[5,50,120],financialMutations:0}));
+          if(x.publicChoiceCount!==1 || x.choices.length!==1) throw Error('new-sale choice count regression');
+          const choice=x.choices[0];
+          if(choice.id!=='ANNUAL'||choice.priceUsd!==35||choice.autoRenew!==true||choice.renewal!=='ANNUAL_UNTIL_CANCELED') throw Error('annual public offer mismatch');
+          const p=c.getPlan('franklin_community_member_annual_v6');
+          if(!p||p.stripePriceId!=='price_1UE31nRxNra9nizoEPyavVQF'||p.newSaleEligible!==true) throw Error('annual mapping mismatch');
+          for(const k of ['franklin_community_member_monthly_v5','franklin_community_member_annual_v5','franklin_charter_member_36_month_v5','franklin_charter_member_36_month_v6']){
+            const old=c.getPlan(k); if(!old||old.newSaleEligible!==false) throw Error('historical recognition/retirement mismatch '+k);
+          }
+          console.log(JSON.stringify({result:'PASS',publicChoices:1,priceUsd:35,annual:true,retiredNewSaleBlocked:true,historicalRecognition:true,financialMutations:0}));
           NODE
