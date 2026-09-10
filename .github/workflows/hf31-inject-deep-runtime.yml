@@ -1,0 +1,36 @@
+name: HF31 inject deep-page runtime cleanup
+on:
+  push:
+    branches:
+      - hf31-profile-currentness-polish-20260910
+    paths:
+      - scripts/hf31-inject-deep-runtime.py
+      - .github/workflows/hf31-inject-deep-runtime.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  inject:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf31-profile-currentness-polish-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Inject dynamic-language cleaner into all explorer pages
+        run: python3 scripts/hf31-inject-deep-runtime.py
+      - name: Verify JavaScript syntax
+        run: node --check dist/assets/hf31-deep-language-runtime.js
+      - name: Persist exact explorer page changes
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist
+          git commit -m 'Load dynamic resident-language cleanup on all explorer pages [skip ci]'
+          git push origin HEAD:hf31-profile-currentness-polish-20260910
