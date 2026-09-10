@@ -57,7 +57,7 @@ jobs:
             grep -F '/assets/community-explorer.js?v=frnav1220' "$page" >/dev/null || { echo "Missing versioned explorer loader: $page"; exit 1; }
           done < /tmp/explorer-pages.txt
           grep -F '/data/franklin-activities.json' dist/assets/hf33-explorer-preload.js
-          grep -F 'nativeFetch' dist/assets/hf33-explorer-preload.js
+          grep -F 'window.fetch=' dist/assets/hf33-explorer-preload.js
           grep -F 'Promise.race' dist/assets/community-explorer.js
           grep -F 'Retry loading' dist/assets/community-explorer.js
           grep -F 'Explore other sports and activities' dist/assets/hf33-next-version.js
