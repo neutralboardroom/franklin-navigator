@@ -1,0 +1,31 @@
+name: HF31 zero-jargon diagnostic
+on:
+  push:
+    branches:
+      - hf31-profile-currentness-polish-20260910
+    paths:
+      - .github/workflows/hf31-zero-jargon-diagnose.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf31-profile-currentness-polish-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply pass in disposable workspace and print full report
+        run: |
+          python3 scripts/hf31-public-language-zero-jargon.py || true
+          echo '--- CHANGED PUBLIC FILES ---'
+          git diff --name-only -- dist
+          echo '--- ZERO JARGON REPORT ---'
+          cat evidence/hf31/PUBLIC_LANGUAGE_ZERO_JARGON_REPORT.json
