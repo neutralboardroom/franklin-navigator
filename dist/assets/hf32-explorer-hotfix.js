@@ -110,4 +110,6 @@
   };
   if (resultGrid) new MutationObserver(tuneResults).observe(resultGrid, { childList: true, subtree: true });
   setTimeout(tuneResults, 0);
+
+  document.body.classList.add('hf32-explorer-ready');
 })();
