@@ -1,0 +1,625 @@
+{
+  "changedFileSamples": [
+    "dist/about/index.html",
+    "dist/activities/index.html",
+    "dist/arts-entertainment/index.html",
+    "dist/assistant/learning/index.html",
+    "dist/benefits-health-plan/index.html",
+    "dist/es/actividades-escolares/index.html",
+    "dist/es/caminos-locales/index.html",
+    "dist/es/deportes/ligas-juveniles/index.html",
+    "dist/es/hoy/index.html",
+    "dist/everyday-help/index.html",
+    "dist/health-safety/index.html",
+    "dist/help/auto/dealer-compare/index.html",
+    "dist/help/auto/used-car-warranty/index.html",
+    "dist/help/home/energy-resilience/index.html",
+    "dist/help/home/records-disputes-resources/index.html",
+    "dist/help/legal/housing-consumer-dispute/index.html",
+    "dist/learning/index.html",
+    "dist/life-change-plans/index.html",
+    "dist/live-local/index.html",
+    "dist/local-pathways/beauty-fitness-wellness/index.html",
+    "dist/local-pathways/civic-neighborhood/index.html",
+    "dist/local-pathways/restaurants-local-experience/index.html",
+    "dist/my-franklin/index.html",
+    "dist/outdoors/index.html",
+    "dist/privacy/index.html",
+    "dist/resources/index.html",
+    "dist/school-activities/index.html",
+    "dist/senior-caregiver/index.html",
+    "dist/sports/adaptive/index.html",
+    "dist/sports/adult-leagues/index.html",
+    "dist/sports/adult-softball/index.html",
+    "dist/sports/amateur/index.html",
+    "dist/sports/basketball/index.html",
+    "dist/sports/bowling/index.html",
+    "dist/sports/coaching/index.html",
+    "dist/sports/cycling/index.html",
+    "dist/sports/facilities/index.html",
+    "dist/sports/golf/index.html",
+    "dist/sports/index.html",
+    "dist/sports/pickleball/index.html",
+    "dist/sports/registration/index.html",
+    "dist/sports/running/index.html",
+    "dist/sports/soccer/index.html",
+    "dist/sports/tennis/index.html",
+    "dist/sports/tournaments/index.html",
+    "dist/sports/volleyball/index.html",
+    "dist/sports/youth-leagues/index.html",
+    "dist/teams-clubs/index.html",
+    "dist/work-with-franklin-navigator/index.html",
+    "dist/youth-family/index.html"
+  ],
+  "changedFiles": 50,
+  "htmlFilesScanned": 19356,
+  "protectedScope": "Presentation-language substitutions only; no profile facts, ranking, prices, runtime, payments, entitlements or safety state changed.",
+  "remainingSuspectSamples": [
+    {
+      "context": "ocal options Browse the Franklin activity coverage floor These are official and first-party starting points, not rankings or a promise that every private or informal group is captured. Search",
+      "match": "first-party",
+      "path": "dist/activities/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " language Current evidence state Choose one Preparing organization source links First-party sources checked and dated Needs recheck before publication Privacy check before generation No names",
+      "match": "First-party",
+      "path": "dist/assistant/learning/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "ctory placement. Search the Franklin directory Find local life Use official and first-party links for music, arts, markets, recreation and family activities. Explore Live Local Legal and cour",
+      "match": "first-party",
+      "path": "dist/community-help-center/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "por el proveedor Estado actual de evidencia Elija una opción Preparando enlaces de primera fuente Fuentes de primera parte revisadas y fechadas Necesita nueva verificación antes de publicar Revisió",
+      "match": "de primera fuente",
+      "path": "dist/es/asistente/aprendizaje/index.html",
+      "pattern": "de primera fuente"
+    },
+    {
+      "context": "klin Negocios 24 rutas en lenguaje sencillo · 194 enlaces a fuentes oficiales y de primera fuente Encuentre el punto de partida correcto en Franklin. Busque necesidades cotidianas con sus propias p",
+      "match": "de primera fuente",
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "pattern": "de primera fuente"
+    },
+    {
+      "context": "y la comunidad Los detalles cambian según la temporada. Use el enlace oficial o de primera fuente antes de inscribirse o participar. Buscar Público Todos los públicos Jóvenes Adolescentes Familias ",
+      "match": "de primera fuente",
+      "path": "dist/es/deportes/ligas-adultos/index.html",
+      "pattern": "de primera fuente"
+    },
+    {
+      "context": "ncuentre los lugares y organizaciones de Franklin que necesita. Busque perfiles respaldados por fuentes públicas por nombre, categoría o lugar y luego abra el perfil completo para ver vías de contacto y ",
+      "match": "respaldados por fuentes",
+      "path": "dist/es/index.html",
+      "pattern": "respaldad[oa]s? por fuentes"
+    },
+    {
+      "context": "or puede mantener información de contacto público de negocios y trabajo oficial respaldada por fuentes. Una vía de contacto pública no es permiso para contactar a alguien con fines de marketing. Antes d",
+      "match": "respaldada por fuentes",
+      "path": "dist/es/privacidad/index.html",
+      "pattern": "respaldad[oa]s? por fuentes"
+    },
+    {
+      "context": "events and public information. Open the city source Downtown Franklin festivals First-party Downtown Franklin Association source for downtown festivals and merchant-area activity. Open downto",
+      "match": "First-party",
+      "path": "dist/events/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "ms, learning and community activities. Open the library The Factory at Franklin First-party venue source for markets, performances and activity at The Factory. Open The Factory Before you go ",
+      "match": "First-party",
+      "path": "dist/events/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "al discovery Find the Franklin places and organizations you need. Search public-source-backed profiles by name, category or place, then open a full profile for contact routes and source details",
+      "match": "source-backed",
+      "path": "dist/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "ry categories Discover what Franklin has to offer—then verify the details. Find first-party and official starting points for live music, arts, dining, markets, recreation, school sports and f",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": ": title performer date local time venue cover or ticket age source last checked First-party and official discovery routes Gray's on Main music calendar Official or first-party link · confirm ",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "t-party and official discovery routes Gray's on Main music calendar Official or first-party link · confirm current details Kimbro's Pickin' Parlor events Official or first-party link · confir",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "party link · confirm current details Kimbro's Pickin' Parlor events Official or first-party link · confirm current details The Franklin Theatre Official or first-party link · confirm current ",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " or first-party link · confirm current details The Franklin Theatre Official or first-party link · confirm current details 1799 live music and events Official or first-party link · confirm cu",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "rst-party link · confirm current details 1799 live music and events Official or first-party link · confirm current details Puckett's Franklin music calendar Official or first-party link · con",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "ty link · confirm current details Puckett's Franklin music calendar Official or first-party link · confirm current details Why exact event details may not appear: Any event identity, date, ti",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "time parking gates tickets accessibility weather bag policy source last checked First-party and official discovery routes FirstBank Amphitheater show calendar Official or first-party link · c",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " and official discovery routes FirstBank Amphitheater show calendar Official or first-party link · confirm current details FirstBank Amphitheater know before you go Official or first-party li",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "· confirm current details FirstBank Amphitheater know before you go Official or first-party link · confirm current details Why exact event details may not appear: Exact event-day venue page o",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "rs, verify: performer time cover reservation or seating food service age source First-party and official discovery routes Gray's on Main music calendar Official or first-party link · confirm ",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "t-party and official discovery routes Gray's on Main music calendar Official or first-party link · confirm current details 1799 live music and events Official or first-party link · confirm cu",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "rst-party link · confirm current details 1799 live music and events Official or first-party link · confirm current details Puckett's Franklin music calendar Official or first-party link · con",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "ty link · confirm current details Puckett's Franklin music calendar Official or first-party link · confirm current details Culinary Dropout Franklin Official or first-party link · confirm cur",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "irst-party link · confirm current details Culinary Dropout Franklin Official or first-party link · confirm current details Why exact event details may not appear: Music occurrence or customer",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "isting appears, verify: activity date time host entry or prize terms age source First-party and official discovery routes Tony's Eat and Drink Franklin Official or first-party link · confirm ",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "t-party and official discovery routes Tony's Eat and Drink Franklin Official or first-party link · confirm current details Fozzy's Franklin promotional events Official or first-party link · c",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " link · confirm current details Fozzy's Franklin promotional events Official or first-party link · confirm current details The Tin Roof 2 Official or first-party link · confirm current detail",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "ficial or first-party link · confirm current details The Tin Roof 2 Official or first-party link · confirm current details The Pond in Franklin Official or first-party link · confirm current ",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " or first-party link · confirm current details The Pond in Franklin Official or first-party link · confirm current details Curio Brewing Company Official or first-party link · confirm current",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "or first-party link · confirm current details Curio Brewing Company Official or first-party link · confirm current details Why exact event details may not appear: Only a generic recurring sta",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "rence time location seating area offer price exclusions age source last checked First-party and official discovery routes 1799 Kitchen and Bar Room happy hour Official or first-party link · c",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " and official discovery routes 1799 Kitchen and Bar Room happy hour Official or first-party link · confirm current details Tony's Eat and Drink Franklin Official or first-party link · confirm",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "-party link · confirm current details Tony's Eat and Drink Franklin Official or first-party link · confirm current details Fozzy's Franklin daily specials Official or first-party link · confi",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "arty link · confirm current details Fozzy's Franklin daily specials Official or first-party link · confirm current details Connors Steak and Seafood Franklin happy hour Official or first-part",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "nfirm current details Connors Steak and Seafood Franklin happy hour Official or first-party link · confirm current details Culinary Dropout Franklin Official or first-party link · confirm cur",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "irst-party link · confirm current details Culinary Dropout Franklin Official or first-party link · confirm current details North Italia Franklin Official or first-party link · confirm current",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "or first-party link · confirm current details North Italia Franklin Official or first-party link · confirm current details Blue Sushi Sake Grill McEwen Northside Official or first-party link ",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "nk · confirm current details Blue Sushi Sake Grill McEwen Northside Official or first-party link · confirm current details Hop House Tennessee Taps Official or first-party link · confirm curr",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "first-party link · confirm current details Hop House Tennessee Taps Official or first-party link · confirm current details Why exact event details may not appear: Price, time, terms, location",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "school sport opponent home or away venue verified time admission weather source First-party and official discovery routes Franklin High calendar Official or first-party link · confirm current",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "ce First-party and official discovery routes Franklin High calendar Official or first-party link · confirm current details Franklin High fall sports schedules Official or first-party link · c",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " link · confirm current details Franklin High fall sports schedules Official or first-party link · confirm current details Centennial High calendar Official or first-party link · confirm curr",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "first-party link · confirm current details Centennial High calendar Official or first-party link · confirm current details TSSAA football Official or first-party link · confirm current detail",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "ficial or first-party link · confirm current details TSSAA football Official or first-party link · confirm current details Why exact event details may not appear: Official pages conflict or p",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "ting appears, verify: sport season facility registration eligibility fee source First-party and official discovery routes City of Franklin sports programs Official or first-party link · confi",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "arty and official discovery routes City of Franklin sports programs Official or first-party link · confirm current details Williamson County adult sports Official or first-party link · confir",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "party link · confirm current details Williamson County adult sports Official or first-party link · confirm current details Why exact event details may not appear: Season, registration, capaci",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "listing appears, verify: sport age band season facility registration fee source First-party and official discovery routes Williamson County youth flag football Official or first-party link · ",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "and official discovery routes Williamson County youth flag football Official or first-party link · confirm current details Franklin Baseball Club Official or first-party link · confirm curren",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "r first-party link · confirm current details Franklin Baseball Club Official or first-party link · confirm current details Williamson County Soccer Association Official or first-party link · ",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "link · confirm current details Williamson County Soccer Association Official or first-party link · confirm current details i9 Sports South Franklin Official or first-party link · confirm curr",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "first-party link · confirm current details i9 Sports South Franklin Official or first-party link · confirm current details YMCA of Middle Tennessee youth flag football Official or first-party",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "onfirm current details YMCA of Middle Tennessee youth flag football Official or first-party link · confirm current details Why exact event details may not appear: Any child-specific informati",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "y: production genre date time venue ticket age suitability accessibility source First-party and official discovery routes The Franklin Theatre Official or first-party link · confirm current d",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "urce First-party and official discovery routes The Franklin Theatre Official or first-party link · confirm current details The Mockingbird Theater Official or first-party link · confirm curre",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " first-party link · confirm current details The Mockingbird Theater Official or first-party link · confirm current details Pull-Tight Players Official or first-party link · confirm current de",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "al or first-party link · confirm current details Pull-Tight Players Official or first-party link · confirm current details Studio Tenn Official or first-party link · confirm current details W",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " Official or first-party link · confirm current details Studio Tenn Official or first-party link · confirm current details Williamson County Performing Arts Center calendar Official or first-",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "m current details Williamson County Performing Arts Center calendar Official or first-party link · confirm current details Why exact event details may not appear: Production, ticket, date, su",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "ng appears, verify: market date time venue weather parking accessibility source First-party and official discovery routes Franklin Farmers Market Official or first-party link · confirm curren",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "e First-party and official discovery routes Franklin Farmers Market Official or first-party link · confirm current details Factory Farmers Market Official or first-party link · confirm curren",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "r first-party link · confirm current details Factory Farmers Market Official or first-party link · confirm current details Church Street Farmers Market Official or first-party link · confirm ",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "t-party link · confirm current details Church Street Farmers Market Official or first-party link · confirm current details Why exact event details may not appear: Occurrence, location, or hou",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " activity age suitability supervision hours price capacity accessibility source First-party and official discovery routes Williamson County Performing Arts Center calendar Official or first-p",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " discovery routes Williamson County Performing Arts Center calendar Official or first-party link · confirm current details Factory Farmers Market Official or first-party link · confirm curren",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "r first-party link · confirm current details Factory Farmers Market Official or first-party link · confirm current details Church Street Farmers Market Official or first-party link · confirm ",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "t-party link · confirm current details Church Street Farmers Market Official or first-party link · confirm current details Franklin Family Entertainment Center Official or first-party link · ",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "link · confirm current details Franklin Family Entertainment Center Official or first-party link · confirm current details Why exact event details may not appear: Age, supervision, availabili",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "ty date time food or nonalcoholic options if verified age transportation source First-party and official discovery routes Black Dog Pub and Music Lounge Official or first-party link · confirm",
+      "match": "First-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "-party and official discovery routes Black Dog Pub and Music Lounge Official or first-party link · confirm current details The Pond in Franklin Official or first-party link · confirm current ",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " or first-party link · confirm current details The Pond in Franklin Official or first-party link · confirm current details Hop House Tennessee Taps Official or first-party link · confirm curr",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "first-party link · confirm current details Hop House Tennessee Taps Official or first-party link · confirm current details Curio Brewing Company Official or first-party link · confirm current",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "or first-party link · confirm current details Curio Brewing Company Official or first-party link · confirm current details Why exact event details may not appear: Age, event, or responsible-u",
+      "match": "first-party",
+      "path": "dist/live-local/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "the issue, people served, time available, skills and geography that matter. Use first-party organization routes and confirm the opportunity, schedule, age rules, accessibility and screening r",
+      "match": "first-party",
+      "path": "dist/local-pathways/community-volunteering/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "nd availability directly. For lost, found or adoptable animals, rely on current first-party records rather than an old shared post. General animal-service navigation only—not veterinary advic",
+      "match": "first-party",
+      "path": "dist/local-pathways/pets-animals/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": "e, reviewing facts, suggesting corrections, viewing source details and ordinary source-backed visibility stay free whether or not you become a member. Important boundary Membership does not buy",
+      "match": "source-backed",
+      "path": "dist/membership-start/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "ivity. Growth Desk and public business contacts Franklin Navigator may maintain source-backed public business and official-work contact information. A public contact route is not permission to ",
+      "match": "source-backed",
+      "path": "dist/privacy/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "court City of Franklin Municipal Court Franklin, TN — service/location identity source-backed; street address not asserted in this release No direct contact route is available in the current pu",
+      "match": "source-backed",
+      "path": "dist/profiles/FR-GOV-0107-city-of-franklin-municipal-court/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": " and recreation City of Franklin Parks Franklin, TN — service/location identity source-backed; street address not asserted in this release No direct contact route is available in the current pu",
+      "match": "source-backed",
+      "path": "dist/profiles/FR-GOV-0108-city-of-franklin-parks/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "ety City of Franklin Police Department Franklin, TN — service/location identity source-backed; street address not asserted in this release No direct contact route is available in the current pu",
+      "match": "source-backed",
+      "path": "dist/profiles/FR-GOV-0110-city-of-franklin-police-department/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "anklin Project & Facilities Management Franklin, TN — service/location identity source-backed; street address not asserted in this release No direct contact route is available in the current pu",
+      "match": "source-backed",
+      "path": "dist/profiles/FR-GOV-0111-city-of-franklin-project-facilities-ma/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": " Sanitation and Environmental Services Franklin, TN — service/location identity source-backed; street address not asserted in this release No direct contact route is available in the current pu",
+      "match": "source-backed",
+      "path": "dist/profiles/FR-GOV-0113-city-of-franklin-sanitation-and-enviro/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "ks City of Franklin Streets Department Franklin, TN — service/location identity source-backed; street address not asserted in this release No direct contact route is available in the current pu",
+      "match": "source-backed",
+      "path": "dist/profiles/FR-GOV-0114-city-of-franklin-streets-department/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "ment City of Franklin Water Management Franklin, TN — service/location identity source-backed; street address not asserted in this release No direct contact route is available in the current pu",
+      "match": "source-backed",
+      "path": "dist/profiles/FR-GOV-0115-city-of-franklin-water-management/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "t nonprofit FO Youth development nonprofit FrankTown Open Hearts Franklin, TN — source-backed service area; street address not asserted Visit website ☆ Save Copy link Share Print Last checked A",
+      "match": "source-backed",
+      "path": "dist/profiles/FR-ORG-32d98fe99e3f-franktown-open-hearts/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "onprofit GM Community assistance nonprofit GraceWorks Ministries Franklin, TN — source-backed service area; street address not asserted Visit website ☆ Save Copy link Share Print Last checked A",
+      "match": "source-backed",
+      "path": "dist/profiles/FR-ORG-447783bf2e06-graceworks-ministries/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "l / Parks nonprofit FO Parks nonprofit Friends of Franklin Parks Franklin, TN — source-backed service area; street address not asserted Visit website Call Email ☆ Save Copy link Share Print Las",
+      "match": "source-backed",
+      "path": "dist/profiles/FR-ORG-67682b152ed8-friends-of-franklin-parks/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "see · Williamson County Franklin-area resources Find the city, county, state or first-party website that best fits your task, with Franklin and Williamson County resources clearly labeled. Bu",
+      "match": "first-party",
+      "path": "dist/resources/index.html",
+      "pattern": "\\bfirst-party\\b"
+    },
+    {
+      "context": " Builds a practical preparation sequence. Routes to existing Franklin tools and source-backed discovery. What it does not do It does not diagnose, give legal advice, calculate changing deadline",
+      "match": "source-backed",
+      "path": "dist/situation-planner/index.html",
+      "pattern": "\\bsource-backed\\b"
+    },
+    {
+      "context": "ilters to compare the official county program, City-designated partner or local first-party organization. Franklin Navigator does not rank teams or providers. Search Audience All audiences Yo",
+      "match": "first-party",
+      "path": "dist/sports/index.html",
+      "pattern": "\\bfirst-party\\b"
+    }
+  ],
+  "remainingSuspectVisibleMatches": 92,
+  "replacementCounts": {
+    "Este es un punto de partida de una fuente responsable, no asesoramiento de elegibilidad, respaldo ni una lista completa de todos los equipos informales.": 1,
+    "No raw contact-list handoff or public-email-equals-consent assumption": 1,
+    "This is a responsible-source starting point, not eligibility advice, endorsement or a complete roster of every informal team.": 1,
+    "first-party source": 7,
+    "follow-through plan": 2,
+    "fuentes responsables de rutas y tráfico": 1,
+    "fuentes responsables del distrito y la escuela": 1,
+    "fuentes responsables duraderas": 1,
+    "official or first-party": 5,
+    "official or first-party source": 50
+  },
+  "schemaVersion": "franklin.hf31.public-language-final.v1"
+}
