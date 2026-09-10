@@ -1,4 +1,4 @@
-/* HF3.1 task-card save control visibility correction. Higher specificity intentionally overrides the earlier generic link-button hide rule. */
+/* HF3.1 final high-specificity visual guards. Loaded from r37.css and intentionally allowed to override older shared layers. */
 .hf31-tasks main .task-card>.link-button.hf31-task-save{
   display:inline-flex!important;
   margin-top:5px!important;
@@ -17,4 +17,25 @@
   color:var(--brand-dark)!important;
   text-decoration:underline!important;
   text-underline-offset:.2em!important
+}
+
+/* Closed progressive disclosures must actually be visually closed even when older author CSS assigns display:grid/flex to their panels. */
+details.hf31-more:not([open])>.hf31-more-menu,
+details.hf28-more-filters:not([open])>.hf28-more-filters-panel,
+details.hf28-result-more:not([open])>.hf28-result-more-menu,
+details.hf29-card-more:not([open])>.hf29-card-more-menu,
+details.hf29-footer-more:not([open])>.hf29-footer-more-menu,
+details.hf29-assistant-extra:not([open])>.hf29-assistant-extra-body{
+  display:none!important
+}
+
+/* The owner's real 1366px laptop view uses a calmer three-column task layout. */
+body.hf31-tasks main .grid.three.r22-task-grid.hf31-task-grid[data-task-grid]{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important
+}
+@media(max-width:900px){
+  body.hf31-tasks main .grid.three.r22-task-grid.hf31-task-grid[data-task-grid]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:720px){
+  body.hf31-tasks main .grid.three.r22-task-grid.hf31-task-grid[data-task-grid]{grid-template-columns:1fr!important}
 }
