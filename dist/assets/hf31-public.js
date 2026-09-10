@@ -143,7 +143,7 @@
       const primary=q(':scope > a.button.primary',card);
       const save=q(':scope > [data-r22-remind]',card);
       if(primary)primary.classList.add('hf31-task-primary');
-      if(save){card.append(makeMore([save],'Save / more','Guardar / más','hf31-task-more'))}
+      if(save){nativeText(save,'☆ Save','☆ Guardar');save.classList.add('hf31-task-save')}
       card.dataset.hf31Ready='1';
     });
   }
@@ -205,11 +205,18 @@
   }
 
   function compactProfileUtilities(){
-    const group=q('.profile-utility-actions');if(!group||group.dataset.hf31Ready==='1')return;
-    const items=[...group.children].filter(el=>el.matches('a,button'));if(!items.length)return;
-    const save=items.find(el=>/saveprofile=/i.test(el.getAttribute('href')||''))||items[0];
+    const group=q('.profile-utility-actions');if(!group)return;
+    const existingMore=q(':scope > details.hf31-profile-tools-more',group);
+    const direct=[...group.children].filter(el=>el.matches('a,button'));
+    if(existingMore){
+      const menu=q(':scope > .hf31-more-menu',existingMore);
+      direct.filter(el=>!el.classList.contains('hf31-profile-save')).forEach(el=>menu?.append(el));
+      return;
+    }
+    if(!direct.length)return;
+    const save=direct.find(el=>/saveprofile=/i.test(el.getAttribute('href')||''))||direct[0];
     group.replaceChildren(save);save.classList.add('hf31-profile-save');
-    const rest=items.filter(el=>el!==save);if(rest.length)group.append(makeMore(rest,'More tools','Más herramientas','hf31-profile-tools-more'));
+    const rest=direct.filter(el=>el!==save);if(rest.length)group.append(makeMore(rest,'More tools','Más herramientas','hf31-profile-tools-more'));
     group.dataset.hf31Ready='1';
   }
 
@@ -227,8 +234,8 @@
     if(/public information about this listing|public-source identity|información.*fuentes públicas|fuller description|descripción.*detallada/i.test(text)){
       nativeText(h,'About this profile','Sobre este perfil');
       nativeText(p,
-        'This public-source profile includes the listing’s identity, location and category. Use the contact options above to confirm current services, hours, pricing and availability.',
-        'Este perfil de fuentes públicas incluye la identidad, la ubicación y la categoría del listado. Use las opciones de contacto de arriba para confirmar servicios, horarios, precios y disponibilidad actuales.'
+        'This public-source profile includes the listing’s identity, location and category. Use any listed contact or source links to confirm current services, hours, pricing and availability.',
+        'Este perfil de fuentes públicas incluye la identidad, la ubicación y la categoría del listado. Use los enlaces de contacto o de fuentes disponibles para confirmar servicios, horarios, precios y disponibilidad actuales.'
       );
     }
   }
@@ -322,8 +329,8 @@
 
   const observer=new MutationObserver(records=>{
     let rerunDirectory=false,rerunProfile=false;
-    for(const record of records){for(const node of record.addedNodes){if(node.nodeType!==1)continue;if(node.matches?.('.r22-profile-result')||node.querySelector?.('.r22-profile-result'))rerunDirectory=true;if(node.matches?.('[data-member-publication]')||node.querySelector?.('[data-member-publication]'))rerunProfile=true}}
-    if(rerunDirectory)refineDirectory();if(rerunProfile){enhanceMemberPublication();syncNativeLanguage()}
+    for(const record of records){for(const node of record.addedNodes){if(node.nodeType!==1)continue;if(node.matches?.('.r22-profile-result')||node.querySelector?.('.r22-profile-result'))rerunDirectory=true;if(node.matches?.('[data-member-publication],.profile-utility-actions > a,.profile-utility-actions > button')||node.closest?.('.profile-utility-actions')||node.querySelector?.('[data-member-publication]'))rerunProfile=true}}
+    if(rerunDirectory)refineDirectory();if(rerunProfile){compactProfileUtilities();enhanceMemberPublication();syncNativeLanguage()}
   });
   if(document.body)observer.observe(document.body,{childList:true,subtree:true});
 })();
