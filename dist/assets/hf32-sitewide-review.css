@@ -1,0 +1,16 @@
+/* Franklin Navigator HF3.2 owner screenshot review — shared-component fixes only.
+   This layer is intentionally site-wide: repeated visual defects belong to shared components, not one-off page patches. */
+
+/* Honor semantic three-column grids. Generic auto-fit was producing 4 + 2 layouts on normal laptops and leaving large dead space. */
+body.hf32-site-cleanup .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+
+/* Replace decorative ellipsis overflow affordances with a consistent disclosure chevron. */
+body.hf32-site-cleanup :is(.r41-more-actions,.hf29-card-more,.hf29-dialog-more,.hf29-footer-more,.hf31-more)>summary::after{
+  content:" ▾"!important;
+  letter-spacing:0!important;
+  font-weight:800!important
+}
+body.hf32-site-cleanup :is(.r41-more-actions,.hf29-card-more,.hf29-dialog-more,.hf29-footer-more,.hf31-more)[open]>summary::after{content:" ▴"!important}
+
+@media(max-width:960px){body.hf32-site-cleanup .grid.three{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:640px){body.hf32-site-cleanup .grid.three{grid-template-columns:1fr!important}}
