@@ -1,0 +1,44 @@
+name: HF32 profile diagnostic
+on:
+  push:
+    branches:
+      - hf32-owner-approved-simplification-20260910
+    paths:
+      - .github/workflows/hf32-profile-diagnostic.yml
+permissions:
+  contents: read
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf32-owner-approved-simplification-20260910
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          python -m pip install --disable-pip-version-check playwright==1.55.0
+          python -m playwright install chromium
+      - run: |
+          python -m http.server 8765 --directory dist >/tmp/hf32-http.log 2>&1 &
+          server=$!
+          trap 'kill $server || true' EXIT
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+          with sync_playwright() as pw:
+              b=pw.chromium.launch(headless=True)
+              p=b.new_page(viewport={'width':1366,'height':768})
+              p.goto('http://127.0.0.1:8765/profiles/FR-ORG-5d72d3ee4e9961c5/',wait_until='domcontentloaded')
+              p.wait_for_function("document.body.classList.contains('hf32-profile')",timeout=10000)
+              p.wait_for_timeout(300)
+              print('BODY_CLASSES',p.locator('body').get_attribute('class'))
+              print('HEADER_CORE',p.locator('header .nav > a').count())
+              print('HEADER_MORE',p.locator('header .nav > details .r41-nav-more-menu > a').count())
+              print('CONTACT_HEADINGS',p.get_by_role('heading',name='Contact & links').count())
+              print('OWNER_EXACT',p.get_by_text('Own or manage this business?',exact=True).count())
+              print('ALL_H2',p.locator('h2').all_inner_texts())
+              print('HERO',p.locator('.r22-profile-hero').inner_text())
+              b.close()
+          PY
