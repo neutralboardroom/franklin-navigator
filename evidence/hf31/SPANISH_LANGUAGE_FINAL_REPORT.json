@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "franklin.hf31.spanish-language-final.v1",
+  "spanishIndexPages": 52,
+  "changedFiles": 20,
+  "changedFileSamples": [
+    "dist/es/accesibilidad/index.html",
+    "dist/es/actividades/index.html",
+    "dist/es/aire-libre/index.html",
+    "dist/es/aprendizaje/index.html",
+    "dist/es/artes-entretenimiento/index.html",
+    "dist/es/asistente/aprendizaje/index.html",
+    "dist/es/asistente/index.html",
+    "dist/es/ayuda-conectada/index.html",
+    "dist/es/ayuda-cotidiana/index.html",
+    "dist/es/ayuda-legal/index.html",
+    "dist/es/ayuda-salud/index.html",
+    "dist/es/ayuda-vehiculo/index.html",
+    "dist/es/ayuda-vivienda/index.html",
+    "dist/es/caminos-locales/index.html",
+    "dist/es/centro-de-ayuda/index.html",
+    "dist/es/deportes/index.html",
+    "dist/es/directorio/index.html",
+    "dist/es/organizador-avisos-reclamos/index.html",
+    "dist/es/preparacion-apelacion/index.html",
+    "dist/es/preparacion-conectada/index.html"
+  ],
+  "replacementCounts": {
+    "Contacta directamente a la organización responsable": 1,
+    "Encuentre algo local que hacer y prepárate antes de ir.": 1,
+    "Estos enlaces te ayudan a llegar": 1,
+    "Enseña el concepto; no completa trabajos evaluados ni pruebas restringidas.": 1,
+    "Estos enlaces oficiales o de primera mano te ayudan a encontrar recursos": 1,
+    "El Centro de Aprendizaje inicial usa la ruta gratuita existente de Franklin": 1,
+    "Consulta la fuente del recinto o productor antes de comprar, viajar o audicionar.": 1,
+    "Empiece con una situación real, no con una categoría. Franklin Assistant te ayuda": 1,
+    "Franklin Assistant forma parte de Franklin Navigator y te orienta": 1,
+    "Prepárate para la próxima conversación.": 1,
+    "Ve la situación completa antes de elegir un próximo paso.": 1,
+    "Busque necesidades cotidianas con sus propias palabras y luego continúa al sitio oficial o de primera mano que corresponda. Franklin Navigator no te pide": 1,
+    "Todavía no hay una coincidencia cercana. Prueba una frase más corta": 1,
+    "— Usa información actual del National Weather Service": 1,
+    "— Confirma el proveedor correcto": 1,
+    "— Elige el tipo correcto": 1,
+    "— Mantén el 988 y el 911 accesibles": 1,
+    "— Mantén separados Franklin Special District y Williamson County Schools": 1,
+    "— Usa páginas actuales de eventos y confirme": 1,
+    "— Empieza con una visión general": 1,
+    "Cada planificador usa solo opciones generales, cree un plan que puede copiar en su dispositivo y conecta con fuentes oficiales y listados del área de Franklin revisados con fuentes.": 4,
+    "Encuentre la ruta responsable para registros, licencias, quejas o ayuda neutral sin tratar una sola fuente como respuesta completa.": 1,
+    "Prueba empleos, alimentos, cuidado infantil, mascotas…": 1,
+    "No hay una ruta cercana que coincida. Prueba una frase más corta o abre el Centro de Ayuda Comunitaria.": 1,
+    "Cómo te protege cada ruta.": 1,
+    "Ve la situación completa y elija un próximo paso.": 1,
+    "Prepárate antes de llamar, visitar o elegir a un profesional.": 1,
+    "Empiece con la situación completa cuando un problema afecta más de una parte de la vida, o abre un área de ayuda enfocada y localizada en Franklin.": 1,
+    "Para deportes escolares, consulta la escuela del estudiante; no envíes expedientes estudiantiles a Franklin Navigator.": 1,
+    "Find Local | Franklin Navigator": 1,
+    "Prueba lectura, aprendizaje adulto, estándares…": 1,
+    "Prueba adulto, biblioteca, estándares…": 1,
+    "Prueba: Mi familiar necesita transporte y atención médica, o necesito ayuda para iniciar un negocio.": 1,
+    "Prueba día de basura, autobús, cuidado infantil, vivienda, empleos…": 1,
+    "Los resultados del directorio son informativos; no son clasificaciones, referencias, respaldos ni prueba de idoneidad.": 4,
+    "Un listado no es respaldo, referencia, disponibilidad actual ni prueba de que un proveedor se adapte a su situación.": 1
+  },
+  "remainingIssues": 8,
+  "remainingIssueCounts": {
+    "INFORMAL_REGISTER": 6,
+    "POSSIBLE_ENGLISH_UI": 2,
+    "MOJIBAKE": 0
+  },
+  "remainingIssueSamples": [
+    {
+      "path": "dist/es/index.html",
+      "location": "text",
+      "flag": "POSSIBLE_ENGLISH_UI",
+      "text": "Buscar en Find Local"
+    },
+    {
+      "path": "dist/es/mi-franklin/index.html",
+      "location": "text",
+      "flag": "INFORMAL_REGISTER",
+      "text": "Mantenga a mano las partes de Franklin Navigator que te importan. No se requiere cuenta, correo ni dirección."
+    },
+    {
+      "path": "dist/es/mi-franklin/index.html",
+      "location": "text",
+      "flag": "POSSIBLE_ENGLISH_UI",
+      "text": "Explorar Find Local"
+    },
+    {
+      "path": "dist/es/mi-franklin/index.html",
+      "location": "text",
+      "flag": "INFORMAL_REGISTER",
+      "text": "¿Qué te importa?"
+    },
+    {
+      "path": "dist/es/negocios/index.html",
+      "location": "text",
+      "flag": "INFORMAL_REGISTER",
+      "text": "Revise el perfil público, use herramientas gratuitas de planificación local y conozca la experiencia ampliada para miembros antes de decidir si la Membresía Comunitaria o Charter te conviene."
+    },
+    {
+      "path": "dist/es/negocios/index.html",
+      "location": "text",
+      "flag": "INFORMAL_REGISTER",
+      "text": "Previsualiza un mayor valor para miembros y decide si un plazo de membresía te conviene."
+    },
+    {
+      "path": "dist/es/organizador-avisos-reclamos/index.html",
+      "location": "text",
+      "flag": "INFORMAL_REGISTER",
+      "text": "Franklin Navigator no decide si un plazo es válido, si una cobertura aplica, ni qué resultado legal o de beneficios debe recibir. Te ayuda a separar el documento, las fechas, las preguntas y la fuente correcta."
+    },
+    {
+      "path": "dist/es/preparacion-conectada/index.html",
+      "location": "text",
+      "flag": "INFORMAL_REGISTER",
+      "text": "Este paquete le ayuda a preparar preguntas y reunir información. No elige un profesional por ti, no crea una relación profesional y no cambia los resultados orgánicos del directorio."
+    }
+  ],
+  "note": "High-confidence formal-register and untranslated-UI normalization. Proper nouns and product names are preserved."
+}
