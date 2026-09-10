@@ -30,9 +30,11 @@
       {kind:'core',href:es?'/es/hoy/':'/today/',label:es?'Hoy':'Today'},
       {kind:'core',href:es?'/es/hacerlo/':'/get-it-done/',label:es?'Resolver tareas':'Get It Done'},
       {kind:'core',href:es?'/es/directorio/':'/directory/',label:es?'Buscar en Franklin':'Find Local'},
+      {kind:'more',href:es?'/es/actividades/':'/activities/',label:es?'Actividades':'Activities'},
       {kind:'more',href:'/community/',label:es?'Comunidad':'Community'},
       {kind:'more',href:es?'/es/mi-franklin/':'/my-franklin/',label:es?'Mi Franklin':'My Franklin'},
-      {kind:'more',href:es?'/es/negocios/':'/business-dashboard/',label:es?'Negocios':'For businesses'}
+      {kind:'more',href:es?'/es/negocios/':'/business-dashboard/',label:es?'Negocios':'For businesses'},
+      {kind:'more',href:es?'/es/centro-de-ayuda/':'/community-help-center/',label:es?'Centro de ayuda':'Help Center'}
     ];
   }
 
@@ -201,6 +203,19 @@
       js.dataset.hf28Directory='1';
       document.head.append(js);
     }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
+})();
+
+/* HF3.2 — universal public navigation, spacing and high-traffic page cleanup. */
+(()=>{
+  function load(){
+    if(document.querySelector('script[data-hf32-site-cleanup]'))return;
+    const js=document.createElement('script');
+    js.src='/assets/hf32-site-cleanup.js';
+    js.defer=true;
+    js.dataset.hf32SiteCleanup='1';
+    document.head.append(js);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
 })();
