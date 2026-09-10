@@ -1,0 +1,38 @@
+name: HF31 zero-jargon public language gate
+on:
+  push:
+    branches:
+      - hf31-profile-currentness-polish-20260910
+    paths:
+      - scripts/hf31-public-language-zero-jargon.py
+      - .github/workflows/hf31-zero-jargon.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrub:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf31-profile-currentness-polish-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Remove high-confidence public technical jargon and require zero findings
+        run: python3 scripts/hf31-public-language-zero-jargon.py
+      - name: Persist changed pages and zero-jargon report
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist evidence/hf31/PUBLIC_LANGUAGE_ZERO_JARGON_REPORT.json
+          if git diff --cached --quiet; then
+            echo 'Public wording already passes zero-jargon gate'
+          else
+            git commit -m 'Remove remaining public technical jargon [skip ci]'
+            git push origin HEAD:hf31-profile-currentness-polish-20260910
+          fi
