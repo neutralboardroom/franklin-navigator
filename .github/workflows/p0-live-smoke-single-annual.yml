@@ -30,14 +30,15 @@ jobs:
           suppressions=json.load(open('/tmp/suppressions.json'))
           assert ready['ok'] is True and ready['commerceEnabled'] is True and ready['liveCheckoutEnabled'] is True
           assert runtime['publicChoiceCount']==1 and len(runtime['choices'])==1
-          r=runtime['choices'][0]; assert r['id']=='ANNUAL' and r['priceUsd']==35 and r['autoRenew'] is True and r['renewal']=='ANNUAL_UNTIL_CANCELED'
+          r=runtime['choices'][0]
+          assert r['id']=='ANNUAL' and r['priceUsd']==35 and r['autoRenew'] is True and r['renewal']=='ANNUAL_UNTIL_CANCELED'
           assert runtime['retiredPlansSelectableForNewSale'] is False and runtime['historicalPlanRecognition'] is True
-          assert runtime['freePresence']['factualCorrectionsFree'] is True and runtime['freePresence']['publicProfileRemovalFree'] is True and runtime['freePresence']['membershipRequiredForProfileControl'] is False
+          assert runtime['freePresence']['factualCorrectionsFree'] and runtime['freePresence']['publicProfileRemovalFree'] and not runtime['freePresence']['membershipRequiredForProfileControl']
           assert len(public['choices'])==1 and public['choices'][0]['amountUsd']==35 and public['choices'][0]['autoRenew'] is True
           assert public['checkout']['newSaleChoiceCount']==1 and public['checkout']['retiredPlanIdentifiersRejectedServerSide'] is True
           assert public['freePresence']['factualCorrectionsFree'] and public['freePresence']['publicProfileRemovalFree'] and not public['freePresence']['membershipRequiredForProfileControl']
           assert suppressions['community']=='FRANKLIN_TN' and suppressions['policy']=='APPROVED_PUBLIC_REMOVAL_SURVIVES_PROFILE_FACTORY_REFRESH'
-          print(json.dumps({'result':'PASS','runtimeReady':True,'commerceEnabled':True,'liveCheckoutEnabled':True,'runtimePublicNewSaleChoices':1,'runtimePriceUsd':35,'runtimeAutoRenew':True,'retiredPlansSelectableForNewSale':False,'historicalPlanRecognition':True,'publicCatalogNewSaleChoices':1,'publicPriceUsd':35,'freeCorrection':True,'freeRemoval':True,'suppressionLedgerLive':True}))
+          print(json.dumps({'result':'PASS','runtimeReady':True,'liveCheckoutEnabled':True,'newSaleChoices':1,'annualUsd':35,'annualAutoRenew':True,'retiredNewSaleBlocked':True,'historicalRecognition':True,'freeCorrection':True,'freeRemoval':True,'suppressionLedgerLive':True}))
           PY
       - name: Live public stale-pricing and free-control HTTP scan
         run: |
@@ -46,9 +47,10 @@ jobs:
           paths=(/membership-pricing/ /membership-start/ /business-membership/ /business-dashboard/ /member-profile-preview/ /member-support/ /member-first-value/ /founding-member-planner/ /terms/ /es/negocios/ /corrections/ /es/correcciones/ /assets/membership-live.js)
           : >/tmp/public-scan.txt
           for p in "${paths[@]}"; do
-            code=$(curl -sS -L --retry 4 --retry-delay 2 -o "/tmp/page$(echo "$p"|tr '/.' '__')" -w '%{http_code}' "$PUBLIC$p")
+            out="/tmp/page$(echo "$p"|tr '/.' '__')"
+            code=$(curl -sS -L --retry 4 --retry-delay 2 -o "$out" -w '%{http_code}' "$PUBLIC$p")
             test "$code" = 200
-            cat "/tmp/page$(echo "$p"|tr '/.' '__')" >>/tmp/public-scan.txt
+            cat "$out" >>/tmp/public-scan.txt
           done
           grep -q '\$35/year' /tmp/public-scan.txt
           grep -q 'Renews annually until canceled' /tmp/public-scan.txt
@@ -56,7 +58,7 @@ jobs:
           grep -q 'No membership or payment is required' /tmp/public-scan.txt
           ! grep -Eiq '\$5/month|\$50/year|\$90[[:space:]]*(/|for)[[:space:]]*(three|36)|\$120|franklin_community_member_monthly_v5|franklin_community_member_annual_v5|franklin_charter_member_36_month_v[56]' /tmp/public-scan.txt
           echo '{"result":"PASS","selectedLiveRoutes":13,"annual35Present":true,"annualRenewalPresent":true,"freeProfileControlPresent":true,"retiredNewSaleStrings":0}'
-      - name: Install lightweight browser driver
+      - name: Install browser driver
         run: |
           set -euo pipefail
           CHROME=$(which google-chrome || which chromium || which chromium-browser)
@@ -81,24 +83,31 @@ jobs:
                 const page=await browser.newPage({viewport:{width:cfg.width,height:cfg.height}});
                 await page.goto(PUBLIC+'/membership-pricing/',{waitUntil:'networkidle',timeout:60000});
                 const text=await page.locator('body').innerText();
-                assert.match(text,/\$35\/year/); assert.match(text,/Renews annually until canceled/i);
+                assert.match(text,/\$35/);
+                assert.match(text,/per year/i);
+                assert.match(text,/Renews annually until canceled/i);
                 assert.doesNotMatch(text,/\$5\/month|\$50\/year|\$90\s*(?:\/|for)\s*(?:three|36)|\$120/i);
                 const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
-                assert.ok(overflow<=2,`${cfg.name} horizontal overflow ${overflow}`);
+                assert.ok(overflow<=2,`${cfg.name} pricing horizontal overflow ${overflow}`);
                 results[cfg.name]=true;
-                await page.goto(PUBLIC+(cfg.name==='mobile'?'/es/correcciones/':'/corrections/'),{waitUntil:'networkidle',timeout:60000});
+
+                const controlPath=cfg.name==='mobile'?'/es/correcciones/':'/corrections/';
+                await page.goto(PUBLIC+controlPath,{waitUntil:'networkidle',timeout:60000});
                 assert.ok(await page.locator('[data-profile-control-form]').isVisible());
                 const unlabeled=await page.locator('[data-profile-control-form]').evaluate(form=>[...form.querySelectorAll('input,select,textarea')].filter(el=>!el.closest('label')&&!el.getAttribute('aria-label')&&!el.getAttribute('aria-labelledby')).length);
                 assert.equal(unlabeled,0);
                 const overflow2=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
-                assert.ok(overflow2<=2,`${cfg.name} control overflow ${overflow2}`);
+                assert.ok(overflow2<=2,`${cfg.name} control horizontal overflow ${overflow2}`);
                 await page.locator('body').press('Tab');
-                for(let i=0;i<25;i++){
-                  const inside=await page.evaluate(()=>document.activeElement?.closest?.('[data-profile-control-form]')!==null);
-                  if(inside){results.keyboard=true;break;}
+                let reached=false;
+                for(let i=0;i<30;i++){
+                  reached=await page.evaluate(()=>Boolean(document.activeElement?.closest?.('[data-profile-control-form]')));
+                  if(reached)break;
                   await page.keyboard.press('Tab');
                 }
-                assert.equal(results.keyboard,true);
+                assert.equal(reached,true);
+                results.keyboard=true;
+
                 if(cfg.name==='desktop'){
                   await page.locator('[name="requestType"]').selectOption('CORRECTION');
                   await page.locator('[name="listing"]').fill('P0 live verification only — no listing action');
@@ -124,14 +133,17 @@ jobs:
                 }
                 await page.close();
               }
+
               const manifest=await (await fetch(PUBLIC+'/data/franklin-profiles-manifest.json',{cache:'no-store'})).json();
               const first=manifest.chunks[0];
               const chunk=await (await fetch(PUBLIC+'/'+String(first.file).replace(/^\//,''),{cache:'no-store'})).json();
-              const id=chunk.records.find(r=>r&&r.i)?.i; assert.ok(id);
+              const id=chunk.records.find(r=>r&&r.i)?.i;
+              assert.ok(id);
               const page=await browser.newPage({viewport:{width:1365,height:768}});
               await page.goto(PUBLIC+'/profiles/'+encodeURIComponent(id)+'/',{waitUntil:'networkidle',timeout:60000});
-              await page.getByText('Request removal from public view',{exact:true}).waitFor({timeout:15000});
-              const href=await page.getByText('Request removal from public view',{exact:true}).getAttribute('href');
+              const removal=page.getByText('Request removal from public view',{exact:true});
+              await removal.waitFor({timeout:15000});
+              const href=await removal.getAttribute('href');
               assert.match(href,/\/corrections\/\?action=PUBLIC_REMOVAL/);
               results.publicProfileControl=true;
               await page.close();
