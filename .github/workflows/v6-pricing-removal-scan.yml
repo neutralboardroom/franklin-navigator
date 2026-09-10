@@ -1,0 +1,43 @@
+name: Franklin V6 pricing and free-removal source scan
+on:
+  push:
+    branches: [franklin-v6-pricing-free-removal-20260910]
+    paths: [.github/workflows/v6-pricing-removal-scan.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: franklin-v6-pricing-free-removal-20260910
+          fetch-depth: 0
+      - name: Scan exact current public source
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          roots=[Path('dist')]
+          pats=[
+            r'\$\s*50\b',r'\$\s*120\b',r'50\s*/\s*year',r'120\s*(?:once|/|for).*36',
+            r'franklin_community_member_annual_v5',r'franklin_charter_member_36_month_v5',
+            r'price_1UAfLXRxNra9nizoW32RIfPG',r'price_1UAfLfRxNra9nizoqd84x8DR',
+            r'correction',r'removal',r'suppress'
+          ]
+          rx=re.compile('|'.join(f'(?:{p})' for p in pats),re.I)
+          hits=[]
+          for root in roots:
+            for p in root.rglob('*'):
+              if not p.is_file() or p.suffix.lower() not in {'.html','.js','.json','.txt','.md','.xml','.css'}: continue
+              try: text=p.read_text(encoding='utf-8')
+              except: continue
+              for i,line in enumerate(text.splitlines(),1):
+                if rx.search(line): hits.append((str(p),i,line[:1200]))
+          for p,i,line in hits:
+            print(f'{p}:{i}:{line}')
+          print('MATCH_COUNT',len(hits))
+          print('FILE_COUNT',len(set(p for p,_,_ in hits)))
+          PY
