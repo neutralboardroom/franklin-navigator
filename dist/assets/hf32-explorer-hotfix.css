@@ -1,0 +1,101 @@
+/* Franklin Navigator HF3.2 live explorer hotfix.
+   Directly linked by explorer pages so the task-first layout and readable colors
+   do not depend on late runtime enhancement or cached intermediate loaders. */
+
+body.hf32-explorer-hotfix .explorer-hero{
+  padding-block:30px!important;
+}
+body.hf32-explorer-hotfix .explorer-hero-grid{
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:18px!important;
+}
+body.hf32-explorer-hotfix .explorer-hero h1{
+  font-size:clamp(2rem,3vw,3rem)!important;
+  line-height:1.08!important;
+  max-width:850px!important;
+}
+body.hf32-explorer-hotfix .explorer-hero p{
+  max-width:790px!important;
+}
+body.hf32-explorer-hotfix .explorer-hero-card{
+  display:none!important;
+}
+
+/* Defensive contrast repair if an explorer dark card is ever intentionally restored. */
+body.hf32-explorer-hotfix .explorer-hero-card,
+body.hf32-explorer-hotfix .explorer-hero-card :is(h1,h2,h3,h4,p,li,span,strong,small){
+  color:#f7fbfa!important;
+}
+body.hf32-explorer-hotfix .explorer-hero-card a{color:#fff1b8!important}
+
+body.hf32-explorer-hotfix #finder{
+  padding-block:28px!important;
+}
+body.hf32-explorer-hotfix #finder>.wrap>h2{
+  margin-bottom:8px!important;
+}
+body.hf32-explorer-hotfix #finder>.wrap>p{
+  margin-top:0!important;
+  max-width:820px!important;
+}
+body.hf32-explorer-hotfix .explorer-controls{
+  gap:10px!important;
+  padding:14px!important;
+}
+body.hf32-explorer-hotfix .explorer-summary{
+  margin-block:12px 8px!important;
+}
+body.hf32-explorer-hotfix .explorer-grid{
+  gap:14px!important;
+}
+body.hf32-explorer-hotfix .explorer-card{
+  padding:16px!important;
+}
+
+/* When a scoped page has only a handful of results, search is enough up front. */
+body.hf32-explorer-hotfix .explorer-controls.hf32-explorer-small-result>label:not(:first-child),
+body.hf32-explorer-hotfix .explorer-controls.hf32-explorer-small-result>[data-explorer-reset]{
+  display:none!important;
+}
+body.hf32-explorer-hotfix .explorer-controls.hf32-explorer-small-result{
+  grid-template-columns:minmax(0,560px)!important;
+}
+
+/* Preserve broad navigation without forcing users through several screens of it. */
+body.hf32-explorer-hotfix .hf32-explorer-other{
+  padding-block:12px 24px!important;
+}
+body.hf32-explorer-hotfix .hf32-explorer-other-details{
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+body.hf32-explorer-hotfix .hf32-explorer-other-details>summary{
+  cursor:pointer;
+  list-style:none;
+  padding:13px 0;
+  color:var(--brand-dark);
+  font-weight:800;
+}
+body.hf32-explorer-hotfix .hf32-explorer-other-details>summary::-webkit-details-marker{display:none}
+body.hf32-explorer-hotfix .hf32-explorer-other-details>summary::after{content:" ▾"}
+body.hf32-explorer-hotfix .hf32-explorer-other-details[open]>summary::after{content:" ▴"}
+body.hf32-explorer-hotfix .hf32-explorer-other-content{
+  display:grid;
+  gap:16px;
+  padding:4px 0 18px;
+}
+
+/* Compact supporting sections after the result-first experience. */
+body.hf32-explorer-hotfix .hf31-explorer-prep,
+body.hf32-explorer-hotfix .hf31-explorer-coverage,
+body.hf32-explorer-hotfix #short-list{
+  padding-block:24px!important;
+}
+body.hf32-explorer-hotfix #short-list[hidden],
+body.hf32-explorer-hotfix [data-explorer-current-section][hidden]{display:none!important}
+
+@media(max-width:720px){
+  body.hf32-explorer-hotfix .explorer-hero{padding-block:24px!important}
+  body.hf32-explorer-hotfix .explorer-hero h1{font-size:clamp(1.9rem,9vw,2.5rem)!important}
+  body.hf32-explorer-hotfix #finder{padding-block:22px!important}
+}
