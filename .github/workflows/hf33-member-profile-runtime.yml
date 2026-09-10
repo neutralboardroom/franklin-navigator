@@ -1,0 +1,52 @@
+name: HF3.3 member profile runtime
+on:
+  push:
+    branches: [hf33-membership-public-profile-20260911]
+    paths:
+      - 'scripts/hf33-member-profile-runtime.py'
+      - '.github/workflows/hf33-member-profile-runtime.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: hf33-membership-public-profile-20260911
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply runtime patch
+        run: python3 scripts/hf33-member-profile-runtime.py
+      - name: Syntax and contract checks
+        run: |
+          node --check lib/member-fulfillment.js
+          node --check server.js
+          grep -F "FRANKLIN_MEMBER_FULFILLMENT_HF3_3" lib/member-fulfillment.js
+          grep -F "activePaidMember:await publicEntitlement" lib/member-fulfillment.js
+          grep -F "galleryUrls" lib/member-fulfillment.js
+          grep -F "socialLinks" lib/member-fulfillment.js
+          grep -F "quoteUrl" lib/member-fulfillment.js
+          grep -F "profileImageUrl" lib/member-fulfillment.js
+      - name: Existing runtime tests
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm test
+      - name: Persist runtime patch
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add lib/member-fulfillment.js
+          if git diff --cached --quiet; then
+            echo 'Runtime already patched.'
+          else
+            git commit -m 'HF3.3: expose active member profile entitlement and richer reviewed fields [skip ci]'
+            git push origin HEAD:hf33-membership-public-profile-20260911
+          fi
