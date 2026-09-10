@@ -1,0 +1,698 @@
+{
+  "schemaVersion": "franklin.hf31.spanish-language-audit-candidates.v1",
+  "release": "FR-NAV1.20.0-HF3.1-CANDIDATE",
+  "scope": "ALL_STATIC_PUBLIC_SPANISH_INDEX_PAGES_UNDER_DIST_ES_PLUS_RUNTIME_LIVE_SAMPLING_REQUIRED_SEPARATELY",
+  "spanishIndexPages": 52,
+  "candidateIssueCounts": {
+    "informalRegister": 111,
+    "englishUi": 3,
+    "mojibake": 0
+  },
+  "note": "Candidates require human qualification; proper nouns and intentional product names are not automatically errors.",
+  "candidates": [
+    {
+      "path": "dist/es/accesibilidad/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Los sitios de terceros enlazados tienen su propio soporte de accesibilidad. Contacta directamente a la organización responsable si una fuente externa es difícil de usar."
+    },
+    {
+      "path": "dist/es/actividades/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Encuentre algo local que hacer y prepárate antes de ir."
+    },
+    {
+      "path": "dist/es/actividades/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/actividades-escolares/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/aire-libre/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Estos enlaces te ayudan a llegar al parque, instalación o grupo local responsable. No garantizan que un lugar esté abierto o sea seguro en este momento."
+    },
+    {
+      "path": "dist/es/aire-libre/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/aprendizaje/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Enseña el concepto; no completa trabajos evaluados ni pruebas restringidas."
+    },
+    {
+      "path": "dist/es/aprendizaje/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Estos enlaces oficiales o de primera mano te ayudan a encontrar recursos para familias escolares, apoyos estatales de aprendizaje, educación para adultos, un campus universitario local, la biblioteca y educación comunitaria. Son puntos de partida, no clasificaciones, derivaciones, respaldos ni prueba de idoneidad."
+    },
+    {
+      "path": "dist/es/aprendizaje/index.html",
+      "location": "@placeholder",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Prueba lectura, aprendizaje adulto, estándares…"
+    },
+    {
+      "path": "dist/es/aprendizaje/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "El Centro de Aprendizaje inicial usa la ruta gratuita existente de Franklin y las opciones actuales de Membresía Comunitaria. Los proveedores de aprendizaje pueden preparar un perfil, revisar la orientación del Centro de Crecimiento y evaluar la membresía sin un sistema de pago educativo separado."
+    },
+    {
+      "path": "dist/es/artes-entretenimiento/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Los espectáculos y registros cambian. Consulta la fuente del recinto o productor antes de comprar, viajar o audicionar."
+    },
+    {
+      "path": "dist/es/artes-entretenimiento/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/asistente/aprendizaje/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "No pegue una prueba activa, tarea calificada, expediente estudiantil ni hoja con derechos de autor."
+    },
+    {
+      "path": "dist/es/asistente/aprendizaje/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Esta primera versión usa plantillas locales estructuradas. No llama a IA externa ni guarda el tema. Para decisiones inmediatas de escuela, inscripción o servicio, use la organización responsable."
+    },
+    {
+      "path": "dist/es/asistente/aprendizaje/index.html",
+      "location": "@placeholder",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Prueba adulto, biblioteca, estándares…"
+    },
+    {
+      "path": "dist/es/asistente/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Empiece con una situación real, no con una categoría. Franklin Assistant te ayuda a identificar próximos pasos útiles, listas, recursos locales y fuentes oficiales manteniendo los detalles sensibles fuera de la conversación."
+    },
+    {
+      "path": "dist/es/asistente/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Franklin Assistant forma parte de Franklin Navigator y te orienta entre recursos específicos de Franklin para residentes, asuntos cívicos, profesionales y la comunidad."
+    },
+    {
+      "path": "dist/es/asistente/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Orientación de situación completa"
+    },
+    {
+      "path": "dist/es/asistente/index.html",
+      "location": "@placeholder",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Prueba: Mi familiar necesita transporte y atención médica, o necesito ayuda para iniciar un negocio."
+    },
+    {
+      "path": "dist/es/asistente/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Evite contraseñas, números de cuenta y documentos médicos o legales privados."
+    },
+    {
+      "path": "dist/es/asistente/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "El nuevo planificador de situación completa revisa la urgencia, conecta necesidades de asuntos legales, salud, hogar, auto, transporte, personas mayores/cuidadores y ayuda cívica, y mantiene el plan en su dispositivo."
+    },
+    {
+      "path": "dist/es/asistente/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Prepárate para la próxima conversación."
+    },
+    {
+      "path": "dist/es/ayuda-conectada/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Navegador de situación completa | Franklin Navigator"
+    },
+    {
+      "path": "dist/es/ayuda-conectada/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Ve la situación completa antes de elegir un próximo paso."
+    },
+    {
+      "path": "dist/es/ayuda-conectada/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Resultado de prueba o diagnóstico que afecta cobertura y trabajo"
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Busque necesidades cotidianas con sus propias palabras y luego continúa al sitio oficial o de primera mano que corresponda. Franklin Navigator no te pide enviar una dirección, cuenta, datos de salud ni información de un caso."
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "@placeholder",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Prueba día de basura, autobús, cuidado infantil, vivienda, empleos…"
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Use la consulta de la Ciudad para su día de recogida. Franklin Navigator no recopila ni almacena su dirección."
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Consulta del día de recogida de basura de Franklin"
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Portal de consulta de solicitudes de servicio de Franklin"
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Use la consulta oficial de direcciones del distrito escolar. Franklin Navigator no almacena información de estudiantes ni direcciones."
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Todavía no hay una coincidencia cercana. Prueba una frase más corta o consulta los recursos oficiales de abajo."
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "— Usa información actual del National Weather Service y alertas locales de emergencia."
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "— Confirma el proveedor correcto de servicios públicos antes de actuar; trata una posible fuga de gas como una emergencia."
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "— Elige el tipo correcto de solicitud a la Ciudad y continúa en el sitio oficial de la Ciudad."
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "— Mantén el 988 y el 911 accesibles cuando se necesite apoyo urgente."
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "— Mantén separados Franklin Special District y Williamson County Schools y use sus herramientas específicas por dirección."
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "— Usa páginas actuales de eventos y confirme los detalles antes de hacer planes."
+    },
+    {
+      "path": "dist/es/ayuda-cotidiana/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "— Empieza con una visión general y luego continúa con la agencia responsable de cada servicio."
+    },
+    {
+      "path": "dist/es/ayuda-legal/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada planificador usa solo opciones generales, cree un plan que puede copiar en su dispositivo y conecta con fuentes oficiales y listados del área de Franklin revisados con fuentes."
+    },
+    {
+      "path": "dist/es/ayuda-legal/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Los resultados del directorio son informativos; no son clasificaciones, referencias, respaldos ni prueba de idoneidad."
+    },
+    {
+      "path": "dist/es/ayuda-legal/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Usted decide si contacta o comparte un plan con una oficina, servicio o profesional externo."
+    },
+    {
+      "path": "dist/es/ayuda-salud/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada planificador usa solo opciones generales, cree un plan que puede copiar en su dispositivo y conecta con fuentes oficiales y listados del área de Franklin revisados con fuentes."
+    },
+    {
+      "path": "dist/es/ayuda-salud/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Preparación para medicamentos y visita a la farmacia"
+    },
+    {
+      "path": "dist/es/ayuda-salud/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Prepare preguntas sobre la orden, ubicación, instrucciones, costo, resultados y seguimiento sin interpretar una prueba."
+    },
+    {
+      "path": "dist/es/ayuda-salud/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Planificador de adecuación de atención primaria y primera visita"
+    },
+    {
+      "path": "dist/es/ayuda-salud/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Compare la adecuación práctica y prepare una primera visita usando las mismas preguntas neutrales para cada práctica."
+    },
+    {
+      "path": "dist/es/ayuda-salud/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Los resultados del directorio son informativos; no son clasificaciones, referencias, respaldos ni prueba de idoneidad."
+    },
+    {
+      "path": "dist/es/ayuda-salud/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Usted decide si contacta o comparte un plan con una oficina, servicio o profesional externo."
+    },
+    {
+      "path": "dist/es/ayuda-vehiculo/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada planificador usa solo opciones generales, cree un plan que puede copiar en su dispositivo y conecta con fuentes oficiales y listados del área de Franklin revisados con fuentes."
+    },
+    {
+      "path": "dist/es/ayuda-vehiculo/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Los resultados del directorio son informativos; no son clasificaciones, referencias, respaldos ni prueba de idoneidad."
+    },
+    {
+      "path": "dist/es/ayuda-vehiculo/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Usted decide si contacta o comparte un plan con una oficina, servicio o profesional externo."
+    },
+    {
+      "path": "dist/es/ayuda-vivienda/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada planificador usa solo opciones generales, cree un plan que puede copiar en su dispositivo y conecta con fuentes oficiales y listados del área de Franklin revisados con fuentes."
+    },
+    {
+      "path": "dist/es/ayuda-vivienda/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Encuentre la ruta responsable para registros, licencias, quejas o ayuda neutral sin tratar una sola fuente como respuesta completa."
+    },
+    {
+      "path": "dist/es/ayuda-vivienda/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Los resultados del directorio son informativos; no son clasificaciones, referencias, respaldos ni prueba de idoneidad."
+    },
+    {
+      "path": "dist/es/ayuda-vivienda/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Usted decide si contacta o comparte un plan con una oficina, servicio o profesional externo."
+    },
+    {
+      "path": "dist/es/busquedas-oficiales/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Las direcciones de Franklin pueden estar atendidas por Williamson County Schools o Franklin Special District. Consulta directamente al distrito responsable."
+    },
+    {
+      "path": "dist/es/busquedas-oficiales/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Consulta de zonas de Williamson County Schools"
+    },
+    {
+      "path": "dist/es/caminos-locales/index.html",
+      "location": "@placeholder",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Prueba empleos, alimentos, cuidado infantil, mascotas…"
+    },
+    {
+      "path": "dist/es/caminos-locales/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "No hay una ruta cercana que coincida. Prueba una frase más corta o abre el Centro de Ayuda Comunitaria."
+    },
+    {
+      "path": "dist/es/caminos-locales/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cómo te protege cada ruta."
+    },
+    {
+      "path": "dist/es/centro-de-ayuda/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Ve la situación completa y elija un próximo paso."
+    },
+    {
+      "path": "dist/es/centro-de-ayuda/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Prepárate antes de llamar, visitar o elegir a un profesional."
+    },
+    {
+      "path": "dist/es/centro-de-ayuda/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Un listado no es respaldo, referencia, disponibilidad actual ni prueba de que un proveedor se adapte a su situación."
+    },
+    {
+      "path": "dist/es/centro-de-ayuda/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Empiece con la situación completa cuando un problema afecta más de una parte de la vida, o abre un área de ayuda enfocada y localizada en Franklin."
+    },
+    {
+      "path": "dist/es/centro-de-ayuda/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Abrir el Navegador de Situación Completa"
+    },
+    {
+      "path": "dist/es/cronologia-evidencia/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cree una cronología sencilla entre seguros, asuntos legales, salud, hogar, auto, beneficios u otras necesidades relacionadas. Usted elige categorías generales de eventos; Franklin Navigator no pide su historia privada."
+    },
+    {
+      "path": "dist/es/cronologia-evidencia/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Incidente, visita, reparación, inspección o audiencia"
+    },
+    {
+      "path": "dist/es/deportes/adaptados/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/amateur/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/baloncesto/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/boliche/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/carreras/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/ciclismo/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/entrenamiento/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/futbol/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/golf/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Para deportes escolares, consulta la escuela del estudiante; no envíes expedientes estudiantiles a Franklin Navigator."
+    },
+    {
+      "path": "dist/es/deportes/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/inscripcion/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/instalaciones/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/ligas-adultos/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/ligas-juveniles/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Este es un punto de partida de una fuente responsable, no asesoramiento de elegibilidad, respaldo ni una lista completa de todos los equipos informales."
+    },
+    {
+      "path": "dist/es/deportes/ligas-juveniles/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/pickleball/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/softbol-adultos/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/tenis/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/torneos/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/deportes/voleibol/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/directorio/index.html",
+      "location": "text",
+      "flag": "POSSIBLE_UNTRANSLATED_ENGLISH_UI",
+      "text": "Find Local | Franklin Navigator"
+    },
+    {
+      "path": "dist/es/directorio/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Las palabras de búsqueda y los filtros aparecen en el enlace de la página, así que evite información privada. Su comparación permanece en este dispositivo y no se incluye al compartir el enlace."
+    },
+    {
+      "path": "dist/es/equipos-clubes/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/hacerlo/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Busque lo que intentas completar o elige una tarea de abajo. su progreso puede permanecer en este dispositivo."
+    },
+    {
+      "path": "dist/es/hacerlo/index.html",
+      "location": "@placeholder",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Prueba mudanza, permiso, escuela, transporte…"
+    },
+    {
+      "path": "dist/es/hoy/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "La fuente de tenis proyectó una apertura de inscripción. Vuelve a comprobar el enlace actual, la ubicación en Franklin, el nivel y la capacidad."
+    },
+    {
+      "path": "dist/es/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Evite contraseñas, números de cuenta y datos altamente sensibles. La voz aparece solo cuando su navegador admite entrada de voz; el habla es procesada por su navegador o proveedor del dispositivo."
+    },
+    {
+      "path": "dist/es/index.html",
+      "location": "text",
+      "flag": "POSSIBLE_UNTRANSLATED_ENGLISH_UI",
+      "text": "Buscar en Find Local"
+    },
+    {
+      "path": "dist/es/jovenes-familias/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Cada tarjeta abre una fuente oficial o de primera fuente. La aparición no implica clasificación, afiliación ni respaldo."
+    },
+    {
+      "path": "dist/es/mi-franklin/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Mantenga a mano las partes de Franklin Navigator que te importan. No se requiere cuenta, correo ni dirección."
+    },
+    {
+      "path": "dist/es/mi-franklin/index.html",
+      "location": "text",
+      "flag": "POSSIBLE_UNTRANSLATED_ENGLISH_UI",
+      "text": "Explorar Find Local"
+    },
+    {
+      "path": "dist/es/mi-franklin/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Los planes guardados de temas y enlaces permanecen en este dispositivo. Su pregunta original no se guarda con ellos. Puede descargar, imprimir o añadir una fecha de seguimiento sin enviar el plan a Franklin Navigator."
+    },
+    {
+      "path": "dist/es/mi-franklin/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "¿Qué te importa?"
+    },
+    {
+      "path": "dist/es/mi-franklin/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Para zonas escolares, distritos, propiedades o permisos, use la consulta oficial correspondiente. Franklin Navigator no almacena aquí su dirección."
+    },
+    {
+      "path": "dist/es/negocios/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Revise el perfil público, use herramientas gratuitas de planificación local y conozca la experiencia ampliada para miembros antes de decidir si la Membresía Comunitaria o Charter te conviene."
+    },
+    {
+      "path": "dist/es/negocios/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Previsualiza un mayor valor para miembros y decide si un plazo de membresía te conviene."
+    },
+    {
+      "path": "dist/es/negocios/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Presencia local más completa"
+    },
+    {
+      "path": "dist/es/organizador-avisos-reclamos/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "No escribas nombres, texto del documento, números de cuenta, reclamo, póliza, caso o paciente. Esta herramienta no calcula plazos legales ni interpreta cobertura."
+    },
+    {
+      "path": "dist/es/organizador-avisos-reclamos/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Franklin Navigator no decide si un plazo es válido, si una cobertura aplica, ni qué resultado legal o de beneficios debe recibir. Te ayuda a separar el documento, las fechas, las preguntas y la fuente correcta."
+    },
+    {
+      "path": "dist/es/plan-beneficios-salud/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Compartir usa solo el enlace en blanco de la herramienta; no incluye sus selecciones."
+    },
+    {
+      "path": "dist/es/plan-cuidado-apoyo/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Compartir usa solo el enlace en blanco de la herramienta; no incluye sus selecciones."
+    },
+    {
+      "path": "dist/es/plan-trabajo-ingresos/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Compartir usa solo el enlace en blanco de la herramienta; no incluye sus selecciones."
+    },
+    {
+      "path": "dist/es/preparacion-apelacion/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Prepárate para una revisión, apelación o reconsideración sin adivinar el resultado."
+    },
+    {
+      "path": "dist/es/preparacion-conectada/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "No escribas nombres, detalles médicos, narraciones legales, números de cuenta ni texto de documentos. Solo elige categorías amplias."
+    },
+    {
+      "path": "dist/es/preparacion-conectada/index.html",
+      "location": "text",
+      "flag": "INFORMAL_OR_MIXED_REGISTER",
+      "text": "Este paquete te ayuda a preparar preguntas y reunir información. No elige un profesional por ti, no crea una relación profesional y no cambia los resultados orgánicos del directorio."
+    }
+  ]
+}
