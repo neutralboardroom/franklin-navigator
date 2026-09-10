@@ -34,7 +34,14 @@ jobs:
             if gitsha(s)!=target and i==0:
               s=next((x for x in (s[:6000],s[-6000:]) if gitsha(x)==target),s)
             if gitsha(s)!=target and i==5 and len(s)==5999:
-              s=next((s+ch for ch in alphabet if gitsha(s+ch)==target),s)
+              found=None
+              for pos in range(len(s)+1):
+                for ch in alphabet:
+                  cand=s[:pos]+ch+s[pos:]
+                  if gitsha(cand)==target:
+                    found=cand; break
+                if found: break
+              if found: s=found
             if gitsha(s)!=target: raise SystemExit(f'P0_PART_INTEGRITY_FAIL:{i}:{len(s)}:{gitsha(s)}')
             parts.append(s)
           decoded=base64.b64decode(''.join(parts),validate=True)
