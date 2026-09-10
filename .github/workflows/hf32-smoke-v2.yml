@@ -1,3 +1,4 @@
+# rerun after profile-label repair
 name: HF32 post-repair rendered smoke
 on:
   push:
