@@ -48,10 +48,13 @@ jobs:
       - name: Site-wide laptop readability contract
         run: |
           grep -F 'Owner-approved site-wide laptop readability' dist/assets/hf32-site-cleanup.css
+          grep -F 'main>[class*="hero"] h1' dist/assets/hf32-site-cleanup.css
           grep -F 'font-size:clamp(2rem,3.25vw,3.35rem)!important' dist/assets/hf32-site-cleanup.css
-          grep -F '.history-section,.urgent-section,.explorer-hero-card' dist/assets/hf32-site-cleanup.css
+          grep -F '.history-section,.urgent-section,.growth-trust,.growth-boundaries,.home-command-bar' dist/assets/hf32-site-cleanup.css
+          grep -F 'body.hf32-site-cleanup:not(.hf31-explorer-page) .explorer-hero-card' dist/assets/hf32-site-cleanup.css
           grep -F 'color:#f7fbfa!important' dist/assets/hf32-site-cleanup.css
           grep -F 'color:#fff1b8!important' dist/assets/hf32-site-cleanup.css
+          grep -F '.growth-boundaries .card a{color:var(--brand-dark)!important}' dist/assets/hf32-site-cleanup.css
       - name: Community Explorer bounded loading contract
         run: |
           grep -F "retry: 'Retry loading local options'" dist/assets/community-explorer.js
