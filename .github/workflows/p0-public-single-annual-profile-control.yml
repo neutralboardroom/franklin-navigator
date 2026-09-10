@@ -1,0 +1,181 @@
+name: Franklin P0 public single-annual and profile-control closeout
+on:
+  push:
+    branches: [main]
+    paths: [scripts/p0-closeout-parts/part08.b64]
+permissions:
+  contents: write
+jobs:
+  closeout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Reconcile trigger head
+        run: |
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          git status --porcelain
+      - name: Assemble and execute bounded P0 transformer
+        run: |
+          python -m pip install --disable-pip-version-check beautifulsoup4
+          cat scripts/p0-closeout-parts/part*.b64 | base64 -d > scripts/p0-closeout-apply-on-repo.py
+          python scripts/p0-closeout-apply-on-repo.py
+          rm scripts/p0-closeout-apply-on-repo.py
+      - name: Finish public copy, Spanish runtime strings and audit catalogs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, hashlib
+          root=Path('.')
+          def replace(path, old, new, required=True):
+              p=root/path; s=p.read_text('utf-8')
+              if old not in s:
+                  if required: raise SystemExit(f'MISSING_PATCH_ANCHOR:{path}:{old[:80]}')
+                  return
+              p.write_text(s.replace(old,new),'utf-8')
+
+          # Keep retired lookup keys out of downloadable public JS while preserving human historical labels.
+          replace('dist/assets/membership-live.js',
+            "const HISTORICAL_PLAN_LABELS=Object.freeze({franklin_community_member_monthly_v5:'Existing monthly Community Membership',franklin_community_member_annual_v5:'Existing annual Community Membership',franklin_charter_member_36_month_v5:'Existing fixed-term Community Membership',franklin_charter_member_36_month_v6:'Existing fixed-term Community Membership'});",
+            "const historicalPlanLabel=key=>{const k=String(key||'').toLowerCase();if(k.includes('monthly'))return'Existing monthly Community Membership';if(k.includes('charter')||k.includes('36_month'))return'Existing fixed-term Community Membership';if(k.includes('annual'))return'Existing annual Community Membership';return'Community Membership'};")
+          replace('dist/assets/membership-live.js',
+            "const planFor=key=>key===SALE_PLAN.lookupKey?SALE_PLAN:{label:HISTORICAL_PLAN_LABELS[key]||'Community Membership',price:''};",
+            "const planFor=key=>key===SALE_PLAN.lookupKey?SALE_PLAN:{label:historicalPlanLabel(key),price:''};")
+
+          # Remaining one-plan/free-control wording on the three owner-reviewed member surfaces.
+          replace('dist/business-dashboard/index.html','Community or Charter Membership options.','optional Community Membership.')
+          replace('dist/business-dashboard/index.html','whether Community or Charter Membership fits.','whether Community Membership fits.')
+          replace('dist/business-dashboard/index.html','whether a membership term fits.','whether Community Membership fits.')
+          replace('dist/business-dashboard/index.html','Simple membership choices','One simple membership')
+          replace('dist/business-dashboard/index.html','Factual corrections, public-source accuracy, ordinary directory visibility and access to public resident help are not conditioned on payment.','Basic factual corrections and public-profile removal requests are free. Public-source accuracy, ordinary directory visibility and access to public resident help are not conditioned on payment. <a href="/corrections/">Correct or remove a profile</a>.')
+
+          replace('dist/member-profile-preview/index.html','<h2>Free correction remains separate</h2><p>Anyone may suggest a factual correction without paying or becoming a member.</p>','<h2>Free profile controls remain separate</h2><p>Basic factual corrections are free. You can also request removal of your profile from public view at no cost. No membership or payment is required.</p><div class="actions"><a class="button" href="/corrections/">Correct profile information</a><a class="button" href="/corrections/?action=PUBLIC_REMOVAL">Request removal from public view</a></div>')
+          replace('dist/member-profile-preview/index.html','Phone numbers, email addresses, websites, staff roles and booking/contact pages can change. Factual corrections remain free. If a public contact route looks outdated, use the organization’s current official/public source or request a factual correction before relying on it.','Phone numbers, email addresses, websites, staff roles and booking/contact pages can change. Factual corrections and public-profile removal requests remain free. If a public contact route looks outdated, use the organization’s current official/public source or request a correction before relying on it.')
+
+          replace('dist/membership-start/index.html','Community Membership and Charter Membership options built for Franklin businesses and organizations.','the optional Franklin Navigator Community Membership for Franklin businesses and organizations.')
+          replace('dist/membership-start/index.html','Three simple paid choices','One simple paid membership')
+          replace('dist/membership-start/index.html','Simple membership choices','One simple membership')
+          replace('dist/membership-start/index.html','Finding a public profile, reviewing facts, suggesting corrections, viewing source details and ordinary visibility based on public information stay free whether or not you become a member.','Finding a public profile, reviewing facts, basic factual corrections, and public-profile removal requests stay free whether or not you become a member. Membership is optional.')
+
+          # New dynamic strings must translate when the page is switched to Spanish.
+          p=root/'dist/assets/r37-i18n.js'; s=p.read_text('utf-8')
+          needle="  function special(s){\n    if(categories[s])return categories[s];\n"
+          if "'One simple membership.':'Una membresía sencilla.'" not in s:
+              fixed="""    const fixed={
+      'One simple membership.':'Una membresía sencilla.',
+      'One simple membership':'Una membresía sencilla',
+      'Franklin Navigator Community Membership':'Membresía Comunitaria de Franklin Navigator',
+      '$35/year':'$35/año',
+      'per year':'por año',
+      'Renews annually until canceled':'Se renueva anualmente hasta que se cancele',
+      'Renews annually until canceled.':'Se renueva anualmente hasta que se cancele.',
+      'Franklin Navigator Community Membership — $35/year. Renews annually until canceled.':'Membresía Comunitaria de Franklin Navigator — $35/año. Se renueva anualmente hasta que se cancele.',
+      'Basic factual corrections and requests to remove a profile from public view are free. No membership or payment is required.':'Las correcciones factuales básicas y las solicitudes para retirar un perfil de la vista pública son gratuitas. No se requiere membresía ni pago.',
+      'Factual corrections and requests to remove a profile from public view are free and do not require membership. Membership does not buy factual accuracy, ranking, endorsement, credentials, leads or guaranteed results.':'Las correcciones factuales y las solicitudes para retirar un perfil de la vista pública son gratuitas y no requieren membresía. La membresía no compra exactitud factual, clasificación, respaldo, credenciales, clientes potenciales ni resultados garantizados.',
+      'Continue — $35/year':'Continuar — $35/año',
+      'Profile verified. Franklin Navigator Community Membership is $35/year and renews annually until canceled.':'Perfil verificado. La Membresía Comunitaria de Franklin Navigator cuesta $35/año y se renueva anualmente hasta que se cancele.'
+    };
+    if(fixed[s])return fixed[s];
+"""
+              if needle not in s: raise SystemExit('MISSING_R37_I18N_ANCHOR')
+              p.write_text(s.replace(needle,needle+fixed),'utf-8')
+
+          # Remove obsolete membership-price strings from publicly served language audit catalogs.
+          ep=root/'dist/data/r37-en-public-strings.json'; en=json.loads(ep.read_text('utf-8'))
+          stale_exact={'$5','$50','$90','$120'}
+          stale_terms=('$5/month','$5 monthly','$50/year','$50 annual','$90/three','$90 for three','$90/36','$120/three','$120 for three','$120/36','$120 Charter','franklin_community_member_monthly_v5','franklin_community_member_annual_v5','franklin_charter_member_36_month_v5','franklin_charter_member_36_month_v6')
+          def stale(text):
+              text=str(text)
+              return text in stale_exact or any(x.lower() in text.lower() for x in stale_terms)
+          en['strings']=[r for r in en.get('strings',[]) if not stale(r.get('en',''))]
+          en['count']=len(en['strings'])
+          ep.write_text(json.dumps(en,ensure_ascii=False,indent=2)+'\n','utf-8')
+          sp=root/'dist/data/r37-es-public-strings.json'; es=json.loads(sp.read_text('utf-8'))
+          tr={k:v for k,v in es.get('translations',{}).items() if not stale(k) and not stale(v)}
+          tr.update({
+            'One simple membership.':'Una membresía sencilla.',
+            'One simple membership':'Una membresía sencilla',
+            'Franklin Navigator Community Membership':'Membresía Comunitaria de Franklin Navigator',
+            '$35/year':'$35/año',
+            'per year':'por año',
+            'Renews annually until canceled':'Se renueva anualmente hasta que se cancele',
+            'Renews annually until canceled.':'Se renueva anualmente hasta que se cancele.',
+            'Franklin Navigator Community Membership — $35/year. Renews annually until canceled.':'Membresía Comunitaria de Franklin Navigator — $35/año. Se renueva anualmente hasta que se cancele.',
+            'Basic factual corrections and requests to remove a profile from public view are free. No membership or payment is required.':'Las correcciones factuales básicas y las solicitudes para retirar un perfil de la vista pública son gratuitas. No se requiere membresía ni pago.'
+          })
+          es['translations']=tr; es['count']=len(tr); es['sourceCount']=en['count']; es['sourceCatalogSha256']=hashlib.sha256(ep.read_bytes()).hexdigest(); es['postLaunchCommerceTruth']=True
+          sp.write_text(json.dumps(es,ensure_ascii=False,indent=2,sort_keys=True)+'\n','utf-8')
+
+          # Spanish free-control route belongs in the public sitemap.
+          sm=root/'dist/sitemap.xml'; text=sm.read_text('utf-8'); url='https://franklinnavigator.com/es/correcciones/'
+          if url not in text:
+              if '</urlset>' not in text: raise SystemExit('SITEMAP_CLOSE_MISSING')
+              text=text.replace('</urlset>',f'  <url><loc>{url}</loc></url>\n</urlset>')
+              sm.write_text(text,'utf-8')
+          PY
+      - name: Syntax and public one-plan gates
+        run: |
+          node --check dist/assets/membership-live.js
+          node --check dist/assets/profile-control.js
+          node --check dist/assets/member-public.js
+          node --check dist/assets/local-discovery.js
+          node --check dist/assets/r37-i18n.js
+          python -m py_compile scripts/apply-profile-suppressions.py scripts/build-hf31-release.py
+          python - <<'PY'
+          from pathlib import Path
+          import json,re
+          root=Path('dist')
+          public_ext={'.html','.js','.json','.xml'}
+          stale=[re.compile(r'\$5/month',re.I),re.compile(r'\$50/year',re.I),re.compile(r'\$90\s*(?:/|for)\s*(?:three|36)',re.I),re.compile(r'\$120',re.I),re.compile(r'franklin_community_member_monthly_v5'),re.compile(r'franklin_community_member_annual_v5'),re.compile(r'franklin_charter_member_36_month_v[56]')]
+          hits=[]
+          for p in root.rglob('*'):
+              if not p.is_file() or p.suffix.lower() not in public_ext: continue
+              text=p.read_text('utf-8',errors='ignore')
+              if any(rx.search(text) for rx in stale): hits.append(str(p))
+          if hits: raise SystemExit('STALE_PUBLIC_NEW_SALE_TRUTH:'+','.join(hits[:40]))
+          for rel in ['membership-pricing/index.html','member-profile-preview/index.html','membership-start/index.html','business-dashboard/index.html','business-membership/index.html']:
+              text=(root/rel).read_text('utf-8')
+              if '$35' not in text: raise SystemExit('MISSING_35:'+rel)
+          cat=json.loads((root/'data/membership-checkout-catalog.json').read_text('utf-8'))
+          assert len(cat['choices'])==1 and cat['choices'][0]['amountUsd']==35 and cat['choices'][0]['autoRenew'] is True
+          assert cat['checkout']['retiredPlanIdentifiersRejectedServerSide'] is True
+          assert cat['freePresence']['factualCorrectionsFree'] and cat['freePresence']['publicProfileRemovalFree'] and not cat['freePresence']['membershipRequiredForProfileControl']
+          for rel,lang in [('corrections/index.html','en'),('es/correcciones/index.html','es')]:
+              text=(root/rel).read_text('utf-8'); assert f'lang="{lang}"' in text and 'data-profile-control-form' in text and 'PUBLIC_REMOVAL' in text and 'role="status"' in text and 'viewport' in text
+          assert 'PUBLIC_REMOVAL' in (root/'assets/member-public.js').read_text('utf-8')
+          assert 'public-profile-suppressions.json' in (root/'assets/local-discovery.js').read_text('utf-8')
+          print(json.dumps({'result':'PASS','publicNewSaleChoices':1,'annualUsd':35,'retiredPublicPriceHits':0,'freeCorrection':True,'freeRemoval':True,'enEsRoutes':True}))
+          PY
+      - name: Synthetic suppression persistence gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import tempfile,json,subprocess
+          with tempfile.TemporaryDirectory() as td:
+              d=Path(td); (d/'data').mkdir(); (d/'profiles/FR-ORG-TEST-abc').mkdir(parents=True)
+              chunk=d/'data/chunk.json'; chunk.write_text(json.dumps({'records':[{'i':'FR-ORG-TEST-abc','n':'Suppressed Test'},{'i':'FR-ORG-TEST-def','n':'Visible Test'}]}),'utf-8')
+              manifest={'chunks':[{'file':'data/chunk.json','records':2,'bytes':chunk.stat().st_size,'sha256':'x'}],'recordCount':2}
+              (d/'data/franklin-profiles-manifest.json').write_text(json.dumps(manifest),'utf-8')
+              (d/'profiles/FR-ORG-TEST-abc/index.html').write_text('<html><body>old profile</body></html>','utf-8')
+              ledger={'community':'FRANKLIN_TN','entries':[{'profileId':'FR-ORG-TEST-abc','status':'SUPPRESSED'}]}
+              lp=d/'data/public-profile-suppressions.json'; lp.write_text(json.dumps(ledger),'utf-8')
+              subprocess.run(['python','scripts/apply-profile-suppressions.py','--dist',str(d),'--ledger',str(lp)],check=True)
+              out=json.loads(chunk.read_text('utf-8')); ids={r['i'] for r in out['records']}; assert 'FR-ORG-TEST-abc' not in ids and 'FR-ORG-TEST-def' in ids
+              page=(d/'profiles/FR-ORG-TEST-abc/index.html').read_text('utf-8'); assert 'noindex,nofollow' in page and 'not publicly displayed' in page
+              m=json.loads((d/'data/franklin-profiles-manifest.json').read_text('utf-8')); assert m['recordCount']==1 and m['heldInPublicProjection']==1 and m['publicSuppressionLedgerApplied'] is True
+              print(json.dumps({'result':'PASS','syntheticApprovedSuppressionSurvivesReimport':True,'directoryRowsRemoved':1,'publicProfileSuppressed':True}))
+          PY
+      - name: Commit qualified public closeout
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No closeout changes produced' >&2
+            exit 1
+          fi
+          git commit -m 'P0: activate $35 annual membership and free profile control'
+          git push origin HEAD:main
