@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "franklin.hf31.ai-product-audit.v1",
+  "releaseTarget": "FR-NAV1.20.0-HF3.1-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "assistantScopeChanged": false,
+  "retained": {
+    "ordinaryInitialMatchedResultsVisibleMax": 1,
+    "ordinaryDirectPrimaryDestinationMax": 1,
+    "secondaryContentDisclosure": "OTHER_USEFUL_OPTIONS",
+    "urgentEmergencyActionsRemainVisible": true,
+    "911And988CollapseExempt": true,
+    "nonAiPathsRemainAvailable": true,
+    "deviceOnlyFollowThroughRetained": true
+  },
+  "hf31Impact": "Profile presentation and dated-content suppression only. No Assistant prompts, grounding inputs, legal/medical/financial behavior, ranking logic, user data handling, or runtime AI integration changed.",
+  "requiredRegression": [
+    "ordinary Assistant deep-link smoke",
+    "emergency/911 visibility smoke",
+    "Spanish label parity",
+    "no giant popup/button wall regression"
+  ],
+  "result": "NO_AI_LOGIC_CHANGE_REGRESSION_REQUIRED"
+}
