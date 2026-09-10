@@ -1,0 +1,46 @@
+name: HF32 fix idempotent labels
+on:
+  workflow_dispatch:
+  push:
+    branches: [hf32-owner-approved-simplification-20260910]
+    paths: [.github/workflows/hf32-fix-marknative.yml]
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf32-owner-approved-simplification-20260910
+          fetch-depth: 0
+      - name: Make shared label writes idempotent
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('dist/assets/hf32-public.js')
+          s=p.read_text(encoding='utf-8')
+          old="""  function markNative(el,en,es){
+    if(!el)return;el.dataset.hf32En=en;el.dataset.hf32Es=es;el.setAttribute('data-franklin-native-locale','');el.textContent=tx(en,es);
+  }"""
+          new="""  function markNative(el,en,es){
+    if(!el)return;
+    if(el.dataset.hf32En!==en)el.dataset.hf32En=en;
+    if(el.dataset.hf32Es!==es)el.dataset.hf32Es=es;
+    if(!el.hasAttribute('data-franklin-native-locale'))el.setAttribute('data-franklin-native-locale','');
+    const next=tx(en,es);if(el.textContent!==next)el.textContent=next;
+  }"""
+          if old not in s:
+              raise SystemExit('markNative block not found')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+          print('MARKNATIVE_IDEMPOTENT_PASS')
+          PY
+          node --check dist/assets/hf32-public.js
+          git diff --check
+      - name: Commit repair
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist/assets/hf32-public.js
+          git commit -m "Make HF3.2 shared label writes idempotent"
+          git push origin HEAD:hf32-owner-approved-simplification-20260910
