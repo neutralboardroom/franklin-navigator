@@ -1,0 +1,26 @@
+name: HF31 Spanish register diagnostic
+on:
+  push:
+    branches:
+      - hf31-profile-currentness-polish-20260910
+    paths:
+      - .github/workflows/hf31-spanish-register-diagnose.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf31-profile-currentness-polish-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Scan all Spanish pages for additional informal-register candidates
+        run: python3 scripts/hf31-spanish-register-diagnose.py
