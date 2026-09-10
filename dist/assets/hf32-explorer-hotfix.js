@@ -10,33 +10,26 @@
   const qa = (selector, base = root) => [...base.querySelectorAll(selector)];
   const isEs = () => document.documentElement.lang === 'es' || location.pathname.startsWith('/es/');
 
-  /* The accepted activity catalog is embedded at build time on explorer pages.
-     Serve that exact static payload to the existing explorer runtime so first render
-     does not depend on a second network request. Other fetches remain untouched. */
-  const payloadNode = document.querySelector('script[data-explorer-static-payload]');
-  const payloadText = payloadNode?.textContent?.trim() || '';
-  if (payloadText && typeof window.fetch === 'function' && typeof window.Response === 'function') {
-    try {
-      const parsed = JSON.parse(payloadText);
-      if (parsed?.schemaVersion === 'franklin.activities.v1' && parsed?.edition === 'FRANKLIN_TN' && Array.isArray(parsed.startingPoints) && Array.isArray(parsed.currentWindow)) {
-        const nativeFetch = window.fetch.bind(window);
-        window.fetch = (input, init) => {
-          try {
-            const raw = typeof input === 'string' ? input : input?.url;
-            const url = new URL(raw || '', location.href);
-            if (url.origin === location.origin && url.pathname === '/data/franklin-activities.json') {
-              return Promise.resolve(new Response(payloadText, {
-                status: 200,
-                headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
-              }));
-            }
-          } catch {}
-          return nativeFetch(input, init);
-        };
-      }
-    } catch (error) {
-      console.warn('Franklin explorer embedded catalog could not be prepared.', error);
-    }
+  /* The accepted activity catalog is materialized as a same-origin JavaScript asset
+     at build time. Serve that exact static object to the existing explorer runtime so
+     first render does not depend on a second network request. Other fetches remain untouched. */
+  const embedded = window.__FRANKLIN_ACTIVITY_CATALOG__;
+  if (embedded && embedded.schemaVersion === 'franklin.activities.v1' && embedded.edition === 'FRANKLIN_TN' && Array.isArray(embedded.startingPoints) && Array.isArray(embedded.currentWindow) && typeof window.fetch === 'function' && typeof window.Response === 'function') {
+    const payloadText = JSON.stringify(embedded);
+    const nativeFetch = window.fetch.bind(window);
+    window.fetch = (input, init) => {
+      try {
+        const raw = typeof input === 'string' ? input : input?.url;
+        const url = new URL(raw || '', location.href);
+        if (url.origin === location.origin && url.pathname === '/data/franklin-activities.json') {
+          return Promise.resolve(new Response(payloadText, {
+            status: 200,
+            headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
+          }));
+        }
+      } catch {}
+      return nativeFetch(input, init);
+    };
   }
 
   const hero = q('.explorer-hero');
