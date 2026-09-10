@@ -1,11 +1,12 @@
 {
   "schemaVersion": "franklin.hf31.rule-source-reconciliation.v1",
   "recordedAtUtc": "2026-09-10T00:24:00Z",
+  "preSealRefreshAtUtc": "2026-09-10T00:50:00Z",
   "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
   "activeEdition": "FRANKLIN_TN",
   "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
   "authorityTransfer": false,
-  "ownerDirective": "Fix the profile-page design issues already identified, deploy the new version when done, then continue page-by-page visual review. Popup/disclosure states must be simple and not confusing.",
+  "ownerDirective": "Fix all reviewed laptop pages now: Homepage, Today, Get It Done, Find Local, and the public profile template; include popup/disclosure simplification; deploy the new version when done, then continue page-by-page review.",
   "standingBuildCommand": {
     "name": "UNIVERSAL SMARTER LOCAL COMMUNITY PLATFORM NEXT MOST IMPROVED REASONABLY POSSIBLE VERSION — PERMANENT BUILD COMMAND",
     "revision": "2026-09-03-R2",
@@ -30,6 +31,7 @@
     "newestAcceptedSuccessorObserved": "v0.39.0 R9",
     "canonicalPointerObserved": "v0.38.0",
     "guardedPointerReplacement": "BLOCKED_GUARDED_WRITE_CAPABILITY",
+    "newerSccR10ObservedDuringPreSealRefresh": false,
     "hf30ReleaseMetadataDebt": "RESOLVED_BY_HF3_0",
     "remainingRelevantDebt": "SUPPRESS_EXPIRED_DATED_HOMEPAGE_ITEMS_AND_KEEP_CURRENTNESS_FAIL_CLOSED"
   },
@@ -42,12 +44,15 @@
     "localConsumption": "DEFER_WITH_CAUSE"
   },
   "localInvestigator": {
-    "newestProducerCandidateObserved": "SLI-FRANKLIN-HANDOFF-20260909-027",
-    "artifactSha256": "c2af5349721c51cb0ef2f3171ba1371e0963d403aa269efef05febfc951c9736",
+    "newestProducerCandidateObserved": "SLI-FRANKLIN-HANDOFF-20260909-028",
+    "artifact": "SMARTER_LOCAL_INVESTIGATOR__FRANKLIN_V28__PUBLIC_ACCESS_TRANSIT_HOUSING_FOOD_AND_CURRENTNESS__2026-09-09.zip",
+    "artifactSha256": "48b3510137591e0c16a83730fcf415584a3cce660039699a6c2d989c790252a7",
+    "validatedAtUtc": "2026-09-10T00:09:15Z",
     "releaseState": "QUALIFIED_RESEARCH_HANDOFF_WITH_QUARANTINED_ITEMS",
     "consumerAcceptance": "UNKNOWN",
     "packageSpecificSccGates": "PENDING",
-    "localConsumption": "DEFER_WITH_CAUSE"
+    "localConsumption": "DEFER_WITH_CAUSE",
+    "lateArrivalDisposition": "RECONCILED_AS_NEWEST_PRODUCER_CANDIDATE_BUT_NOT_ADOPTED_BECAUSE_ACCEPTANCE_AND_POINT_OF_USE_GATES_REMAIN_EXTERNAL"
   },
   "sre": {
     "newestProducerCandidateObserved": "SRE-OC-CP-2.44.0",
@@ -58,7 +63,7 @@
   },
   "smarterJustice": {
     "donorUsed": false,
-    "reason": "No Local legal-module donor capability question is in scope for this release."
+    "reason": "No Local legal-module capability question is in scope for this release."
   },
   "releaseLease": {
     "exclusiveLeasePrimitiveAvailableToBuilder": false,
@@ -66,6 +71,6 @@
     "successorIdentifierCollisionObserved": false,
     "concurrencyPolicy": "FAIL_CLOSED_IF_MAIN_OR_ACCEPTED_COORDINATION_CHANGES_BEFORE_SEAL"
   },
-  "precedenceDecision": "Owner design directive and accepted SCC R9 debt are compatible. HF3.0 is the exact deployed no-loss base. New PF/LI/SRE producer candidates remain evidence only and are not self-promoted into Local product truth.",
-  "result": "PASS_RECONCILED_BEFORE_MATERIAL_IMPLEMENTATION"
+  "precedenceDecision": "Owner design directive and accepted SCC R9 debt are compatible. HF3.0 is the exact deployed no-loss base. PF15.19, LI V28 and SRE2.44 remain producer/candidate evidence only and are not self-promoted into Local product truth.",
+  "result": "PASS_RECONCILED_BEFORE_IMPLEMENTATION_AND_REFRESHED_BEFORE_PROMOTION"
 }
