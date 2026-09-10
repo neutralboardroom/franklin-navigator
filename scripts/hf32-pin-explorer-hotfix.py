@@ -4,10 +4,13 @@ import json
 import re
 
 DIST = Path('dist')
-VERSION = 'frnav1210h1'
+VERSION = 'frnav1211h1'
+RELEASE = 'FR-NAV1.21.1-HF3.2-HOTFIX1'
 
 payload_obj = json.loads((DIST / 'data' / 'franklin-activities.json').read_text(encoding='utf-8'))
-payload = json.dumps(payload_obj, ensure_ascii=False, separators=(',', ':')).replace('</script', '<\\/script')
+payload_js = 'window.__FRANKLIN_ACTIVITY_CATALOG__=' + json.dumps(payload_obj, ensure_ascii=True, separators=(',', ':')) + ';\n'
+embedded_asset = DIST / 'assets' / 'franklin-activities-embedded.js'
+embedded_asset.write_text(payload_js, encoding='utf-8')
 
 css = (
     f'<link rel="stylesheet" href="/assets/hf32-site-cleanup.css?v={VERSION}" data-hf32-direct-css="1">'
@@ -16,7 +19,7 @@ css = (
 )
 
 runtime = (
-    f'<script type="application/json" data-explorer-static-payload>{payload}</script>'
+    f'<script src="/assets/franklin-activities-embedded.js?v={VERSION}" defer data-explorer-static-payload="1"></script>'
     f'<script src="/assets/hf32-explorer-hotfix.js?v={VERSION}" defer data-hf32-explorer-hotfix="1"></script>'
 )
 
@@ -48,8 +51,25 @@ for page in sorted(DIST.rglob('*.html')):
     original = text
     text = re.sub(r'<link[^>]+data-hf32-(?:direct-css|review-css|explorer-hotfix-css)="1"[^>]*>', '', text)
     text = re.sub(r'<script type="application/json" data-explorer-static-payload>[\s\S]*?</script>', '', text)
+    text = re.sub(r'<script[^>]+data-explorer-static-payload="1"[^>]*></script>', '', text)
     text = re.sub(r'<script[^>]+data-hf32-explorer-hotfix="1"[^>]*></script>', '', text)
     text = add_body_classes(text)
+
+    # Mark this patched explorer family explicitly without changing authoritative facts.
+    text = re.sub(
+        r'(<meta\s+name="franklin-release"\s+content=")[^"]+("[^>]*>)',
+        rf'\g<1>{RELEASE}\2',
+        text,
+        count=1,
+        flags=re.I,
+    )
+    text = re.sub(
+        r'(<meta\s+content=")[^"]+("\s+name="franklin-release"[^>]*>)',
+        rf'\g<1>{RELEASE}\2',
+        text,
+        count=1,
+        flags=re.I,
+    )
 
     if '</head>' not in text:
         raise RuntimeError(f'Missing </head>: {page}')
@@ -66,5 +86,6 @@ for page in sorted(DIST.rglob('*.html')):
         changed.append(str(page))
 
 print(f'Pinned direct explorer hotfix on {len(changed)} pages')
+print(f'Materialized accepted catalog asset: {embedded_asset}')
 for item in changed:
     print(item)
