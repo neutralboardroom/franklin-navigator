@@ -95,7 +95,6 @@
     practical.addEventListener('load',()=>{if(document.querySelector('script[data-r40-assistant-safety-guard]'))return;const guard=document.createElement('script');guard.src='/assets/r40-assistant-safety-guard.js';guard.defer=true;guard.dataset.r40AssistantSafetyGuard='1';document.head.append(guard)});
     document.head.append(practical);
   });
-
 })();
 
 /* HF2.7 shared navigation and next-action hierarchy loader. */
@@ -115,6 +114,19 @@
     js.src='/assets/hf29-design.js';
     js.defer=true;
     js.dataset.hf29Design='1';
+    document.head.append(js);
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
+})();
+
+/* HF3.1 reviewed-page hierarchy, profile polish, and dated-content currentness loader. */
+(()=>{
+  const load=()=>{
+    if(document.querySelector('script[data-hf31-public]'))return;
+    const js=document.createElement('script');
+    js.src='/assets/hf31-public.js';
+    js.defer=true;
+    js.dataset.hf31Public='1';
     document.head.append(js);
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
