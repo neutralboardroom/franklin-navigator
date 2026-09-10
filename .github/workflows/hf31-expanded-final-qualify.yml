@@ -1,0 +1,41 @@
+name: HF31 expanded final source qualification
+on:
+  push:
+    branches:
+      - hf31-profile-currentness-polish-20260910
+    paths:
+      - .github/workflows/hf31-expanded-final-qualify.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf31-profile-currentness-polish-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run exhaustive expanded no-loss and public-language validation
+        run: python3 scripts/validate-hf31-expanded-final.py
+      - name: Syntax check all changed and retained interaction layers
+        run: |
+          node --check dist/assets/hf31-public.js
+          node --check dist/assets/hf31-deep-public.js
+          node --check dist/assets/hf31-deep-language-runtime.js
+          node --check dist/assets/community-explorer.js
+          node --check dist/assets/r37-i18n.js
+          node --check dist/assets/hf27-navigation.js
+          node --check dist/assets/hf29-design.js
+          node --check dist/assets/r40-assistant-safety-guard.js
+      - name: Recheck retained HF2.9 interaction hierarchy
+        run: node scripts/verify-hf29-design.mjs
