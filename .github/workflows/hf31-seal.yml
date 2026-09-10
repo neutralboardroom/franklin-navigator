@@ -1,0 +1,41 @@
+name: HF31 deterministic seal
+on:
+  push:
+    branches:
+      - hf31-profile-currentness-polish-20260910
+    paths:
+      - .github/workflows/hf31-seal.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf31-profile-currentness-polish-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build exact deterministic successor twice and validate fresh extraction
+        run: python3 scripts/build-hf31-release.py --out release-output
+      - name: Show external attestation
+        run: cat release-output/HF31_EXTERNAL_RELEASE_ATTESTATION.json
+      - name: Upload exact successor and attestation
+        uses: actions/upload-artifact@v4
+        with:
+          name: HF31_SEALED_RELEASE
+          path: |
+            release-output/FRANKLIN_NAVIGATOR__HF3_1__LAPTOP_DESIGN_DEEP_NAVIGATION_PUBLIC_LANGUAGE_AND_SPANISH__2026-09-10.zip
+            release-output/HF31_EXTERNAL_RELEASE_ATTESTATION.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
