@@ -113,7 +113,7 @@
     const now=Date.now(),defs=[['today','Today','Hoy'],['tomorrow','Tomorrow','Mañana'],['coming','Coming up','Próximamente']],groups={};
     defs.forEach(([key,en,es])=>{const section=el('section','hf32-today-group');section.dataset.hf32Group=key;const h=el('h3','hf32-today-group-title');markNative(h,en,es);const inner=el('div','hf32-today-group-grid');section.append(h,inner);groups[key]={section,inner};grid.append(section)});
     cards.forEach(card=>groups[eventGroup(card,now)].inner.append(card));
-    const update=()=>Object.values(groups).forEach(({section,inner})=>section.hidden=!qa('.today-card',inner).some(c=>!c.hidden));update();
+    const update=()=>Object.values(groups).forEach(({section,inner})=>{const next=!qa('.today-card',inner).some(c=>!c.hidden);if(section.hidden!==next)section.hidden=next});update();
     new MutationObserver(update).observe(grid,{subtree:true,attributes:true,attributeFilter:['hidden']});
   }
   function today(){
@@ -148,7 +148,7 @@
     if(show){qa('.r22-profile-result',root).forEach(simplifyDirectoryCard);updateDirectoryCount(root)}
   }
   function updateDirectoryCount(root){
-    const count=q('[data-dir-count]',root),page=q('[data-dir-page]',root),prev=q('[data-dir-prev]',root);if(!count||!page)return;const total=Number((count.textContent.match(/[\d,\.]+/)||['0'])[0].replace(/[^\d]/g,''));const pg=Number((page.textContent.match(/\d+/)||['1'])[0]);if(!total)return;const start=(pg-1)*24+1,end=Math.min(pg*24,total);markNative(page,`Showing ${start.toLocaleString()}–${end.toLocaleString()} of ${total.toLocaleString()}`,`Mostrando ${start.toLocaleString()}–${end.toLocaleString()} de ${total.toLocaleString()}`);if(prev)prev.hidden=pg<=1;if(!meaningfulDirectoryState(root)&&document.body.classList.contains('hf32-directory-browse'))markNative(count,`${total.toLocaleString()} local profiles`,`${total.toLocaleString()} perfiles locales`)}
+    const count=q('[data-dir-count]',root),page=q('[data-dir-page]',root),prev=q('[data-dir-prev]',root);if(!count||!page)return;const total=Number((count.textContent.match(/[\d,\.]+/)||['0'])[0].replace(/[^\d]/g,''));const pg=Number((page.textContent.match(/\d+/)||['1'])[0]);if(!total)return;const start=(pg-1)*24+1,end=Math.min(pg*24,total);const pageEn=`Showing ${start.toLocaleString()}–${end.toLocaleString()} of ${total.toLocaleString()}`,pageEs=`Mostrando ${start.toLocaleString()}–${end.toLocaleString()} de ${total.toLocaleString()}`;if(page.textContent.trim()!==tx(pageEn,pageEs))markNative(page,pageEn,pageEs);if(prev&&prev.hidden!==(pg<=1))prev.hidden=pg<=1;if(!meaningfulDirectoryState(root)&&document.body.classList.contains('hf32-directory-browse')){const countEn=`${total.toLocaleString()} local profiles`,countEs=`${total.toLocaleString()} perfiles locales`;if(count.textContent.trim()!==tx(countEn,countEs))markNative(count,countEn,countEs)}}
   function directory(){
     if(!DIR_RE.test(p()))return;document.body.classList.add('hf32-directory');const hero=q('main>.r22-hero');if(hero){const para=q('p',hero);if(para)markNative(para,'Search 19,103 Franklin-area businesses, services, professionals and organizations by name, category or place.','Busque 19,103 negocios, servicios, profesionales y organizaciones del área de Franklin por nombre, categoría o lugar.')}
     const root=q('[data-franklin-discovery]');if(!root)return;const toolbar=q('.r22-directory-toolbar',root);toolbar?.classList.add('hf32-directory-toolbar');
