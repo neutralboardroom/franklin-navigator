@@ -1,0 +1,41 @@
+name: P0 Franklin V6 pricing and removal audit
+
+on:
+  push:
+    branches:
+      - p0-franklin-v6-pricing-free-removal-20260910
+    paths:
+      - '.github/workflows/p0-v6-audit.yml'
+      - 'scripts/p0_v6_pricing_removal_audit.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: p0-franklin-v6-pricing-free-removal-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run full text audit
+        run: python scripts/p0_v6_pricing_removal_audit.py
+      - name: Commit audit evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add evidence/p0-v6/PRE_CHANGE_PRICING_REMOVAL_AUDIT.json
+          if git diff --cached --quiet; then
+            echo 'No audit changes.'
+          else
+            git commit -m 'Record P0 V6 pricing and removal pre-change audit'
+            git push origin HEAD:p0-franklin-v6-pricing-free-removal-20260910
+          fi
