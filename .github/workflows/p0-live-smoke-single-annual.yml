@@ -1,0 +1,141 @@
+name: Franklin P0 deployed live smoke
+'on':
+  push:
+    branches:
+      - p0-live-smoke-single-annual-profile-control-20260910
+permissions:
+  contents: read
+jobs:
+  live-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Live HTTP runtime and public catalog truth
+        run: |
+          set -euo pipefail
+          RUNTIME=https://franklin-navigator-membership.onrender.com
+          PUBLIC=https://franklinnavigator.com
+          curl -fsS --retry 4 --retry-delay 2 "$RUNTIME/ready" -o /tmp/ready.json
+          curl -fsS --retry 4 --retry-delay 2 "$RUNTIME/api/catalog" -o /tmp/runtime-catalog.json
+          curl -fsS --retry 4 --retry-delay 2 "$PUBLIC/data/membership-checkout-catalog.json" -o /tmp/public-catalog.json
+          curl -fsS --retry 4 --retry-delay 2 "$PUBLIC/data/public-profile-suppressions.json" -o /tmp/suppressions.json
+          python - <<'PY'
+          import json
+          ready=json.load(open('/tmp/ready.json'))
+          runtime=json.load(open('/tmp/runtime-catalog.json'))
+          public=json.load(open('/tmp/public-catalog.json'))
+          suppressions=json.load(open('/tmp/suppressions.json'))
+          assert ready['ok'] is True and ready['commerceEnabled'] is True and ready['liveCheckoutEnabled'] is True
+          assert runtime['publicChoiceCount']==1 and len(runtime['choices'])==1
+          r=runtime['choices'][0]; assert r['id']=='ANNUAL' and r['priceUsd']==35 and r['autoRenew'] is True and r['renewal']=='ANNUAL_UNTIL_CANCELED'
+          assert runtime['retiredPlansSelectableForNewSale'] is False and runtime['historicalPlanRecognition'] is True
+          assert runtime['freePresence']['factualCorrectionsFree'] is True and runtime['freePresence']['publicProfileRemovalFree'] is True and runtime['freePresence']['membershipRequiredForProfileControl'] is False
+          assert len(public['choices'])==1 and public['choices'][0]['amountUsd']==35 and public['choices'][0]['autoRenew'] is True
+          assert public['checkout']['newSaleChoiceCount']==1 and public['checkout']['retiredPlanIdentifiersRejectedServerSide'] is True
+          assert public['freePresence']['factualCorrectionsFree'] and public['freePresence']['publicProfileRemovalFree'] and not public['freePresence']['membershipRequiredForProfileControl']
+          assert suppressions['community']=='FRANKLIN_TN' and suppressions['policy']=='APPROVED_PUBLIC_REMOVAL_SURVIVES_PROFILE_FACTORY_REFRESH'
+          print(json.dumps({'result':'PASS','runtimeReady':True,'commerceEnabled':True,'liveCheckoutEnabled':True,'runtimePublicNewSaleChoices':1,'runtimePriceUsd':35,'runtimeAutoRenew':True,'retiredPlansSelectableForNewSale':False,'historicalPlanRecognition':True,'publicCatalogNewSaleChoices':1,'publicPriceUsd':35,'freeCorrection':True,'freeRemoval':True,'suppressionLedgerLive':True}))
+          PY
+      - name: Live public stale-pricing and free-control HTTP scan
+        run: |
+          set -euo pipefail
+          PUBLIC=https://franklinnavigator.com
+          paths=(/membership-pricing/ /membership-start/ /business-membership/ /business-dashboard/ /member-profile-preview/ /member-support/ /member-first-value/ /founding-member-planner/ /terms/ /es/negocios/ /corrections/ /es/correcciones/ /assets/membership-live.js)
+          : >/tmp/public-scan.txt
+          for p in "${paths[@]}"; do
+            code=$(curl -sS -L --retry 4 --retry-delay 2 -o "/tmp/page$(echo "$p"|tr '/.' '__')" -w '%{http_code}' "$PUBLIC$p")
+            test "$code" = 200
+            cat "/tmp/page$(echo "$p"|tr '/.' '__')" >>/tmp/public-scan.txt
+          done
+          grep -q '\$35/year' /tmp/public-scan.txt
+          grep -q 'Renews annually until canceled' /tmp/public-scan.txt
+          grep -q 'public view' /tmp/public-scan.txt
+          grep -q 'No membership or payment is required' /tmp/public-scan.txt
+          ! grep -Eiq '\$5/month|\$50/year|\$90[[:space:]]*(/|for)[[:space:]]*(three|36)|\$120|franklin_community_member_monthly_v5|franklin_community_member_annual_v5|franklin_charter_member_36_month_v[56]' /tmp/public-scan.txt
+          echo '{"result":"PASS","selectedLiveRoutes":13,"annual35Present":true,"annualRenewalPresent":true,"freeProfileControlPresent":true,"retiredNewSaleStrings":0}'
+      - name: Install lightweight browser driver
+        run: |
+          set -euo pipefail
+          CHROME=$(which google-chrome || which chromium || which chromium-browser)
+          test -n "$CHROME"
+          echo "CHROME=$CHROME" >> "$GITHUB_ENV"
+          mkdir -p /tmp/pw && cd /tmp/pw
+          npm init -y >/dev/null 2>&1
+          npm install --no-save --ignore-scripts playwright-core@1.55.0 >/dev/null 2>&1
+      - name: Deployed desktop mobile keyboard and free-request browser flow
+        env:
+          NODE_PATH: /tmp/pw/node_modules
+        run: |
+          node - <<'NODE'
+          const {chromium}=require('playwright-core');
+          const assert=require('node:assert/strict');
+          const PUBLIC='https://franklinnavigator.com';
+          (async()=>{
+            const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME,args:['--no-sandbox','--disable-dev-shm-usage']});
+            const results={desktop:false,mobile:false,keyboard:false,englishCorrection:false,spanishRemoval:false,publicProfileControl:false};
+            try{
+              for(const cfg of [{name:'desktop',width:1365,height:768},{name:'mobile',width:390,height:844}]){
+                const page=await browser.newPage({viewport:{width:cfg.width,height:cfg.height}});
+                await page.goto(PUBLIC+'/membership-pricing/',{waitUntil:'networkidle',timeout:60000});
+                const text=await page.locator('body').innerText();
+                assert.match(text,/\$35\/year/); assert.match(text,/Renews annually until canceled/i);
+                assert.doesNotMatch(text,/\$5\/month|\$50\/year|\$90\s*(?:\/|for)\s*(?:three|36)|\$120/i);
+                const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+                assert.ok(overflow<=2,`${cfg.name} horizontal overflow ${overflow}`);
+                results[cfg.name]=true;
+                await page.goto(PUBLIC+(cfg.name==='mobile'?'/es/correcciones/':'/corrections/'),{waitUntil:'networkidle',timeout:60000});
+                assert.ok(await page.locator('[data-profile-control-form]').isVisible());
+                const unlabeled=await page.locator('[data-profile-control-form]').evaluate(form=>[...form.querySelectorAll('input,select,textarea')].filter(el=>!el.closest('label')&&!el.getAttribute('aria-label')&&!el.getAttribute('aria-labelledby')).length);
+                assert.equal(unlabeled,0);
+                const overflow2=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+                assert.ok(overflow2<=2,`${cfg.name} control overflow ${overflow2}`);
+                await page.locator('body').press('Tab');
+                for(let i=0;i<25;i++){
+                  const inside=await page.evaluate(()=>document.activeElement?.closest?.('[data-profile-control-form]')!==null);
+                  if(inside){results.keyboard=true;break;}
+                  await page.keyboard.press('Tab');
+                }
+                assert.equal(results.keyboard,true);
+                if(cfg.name==='desktop'){
+                  await page.locator('[name="requestType"]').selectOption('CORRECTION');
+                  await page.locator('[name="listing"]').fill('P0 live verification only — no listing action');
+                  await page.locator('[name="requesterName"]').fill('Franklin Navigator automated verification');
+                  await page.locator('[name="requesterEmail"]').fill('community@franklinnavigator.com');
+                  await page.locator('[name="details"]').fill('P0 synthetic correction-path verification only. Do not change any public profile. This request exists only to prove the free deployed submission path.');
+                  await page.locator('button[type="submit"]').click();
+                  await page.locator('[data-profile-control-status].good').waitFor({timeout:30000});
+                  assert.match(await page.locator('[data-profile-control-status]').innerText(),/Request received/i);
+                  results.englishCorrection=true;
+                } else {
+                  await page.locator('[name="requestType"]').selectOption('PUBLIC_REMOVAL');
+                  await page.locator('[name="listing"]').fill('VERIFICACIÓN P0 — no retirar ningún perfil real');
+                  await page.locator('[name="requesterName"]').fill('Franklin Navigator verificación automatizada');
+                  await page.locator('[name="requesterEmail"]').fill('community@franklinnavigator.com');
+                  await page.locator('[name="authorityBasis"]').fill('Prueba sintética del flujo; no representa un perfil real');
+                  await page.locator('[name="details"]').fill('Verificación sintética P0 del envío gratuito. No retirar ni modificar ningún perfil real.');
+                  await page.locator('[name="authorityConfirmed"]').check();
+                  await page.locator('button[type="submit"]').click();
+                  await page.locator('[data-profile-control-status].good').waitFor({timeout:30000});
+                  assert.match(await page.locator('[data-profile-control-status]').innerText(),/Solicitud recibida/i);
+                  results.spanishRemoval=true;
+                }
+                await page.close();
+              }
+              const manifest=await (await fetch(PUBLIC+'/data/franklin-profiles-manifest.json',{cache:'no-store'})).json();
+              const first=manifest.chunks[0];
+              const chunk=await (await fetch(PUBLIC+'/'+String(first.file).replace(/^\//,''),{cache:'no-store'})).json();
+              const id=chunk.records.find(r=>r&&r.i)?.i; assert.ok(id);
+              const page=await browser.newPage({viewport:{width:1365,height:768}});
+              await page.goto(PUBLIC+'/profiles/'+encodeURIComponent(id)+'/',{waitUntil:'networkidle',timeout:60000});
+              await page.getByText('Request removal from public view',{exact:true}).waitFor({timeout:15000});
+              const href=await page.getByText('Request removal from public view',{exact:true}).getAttribute('href');
+              assert.match(href,/\/corrections\/\?action=PUBLIC_REMOVAL/);
+              results.publicProfileControl=true;
+              await page.close();
+              console.log(JSON.stringify({result:'PASS',...results,financialMutations:0}));
+            } finally { await browser.close(); }
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
