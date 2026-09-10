@@ -31,6 +31,7 @@
       "candidateConsumerAccepted": false,
       "localPublicCopyWorkOrder": "WO-20260909-SRE-LOCAL-FRANKLIN-MEMBERSHIP-OPEN-COPY-ALIGNMENT-056",
       "localPublicCopyWorkOrderState": "ROUTED_NOT_SELF_ACCEPTED",
+      "acceptedLocalResultObserved": false,
       "disposition": "DEFER_WITH_CAUSE_NO_SELF_ACCEPTANCE"
     }
   },
@@ -40,8 +41,6 @@
     "runtimeChangedByHF31": false,
     "checkoutChangedByHF31": false
   },
-  "smarterJustice": {
-    "used": false
-  },
+  "smarterJustice": {"used": false},
   "result": "PASS_NO_NEW_ACCEPTED_UPSTREAM_OR_LOCAL_WORK_ORDER_CONFLICT_BEFORE_DEPLOY"
 }
