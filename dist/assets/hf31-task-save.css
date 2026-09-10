@@ -1,0 +1,20 @@
+/* HF3.1 task-card save control visibility correction. Higher specificity intentionally overrides the earlier generic link-button hide rule. */
+.hf31-tasks main .task-card>.link-button.hf31-task-save{
+  display:inline-flex!important;
+  margin-top:5px!important;
+  padding:5px 1px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#557075!important;
+  font:inherit!important;
+  font-size:.82rem!important;
+  font-weight:690!important;
+  text-decoration:none!important;
+  cursor:pointer
+}
+.hf31-tasks main .task-card>.link-button.hf31-task-save:hover{
+  color:var(--brand-dark)!important;
+  text-decoration:underline!important;
+  text-underline-offset:.2em!important
+}
