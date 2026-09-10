@@ -1,0 +1,28 @@
+name: HF32 repair observers v2
+on:
+  push:
+    branches:
+      - hf32-owner-approved-simplification-20260910
+    paths:
+      - scripts/hf32_fix_idempotence.py
+      - .github/workflows/hf32-fix-idempotence-v2.yml
+permissions:
+  contents: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf32-owner-approved-simplification-20260910
+          fetch-depth: 0
+      - run: python scripts/hf32_fix_idempotence.py
+      - run: node --check dist/assets/hf32-public.js
+      - run: git diff --check
+      - name: Commit repair
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist/assets/hf32-public.js
+          git commit -m "Fix HF3.2 mutation observer idempotence"
+          git push origin HEAD:hf32-owner-approved-simplification-20260910
