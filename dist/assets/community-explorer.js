@@ -11,6 +11,7 @@
     en: {
       loading: 'Loading Franklin options…',
       loadError: 'The local activity catalog could not load. Use the official source links on this page and try again later.',
+      retry: 'Retry loading local options',
       showing: (shown, total) => `Showing ${shown} of ${total} local options`,
       none: 'No option matches those filters. Clear a filter or try a broader search.',
       source: 'Official source',
@@ -31,6 +32,7 @@
     es: {
       loading: 'Cargando opciones de Franklin…',
       loadError: 'No se pudo cargar el catálogo local. Use los enlaces de fuentes oficiales de esta página e inténtelo más tarde.',
+      retry: 'Volver a cargar opciones locales',
       showing: (shown, total) => `Mostrando ${shown} de ${total} opciones locales`,
       none: 'Ninguna opción coincide con esos filtros. Borre un filtro o pruebe una búsqueda más general.',
       source: 'Fuente oficial',
@@ -71,6 +73,7 @@
   const selected = new Set();
   let catalog = [];
   let current = [];
+  let loadingCatalog = false;
 
   const create = (tag, attrs = {}, value = '') => {
     const node = document.createElement(tag);
@@ -120,6 +123,7 @@
   };
 
   const populateOptions = () => {
+    while (sport.options.length > 1) sport.remove(1);
     const sports = [...new Set(catalog.flatMap(item => item.sports))].sort();
     sports.forEach(value => addOption(sport, value));
   };
@@ -246,24 +250,83 @@
   downloadButton.addEventListener('click', download);
   printButton.addEventListener('click', () => window.print());
 
-  grid.textContent = text.loading;
-  fetch('/data/franklin-activities.json', { credentials: 'same-origin' })
-    .then(response => {
+  const fetchCatalogAttempt = (cacheMode, timeoutMs, bustCache = false) => {
+    const controller = typeof AbortController === 'function' ? new AbortController() : null;
+    let timer = 0;
+    const timeout = new Promise((_, reject) => {
+      timer = window.setTimeout(() => {
+        if (controller) controller.abort();
+        reject(new Error('catalog timeout'));
+      }, timeoutMs);
+    });
+    const suffix = bustCache ? `?franklin-retry=${Date.now()}` : '';
+    const request = fetch(`/data/franklin-activities.json${suffix}`, {
+      credentials: 'same-origin',
+      cache: cacheMode,
+      ...(controller ? { signal: controller.signal } : {})
+    }).then(response => {
       if (!response.ok) throw new Error('catalog unavailable');
       return response.json();
-    })
-    .then(data => {
-      if (data.schemaVersion !== 'franklin.activities.v1' || data.edition !== 'FRANKLIN_TN' || !Array.isArray(data.startingPoints)) throw new Error('catalog invalid');
-      catalog = data.startingPoints.filter(item => item.currentnessState !== 'SUPPRESSED' && item.sourceClass !== 'DISCOVERY_ONLY_REJECTED');
-      current = data.currentWindow.filter(item => item.currentnessState === 'RECHECK_BEFORE_USE');
-      populateOptions();
-      render();
-      renderCurrent();
-    })
-    .catch(() => {
-      grid.textContent = text.loadError;
-      summary.textContent = '';
-      empty.hidden = true;
-      if (currentGrid) currentGrid.textContent = text.loadError;
     });
+    return Promise.race([request, timeout]).finally(() => window.clearTimeout(timer));
+  };
+
+  const acceptCatalog = data => {
+    if (data.schemaVersion !== 'franklin.activities.v1' || data.edition !== 'FRANKLIN_TN' || !Array.isArray(data.startingPoints) || !Array.isArray(data.currentWindow)) throw new Error('catalog invalid');
+    catalog = data.startingPoints.filter(item => item.currentnessState !== 'SUPPRESSED' && item.sourceClass !== 'DISCOVERY_ONLY_REJECTED');
+    current = data.currentWindow.filter(item => item.currentnessState === 'RECHECK_BEFORE_USE');
+    populateOptions();
+    render();
+    renderCurrent();
+  };
+
+  const showLoadError = () => {
+    summary.textContent = text.loadError;
+    empty.hidden = true;
+    const panel = create('div', { class: 'explorer-empty' });
+    panel.append(create('p', {}, text.loadError));
+    const retry = create('button', { class: 'button', type: 'button' }, text.retry);
+    retry.addEventListener('click', () => loadCatalog(true));
+    panel.append(retry);
+    grid.replaceChildren(panel);
+    if (currentGrid) currentGrid.replaceChildren();
+    if (currentEmpty) {
+      currentEmpty.textContent = text.loadError;
+      currentEmpty.hidden = false;
+    }
+  };
+
+  const setLoadingState = () => {
+    summary.textContent = text.loading;
+    grid.textContent = text.loading;
+    empty.hidden = true;
+    if (currentEmpty) currentEmpty.hidden = true;
+  };
+
+  const loadCatalog = async (forceReload = false) => {
+    if (loadingCatalog) return;
+    loadingCatalog = true;
+    setLoadingState();
+    try {
+      let data;
+      if (forceReload) {
+        data = await fetchCatalogAttempt('no-store', 7000, true);
+      } else {
+        try {
+          data = await fetchCatalogAttempt('default', 4500, false);
+        } catch (firstError) {
+          console.warn('Franklin activity catalog first load attempt did not complete; retrying once.', firstError);
+          data = await fetchCatalogAttempt('no-store', 7000, true);
+        }
+      }
+      acceptCatalog(data);
+    } catch (error) {
+      console.warn('Franklin activity catalog could not load after bounded retries.', error);
+      showLoadError();
+    } finally {
+      loadingCatalog = false;
+    }
+  };
+
+  loadCatalog();
 })();
