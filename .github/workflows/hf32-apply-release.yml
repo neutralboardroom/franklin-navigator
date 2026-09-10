@@ -1,4 +1,4 @@
-name: HF32 apply direct loader and release identity
+name: HF32 repair shared UI stability
 
 on:
   push:
@@ -26,9 +26,34 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Apply HF3.2 release pass
-        run: python scripts/apply-hf32-release.py
-      - name: Verify direct loading and no state mutation
+      - name: Make shared label writes idempotent
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('dist/assets/hf32-public.js')
+          s=p.read_text(encoding='utf-8')
+          old="""  function markNative(el,en,es){
+    if(!el)return;el.dataset.hf32En=en;el.dataset.hf32Es=es;el.setAttribute('data-franklin-native-locale','');el.textContent=tx(en,es);
+  }"""
+          new="""  function markNative(el,en,es){
+    if(!el)return;
+    if(el.dataset.hf32En!==en)el.dataset.hf32En=en;
+    if(el.dataset.hf32Es!==es)el.dataset.hf32Es=es;
+    if(!el.hasAttribute('data-franklin-native-locale'))el.setAttribute('data-franklin-native-locale','');
+    const next=tx(en,es);if(el.textContent!==next)el.textContent=next;
+  }"""
+          if old in s:
+              s=s.replace(old,new,1)
+              p.write_text(s,encoding='utf-8')
+              print('MARKNATIVE_IDEMPOTENT_APPLIED')
+          elif 'const next=tx(en,es);if(el.textContent!==next)el.textContent=next;' in s:
+              print('MARKNATIVE_ALREADY_IDEMPOTENT')
+          else:
+              raise SystemExit('unexpected markNative implementation')
+          PY
+      - name: Verify source and no-loss invariants
         shell: bash
         run: |
           set -euo pipefail
@@ -36,29 +61,27 @@ jobs:
           node --check dist/assets/r37-i18n.js
           python - <<'PY'
           from pathlib import Path
-          import re, subprocess
+          import subprocess
           pages=list(Path('dist').rglob('index.html'))
           assert len(pages)==19355,len(pages)
-          assert all(p.read_text(encoding='utf-8').count('data-hf32-direct="1"')==1 for p in pages)
+          assert len(list(Path('dist/profiles').glob('*/index.html')))==19103
           assert all('FR-NAV1.21.0-HF3.2-CANDIDATE' in p.read_text(encoding='utf-8') for p in pages)
-          r37=Path('dist/assets/r37-i18n.js').read_text(encoding='utf-8')
-          assert '/* HF3.2 — owner-approved simplification layer. */' not in r37
-          assert "@import url('/assets/hf32-public.css');" in Path('dist/assets/r37.css').read_text(encoding='utf-8')
+          assert all(p.read_text(encoding='utf-8').count('data-hf32-direct="1"')==1 for p in pages)
           changed=subprocess.check_output(['git','diff','--name-only','50bf87535d7cd9bb5aabaaf5b1b93f4602549fa2...HEAD'],text=True).splitlines()
-          forbidden=[x for x in changed if x.startswith(('server/','dist/data/'))]
-          assert not forbidden,forbidden[:20]
-          print('HF32_DIRECT_LOAD_PASS pages=19355 forbidden_state_changes=0')
+          assert not [x for x in changed if x.startswith(('server/','dist/data/'))]
+          print('HF32_SOURCE_NO_LOSS_PASS')
           PY
-      - name: Commit release pass
+          git diff --check
+      - name: Commit stability repair
         shell: bash
         run: |
           set -euo pipefail
           git config user.name neutralboardroom
           git config user.email reachrgnow@gmail.com
-          git add dist scripts/apply-hf32-release.py
+          git add dist/assets/hf32-public.js
           if git diff --cached --quiet; then
-            echo 'No release-pass changes to commit.'
+            echo 'No stability change to commit.'
           else
-            git commit -m 'Apply HF3.2 direct shared UI loader and truthful release identity'
+            git commit -m 'Make HF3.2 shared UI label writes idempotent'
             git push origin HEAD:hf32-owner-approved-simplification-20260910
           fi
