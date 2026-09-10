@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "franklin.hf31.rule-source-reconciliation.v1",
+  "recordedAtUtc": "2026-09-10T00:10:00Z",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
+  "authorityTransfer": false,
+  "ownerInstruction": "Continue the full rendered-site audit from the owner's real laptop screenshots and make the site as aesthetically strong, simple and intuitive as reasonably possible. Use builder judgment; do not ask which visual changes to make. Preserve the very-low visible-button/choice-load standard.",
+  "laptopReviewBaseline": {
+    "source": "OWNER_SUPPLIED_LIVE_SCREENSHOTS",
+    "browserWindowClass": "approximately 1366x768 laptop screenshots",
+    "use": "PRIMARY_DESKTOP_LAPTOP_VISUAL_TARGET_FOR_HF31",
+    "exactCssViewportHeightInferred": false
+  },
+  "exactNoLossPredecessor": {
+    "release": "FR-NAV1.19.0-HF3.0-CANDIDATE",
+    "sourceCommit": "736e3cfb5ae6be08758a442ce7bb2f8cedf8b9f0",
+    "artifact": "FRANKLIN_NAVIGATOR__HF3_0__PUBLIC_TRUTH_RELEASE_INTEGRITY__2026-09-10.zip",
+    "artifactBytes": 68251653,
+    "artifactSha256": "49bc25045eb94d32d31096e6200907403a75efe45e718c8cd98b307e0b25214f",
+    "state": "QUALIFIED_SUCCESSOR_DEPLOYED_LIVE_VERIFIED; SCC_ACCEPTANCE_NOT_SELF_ASSERTED"
+  },
+  "coordinationTruth": {
+    "newestAcceptedSccSuccessorObserved": "v0.39.0 R9",
+    "sccCanonicalPointerObserved": "v0.38.0",
+    "sccPointerGate": "BLOCKED_GUARDED_WRITE_CAPABILITY",
+    "wo055": "ACCEPTED_CLOSED_FINAL",
+    "wo056": "ROUTED_NOT_SELF_ACCEPTED_SRE_MEMBERSHIP_COPY_ALIGNMENT",
+    "manualDispatchRequired": true
+  },
+  "upstreamCandidates": {
+    "profileFactory": {
+      "version": "FR-PF-PLATFORM-15.19",
+      "readyProfiles": 22874,
+      "newReadyProfiles": 48,
+      "state": "TESTED_AND_LIBRARY_PERSISTED_QUALIFIED_SUCCESSOR_CANDIDATE_NOT_SELF_ACCEPTED",
+      "consumeNow": false,
+      "reason": "Local cannot self-promote candidate profile truth."
+    },
+    "localInvestigator": {
+      "version": "SLI-FRANKLIN-HANDOFF-20260909-027",
+      "state": "QUALIFIED_RESEARCH_HANDOFF_WITH_QUARANTINED_ITEMS",
+      "consumerAcceptance": "UNKNOWN",
+      "consumeNow": false,
+      "reason": "Package-specific SCC/consumer acceptance remains pending."
+    },
+    "sre": {
+      "version": "SRE-OC-CP-2.44.0",
+      "state": "TESTED_SOURCE_CANDIDATE_NOT_DEPLOYED_OR_CONSUMER_ACCEPTED",
+      "consumeNow": false,
+      "reason": "Commercial candidate is not an accepted Local-facing contract."
+    }
+  },
+  "smarterJusticeDonor": {
+    "used": false,
+    "reason": "No bounded Local legal-module donor capability question is part of this homepage/currentness slice."
+  },
+  "qualifiedNow": [
+    "Fix homepage event-card suppression so expired leading cards cannot cause all still-current cards to disappear.",
+    "Compact the separate language strip into the main laptop header.",
+    "Reduce hero vertical bulk by hiding empty saved-checklist chrome until it contains useful state.",
+    "Compress connected-help presentation to a calm secondary callout.",
+    "Reduce homepage browse-card density and visible competing route choices without removing destinations.",
+    "Collapse specialized-help overflow behind one disclosure.",
+    "Correct Franklin Through Time heading contrast and tighten footer/section rhythm."
+  ],
+  "result": "PASS_RECONCILED_READY_FOR_MATERIAL_HF31_IMPLEMENTATION"
+}
