@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "franklin.hf31.donor-capability-registry.v1",
+  "releaseTarget": "FR-NAV1.20.0-HF3.1-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "donors": [
+    {"donor":"SMARTER_JUSTICE","disposition":"DEFER_WITH_CAUSE","reason":"No Local legal-module capability question is in scope; strict donor gate therefore forbids inspection/use."},
+    {"donor":"SMARTER_HEALTH","disposition":"DEFER_WITH_CAUSE","reason":"No bounded donor capability question is needed for this profile/currentness release."},
+    {"donor":"SMARTER_HOME_OR_NAVIGATOR","disposition":"DEFER_WITH_CAUSE","reason":"No bounded donor capability question is needed for this profile/currentness release."},
+    {"donor":"SMARTER_AUTO","disposition":"DEFER_WITH_CAUSE","reason":"No bounded donor capability question is needed for this profile/currentness release."}
+  ],
+  "donorCodeImported": false,
+  "donorStateImported": false,
+  "donorRuntimeConnectionCreated": false,
+  "authorityTransfer": false
+}
