@@ -21,6 +21,13 @@ body.hf32-explorer-hotfix .explorer-hero-card{
   display:none!important;
 }
 
+/* Before the direct hotfix executes, expose only the hero and requested finder.
+   This prevents the old generic navigation/preparation sections from flashing ahead
+   of results. If JavaScript enhancement fails, the finder still remains visible. */
+body.hf32-explorer-hotfix:not(.hf32-explorer-ready) main[data-community-explorer]>section:not(.explorer-hero):not(#finder){
+  display:none!important;
+}
+
 /* Defensive contrast repair if an explorer dark card is ever intentionally restored. */
 body.hf32-explorer-hotfix .explorer-hero-card,
 body.hf32-explorer-hotfix .explorer-hero-card :is(h1,h2,h3,h4,p,li,span,strong,small){
