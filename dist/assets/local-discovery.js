@@ -156,7 +156,7 @@
     if (loading) return; loading = true; retry.hidden = true; root.setAttribute('aria-busy', 'true');
     count.textContent = tx('Loading local profiles…', 'Cargando perfiles locales…');
     try {
-      rows = await data.all(); byId = new Map(rows.map(r => [r.i, r])); loaded = true;
+      const suppressionResponse=await fetch('/data/public-profile-suppressions.json',{cache:'no-store'}); if(!suppressionResponse.ok)throw new Error('SUPPRESSION_LEDGER_UNAVAILABLE'); const suppressionData=await suppressionResponse.json(); const suppressed=new Set((suppressionData.entries||[]).filter(e=>e&&e.status==='SUPPRESSED').map(e=>e.profileId)); rows = (await data.all()).filter(r=>!suppressed.has(r.i)); byId = new Map(rows.map(r => [r.i, r])); loaded = true;
       if (history.state?.franklinDiscovery) {
         state = C.cleanState(history.state.state);
         for (const id of (Array.isArray(history.state.selected) ? history.state.selected : []).slice(0, 3)) if (byId.has(id)) selected.set(id, byId.get(id));

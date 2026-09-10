@@ -59,6 +59,7 @@ def main():
  ap=argparse.ArgumentParser();ap.add_argument('--out',default='release-output');a=ap.parse_args();out=ROOT/a.out
  if out.exists():shutil.rmtree(out)
  out.mkdir(parents=True);commit=git('rev-parse','HEAD')
+ subprocess.run(['python3','scripts/apply-profile-suppressions.py'],cwd=ROOT,check=True)
  subprocess.run(['python3','scripts/validate-hf31-expanded-fast.py'],cwd=ROOT,check=True)
  A,ma,mba,ea=build(commit);B,mb,mbb,eb=build(commit)
  if A!=B or ma!=mb or mba!=mbb or ea!=eb:raise SystemExit('Deterministic double build mismatch')

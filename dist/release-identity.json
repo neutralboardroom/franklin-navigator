@@ -8,6 +8,7 @@
   "communityCentered": true,
   "deploymentAuthorization": "OWNER_AND_WO056_AUTHORIZED_AFTER_PRODUCT_QUALIFICATION",
   "exactSourcePredecessor": "FR-NAV1.14.0-CANDIDATE-R39",
+  "freeProfileControl": "FACTUAL_CORRECTION_AND_PUBLIC_REMOVAL_NO_PAYMENT",
   "liveObservationBeforeBuild": {
     "classification": "R39_DERIVED_POST_SEAL_PATCH",
     "commit": "b254b3d83f03935e4337ff2d19f6f7e773c16158",
@@ -15,6 +16,7 @@
     "exactSealedR39Binding": false,
     "providerLive": true
   },
+  "p0CloseoutPatch": "FR-NAV1.20.0-HF3.1-P0C1-SINGLE-ANNUAL-PROFILE-CONTROL",
   "predecessorArtifactSha256": "1f40073f442877e1f5be7ff06f0517a82a96a0e97098cde40d1de199fcf9d151",
   "predecessorSourceTreeSha256": "2c5a9f14f345604575dd5173e0a25d47325ab94bf8eaba23fff77756eb77e88c",
   "profileCount": 19103,
@@ -22,6 +24,7 @@
   "publicConstruction": "R39_PLUS_CANONICAL_LIVE_HOTFIX_PLUS_WO056_CUSTOMER_LANGUAGE_AND_SHORTLIST_UX",
   "release": "FR-NAV1.15.0-CANDIDATE-R40",
   "schemaVersion": "franklin.release-identity.r40.v1",
+  "singleNewSalePlan": "$35/year annual until canceled",
   "sourceQualified": true,
   "status": "SOURCE_QUALIFIED_DEPLOYMENT_AUTHORIZED_PENDING_EXECUTION"
 }

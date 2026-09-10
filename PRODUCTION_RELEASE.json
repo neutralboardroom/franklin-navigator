@@ -22,7 +22,15 @@
   "preDeployCurrentnessReceipt": "evidence/hf31/PRE_DEPLOY_CURRENTNESS_RECEIPT.json",
   "preDeployCurrentnessResult": "PASS_NO_NEW_ACCEPTED_UPSTREAM_OR_LOCAL_WORK_ORDER_CONFLICT_BEFORE_DEPLOY",
   "ownerReviewTarget": "REAL_LAPTOP_SCREENSHOTS_APPROX_1366x768",
-  "reviewedPages": ["HOME","TODAY","GET_IT_DONE","FIND_LOCAL","PUBLIC_PROFILE_TEMPLATE","DEEP_ACTIVITY_AND_SPORT_EXPLORER_PAGES","SPANISH_PUBLIC_PAGES"],
+  "reviewedPages": [
+    "HOME",
+    "TODAY",
+    "GET_IT_DONE",
+    "FIND_LOCAL",
+    "PUBLIC_PROFILE_TEMPLATE",
+    "DEEP_ACTIVITY_AND_SPORT_EXPLORER_PAGES",
+    "SPANISH_PUBLIC_PAGES"
+  ],
   "popupAndDisclosureAuditIncluded": true,
   "publicIndexPages": 19355,
   "publicReleaseMarkersExact": 19355,
@@ -52,7 +60,10 @@
   "getItDoneTaskCardCount": 12,
   "getItDoneLaptopColumns": 3,
   "getItDoneSecondarySaveStyle": "QUIET_DIRECT_ACTION",
-  "findLocalPrimaryFilters": ["Search","Category"],
+  "findLocalPrimaryFilters": [
+    "Search",
+    "Category"
+  ],
   "findLocalAdvancedFiltersProgressiveDisclosure": true,
   "findLocalResultPrimaryAction": "Open profile",
   "findLocalCompareStyle": "QUIET_SECONDARY",
@@ -74,9 +85,9 @@
   "assistantNonSafetyDirectActionsPerResultMax": 1,
   "assistantSecondaryContentDisclosure": "OTHER_USEFUL_OPTIONS",
   "assistantUrgentEmergencyActionsRemainVisible": true,
-  "pricesChanged": false,
-  "runtimeChanged": false,
-  "checkoutChanged": false,
+  "pricesChanged": true,
+  "runtimeChanged": true,
+  "checkoutChanged": true,
   "runtimePair": "44b62d30c5e2726f8e449a5d2a52a1cdc864d5e8",
   "staticSiteService": "srv-da8tg6rbc2fs73crru2g",
   "staticDeploy": "dep-dah108ijnfac73fqrjng",
@@ -94,5 +105,20 @@
   "profileFactoryCandidateConsumption": "DEFER_WITH_CAUSE_FR_PF_PLATFORM_15_19_NOT_CONSUMER_ACCEPTED",
   "localInvestigatorNewestCandidateObserved": "SLI-FRANKLIN-HANDOFF-20260909-028",
   "localInvestigatorCandidateConsumption": "DEFER_WITH_CAUSE_V28_PACKAGE_SPECIFIC_SCC_GATES_AND_CONSUMER_ACCEPTANCE_PENDING",
-  "sreCandidateConsumption": "DEFER_WITH_CAUSE_SRE_2_44_0_CANDIDATE_NOT_DEPLOYED_OR_CONSUMER_ACCEPTED"
+  "sreCandidateConsumption": "DEFER_WITH_CAUSE_SRE_2_44_0_CANDIDATE_NOT_DEPLOYED_OR_CONSUMER_ACCEPTED",
+  "p0CommercialProfileControlCloseout": {
+    "patchIdentity": "FR-NAV1.20.0-HF3.1-P0C1-SINGLE-ANNUAL-PROFILE-CONTROL",
+    "ownerFinalNewSalePolicy": "SINGLE_ANNUAL_35",
+    "publicNewSaleChoiceCount": 1,
+    "publicNewSalePriceUsd": 35,
+    "publicNewSaleRenewal": "ANNUAL_UNTIL_CANCELED",
+    "monthlyNewSaleRetired": true,
+    "threeYearNewSaleRetired": true,
+    "old50And120NewSaleRetired": true,
+    "freeFactualCorrection": true,
+    "freePublicProfileRemoval": true,
+    "suppressionLedger": "dist/data/public-profile-suppressions.json",
+    "suppressionConsumer": "dist/assets/member-public.js + dist/assets/local-discovery.js + scripts/apply-profile-suppressions.py",
+    "authorityTransfer": false
+  }
 }

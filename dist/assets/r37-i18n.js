@@ -10,6 +10,21 @@
   };
   function special(s){
     if(categories[s])return categories[s];
+    const fixed={
+      'One simple membership.':'Una membresía sencilla.',
+      'One simple membership':'Una membresía sencilla',
+      'Franklin Navigator Community Membership':'Membresía Comunitaria de Franklin Navigator',
+      '$35/year':'$35/año',
+      'per year':'por año',
+      'Renews annually until canceled':'Se renueva anualmente hasta que se cancele',
+      'Renews annually until canceled.':'Se renueva anualmente hasta que se cancele.',
+      'Franklin Navigator Community Membership — $35/year. Renews annually until canceled.':'Membresía Comunitaria de Franklin Navigator — $35/año. Se renueva anualmente hasta que se cancele.',
+      'Basic factual corrections and requests to remove a profile from public view are free. No membership or payment is required.':'Las correcciones factuales básicas y las solicitudes para retirar un perfil de la vista pública son gratuitas. No se requiere membresía ni pago.',
+      'Factual corrections and requests to remove a profile from public view are free and do not require membership. Membership does not buy factual accuracy, ranking, endorsement, credentials, leads or guaranteed results.':'Las correcciones factuales y las solicitudes para retirar un perfil de la vista pública son gratuitas y no requieren membresía. La membresía no compra exactitud factual, clasificación, respaldo, credenciales, clientes potenciales ni resultados garantizados.',
+      'Continue — $35/year':'Continuar — $35/año',
+      'Profile verified. Franklin Navigator Community Membership is $35/year and renews annually until canceled.':'Perfil verificado. La Membresía Comunitaria de Franklin Navigator cuesta $35/año y se renueva anualmente hasta que se cancele.'
+    };
+    if(fixed[s])return fixed[s];
     let m;
     if((m=s.match(/^Signed in as (.+)\.$/)))return `Sesión iniciada como ${m[1]}.`;
     if((m=s.match(/^Selected: (.+)$/)))return `Seleccionado: ${m[1]}`;

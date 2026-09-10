@@ -1,81 +1,31 @@
 {
-  "boundaries": [
-    "FREE_FACTUAL_CORRECTIONS",
-    "NO_PAY_TO_RANK",
-    "NO_ENDORSEMENT",
-    "NO_GUARANTEED_RESULTS",
-    "NO_MINOR_SALES_OR_PAYMENT",
-    "PUBLIC_EMAIL_IS_NOT_CONSENT"
-  ],
   "checkout": {
-    "automaticEntitlementActivation": false,
-    "paymentCollectionOpen": false,
-    "paymentCtaAvailable": false,
-    "publicCheckoutOpen": false,
-    "publicPreviewCta": "SHOW ME",
-    "secondControlledChargeAuthorized": false
+    "newSaleChoiceCount": 1,
+    "publicCheckoutOpen": true,
+    "retiredPlanIdentifiersRejectedServerSide": true,
+    "serverCreatedCheckoutRequired": true
   },
   "choices": [
     {
-      "amountUsd": 5,
-      "autoRenew": true,
-      "billing": "RECURRING_MONTHLY",
-      "id": "monthly",
-      "lookupKey": "franklin_community_member_monthly_v5",
-      "publicCheckoutAvailable": false,
-      "stripePriceId": "price_1UAfLPRxNra9nizolEiP5Z2z"
-    },
-    {
-      "amountUsd": 50,
+      "amountUsd": 35,
       "autoRenew": true,
       "billing": "RECURRING_ANNUAL",
       "id": "annual",
-      "lookupKey": "franklin_community_member_annual_v5",
-      "publicCheckoutAvailable": false,
-      "stripePriceId": "price_1UAfLXRxNra9nizoW32RIfPG"
-    },
-    {
-      "amountUsd": 120,
-      "autoRenew": false,
-      "billing": "ONE_TIME_PREPAID_36_MONTH_TERM",
-      "id": "charter",
-      "label": "BEST_LONG_TERM_VALUE",
-      "lookupKey": "franklin_charter_member_36_month_v5",
-      "publicCheckoutAvailable": false,
-      "stripePriceId": "price_1UAfLfRxNra9nizoqd84x8DR",
-      "termMonths": 36
+      "label": "Franklin Navigator Community Membership",
+      "publicCheckoutAvailable": true,
+      "renewal": "UNTIL_CANCELED"
     }
   ],
   "community": "FRANKLIN_TN",
-  "coordinationCurrentness": "SCCC37.0_UEC1.35",
-  "currentness": {
-    "controlledExistingMembership": "ACTIVE_RESTART_PERSISTENT_ACCOUNT_BOUND_BILLING_PORTAL",
-    "coordinationBuilder": "SCCC37.0",
-    "coordinationRelease": "v0.37.0",
-    "coordinationStandard": "UEC-1.35",
-    "publicCheckoutOpen": false,
-    "workOrder": "WO056"
-  },
   "freePresence": {
     "amountUsd": 0,
-    "factualReviewAndCorrectionsFree": true
+    "factualCorrectionsFree": true,
+    "membershipRequiredForProfileControl": false,
+    "publicProfileRemovalFree": true
   },
-  "incident": {
-    "accountBoundBillingPortal": true,
-    "durableAccess": true,
-    "durableMembership": true,
-    "durableMembershipOrEntitlement": true,
-    "existingPaidSubscriptionReconciledExactlyOnce": true,
-    "newChargeProhibited": true,
-    "oneControlledPaymentSucceeded": true,
-    "requiredNextStep": "FORMAL_LOCAL_READINESS_THEN_SRE_ACCEPTANCE_AND_SCC_CONVERGENCE_BEFORE_PUBLIC_CHECKOUT",
-    "restartPersistence": true,
-    "runtimeState": "CONTROLLED_EXISTING_MEMBERSHIP_PROVEN_COMMERCE_DISABLED",
-    "subscriptionObservedActive": true,
-    "workOrder": "WO-20260903-SCC-LOCAL-FRANKLIN-RUNTIME-BIND-RECONCILE-AND-READY-050"
-  },
+  "historicalPlanRecognition": "INTERNAL_ONLY_FOR_EXISTING_MEMBER_SERVICING",
   "publicIdentity": "Franklin Navigator Community Membership",
-  "release": "FR-NAV1.15.0-CANDIDATE-R40",
-  "schemaVersion": "franklin.community-membership.v7.currentness.v1",
-  "status": "EXISTING_MEMBERSHIP_ACTIVE_NEW_PUBLIC_CHECKOUT_CLOSED"
+  "releasePatch": "FR-NAV1.20.0-HF3.1-P0C1-SINGLE-ANNUAL-PROFILE-CONTROL",
+  "schemaVersion": "franklin.community-membership.public-catalog.vFinal1",
+  "status": "PUBLIC_CHECKOUT_OPEN_SINGLE_ANNUAL_PLAN"
 }
