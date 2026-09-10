@@ -5,6 +5,7 @@ on:
     paths:
       - 'dist/assets/hf32-site-cleanup.js'
       - 'dist/assets/hf32-site-cleanup.css'
+      - 'dist/assets/hf32-sitewide-review.css'
       - 'dist/assets/community-explorer.js'
       - 'dist/assets/hf27-navigation.js'
       - 'dist/assets/r37.css'
@@ -15,6 +16,7 @@ on:
     paths:
       - 'dist/assets/hf32-site-cleanup.js'
       - 'dist/assets/hf32-site-cleanup.css'
+      - 'dist/assets/hf32-sitewide-review.css'
       - 'dist/assets/community-explorer.js'
       - 'dist/assets/hf27-navigation.js'
       - 'dist/assets/r37.css'
@@ -41,6 +43,7 @@ jobs:
       - name: Shared cleanup contract
         run: |
           grep -F "@import url('/assets/hf32-site-cleanup.css');" dist/assets/r37.css
+          grep -F "@import url('/assets/hf32-sitewide-review.css');" dist/assets/r37.css
           grep -F "Ask Franklin Assistant" dist/assets/hf32-site-cleanup.js
           grep -F "Get It Done" dist/assets/hf32-site-cleanup.js
           grep -F "Find Local" dist/assets/hf32-site-cleanup.js
@@ -55,6 +58,12 @@ jobs:
           grep -F 'color:#f7fbfa!important' dist/assets/hf32-site-cleanup.css
           grep -F 'color:#fff1b8!important' dist/assets/hf32-site-cleanup.css
           grep -F '.growth-boundaries .card a{color:var(--brand-dark)!important}' dist/assets/hf32-site-cleanup.css
+      - name: Shared screenshot-review layout contract
+        run: |
+          grep -F 'body.hf32-site-cleanup .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))!important}' dist/assets/hf32-sitewide-review.css
+          grep -F '.r41-more-actions,.hf29-card-more,.hf29-dialog-more,.hf29-footer-more,.hf31-more' dist/assets/hf32-sitewide-review.css
+          grep -F 'content:" ▾"!important' dist/assets/hf32-sitewide-review.css
+          grep -F 'content:" ▴"!important' dist/assets/hf32-sitewide-review.css
       - name: Community Explorer bounded loading contract
         run: |
           grep -F "retry: 'Retry loading local options'" dist/assets/community-explorer.js
