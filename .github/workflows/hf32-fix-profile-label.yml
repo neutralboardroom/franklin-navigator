@@ -1,0 +1,28 @@
+name: HF32 fix profile owner label
+on:
+  push:
+    branches:
+      - hf32-owner-approved-simplification-20260910
+    paths:
+      - scripts/hf32_fix_profile_label.py
+      - .github/workflows/hf32-fix-profile-label.yml
+permissions:
+  contents: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf32-owner-approved-simplification-20260910
+          fetch-depth: 0
+      - run: python scripts/hf32_fix_profile_label.py
+      - run: node --check dist/assets/hf32-public.js
+      - run: git diff --check
+      - name: Commit repair
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist/assets/hf32-public.js
+          git commit -m "Fix HF3.2 business owner profile label"
+          git push origin HEAD:hf32-owner-approved-simplification-20260910
