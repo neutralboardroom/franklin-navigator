@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "franklin.hf31.no-loss-ledger.v1",
+  "releaseTarget": "FR-NAV1.20.0-HF3.1-CANDIDATE",
+  "baseCommit": "736e3cfb5ae6be08758a442ce7bb2f8cedf8b9f0",
+  "activeEdition": "FRANKLIN_TN",
+  "capabilities": [
+    {"id":"UNIVERSAL_HEADER","status":"RETAINED","evidence":"4 direct destinations plus 3 compact More destinations"},
+    {"id":"ASSISTANT_ORDINARY_SIMPLIFICATION","status":"RETAINED","evidence":"one initial matched result; one primary destination; secondary content behind compact disclosure"},
+    {"id":"ASSISTANT_EMERGENCY_VISIBILITY","status":"RETAINED","evidence":"911/988/urgent actions exempt from ordinary collapse"},
+    {"id":"TODAY_EXPIRY","status":"IMPROVED","evidence":"client-side expiry remains and HF3.1 adds explicit fail-closed suppression/empty-state behavior"},
+    {"id":"HOME_CURRENTNESS","status":"IMPROVED","evidence":"expired homepage highlights are suppressed and empty state is made intentional rather than blank"},
+    {"id":"FIND_LOCAL","status":"RETAINED","evidence":"Search + Category first; advanced filters under More; profile count unchanged"},
+    {"id":"PROFILE_PUBLIC_FACTS","status":"RETAINED","evidence":"profile facts and canonical source text remain unchanged; HF3.1 changes presentation only"},
+    {"id":"PROFILE_PRIMARY_CONTACT","status":"IMPROVED","evidence":"one dominant primary contact action and no more than one visible secondary contact action"},
+    {"id":"PROFILE_UTILITY_ACTIONS","status":"IMPROVED","evidence":"Save remains directly available; copy/share/print/preparation utilities move under compact More tools"},
+    {"id":"PROFILE_SOURCE_PROVENANCE","status":"RETAINED","evidence":"source disclosure, check dates, and public/member distinction remain available"},
+    {"id":"PROFILE_CLAIM_CORRECTION","status":"IMPROVED","evidence":"claim/manage becomes the clear primary path; factual correction remains visible; member-options route becomes secondary disclosure"},
+    {"id":"MEMBER_PUBLICATION","status":"RETAINED","evidence":"reviewed member-provided content remains additive and separate from public-source facts"},
+    {"id":"SPANISH_PARITY","status":"IMPROVED","evidence":"all new HF3.1 controls and injected explanatory copy have explicit English/Spanish labels"},
+    {"id":"COMMERCE_RUNTIME","status":"RETAINED","evidence":"no price, payment, runtime, checkout, entitlement, or provider mutation in HF3.1"},
+    {"id":"COMMUNITY_ISOLATION","status":"RETAINED","evidence":"Franklin-only source and deployment lane"}
+  ],
+  "profileCountExpected": 19103,
+  "profileFactsMayChange": false,
+  "pricesMayChange": false,
+  "runtimeMayChange": false,
+  "authorityTransfer": false
+}
