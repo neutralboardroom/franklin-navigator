@@ -1,0 +1,82 @@
+name: HF31 reviewed-pages source qualification
+on:
+  push:
+    branches:
+      - hf31-profile-currentness-polish-20260910
+    paths:
+      - .github/workflows/hf31-qualify.yml
+      - dist/assets/hf31-public.js
+      - dist/assets/hf31-public.css
+      - dist/assets/hf31-task-save.css
+      - dist/assets/r37.css
+      - dist/assets/r37-i18n.js
+      - dist/index.html
+      - dist/today/index.html
+      - dist/es/index.html
+      - dist/es/hoy/index.html
+      - dist/profiles/**/index.html
+      - PRODUCTION_RELEASE.json
+      - scripts/validate-hf31-reviewed-pages.py
+      - scripts/verify-hf31-reviewed-pages.mjs
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf31-profile-currentness-polish-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce HF3.1 protected-scope and expected public-file boundary
+        run: |
+          BASE=736e3cfb5ae6be08758a442ce7bb2f8cedf8b9f0
+          git diff --name-only "$BASE"...HEAD > /tmp/hf31-changed.txt
+          if grep -E '^(dist/data/|server/|runtime/)' /tmp/hf31-changed.txt; then
+            echo 'HF3.1 changed protected data/runtime scope' >&2
+            exit 1
+          fi
+          grep '^dist/' /tmp/hf31-changed.txt | grep -vE '(^|/)index\.html$' | grep -vE '^dist/assets/(hf31-public\.js|hf31-public\.css|hf31-task-save\.css|r37\.css|r37-i18n\.js)$' > /tmp/hf31-unexpected-dist.txt || true
+          if test -s /tmp/hf31-unexpected-dist.txt; then
+            echo 'Unexpected HF3.1 dist files:' >&2
+            cat /tmp/hf31-unexpected-dist.txt >&2
+            exit 1
+          fi
+      - name: Exhaustively prove 19,355 public pages and 19,103 profiles preserve no-loss boundaries
+        run: python3 scripts/validate-hf31-reviewed-pages.py
+      - name: Verify reviewed-page hierarchy and popup/disclosure source contracts
+        run: node scripts/verify-hf31-reviewed-pages.mjs
+      - name: Syntax check changed and retained interaction JavaScript
+        run: |
+          node --check dist/assets/hf31-public.js
+          node --check dist/assets/r37-i18n.js
+          node --check dist/assets/hf27-navigation.js
+          node --check dist/assets/hf29-design.js
+          node --check dist/assets/hf28-directory.js
+          node --check dist/assets/local-discovery.js
+          node --check dist/assets/navigator-bot.js
+          node --check dist/assets/r38-assistant-followthrough.js
+          node --check dist/assets/r40-assistant-safety-guard.js
+      - name: Verify exact release metadata contract
+        run: |
+          python3 - <<'PY'
+          import json
+          m=json.load(open('PRODUCTION_RELEASE.json'))
+          assert m['release']=='FR-NAV1.20.0-HF3.1-CANDIDATE'
+          assert m['activeEdition']=='FRANKLIN_TN'
+          assert m['profileCount']==19103 and m['profileFactsChanged'] is False
+          assert m['pricesChanged'] is False and m['runtimeChanged'] is False and m['checkoutChanged'] is False
+          assert m['checkoutRemainsOpen'] is True
+          assert m['popupAndDisclosureAuditIncluded'] is True
+          assert m['reviewedPages']==['HOME','TODAY','GET_IT_DONE','FIND_LOCAL','PUBLIC_PROFILE_TEMPLATE']
+          print('HF31_METADATA_PASS')
+          PY
