@@ -1,21 +1,29 @@
 name: HF32 fix idempotent labels
+
 on:
-  workflow_dispatch:
   push:
-    branches: [hf32-owner-approved-simplification-20260910]
-    paths: [.github/workflows/hf32-fix-marknative.yml]
+    branches:
+      - hf32-owner-approved-simplification-20260910
+    paths:
+      - '.github/workflows/hf32-fix-marknative.yml'
+  workflow_dispatch:
+
 permissions:
   contents: write
+
 jobs:
   fix:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           ref: hf32-owner-approved-simplification-20260910
           fetch-depth: 0
       - name: Make shared label writes idempotent
+        shell: bash
         run: |
+          set -euo pipefail
           python - <<'PY'
           from pathlib import Path
           p=Path('dist/assets/hf32-public.js')
@@ -38,9 +46,15 @@ jobs:
           node --check dist/assets/hf32-public.js
           git diff --check
       - name: Commit repair
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name neutralboardroom
           git config user.email reachrgnow@gmail.com
           git add dist/assets/hf32-public.js
-          git commit -m "Make HF3.2 shared label writes idempotent"
-          git push origin HEAD:hf32-owner-approved-simplification-20260910
+          if git diff --cached --quiet; then
+            echo 'No repair changes to commit.'
+          else
+            git commit -m 'Make HF3.2 shared label writes idempotent'
+            git push origin HEAD:hf32-owner-approved-simplification-20260910
+          fi
