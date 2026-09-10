@@ -1,0 +1,43 @@
+name: HF32 sports diagnostic
+on:
+  push:
+    branches:
+      - hf32-owner-approved-simplification-20260910
+    paths:
+      - .github/workflows/hf32-sports-diagnostic.yml
+permissions:
+  contents: read
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf32-owner-approved-simplification-20260910
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          python -m pip install --disable-pip-version-check playwright==1.55.0
+          python -m playwright install chromium
+      - run: |
+          python -m http.server 8765 --directory dist >/tmp/hf32-http.log 2>&1 &
+          server=$!
+          trap 'kill $server || true' EXIT
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+          with sync_playwright() as pw:
+              b=pw.chromium.launch(headless=True)
+              for path in ['/sports/','/sports/bowling/','/es/deportes/']:
+                  p=b.new_page(viewport={'width':1366,'height':768})
+                  errors=[]
+                  p.on('pageerror',lambda e,errors=errors: errors.append(str(e)))
+                  p.on('console',lambda m,path=path: print('CONSOLE',path,m.type,m.text) if m.type=='error' else None)
+                  p.goto('http://127.0.0.1:8765'+path,wait_until='domcontentloaded')
+                  p.wait_for_timeout(1000)
+                  print('PATH',path,'BODY_CLASSES',p.locator('body').get_attribute('class'),'ERRORS',errors)
+                  print('H1',p.locator('h1').first.inner_text() if p.locator('h1').count() else 'NONE')
+                  p.close()
+              b.close()
+          PY
