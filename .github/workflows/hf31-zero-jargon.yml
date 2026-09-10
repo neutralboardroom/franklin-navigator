@@ -42,5 +42,5 @@ jobs:
           import json
           p=json.load(open('evidence/hf31/PUBLIC_LANGUAGE_ZERO_JARGON_REPORT.json'))
           print('remainingHighConfidenceJargonMatches=',p['remainingHighConfidenceJargonMatches'])
-          # Persist first; a later qualification gate enforces zero after human-qualified cleanup.
+          # This pass persists evidence; the final expanded qualification requires zero unresolved high-confidence jargon.
           PY
