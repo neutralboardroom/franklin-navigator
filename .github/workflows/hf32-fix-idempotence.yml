@@ -1,0 +1,47 @@
+name: HF32 fix mutation idempotence
+on:
+  push:
+    branches:
+      - hf32-owner-approved-simplification-20260910
+    paths:
+      - .github/workflows/hf32-fix-idempotence.yml
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf32-owner-approved-simplification-20260910
+          fetch-depth: 0
+      - name: Make mutation observers idempotent
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('dist/assets/hf32-public.js')
+          s=p.read_text(encoding='utf-8')
+          old="""    const update=()=>Object.values(groups).forEach(({section,inner})=>section.hidden=!qa('.today-card',inner).some(c=>!c.hidden));update();
+    new MutationObserver(update).observe(grid,{subtree:true,attributes:true,attributeFilter:['hidden']});"""
+          new="""    const update=()=>Object.values(groups).forEach(({section,inner})=>{const next=!qa('.today-card',inner).some(c=>!c.hidden);if(section.hidden!==next)section.hidden=next});update();
+    new MutationObserver(update).observe(grid,{subtree:true,attributes:true,attributeFilter:['hidden']});"""
+          assert old in s, 'today observer block not found'
+          s=s.replace(old,new,1)
+          old2="""  function updateDirectoryCount(root){
+    const count=q('[data-dir-count]',root),page=q('[data-dir-page]',root),prev=q('[data-dir-prev]',root);if(!count||!page)return;const total=Number((count.textContent.match(/[\\d,\\.]+/)||['0'])[0].replace(/[^\\d]/g,''));const pg=Number((page.textContent.match(/\\d+/)||['1'])[0]);if(!total)return;const start=(pg-1)*24+1,end=Math.min(pg*24,total);markNative(page,`Showing ${start.toLocaleString()}–${end.toLocaleString()} of ${total.toLocaleString()}`,`Mostrando ${start.toLocaleString()}–${end.toLocaleString()} de ${total.toLocaleString()}`);if(prev)prev.hidden=pg<=1;if(!meaningfulDirectoryState(root)&&document.body.classList.contains('hf32-directory-browse'))markNative(count,`${total.toLocaleString()} local profiles`,`${total.toLocaleString()} perfiles locales`)}"""
+          new2="""  function updateDirectoryCount(root){
+    const count=q('[data-dir-count]',root),page=q('[data-dir-page]',root),prev=q('[data-dir-prev]',root);if(!count||!page)return;const total=Number((count.textContent.match(/[\\d,\\.]+/)||['0'])[0].replace(/[^\\d]/g,''));const pg=Number((page.textContent.match(/\\d+/)||['1'])[0]);if(!total)return;const start=(pg-1)*24+1,end=Math.min(pg*24,total);const pageEn=`Showing ${start.toLocaleString()}–${end.toLocaleString()} of ${total.toLocaleString()}`,pageEs=`Mostrando ${start.toLocaleString()}–${end.toLocaleString()} de ${total.toLocaleString()}`;if(page.textContent.trim()!==tx(pageEn,pageEs))markNative(page,pageEn,pageEs);if(prev&&prev.hidden!==(pg<=1))prev.hidden=pg<=1;if(!meaningfulDirectoryState(root)&&document.body.classList.contains('hf32-directory-browse')){const countEn=`${total.toLocaleString()} local profiles`,countEs=`${total.toLocaleString()} perfiles locales`;if(count.textContent.trim()!==tx(countEn,countEs))markNative(count,countEn,countEs)}}"""
+          assert old2 in s, 'directory count block not found'
+          s=s.replace(old2,new2,1)
+          p.write_text(s,encoding='utf-8')
+          print('fixed idempotence')
+          PY
+          node --check dist/assets/hf32-public.js
+          git diff --check
+      - name: Commit repair
+        run: |
+          git config user.name "neutralboardroom"
+          git config user.email "reachrgnow@gmail.com"
+          git add dist/assets/hf32-public.js
+          git commit -m "Fix HF3.2 mutation-observer idempotence"
+          git push origin HEAD:hf32-owner-approved-simplification-20260910
