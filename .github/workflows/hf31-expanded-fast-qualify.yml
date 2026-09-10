@@ -1,0 +1,41 @@
+name: HF31 expanded fast qualification
+on:
+  push:
+    branches:
+      - hf31-profile-currentness-polish-20260910
+    paths:
+      - .github/workflows/hf31-expanded-fast-qualify.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf31-profile-currentness-polish-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run fast exact expanded source qualification
+        run: python3 scripts/validate-hf31-expanded-fast.py
+      - name: Syntax check changed and retained JS
+        run: |
+          node --check dist/assets/hf31-public.js
+          node --check dist/assets/hf31-deep-public.js
+          node --check dist/assets/hf31-deep-language-runtime.js
+          node --check dist/assets/community-explorer.js
+          node --check dist/assets/r37-i18n.js
+          node --check dist/assets/hf27-navigation.js
+          node --check dist/assets/hf29-design.js
+          node --check dist/assets/r40-assistant-safety-guard.js
+      - name: Recheck retained interaction hierarchy
+        run: node scripts/verify-hf29-design.mjs
