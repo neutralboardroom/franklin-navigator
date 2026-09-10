@@ -33,9 +33,28 @@ The following items were reviewed from the live site at Roger's normal laptop/br
 12. Preserve the current four-direct-destination global header and active Today state; do not add more top-level navigation choices.
 13. Make the target Today experience feel like a true temporal briefing: concise title/intro, then qualified `Today` / `Tomorrow` / `Coming up` content, followed by a simple regular-activities route—without exposing internal freshness architecture.
 
+### Get It Done — APPROVED
+
+1. Simplify the hero to one obvious action. Keep the text box and one strong primary CTA such as `Find my next step`; remove the competing `I'm not sure where to start` route because the same assistant/input can handle uncertainty.
+2. Rewrite technical privacy/device wording more naturally. Replace phrasing such as `Your progress can stay on this device` with a clearer user benefit such as `Your checklist stays private on this device`, while preserving the underlying behavior.
+3. Give the task area a clear resident-facing heading such as `Choose what you want to get done`, with a short supporting sentence, before the Category control.
+4. Preserve the single Category dropdown. Do not restore the previous wall of category pills.
+5. Reduce initial task-card density. Show roughly six broadly useful/common tasks first and place the remaining tasks behind `See all tasks` and/or reveal them through the Category selector. Preserve every qualified task and route.
+6. Make each task card feel like a destination rather than a mini dashboard. Keep one obvious task action and make Save a quiet, consistent bookmark-style affordance rather than a competing CTA.
+7. Shorten task-card descriptions so the grid is easier to scan. Keep only enough copy to help the resident choose the correct task; move deeper explanation into the opened task/guide.
+8. Standardize task action labels toward simple outcome language. Prefer direct labels such as `Start moving`, `Enroll in school`, `Plan a permit`, `Find transportation`, and `Get housing help` rather than unnecessary variation across every card.
+9. Remove internal/release language from `How tasks work`, including `Deeper existing Franklin guides remain available; no qualified guide was removed.` Public copy must explain the experience, not release preservation.
+10. Compress `How tasks work` into a compact four-step strip: `Understand → Prepare → Complete → Next`, with one short explanation such as `Understand the task, prepare what you need, complete it at the right place, and know what comes next.`
+11. Remove or substantially simplify the feature-specification list (`Device-only checklists`, `Official source links`, `Copy / print where supported`, `Reminders through My Franklin`). Prefer one quiet reassurance such as `Save a private checklist, open official sources, and keep track of follow-ups.`
+12. Remove the two competing bottom actions `Prepare connected needs` and `Organize a notice or claim` from this general page. Replace them with one contextual route such as `Need help with more than one task? Ask Franklin Assistant.` Keep notice/claim functionality available in the contexts where it is actually relevant.
+13. Replace footer `More links ...` with the approved intentional `More links` disclosure treatment and equivalent Spanish labeling.
+14. Preserve the current three-column laptop task grid; it is substantially clearer than the previous four-column layout at the owner's real laptop width.
+15. Tighten vertical rhythm modestly between hero, category selector, task grid, `How tasks work`, and footer so the page feels shorter and more intentional without becoming crowded.
+16. Target experience: concise `Get It Done in Franklin` hero, one describe-your-need action, `Choose what you want to get done`, one Category selector, six common task cards plus `See all tasks`, then a compact `Understand → Prepare → Complete → Next` explanation.
+
 ## Continuing next-version requirements
 
-1. Continue the owner-led laptop screenshot review with Get It Done, Find Local, the public profile template, deep activity/help routes, Community, My Franklin, For Businesses / Membership, and representative popup/open states before calling the full site visually complete.
+1. Continue the owner-led laptop screenshot review with Find Local, the public profile template, deep activity/help routes, Community, My Franklin, For Businesses / Membership, and representative popup/open states before calling the full site visually complete.
 2. Capture open-state screenshots for representative More menus, filters, claim/correction flows, Assistant result dialogs, comparison panels, and membership/account screens; keep secondary surfaces compact and decision-reducing.
 3. Preserve the universal navigation hierarchy: four direct destinations plus three under More on desktop/laptop, unless later observed user evidence clearly supports another structure.
 4. Preserve the deep-page rule established in HF3.1: a click into a specific topic should present useful topic-specific information immediately; generic cross-navigation belongs later or under progressive disclosure.
