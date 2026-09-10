@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "franklin.hf31.profile-render-language.v1",
+  "file": "dist/assets/hf31-public.js",
+  "renderOnly": true,
+  "profileFactsChanged": false,
+  "phrasesCleaned": [
+    "source-backed service/location identity",
+    "source-backed service area",
+    "generic source-backed",
+    "not asserted in this release"
+  ],
+  "result": "PASS"
+}

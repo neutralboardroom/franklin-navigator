@@ -1,0 +1,43 @@
+{
+  "changedFileSamples": [
+    "dist/activities/index.html",
+    "dist/assistant/learning/index.html",
+    "dist/community-help-center/index.html",
+    "dist/es/index.html",
+    "dist/es/privacidad/index.html",
+    "dist/events/index.html",
+    "dist/index.html",
+    "dist/jobs-internships/index.html",
+    "dist/live-local/index.html",
+    "dist/membership-start/index.html",
+    "dist/privacy/index.html",
+    "dist/situation-planner/index.html"
+  ],
+  "changedFiles": 12,
+  "profileStaticHtmlExcludedReason": "Profile HTML is preserved as source evidence; public display jargon is cleaned by hf31-public.js without changing underlying profile facts.",
+  "remainingHighConfidenceJargonMatches": 0,
+  "remainingSamples": [],
+  "replacementCounts": {
+    "Current evidence state": 1,
+    "First-party Downtown Franklin Association source": 1,
+    "First-party sources checked and dated": 1,
+    "First-party venue source": 1,
+    "Needs recheck before publication": 1,
+    "Official or first-party link": 51,
+    "Preparing organization source links": 1,
+    "Privacy check before generation": 1,
+    "Routes to existing Franklin tools and source-backed discovery.": 1,
+    "coverage floor": 2,
+    "first-party and official starting points": 1,
+    "first-party links": 1,
+    "información de contacto público de negocios y trabajo oficial respaldada por fuentes": 1,
+    "official and first-party starting points": 3,
+    "ordinary source-backed visibility": 1,
+    "public-source-backed profiles": 1,
+    "respaldados por fuentes públicas": 1,
+    "source-backed public business and official-work contact information": 1
+  },
+  "result": "PASS",
+  "schemaVersion": "franklin.hf31.public-language-zero-jargon.v2",
+  "scope": "NON_PROFILE_STATIC_PUBLIC_HTML_PLUS_PROFILE_RENDER_CLEANUP_SEPARATE"
+}

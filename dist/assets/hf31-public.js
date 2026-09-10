@@ -293,6 +293,21 @@
     publication.classList.add('hf31-member-publication');publication.dataset.hf31Ready='1';
   }
 
+  function refineProfilePlainLanguage(){
+    if(!PROFILE_RE.test(path()))return;
+    const replacements=[
+      [/service\/location identity source-backed; street address not asserted in this release/gi,tx('service and location information from public sources; the source does not list a street address','información de servicio y ubicación de fuentes públicas; la fuente no indica una dirección postal')],
+      [/source-backed service area; street address not asserted/gi,tx('service area based on public information; the source does not list a street address','área de servicio basada en información pública; la fuente no indica una dirección postal')],
+      [/source-backed/gi,tx('based on public information','basado en información pública')],
+      [/not asserted in this release/gi,tx('not listed in the source','no indicado en la fuente')]
+    ];
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let node;
+    while((node=walker.nextNode())){
+      if(node.parentElement?.closest('script,style,noscript,code,pre,textarea'))continue;
+      const raw=node.nodeValue||'';let value=raw;for(const [re,repl] of replacements)value=value.replace(re,repl);if(value!==raw)node.nodeValue=value;
+    }
+  }
+
   function refineProfile(){
     if(!PROFILE_RE.test(path()))return;
     document.body.classList.add('hf31-profile-page');
@@ -307,7 +322,7 @@
       if(article){refineProfileAbout(article);refineProfileFacts(article);refineProfileSources(article,side);refineProfileManagement(article)}
       refineProfileRelated(side);
     }
-    enhanceMemberPublication();
+    enhanceMemberPublication();refineProfilePlainLanguage();
   }
 
   function init(){
