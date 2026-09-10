@@ -1,0 +1,131 @@
+name: Franklin FR-NAV1.22.0 HF3.3 next version
+on:
+  push:
+    branches: [fr-nav1-22-0-hf33-20260911]
+    paths:
+      - 'scripts/hf33-build.py'
+      - 'dist/assets/hf33-next-version.css'
+      - 'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_22_0_HF33.md'
+      - '.github/workflows/hf33-next-version.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: fr-nav1-22-0-hf33-20260911
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Build full HF3.3 release
+        run: python3 scripts/hf33-build.py
+      - name: JavaScript syntax
+        run: |
+          node --check dist/assets/hf33-next-version.js
+          node --check dist/assets/hf33-explorer-preload.js
+          node --check dist/assets/member-public.js
+          node --check dist/assets/member-profile-live.js
+          node --check dist/assets/community-explorer.js
+      - name: Release identity and shared first-paint contract
+        run: |
+          grep -F 'FR-NAV1.22.0-HF3.3' PRODUCTION_RELEASE.json
+          grep -F 'FR-NAV1.22.0-HF3.3' dist/index.html
+          grep -F 'hf33-first-paint-nav' dist/index.html
+          grep -F 'Ask Franklin Assistant' dist/index.html
+          grep -F 'Get It Done' dist/index.html
+          grep -F 'Find Local' dist/index.html
+          grep -F 'r41-nav-more' dist/index.html
+          grep -F '/assets/hf33-next-version.css?v=frnav1220' dist/index.html
+          grep -F '/assets/hf33-next-version.js?v=frnav1220' dist/index.html
+      - name: Explorer deterministic loading contract
+        run: |
+          grep -R -l 'data-community-explorer' dist --include='*.html' > /tmp/explorer-pages.txt
+          test "$(wc -l < /tmp/explorer-pages.txt)" -ge 40
+          while IFS= read -r page; do
+            grep -F 'data-explorer-static-payload' "$page" >/dev/null
+            grep -F '/assets/hf33-explorer-preload.js?v=frnav1220' "$page" >/dev/null
+            grep -F '/assets/community-explorer.js?v=frnav1220' "$page" >/dev/null
+          done < /tmp/explorer-pages.txt
+          grep -F "url.pathname!=='/data/franklin-activities.json'" dist/assets/hf33-explorer-preload.js
+          grep -F 'Promise.race([request, timeout])' dist/assets/community-explorer.js
+          grep -F 'Retry loading local options' dist/assets/community-explorer.js
+          grep -F 'Explore other sports and activities' dist/assets/hf33-next-version.js
+      - name: Dark contrast and shared density contract
+        run: |
+          grep -F '.urgent-section,.history-section,.growth-trust,.growth-boundaries,.home-command-bar,.explorer-hero-card,.hf33-dark-surface' dist/assets/hf33-next-version.css
+          grep -F 'color:#f8fcfb!important' dist/assets/hf33-next-version.css
+          grep -F 'color:#fff0a8!important' dist/assets/hf33-next-version.css
+          grep -F 'main>[class*="hero"] h1' dist/assets/hf33-next-version.css
+          grep -F '.empty-state' dist/assets/hf33-next-version.css
+      - name: Finished public profile contract
+        run: |
+          test -f dist/profiles/FR-ORG-5d72d3ee4e9961c5/index.html
+          grep -F 'hf33-profile' dist/profiles/FR-ORG-5d72d3ee4e9961c5/index.html
+          grep -F '/assets/hf33-next-version.css?v=frnav1220' dist/profiles/FR-ORG-5d72d3ee4e9961c5/index.html
+          grep -F 'extractHiddenContactActions' dist/assets/hf33-next-version.js
+          grep -F 'Similar local profiles' dist/assets/hf33-next-version.js
+          grep -F 'data-franklin-active-member-profile' dist/assets/hf33-next-version.css
+          grep -F 'data-franklin-member-entitlement="pending"' dist/assets/hf33-next-version.css
+          grep -F 'activePaidMember' dist/assets/member-public.js
+          grep -F 'Request removal from public view' dist/assets/member-public.js
+          grep -F 'bookingUrl' dist/assets/member-public.js
+          grep -F 'galleryUrls' dist/assets/member-profile-live.js
+          grep -F 'socialLinks' dist/assets/member-profile-live.js
+          grep -F 'quoteUrl' dist/assets/member-profile-live.js
+      - name: Pre-purchase member value contract
+        run: |
+          grep -F 'Keep the focus on your business' dist/assets/hf33-next-version.js
+          grep -F 'Membership does not change ordinary Directory ranking' dist/assets/hf33-next-version.js
+          grep -F 'Community Member profile — $35/year' dist/assets/hf33-next-version.js
+          test -f dist/membership-start/index.html
+          test -f dist/member-profile-preview/index.html
+          test -f dist/business-dashboard/index.html
+      - name: Safety, directory, workspace and public-language contract
+        run: |
+          test -f dist/community-help-center/index.html
+          grep -F '911' dist/community-help-center/index.html
+          grep -F '988' dist/community-help-center/index.html
+          grep -F '211' dist/community-help-center/index.html
+          test -f dist/directory/index.html
+          grep -F 'hf33-directory' dist/directory/index.html
+          test -f dist/my-franklin/index.html
+          grep -F 'hf33-my-franklin' dist/my-franklin/index.html
+          grep -F 'Last checked' dist/assets/hf33-next-version.js
+          ! grep -F 'FR_NAV1_22_BUILD_MARKER' PRODUCTION_RELEASE.json
+      - name: No-loss capability markers
+        run: |
+          test -f dist/corrections/index.html
+          test -f dist/profile-studio/index.html
+          test -f dist/member-profile-preview/index.html
+          test -f dist/sports/index.html
+          test -f dist/sports/bowling/index.html
+          test -f dist/activities/index.html
+          test -f dist/today/index.html
+          test -f dist/get-it-done/index.html
+          test -f dist/directory/index.html
+          test -f dist/community/index.html
+          test -f dist/my-franklin/index.html
+          test -f dist/es/deportes/index.html
+          test -f dist/es/centro-de-ayuda/index.html
+          grep -F 'freeCorrectionRemovalPreserved' PRODUCTION_RELEASE.json
+          grep -F 'directoryRankingChangedByMembership' PRODUCTION_RELEASE.json
+          grep -F 'reviewsRatingsInvented' PRODUCTION_RELEASE.json
+      - name: Persist generated release
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist PRODUCTION_RELEASE.json NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_22_0_HF33.md
+          if git diff --cached --quiet; then
+            echo 'HF3.3 release already generated.'
+          else
+            git commit -m 'FR-NAV1.22.0 HF3.3: build complete owner-review release [skip ci]'
+            git push origin HEAD:fr-nav1-22-0-hf33-20260911
+          fi
