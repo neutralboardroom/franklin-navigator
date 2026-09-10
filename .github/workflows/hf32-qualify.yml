@@ -34,7 +34,7 @@ jobs:
           node --check dist/assets/r37-i18n.js
           python - <<'PY'
           from pathlib import Path
-          import hashlib, subprocess, re
+          import hashlib, subprocess
           assert hashlib.sha256(Path('dist/assets/hf32-public.js').read_bytes()).hexdigest() == '11f104253eb55bfb38d880f313fa60008e7097626526aefa355e6945a2eadf5c'
           assert hashlib.sha256(Path('dist/assets/hf32-public.css').read_bytes()).hexdigest() == '485946a5cea4faa19acc9ca8a2addd342246b4cd7c59e8811b2e33ffb61d38c0'
           r37=Path('dist/assets/r37-i18n.js').read_text(encoding='utf-8')
@@ -78,7 +78,8 @@ jobs:
               return page.locator(sel).evaluate_all("els=>els.filter(e=>!e.hidden&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden').length")
           def load(page,path,body_class=None,wait=1000):
               page.goto(BASE+path,wait_until='domcontentloaded')
-              if body_class: page.wait_for_selector('body.'+body_class,state='attached',timeout=12000)
+              if body_class:
+                  page.wait_for_function("c => document.body && document.body.classList.contains(c)", arg=body_class, timeout=12000)
               page.wait_for_timeout(wait)
               name=path.strip('/').replace('/','__') or 'home'
               page.screenshot(path=str(out/(name+'.png')),full_page=True)
@@ -160,7 +161,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: HF32_BROWSER_EVIDENCE_DIRECT
+          name: HF32_BROWSER_EVIDENCE_DIRECT_V2
           path: hf32-browser-evidence/
           if-no-files-found: warn
           retention-days: 30
