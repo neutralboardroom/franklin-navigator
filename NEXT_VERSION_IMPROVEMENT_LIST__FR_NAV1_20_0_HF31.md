@@ -52,9 +52,38 @@ The following items were reviewed from the live site at Roger's normal laptop/br
 15. Tighten vertical rhythm modestly between hero, category selector, task grid, `How tasks work`, and footer so the page feels shorter and more intentional without becoming crowded.
 16. Target experience: concise `Get It Done in Franklin` hero, one describe-your-need action, `Choose what you want to get done`, one Category selector, six common task cards plus `See all tasks`, then a compact `Understand → Prepare → Complete → Next` explanation.
 
+### Site-wide source-date presentation — APPROVED
+
+1. Do not routinely display research/source-check dates such as `Source date: Aug 25, 2026` on ordinary cards, profiles, directories, or general public-facing pages.
+2. Preserve every source/check date internally for provenance, currentness rules, auditability, expiry/suppression logic, and source-detail views. This is a presentation change, not a source-evidence deletion.
+3. Keep source/check dates available when a user deliberately opens a source/details/currentness disclosure and when the date itself is materially useful to evaluating the information.
+4. Distinguish the date of the real-world event/service from the date Franklin Navigator checked a source. Event dates/times that users need to act remain prominent; research/check dates normally do not.
+5. Continue fail-closed handling of stale or expired information even when the underlying research date is no longer shown in the ordinary public presentation.
+
+### Find Local — APPROVED
+
+1. Remove visible source dates from every ordinary result card, consistent with the approved site-wide source-date presentation rule. Preserve them in the underlying evidence and optional source/details views.
+2. Rewrite the hero in ordinary resident language. Replace database-style wording such as `19,103 local profiles built from public information` with a direct explanation such as `Search 19,103 Franklin-area businesses, services, professionals and organizations by name, category or place.`
+3. Keep Search + Category as the two primary controls and keep advanced filters behind the collapsed `More filters` disclosure. Tighten excess vertical spacing between hero, controls and results.
+4. Remove the technical privacy/process paragraph from the default search view (`Search words and filters appear in the page link... comparison stays on this device...`). If still useful, move it behind a small `Search privacy` disclosure.
+5. Hide `Copy search link` until the user has entered a search or selected a meaningful filter worth sharing.
+6. Fix sticky-filter behavior on laptop. Do not keep a large Search + Category panel covering a substantial portion of the owner's screen or allowing cards to pass underneath it. Either stop making the full panel sticky or collapse it into a compact one-line search strip after scrolling.
+7. Change the ordinary laptop result grid from four narrow columns to three wider columns for easier scanning of names, categories, addresses and actions.
+8. Simplify category presentation. Replace large outlined category pills with a quieter category label or similarly low-noise treatment unless a pill has a real interactive purpose.
+9. Simplify contact-availability indicators. Replace separate pill-like `Phone`, `Website`, `Public email`, and `Exact address` badges with one restrained availability line such as `Phone · Website · Email`; do not show `Exact address` as a badge when the address is already displayed.
+10. Remove source/research-process phrasing from ordinary cards, including wording such as `Public IRS filing address geocoded in Williamson County`. Preserve the source fact and relevant caveat internally/full-profile source details, but present residents with useful plain-language location information.
+11. Give each result one obvious primary action: `Open profile`. Make Compare a quieter checkbox/control rather than a competing CTA, and keep genuinely useful secondary utilities in a compact disclosure.
+12. Replace every `More ...` result control with a deliberate accessible label such as `More options` plus a clear disclosure indicator, with equivalent Spanish labeling.
+13. Improve the untouched/unfiltered directory experience. Do not make an alphabetical dump beginning with names such as `1 Surface LLC`, `10 Federal Self Storage`, etc. the dominant first experience. Emphasize `Search or choose a category`, while preserving neutral full alphabetical browsing as an available option. Do not create paid/recommended ranking bias.
+14. Use friendlier result-count wording. Before filtering, prefer `19,103 local profiles`; after a user searches/filters, use a normal result count such as `42 results`.
+15. Improve pagination. Prefer wording such as `Showing 1–24 of 19,103` with clear Previous/Next controls rather than emphasizing `Page 1 of 796`. Hide or properly disable Previous on page 1. Keep deep paging available but make search/category the normal discovery path.
+16. Rewrite the fairness/ranking note in plain English. Replace `Results use the same directory information for everyone. Membership does not change ordinary directory ranking.` with concise copy such as `Membership does not affect where profiles appear in search results.` Keep a quiet `How results work` link for users who want more detail.
+17. Preserve the useful core architecture: Search, Category, collapsed advanced filters, comparison capability, full-profile access, neutral ranking principles, and all qualified profile records. Simplify the presentation without removing capability or changing profile facts.
+18. Target result-card experience: business/organization name, quiet category label, concise address/location, restrained contact availability (`Phone · Website · Email` where supported), one primary `Open profile` action, quiet Compare control, and a compact `More options` disclosure only where useful.
+
 ## Continuing next-version requirements
 
-1. Continue the owner-led laptop screenshot review with Find Local, the public profile template, deep activity/help routes, Community, My Franklin, For Businesses / Membership, and representative popup/open states before calling the full site visually complete.
+1. Continue the owner-led laptop screenshot review with the public profile template, representative deep activity/help routes, Community, My Franklin, For Businesses / Membership, and representative popup/open states before calling the full site visually complete.
 2. Capture open-state screenshots for representative More menus, filters, claim/correction flows, Assistant result dialogs, comparison panels, and membership/account screens; keep secondary surfaces compact and decision-reducing.
 3. Preserve the universal navigation hierarchy: four direct destinations plus three under More on desktop/laptop, unless later observed user evidence clearly supports another structure.
 4. Preserve the deep-page rule established in HF3.1: a click into a specific topic should present useful topic-specific information immediately; generic cross-navigation belongs later or under progressive disclosure.
