@@ -1,0 +1,43 @@
+name: HF31 public language scrub
+on:
+  push:
+    branches:
+      - hf31-profile-currentness-polish-20260910
+    paths:
+      - scripts/hf31-public-language-scrub.py
+      - .github/workflows/hf31-public-language-scrub.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrub:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf31-profile-currentness-polish-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply public-language cleanup and generate audit report
+        run: python scripts/hf31-public-language-scrub.py --apply
+      - name: Syntax check community explorer and deep public scripts
+        run: |
+          node --check dist/assets/community-explorer.js
+          node --check dist/assets/hf31-deep-public.js
+          node --check dist/assets/r37-i18n.js
+      - name: Commit deterministic public-language changes
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist evidence/hf31/PUBLIC_LANGUAGE_SCRUB_REPORT.json
+          if git diff --cached --quiet; then
+            echo "No source text changes needed"
+          else
+            git commit -m "Clean public technical language and Spanish wording across Franklin deep pages"
+            git push origin HEAD:hf31-profile-currentness-polish-20260910
+          fi
