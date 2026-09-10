@@ -18,10 +18,29 @@ jobs:
           persist-credentials: true
       - name: Verify trigger head
         run: test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
-      - name: Apply P0 public closeout
+      - name: Assemble and apply P0 public closeout
         run: |
           python -m pip install --disable-pip-version-check beautifulsoup4
-          cat scripts/p0-closeout-parts/part*.b64 | base64 -d > scripts/p0-closeout-apply-on-repo.py
+          python - <<'PY'
+          from pathlib import Path
+          import base64,hashlib,string
+          root=Path('scripts/p0-closeout-parts')
+          expected={0:'e562dc92009b62c415a660da1a061b211db946aa',1:'97b742d6d0f82249ef52ca4b22fa70ad78a15fcb',2:'a3a0d634287737d6e76fe1b210ae21d0522b5472',3:'2fbe497bdf0537c46641cfdca2e6ca8d23144a73',4:'ee833b1be414a7da7694afdb947f8e829da34637',5:'fd353ab74088d73323f6668d2f680db62b6b6a8a',6:'55953f4dee5e1eca38257706dc89e10cdf2ce42f',7:'43baa1d1ba2c67cb952919a7018f38c8cb2daa32',8:'05aa3743fe8fe95c6238475ab7c77cb9aaa44f49'}
+          def gitsha(s):
+            b=s.encode(); return hashlib.sha1(f'blob {len(b)}\0'.encode()+b).hexdigest()
+          parts=[]; alphabet=string.ascii_letters+string.digits+'+/='
+          for i in range(9):
+            s=(root/f'part{i:02}.b64').read_text('utf-8').strip(); target=expected[i]
+            if gitsha(s)!=target and i==0:
+              s=next((x for x in (s[:6000],s[-6000:]) if gitsha(x)==target),s)
+            if gitsha(s)!=target and i==5 and len(s)==5999:
+              s=next((s+ch for ch in alphabet if gitsha(s+ch)==target),s)
+            if gitsha(s)!=target: raise SystemExit(f'P0_PART_INTEGRITY_FAIL:{i}:{len(s)}:{gitsha(s)}')
+            parts.append(s)
+          decoded=base64.b64decode(''.join(parts),validate=True)
+          Path('scripts/p0-closeout-apply-on-repo.py').write_bytes(decoded)
+          print('P0_TRANSFORMER_BYTES',len(decoded))
+          PY
           python scripts/p0-closeout-apply-on-repo.py
           rm scripts/p0-closeout-apply-on-repo.py
           python scripts/p0-closeout-post.py
