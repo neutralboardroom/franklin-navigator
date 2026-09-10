@@ -1,0 +1,64 @@
+name: HF32 apply direct loader and release identity
+
+on:
+  push:
+    branches:
+      - hf32-owner-approved-simplification-20260910
+    paths:
+      - .github/workflows/hf32-apply-release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hf32-owner-approved-simplification-20260910
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply HF3.2 release pass
+        run: python scripts/apply-hf32-release.py
+      - name: Verify direct loading and no state mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check dist/assets/hf32-public.js
+          node --check dist/assets/r37-i18n.js
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          pages=list(Path('dist').rglob('index.html'))
+          assert len(pages)==19355,len(pages)
+          assert all(p.read_text(encoding='utf-8').count('data-hf32-direct="1"')==1 for p in pages)
+          assert all('FR-NAV1.21.0-HF3.2-CANDIDATE' in p.read_text(encoding='utf-8') for p in pages)
+          r37=Path('dist/assets/r37-i18n.js').read_text(encoding='utf-8')
+          assert '/* HF3.2 — owner-approved simplification layer. */' not in r37
+          assert "@import url('/assets/hf32-public.css');" in Path('dist/assets/r37.css').read_text(encoding='utf-8')
+          changed=subprocess.check_output(['git','diff','--name-only','50bf87535d7cd9bb5aabaaf5b1b93f4602549fa2...HEAD'],text=True).splitlines()
+          forbidden=[x for x in changed if x.startswith(('server/','dist/data/'))]
+          assert not forbidden,forbidden[:20]
+          print('HF32_DIRECT_LOAD_PASS pages=19355 forbidden_state_changes=0')
+          PY
+      - name: Commit release pass
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist scripts/apply-hf32-release.py
+          if git diff --cached --quiet; then
+            echo 'No release-pass changes to commit.'
+          else
+            git commit -m 'Apply HF3.2 direct shared UI loader and truthful release identity'
+            git push origin HEAD:hf32-owner-approved-simplification-20260910
+          fi
