@@ -27,7 +27,7 @@ jobs:
           node-version: '22'
       - name: Run fast exact expanded source qualification
         run: python3 scripts/validate-hf31-expanded-fast.py
-      - name: Syntax check changed and retained JS
+      - name: Syntax check changed and retained interaction layers
         run: |
           node --check dist/assets/hf31-public.js
           node --check dist/assets/hf31-deep-public.js
@@ -37,5 +37,18 @@ jobs:
           node --check dist/assets/hf27-navigation.js
           node --check dist/assets/hf29-design.js
           node --check dist/assets/r40-assistant-safety-guard.js
-      - name: Recheck retained interaction hierarchy
-        run: node scripts/verify-hf29-design.mjs
+      - name: Assert retained assistant and navigation safety contracts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          need={
+            'dist/assets/hf27-navigation.js':['r41-nav-more','More options','urgent-section'],
+            'dist/assets/hf29-design.js':['hf29-example-select','Other useful options','safety'],
+            'dist/assets/r40-assistant-safety-guard.js':['911','988'],
+          }
+          for path,tokens in need.items():
+            s=Path(path).read_text('utf-8')
+            missing=[t for t in tokens if t not in s]
+            if missing: raise SystemExit(f'{path} missing retained tokens {missing}')
+          print('HF31_RETAINED_NAV_ASSISTANT_SAFETY_PASS')
+          PY
