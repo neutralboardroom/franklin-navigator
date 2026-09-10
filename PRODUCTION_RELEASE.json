@@ -5,7 +5,7 @@
   "checkoutRemainsOpen": true,
   "component": "public",
   "release": "FR-NAV1.20.0-HF3.1-CANDIDATE",
-  "releaseState": "CANDIDATE_PENDING_SOURCE_QUALIFICATION",
+  "releaseState": "SOURCE_QUALIFIED_CANDIDATE_PENDING_DEPLOYMENT",
   "scope": "REVIEWED_PAGES_VISUAL_HIERARCHY_PROFILE_POLISH_AND_FAIL_CLOSED_DYNAMIC_CURRENTNESS",
   "parent": "736e3cfb5ae6be08758a442ce7bb2f8cedf8b9f0",
   "effectiveNoLossPredecessor": {
@@ -16,14 +16,10 @@
     "state": "QUALIFIED_SUCCESSOR_DEPLOYED_LIVE_VERIFIED; SCC_ACCEPTANCE_NOT_SELF_ASSERTED"
   },
   "sourceBranch": "hf31-profile-currentness-polish-20260910",
+  "sourceQualificationRunId": 34422877487,
+  "sourceQualification": "PASS_EXHAUSTIVE_19355_PUBLIC_PAGES_19103_PROFILE_NO_FACT_DRIFT_AND_REVIEWED_PAGE_BEHAVIOR",
   "ownerReviewTarget": "REAL_LAPTOP_SCREENSHOTS_APPROX_1366x768",
-  "reviewedPages": [
-    "HOME",
-    "TODAY",
-    "GET_IT_DONE",
-    "FIND_LOCAL",
-    "PUBLIC_PROFILE_TEMPLATE"
-  ],
+  "reviewedPages": ["HOME","TODAY","GET_IT_DONE","FIND_LOCAL","PUBLIC_PROFILE_TEMPLATE"],
   "popupAndDisclosureAuditIncluded": true,
   "publicIndexPages": 19355,
   "publicReleaseMarkersExact": 19355,
@@ -46,7 +42,7 @@
   "getItDoneCategoryControl": "SINGLE_SELECT",
   "getItDoneTaskCardCount": 12,
   "getItDoneSecondarySaveStyle": "QUIET_DIRECT_ACTION",
-  "findLocalPrimaryFilters": ["Search", "Category"],
+  "findLocalPrimaryFilters": ["Search","Category"],
   "findLocalAdvancedFiltersProgressiveDisclosure": true,
   "findLocalResultPrimaryAction": "Open profile",
   "findLocalCompareStyle": "QUIET_SECONDARY",
@@ -79,6 +75,7 @@
   "workOrderState": "ACCEPTED_CLOSED_FINAL",
   "smarterJusticeDonorUse": "NOT_USED",
   "profileFactoryCandidateConsumption": "DEFER_WITH_CAUSE_FR_PF_PLATFORM_15_19_NOT_CONSUMER_ACCEPTED",
-  "localInvestigatorCandidateConsumption": "DEFER_WITH_CAUSE_V27_SCC_GATES_AND_CONSUMER_ACCEPTANCE_PENDING",
+  "localInvestigatorNewestCandidateObserved": "SLI-FRANKLIN-HANDOFF-20260909-028",
+  "localInvestigatorCandidateConsumption": "DEFER_WITH_CAUSE_V28_PACKAGE_SPECIFIC_SCC_GATES_AND_CONSUMER_ACCEPTANCE_PENDING",
   "sreCandidateConsumption": "DEFER_WITH_CAUSE_SRE_2_44_0_CANDIDATE_NOT_DEPLOYED_OR_CONSUMER_ACCEPTED"
 }
