@@ -9,31 +9,24 @@
   if(suppressed){let robots=document.querySelector('meta[name="robots"]');if(!robots){robots=document.createElement('meta');robots.name='robots';document.head.append(robots)}robots.content='noindex,nofollow';document.title='Profile unavailable | Franklin Navigator';if(main){main.replaceChildren();const s=n('section','');s.className='section';const w=n('div','');w.className='wrap narrow';w.append(n('h1','This profile is not publicly displayed.'),n('p','This profile has been removed from Franklin Navigator public view. A paid membership is not required to request removal or a factual correction.'));const a=n('a','Contact Franklin Navigator about this profile');a.href='/corrections/?profile='+encodeURIComponent(id);a.className='button';w.append(a);s.append(w);main.append(s)}return}
  }catch{if(main){main.replaceChildren();const s=n('section','');s.className='section';const w=n('div','');w.className='wrap narrow';w.append(n('h1','This profile is temporarily unavailable.'),n('p','Franklin Navigator could not verify the public-display status of this profile. Please try again shortly.'));s.append(w);main.append(s)}return}
 
- // Free factual correction and public-removal controls are available on every public profile.
- // They are independent of membership and do not require an account or payment.
+ // Free factual correction and public-removal controls are always rendered as their own
+ // visible public section. They are independent of claiming/membership and cannot be
+ // collapsed into a paid/member overflow menu by later presentation cleanup.
  try{
   if(main&&!document.querySelector('[data-free-profile-control]')){
    const page=location.href;
-   const existingHeading=[...document.querySelectorAll('main h2')].find(h=>/correction|claim|own or manage|profile information/i.test(h.textContent||''));
-   const existingSection=existingHeading?.closest('section');
-   if(existingSection){
-    existingSection.dataset.freeProfileControl='';
-    const p=existingSection.querySelector('p');
-    if(p)p.textContent='Basic factual corrections and requests to remove this profile from public view are free. No membership or payment is required.';
-    const actions=existingSection.querySelector('.actions')||existingSection;
-    if(!actions.querySelector('[data-free-correction]')){const a=n('a','Correct profile information');a.className='button';a.dataset.freeCorrection='';a.href='/corrections/?profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);actions.append(a)}
-    if(!actions.querySelector('[data-free-removal]')){const a=n('a','Request removal from public view');a.className='button';a.dataset.freeRemoval='';a.href='/corrections/?action=PUBLIC_REMOVAL&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);actions.append(a)}
-   }else{
-    const s=n('section','');s.className='section';s.dataset.freeProfileControl='';
-    const w=n('div','');w.className='wrap narrow';
-    w.append(n('h2','Correct or remove this profile'),n('p','Basic factual corrections and requests to remove this profile from public view are free. No membership or payment is required.'));
-    const actions=n('div','');actions.className='actions';
-    const correction=n('a','Correct profile information');correction.className='button';correction.dataset.freeCorrection='';correction.href='/corrections/?profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
-    const removal=n('a','Request removal from public view');removal.className='button';removal.dataset.freeRemoval='';removal.href='/corrections/?action=PUBLIC_REMOVAL&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
-    actions.append(correction,removal);w.append(actions);s.append(w);main.append(s);
-   }
+   const s=n('section','');s.className='section hf32-free-control';s.dataset.freeProfileControl='';
+   const w=n('div','');w.className='wrap narrow';
+   const h=n('h2','Correct or remove this profile');
+   const p=n('p','Basic factual corrections and requests to remove this profile from public view are free. No membership or payment is required.');
+   const actions=n('div','');actions.className='actions';actions.setAttribute('data-free-profile-actions','');
+   const correction=n('a','Correct profile information');correction.className='button';correction.dataset.freeCorrection='';correction.href='/corrections/?profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
+   const removal=n('a','Request removal from public view');removal.className='button';removal.dataset.freeRemoval='';removal.href='/corrections/?action=PUBLIC_REMOVAL&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
+   actions.append(correction,removal);w.append(h,p,actions);s.append(w);
+   const layout=document.querySelector('.r22-profile-layout')?.closest('.section');
+   if(layout?.nextSibling)main.insertBefore(s,layout.nextSibling);else main.append(s);
   }
- }catch{/* The public-source profile remains readable; correction/removal also remains reachable from the site footer/help. */}
+ }catch{/* Public profile remains readable; correction/removal remains reachable from the site-wide free profile-control route. */}
 
  try{
   const response=await fetch('https://franklin-navigator-membership.onrender.com/api/member/public-profile?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'});if(!response.ok)return;
