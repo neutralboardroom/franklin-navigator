@@ -1,0 +1,59 @@
+name: Franklin HF3.2 explorer live hotfix
+on:
+  push:
+    branches:
+      - hf32-explorer-live-hotfix-20260911
+    paths:
+      - scripts/hf32-pin-explorer-hotfix.py
+      - dist/assets/hf32-explorer-hotfix.js
+      - dist/assets/hf32-explorer-hotfix.css
+      - .github/workflows/hf32-explorer-live-hotfix.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: hf32-explorer-live-hotfix-20260911
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Apply direct explorer hotfix to every explorer page
+        run: python3 scripts/hf32-pin-explorer-hotfix.py
+      - name: Qualify scripts and direct asset pins
+        run: |
+          node --check dist/assets/community-explorer.js
+          node --check dist/assets/hf32-explorer-hotfix.js
+          grep -R -l 'data-community-explorer' dist --include='*.html' > /tmp/explorer-pages.txt
+          test "$(wc -l < /tmp/explorer-pages.txt)" -ge 40
+          while IFS= read -r page; do
+            grep -F 'data-hf32-explorer-hotfix="1"' "$page"
+            grep -F 'data-explorer-static-payload' "$page"
+            grep -F '/assets/community-explorer.js?v=frnav1210h1' "$page"
+            grep -F 'class="hf32-site-cleanup hf31-explorer-page hf32-explorer-hotfix' "$page" || grep -F 'hf32-explorer-hotfix' "$page"
+          done < /tmp/explorer-pages.txt
+          grep -F "url.pathname === '/data/franklin-activities.json'" dist/assets/hf32-explorer-hotfix.js
+          grep -F "heroCard.hidden = true" dist/assets/hf32-explorer-hotfix.js
+          grep -F "hero.after(finder)" dist/assets/hf32-explorer-hotfix.js
+          grep -F '.explorer-hero-card{' dist/assets/hf32-explorer-hotfix.css
+      - name: Persist generated explorer pages
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist
+          if git diff --cached --quiet; then
+            echo 'Explorer pages already pinned.'
+          else
+            git commit -m 'HF3.2: pin direct explorer hotfix on all explorer pages [skip ci]'
+            git push origin HEAD:hf32-explorer-live-hotfix-20260911
+          fi
