@@ -142,6 +142,13 @@ The following items were reviewed from the live site at Roger's normal laptop/br
 13. Preserve the improved laptop form behavior already observed: labels above controls, usable full-width inputs, no collisions/overlap, and responsive stacking at narrower widths. Do not regress to the earlier cramped side-by-side field layout.
 14. Target member-profile-preview experience: compact `Manage or improve your Franklin profile` hero → primary `Find my profile` → optional no-profile/free-control routes → clear preview-only form + realistic live preview → compact single $35/year membership panel → compact free correction/removal band → optional `About profile information` disclosure → simple footer.
 
+### Site-wide hero scale and contrast — APPROVED
+
+1. Apply a site-wide hero/headline scale rule to every ordinary Franklin public page, including English and Spanish variants and deep topic pages. Avoid oversized multi-line H1 treatments that dominate most of the first laptop viewport. Headings must remain clear and prominent, but the page's useful content/action should appear substantially sooner at the owner's normal laptop width. Use responsive type sizing and tighter hero padding rather than one extra-large fixed presentation.
+2. Apply a site-wide dark-surface contrast rule to every card, callout, hero panel, navigation state, disclosure and component. Dark teal or other dark backgrounds must use clearly readable light foreground text for headings, body copy, metadata and links. Do not place dark gray/low-contrast secondary copy on dark backgrounds. Preserve the restrained Franklin palette while meeting practical real-world readability and at least WCAG AA contrast for ordinary text.
+3. These are shared-component requirements, not Sports-only fixes. Audit existing templates/components for the same oversized hero and low-contrast dark-panel patterns and correct them wherever they occur so the problem does not recur page by page.
+4. Verify both rules at the owner's normal laptop/browser width and on narrower/mobile layouts, including sticky/header states and Spanish text expansion. Do not fix one breakpoint by causing clipping, overlap, excessive wrapping or new vertical bloat at another.
+
 ## Continuing next-version requirements
 
 1. Continue the owner-led laptop screenshot review with the Bowling Leagues detail page and other representative deep activity/help routes, Community, My Franklin, For Businesses / Membership, and representative popup/open states before calling the full site visually complete.
