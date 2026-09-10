@@ -11,29 +11,30 @@ body.hf32-site-cleanup .footer{padding-block:28px 36px}
 body.hf32-site-cleanup .footer-grid{gap:24px}
 body.hf32-site-cleanup .footer-links{gap:8px 16px}
 
-/* Owner-approved site-wide laptop readability: keep ordinary hero/header text proportional and bring useful content into the first screen. */
-body.hf32-site-cleanup main>:is(.hero,.r22-hero,.r29-hero,.explorer-hero) h1,
-body.hf32-site-cleanup main>section:is(.hero,.r22-hero,.r29-hero,.explorer-hero) h1{
+/* Owner-approved site-wide laptop readability: any top-level public hero class gets a proportional heading and a shorter first screen. */
+body.hf32-site-cleanup main>[class*="hero"] h1{
   font-size:clamp(2rem,3.25vw,3.35rem)!important;
   line-height:1.08!important;
   letter-spacing:-.035em!important;
   max-width:900px;
 }
-body.hf32-site-cleanup main>:is(.hero,.r22-hero,.r29-hero,.explorer-hero),
-body.hf32-site-cleanup main>section:is(.hero,.r22-hero,.r29-hero,.explorer-hero){
+body.hf32-site-cleanup main>[class*="hero"]{
   padding-block:clamp(34px,3.8vw,50px)!important;
 }
 @media(min-width:721px) and (max-width:1440px){
-  body.hf32-site-cleanup main>:is(.hero,.r22-hero,.r29-hero,.explorer-hero) h1,
-  body.hf32-site-cleanup main>section:is(.hero,.r22-hero,.r29-hero,.explorer-hero) h1{font-size:clamp(2.05rem,3vw,3rem)!important}
+  body.hf32-site-cleanup main>[class*="hero"] h1{font-size:clamp(2.05rem,3vw,3rem)!important}
 }
 
-/* Owner-approved site-wide dark-surface readability. These selectors cover the shared dark public surfaces; all copy inherits a high-contrast foreground and links remain visibly distinct. */
-body.hf32-site-cleanup :is(.history-section,.urgent-section,.explorer-hero-card){color:#f7fbfa!important}
-body.hf32-site-cleanup :is(.history-section,.urgent-section,.explorer-hero-card) :is(h1,h2,h3,h4,h5,h6,p,li,small,strong,span,.meta,.fine-print){color:inherit!important}
-body.hf32-site-cleanup :is(.history-section,.urgent-section,.explorer-hero-card) a{color:#fff1b8!important;text-decoration-thickness:.1em;text-underline-offset:.18em}
-body.hf32-site-cleanup :is(.history-section,.urgent-section,.explorer-hero-card) a:hover,
-body.hf32-site-cleanup :is(.history-section,.urgent-section,.explorer-hero-card) a:focus-visible{color:#fff!important}
+/* Owner-approved site-wide dark-surface readability. Parent color repairs body copy that the R40 light rule could otherwise darken on dark sections; existing component-specific colors remain intact. */
+body.hf32-site-cleanup :is(.history-section,.urgent-section,.growth-trust,.growth-boundaries,.home-command-bar){color:#f7fbfa!important}
+body.hf32-site-cleanup:not(.hf31-explorer-page) .explorer-hero-card{color:#f7fbfa!important}
+body.hf32-site-cleanup:not(.hf31-explorer-page) .explorer-hero-card a{color:#fff1b8!important;text-decoration-thickness:.1em;text-underline-offset:.18em}
+body.hf32-site-cleanup:not(.hf31-explorer-page) .explorer-hero-card a:hover,
+body.hf32-site-cleanup:not(.hf31-explorer-page) .explorer-hero-card a:focus-visible{color:#fff!important}
+body.hf32-site-cleanup .growth-boundaries .card{color:#172126!important}
+body.hf32-site-cleanup .growth-boundaries .card a{color:var(--brand-dark)!important}
+body.hf32-site-cleanup .growth-boundaries .card a:hover,
+body.hf32-site-cleanup .growth-boundaries .card a:focus-visible{color:var(--brand)!important}
 
 /* Universal navigation: four direct jobs + one More disclosure. */
 header .nav.hf32-universal-nav{display:flex;align-items:center;gap:6px 14px;flex-wrap:nowrap}
@@ -122,8 +123,7 @@ header .nav.hf32-universal-nav>a{white-space:nowrap}
 }
 @media(max-width:720px){
   body.hf32-site-cleanup .section{padding-block:32px}
-  body.hf32-site-cleanup main>:is(.hero,.r22-hero,.r29-hero,.explorer-hero) h1,
-  body.hf32-site-cleanup main>section:is(.hero,.r22-hero,.r29-hero,.explorer-hero) h1{font-size:clamp(1.95rem,9vw,2.55rem)!important;line-height:1.1!important}
+  body.hf32-site-cleanup main>[class*="hero"] h1{font-size:clamp(1.95rem,9vw,2.55rem)!important;line-height:1.1!important}
   header .nav.hf32-universal-nav{flex-wrap:wrap;gap:0 16px}
   .hf32-nav-more{position:static;width:100%}
   .hf32-nav-more>summary{padding:11px 0}
