@@ -131,3 +131,16 @@
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
 })();
+
+/* HF3.1 deep-page resident-language and navigation simplification loader. */
+(()=>{
+  const load=()=>{
+    if(document.querySelector('script[data-hf31-deep-public]'))return;
+    const js=document.createElement('script');
+    js.src='/assets/hf31-deep-public.js';
+    js.defer=true;
+    js.dataset.hf31DeepPublic='1';
+    document.head.append(js);
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
+})();
