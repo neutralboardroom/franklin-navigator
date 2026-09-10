@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Static no-loss and asset gates
+      - name: Static no-loss and direct-loader gates
         shell: bash
         run: |
           set -euo pipefail
@@ -34,22 +34,26 @@ jobs:
           node --check dist/assets/r37-i18n.js
           python - <<'PY'
           from pathlib import Path
-          import hashlib, re
+          import hashlib, subprocess, re
           assert hashlib.sha256(Path('dist/assets/hf32-public.js').read_bytes()).hexdigest() == '11f104253eb55bfb38d880f313fa60008e7097626526aefa355e6945a2eadf5c'
           assert hashlib.sha256(Path('dist/assets/hf32-public.css').read_bytes()).hexdigest() == '485946a5cea4faa19acc9ca8a2addd342246b4cd7c59e8811b2e33ffb61d38c0'
           r37=Path('dist/assets/r37-i18n.js').read_text(encoding='utf-8')
-          assert r37.count('/* HF3.2 — owner-approved simplification layer. */') == 1
-          assert r37.count("js.src='/assets/hf32-public.js'") == 1
+          assert '/* HF3.2 — owner-approved simplification layer. */' not in r37
+          assert "@import url('/assets/hf32-public.css');" in Path('dist/assets/r37.css').read_text(encoding='utf-8')
+          pages=list(Path('dist').rglob('index.html'))
+          assert len(pages)==19355,len(pages)
+          assert all(p.read_text(encoding='utf-8').count('data-hf32-direct="1"')==1 for p in pages)
+          assert all('FR-NAV1.21.0-HF3.2-CANDIDATE' in p.read_text(encoding='utf-8') for p in pages)
           js=Path('dist/assets/hf32-public.js').read_text(encoding='utf-8')
-          required=['canonicalHeader','sourceDatePresentation','homepage','today','tasks','directory','profile','sports','genericGridLimit','Contact & links','See all tasks','Search or choose a category','How we keep Today current']
-          for token in required: assert token in js, token
+          for token in ['canonicalHeader','sourceDatePresentation','homepage','today','tasks','directory','profile','sports','genericGridLimit','Contact & links','See all tasks','Search or choose a category','How we keep Today current']:
+              assert token in js, token
           assert '911|988|emergency|urgent|crisis' in js
           profiles=list(Path('dist/profiles').glob('*/index.html'))
-          assert len(profiles)==19103, len(profiles)
-          changed='\n'.join(__import__('subprocess').check_output(['git','diff','--name-only','50bf87535d7cd9bb5aabaaf5b1b93f4602549fa2...HEAD'],text=True).splitlines())
-          forbidden=[x for x in changed.splitlines() if x.startswith(('server/','dist/data/'))]
-          assert not forbidden, forbidden[:20]
-          print('STATIC_PASS profiles=19103 forbidden_state_changes=0')
+          assert len(profiles)==19103,len(profiles)
+          changed=subprocess.check_output(['git','diff','--name-only','50bf87535d7cd9bb5aabaaf5b1b93f4602549fa2...HEAD'],text=True).splitlines()
+          forbidden=[x for x in changed if x.startswith(('server/','dist/data/'))]
+          assert not forbidden,forbidden[:20]
+          print('STATIC_PASS pages=19355 profiles=19103 forbidden_state_changes=0 direct_load=PASS')
           PY
       - name: Install browser qualification tools
         run: |
@@ -66,126 +70,89 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           from playwright.sync_api import sync_playwright
-          import json, time
-
+          import json
           BASE='http://127.0.0.1:8765'
           out=Path('hf32-browser-evidence')
           results={}
-
-          def visible(page, sel):
-              return page.locator(sel).evaluate_all("els => els.filter(e => !e.hidden && getComputedStyle(e).display !== 'none' && getComputedStyle(e).visibility !== 'hidden').length")
-
-          def load(page, path, body_class=None, wait=900):
-              page.goto(BASE+path, wait_until='domcontentloaded')
+          def visible(page,sel):
+              return page.locator(sel).evaluate_all("els=>els.filter(e=>!e.hidden&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden').length")
+          def load(page,path,body_class=None,wait=1000):
+              page.goto(BASE+path,wait_until='domcontentloaded')
+              if body_class: page.wait_for_selector('body.'+body_class,state='attached',timeout=12000)
               page.wait_for_timeout(wait)
-              if body_class:
-                  page.wait_for_selector('body.'+body_class, state='attached', timeout=10000)
-              page.screenshot(path=str(out/(path.strip('/').replace('/','__') or 'home')).replace('.png','')+'.png', full_page=True)
-
+              name=path.strip('/').replace('/','__') or 'home'
+              page.screenshot(path=str(out/(name+'.png')),full_page=True)
           def header_gate(page):
-              assert page.locator('header .nav > a').count()==4, page.locator('header .nav').inner_text()
+              assert page.locator('header .nav > a').count()==4,page.locator('header .nav').inner_text()
               assert page.locator('header .nav > details summary').inner_text().strip() in ('More','Más')
               assert page.locator('header .nav > details .r41-nav-more-menu > a').count()==3
-
           with sync_playwright() as pw:
               browser=pw.chromium.launch()
               page=browser.new_page(viewport={'width':1366,'height':768})
-
-              load(page,'/','hf32-home')
-              header_gate(page)
+              load(page,'/','hf32-home'); header_gate(page)
               assert page.locator('.hf32-history h2').inner_text().strip()=='Then & Now'
               assert 'skyline.webp' in page.locator('.hf32-history img').nth(2).get_attribute('src')
               color=page.locator('.hf32-history h2').evaluate("e=>getComputedStyle(e).color")
-              assert color not in ('rgb(17, 49, 52)','rgb(0, 0, 0)'), color
+              assert color not in ('rgb(17, 49, 52)','rgb(0, 0, 0)'),color
               assert page.get_by_role('heading',name='Grow your visibility in the Franklin community.').count()==1
               results['home']='PASS'
-
-              load(page,'/today/','hf32-today')
-              header_gate(page)
-              hero=page.locator('main > .r22-hero')
-              assert hero.locator('.actions').count()==0
+              load(page,'/today/','hf32-today'); header_gate(page)
+              assert page.locator('main > .r22-hero .actions').count()==0
               assert visible(page,'[data-today-grid] .hf32-today-group')>=1
               assert page.get_by_text('How we keep Today current',exact=True).count()==1
               assert page.locator('text=SOURCES LAST REFRESHED').count()==0
               results['today']='PASS'
-
-              load(page,'/get-it-done/','hf32-tasks')
-              header_gate(page)
+              load(page,'/get-it-done/','hf32-tasks'); header_gate(page)
               assert page.locator('.r22-task-search .actions a,.r22-task-search .actions button').count()==1
               assert page.get_by_role('heading',name='Choose what you want to get done').count()==1
-              count=visible(page,'.task-card')
-              assert count<=6, count
+              count=visible(page,'.task-card'); assert count<=6,count
               assert page.get_by_role('button',name='See all tasks').count()==1
               results['get_it_done']=f'PASS initial_visible_tasks={count}'
-
-              load(page,'/directory/','hf32-directory',2200)
-              header_gate(page)
+              load(page,'/directory/','hf32-directory',2300); header_gate(page)
               assert page.get_by_role('heading',name='Search or choose a category').count()==1
               assert visible(page,'[data-dir-results]')==0
-              page.locator('[data-dir-search]').fill("Carson's Barbershop")
-              page.wait_for_timeout(1200)
+              page.locator('[data-dir-search]').fill("Carson's Barbershop"); page.wait_for_timeout(1200)
               assert visible(page,'.r22-profile-result')>=1
               assert visible(page,'.r22-profile-result .fine-print')==0
-              cols=page.locator('[data-dir-results]').evaluate("e=>getComputedStyle(e).gridTemplateColumns.split(' ').length")
-              assert cols==3, cols
+              cols=page.locator('[data-dir-results]').evaluate("e=>getComputedStyle(e).gridTemplateColumns.split(' ').length"); assert cols==3,cols
               results['find_local']='PASS'
-
-              load(page,'/profiles/FR-ORG-5d72d3ee4e9961c5/','hf32-profile')
-              header_gate(page)
+              load(page,'/profiles/FR-ORG-5d72d3ee4e9961c5/','hf32-profile'); header_gate(page)
               assert visible(page,'.profile-currentness')==0
               assert page.get_by_role('heading',name='Contact & links').count()==1
-              contact=page.locator('.hf32-contact-links').inner_text()
-              assert 'Call' in contact and 'Email' in contact, contact
-              about=page.locator('.hf32-profile .hf31-profile-about p,.hf32-profile article > section p').first.inner_text()
-              assert 'public-source' not in about.lower()
+              contact=page.locator('.hf32-contact-links').inner_text(); assert 'Call' in contact and 'Email' in contact,contact
+              assert 'public-source' not in page.locator('.hf32-profile article').inner_text().lower()
               assert visible(page,'.profile-facts-grid')==0
               assert page.get_by_text('Own or manage this business?',exact=True).count()==1
               results['profile']='PASS'
-
-              load(page,'/sports/','hf32-sports',2200)
-              header_gate(page)
+              load(page,'/sports/','hf32-sports',2400); header_gate(page)
               assert page.get_by_role('heading',name='Find sports in Franklin.').count()==1
-              assert page.locator('.explorer-hero').evaluate("e=>e.nextElementSibling && e.nextElementSibling.id")=='finder'
+              assert page.locator('.explorer-hero').evaluate("e=>e.nextElementSibling&&e.nextElementSibling.id")=='finder'
               assert page.locator('.hf32-sport-select').count()==1
               assert page.get_by_text('Explore other activities',exact=True).count()==1
               assert page.get_by_text('Before you register',exact=True).count()==1
               assert visible(page,'#short-list')==0
-              cards=visible(page,'[data-explorer-grid] .explorer-card')
-              assert cards<=9, cards
+              cards=visible(page,'[data-explorer-grid] .explorer-card'); assert cards<=9,cards
               results['sports']=f'PASS initial_visible_options={cards}'
-
-              load(page,'/sports/bowling/','hf32-sports',2200)
-              header_gate(page)
+              load(page,'/sports/bowling/','hf32-sports',2400); header_gate(page)
               assert 'bowling' in page.locator('h1').first.inner_text().lower()
-              assert page.locator('.explorer-hero').evaluate("e=>e.nextElementSibling && e.nextElementSibling.id")=='finder'
-              bowlcards=visible(page,'[data-explorer-grid] .explorer-card')
-              assert bowlcards>=1, bowlcards
+              assert page.locator('.explorer-hero').evaluate("e=>e.nextElementSibling&&e.nextElementSibling.id")=='finder'
+              bowlcards=visible(page,'[data-explorer-grid] .explorer-card'); assert bowlcards>=1,bowlcards
               results['bowling']=f'PASS visible_bowling_options={bowlcards}'
-
-              load(page,'/everyday-help/','hf32-high-load-page',1200)
-              header_gate(page)
-              all_cards=page.locator('[data-help-card]').count()
-              visible_cards=visible(page,'[data-help-card]')
-              assert all_cards>=20, all_cards
-              assert visible_cards<all_cards, (visible_cards,all_cards)
+              load(page,'/everyday-help/','hf32-high-load-page',1400); header_gate(page)
+              all_cards=page.locator('[data-help-card]').count(); vis=visible(page,'[data-help-card]')
+              assert all_cards>=20,all_cards; assert vis<all_cards,(vis,all_cards)
               assert page.get_by_text('Emergency help',exact=True).count()==1
               assert page.get_by_text('Mental-health crisis',exact=True).count()==1
-              results['generic_high_load']=f'PASS visible={visible_cards} total={all_cards}'
-
-              load(page,'/es/hacerlo/','hf32-tasks')
-              header_gate(page)
+              results['generic_high_load']=f'PASS visible={vis} total={all_cards}'
+              load(page,'/es/hacerlo/','hf32-tasks'); header_gate(page)
               assert page.get_by_role('heading',name='Elija lo que quiere resolver').count()==1
               assert page.get_by_role('button',name='Ver todas las tareas').count()==1
               results['spanish_tasks']='PASS'
-
-              load(page,'/es/deportes/','hf32-sports',1800)
-              header_gate(page)
+              load(page,'/es/deportes/','hf32-sports',2000); header_gate(page)
               assert page.get_by_role('heading',name='Encuentre deportes en Franklin.').count()==1
               assert page.get_by_text('Más filtros',exact=True).count()>=1
               results['spanish_sports']='PASS'
-
               browser.close()
-
           (out/'HF32_BROWSER_QUALIFICATION.json').write_text(json.dumps(results,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
           print(json.dumps(results,indent=2,ensure_ascii=False))
           PY
@@ -193,7 +160,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: HF32_BROWSER_EVIDENCE
+          name: HF32_BROWSER_EVIDENCE_DIRECT
           path: hf32-browser-evidence/
           if-no-files-found: warn
           retention-days: 30
