@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "franklin.hf31.pre-deploy-currentness.v1",
+  "release": "FR-NAV1.20.0-HF3.1-CANDIDATE",
+  "activeEdition": "FRANKLIN_TN",
+  "authorityTransfer": false,
+  "sourceQualificationRunId": 34427597052,
+  "sourceQualificationResult": "PASS",
+  "currentnessObservedAfterQualification": {
+    "scc": {
+      "newestAcceptedSuccessor": "v0.39.0 R9",
+      "canonicalPointer": "v0.38.0",
+      "pointerAdvanceBlocked": "GUARDED_WRITE_CAPABILITY",
+      "localProductAcceptanceSelfAsserted": false
+    },
+    "profileFactory": {
+      "newestObserved": "FR-PF-PLATFORM-15.19",
+      "releaseState": "TESTED_AND_LIBRARY_PERSISTED_QUALIFIED_SUCCESSOR_CANDIDATE_NOT_SELF_ACCEPTED",
+      "consumerAcceptanceEstablished": false,
+      "disposition": "DEFER_WITH_CAUSE"
+    },
+    "localInvestigator": {
+      "newestObserved": "SLI-FRANKLIN-HANDOFF-20260909-028",
+      "releaseState": "QUALIFIED_RESEARCH_HANDOFF_WITH_QUARANTINED_ITEMS",
+      "consumerAcceptance": "UNKNOWN",
+      "packageSpecificSccGates": "PENDING",
+      "disposition": "DEFER_WITH_CAUSE"
+    },
+    "sre": {
+      "newestObserved": "SRE-OC-CP-2.44.0",
+      "releaseState": "CURRENT_TESTED_SOURCE_CANDIDATE_NOT_DEPLOYED",
+      "candidateConsumerAccepted": false,
+      "localPublicCopyWorkOrder": "WO-20260909-SRE-LOCAL-FRANKLIN-MEMBERSHIP-OPEN-COPY-ALIGNMENT-056",
+      "localPublicCopyWorkOrderState": "ROUTED_NOT_SELF_ACCEPTED",
+      "disposition": "DEFER_WITH_CAUSE_NO_SELF_ACCEPTANCE"
+    }
+  },
+  "commerceBoundary": {
+    "publicCheckoutOpenPreexisting": true,
+    "pricesChangedByHF31": false,
+    "runtimeChangedByHF31": false,
+    "checkoutChangedByHF31": false
+  },
+  "smarterJustice": {
+    "used": false
+  },
+  "result": "PASS_NO_NEW_ACCEPTED_UPSTREAM_OR_LOCAL_WORK_ORDER_CONFLICT_BEFORE_DEPLOY"
+}
