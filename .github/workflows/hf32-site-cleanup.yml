@@ -10,6 +10,8 @@ on:
       - 'dist/assets/hf27-navigation.js'
       - 'dist/assets/r37.css'
       - 'dist/member-profile-preview/index.html'
+      - 'PRODUCTION_RELEASE.json'
+      - 'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_21_0_HF32.md'
       - '.github/workflows/hf32-site-cleanup.yml'
   pull_request:
     branches: [main]
@@ -21,6 +23,8 @@ on:
       - 'dist/assets/hf27-navigation.js'
       - 'dist/assets/r37.css'
       - 'dist/member-profile-preview/index.html'
+      - 'PRODUCTION_RELEASE.json'
+      - 'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_21_0_HF32.md'
       - '.github/workflows/hf32-site-cleanup.yml'
 permissions:
   contents: read
@@ -54,11 +58,25 @@ jobs:
           grep -F 'main>[class*="hero"] h1' dist/assets/hf32-site-cleanup.css
           grep -F 'font-size:clamp(2rem,3.25vw,3.35rem)!important' dist/assets/hf32-site-cleanup.css
           grep -F '.history-section,.urgent-section,.growth-trust,.growth-boundaries,.home-command-bar' dist/assets/hf32-site-cleanup.css
-          grep -F 'body.hf32-site-cleanup:not(.hf31-explorer-page) .explorer-hero-card' dist/assets/hf32-site-cleanup.css
           grep -F 'color:#f7fbfa!important' dist/assets/hf32-site-cleanup.css
           grep -F 'color:#fff1b8!important' dist/assets/hf32-site-cleanup.css
-          grep -F '.growth-boundaries .card a{color:var(--brand-dark)!important}' dist/assets/hf32-site-cleanup.css
-      - name: Shared screenshot-review layout contract
+      - name: Consolidated owner screenshot review contract
+        run: |
+          grep -F 'FIRST-PAINT SITE-WIDE DENSITY + READABILITY' dist/assets/hf32-sitewide-review.css
+          grep -F 'body .local-hero-photo img' dist/assets/hf32-sitewide-review.css
+          grep -F '.hf32-my .r22-dashboard-grid' dist/assets/hf32-sitewide-review.css
+          grep -F '.hf32-business .hf32-business-membership-section .r29-plan-grid' dist/assets/hf32-sitewide-review.css
+          grep -F '.hf32-help #urgent-help' dist/assets/hf32-sitewide-review.css
+          grep -F '.hf32-explorer .explorer-hero-card' dist/assets/hf32-sitewide-review.css
+          grep -F '.hf32-directory-default-browse .r22-directory-pager' dist/assets/hf32-sitewide-review.css
+          grep -F 'function refineMyFranklin' dist/assets/hf32-site-cleanup.js
+          grep -F 'function refineBusiness' dist/assets/hf32-site-cleanup.js
+          grep -F 'function refineHelpCenter' dist/assets/hf32-site-cleanup.js
+          grep -F 'function refineExplorer' dist/assets/hf32-site-cleanup.js
+          grep -F 'function refineDirectory' dist/assets/hf32-site-cleanup.js
+          grep -F "Public filing address:" dist/assets/hf32-site-cleanup.js
+          grep -F "Browse local profiles" dist/assets/hf32-site-cleanup.js
+      - name: Shared screenshot-review disclosure contract
         run: |
           grep -F 'body.hf32-site-cleanup .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))!important}' dist/assets/hf32-sitewide-review.css
           grep -F '.r41-more-actions,.hf29-card-more,.hf29-dialog-more,.hf29-footer-more,.hf31-more' dist/assets/hf32-sitewide-review.css
@@ -79,6 +97,11 @@ jobs:
           grep -F 'Correct or remove a profile' dist/member-profile-preview/index.html
           grep -F 'data-r28-preview-form' dist/member-profile-preview/index.html
           ! grep -E '\$5/month|\$90|\$50/year|\$120|Charter Member' dist/member-profile-preview/index.html
+      - name: Release identity and improvement list
+        run: |
+          grep -F '"release": "FR-NAV1.21.0-HF3.2-CANDIDATE"' PRODUCTION_RELEASE.json
+          test -f NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_21_0_HF32.md
+          grep -F 'Next Version Improvement List' NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_21_0_HF32.md
       - name: No accidental capability removal markers
         run: |
           test -f dist/assets/r28-community.js
@@ -88,3 +111,6 @@ jobs:
           test -f dist/today/index.html
           test -f dist/get-it-done/index.html
           test -f dist/directory/index.html
+          test -f dist/community-help-center/index.html
+          test -f dist/my-franklin/index.html
+          test -f dist/business-dashboard/index.html
