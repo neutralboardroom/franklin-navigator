@@ -1,0 +1,250 @@
+/* Franklin Navigator HF3.2 owner screenshot review — consolidated shared-component pass.
+   Fix repeated patterns once across the site; preserve product facts, safety, commerce and data authority. */
+
+/* FIRST-PAINT SITE-WIDE DENSITY + READABILITY */
+body .section{padding-block:clamp(28px,3vw,40px)!important}
+body main>[class*="hero"]{padding-block:clamp(28px,3.2vw,42px)!important}
+body main>[class*="hero"] h1{
+  font-size:clamp(2rem,3vw,3rem)!important;
+  line-height:1.08!important;
+  letter-spacing:-.035em!important;
+  max-width:860px!important
+}
+body main>[class*="hero"] p{max-width:760px}
+body .actions{gap:8px 12px;margin-top:18px}
+body .card,body .r22-card,body .r29-panel,body .r22-dashboard-card{box-shadow:none!important}
+body .footer{padding-block:24px 30px!important}
+body .footer-grid{gap:22px!important}
+
+/* Keep useful images supportive rather than allowing them to consume a full laptop screen. */
+body .local-hero-photo{margin-top:18px!important}
+body .local-hero-photo img{
+  width:100%!important;
+  height:clamp(220px,28vw,340px)!important;
+  aspect-ratio:auto!important;
+  object-fit:cover!important
+}
+
+/* High contrast on every known dark shared surface. */
+body :is(.history-section,.urgent-section,.growth-trust,.growth-boundaries,.home-command-bar){
+  color:#f7fbfa!important
+}
+body :is(.history-section,.urgent-section,.growth-trust,.growth-boundaries,.home-command-bar)
+:is(h1,h2,h3,h4,h5,h6,p,li,small,strong,span,.meta,.fine-print){
+  color:#f7fbfa!important
+}
+body :is(.history-section,.urgent-section,.growth-trust,.growth-boundaries,.home-command-bar) a{
+  color:#fff1b8!important;
+  text-decoration-thickness:.1em;
+  text-underline-offset:.18em
+}
+body :is(.history-section,.urgent-section,.growth-trust,.growth-boundaries,.home-command-bar) a:hover,
+body :is(.history-section,.urgent-section,.growth-trust,.growth-boundaries,.home-command-bar) a:focus-visible{
+  color:#fff!important
+}
+body .growth-boundaries .card,
+body .growth-boundaries .card :is(h1,h2,h3,h4,h5,h6,p,li,small,strong,span,.meta,.fine-print){
+  color:#172126!important
+}
+body .growth-boundaries .card a{color:var(--brand-dark)!important}
+
+/* Compact empty states and generated-output placeholders until there is real content. */
+body .empty-state,
+body .hf32-empty-state{
+  min-height:0!important;
+  padding:12px 14px!important;
+  margin:10px 0!important;
+  border-radius:9px!important
+}
+body .hf32-output-empty .output,
+body .hf32-output-empty[data-explorer-output],
+body .hf32-output-empty pre{
+  min-height:0!important;
+  max-height:none!important;
+  padding:12px 14px!important;
+  margin:8px 0!important
+}
+body .hf32-output-actions-empty{display:none!important}
+
+/* Shared grid behavior: avoid awkward 4+2 orphan rows on ordinary laptop layouts. */
+body.hf32-site-cleanup .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+body.hf32-site-cleanup .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+body.hf32-community .hf32-responsive-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
+
+/* Consistent disclosure chevrons instead of literal ellipses. */
+body :is(.r41-more-actions,.hf29-card-more,.hf29-dialog-more,.hf29-footer-more,.hf31-more,.hf32-inline-more,.hf32-business-how,.hf32-explorer-method)>summary::after{
+  content:" ▾"!important;
+  letter-spacing:0!important;
+  font-weight:800!important
+}
+body :is(.r41-more-actions,.hf29-card-more,.hf29-dialog-more,.hf29-footer-more,.hf31-more,.hf32-inline-more,.hf32-business-how,.hf32-explorer-method)[open]>summary::after{
+  content:" ▴"!important
+}
+.hf32-inline-more{position:relative;display:inline-block}
+.hf32-inline-more>summary{list-style:none;cursor:pointer;font-weight:720;padding:8px 2px;color:var(--brand-dark)}
+.hf32-inline-more>summary::-webkit-details-marker{display:none}
+.hf32-inline-more-body{position:absolute;z-index:50;left:0;top:100%;min-width:220px;padding:7px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 14px 34px rgba(17,49,52,.14)}
+.hf32-inline-more:not([open])>.hf32-inline-more-body{display:none}
+.hf32-inline-more-body a{display:block;padding:9px 10px}
+
+/* WORKSPACE/DASHBOARD PAGES */
+.hf32-my .hf32-workspace-hero{padding-block:26px!important}
+.hf32-my .r22-dashboard-grid{grid-template-columns:1fr!important;gap:18px!important}
+.hf32-my .r22-dashboard-side{
+  grid-row:1!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:16px!important
+}
+.hf32-my .r22-dashboard-main{grid-row:2!important;gap:16px!important}
+.hf32-my .r22-dashboard-card{padding:18px!important}
+.hf32-my .r22-section-head{margin-bottom:10px!important}
+.hf32-my .r22-section-head>div>p{margin-bottom:0}
+.hf32-my .r22-dashboard-side>details>summary{padding:3px 0!important;font-size:1rem!important}
+.hf32-my .r22-dashboard-side>details:not([open]){align-self:start}
+.hf32-my .r22-reminder-form{grid-template-columns:minmax(0,1fr) 180px auto!important;gap:10px!important}
+.hf32-my .r22-mini-list{gap:7px!important}
+.hf32-my .r22-mini-list>a{padding:10px 12px!important}
+
+/* BUSINESS/MEMBERSHIP: benefit-first, centered decision path, no stranded narrow plan card. */
+.hf32-business .hf32-business-hero .r29-hero-grid{grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr)!important;gap:34px!important}
+.hf32-business .hf32-business-digital-card{padding:20px!important}
+.hf32-business .hf32-business-how{max-width:860px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.hf32-business .hf32-business-how>summary{list-style:none;cursor:pointer;padding:14px 0;font-weight:780;color:var(--brand-dark)}
+.hf32-business .hf32-business-how>summary::-webkit-details-marker{display:none}
+.hf32-business .hf32-business-how-body{padding:0 0 14px}
+.hf32-business .r29-panel{padding:20px!important}
+.hf32-business .hf32-business-membership-section{padding-block:28px!important}
+.hf32-business .hf32-business-membership-section .r29-plan-grid{
+  grid-template-columns:minmax(0,620px)!important;
+  justify-content:center!important;
+  margin:0!important
+}
+.hf32-business .hf32-business-membership-card{padding:24px!important}
+.hf32-business .hf32-business-member-cta{margin-top:8px}
+.hf32-business .hf32-business-free-section{padding-block:28px!important}
+.hf32-business .r34-growth-band{padding:24px!important}
+
+/* HELP CENTER: safety first, smaller imagery, compact empty plan and calmer deep-tool sections. */
+.hf32-help .hf32-help-hero{padding-bottom:30px!important}
+.hf32-help #urgent-help{padding-block:28px!important}
+.hf32-help #urgent-help .urgent-grid{gap:12px!important;margin:18px 0!important}
+.hf32-help #urgent-help .urgent-card{padding:16px!important}
+.hf32-help #urgent-help .urgent-card h3{font-size:.98rem!important;margin-bottom:9px!important}
+.hf32-help .hf32-help-photo{margin-block:22px!important}
+.hf32-help .hf32-help-photo img{height:clamp(180px,22vw,260px)!important}
+.hf32-help .help-planner-layout{gap:22px!important}
+.hf32-help .help-plan-output{padding:18px!important;box-shadow:none!important}
+.hf32-help .help-plan-output.hf32-help-plan-empty .output{min-height:76px!important;max-height:none!important}
+.hf32-help .help-plan-output.hf32-help-plan-empty .plan-actions{display:none!important}
+.hf32-help .help-tool-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
+.hf32-help .help-tool-grid .card{padding:18px!important}
+.hf32-help .hf32-help-deeper{padding-block:26px!important}
+.hf32-help .preparation-bridge,
+.hf32-help .local-pathways-bridge,
+.hf32-help .situation-bridge{padding-block:26px!important}
+
+/* EXPLORER/SPORTS/ACTIVITIES: local result first, generic cross-navigation collapsed, empty utilities hidden. */
+.hf32-explorer .explorer-hero-card{display:none!important}
+.hf32-explorer .explorer-hero-grid{grid-template-columns:1fr!important}
+.hf32-explorer #finder{padding-top:22px!important;padding-bottom:28px!important}
+.hf32-explorer .hf32-explorer-other{padding-block:12px!important}
+.hf32-explorer .hf32-explorer-other-details{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.hf32-explorer .hf32-explorer-other-details>summary{list-style:none;cursor:pointer;padding:13px 0;font-weight:760;color:var(--brand-dark)}
+.hf32-explorer .hf32-explorer-other-details>summary::-webkit-details-marker{display:none}
+.hf32-explorer .hf32-explorer-other-details>summary::after{content:" +"}
+.hf32-explorer .hf32-explorer-other-details[open]>summary::after{content:" −"}
+.hf32-explorer .hf32-explorer-other-details:not([open])>.hf31-explorer-other-content{display:none!important}
+.hf32-explorer .hf32-explorer-small-results .explorer-controls,
+.hf32-explorer .explorer-controls.hf32-explorer-controls-hidden{display:none!important}
+.hf32-explorer .hf32-explorer-small-results .explorer-summary{margin:8px 0!important}
+.hf32-explorer .explorer-grid{gap:14px!important}
+.hf32-explorer .explorer-card{padding:18px!important;max-width:520px}
+.hf32-explorer .hf32-explorer-prep{padding-block:24px!important}
+.hf32-explorer .hf32-explorer-current{padding-block:24px!important}
+.hf32-explorer .hf32-explorer-shortlist-section{padding-block:24px!important}
+.hf32-explorer .hf32-explorer-coverage{padding-block:16px!important}
+.hf32-explorer .hf32-explorer-organizer{display:none!important}
+.hf32-explorer .hf32-explorer-method{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.hf32-explorer .hf32-explorer-method>summary{list-style:none;cursor:pointer;padding:13px 0;font-weight:760;color:var(--brand-dark)}
+.hf32-explorer .hf32-explorer-method>summary::-webkit-details-marker{display:none}
+.hf32-explorer .hf32-explorer-method-body{padding:0 0 14px}
+
+/* DIRECTORY: search-led default, representative sample before filtering, tighter sticky controls and cards. */
+.hf32-directory .hf32-directory-hero{padding-block:26px!important}
+.hf32-directory .hf32-directory-root{max-width:none}
+.hf32-directory .hf28-primary-toolbar,
+.hf32-directory .r22-directory-toolbar{
+  position:sticky!important;
+  top:64px!important;
+  z-index:18!important;
+  background:#fff!important;
+  padding:8px 0!important;
+  gap:10px!important
+}
+.hf32-directory .hf28-primary-toolbar input,
+.hf32-directory .hf28-primary-toolbar select{min-height:44px!important}
+.hf32-directory .hf28-more-filters{margin-top:2px!important}
+.hf32-directory .discovery-share{margin-block:8px!important}
+.hf32-directory .discovery-share p{display:none!important}
+.hf32-directory [data-dir-share]{display:none}
+.hf32-directory.hf32-directory-has-query [data-dir-share]{display:inline-flex}
+.hf32-directory .r22-directory-meta{margin:12px 0!important}
+.hf32-directory .r22-directory-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:12px!important
+}
+.hf32-directory .r22-profile-result{padding:16px!important;gap:7px!important}
+.hf32-directory .result-actions{gap:7px 10px!important}
+.hf32-directory .category-tag,.hf32-directory .hf32-category-label{text-transform:capitalize}
+.hf32-directory-default-browse .r22-directory-grid>.r22-profile-result:nth-child(n+7){display:none!important}
+.hf32-directory-default-browse .r22-directory-pager{display:none!important}
+.hf32-directory .hf32-directory-shortcuts{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px 10px;
+  margin:10px 0 14px;
+  font-size:.88rem
+}
+.hf32-directory .hf32-directory-shortcuts-label{font-weight:780;color:#53666b}
+.hf32-directory .hf32-directory-shortcuts a{
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  padding:6px 10px;
+  border:1px solid #cbdad8;
+  border-radius:999px;
+  background:#f7fbfa;
+  color:var(--brand-dark);
+  text-decoration:none;
+  font-weight:700
+}
+.hf32-directory .hf32-directory-shortcuts a:hover,
+.hf32-directory .hf32-directory-shortcuts a:focus-visible{background:#fff;border-color:#9ebfbb}
+.hf32-directory .r22-directory-pager{margin-top:16px!important}
+
+/* Mobile and narrower laptop safeguards. */
+@media(max-width:960px){
+  body.hf32-site-cleanup .grid.three,
+  body.hf32-site-cleanup .grid.four,
+  body.hf32-community .hf32-responsive-grid,
+  .hf32-help .help-tool-grid,
+  .hf32-directory .r22-directory-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .hf32-my .r22-dashboard-side{grid-template-columns:1fr!important}
+  .hf32-business .hf32-business-hero .r29-hero-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:720px){
+  body .section{padding-block:26px!important}
+  body main>[class*="hero"]{padding-block:26px!important}
+  body main>[class*="hero"] h1{font-size:clamp(1.9rem,9vw,2.5rem)!important;line-height:1.1!important}
+  body .local-hero-photo img{height:220px!important}
+  body.hf32-site-cleanup .grid.three,
+  body.hf32-site-cleanup .grid.four,
+  body.hf32-community .hf32-responsive-grid,
+  .hf32-help .help-tool-grid,
+  .hf32-directory .r22-directory-grid{grid-template-columns:1fr!important}
+  .hf32-my .r22-reminder-form{grid-template-columns:1fr!important}
+  .hf32-directory .hf28-primary-toolbar,.hf32-directory .r22-directory-toolbar{position:static!important}
+  .hf32-inline-more-body{position:static;box-shadow:none;margin-top:4px}
+}
