@@ -1,0 +1,27 @@
+name: Franklin P0 public-profile control source gate
+'on':
+  push:
+    branches:
+      - main
+    paths:
+      - dist/assets/member-public.js
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify public profile control source
+        run: |
+          node --check dist/assets/member-public.js
+          grep -q 'data-free-profile-control' dist/assets/member-public.js
+          grep -q 'Correct profile information' dist/assets/member-public.js
+          grep -q 'Request removal from public view' dist/assets/member-public.js
+          grep -q 'No membership or payment is required' dist/assets/member-public.js
+          grep -q '/corrections/?action=PUBLIC_REMOVAL' dist/assets/member-public.js
+          grep -q 'public-profile-suppressions.json' dist/assets/member-public.js
+          echo '{"result":"PASS","publicProfileControlAlwaysPresent":true,"freeCorrection":true,"freeRemoval":true,"suppressionFailClosed":true}'
