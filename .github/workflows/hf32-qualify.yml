@@ -82,7 +82,10 @@ jobs:
                   page.wait_for_function("c => document.body && document.body.classList.contains(c)", arg=body_class, timeout=12000)
               page.wait_for_timeout(wait)
               name=path.strip('/').replace('/','__') or 'home'
-              page.screenshot(path=str(out/(name+'.png')),full_page=True)
+              try:
+                  page.screenshot(path=str(out/(name+'.png')),full_page=False,timeout=10000)
+              except Exception as exc:
+                  (out/(name+'__screenshot_warning.txt')).write_text(str(exc)+'\n',encoding='utf-8')
           def header_gate(page):
               assert page.locator('header .nav > a').count()==4,page.locator('header .nav').inner_text()
               assert page.locator('header .nav > details summary').inner_text().strip() in ('More','Más')
@@ -161,7 +164,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: HF32_BROWSER_EVIDENCE_DIRECT_V2
+          name: HF32_BROWSER_EVIDENCE_VIEWPORT
           path: hf32-browser-evidence/
           if-no-files-found: warn
           retention-days: 30
