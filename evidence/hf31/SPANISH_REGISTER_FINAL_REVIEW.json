@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "franklin.hf31.spanish-register-final-review.v1",
+  "spanishPages": 52,
+  "changedFiles": 6,
+  "remainingHighConfidenceInformalRegister": 0,
+  "issues": [],
+  "result": "PASS",
+  "explicitFalsePositiveClassesExcluded": [
+    "Consulta de / Consulta del noun labels",
+    "sigue siendo third-person phrase"
+  ],
+  "note": "Formal usted register is the default public voice. Proper nouns remain unchanged."
+}
