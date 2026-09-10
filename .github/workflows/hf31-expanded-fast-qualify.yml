@@ -42,8 +42,8 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           need={
-            'dist/assets/hf27-navigation.js':['r41-nav-more','More options','urgent-section'],
-            'dist/assets/hf29-design.js':['hf29-example-select','Other useful options','safety'],
+            'dist/assets/hf27-navigation.js':['r41-nav-more','r41-more-actions','urgent-section'],
+            'dist/assets/hf29-design.js':['hf29-example-select','Other useful options','hf29-card-more'],
             'dist/assets/r40-assistant-safety-guard.js':['911','988'],
           }
           for path,tokens in need.items():
