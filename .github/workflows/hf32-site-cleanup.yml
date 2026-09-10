@@ -1,0 +1,51 @@
+name: Franklin HF3.2 site cleanup qualification
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/assets/hf32-site-cleanup.js'
+      - 'dist/assets/hf32-site-cleanup.css'
+      - 'dist/assets/hf27-navigation.js'
+      - 'dist/assets/r37.css'
+      - 'dist/member-profile-preview/index.html'
+      - '.github/workflows/hf32-site-cleanup.yml'
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: JavaScript syntax
+        run: |
+          node --check dist/assets/hf32-site-cleanup.js
+          node --check dist/assets/hf27-navigation.js
+      - name: Shared cleanup contract
+        run: |
+          grep -F "@import url('/assets/hf32-site-cleanup.css');" dist/assets/r37.css
+          grep -F "Ask Franklin Assistant" dist/assets/hf32-site-cleanup.js
+          grep -F "Get It Done" dist/assets/hf32-site-cleanup.js
+          grep -F "Find Local" dist/assets/hf32-site-cleanup.js
+          grep -F "Help Center" dist/assets/hf32-site-cleanup.js
+      - name: Member-profile layout and single annual plan
+        run: |
+          grep -F 'Manage or improve your Franklin profile.' dist/member-profile-preview/index.html
+          grep -F 'Join for $35/year' dist/member-profile-preview/index.html
+          grep -F 'Correct or remove a profile' dist/member-profile-preview/index.html
+          grep -F 'data-r28-preview-form' dist/member-profile-preview/index.html
+          ! grep -E '\$5/month|\$90|\$50/year|\$120|Charter Member' dist/member-profile-preview/index.html
+      - name: No accidental capability removal markers
+        run: |
+          test -f dist/assets/r28-community.js
+          test -f dist/assets/r37-i18n.js
+          test -f dist/corrections/index.html
+          test -f dist/sports/index.html
+          test -f dist/today/index.html
+          test -f dist/get-it-done/index.html
+          test -f dist/directory/index.html
