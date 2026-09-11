@@ -1,0 +1,33 @@
+name: Franklin HF3.4 full audit
+on:
+  push:
+    branches: [fr-nav1-23-0-hf34-full-audit-simplification-20260911]
+    paths:
+      - 'scripts/hf34-audit.py'
+      - '.github/workflows/hf34-full-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: fr-nav1-23-0-hf34-full-audit-simplification-20260911
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install beautifulsoup4==4.13.4
+      - name: Run audit
+        run: python3 scripts/hf34-audit.py
+      - name: Persist audit report
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add HF34_FULL_AUDIT_REPORT.json HF34_FULL_AUDIT_REPORT.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'HF3.4 persist full static audit [skip ci]'
+          git push origin HEAD:fr-nav1-23-0-hf34-full-audit-simplification-20260911
