@@ -58,6 +58,13 @@ jobs:
           if '/assets/r29-v6.css' not in s:
               s=s.replace('</head>','<link href="/assets/r29-v6.css" rel="stylesheet"/></head>',1)
               p.write_text(s,encoding='utf-8')
+          js=Path('dist/assets/member-profile-live.js')
+          j=js.read_text(encoding='utf-8')
+          bad='const f=field(...spec);'
+          good='const f=field(spec[1],spec[0],spec[2],spec[3],spec[4]);'
+          if bad not in j:
+              raise SystemExit('expected HF3.8 generated member-field mapping marker missing')
+          js.write_text(j.replace(bad,good,1),encoding='utf-8')
           PY
 
       - name: Static no-loss and authority qualification
@@ -88,7 +95,7 @@ jobs:
           test "$(git merge-base HEAD origin/main)" = "$EXPECTED_MAIN_SHA"
           python - <<'PY'
           from pathlib import Path
-          import hashlib,json,subprocess,sys
+          import hashlib,json,subprocess
           root=Path('.')
           dist=root/'dist'
           manifest=json.loads((dist/'data/discovery/manifest.json').read_text(encoding='utf-8'))
