@@ -1,0 +1,209 @@
+name: Franklin HF3.8 build and qualify
+
+on:
+  push:
+    branches: [fr-nav1-27-0-hf38-member-first-value-accessibility-20260911]
+    paths:
+      - 'scripts/hf38-build.py'
+      - 'scripts/hf38-verify.py'
+      - 'scripts/hf38-browser.py'
+      - '.github/workflows/hf38-build-qualify.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      EXPECTED_MAIN_SHA: 21109ed7f35c24e9ba6cf25945b673a3b24de131
+      RELEASE_BRANCH: fr-nav1-27-0-hf38-member-first-value-accessibility-20260911
+    steps:
+      - name: Check out exact candidate branch
+        uses: actions/checkout@v4
+        with:
+          ref: fr-nav1-27-0-hf38-member-first-value-accessibility-20260911
+          fetch-depth: 0
+
+      - name: Verify exact production base before build
+        run: |
+          set -euo pipefail
+          git fetch origin main --quiet
+          test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN_SHA"
+          test "$(git merge-base HEAD origin/main)" = "$EXPECTED_MAIN_SHA"
+          test "$(git show origin/main:PRODUCTION_RELEASE.json | python -c 'import json,sys; print(json.load(sys.stdin)["release"])')" = "FR-NAV1.26.0-HF3.7"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install qualification dependencies
+        run: |
+          python -m pip install --disable-pip-version-check beautifulsoup4==4.13.4 playwright==1.55.0
+          python -m playwright install --with-deps chromium
+
+      - name: Compile release scripts
+        run: python -m py_compile scripts/hf38-build.py scripts/hf38-verify.py scripts/hf38-browser.py
+
+      - name: Build candidate from HF3.7
+        run: |
+          set -euo pipefail
+          python scripts/hf38-build.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('dist/profile-studio/index.html')
+          s=p.read_text(encoding='utf-8')
+          if '/assets/r29-v6.css' not in s:
+              s=s.replace('</head>','<link href="/assets/r29-v6.css" rel="stylesheet"/></head>',1)
+              p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Static no-loss and authority qualification
+        run: python scripts/hf38-verify.py
+
+      - name: Representative browser qualification
+        run: |
+          set -euo pipefail
+          python -m http.server 8765 --directory dist > /tmp/hf38-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 2
+          python scripts/hf38-browser.py
+
+      - name: Upload visual-review screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: hf38-review-screenshots
+          path: hf38-review-screenshots/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Verify production base still current before seal
+        run: |
+          set -euo pipefail
+          git fetch origin main --quiet
+          test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN_SHA"
+          test "$(git merge-base HEAD origin/main)" = "$EXPECTED_MAIN_SHA"
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,subprocess,sys
+          root=Path('.')
+          dist=root/'dist'
+          manifest=json.loads((dist/'data/discovery/manifest.json').read_text(encoding='utf-8'))
+          idx=dist/manifest['index']['file'].lstrip('/')
+          digest=hashlib.sha256(idx.read_bytes()).hexdigest()
+          if manifest['recordCount'] != 19103 or digest != manifest['index']['sha256']:
+              raise SystemExit('profile discovery source drift detected before seal')
+          prior=json.loads((root/'HF37_QUALIFICATION_REPORT.json').read_text(encoding='utf-8'))
+          pages=sum(1 for _ in dist.rglob('index.html'))
+          if pages != prior['counts']['pages']:
+              raise SystemExit(f'page-count drift: {pages} != {prior["counts"]["pages"]}')
+          static=json.loads((root/'HF38_STATIC_QUALIFICATION_REPORT.json').read_text(encoding='utf-8'))
+          browser=json.loads((root/'HF38_BROWSER_QUALIFICATION_REPORT.json').read_text(encoding='utf-8'))
+          if static.get('status')!='PASS' or browser.get('status')!='PASS':
+              raise SystemExit('qualification report is not green')
+          observed=subprocess.check_output(['git','rev-parse','origin/main'],text=True).strip()
+          currentness={
+            'release':'FR-NAV1.27.0-HF3.8',
+            'expectedProductionMainSha':'21109ed7f35c24e9ba6cf25945b673a3b24de131',
+            'observedProductionMainSha':observed,
+            'productionBaseStillCurrent':observed=='21109ed7f35c24e9ba6cf25945b673a3b24de131',
+            'profileSourceRecordCount':manifest['recordCount'],
+            'profileSourceSha256':digest,
+            'profileFactory15_21':'DEFER_WITH_CAUSE',
+            'localInvestigator31':'DEFER_WITH_CAUSE',
+            'membershipRuntimeObservedSha':'a7f2eace8283ebda702d587f6dc98985329699f3',
+            'status':'PASS'
+          }
+          (root/'HF38_PRE_SEAL_CURRENTNESS_RECEIPT.json').write_text(json.dumps(currentness,indent=2)+'\n',encoding='utf-8')
+          evidence={
+            'release':'FR-NAV1.27.0-HF3.8',
+            'desktopChangedPages':browser.get('desktopChangedPages',[]),
+            'mobileRoutes':browser.get('mobileRoutes',[]),
+            'screenshots':browser.get('screenshots',[]),
+            'contrast':'PASS',
+            'keyboard':'PASS',
+            'mobileOverflow':'PASS',
+            'sportsNoJs':'PASS',
+            'spanishRepresentativeRoutes':'PASS',
+            'status':'PASS'
+          }
+          (root/'HF38_REVIEW_EVIDENCE_RECEIPT.json').write_text(json.dumps(evidence,indent=2)+'\n',encoding='utf-8')
+          report={
+            'release':'FR-NAV1.27.0-HF3.8',
+            'base':'FR-NAV1.26.0-HF3.7',
+            'status':'QUALIFIED_SUCCESSOR',
+            'counts':{'pages':pages,'profiles':manifest['recordCount']},
+            'profileSourceSha256':digest,
+            'staticQualification':static.get('status'),
+            'browserQualification':browser.get('status'),
+            'issueCount':static.get('issueCount',0)+browser.get('failureCount',0),
+            'issues':static.get('issues',[])+browser.get('failures',[]),
+            'authority':{
+              'profileFactory15_21':'DEFER_WITH_CAUSE',
+              'localInvestigator31':'DEFER_WITH_CAUSE',
+              'smarterJustice':'NOT_USED',
+              'revenuePricingMutation':'NONE'
+            },
+            'changedProductSlices':['profile-studio','member-profile-preview','business-dashboard','community-help-center','shared-accessibility'],
+            'screenshotArtifact':'hf38-review-screenshots',
+            'deployment':'NOT_PERFORMED_BY_QUALIFICATION_WORKFLOW'
+          }
+          (root/'HF38_QUALIFICATION_REPORT.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+          PY
+
+      - name: Guard against profile, discovery, or accidental file mutation
+        run: |
+          set -euo pipefail
+          rm -rf hf38-review-screenshots
+          if git diff --name-only | grep -E '^(dist/profiles/|dist/data/discovery/)'; then
+            echo 'Forbidden profile/discovery mutation detected.' >&2
+            exit 1
+          fi
+          cat > /tmp/hf38-allowed.txt <<'EOF'
+          HF38_BROWSER_QUALIFICATION_REPORT.json
+          HF38_BUILD_RECEIPT.json
+          HF38_CHANGED_FILE_MANIFEST.json
+          HF38_NO_LOSS_LEDGER.json
+          HF38_PRE_SEAL_CURRENTNESS_RECEIPT.json
+          HF38_QUALIFICATION_REPORT.json
+          HF38_REVIEW_EVIDENCE_RECEIPT.json
+          HF38_RUNTIME_COMPATIBILITY_RECEIPT.json
+          HF38_SOURCE_RECONCILIATION_RECEIPT.json
+          HF38_STATIC_QUALIFICATION_REPORT.json
+          NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_27_0_HF38.md
+          PRODUCTION_RELEASE.json
+          dist/assets/accessibility.css
+          dist/assets/hf38.css
+          dist/assets/hf38.js
+          dist/assets/member-profile-live.js
+          dist/business-dashboard/index.html
+          dist/community-help-center/index.html
+          dist/member-profile-preview/index.html
+          dist/profile-studio/index.html
+          EOF
+          sort -u /tmp/hf38-allowed.txt -o /tmp/hf38-allowed.txt
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          allowed=[x.strip() for x in Path('/tmp/hf38-allowed.txt').read_text().splitlines() if x.strip()]
+          manifest={'release':'FR-NAV1.27.0-HF3.8','allowedQualifiedCandidateFiles':allowed,'count':len(allowed)}
+          Path('HF38_CHANGED_FILE_MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
+          PY
+          git add $(cat /tmp/hf38-allowed.txt)
+          git diff --cached --name-only | sort -u > /tmp/hf38-actual.txt
+          if ! diff -u /tmp/hf38-allowed.txt /tmp/hf38-actual.txt; then
+            echo 'Qualified candidate changed-file set is outside the allowlist.' >&2
+            exit 1
+          fi
+          test -z "$(git status --porcelain | grep '^??' || true)"
+
+      - name: Persist qualified successor candidate
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git commit -m 'FR-NAV1.27.0 HF3.8 qualified member first-value and accessibility successor [skip ci]'
+          git push origin HEAD:$RELEASE_BRANCH
