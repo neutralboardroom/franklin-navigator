@@ -70,6 +70,35 @@ def simplify_home():
             d.append(body);wrap.append(d)
         save(p,s)
 
+def simplify_my_franklin():
+    for rel in ('my-franklin/index.html','es/mi-franklin/index.html'):
+        p=DIST/rel
+        if not p.exists():continue
+        s=BeautifulSoup(p.read_text(encoding='utf-8'),'html.parser')
+        if s.body:
+            classes=list(s.body.get('class',[]))
+            if 'hf34-my-franklin' not in classes:classes.append('hf34-my-franklin')
+            s.body['class']=classes
+        grid=s.select_one('.r22-dashboard-grid');main=s.select_one('.r22-dashboard-main');side=s.select_one('.r22-dashboard-side')
+        if grid and main and side:
+            pref=side.select_one('details.r22-dashboard-card')
+            if pref:pref.attrs.pop('open',None)
+            tools=tag(s,'div',class_='hf34-my-tools')
+            for child in list(side.children):
+                try: tools.append(child.extract())
+                except: pass
+            main.insert(0,tools);side.decompose()
+        save(p,s)
+
+def patch_member_runtime():
+    p=DIST/'assets/hf34-member-public.js'
+    if not p.exists():return
+    js=p.read_text(encoding='utf-8')
+    old="function related(){return [...document.querySelectorAll('.r22-profile-side .r22-card')].find(x=>/Related local profiles|Similar local profiles/i.test(x.querySelector('h2')?.textContent||''))}"
+    new="function competitorCards(){return [...document.querySelectorAll('.r22-profile-side .r22-card')].filter(x=>/Related local profiles|Similar local profiles|Explore /i.test(x.querySelector('h2')?.textContent||''))}"
+    js=js.replace(old,new).replace("if(out.activePaidMember===true){related()?.remove();document.body.dataset.activeMember='true'}","if(out.activePaidMember===true){competitorCards().forEach(x=>x.remove());document.body.dataset.activeMember='true'}")
+    p.write_text(js,encoding='utf-8')
+
 def css_append():
     p=DIST/'assets/hf34.css'
     if not p.exists():return
@@ -81,10 +110,16 @@ body.hf34 .hf34-member-difference{border:1px solid var(--hf34-line);border-radiu
 body.hf34 .hf34-member-difference h3{margin-top:0}
 body.hf34 .hf34-home-more{margin-block:0}
 body.hf34 .hf34-home-more>.hf34-disclosure-body{padding-top:8px}
+body.hf34-my-franklin .r22-dashboard-grid{grid-template-columns:1fr!important;gap:14px!important}
+body.hf34-my-franklin .r22-dashboard-main{display:grid;gap:14px}
+body.hf34-my-franklin .hf34-my-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+body.hf34-my-franklin .r22-dashboard-card{padding:18px!important}
 body.hf34-profile .hf34-profile-image{width:100%;height:100%;object-fit:cover;border-radius:16px}
+body.hf34-profile .r22-profile-side{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}
+@media(max-width:760px){body.hf34-my-franklin .hf34-my-tools{grid-template-columns:1fr}}
 '''
     if 'HF3.4 high-traffic finishing pass' not in css:p.write_text(css+extra,encoding='utf-8')
 
 def main():
-    membership_pages();simplify_home();css_append();print('HF3.4 post-build simplification complete')
+    membership_pages();simplify_home();simplify_my_franklin();patch_member_runtime();css_append();print('HF3.4 post-build simplification complete')
 if __name__=='__main__':main()
