@@ -3,12 +3,12 @@
   "activeEdition": "FRANKLIN_TN",
   "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
   "component": "public",
-  "release": "FR-NAV1.23.0-HF3.4",
-  "releaseState": "FULL_AUDIT_BROWSER_QUALIFICATION_GATED_RELEASE",
+  "release": "FR-NAV1.24.0-HF3.5",
+  "releaseState": "QUALIFIED_CANDIDATE_PENDING_MERGE_AND_DEPLOY",
   "releaseDate": "2026-09-11",
-  "scope": "FULL_SITE_AUDIT_SIMPLIFICATION_REBUILD_AFTER_HF3_3_ROLLBACK",
+  "scope": "POST_HF34_FULL_SITE_FINISHING_SIMPLIFICATION_PROFILES_CORRECTIONS_DIRECTORY_HELP_BUSINESS_AND_DENSITY",
   "parentSourceCommit": "1da2b9b9c52a71291292e1ce4ebf3fc104502648",
-  "candidateBranch": "fr-nav1-23-0-hf34-full-audit-simplification-20260911",
+  "candidateBranch": "fr-nav1-24-0-hf35-finish-simplify-20260911",
   "ownerDeployAuthorized": true,
   "ownerReviewTarget": "REAL_LAPTOP_SCREENSHOTS_APPROX_1366x768",
   "audit": {
@@ -110,12 +110,11 @@
     "canonicalProfileDataChanged": false
   },
   "dataAndAuthorityBoundaries": {
-    "profileFactoryAuthorityTransferred": false,
-    "canonicalProfileFactsChanged": false,
-    "duplicatesMergedByPlatform": false,
-    "localInvestigatorAuthorityAbsorbed": false,
-    "customerStateMutatedByStaticRelease": false,
-    "paymentStateMutatedByStaticRelease": false,
+    "profileFactsChanged": false,
+    "profileCountInherited": 19103,
+    "customerStateMutatedByThisRelease": false,
+    "paymentStateMutatedByThisRelease": false,
+    "membershipEntitlementStateMutatedByThisRelease": false,
     "communityIsolation": "FRANKLIN_TN_ONLY"
   },
   "deploymentTarget": {
@@ -142,6 +141,6 @@
     "contrastQualification": "REQUIRED",
     "ownerLiveVisualReview": "CONTINUES_AFTER_DEPLOY"
   },
-  "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_23_0_HF34.md",
+  "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_24_0_HF35.md",
   "smarterJusticeDonorUse": "NOT_USED"
 }
