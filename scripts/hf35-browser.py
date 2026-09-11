@@ -18,7 +18,6 @@ def contrast_failures(page):
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     ctx=browser.new_context(viewport={'width':1366,'height':768})
-    # Default free-profile API response for ordinary route passes.
     ctx.route('https://franklin-navigator-membership.onrender.com/api/member/public-profile**',lambda route:route.fulfill(status=200,content_type='application/json',body=json.dumps({'activePaidMember':False,'publication':None})))
     for route in routes:
         page=ctx.new_page();errs=[];page.on('pageerror',lambda e,errs=errs:errs.append(str(e)))
@@ -65,9 +64,28 @@ with sync_playwright() as p:
         except Exception as e:fail.append([route,'navigation:'+str(e)[:160]])
         finally:page.close()
     ctx.close()
-    # Mock an active member profile and prove competitor suppression + rich integration.
+
     member=browser.new_context(viewport={'width':1366,'height':768})
-    member.route('https://franklin-navigator-membership.onrender.com/api/member/public-profile**',lambda route:route.fulfill(status=200,content_type='application/json',body=json.dumps({'activePaidMember':True,'publication':{'profileId':'FR-ORG-5d72d3ee4e9961c5','provenance':'MEMBER_SUBMITTED_REVIEWED','fields':{'summary':'A locally owned barbershop serving Franklin.','services':'Haircuts\nBeard trims','hours':'Mon–Fri 9–5','serviceArea':'Franklin','languages':'English','accessibility':'Call for current accessibility details','website':'https://example.com','bookingUrl':'https://example.com/book','galleryUrls':'https://example.com/a.jpg\nhttps://example.com/b.jpg','socialLinks':'https://www.instagram.com/example'}}}})))
+    mock_payload={
+        'activePaidMember':True,
+        'publication':{
+            'profileId':'FR-ORG-5d72d3ee4e9961c5',
+            'provenance':'MEMBER_SUBMITTED_REVIEWED',
+            'fields':{
+                'summary':'A locally owned barbershop serving Franklin.',
+                'services':'Haircuts\nBeard trims',
+                'hours':'Mon–Fri 9–5',
+                'serviceArea':'Franklin',
+                'languages':'English',
+                'accessibility':'Call for current accessibility details',
+                'website':'https://example.com',
+                'bookingUrl':'https://example.com/book',
+                'galleryUrls':'https://example.com/a.jpg\nhttps://example.com/b.jpg',
+                'socialLinks':'https://www.instagram.com/example'
+            }
+        }
+    }
+    member.route('https://franklin-navigator-membership.onrender.com/api/member/public-profile**',lambda route:route.fulfill(status=200,content_type='application/json',body=json.dumps(mock_payload)))
     page=member.new_page();page.goto(BASE+'/profiles/FR-ORG-5d72d3ee4e9961c5/',wait_until='domcontentloaded',timeout=15000);page.wait_for_timeout(500)
     if page.locator('.hf35-competitor-card').count()!=0:fail.append(['/profiles/member-mock','competitor_cards_not_removed'])
     if page.locator('.hf35-member-badge').count()!=1:fail.append(['/profiles/member-mock','member_badge_missing'])
@@ -75,11 +93,11 @@ with sync_playwright() as p:
     if page.locator('.hf35-profile-section-nav').count()!=1:fail.append(['/profiles/member-mock','member_section_nav_missing'])
     if page.get_by_role('link',name='Book').count()!=1:fail.append(['/profiles/member-mock','booking_action_missing'])
     page.close();member.close()
-    # Sports must remain useful even with JavaScript disabled.
+
     nojs=browser.new_context(java_script_enabled=False,viewport={'width':1366,'height':768});page=nojs.new_page();page.goto(BASE+'/sports/',wait_until='domcontentloaded',timeout=15000)
     if page.locator('.hf34-explorer-card').count()<5:fail.append(['/sports/','nojs_results_missing'])
     page.close();nojs.close()
-    # Mobile horizontal overflow smoke.
+
     mob=browser.new_context(viewport={'width':390,'height':844})
     for route in ('/','/sports/','/directory/','/business-dashboard/','/community-help-center/','/corrections/','/profiles/FR-ORG-5d72d3ee4e9961c5/'):
         page=mob.new_page();page.goto(BASE+route,wait_until='domcontentloaded',timeout=15000);page.wait_for_timeout(200)
