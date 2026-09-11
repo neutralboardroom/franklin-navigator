@@ -5,6 +5,7 @@ on:
     branches: [fr-nav1-28-0-hf39-consolidated-owner-review-20260912]
     paths:
       - 'scripts/hf39-build.py'
+      - 'scripts/hf39-fix.py'
       - 'scripts/hf39-verify.py'
       - 'scripts/hf39-browser.py'
       - '.github/workflows/hf39-build-qualify.yml'
@@ -45,10 +46,13 @@ jobs:
           python -m playwright install --with-deps chromium
 
       - name: Compile release scripts
-        run: python -m py_compile scripts/hf39-build.py scripts/hf39-verify.py scripts/hf39-browser.py
+        run: python -m py_compile scripts/hf39-build.py scripts/hf39-fix.py scripts/hf39-verify.py scripts/hf39-browser.py
 
       - name: Build candidate from HF3.8
-        run: python scripts/hf39-build.py
+        run: |
+          set -euo pipefail
+          python scripts/hf39-build.py
+          python scripts/hf39-fix.py
 
       - name: Static no-loss and owner-review qualification
         run: python scripts/hf39-verify.py
@@ -154,6 +158,7 @@ jobs:
           NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_28_0_HF39.md
           PRODUCTION_RELEASE.json
           dist/activities/index.html
+          dist/assets/community-explorer.js
           dist/assets/hf39.css
           dist/assets/hf39.js
           dist/assets/local-discovery-core.js
