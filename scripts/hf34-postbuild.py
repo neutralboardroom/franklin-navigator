@@ -116,6 +116,9 @@ body.hf34-my-franklin .hf34-my-tools{display:grid;grid-template-columns:repeat(2
 body.hf34-my-franklin .r22-dashboard-card{padding:18px!important}
 body.hf34-profile .hf34-profile-image{width:100%;height:100%;object-fit:cover;border-radius:16px}
 body.hf34-profile .r22-profile-side{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}
+/* Learning has a dark boundary section with a white nested safety card. The card must reset to dark text. */
+body.hf34 .learning-boundary .card{background:#fff!important;color:var(--hf34-ink)!important}
+body.hf34 .learning-boundary .card :is(h1,h2,h3,h4,p,li,span,strong,small,label){color:inherit!important}
 @media(max-width:760px){body.hf34-my-franklin .hf34-my-tools{grid-template-columns:1fr}}
 '''
     if 'HF3.4 high-traffic finishing pass' not in css:p.write_text(css+extra,encoding='utf-8')
