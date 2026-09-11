@@ -86,7 +86,7 @@
     const rawFacts = Array.isArray(raw.facts) ? raw.facts : typeof raw.facts === 'string' ? raw.facts.split(',') : [];
     return {
       q: String(raw.q || '').slice(0, 160), category: String(raw.category || '').slice(0, 300), type: String(raw.type || '').slice(0, 100), area: String(raw.area || '').slice(0, 200),
-      sort: ['name', 'checked', 'website', 'address'].includes(raw.sort) ? raw.sort : 'name',
+      sort: ['local', 'name', 'checked', 'website', 'address'].includes(raw.sort) ? raw.sort : 'local',
       facts: [...new Set(rawFacts.filter(x => ['website', 'phone', 'email', 'address'].includes(x)))].sort(),
       page: Number.isInteger(Number(raw.page)) && Number(raw.page) >= 1 && Number(raw.page) <= MAX ? Number(raw.page) : 1
     };
@@ -95,7 +95,7 @@
   function searchParams(raw) {
     const state = cleanState(raw), p = new URLSearchParams();
     for (const k of ['q', 'category', 'type', 'area']) if (state[k]) p.set(k, state[k]);
-    if (state.sort !== 'name') p.set('sort', state.sort);
+    if (state.sort !== 'local') p.set('sort', state.sort);
     if (state.facts.length) p.set('facts', state.facts.join(','));
     if (state.page > 1) p.set('page', String(state.page));
     return p.toString();
@@ -104,8 +104,24 @@
     const s = cleanState(raw), terms = queryTerms(s.q);
     const matches = rows.filter(r => (!s.category || r.c === s.category) && (!s.type || r.t === s.type) && (!s.area || r.g === s.area) && terms.every(group => group.some(word => r.searchText.includes(word))) && s.facts.every(f => f === 'website' ? !!r.websiteHref : f === 'phone' ? !!r.phoneHref : f === 'email' ? !!r.emailHref : r.h));
     const compare = (a, b) => a.nameKey < b.nameKey ? -1 : a.nameKey > b.nameKey ? 1 : a.i < b.i ? -1 : a.i > b.i ? 1 : 0;
-    matches.sort((a, b) => (s.sort === 'checked' ? (validDate(b.d) ? b.d : '').localeCompare(validDate(a.d) ? a.d : '') : s.sort === 'website' ? Number(!!b.websiteHref) - Number(!!a.websiteHref) : s.sort === 'address' ? Number(b.h) - Number(a.h) : 0) || compare(a, b));
-    return matches;
+    // HF3.6 local relevance and conservative duplicate suppression.
+    const canonicalName = value => norm(value).replace(/\bone\b/g, '1').replace(/\btwo\b/g, '2').replace(/\b(?:llc|inc|incorporated|corp|corporation|pc|pllc|ltd)\b/g, '').replace(/\s+/g, ' ').trim();
+    const canonicalAddress = value => norm(value)
+      .replace(/\bnorth\b/g, 'n').replace(/\bsouth\b/g, 's').replace(/\beast\b/g, 'e').replace(/\bwest\b/g, 'w')
+      .replace(/\bavenue\b/g, 'ave').replace(/\bstreet\b/g, 'st').replace(/\broad\b/g, 'rd').replace(/\bboulevard\b/g, 'blvd').replace(/\bdrive\b/g, 'dr').replace(/\blane\b/g, 'ln').replace(/\bplace\b/g, 'pl')
+      .replace(/\bfranklin (?:tennessee|tn) \d{5}(?: \d{4})?\b/g, '').replace(/\bfranklin (?:tennessee|tn)\b/g, '').replace(/\btn \d{5}(?: \d{4})?\b/g, '')
+      .replace(/\s+/g, ' ').trim();
+    const deduped = [], seenIdentity = new Set();
+    for (const r of matches) {
+      const address = canonicalAddress(r.l);
+      const key = address ? address + '|' + canonicalName(r.n) : '';
+      if (key && seenIdentity.has(key)) continue;
+      if (key) seenIdentity.add(key);
+      deduped.push(r);
+    }
+    const localRank = r => { const t = norm([r.g, r.l].join(' ')); return t.includes('franklin') ? 0 : t.includes('williamson') ? 1 : 2; };
+    deduped.sort((a, b) => (s.sort === 'local' ? localRank(a) - localRank(b) : s.sort === 'checked' ? (validDate(b.d) ? b.d : '').localeCompare(validDate(a.d) ? a.d : '') : s.sort === 'website' ? Number(!!b.websiteHref) - Number(!!a.websiteHref) : s.sort === 'address' ? Number(b.h) - Number(a.h) : 0) || compare(a, b));
+    return deduped;
   }
   function shardFor(id) {
     if (typeof id !== 'string' || !ID.test(id)) throw Error('Invalid profile identifier');
