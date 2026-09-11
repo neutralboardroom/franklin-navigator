@@ -2,7 +2,7 @@
 from playwright.sync_api import sync_playwright
 from pathlib import Path
 from urllib.parse import urlparse
-import json,sys
+import json,sys,shutil
 
 BASE='http://127.0.0.1:8765'
 API='https://franklin-navigator-membership.onrender.com'
@@ -189,4 +189,5 @@ receipt={
 }
 (ROOT/'HF38_BROWSER_QUALIFICATION_REPORT.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(receipt,indent=2))
+shutil.rmtree(ROOT/'scripts/__pycache__',ignore_errors=True)
 if fail: sys.exit(1)
