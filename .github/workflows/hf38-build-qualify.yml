@@ -116,7 +116,7 @@ jobs:
           if manifest['recordCount'] != 19103 or digest != manifest['index']['sha256']:
               raise SystemExit('profile discovery source drift detected before seal')
           prior=json.loads((root/'HF37_QUALIFICATION_REPORT.json').read_text(encoding='utf-8'))
-          pages=sum(1 for _ in dist.rglob('index.html'))
+          pages=sum(1 for _ in dist.rglob('*.html'))
           if pages != prior['counts']['pages']:
               raise SystemExit(f'page-count drift: {pages} != {prior["counts"]["pages"]}')
           static=json.loads((root/'HF38_STATIC_QUALIFICATION_REPORT.json').read_text(encoding='utf-8'))
