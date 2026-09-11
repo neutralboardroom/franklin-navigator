@@ -3,62 +3,85 @@
   "activeEdition": "FRANKLIN_TN",
   "writableProductLane": "LOCAL_COMMUNITY_EDITION:FRANKLIN_TN",
   "component": "public",
-  "release": "FR-NAV1.21.0-HF3.2-CANDIDATE",
-  "releaseState": "SOURCE_CANDIDATE_OWNER_AUTHORIZED_FOR_DEPLOY_AFTER_QUALIFICATION",
+  "release": "FR-NAV1.23.0-HF3.4",
+  "releaseState": "FULL_AUDIT_BROWSER_QUALIFICATION_GATED_RELEASE",
   "releaseDate": "2026-09-11",
-  "scope": "CONSOLIDATED_OWNER_SCREENSHOT_REVIEW_SHARED_UI_DENSITY_READABILITY_SAFETY_EXPLORER_DIRECTORY_BUSINESS_AND_WORKSPACE_CLEANUP",
-  "parentSourceCommit": "9f15657b6a06c394d83dcdff9620be40f4c59f31",
-  "candidateBranch": "hf32-sitewide-shared-ux-20260911",
+  "scope": "FULL_SITE_AUDIT_SIMPLIFICATION_REBUILD_AFTER_HF3_3_ROLLBACK",
+  "parentSourceCommit": "1da2b9b9c52a71291292e1ce4ebf3fc104502648",
+  "candidateBranch": "fr-nav1-23-0-hf34-full-audit-simplification-20260911",
   "ownerDeployAuthorized": true,
   "ownerReviewTarget": "REAL_LAPTOP_SCREENSHOTS_APPROX_1366x768",
-  "reviewedRepresentativePages": [
-    "SPORTS",
-    "BOWLING_DEEP_SPORT",
-    "COMMUNITY",
-    "MY_FRANKLIN",
-    "BUSINESS_DASHBOARD",
-    "COMMUNITY_HELP_CENTER",
-    "DIRECTORY"
-  ],
-  "sharedImprovements": {
-    "heroScale": "SITE_WIDE_FIRST_PAINT_COMPACT_RESPONSIVE",
-    "sectionDensity": "SITE_WIDE_REDUCED_DEAD_SPACE",
-    "darkSurfaceContrast": "HIGH_CONTRAST_TEXT_AND_DISTINCT_LINKS",
-    "largeSupportingImages": "RESPONSIVE_HEIGHT_CAPPED",
-    "emptyStates": "COMPACT_UNTIL_CONTENT_EXISTS",
-    "actionHierarchy": "PRIMARY_SECONDARY_THEN_DISCLOSURE",
-    "literalMoreEllipsis": "REMOVED_BY_SHARED_RUNTIME",
-    "sharedGridOrphanRows": "NORMALIZED_ON_REVIEWED_COMPONENTS"
+  "audit": {
+    "pagesAudited": 19358,
+    "profilesAudited": 19103,
+    "explorerPagesAudited": 50,
+    "fullAuditReport": "HF34_FULL_AUDIT_REPORT.json",
+    "priorRegressionExplicitlyExcluded": "FR-NAV1.22.0-HF3.3"
+  },
+  "navigation": {
+    "coreVisibleItems": [
+      "ASK_FRANKLIN_ASSISTANT",
+      "FIND_LOCAL",
+      "GET_IT_DONE"
+    ],
+    "secondaryDestinations": "NATIVE_MORE_DISCLOSURE",
+    "footerLinkCountTarget": 6,
+    "runtimePrimaryNavRewriteAllowed": false
+  },
+  "presentationStrategy": {
+    "firstPaint": "STATIC_CANONICAL_HTML",
+    "automaticDarkSurfaceGuessing": false,
+    "legacyPresentationMutationLoaders": "DISABLED",
+    "secondaryExplanations": "NATIVE_DISCLOSURES_WHERE_APPROPRIATE",
+    "emptyStates": "COMPACT"
   },
   "communityExplorer": {
-    "boundedLoadingRetry": "PRESERVED_FROM_PARENT",
-    "finderMovedImmediatelyAfterHero": true,
-    "genericCrossNavigationCollapsed": true,
-    "smallResultRedundantFiltersHidden": true,
-    "emptyCurrentSectionsHiddenAfterSettle": true,
-    "deepScopedGenericAddressRemoved": true,
+    "basicResults": "STATIC_HTML_FIRST",
+    "javascriptRole": "FILTER_AND_SHORTLIST_ENHANCEMENT_ONLY",
+    "networkCatalogRequiredForBasicUse": false,
+    "legacyGlobalMutationRuntimeRemoved": true,
+    "finderImmediatelyAfterHero": true,
+    "broadCrossNavigationCollapsed": true,
+    "methodologyAndOrganizerMaterialCollapsed": true,
+    "deepGenericAddressRemovedWhenIrrelevant": true,
     "shortlistHiddenUntilUsed": true,
-    "methodologyCollapsed": true,
-    "organizerPromotionDeemphasized": true
+    "noJavascriptBasicResultsRequired": true
   },
-  "myFranklin": {
-    "preferencesDefault": "COLLAPSED",
-    "dashboardFlow": "FULL_WIDTH_AFTER_COMPACT_SETTINGS_AND_ADDRESS_LOOKUPS",
-    "emptySavedStates": "COMPACT",
-    "deviceOnlyStorageSemanticsChanged": false,
-    "saveResetCapabilitiesChanged": false
+  "corrections": {
+    "freeFactualCorrection": true,
+    "freePublicProfileRemoval": true,
+    "profileReferenceAutoFill": "QUERY_OR_PROFILE_URL_FALLBACK",
+    "internalProfileReferenceHiddenFromOrdinaryForm": true,
+    "explicitReadableContrast": true
+  },
+  "profiles": {
+    "profileCountInherited": 19103,
+    "finishedAdaptivePresentation": true,
+    "highIntentVerifiedActionsVisible": true,
+    "correctionLinksCarryProfileId": true,
+    "entitySpecificAboutCopy": true,
+    "activePaidMemberSimilarProfiles": "SUPPRESSED_ON_MEMBER_OWN_PROFILE",
+    "activePaidMemberCategoryCompetitorCard": "SUPPRESSED_ON_MEMBER_OWN_PROFILE",
+    "nonMemberSimilarProfiles": "RETAINED_LOWER_ON_PAGE",
+    "richReviewedMemberModules": true,
+    "fabricatedRatingsReviewsBadges": false
+  },
+  "membership": {
+    "singleAnnualPriceUsd": 35,
+    "renewal": "ANNUAL_UNTIL_CANCELED",
+    "prePurchaseCompetitorFreeProfileBenefitShown": true,
+    "membershipChangesDirectoryRanking": false,
+    "membershipChangesCanonicalFacts": false,
+    "freeCorrectionRemovalPreserved": true,
+    "runtimeBranch": "franklin-commerce-runtime-r30",
+    "runtimeCommit": "a7f2eace8283ebda702d587f6dc98985329699f3"
   },
   "businessDashboard": {
     "primaryStartAction": "FIND_OR_REVIEW_PROFILE",
-    "communityMembershipSecondary": true,
-    "singleAnnualPriceUsd": 35,
-    "renewal": "ANNUAL_UNTIL_CANCELED",
-    "membershipCard": "CENTERED_COMPACT",
-    "processPath": "COLLAPSED_HOW_IT_WORKS",
+    "secondaryAction": "SEE_MEMBERSHIP",
+    "processDetailsCollapsed": true,
     "internalProductLanguageRemoved": true,
-    "freeFactualCorrections": true,
-    "freePublicProfileRemoval": true,
-    "membershipBuysRanking": false
+    "duplicateSalesBandsRemoved": true
   },
   "communityHelpCenter": {
     "urgentHelpImmediatelyAfterHero": true,
@@ -69,44 +92,30 @@
       "POISON_CONTROL",
       "LOCAL_DOMESTIC_VIOLENCE_HELP"
     ],
-    "decorativePhotoMovedBelowPlanner": true,
-    "decorativePhotoHeightCapped": true,
-    "urgentDarkContrastRepaired": true,
-    "emptyPlanCopyPrintHidden": true,
-    "publicInternalTrackCountsRemovedFromPresentation": true,
-    "privatePlannerSemanticsChanged": false
+    "specializedToolsCollapsedAfterPrimaryFlow": true,
+    "architectureTrackLabelsRemovedFromPresentation": true
+  },
+  "myFranklin": {
+    "preferencesDefault": "COLLAPSED",
+    "secondaryTools": "COMPACT_TOP_GRID",
+    "mainWorkspace": "FULL_WIDTH",
+    "emptyStates": "COMPACT",
+    "deviceOnlyStorageSemanticsChanged": false
   },
   "directory": {
-    "primaryFilters": [
-      "Search",
-      "Category"
-    ],
+    "searchAndCategoryRemainPrimary": true,
     "advancedFiltersPreserved": true,
-    "defaultPresentation": "SIX_PROFILE_REPRESENTATIVE_SAMPLE_PLUS_POPULAR_SEARCH_SHORTCUTS",
-    "fullPaginationWhenSearchOrFilterActive": true,
-    "stickyToolbarCompacted": true,
-    "cardDensityCompacted": true,
-    "sourceDatePublicLabel": "Last checked",
-    "publicGeocodingImplementationPhrase": "REPLACED_WITH_PUBLIC_FILING_ADDRESS_LABEL",
-    "canonicalProfileDataChanged": false,
-    "canonicalCategoryDataChanged": false,
     "comparePreserved": true,
-    "membershipNeutralRankingPreserved": true
-  },
-  "profileFactoryBoundary": {
-    "canonicalProfileAuthorityTransferred": false,
-    "duplicatesMergedByPlatform": false,
-    "reconciliationHandoff": "evidence/hf32/DIRECTORY_PROFILE_FACTORY_RECONCILIATION_HANDOFF__2026-09-11.md",
-    "consumerAction": "AWAIT_PROFILE_FACTORY_SOURCE_BACKED_RECONCILIATION"
+    "membershipNeutralRankingPreserved": true,
+    "canonicalProfileDataChanged": false
   },
   "dataAndAuthorityBoundaries": {
-    "profileFactsChanged": false,
-    "profileCountInherited": 19103,
+    "profileFactoryAuthorityTransferred": false,
+    "canonicalProfileFactsChanged": false,
+    "duplicatesMergedByPlatform": false,
     "localInvestigatorAuthorityAbsorbed": false,
-    "customerStateMutatedByThisRelease": false,
-    "paymentStateMutatedByThisRelease": false,
-    "membershipEntitlementStateMutatedByThisRelease": false,
-    "outreachAuthorizedByThisRelease": false,
+    "customerStateMutatedByStaticRelease": false,
+    "paymentStateMutatedByStaticRelease": false,
     "communityIsolation": "FRANKLIN_TN_ONLY"
   },
   "deploymentTarget": {
@@ -116,31 +125,23 @@
     "branch": "main",
     "autoDeploy": "no",
     "manualDeployRequired": true,
-    "deploymentState": "PENDING_PR_QUALIFICATION_MERGE_AND_MANUAL_TRIGGER"
+    "deploymentState": "FINAL_QUALIFICATION_MERGE_AND_MANUAL_DEPLOY_REQUIRED"
   },
-  "predecessorDeployment": {
-    "release": "FR-NAV1.20.0-HF3.1-CANDIDATE",
-    "staticDeploy": "dep-dah108ijnfac73fqrjng",
-    "staticDeployStatus": "live",
-    "staticDeployFinishedAtUtc": "2026-09-10T02:05:40.220555Z",
-    "liveDeploymentCommit": "3fa8144504b7bae0633ea0d807d3a7368d065918"
-  },
-  "inheritedCommercialAndSafetyInvariants": {
-    "checkoutRemainsOpen": true,
-    "singleAnnualNewSalePriceUsd": 35,
-    "monthlyNewSaleRetired": true,
-    "threeYearNewSaleRetired": true,
-    "old50And120NewSaleRetired": true,
-    "freeFactualCorrection": true,
-    "freePublicProfileRemoval": true,
-    "urgentHelpNotConditionedOnPayment": true
+  "rollbackBase": {
+    "staticCommit": "1da2b9b9c52a71291292e1ce4ebf3fc104502648",
+    "renderDeploy": "dep-dahqp93m8hqs73d0q2vg",
+    "status": "LIVE_DURING_CANDIDATE_BUILD"
   },
   "qualification": {
-    "workflow": ".github/workflows/hf32-site-cleanup.yml",
-    "requiredBeforeMerge": true,
-    "requiredBeforeDeploy": true,
-    "independentLiveVisualReview": "OWNER_SCREENSHOT_REVIEW_TO_CONTINUE_AFTER_DEPLOY"
+    "fullStaticAuditWorkflow": ".github/workflows/hf34-full-audit.yml",
+    "buildAndBrowserWorkflow": ".github/workflows/hf34-build-qualify.yml",
+    "staticQualification": "REQUIRED",
+    "representativeChromiumQualification": "REQUIRED",
+    "noJavascriptSportsQualification": "REQUIRED",
+    "mobileOverflowQualification": "REQUIRED",
+    "contrastQualification": "REQUIRED",
+    "ownerLiveVisualReview": "CONTINUES_AFTER_DEPLOY"
   },
-  "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_21_0_HF32.md",
+  "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_23_0_HF34.md",
   "smarterJusticeDonorUse": "NOT_USED"
 }

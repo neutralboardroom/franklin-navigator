@@ -1,0 +1,8 @@
+{
+  "release": "FR-NAV1.23.0-HF3.4",
+  "pages": 19358,
+  "profiles": 19103,
+  "explorers": 50,
+  "base": "rollback-pre-HF3.3",
+  "strategy": "build-time static simplification; no global DOM mutation; deterministic explorer cards"
+}

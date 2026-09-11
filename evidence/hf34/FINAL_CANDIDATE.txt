@@ -1,0 +1,4 @@
+FR-NAV1.23.0-HF3.4
+Qualified generated candidate: 7bd82ac3d566c1df3173ee155b7e8c6671b44fe6
+Green workflow: 34577310891
+Post-qualification branch changes are evidence-only and do not alter dist/ runtime behavior.
