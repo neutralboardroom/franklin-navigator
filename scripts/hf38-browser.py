@@ -112,7 +112,7 @@ with sync_playwright() as p:
     pg.locator('[name="website"]').fill('https://example.com')
     pg.locator('[name="about"]').fill('A public sample description long enough for the preview readiness check.')
     pg.locator('[name="services"]').fill('Repairs, maintenance')
-    pg.locator('[name="hours"]').fill('Mon-Fri 9-5')
+    preview_hours=pg.locator('[name="hours"]');preview_hours.fill('Mon-Fri 9-5')
     pg.locator('[name="online"]').fill('https://www.linkedin.com/company/example')
     pg.wait_for_timeout(150)
     final=int(pg.locator('[data-r38-preview-progress]').get_attribute('value') or '0')
