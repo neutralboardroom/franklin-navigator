@@ -77,19 +77,13 @@ jobs:
           from pathlib import Path
           p=Path('scripts/hf38-browser.py')
           s=p.read_text(encoding='utf-8')
-          old="""    pg.locator('[name=\"website\"]').fill('https://example.com')
-    pg.locator('[name=\"hours\"]').fill('Mon-Fri 9-5')
-    pg.locator('[name=\"languages\"]').fill('English, Spanish')
-    pg.locator('[name=\"socialLinks\"]').fill('https://www.instagram.com/example')"""
-          new="""    pg.locator('[name=\"website\"]').fill('https://example.com')
-    pg.locator('summary', has_text='Hours, service area, language and accessibility').click()
-    pg.locator('[name=\"hours\"]').fill('Mon-Fri 9-5')
-    pg.locator('[name=\"languages\"]').fill('English, Spanish')
-    pg.locator('summary', has_text='Offers, events, photos and online presence').click()
-    pg.locator('[name=\"socialLinks\"]').fill('https://www.instagram.com/example')"""
-          if old not in s:
+          hours="    pg.locator('[name=\"hours\"]').fill('Mon-Fri 9-5')"
+          social="    pg.locator('[name=\"socialLinks\"]').fill('https://www.instagram.com/example')"
+          if hours not in s or social not in s:
               raise SystemExit('expected collapsed-section browser sequence missing')
-          p.write_text(s.replace(old,new,1),encoding='utf-8')
+          s=s.replace(hours,"    pg.locator('summary', has_text='Hours, service area, language and accessibility').click()\n"+hours,1)
+          s=s.replace(social,"    pg.locator('summary', has_text='Offers, events, photos and online presence').click()\n"+social,1)
+          p.write_text(s,encoding='utf-8')
           PY
           python -m http.server 8765 --directory dist > /tmp/hf38-http.log 2>&1 &
           SERVER_PID=$!
