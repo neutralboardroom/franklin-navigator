@@ -34,6 +34,9 @@ jobs:
           p=Path('dist/member-profile-preview/index.html')
           s=p.read_text(encoding='utf-8').replace('Review Community Membership — $35/year','Review Community Membership')
           p.write_text(s,encoding='utf-8')
+          p=Path('dist/assets/local-discovery.js')
+          s=p.read_text(encoding='utf-8').replace("window.FranklinI18n?.category?.(value) || categoryAliases[value] || value","categoryAliases[value] || window.FranklinI18n?.category?.(value) || value")
+          p.write_text(s,encoding='utf-8')
           PY
       - name: Static qualification
         run: python scripts/hf37-verify.py
