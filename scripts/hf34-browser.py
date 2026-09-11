@@ -10,7 +10,6 @@ def rgb_luma(value):
     r,g,b=map(int,m.groups());return .2126*r+.7152*g+.0722*b
 
 def contrast_failures(page):
-    # Check visible representative copy against the nearest non-transparent background.
     return page.evaluate("""() => {
       const parse = s => { const m=String(s||'').match(/rgba?\\((\\d+)[, ]+(\\d+)[, ]+(\\d+)(?:[, /]+([0-9.]+))?/i); return m ? [Number(m[1]),Number(m[2]),Number(m[3]),m[4]===undefined?1:Number(m[4])] : null };
       const lin = c => { c/=255; return c<=.04045?c/12.92:Math.pow((c+.055)/1.055,2.4) };
@@ -30,7 +29,7 @@ with sync_playwright() as p:
         page=ctx.new_page();errs=[];page.on('pageerror',lambda e,errs=errs:errs.append(str(e)))
         try:
             page.goto(BASE+route,wait_until='domcontentloaded',timeout=12000)
-            page.wait_for_timeout(400)
+            page.wait_for_timeout(500 if route=='/directory/' else 400)
             h1=page.locator('h1').first
             if h1.count()==0 or not h1.is_visible():fail.append([route,'h1_not_visible'])
             nav=page.locator('header nav.nav > a')
@@ -39,6 +38,11 @@ with sync_playwright() as p:
             if errs:fail.append([route,'pageerror:'+errs[0][:160]])
             low=contrast_failures(page)
             if low:fail.append([route,'low_contrast:'+json.dumps(low[:2],ensure_ascii=False)])
+            if route=='/my-franklin/':
+                if page.locator('.r22-dashboard-side').count()!=0:fail.append([route,'side_rail_not_removed'])
+                if page.locator('.hf34-my-tools').count()!=1:fail.append([route,'compact_tools_missing'])
+                pref=page.locator('.hf34-my-tools details.r22-dashboard-card').first
+                if pref.count() and pref.get_attribute('open') is not None:fail.append([route,'preferences_not_collapsed'])
             if route=='/business-dashboard/':
                 if page.locator('.r29-hero .actions a').count()>2:fail.append([route,'too_many_hero_actions'])
                 if page.get_by_text('Active member profiles do not show Similar local profiles on their own profile page.').count()<1:fail.append([route,'member_competitor_free_benefit_missing'])
@@ -56,6 +60,11 @@ with sync_playwright() as p:
                 urgent=page.locator('.urgent-section').first
                 if urgent.count()==0 or not urgent.is_visible():fail.append([route,'urgent_not_visible'])
                 elif urgent.bounding_box() and urgent.bounding_box()['y']>900:fail.append([route,'urgent_buried'])
+            if route=='/directory/':
+                # The rollback directory loaded normally; keep that real functionality intact.
+                try:
+                    page.wait_for_function("document.querySelectorAll('[data-dir-results] .r22-profile-result').length > 0",timeout=7000)
+                except: fail.append([route,'directory_results_not_loaded'])
             if route.startswith('/profiles/'):
                 if page.locator('.profile-primary-actions a').count()<2:fail.append([route,'profile_actions_hidden'])
         except Exception as e:fail.append([route,'navigation:'+str(e)[:180]])
@@ -77,7 +86,7 @@ with sync_playwright() as p:
     page.close();nojs.close()
     # Mobile overflow smoke across key surfaces.
     mob=browser.new_context(viewport={'width':390,'height':844})
-    for route in ('/sports/','/directory/','/business-dashboard/','/profiles/FR-ORG-5d72d3ee4e9961c5/'):
+    for route in ('/sports/','/directory/','/business-dashboard/','/my-franklin/','/profiles/FR-ORG-5d72d3ee4e9961c5/'):
         page=mob.new_page();page.goto(BASE+route,wait_until='domcontentloaded',timeout=12000);page.wait_for_timeout(180)
         overflow=page.evaluate('document.documentElement.scrollWidth > window.innerWidth + 2')
         if overflow:fail.append([route,'mobile_horizontal_overflow'])
