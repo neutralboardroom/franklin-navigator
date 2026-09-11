@@ -92,7 +92,8 @@ with sync_playwright() as p:
     chk(pg.get_by_text('Franklin Splash Park extension',exact=False).count()==0,'/activities/','expired_splash_visible')
     chk(pg.get_by_text('Franklin 9/11 Remembrance Ceremony',exact=False).count()==0,'/activities/','expired_memorial_visible')
     chk(pg.get_by_text('Last checked:',exact=False).count()==0,'/activities/','last_checked_visible')
-    chk(pg.get_by_text('Activities & local options',exact=True).count()==1,'/activities/','activity_summary_missing')
+    summary=pg.locator('[data-explorer-summary]')
+    chk(summary.count()==1 and summary.inner_text().strip()=='Activities & local options','/activities/','activity_summary_missing')
     chk(pg.get_by_text('Official resources & starting points',exact=True).count()==1,'/activities/','official_resources_disclosure_missing')
     pg.close()
 
@@ -123,14 +124,12 @@ with sync_playwright() as p:
     chk(pg.get_by_text('Preparation tools',exact=True).count()==1,'/community-help-center/','preparation_link_missing')
     pg.close()
 
-    # Active-member state on business dashboard.
     act=browser.new_context(viewport={'width':1366,'height':768}); act.route(API+'/**',handler(True))
     pg=act.new_page(); pg.goto(BASE+'/business-dashboard/',wait_until='domcontentloaded'); pg.wait_for_timeout(700)
     chk(pg.locator('[data-business-primary]').inner_text()=='Manage my member profile','/business-dashboard/active','active_member_next_action_wrong')
     chk(pg.locator('[data-business-membership-cta]').inner_text()=='Manage membership','/business-dashboard/active','active_member_membership_cta_wrong')
     chk(not pg.locator('[data-business-readiness]').is_hidden(),'/business-dashboard/active','active_member_readiness_hidden'); pg.close(); act.close()
 
-    # Critical regressions untouched by HF3.9.
     pg=ctx.new_page(); pg.goto(BASE+'/sports/',wait_until='domcontentloaded'); pg.wait_for_timeout(500)
     chk(pg.locator('.hf34-explorer-card').count()>=5,'/sports/','sports_static_results_missing'); pg.close()
     pg=ctx.new_page(); pg.goto(BASE+"/corrections/?listing=Carson%27s%20Barbershop&profile=FR-ORG-5d72d3ee4e9961c5",wait_until='domcontentloaded'); pg.wait_for_timeout(300)
