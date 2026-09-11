@@ -12,9 +12,9 @@
       loading: 'Loading Franklin options…',
       loadError: 'The local activity catalog could not load. Use the official source links on this page and try again later.',
       retry: 'Retry loading local options',
-      showing: (shown, total) => `Showing ${shown} of ${total} local options`,
+      showing: () => 'Activities & local options',
       none: 'No option matches those filters. Clear a filter or try a broader search.',
-      source: 'Official source',
+      source: 'Details',
       profile: 'Open Franklin profile',
       reviewed: 'Checked',
       recheck: 'Schedules, registration, fees, capacity, location and eligibility can change. Recheck before relying on them.',
@@ -26,16 +26,16 @@
       copy: 'Copy list',
       download: 'Download list',
       currentNone: 'No current items are listed here right now. See the local options below.',
-      currentSource: 'Check current source',
+      currentSource: 'Check current details',
       filterAll: 'All'
     },
     es: {
       loading: 'Cargando opciones de Franklin…',
       loadError: 'No se pudo cargar el catálogo local. Use los enlaces de fuentes oficiales de esta página e inténtelo más tarde.',
       retry: 'Volver a cargar opciones locales',
-      showing: (shown, total) => `Mostrando ${shown} de ${total} opciones locales`,
+      showing: () => 'Actividades y opciones locales',
       none: 'Ninguna opción coincide con esos filtros. Borre un filtro o pruebe una búsqueda más general.',
-      source: 'Fuente oficial',
+      source: 'Detalles',
       profile: 'Abrir perfil de Franklin',
       reviewed: 'Revisado',
       recheck: 'Los horarios, inscripciones, costos, cupos, ubicaciones y requisitos pueden cambiar. Confírmelos antes de depender de ellos.',
@@ -47,7 +47,7 @@
       copy: 'Copiar lista',
       download: 'Descargar lista',
       currentNone: 'No hay elementos vigentes en esta sección. Consulte las opciones locales que aparecen abajo.',
-      currentSource: 'Confirmar en la fuente',
+      currentSource: 'Confirmar detalles',
       filterAll: 'Todos'
     }
   }[lang];
@@ -128,16 +128,23 @@
     sports.forEach(value => addOption(sport, value));
   };
 
-  const sourceCard = item => {
+  const sourceCard = (item, resource = false) => {
     const card = create('article', { class: 'explorer-card' });
     const tags = create('div', { class: 'explorer-tags' });
-    tags.append(create('span', { class: 'explorer-tag' }, localized(item, 'typeLabel')));
+    const rawType = localized(item, 'typeLabel');
+    const humanTypes = {
+      'Local participation group':'Community group','Local golf league':'Golf','Local adult league route':'Softball',
+      'Official event calendar':'Events','Public outdoors':'Parks & outdoors','Local youth leagues':'Youth sports',
+      'Community ensemble':'Music','Local youth league':'Youth sports','Golf / coaching':'Golf',
+      'Official starting point':'Official resource','Public starting point':'Official resource'
+    };
+    tags.append(create('span', { class: 'explorer-tag' }, humanTypes[rawType] || rawType));
     for (const value of item.audiences.slice(0, 3)) tags.append(create('span', { class: 'explorer-tag is-age' }, label(value)));
     tags.append(create('span', { class: 'explorer-tag is-source' }, item.geographyLabel));
     const heading = create('h3', {}, localized(item, 'name'));
     const description = create('p', {}, localized(item, 'summary'));
     const sportsLine = item.sports.length ? create('p', { class: 'explorer-mini-note' }, `${lang === 'es' ? 'Deportes' : 'Sports'}: ${item.sports.map(label).join(', ')}`) : null;
-    const freshness = create('p', { class: 'explorer-mini-note' }, `${text.reviewed}: ${item.reviewedOn}. ${text.recheck}`);
+
     const actions = create('div', { class: 'actions' });
     const link = create('a', { class: 'button small', href: item.url, target: '_blank', rel: 'noopener' }, text.source);
     actions.append(link);
@@ -153,7 +160,8 @@
     choice.append(checkbox, create('span', {}, text.add));
     card.append(tags, heading, description);
     if (sportsLine) card.append(sportsLine);
-    card.append(freshness, actions, choice);
+    card.append(actions);
+    if (!resource) card.append(choice);
     return card;
   };
 
@@ -164,9 +172,14 @@
     const geographyValue = geography.value;
     const scoped = catalog.filter(inScope);
     const filtered = scoped.filter(item => (!needle || searchable(item).includes(needle)) && (!audienceValue || item.audiences.includes(audienceValue)) && (!sportValue || item.sports.includes(sportValue)) && (!geographyValue || item.geographyTier === geographyValue));
-    grid.replaceChildren(...filtered.map(sourceCard));
-    summary.textContent = text.showing(filtered.length, scoped.length);
-    empty.hidden = filtered.length !== 0;
+    const isResource = item => /official|public|route|starting point|calendar/i.test(String(item.typeLabel || ''));
+    const residentOptions = filtered.filter(item => !isResource(item));
+    const resourceOptions = filtered.filter(isResource);
+    grid.replaceChildren(...residentOptions.map(item => sourceCard(item, false)));
+    const resourceGrid = root.querySelector('[data-explorer-official-grid]');
+    if (resourceGrid) resourceGrid.replaceChildren(...resourceOptions.map(item => sourceCard(item, true)));
+    summary.textContent = text.showing(residentOptions.length, scoped.length);
+    empty.hidden = residentOptions.length !== 0;
     updateSelection();
   };
 
@@ -178,10 +191,11 @@
   const renderCurrent = () => {
     if (!currentGrid) return;
     const now = Date.now();
-    const visible = current.filter(item => inScope(item) && new Date(item.expiresAt).getTime() > now && item.status !== 'CANCELED');
+    const releaseFloor = new Date('2026-09-12T00:00:00-05:00').getTime();
+    const visible = current.filter(item => inScope(item) && new Date(item.expiresAt).getTime() > Math.max(now, releaseFloor) && item.status !== 'CANCELED').slice(0, 6);
     const cards = visible.map(item => {
       const card = create('article', { class: 'explorer-current-card' });
-      card.append(create('div', { class: 'explorer-date' }, formatDate(item.startsAt)), create('h3', {}, localized(item, 'name')), create('p', {}, localized(item, 'summary')), create('p', {}, item.location), create('p', { class: 'explorer-recheck' }, text.recheck));
+      card.append(create('div', { class: 'explorer-date' }, formatDate(item.startsAt)), create('h3', {}, localized(item, 'name')), create('p', {}, item.location), create('p', {}, localized(item, 'summary')));
       const actions = create('div', { class: 'actions' });
       actions.append(create('a', { class: 'button small', href: item.url, target: '_blank', rel: 'noopener' }, text.currentSource));
       card.append(actions);
@@ -297,7 +311,7 @@
   };
 
   const setLoadingState = () => {
-    summary.textContent = text.loading;
+    summary.textContent = text.showing(0, 0);
     grid.textContent = text.loading;
     empty.hidden = true;
     if (currentEmpty) currentEmpty.hidden = true;

@@ -127,6 +127,32 @@
       return geo * 100 + sourceOnly * 18 + (3 - contacts) * 4 + (r.h ? 0 : 2);
     };
     deduped.sort((a, b) => (s.sort === 'local' ? localRank(a) - localRank(b) : s.sort === 'checked' ? (validDate(b.d) ? b.d : '').localeCompare(validDate(a.d) ? a.d : '') : s.sort === 'website' ? Number(!!b.websiteHref) - Number(!!a.websiteHref) : s.sort === 'address' ? Number(b.h) - Number(a.h) : 0) || compare(a, b));
+    // HF3.9 default browse diversification: factual, payment-neutral, and deterministic.
+    if (s.sort === 'local' && !s.q && !s.category && !s.type && !s.area && !s.facts.length) {
+      const facilityRoot = r => { const m = norm(r.n).match(/^(.+?\b(?:park|farm))\b/); return m ? m[1] : ''; };
+      const seenFacility = new Set(), primary = [], related = [];
+      for (const r of deduped) { const k = facilityRoot(r); if (k && seenFacility.has(k)) related.push(r); else { if (k) seenFacility.add(k); primary.push(r); } }
+      const ordered = primary.concat(related);
+      const family = r => { const t = norm([r.c, r.t, r.n].join(' '));
+        if (/park|trail|recreation|historic site|playground|pavilion|greenway/.test(t)) return 'parks';
+        if (/health|medical|doctor|clinic|hospital|chiropr|dental|pharmacy|care/.test(t)) return 'health';
+        if (/restaurant|food|cafe|coffee|pizza|bakery|market/.test(t)) return 'food';
+        if (/school|education|learning|academy|college|child care/.test(t)) return 'education';
+        if (/nonprofit|organization|community|faith|religion|charity|church/.test(t)) return 'community';
+        if (/government|civic|court|police|city|county|public service/.test(t)) return 'civic';
+        if (/attorney|law|account|consult|professional|architect|engineer|real estate|insurance/.test(t)) return 'professional';
+        if (/plumb|electric|roof|hvac|contractor|construction|landscap|home service|repair/.test(t)) return 'home-services';
+        if (/auto|vehicle|car |motor|tire|collision|dealer/.test(t)) return 'auto';
+        if (/bank|finance|invest|mortgage|credit|wealth|tax/.test(t)) return 'finance';
+        if (/salon|barber|spa|beauty|fitness|gym|wellness/.test(t)) return 'personal-care';
+        if (/art|music|theatre|theater|museum|gallery|entertainment/.test(t)) return 'arts';
+        if (/hotel|lodging|inn |travel|tourism/.test(t)) return 'lodging';
+        if (/store|shop|retail|goods|boutique|clothing|furniture/.test(t)) return 'retail';
+        return 'general-services'; };
+      const first = [], rest = [], counts = new Map();
+      for (const r of ordered) { const f = family(r), n = counts.get(f) || 0; if (first.length < 16 && n < 2) { first.push(r); counts.set(f, n + 1); } else rest.push(r); }
+      return first.concat(rest);
+    }
     return deduped;
   }
   function shardFor(id) {

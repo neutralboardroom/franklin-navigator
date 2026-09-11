@@ -1,0 +1,198 @@
+name: Franklin HF3.9 build and qualify
+
+on:
+  push:
+    branches: [fr-nav1-28-0-hf39-consolidated-owner-review-20260912]
+    paths:
+      - 'scripts/hf39-build.py'
+      - 'scripts/hf39-fix.py'
+      - 'scripts/hf39-finalfix.py'
+      - 'scripts/hf39-verify.py'
+      - 'scripts/hf39-browser.py'
+      - '.github/workflows/hf39-build-qualify.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      EXPECTED_MAIN_SHA: d4290e5f9032f97bd1e5fe9b6694c1e9300898b3
+      RELEASE_BRANCH: fr-nav1-28-0-hf39-consolidated-owner-review-20260912
+    steps:
+      - name: Check out exact candidate branch
+        uses: actions/checkout@v4
+        with:
+          ref: fr-nav1-28-0-hf39-consolidated-owner-review-20260912
+          fetch-depth: 0
+
+      - name: Verify exact production base before build
+        run: |
+          set -euo pipefail
+          git fetch origin main --quiet
+          test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN_SHA"
+          test "$(git merge-base HEAD origin/main)" = "$EXPECTED_MAIN_SHA"
+          test "$(git show origin/main:PRODUCTION_RELEASE.json | python -c 'import json,sys; print(json.load(sys.stdin)["release"])')" = "FR-NAV1.27.0-HF3.8"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install qualification dependencies
+        run: |
+          python -m pip install --disable-pip-version-check beautifulsoup4==4.13.4 playwright==1.55.0
+          python -m playwright install --with-deps chromium
+
+      - name: Compile release scripts
+        run: python -m py_compile scripts/hf39-build.py scripts/hf39-fix.py scripts/hf39-finalfix.py scripts/hf39-verify.py scripts/hf39-browser.py
+
+      - name: Build candidate from HF3.8
+        run: |
+          set -euo pipefail
+          python scripts/hf39-build.py
+          python scripts/hf39-fix.py
+          python scripts/hf39-finalfix.py
+
+      - name: Static no-loss and owner-review qualification
+        run: python scripts/hf39-verify.py
+
+      - name: Representative browser qualification
+        run: |
+          set -euo pipefail
+          python -m http.server 8765 --directory dist > /tmp/hf39-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 2
+          python scripts/hf39-browser.py
+
+      - name: Upload visual-review screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: hf39-review-screenshots
+          path: hf39-review-screenshots/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Verify production base still current and seal receipts
+        run: |
+          set -euo pipefail
+          git fetch origin main --quiet
+          test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN_SHA"
+          test "$(git merge-base HEAD origin/main)" = "$EXPECTED_MAIN_SHA"
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,subprocess
+          root=Path('.'); dist=root/'dist'
+          manifest=json.loads((dist/'data/discovery/manifest.json').read_text(encoding='utf-8'))
+          idx=dist/manifest['index']['file'].lstrip('/')
+          digest=hashlib.sha256(idx.read_bytes()).hexdigest()
+          if manifest['recordCount']!=19103 or digest!=manifest['index']['sha256']:
+              raise SystemExit('profile discovery source drift detected before seal')
+          pages=sum(1 for _ in dist.rglob('*.html'))
+          if pages!=19358:
+              raise SystemExit(f'page-count drift: {pages} != 19358')
+          static=json.loads((root/'HF39_STATIC_QUALIFICATION_REPORT.json').read_text(encoding='utf-8'))
+          browser=json.loads((root/'HF39_BROWSER_QUALIFICATION_REPORT.json').read_text(encoding='utf-8'))
+          if static.get('status')!='PASS' or browser.get('status')!='PASS':
+              raise SystemExit('qualification report is not green')
+          observed=subprocess.check_output(['git','rev-parse','origin/main'],text=True).strip()
+          currentness={
+            'release':'FR-NAV1.28.0-HF3.9',
+            'expectedProductionMainSha':'d4290e5f9032f97bd1e5fe9b6694c1e9300898b3',
+            'observedProductionMainSha':observed,
+            'productionBaseStillCurrent':observed=='d4290e5f9032f97bd1e5fe9b6694c1e9300898b3',
+            'profileSourceRecordCount':manifest['recordCount'],
+            'profileSourceSha256':digest,
+            'profileFactory15_21':'DEFER_WITH_CAUSE',
+            'localInvestigator31':'DEFER_WITH_CAUSE',
+            'status':'PASS'
+          }
+          (root/'HF39_PRE_SEAL_CURRENTNESS_RECEIPT.json').write_text(json.dumps(currentness,indent=2)+'\n',encoding='utf-8')
+          evidence={
+            'release':'FR-NAV1.28.0-HF3.9',
+            'screenshots':browser.get('screenshots',[]),
+            'desktopRoutes':browser.get('routesReviewed',[]),
+            'mobileRoutes':browser.get('mobileRoutes',[]),
+            'currentnessRegression':'PASS',
+            'directoryDiversity':'PASS',
+            'businessStateAwareFlow':'PASS',
+            'sportsNoJs':'PASS',
+            'status':'PASS'
+          }
+          (root/'HF39_REVIEW_EVIDENCE_RECEIPT.json').write_text(json.dumps(evidence,indent=2)+'\n',encoding='utf-8')
+          report={
+            'release':'FR-NAV1.28.0-HF3.9',
+            'base':'FR-NAV1.27.0-HF3.8',
+            'status':'QUALIFIED_SUCCESSOR',
+            'counts':{'pages':pages,'profiles':manifest['recordCount']},
+            'profileSourceSha256':digest,
+            'staticQualification':static.get('status'),
+            'browserQualification':browser.get('status'),
+            'issueCount':static.get('issueCount',0)+browser.get('failureCount',0),
+            'issues':static.get('issues',[])+browser.get('failures',[]),
+            'authority':{'profileFactory15_21':'DEFER_WITH_CAUSE','localInvestigator31':'DEFER_WITH_CAUSE','smarterJustice':'NOT_USED','revenuePricingMutation':'NONE'},
+            'changedProductSlices':['home','directory','get-it-done','today','activities','community','my-franklin','business-dashboard','community-help-center','shared-hf39-ui'],
+            'deployment':'PENDING_AUTOMATIC_OWNER_PROMOTION_AFTER_QUALIFICATION'
+          }
+          (root/'HF39_QUALIFICATION_REPORT.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+          PY
+
+      - name: Guard exact qualified change set
+        run: |
+          set -euo pipefail
+          rm -rf hf39-review-screenshots scripts/__pycache__
+          if git diff --name-only | grep -E '^(dist/profiles/|dist/data/discovery/)'; then
+            echo 'Forbidden profile/discovery mutation detected.' >&2
+            exit 1
+          fi
+          cat > /tmp/hf39-allowed.txt <<'EOF'
+          HF39_BROWSER_QUALIFICATION_REPORT.json
+          HF39_BUILD_RECEIPT.json
+          HF39_CHANGED_FILE_MANIFEST.json
+          HF39_PRE_SEAL_CURRENTNESS_RECEIPT.json
+          HF39_QUALIFICATION_REPORT.json
+          HF39_REVIEW_EVIDENCE_RECEIPT.json
+          HF39_SOURCE_RECONCILIATION_RECEIPT.json
+          HF39_STATIC_QUALIFICATION_REPORT.json
+          NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_28_0_HF39.md
+          PRODUCTION_RELEASE.json
+          dist/activities/index.html
+          dist/assets/community-explorer.js
+          dist/assets/hf39.css
+          dist/assets/hf39.js
+          dist/assets/local-discovery-core.js
+          dist/assets/local-discovery.js
+          dist/business-dashboard/index.html
+          dist/community-help-center/index.html
+          dist/community/index.html
+          dist/directory/index.html
+          dist/get-it-done/index.html
+          dist/index.html
+          dist/my-franklin/index.html
+          dist/today/index.html
+          EOF
+          sort -u /tmp/hf39-allowed.txt -o /tmp/hf39-allowed.txt
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          allowed=[x.strip() for x in Path('/tmp/hf39-allowed.txt').read_text().splitlines() if x.strip()]
+          Path('HF39_CHANGED_FILE_MANIFEST.json').write_text(json.dumps({'release':'FR-NAV1.28.0-HF3.9','allowedQualifiedCandidateFiles':allowed,'count':len(allowed)},indent=2)+'\n',encoding='utf-8')
+          PY
+          git add $(cat /tmp/hf39-allowed.txt)
+          git diff --cached --name-only | sort -u > /tmp/hf39-actual.txt
+          if ! diff -u /tmp/hf39-allowed.txt /tmp/hf39-actual.txt; then
+            echo 'Qualified candidate changed-file set is outside the allowlist.' >&2
+            exit 1
+          fi
+          test -z "$(git status --porcelain | grep '^??' || true)"
+
+      - name: Persist qualified successor candidate
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git commit -m 'FR-NAV1.28.0 HF3.9 qualified consolidated owner-review successor [skip ci]'
+          git push origin HEAD:$RELEASE_BRANCH

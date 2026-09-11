@@ -1,0 +1,33 @@
+{
+  "release": "FR-NAV1.28.0-HF3.9",
+  "base": "FR-NAV1.27.0-HF3.8",
+  "status": "QUALIFIED_SUCCESSOR",
+  "counts": {
+    "pages": 19358,
+    "profiles": 19103
+  },
+  "profileSourceSha256": "a70510bfb65c76749dd0121fbd3988040ed8147140756f0d8055d23dfc2578bf",
+  "staticQualification": "PASS",
+  "browserQualification": "PASS",
+  "issueCount": 0,
+  "issues": [],
+  "authority": {
+    "profileFactory15_21": "DEFER_WITH_CAUSE",
+    "localInvestigator31": "DEFER_WITH_CAUSE",
+    "smarterJustice": "NOT_USED",
+    "revenuePricingMutation": "NONE"
+  },
+  "changedProductSlices": [
+    "home",
+    "directory",
+    "get-it-done",
+    "today",
+    "activities",
+    "community",
+    "my-franklin",
+    "business-dashboard",
+    "community-help-center",
+    "shared-hf39-ui"
+  ],
+  "deployment": "PENDING_AUTOMATIC_OWNER_PROMOTION_AFTER_QUALIFICATION"
+}

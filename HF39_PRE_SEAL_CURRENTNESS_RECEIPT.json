@@ -1,0 +1,11 @@
+{
+  "release": "FR-NAV1.28.0-HF3.9",
+  "expectedProductionMainSha": "d4290e5f9032f97bd1e5fe9b6694c1e9300898b3",
+  "observedProductionMainSha": "d4290e5f9032f97bd1e5fe9b6694c1e9300898b3",
+  "productionBaseStillCurrent": true,
+  "profileSourceRecordCount": 19103,
+  "profileSourceSha256": "a70510bfb65c76749dd0121fbd3988040ed8147140756f0d8055d23dfc2578bf",
+  "profileFactory15_21": "DEFER_WITH_CAUSE",
+  "localInvestigator31": "DEFER_WITH_CAUSE",
+  "status": "PASS"
+}
