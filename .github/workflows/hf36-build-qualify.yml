@@ -4,6 +4,7 @@ on:
     branches: [fr-nav1-25-0-hf36-owner-review-20260911]
     paths:
       - 'scripts/hf36-build.py'
+      - 'scripts/hf36-postfix.py'
       - 'scripts/hf36-verify.py'
       - 'scripts/hf36-browser.py'
       - '.github/workflows/hf36-build-qualify.yml'
@@ -25,9 +26,11 @@ jobs:
           pip install beautifulsoup4==4.13.4 playwright==1.55.0
           python -m playwright install chromium
       - name: Compile release scripts
-        run: python -m py_compile scripts/hf36-build.py scripts/hf36-verify.py scripts/hf36-browser.py
+        run: python -m py_compile scripts/hf36-build.py scripts/hf36-postfix.py scripts/hf36-verify.py scripts/hf36-browser.py
       - name: Build owner-review release
-        run: python scripts/hf36-build.py
+        run: |
+          python scripts/hf36-build.py
+          python scripts/hf36-postfix.py
       - name: Static qualification
         run: python scripts/hf36-verify.py
       - name: Representative browser qualification
