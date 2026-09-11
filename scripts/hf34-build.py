@@ -34,11 +34,11 @@ def add_class(tag,name):
     if name not in classes: classes.append(name)
     tag['class']=classes
 
-def mk_tag(soup,name,text=None,**attrs):
-    t=soup.new_tag(name)
+def mk_tag(soup,tag_name,text=None,**attrs):
+    t=soup.new_tag(tag_name)
     for k,v in attrs.items():
         if v is None: continue
-        t[k.replace('_','-')]=v
+        t['class' if k=='class_' else k.replace('_','-')]=v
     if text is not None: t.string=text
     return t
 
