@@ -37,6 +37,7 @@ with sync_playwright() as p:
             if route=='/business-dashboard/':
                 if page.locator('.hf35-profile-comparison').count()!=1:fail.append([route,'comparison_missing'])
                 if page.get_by_text('Active Community Member profiles do not show the Similar local profiles section on their own profile page.').count()<1:fail.append([route,'competitor_free_message_missing'])
+                if page.locator('a[href="/member-starter-plan/"]').count()>0:fail.append([route,'duplicate_member_starter_cta'])
             if route=='/member-profile-preview/':
                 if page.locator('.hf35-member-preview-comparison').count()!=1:fail.append([route,'preview_comparison_missing'])
             if route=='/community-help-center/':
@@ -59,7 +60,8 @@ with sync_playwright() as p:
                 if not page.locator('[name="authorityBasis"]').is_visible():fail.append([route,'removal_fields_hidden'])
             if route.startswith('/profiles/'):
                 if page.locator('.profile-primary-actions a').count()<3:fail.append([route,'profile_contact_actions_missing'])
-                if page.locator('.r22-profile-side .hf35-competitor-card').count()<1:fail.append([route,'free_profile_similar_section_missing'])
+                if page.locator('.r22-profile-side .hf35-competitor-card').count()!=1:fail.append([route,'free_profile_similar_section_count'])
+                if page.locator('.r22-profile-side .hf35-competitor-card a:has-text("Browse more in this category")').count()!=1:fail.append([route,'similar_section_browse_link_missing'])
                 if page.locator('#manage details.hf35-admin-more').count()!=1:fail.append([route,'profile_admin_disclosure_missing'])
         except Exception as e:fail.append([route,'navigation:'+str(e)[:160]])
         finally:page.close()
