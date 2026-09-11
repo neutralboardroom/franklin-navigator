@@ -18,6 +18,22 @@ body.hf36-get-it-done:not(.hf36-show-all-tasks) .task-card.hf36-extra-task{displ
 if 'HF3.9 qualification fix: preserve progressive task disclosure' not in s:
     css.write_text(s.rstrip()+addition+'\n',encoding='utf-8')
 
+# The older helper reveals all tasks as soon as search begins. HF3.9 adds the
+# missing final resident-facing filter: match the visible task name/category,
+# not deep explanatory copy, so "permit" produces the permit task instead of
+# incidental mentions such as permit history.
+p=DIST/'assets/hf39.js'
+s=p.read_text(encoding='utf-8')
+marker="function taskFiltering(){"
+if marker not in s:
+    insert="""
+function taskFiltering(){if(!document.body.classList.contains('hf39-get-it-done'))return;const search=q('[data-task-search]'),grid=q('[data-task-grid]'),empty=q('[data-task-empty]');if(!search||!grid)return;const cards=qa('.task-card',grid);const apply=()=>{const needle=String(search.value||'').trim().toLowerCase();if(!needle)return;let shown=0;cards.forEach(card=>{const title=(q('h3',card)?.textContent||'').toLowerCase(),category=(card.dataset.category||'').toLowerCase(),match=title.includes(needle)||category.includes(needle);card.hidden=!match;if(match)shown++});if(empty)empty.hidden=shown!==0};search.addEventListener('input',apply);}
+"""
+    if "document.addEventListener('DOMContentLoaded',()=>{" not in s:
+        raise SystemExit('expected HF3.9 DOMContentLoaded marker missing')
+    s=s.replace("document.addEventListener('DOMContentLoaded',()=>{",insert+"\ndocument.addEventListener('DOMContentLoaded',()=>{taskFiltering();",1)
+    p.write_text(s,encoding='utf-8')
+
 # 2) Directory: use a compact 12-result browse page and broaden neutral factual
 # category families so Franklin-first never becomes an all-parks front page.
 p=DIST/'assets/local-discovery.js'
@@ -147,6 +163,12 @@ new_current="""    const now = Date.now();
 if old_current not in s:
     raise SystemExit('community explorer current-render marker missing')
 s=s.replace(old_current,new_current,1)
+
+# Keep the resident-facing summary stable while the dynamic catalog loads; do
+# not flash implementation wording like "Loading Franklin options…" over it.
+if "summary.textContent = text.loading;" not in s:
+    raise SystemExit('community explorer loading-summary marker missing')
+s=s.replace("summary.textContent = text.loading;","summary.textContent = text.showing(0, 0);",1)
 p.write_text(s,encoding='utf-8')
 
 print('HF3.9 browser-discovered fixes applied')
