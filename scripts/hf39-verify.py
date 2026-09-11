@@ -39,8 +39,8 @@ for rel in changed:
 
 home=text('index.html')
 chk('Sources were last refreshed' not in home,'home_public_refresh_language')
-chk('Franklin Through Time — Then & Now' in home,'home_then_now')
 hs=soup('index.html')
+chk('Franklin Through Time — Then & Now' in hs.get_text(' ',strip=True),'home_then_now')
 biz=hs.select_one('.r24-business-section .actions')
 chk(biz is not None and len(biz.find_all('a',recursive=False))==1,'home_single_business_cta')
 
