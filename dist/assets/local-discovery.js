@@ -12,7 +12,7 @@
   const selected = new Map();
   let rows = [], byId = new Map(), loaded = false, loading = false, comparisonOpen = false, queryTimer;
   let state = C.stateFromSearch(location.search);
-  const perPage = 24;
+  const perPage = 16;
   const language = () => document.documentElement.lang.toLowerCase().startsWith('es') ? 'es' : 'en';
   const tx = (en, es) => language() === 'es' ? es : en;
   const categoryText = value => window.FranklinI18n?.category?.(value) || value;
@@ -55,22 +55,24 @@
     tray.setAttribute('aria-label', tx('Selected profile comparison', 'Comparación de perfiles seleccionados'));
     if (loaded) { populate(); render(); renderTray(); }
   }
+  // HF3.6 compact resident-facing directory card.
   function card(row) {
-    const article = el('article', null, 'r22-profile-result');
+    const article = el('article', null, 'r22-profile-result hf36-directory-card');
     const title = link('', C.canonicalProfile(row.i, language()), 'result-title'); title.append(el('h3', row.n));
-    const cat = button(categoryText(row.c) || typeText(row.t), () => { fields.category.value = row.c; readForm(); setHistory(true); render(); }, 'category-tag');
+    const cat = button(categoryText(row.c) || typeText(row.t), () => { fields.category.value = row.c; readForm(); setHistory(true); render(); }, 'category-tag hf36-category-link');
     cat.setAttribute('aria-label', tx('Filter category: ', 'Filtrar categoría: ') + (categoryText(row.c) || typeText(row.t)));
-    const locationText = el('p', row.l || row.g || tx('Location not supplied', 'Ubicación no indicada'));
-    const checked = el('p', tx('Source date: ', 'Fecha de la fuente: ') + C.dateLabel(row.d, language()), 'fine-print');
-    const facts = el('p', null, 'result-facts');
-    for (const [yes, en, es] of [[row.phoneHref, 'Phone', 'Teléfono'], [row.websiteHref, 'Website', 'Sitio web'], [row.emailHref, 'Public email', 'Correo público'], [row.h, 'Exact address', 'Dirección exacta']]) if (yes) facts.append(el('span', tx(en, es)));
-    const actions = el('div', null, 'result-actions');
-    const choose = button(selected.has(row.i) ? tx('Selected', 'Seleccionado') : tx('Compare', 'Comparar'), () => toggle(row.i));
+    const locationText = el('p', row.l || row.g || tx('Location not supplied', 'Ubicación no indicada'), 'hf36-result-location');
+    const checked = el('p', tx('Source date: ', 'Fecha de la fuente: ') + C.dateLabel(row.d, language()), 'fine-print hf36-source-date');
+    const facts = el('div', null, 'result-facts hf36-result-facts');
+    if (row.phoneHref) facts.append(link(tx('Call', 'Llamar'), row.phoneHref, 'hf36-fact-link'));
+    if (row.websiteHref) facts.append(link(tx('Website', 'Sitio web'), row.websiteHref, 'hf36-fact-link'));
+    if (row.emailHref) facts.append(link(tx('Email', 'Correo'), row.emailHref, 'hf36-fact-link'));
+    if (row.h) facts.append(el('span', tx('Exact address', 'Dirección exacta'), 'hf36-fact-text'));
+    const actions = el('div', null, 'result-actions hf36-result-actions');
+    const choose = button(selected.has(row.i) ? tx('Selected', 'Seleccionado') : tx('Compare', 'Comparar'), () => toggle(row.i), 'link-button hf36-compare');
     choose.dataset.compareId = row.i; choose.setAttribute('aria-pressed', String(selected.has(row.i)));
     choose.setAttribute('aria-label', tx(selected.has(row.i) ? 'Remove from comparison: ' : 'Compare: ', selected.has(row.i) ? 'Quitar de la comparación: ' : 'Comparar: ') + row.n);
-    const savePath = (language() === 'es' ? '/es/mi-franklin/' : '/my-franklin/') + '?saveProfile=' + encodeURIComponent(row.i) + '&chunk=' + row.x;
-    actions.append(link(tx('Open profile', 'Abrir perfil'), C.canonicalProfile(row.i, language()), 'button small primary'), choose, link(tx('Save', 'Guardar'), savePath, 'button small'));
-    if (row.websiteHref) actions.append(link(tx('Listed website', 'Sitio web indicado'), row.websiteHref, 'button small'));
+    actions.append(link(tx('Open profile', 'Abrir perfil'), C.canonicalProfile(row.i, language()), 'button small primary'), choose);
     article.append(title, cat, locationText, checked, facts, actions); return article;
   }
   function render() {
@@ -85,7 +87,7 @@
       results.append(panel);
     }
     count.textContent = new Intl.NumberFormat(language()).format(found.length) + tx(found.length === 1 ? ' result' : ' results', found.length === 1 ? ' resultado' : ' resultados');
-    pageLabel.textContent = tx(`Page ${state.page} of ${pages}`, `Página ${state.page} de ${pages}`);
+    pageLabel.textContent = tx(`Page ${state.page}`, `Página ${state.page}`);
     prev.disabled = state.page <= 1; next.disabled = state.page >= pages;
     root.dataset.loaded = 'true';
     setHistory();
