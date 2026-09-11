@@ -119,7 +119,13 @@
       if (key) seenIdentity.add(key);
       deduped.push(r);
     }
-    const localRank = r => { const t = norm([r.g, r.l].join(' ')); return t.includes('franklin') ? 0 : t.includes('williamson') ? 1 : 2; };
+    const localRank = r => {
+      const t = norm([r.g, r.l].join(' '));
+      const geo = t.includes('franklin') ? 0 : t.includes('williamson') ? 1 : 2;
+      const contacts = Number(!!r.websiteHref) + Number(!!r.phoneHref) + Number(!!r.emailHref);
+      const sourceOnly = /^FR-IRS-/.test(r.i) && contacts === 0 ? 1 : 0;
+      return geo * 100 + sourceOnly * 18 + (3 - contacts) * 4 + (r.h ? 0 : 2);
+    };
     deduped.sort((a, b) => (s.sort === 'local' ? localRank(a) - localRank(b) : s.sort === 'checked' ? (validDate(b.d) ? b.d : '').localeCompare(validDate(a.d) ? a.d : '') : s.sort === 'website' ? Number(!!b.websiteHref) - Number(!!a.websiteHref) : s.sort === 'address' ? Number(b.h) - Number(a.h) : 0) || compare(a, b));
     return deduped;
   }

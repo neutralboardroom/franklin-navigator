@@ -443,3 +443,11 @@ input,textarea,select{background:#fff!important;color:#172126!important}
 .button:not(.primary){background:#fff!important;color:#03454b!important}
 .r22-compare-tray,.explorer-shortlist{position:static!important;bottom:auto!important;box-shadow:none!important}
 [hidden]{display:none!important}
+
+
+/* HF3.7 SITEWIDE HEADER ORDER — brand left, primary navigation next, language right. */
+header .wrap.top{display:flex!important;align-items:center!important;gap:18px!important}
+header .wrap.top>a.brand{order:1!important;margin:0!important;flex:0 0 auto!important}
+header .wrap.top>nav.nav{order:2!important;margin-left:auto!important;flex:0 1 auto!important}
+header .wrap.top>.r37-language-switch{order:3!important;margin-left:10px!important;flex:0 0 auto!important;position:static!important}
+@media(max-width:900px){header .wrap.top{flex-wrap:wrap!important}header .wrap.top>a.brand{order:1!important}header .wrap.top>.r37-language-switch{order:2!important;margin-left:auto!important}header .wrap.top>nav.nav{order:3!important;width:100%!important;margin-left:0!important}}

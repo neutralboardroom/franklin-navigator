@@ -180,3 +180,7 @@
     const initial=new URLSearchParams(location.search),initialId=initial.get('profile');if(initialId){idInput.value=initialId;loadProfile(initialId,initial.get('chunk')).catch(error=>{status.textContent=`${error.message}. Search the directory and try the “Review or claim” link.`})}
   }
 })();
+
+
+/* HF3.7 shell DOM order: visual order and keyboard order match. */
+(()=>{const fix=()=>{document.querySelectorAll('header .wrap.top').forEach(top=>{if(top.dataset.hf37Shell==='1')return;const brand=top.querySelector(':scope > a.brand'),nav=top.querySelector(':scope > nav.nav'),lang=top.querySelector(':scope > .r37-language-switch');if(brand)top.insertBefore(brand,top.firstChild);if(nav){if(lang)top.insertBefore(nav,lang);else top.append(nav)}if(lang)top.append(lang);top.dataset.hf37Shell='1'})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix,{once:true});else fix()})();

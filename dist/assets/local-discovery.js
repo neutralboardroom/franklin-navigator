@@ -15,7 +15,9 @@
   const perPage = 16;
   const language = () => document.documentElement.lang.toLowerCase().startsWith('es') ? 'es' : 'en';
   const tx = (en, es) => language() === 'es' ? es : en;
-  const categoryText = value => window.FranklinI18n?.category?.(value) || value;
+  const categoryAliases = {'organization':'Organization','Religion-Related':'Community / faith organization','Non-Profit Organizations':'Nonprofit','Vitamins And Supplements':'Vitamins & supplements','Health Maintenance Organization':'Healthcare organization','investing':'Investing'};
+  const categoryText = value => categoryAliases[value] || window.FranklinI18n?.category?.(value) || value;
+  const displayLocation = row => { const raw=String(row.l||row.g||'').trim(); return raw.replace(/^Public IRS filing address geocoded in Williamson County:\s*/i,'').replace(/^Public IRS filing address:\s*/i,'') || tx('Location not supplied','Ubicación no indicada'); };
   const typeNames = {
     organization_or_place: ['Organization or place', 'Organización o lugar'], individual_healthcare_provider: ['Individual healthcare provider', 'Profesional de salud'], healthcare_provider_organization: ['Healthcare organization', 'Organización de salud'], tax_exempt_organization: ['Tax-exempt organization', 'Organización exenta de impuestos'], business: ['Business', 'Negocio'], community_resource: ['Community resource', 'Recurso comunitario'], regulated_child_care_provider: ['Child care provider', 'Proveedor de cuidado infantil'], government_department: ['Government department', 'Departamento público'], public_school: ['Public school', 'Escuela pública'], health_or_regulated_business: ['Health or regulated business', 'Negocio de salud o regulado'], healthcare_practice: ['Healthcare practice', 'Consultorio de salud'], nonprofit: ['Nonprofit', 'Organización sin fines de lucro'], historic_site: ['Historic site', 'Sitio histórico'], government: ['Government', 'Gobierno'], government_social_service: ['Public social service', 'Servicio social público'], professional_firm: ['Professional firm', 'Firma profesional'], public_school_district: ['Public school district', 'Distrito escolar público'], tourism_resource: ['Tourism resource', 'Recurso turístico'], arts_organization: ['Arts organization', 'Organización de arte'], government_facility: ['Government facility', 'Instalación pública'], hospital: ['Hospital', 'Hospital']
   };
@@ -61,7 +63,7 @@
     const title = link('', C.canonicalProfile(row.i, language()), 'result-title'); title.append(el('h3', row.n));
     const cat = button(categoryText(row.c) || typeText(row.t), () => { fields.category.value = row.c; readForm(); setHistory(true); render(); }, 'category-tag hf36-category-link');
     cat.setAttribute('aria-label', tx('Filter category: ', 'Filtrar categoría: ') + (categoryText(row.c) || typeText(row.t)));
-    const locationText = el('p', row.l || row.g || tx('Location not supplied', 'Ubicación no indicada'), 'hf36-result-location');
+    const locationText = el('p', displayLocation(row), 'hf36-result-location');
     const checked = el('p', tx('Source date: ', 'Fecha de la fuente: ') + C.dateLabel(row.d, language()), 'fine-print hf36-source-date');
     const facts = el('div', null, 'result-facts hf36-result-facts');
     if (row.phoneHref) facts.append(link(tx('Call', 'Llamar'), row.phoneHref, 'hf36-fact-link'));
@@ -69,7 +71,7 @@
     if (row.emailHref) facts.append(link(tx('Email', 'Correo'), row.emailHref, 'hf36-fact-link'));
     if (row.h) facts.append(el('span', tx('Exact address', 'Dirección exacta'), 'hf36-fact-text'));
     const actions = el('div', null, 'result-actions hf36-result-actions');
-    const choose = button(selected.has(row.i) ? tx('Selected', 'Seleccionado') : tx('Compare', 'Comparar'), () => toggle(row.i), 'link-button hf36-compare');
+    const choose = button(selected.has(row.i) ? tx('✓ Compare', '✓ Comparar') : tx('□ Compare', '□ Comparar'), () => toggle(row.i), 'link-button hf36-compare');
     choose.dataset.compareId = row.i; choose.setAttribute('aria-pressed', String(selected.has(row.i)));
     choose.setAttribute('aria-label', tx(selected.has(row.i) ? 'Remove from comparison: ' : 'Compare: ', selected.has(row.i) ? 'Quitar de la comparación: ' : 'Comparar: ') + row.n);
     actions.append(link(tx('Open profile', 'Abrir perfil'), C.canonicalProfile(row.i, language()), 'button small primary'), choose);
@@ -86,7 +88,7 @@
       panel.append(button(tx('Clear filters', 'Quitar filtros'), clearFilters), link(tx('I do not see my business or organization', 'No veo mi negocio u organización'), '/profile-request/', 'button'));
       results.append(panel);
     }
-    count.textContent = new Intl.NumberFormat(language()).format(found.length) + tx(found.length === 1 ? ' result' : ' results', found.length === 1 ? ' resultado' : ' resultados');
+    const filtered = !!(state.q || state.category || state.type || state.area || state.facts.length); count.textContent = filtered ? new Intl.NumberFormat(language()).format(found.length) + tx(found.length === 1 ? ' match' : ' matches', found.length === 1 ? ' coincidencia' : ' coincidencias') : tx('Local profiles', 'Perfiles locales');
     pageLabel.textContent = tx(`Page ${state.page}`, `Página ${state.page}`);
     prev.disabled = state.page <= 1; next.disabled = state.page >= pages;
     root.dataset.loaded = 'true';
