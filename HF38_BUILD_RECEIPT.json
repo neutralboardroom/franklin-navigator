@@ -1,0 +1,15 @@
+{
+  "release": "FR-NAV1.27.0-HF3.8",
+  "base": "FR-NAV1.26.0-HF3.7",
+  "changedProductSlices": [
+    "profile-studio",
+    "member-profile-preview",
+    "business-dashboard",
+    "community-help-center",
+    "shared-accessibility"
+  ],
+  "profileCount": 19103,
+  "sourceDigestPreserved": true,
+  "authorityDrift": "NONE",
+  "status": "BUILT_PENDING_QUALIFICATION"
+}

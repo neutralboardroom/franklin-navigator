@@ -1,0 +1,35 @@
+/* FR-NAV1.27.0-HF3.8 — safe member first-value and accessibility pass. */
+.r38-studio-hero{background:linear-gradient(145deg,#eef8f6,#fff 65%,#fbf8f1)}
+.r38-studio-hero h1{max-width:760px}
+.r38-studio-shell{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+.r38-studio-note{border:1px solid #c9dbd8;background:#f5fbfa;border-radius:12px;padding:16px 18px}
+.r38-studio-note p{margin:.35rem 0}
+.r38-member-readiness{border:1px solid #bdd5d1;background:#f3f9f8;border-radius:12px;padding:16px;margin:0 0 20px}
+.r38-member-readiness h3{margin:0 0 4px}
+.r38-member-readiness progress{width:100%;height:14px;accent-color:#075f66}
+.r38-member-readiness ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;margin:.8rem 0 0;padding-left:1.2rem}
+.r38-ready{font-weight:760;color:#075f66}
+.r38-not-ready{color:#5f6c70}
+.r38-field-group{border:1px solid #d7e3e1;border-radius:12px;background:#fff;margin:0 0 14px}
+.r38-field-group>summary{font-weight:820;padding:14px 16px}
+.r38-field-group[open]>summary{border-bottom:1px solid #e1e9e8}
+.r38-field-group-body{padding:4px 16px 16px}
+.r38-field-group-body label{display:block;font-weight:720;margin:13px 0 5px}
+.r38-field-group-body input,.r38-field-group-body textarea{width:100%;padding:11px 12px;border:1px solid #aebbbb;border-radius:7px;font:inherit;background:#fff;color:#172126}
+.r38-field-help{font-size:.84rem;color:#657278;margin:.25rem 0 .7rem}
+.r38-member-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.r38-status-strip{border-left:4px solid #075f66;background:#f3f8f7;padding:12px 14px;margin:0 0 16px}
+.r38-business-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:22px}
+.r38-business-step{border:1px solid #d8e4e2;border-radius:12px;background:#fff;padding:19px}
+.r38-business-step .r38-step-number{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#03454b;color:#fff;font-weight:850;margin-bottom:10px}
+.r38-business-step h2{font-size:1.22rem;margin:.2rem 0 .45rem}
+.r38-business-step p{color:#4c5a60}
+.r38-business-step .button{margin-top:6px}
+.r38-business-membership{max-width:760px;margin:0 auto}
+.r38-preview-readiness{border:1px solid #c4d9d6;border-radius:10px;padding:13px 14px;background:#f6fbfa;margin:12px 0 18px}
+.r38-preview-readiness progress{width:100%;height:12px;accent-color:#075f66}
+.r38-preview-readiness ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px;padding-left:1.15rem;margin:.65rem 0 0;font-size:.9rem}
+@media(max-width:780px){
+  .r38-business-steps,.r38-member-readiness ul,.r38-preview-readiness ul{grid-template-columns:1fr}
+  .r38-field-group-body{padding-inline:13px}
+}
