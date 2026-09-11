@@ -1,0 +1,96 @@
+/* FR-NAV1.28.0-HF3.9 — consolidated owner-review finishing pass. */
+.hf39-compact-hero{padding-block:34px!important}
+.hf39-home .hf39-home-events .r22-card{min-height:0}
+.hf39-home .hf36-everyday .r22-mini-list{gap:8px}
+.hf39-home .hf36-everyday .r22-mini-list a{padding:10px 12px}
+.hf39-home .r24-business-section .actions{margin-top:14px}
+.hf39-home .r22-member-preview-mini span{line-height:1.45}
+.hf39-directory .r22-directory-toolbar{transition:.18s ease}
+.hf39-directory.hf39-directory-scrolled .r22-directory-toolbar{position:sticky;top:72px;z-index:15;background:#fff;padding:8px 0;box-shadow:0 1px 0 rgba(3,69,75,.12)}
+.hf39-directory.hf39-directory-scrolled .r22-directory-toolbar input,.hf39-directory.hf39-directory-scrolled .r22-directory-toolbar select{min-height:42px;padding-block:7px}
+.hf39-directory .hf36-directory-card{min-height:0;align-content:start}
+.hf39-directory .hf36-result-location{margin:.4rem 0}
+.hf39-directory .hf36-result-facts{gap:8px;align-items:center}
+.hf39-directory .hf36-fact-text{font-size:.84rem;color:#667276;font-weight:650}
+.hf39-directory .hf39-compare-choice{display:inline-flex;align-items:center;gap:6px;font-size:.9rem;font-weight:650;cursor:pointer}
+.hf39-directory .hf39-compare-choice input{width:16px;height:16px;margin:0}
+.hf39-directory .r22-directory-grid{align-items:stretch}
+.hf39-directory .r22-directory-meta{margin-top:16px}
+.hf39-directory .r22-directory-pager{margin-top:20px}
+.hf39-directory .hf39-how-listings{margin-top:12px}
+.hf39-get-it-done .r22-hero.compact{padding-block:32px}
+.hf39-get-it-done .r22-task-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.hf39-get-it-done .task-card{display:flex;flex-direction:column;min-height:248px}
+.hf39-get-it-done .task-card .button{margin-top:auto;align-self:flex-start}
+.hf39-get-it-done .hf36-how-tasks{padding-block:34px}
+.hf39-get-it-done .hf39-task-flow{display:flex;justify-content:space-between;gap:28px;align-items:center;flex-wrap:wrap}
+.hf39-get-it-done .hf39-task-flow h2{margin:.2rem 0}
+.hf39-get-it-done .hf39-task-flow p{margin:0;color:#56646a}
+.hf39-get-it-done .hf36-task-more-tools{max-width:520px;margin-top:18px}
+.hf39-get-it-done .hf36-task-more-tools>summary{padding:12px 14px}
+.hf39-today .hf39-today-group{margin-top:28px}
+.hf39-today .hf39-today-group h3{font-size:1.45rem;margin:0 0 12px}
+.hf39-today .hf39-today-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.hf39-today .hf39-event-meta{font-weight:720;color:#204b50;margin:.35rem 0}
+.hf39-today .today-card{min-height:0}
+.hf39-today .today-card .fine-print{margin:.35rem 0 .7rem}
+.hf39-today .hf39-more-activities{padding-block:34px}
+.hf39-today .hf39-more-activities .actions{gap:8px}
+.hf39-today .hf39-more-activities .button{padding:10px 14px}
+.hf39-activities .explorer-hero{padding-block:34px}
+.hf39-activities .hf39-current-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.hf39-activities .explorer-current-card{min-height:0}
+.hf39-activities .hf39-current-meta{font-weight:720;color:#204b50}
+.hf39-activities .explorer-mini-note{margin:.35rem 0}
+.hf39-activities .explorer-choice{display:inline-flex!important;align-items:center;gap:7px;border:0!important;padding:0!important;margin-top:8px!important}
+.hf39-activities .explorer-choice input{width:16px;height:16px;margin:0}
+.hf39-activities .explorer-card{min-height:0}
+.hf39-activities .hf39-official-resources{margin-top:26px}
+.hf39-activities .hf39-official-resources>summary{font-weight:800;padding:14px 16px;border:1px solid #c9d8d6;border-radius:10px}
+.hf39-activities .hf39-official-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:14px}
+.hf39-activities .hf39-official-grid .explorer-card{box-shadow:none}
+.hf39-activities .explorer-summary{margin-top:14px}
+.hf39-activities .explorer-summary p{font-weight:760}
+.hf39-community .r22-hero.compact{padding-block:34px}
+.hf39-community .hf39-stay-strip{padding-block:30px}
+.hf39-community .hf39-stay-strip .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.hf39-community .hf39-stay-strip h2{margin:0;font-size:1.6rem}
+.hf39-community .hf36-community-resources,.hf39-community .hf36-civic-links{margin-top:14px}
+.hf39-community .hf36-community-resources>summary,.hf39-community .hf36-civic-links>summary{padding:13px 15px}
+.hf39-my-franklin .r22-hero.compact{padding-block:32px}
+.hf39-my-franklin .hf36-saved-blocks[hidden]{display:none!important}
+.hf39-my-franklin .hf36-saved-empty{padding:14px!important;margin:8px 0 14px!important}
+.hf39-my-franklin .r22-dashboard-card{padding:20px}
+.hf39-my-franklin .hf39-reminder-note{margin:.25rem 0 12px;color:#657278}
+.hf39-my-franklin [data-franklin-reminders] .empty-state{border:0!important;padding:7px 0!important;text-align:left!important}
+.hf39-my-franklin .hf34-my-tools{gap:14px}
+.hf39-my-franklin .hf34-my-tools>details>summary{padding:13px 15px}
+.hf39-my-franklin .hf36-starting-points[hidden]{display:none!important}
+.hf39-my-franklin details>summary::after{content:"▾"!important;float:right}
+.hf39-my-franklin details[open]>summary::after{content:"▴"!important}
+.hf39-business .r29-hero{padding-block:38px}
+.hf39-business .hf39-business-status{margin:14px 0 0;color:#536168}
+.hf39-business .r38-business-steps{margin-top:12px}
+.hf39-business .r38-business-step{padding:16px}
+.hf39-business .r38-business-membership{padding:24px}
+.hf39-business .r29-price{margin:.55rem 0}
+.hf39-business .hf39-readiness-inline{margin-top:12px;padding:12px 14px;border:1px solid #c4d9d6;border-radius:10px;background:#f7fbfa}
+.hf39-business .hf39-readiness-inline[hidden]{display:none!important}
+.hf39-help .help-hero{padding-block:34px}
+.hf39-help .urgent-section{padding-block:34px}
+.hf39-help .urgent-grid{gap:12px}
+.hf39-help .urgent-card{padding:16px}
+.hf39-help .hf39-help-planner{max-width:1000px}
+.hf39-help .topic-grid{gap:8px}
+.hf39-help .topic-choice{padding:9px 11px!important}
+.hf39-help .help-plan-output[hidden]{display:none!important}
+.hf39-help .hf39-more-help>summary,.hf39-help .hf39-privacy-safety>summary{padding:14px 16px;font-weight:800}
+.hf39-help .hf39-help-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;padding:14px 0}
+.hf39-help .hf39-help-links a{padding:10px 0}
+.hf39-help .hf39-core-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+@media(max-width:900px){.hf39-directory.hf39-directory-scrolled .r22-directory-toolbar{top:112px}.hf39-get-it-done .r22-task-grid,.hf39-today .hf39-today-grid,.hf39-activities .hf39-current-grid,.hf39-activities .hf39-official-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:640px){.hf39-get-it-done .r22-task-grid,.hf39-today .hf39-today-grid,.hf39-activities .hf39-current-grid,.hf39-activities .hf39-official-grid,.hf39-help .hf39-help-links{grid-template-columns:1fr!important}.hf39-task-flow{display:block!important}}
+/* HF3.9 qualification fix: preserve progressive task disclosure and filtering. */
+body.hf36-get-it-done:not(.hf36-show-all-tasks) .task-card.hf36-extra-task{display:none!important}
+.hf39-get-it-done .task-card[hidden]{display:none!important}
+

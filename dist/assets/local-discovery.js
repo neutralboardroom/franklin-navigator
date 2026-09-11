@@ -12,10 +12,10 @@
   const selected = new Map();
   let rows = [], byId = new Map(), loaded = false, loading = false, comparisonOpen = false, queryTimer;
   let state = C.stateFromSearch(location.search);
-  const perPage = 16;
+  const perPage = 12;
   const language = () => document.documentElement.lang.toLowerCase().startsWith('es') ? 'es' : 'en';
   const tx = (en, es) => language() === 'es' ? es : en;
-  const categoryAliases = {'organization':'Organization','Religion-Related':'Community / faith organization','Non-Profit Organizations':'Nonprofit','Vitamins And Supplements':'Vitamins & supplements','Health Maintenance Organization':'Healthcare organization','investing':'Investing'};
+  const categoryAliases = {'organization':'Organization','Religion-Related':'Community / faith organization','Non-Profit Organizations':'Nonprofit','Vitamins And Supplements':'Vitamins & supplements','Health Maintenance Organization':'Healthcare organization','investing':'Investing','Public Park, Historic Site, Trail, or Recreation Facility':'Park & recreation'};
   const categoryText = value => categoryAliases[value] || window.FranklinI18n?.category?.(value) || value;
   const displayLocation = row => { const raw=String(row.l||row.g||'').trim(); return raw.replace(/^Public IRS filing address geocoded in Williamson County:\s*/i,'').replace(/^Public IRS filing address:\s*/i,'') || tx('Location not supplied','Ubicación no indicada'); };
   const typeNames = {
@@ -64,18 +64,19 @@
     const cat = button(categoryText(row.c) || typeText(row.t), () => { fields.category.value = row.c; readForm(); setHistory(true); render(); }, 'category-tag hf36-category-link');
     cat.setAttribute('aria-label', tx('Filter category: ', 'Filtrar categoría: ') + (categoryText(row.c) || typeText(row.t)));
     const locationText = el('p', displayLocation(row), 'hf36-result-location');
-    const checked = el('p', tx('Source date: ', 'Fecha de la fuente: ') + C.dateLabel(row.d, language()), 'fine-print hf36-source-date');
     const facts = el('div', null, 'result-facts hf36-result-facts');
     if (row.phoneHref) facts.append(link(tx('Call', 'Llamar'), row.phoneHref, 'hf36-fact-link'));
     if (row.websiteHref) facts.append(link(tx('Website', 'Sitio web'), row.websiteHref, 'hf36-fact-link'));
     if (row.emailHref) facts.append(link(tx('Email', 'Correo'), row.emailHref, 'hf36-fact-link'));
     if (row.h) facts.append(el('span', tx('Exact address', 'Dirección exacta'), 'hf36-fact-text'));
     const actions = el('div', null, 'result-actions hf36-result-actions');
-    const choose = button(selected.has(row.i) ? tx('✓ Compare', '✓ Comparar') : tx('□ Compare', '□ Comparar'), () => toggle(row.i), 'link-button hf36-compare');
-    choose.dataset.compareId = row.i; choose.setAttribute('aria-pressed', String(selected.has(row.i)));
-    choose.setAttribute('aria-label', tx(selected.has(row.i) ? 'Remove from comparison: ' : 'Compare: ', selected.has(row.i) ? 'Quitar de la comparación: ' : 'Comparar: ') + row.n);
+    const choose = el('label', null, 'hf39-compare-choice');
+    const check = document.createElement('input'); check.type='checkbox'; check.checked=selected.has(row.i); check.dataset.compareId=row.i;
+    check.setAttribute('aria-label', tx('Compare: ', 'Comparar: ') + row.n);
+    check.addEventListener('change', () => toggle(row.i));
+    choose.append(check, el('span', tx('Compare','Comparar')));
     actions.append(link(tx('Open profile', 'Abrir perfil'), C.canonicalProfile(row.i, language()), 'button small primary'), choose);
-    article.append(title, cat, locationText, checked, facts, actions); return article;
+    article.append(title, cat, locationText, facts, actions); return article;
   }
   function render() {
     if (!loaded) return;
@@ -106,13 +107,13 @@
   function selectedText() {
     const lines = [tx('Franklin Navigator — contact preparation', 'Franklin Navigator — preparación para contactar'), '', tx('Public directory facts only. No message was sent and no appointment was made. Confirm services, credentials where relevant, costs and availability directly.', 'Solo datos públicos del directorio. No se envió ningún mensaje ni se concertó una cita. Confirme directamente los servicios, las credenciales pertinentes, los costos y la disponibilidad.'), ''];
     [...selected.values()].forEach((r, i) => {
-      lines.push(`${i + 1}. ${r.n}`, categoryText(r.c), r.l || r.g, 'https://franklinnavigator.com' + C.canonicalProfile(r.i, language()), tx('Source date: ', 'Fecha de la fuente: ') + C.dateLabel(r.d, language()));
+      lines.push(`${i + 1}. ${r.n}`, categoryText(r.c), r.l || r.g, 'https://franklinnavigator.com' + C.canonicalProfile(r.i, language()));
       if (r.websiteHref) lines.push(tx('Listed website: ', 'Sitio web indicado: ') + r.websiteHref);
       if (r.phoneHref) lines.push(tx('Phone: ', 'Teléfono: ') + r.p);
       if (r.emailHref) lines.push(tx('Public email: ', 'Correo público: ') + r.e);
       lines.push('');
     });
-    lines.push(tx('Questions to ask', 'Preguntas para hacer'), ...questions().map((x, i) => `${i + 1}. ${x}`), '', tx('Selection is yours, not a recommendation or paid ranking. A source date is not proof of current availability.', 'La selección es suya, no una recomendación ni una clasificación pagada. La fecha de la fuente no confirma la disponibilidad actual.'));
+    lines.push(tx('Questions to ask', 'Preguntas para hacer'), ...questions().map((x, i) => `${i + 1}. ${x}`), '', tx('Selection is yours, not a recommendation or paid ranking. Listed information can change; confirm current details directly.', 'La selección es suya, no una recomendación ni una clasificación pagada. La información indicada puede cambiar; confirme los detalles actuales directamente.'));
     return lines.join('\n');
   }
   const questions = () => [tx('Do you provide the service I need at my location?', '¿Ofrece el servicio que necesito en mi ubicación?'), tx('What are the total costs and any cancellation terms before I commit?', '¿Cuáles son los costos totales y las condiciones de cancelación antes de comprometerme?'), tx('How do I confirm availability or arrange the next step?', '¿Cómo confirmo la disponibilidad o acuerdo el siguiente paso?'), tx('What language or accessibility support is available?', '¿Qué apoyo de idioma o accesibilidad está disponible?'), tx('What information do you actually need from me, and how should I send it securely?', '¿Qué información necesita realmente de mí y cómo debo enviarla de forma segura?')];

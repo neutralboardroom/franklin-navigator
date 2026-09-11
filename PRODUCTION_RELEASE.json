@@ -1,8 +1,8 @@
 {
-  "release": "FR-NAV1.27.0-HF3.8",
-  "date": "2026-09-11",
-  "base": "FR-NAV1.26.0-HF3.7",
-  "scope": "Regression-safe member first-value, Profile Studio completeness, accessibility and public-language finishing",
+  "release": "FR-NAV1.28.0-HF3.9",
+  "date": "2026-09-12",
+  "base": "FR-NAV1.27.0-HF3.8",
+  "scope": "Consolidated owner-review simplification, currentness, resident-facing public language, directory diversity, business next-best-action and Help Center front-door finishing",
   "counts": {
     "profiles": 19103
   },

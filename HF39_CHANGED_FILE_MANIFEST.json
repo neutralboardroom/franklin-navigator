@@ -1,0 +1,30 @@
+{
+  "release": "FR-NAV1.28.0-HF3.9",
+  "allowedQualifiedCandidateFiles": [
+    "HF39_BROWSER_QUALIFICATION_REPORT.json",
+    "HF39_BUILD_RECEIPT.json",
+    "HF39_CHANGED_FILE_MANIFEST.json",
+    "HF39_PRE_SEAL_CURRENTNESS_RECEIPT.json",
+    "HF39_QUALIFICATION_REPORT.json",
+    "HF39_REVIEW_EVIDENCE_RECEIPT.json",
+    "HF39_SOURCE_RECONCILIATION_RECEIPT.json",
+    "HF39_STATIC_QUALIFICATION_REPORT.json",
+    "NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_28_0_HF39.md",
+    "PRODUCTION_RELEASE.json",
+    "dist/activities/index.html",
+    "dist/assets/community-explorer.js",
+    "dist/assets/hf39.css",
+    "dist/assets/hf39.js",
+    "dist/assets/local-discovery-core.js",
+    "dist/assets/local-discovery.js",
+    "dist/business-dashboard/index.html",
+    "dist/community-help-center/index.html",
+    "dist/community/index.html",
+    "dist/directory/index.html",
+    "dist/get-it-done/index.html",
+    "dist/index.html",
+    "dist/my-franklin/index.html",
+    "dist/today/index.html"
+  ],
+  "count": 24
+}

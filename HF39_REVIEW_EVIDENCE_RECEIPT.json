@@ -1,0 +1,45 @@
+{
+  "release": "FR-NAV1.28.0-HF3.9",
+  "screenshots": [
+    "hf39-review-screenshots/activities.png",
+    "hf39-review-screenshots/business-dashboard.png",
+    "hf39-review-screenshots/community-help-center.png",
+    "hf39-review-screenshots/community.png",
+    "hf39-review-screenshots/directory.png",
+    "hf39-review-screenshots/get-it-done.png",
+    "hf39-review-screenshots/home.png",
+    "hf39-review-screenshots/my-franklin.png",
+    "hf39-review-screenshots/today.png"
+  ],
+  "desktopRoutes": [
+    "/",
+    "/directory/",
+    "/get-it-done/",
+    "/today/",
+    "/activities/",
+    "/community/",
+    "/my-franklin/",
+    "/business-dashboard/",
+    "/community-help-center/"
+  ],
+  "mobileRoutes": [
+    "/",
+    "/directory/",
+    "/get-it-done/",
+    "/today/",
+    "/activities/",
+    "/community/",
+    "/my-franklin/",
+    "/business-dashboard/",
+    "/community-help-center/",
+    "/sports/",
+    "/profiles/FR-ORG-5d72d3ee4e9961c5/",
+    "/es/deportes/",
+    "/es/centro-de-ayuda/"
+  ],
+  "currentnessRegression": "PASS",
+  "directoryDiversity": "PASS",
+  "businessStateAwareFlow": "PASS",
+  "sportsNoJs": "PASS",
+  "status": "PASS"
+}

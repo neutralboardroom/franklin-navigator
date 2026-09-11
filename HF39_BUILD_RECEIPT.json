@@ -1,0 +1,20 @@
+{
+  "release": "FR-NAV1.28.0-HF3.9",
+  "base": "FR-NAV1.27.0-HF3.8",
+  "profileCount": 19103,
+  "profileSourceSha256": "a70510bfb65c76749dd0121fbd3988040ed8147140756f0d8055d23dfc2578bf",
+  "changedProductSlices": [
+    "home",
+    "directory",
+    "get-it-done",
+    "today",
+    "activities",
+    "community",
+    "my-franklin",
+    "business-dashboard",
+    "community-help-center",
+    "shared-hf39-ui"
+  ],
+  "authorityDrift": "NONE",
+  "status": "BUILT_PENDING_QUALIFICATION"
+}
