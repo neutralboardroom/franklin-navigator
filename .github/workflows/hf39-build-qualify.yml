@@ -6,6 +6,7 @@ on:
     paths:
       - 'scripts/hf39-build.py'
       - 'scripts/hf39-fix.py'
+      - 'scripts/hf39-finalfix.py'
       - 'scripts/hf39-verify.py'
       - 'scripts/hf39-browser.py'
       - '.github/workflows/hf39-build-qualify.yml'
@@ -46,13 +47,14 @@ jobs:
           python -m playwright install --with-deps chromium
 
       - name: Compile release scripts
-        run: python -m py_compile scripts/hf39-build.py scripts/hf39-fix.py scripts/hf39-verify.py scripts/hf39-browser.py
+        run: python -m py_compile scripts/hf39-build.py scripts/hf39-fix.py scripts/hf39-finalfix.py scripts/hf39-verify.py scripts/hf39-browser.py
 
       - name: Build candidate from HF3.8
         run: |
           set -euo pipefail
           python scripts/hf39-build.py
           python scripts/hf39-fix.py
+          python scripts/hf39-finalfix.py
 
       - name: Static no-loss and owner-review qualification
         run: python scripts/hf39-verify.py
