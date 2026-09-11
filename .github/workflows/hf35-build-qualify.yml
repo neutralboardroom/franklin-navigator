@@ -4,6 +4,7 @@ on:
     branches: [fr-nav1-24-0-hf35-finish-simplify-20260911]
     paths:
       - 'scripts/hf35-build.py'
+      - 'scripts/hf35-preflight.py'
       - 'scripts/hf35-verify.py'
       - 'scripts/hf35-browser.py'
       - '.github/workflows/hf35-build-qualify.yml'
@@ -24,8 +25,10 @@ jobs:
         run: |
           pip install beautifulsoup4==4.13.4 playwright==1.55.0
           python -m playwright install chromium
-      - name: Compile builder and qualification scripts
-        run: python -m py_compile scripts/hf35-build.py scripts/hf35-verify.py scripts/hf35-browser.py
+      - name: Builder preflight and compile
+        run: |
+          python scripts/hf35-preflight.py
+          python -m py_compile scripts/hf35-build.py scripts/hf35-preflight.py scripts/hf35-verify.py scripts/hf35-browser.py
       - name: Build finishing release
         run: python scripts/hf35-build.py
       - name: Static qualification
