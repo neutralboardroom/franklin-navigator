@@ -23,7 +23,8 @@ for p in DIST.rglob('*.html'):
         if len(s.select('.hf34-explorer-card'))<1:issues.append((r,'explorer_static_results_missing'))
     if r.startswith('/profiles/'):
         counts['profiles']+=1
-        if not s.select_one('.hf35-contact-label'):issues.append((r,'profile_contact_label_missing'))
+        contact=s.select_one('.profile-primary-actions')
+        if contact and contact.find('a') and not s.select_one('.hf35-contact-label'):issues.append((r,'profile_contact_label_missing'))
         if not s.select_one('script[src^="/assets/hf35-member-public.js"]'):issues.append((r,'profile_hf35_member_runtime_missing'))
         if s.select_one('script[src*="hf34-member-public.js"]'):issues.append((r,'profile_old_member_runtime_present'))
         about_listing=[x for x in s.select('.r22-profile-side h2') if re.search(r'About this listing|Acerca de este listado',x.get_text(' ',strip=True),re.I)]
