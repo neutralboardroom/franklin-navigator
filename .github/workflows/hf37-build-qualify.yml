@@ -1,0 +1,49 @@
+name: Franklin HF3.7 build and qualify
+on:
+  push:
+    branches: [fr-nav1-26-0-hf37-safe-commercial-profile-directory-polish-20260911]
+    paths:
+      - 'scripts/hf37-build.py'
+      - 'scripts/hf37-verify.py'
+      - 'scripts/hf37-browser.py'
+      - '.github/workflows/hf37-build-qualify.yml'
+permissions:
+  contents: write
+jobs:
+  build-qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: fr-nav1-26-0-hf37-safe-commercial-profile-directory-polish-20260911
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install build and browser dependencies
+        run: |
+          pip install beautifulsoup4==4.13.4 playwright==1.55.0
+          python -m playwright install chromium
+      - name: Compile release scripts
+        run: python -m py_compile scripts/hf37-build.py scripts/hf37-verify.py scripts/hf37-browser.py
+      - name: Build regression-safe release
+        run: python scripts/hf37-build.py
+      - name: Static qualification
+        run: python scripts/hf37-verify.py
+      - name: Representative browser qualification
+        run: |
+          python -m http.server 8765 --directory dist > /tmp/hf37-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 2
+          python scripts/hf37-browser.py
+      - name: Persist qualified candidate
+        run: |
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add dist/assets/styles.css dist/assets/app.js dist/assets/hf37.css dist/assets/hf37.js dist/assets/local-discovery.js dist/assets/local-discovery-core.js \
+            dist/membership-start/index.html dist/member-profile-preview/index.html dist/claim-profile/index.html dist/directory/index.html \
+            PRODUCTION_RELEASE.json HF37_BUILD_RECEIPT.json HF37_QUALIFICATION_REPORT.json PROFILE_FACTORY_RECONCILIATION_HANDOFF__HF37.json NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_26_0_HF37.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'FR-NAV1.26.0 HF3.7 qualified safe commercial/profile/directory polish [skip ci]'
+          git push origin HEAD:fr-nav1-26-0-hf37-safe-commercial-profile-directory-polish-20260911
