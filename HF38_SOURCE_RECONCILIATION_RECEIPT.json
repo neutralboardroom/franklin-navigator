@@ -1,0 +1,29 @@
+{
+  "release": "FR-NAV1.27.0-HF3.8",
+  "base": "FR-NAV1.26.0-HF3.7",
+  "community": "FRANKLIN_TN",
+  "profileFactory": {
+    "observedCandidate": "FR-PF-PLATFORM-15.21",
+    "packageSha256": "f64dd7b51fe405d975d1b21fb68a3e775ef33ceaf792dc2e1cd1e3c0c2aef8d0",
+    "consumerAcceptance": "UNKNOWN",
+    "disposition": "DEFER_WITH_CAUSE",
+    "cause": "Producer package integrity passed but stronger semantic consumer acceptance was not advanced; no profile facts, counts, identity resolutions, links or categories imported."
+  },
+  "localInvestigator": {
+    "observedCandidate": "SLI-FRANKLIN-HANDOFF-20260910-031",
+    "consumerAcceptance": "UNKNOWN",
+    "publication": "UNKNOWN",
+    "disposition": "DEFER_WITH_CAUSE",
+    "cause": "Exact package gate does not imply Local Platform adoption or publication; no LI records published in this release."
+  },
+  "revenueEngine": {
+    "mutation": "NONE",
+    "reason": "Pricing/outreach authority remains outside this build; existing $35/year owner-authorized offer preserved."
+  },
+  "smarterJusticeDonor": {
+    "used": false,
+    "receipt": "SMARTER_JUSTICE_DONOR_NOT_USED"
+  },
+  "profileSourceRecordCount": 19103,
+  "profileSourceSha256": "a70510bfb65c76749dd0121fbd3988040ed8147140756f0d8055d23dfc2578bf"
+}

@@ -1,0 +1,57 @@
+{
+  "release": "FR-NAV1.27.0-HF3.8",
+  "routesReviewed": 19,
+  "desktopChangedPages": [
+    "/business-dashboard/",
+    "/member-profile-preview/",
+    "/profile-studio/",
+    "/community-help-center/"
+  ],
+  "mobileRoutes": [
+    "/business-dashboard/",
+    "/member-profile-preview/",
+    "/profile-studio/",
+    "/community-help-center/",
+    "/directory/",
+    "/sports/",
+    "/profiles/FR-ORG-5d72d3ee4e9961c5/",
+    "/es/deportes/",
+    "/es/centro-de-ayuda/"
+  ],
+  "screenshots": [
+    "hf38-review-screenshots/business-dashboard.png",
+    "hf38-review-screenshots/community-help-center.png",
+    "hf38-review-screenshots/member-profile-preview.png",
+    "hf38-review-screenshots/profile-studio.png"
+  ],
+  "memberStudioSavePayloadFields": [
+    "accessibility",
+    "associations",
+    "awards",
+    "bookingUrl",
+    "contactUrl",
+    "credentials",
+    "directionsUrl",
+    "education",
+    "experience",
+    "galleryUrls",
+    "hours",
+    "languages",
+    "menuUrl",
+    "offersEvents",
+    "orderUrl",
+    "pricing",
+    "profileImageUrl",
+    "publications",
+    "quoteUrl",
+    "serviceArea",
+    "services",
+    "socialLinks",
+    "summary",
+    "tagline",
+    "website"
+  ],
+  "failures": [],
+  "failureCount": 0,
+  "status": "PASS"
+}

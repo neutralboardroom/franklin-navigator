@@ -1,0 +1,26 @@
+{
+  "release": "FR-NAV1.27.0-HF3.8",
+  "allowedQualifiedCandidateFiles": [
+    "HF38_BROWSER_QUALIFICATION_REPORT.json",
+    "HF38_BUILD_RECEIPT.json",
+    "HF38_CHANGED_FILE_MANIFEST.json",
+    "HF38_NO_LOSS_LEDGER.json",
+    "HF38_PRE_SEAL_CURRENTNESS_RECEIPT.json",
+    "HF38_QUALIFICATION_REPORT.json",
+    "HF38_REVIEW_EVIDENCE_RECEIPT.json",
+    "HF38_RUNTIME_COMPATIBILITY_RECEIPT.json",
+    "HF38_SOURCE_RECONCILIATION_RECEIPT.json",
+    "HF38_STATIC_QUALIFICATION_REPORT.json",
+    "NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_27_0_HF38.md",
+    "PRODUCTION_RELEASE.json",
+    "dist/assets/accessibility.css",
+    "dist/assets/hf38.css",
+    "dist/assets/hf38.js",
+    "dist/assets/member-profile-live.js",
+    "dist/business-dashboard/index.html",
+    "dist/community-help-center/index.html",
+    "dist/member-profile-preview/index.html",
+    "dist/profile-studio/index.html"
+  ],
+  "count": 20
+}

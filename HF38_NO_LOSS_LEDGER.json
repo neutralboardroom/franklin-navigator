@@ -1,17 +1,11 @@
 {
   "release": "FR-NAV1.27.0-HF3.8",
-  "date": "2026-09-11",
   "base": "FR-NAV1.26.0-HF3.7",
-  "scope": "Regression-safe member first-value, Profile Studio completeness, accessibility and public-language finishing",
-  "counts": {
-    "profiles": 19103
-  },
-  "authority": {
-    "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
-    "pf15_21": "DEFER_WITH_CAUSE",
-    "li31": "DEFER_WITH_CAUSE",
-    "smarterJustice": "NOT_USED"
-  },
+  "profileSourceRecordCountBefore": 19103,
+  "profileSourceRecordCountAfter": 19103,
+  "profileSourceSha256Before": "a70510bfb65c76749dd0121fbd3988040ed8147140756f0d8055d23dfc2578bf",
+  "profileSourceSha256After": "a70510bfb65c76749dd0121fbd3988040ed8147140756f0d8055d23dfc2578bf",
+  "communityIsolation": "PASS_FRANKLIN_ONLY",
   "preserved": [
     "Sports static-first and no-JS usefulness",
     "Directory membership-neutral ordinary ranking",
@@ -21,5 +15,8 @@
     "member publication review/provenance/representation gates",
     "Community Membership $35/year",
     "privacy and no-public-rating boundaries"
-  ]
+  ],
+  "canonicalProfileFactsMutated": false,
+  "profileFactoryCandidateFactsConsumed": false,
+  "localInvestigatorCandidateFactsPublished": false
 }
