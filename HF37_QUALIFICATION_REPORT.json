@@ -1,0 +1,10 @@
+{
+  "release": "FR-NAV1.26.0-HF3.7",
+  "counts": {
+    "pages": 19358,
+    "profiles": 19103,
+    "profileFactoryCandidateGroups": 250
+  },
+  "issues": [],
+  "issueCount": 0
+}

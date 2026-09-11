@@ -3,9 +3,6 @@
   "date": "2026-09-11",
   "base": "FR-NAV1.25.0-HF3.6",
   "scope": "Regression-safe commercial profile, claim flow and Directory finishing",
-  "counts": {
-    "profiles": 19103
-  },
   "preserved": [
     "Sports static-first rendering",
     "public profile direct contact actions",
@@ -13,5 +10,13 @@
     "free corrections/removal",
     "Profile Factory authority",
     "ordinary Directory ranking neutrality to membership"
+  ],
+  "changed": [
+    "sitewide header order via global shared shell assets",
+    "membership sales page shortened and de-duplicated",
+    "member profile preview upgraded to realistic entered-data-only preview",
+    "claim/manage profile flow consolidated",
+    "Directory public display normalized and local relevance refined",
+    "Profile Factory near-duplicate reconciliation handoff created without source mutation"
   ]
 }
