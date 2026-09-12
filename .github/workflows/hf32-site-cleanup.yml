@@ -79,7 +79,10 @@ jobs:
           node --check dist/assets/franklin-assistant-r1293-core.js
           node --check dist/assets/franklin-assistant-r1293-files.js
           node --check dist/assets/franklin-assistant-r1293-file-analysis.js
-          node --check dist/assets/franklin-assistant-r1293.js\n          node --check dist/assets/franklin-assistant-r1294-core.js\n          node --check dist/assets/franklin-assistant-r1294.js\n          node --check scripts/test-assistant-r1294.js
+          node --check dist/assets/franklin-assistant-r1293.js
+          node --check dist/assets/franklin-assistant-r1294-core.js
+          node --check dist/assets/franklin-assistant-r1294.js
+          node --check scripts/test-assistant-r1294.js
           node --check dist/assets/franklin-established-positioning.js
           node --check assistant-runtime/server.js
           test -f dist/assets/hf3103-mobile.css
@@ -88,7 +91,8 @@ jobs:
       - name: Franklin Assistant answer-first research, upload and mobile contract
         run: |
           set -euo pipefail
-          grep -F "FR-NAV1.29.4-HF3.10.4" dist/assets/franklin-assistant-r1294-core.js dist/assets/franklin-assistant-r1294.js PRODUCTION_RELEASE.json\n          grep -F "FR-NAV1.29.3-HF3.10.3" assistant-runtime/server.js
+          grep -F "FR-NAV1.29.4-HF3.10.4" dist/assets/franklin-assistant-r1294-core.js dist/assets/franklin-assistant-r1294.js PRODUCTION_RELEASE.json
+          grep -F "FR-NAV1.29.3-HF3.10.3" assistant-runtime/server.js
           grep -F "Example: I just moved here and need help setting up utilities." dist/assets/franklin-assistant-r1293-files.js
           grep -F "Attach a document, screenshot or photo with readable text" dist/assets/franklin-assistant-r1293-files.js
           grep -F "action or deadline language" dist/assets/franklin-assistant-r1293-file-analysis.js
@@ -100,7 +104,10 @@ jobs:
           ! grep -i -E 'founding member|new service|new platform|once this feature launches|this pilot' dist/index.html dist/assistant/index.html dist/business-dashboard/index.html dist/membership-start/index.html dist/member-profile-preview/index.html
           grep -F 'Community Member benefit' dist/assets/franklin-established-positioning.js
           grep -F 'No promotional discount' dist/assets/franklin-established-positioning.js
-          grep -F 'Community Membership conversation' dist/assets/franklin-established-positioning.js\n          node scripts/test-assistant-r1294.js\n          grep -F 'franklin-assistant-r1294-core.js' dist/assets/hf36.js\n          grep -F 'franklin-assistant-r1294.js' dist/assets/hf36.js
+          grep -F 'Community Membership conversation' dist/assets/franklin-established-positioning.js
+          node scripts/test-assistant-r1294.js
+          grep -F 'franklin-assistant-r1294-core.js' dist/assets/hf36.js
+          grep -F 'franklin-assistant-r1294.js' dist/assets/hf36.js
           node - <<'NODE'
           global.window={};require('./dist/assets/franklin-assistant-core.js');require('./dist/assets/franklin-assistant-r1293-core.js');
           const C=window.FranklinAssistantCore,R=window.FranklinAssistantR1293Core;
