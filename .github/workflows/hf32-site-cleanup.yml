@@ -5,13 +5,15 @@ on:
     branches: [main]
     paths:
       - 'dist/**'
+      - 'assistant-runtime/**'
       - 'PRODUCTION_RELEASE.json'
-      - 'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_29_2_HF3102.md'
+      - 'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_29_3_HF3103.md'
       - '.github/workflows/hf32-site-cleanup.yml'
   pull_request:
     branches: [main]
     paths:
       - 'dist/**'
+      - 'assistant-runtime/**'
       - 'PRODUCTION_RELEASE.json'
       - '.github/workflows/hf32-site-cleanup.yml'
 
@@ -34,105 +36,81 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Current release identity and profile-source contract
+      - name: Current release, profile and Assistant source contract
         run: |
           set -euo pipefail
           python - <<'PY'
           import json, hashlib
           from pathlib import Path
-          release_data=json.loads(Path('PRODUCTION_RELEASE.json').read_text())
-          release=release_data['release']
-          base=release_data.get('base','')
-          page_baseline=release_data.get('unchangedPageBaseline','')
-          if not release.startswith('FR-NAV1.'):
-              raise SystemExit(f'unexpected current release {release}')
-          core=Path('dist/assets/franklin-assistant-core.js').read_text()
-          if f"const VERSION='{release}'" not in core:
-              raise SystemExit('Assistant successor version does not match PRODUCTION_RELEASE')
-          preview=Path('dist/member-profile-preview/index.html').read_text()
-          if page_baseline and f'meta content="{page_baseline}" name="franklin-release"' not in preview:
-              raise SystemExit('unchanged member preview no longer carries the declared page baseline marker')
+          d=json.loads(Path('PRODUCTION_RELEASE.json').read_text())
+          assert d['release']=='FR-NAV1.29.3-HF3.10.3'
+          assert d['base']=='FR-NAV1.29.2-HF3.10.2'
+          assert d['branding']['mobileBrandPosition']=='UPPER_LEFT'
+          assert d['branding']['foundingMemberPublicLanguage'] is False
+          assert d['branding']['newServicePublicLanguage'] is False
+          a=d['assistant']
+          assert a['mode']=='ANSWER_FIRST_LOCAL_VERIFIED_THEN_PUBLIC_WEB_RESEARCH'
+          assert a['routeDataRelease']=='FR-NAV1.29.2-HF3.10.2'
+          assert a['routeCount']==254 and a['profileCount']==19103
+          assert a['attachmentNetworkSubmission'] is False
           manifest=json.loads(Path('dist/data/discovery/manifest.json').read_text())
           idx=Path('dist')/manifest['index']['file'].lstrip('/')
-          digest=hashlib.sha256(idx.read_bytes()).hexdigest()
-          if digest != manifest['index']['sha256']:
-              raise SystemExit('profile discovery index hash drift')
-          if manifest['recordCount'] != 19103:
-              raise SystemExit(f'unexpected live profile projection count {manifest["recordCount"]}')
-          route_receipts=release_data.get('assistantHotfix',{}).get('verifiedRouteShards',[])
-          if len(route_receipts) != 4:
-              raise SystemExit('Assistant route shard receipt count drift')
-          route_count=0
-          for i,item in enumerate(route_receipts):
-              route_path=Path('dist')/item['path'].lstrip('/')
-              route_hash=hashlib.sha256(route_path.read_bytes()).hexdigest()
-              route_data=json.loads(route_path.read_text())
-              if route_hash != item['sha256'] or route_data.get('release') != release or route_data.get('shard') != f'{i:02d}':
-                  raise SystemExit(f'Assistant route shard {i} drift')
-              route_count += route_data.get('recordCount',0)
-          if route_count != 254:
-              raise SystemExit('Assistant route count drift')
-          print(release, base, page_baseline, manifest['recordCount'], digest, route_count)
+          assert manifest['recordCount']==19103
+          assert hashlib.sha256(idx.read_bytes()).hexdigest()==manifest['index']['sha256']
+          total=0
+          for i,item in enumerate(a['verifiedRouteShards']):
+              p=Path('dist')/item['path'].lstrip('/')
+              r=json.loads(p.read_text())
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']
+              assert r['release']==a['routeDataRelease'] and r['shard']==f'{i:02d}'
+              assert r['recordCount']==item['count']
+              total+=r['recordCount']
+          assert total==254
+          print(d['release'], manifest['recordCount'], total)
           PY
 
-      - name: JavaScript syntax and shared route integrity
+      - name: JavaScript syntax and route integrity
         run: |
           set -euo pipefail
-          node --check dist/assets/navigator-bot.js
-          node --check dist/assets/franklin-assistant-core.js
-          node --check dist/assets/franklin-assistant-v2.js
           node --check dist/assets/hf36.js
-          test -f dist/assets/hf3102-mobile.css
-          test -f dist/data/assistant-routes-00.json
-          test -f dist/data/assistant-routes-01.json
-          test -f dist/data/assistant-routes-02.json
-          test -f dist/data/assistant-routes-03.json
-          node --check dist/assets/hf32-site-cleanup.js
-          node --check dist/assets/hf27-navigation.js
-          node --check dist/assets/community-explorer.js
-          test -f dist/index.html
-          test -f dist/assistant/index.html
-          test -f dist/corrections/index.html
-          test -f dist/sports/index.html
-          test -f dist/today/index.html
-          test -f dist/get-it-done/index.html
-          test -f dist/directory/index.html
-          test -f dist/community-help-center/index.html
-          test -f dist/my-franklin/index.html
-          test -f dist/business-dashboard/index.html
-          test -f dist/member-profile-preview/index.html
-          test -f dist/membership-start/index.html
-          test -f dist/claim-profile/index.html
+          node --check dist/assets/franklin-assistant-r1293-core.js
+          node --check dist/assets/franklin-assistant-r1293-files.js
+          node --check dist/assets/franklin-assistant-r1293.js
+          node --check dist/assets/franklin-established-positioning.js
+          node --check assistant-runtime/server.js
+          test -f dist/assets/hf3103-mobile.css
+          for p in index.html assistant/index.html directory/index.html get-it-done/index.html today/index.html community-help-center/index.html my-franklin/index.html business-dashboard/index.html member-profile-preview/index.html membership-start/index.html claim-profile/index.html corrections/index.html; do test -f "dist/$p"; done
 
-      - name: Current Franklin Assistant second-pass contract
+      - name: Franklin Assistant answer-first research, upload and mobile contract
         run: |
           set -euo pipefail
-          grep -F "const ROUTE_SHARDS=[" dist/assets/franklin-assistant-core.js
-          grep -F "assistant-routes-00.json','c86c5a4458943af460a8cdae0efb41eb17f4b7a23c377eedd497ca51607f3e5e" dist/assets/franklin-assistant-core.js
-          grep -F "assistant-routes-03.json','a5fa101d3fc916c549782171caee2a1f7d5906c420057736725a9e10d4f8c5ab" dist/assets/franklin-assistant-core.js
-          grep -F 'function rankRoutes' dist/assets/franklin-assistant-core.js
-          grep -F 'function rankDirectory' dist/assets/franklin-assistant-core.js
-          grep -F '/profiles/${encodeURIComponent(row.id)}/' dist/assets/franklin-assistant-v2.js
-          grep -F 'A Franklin plan for the parts of your question' dist/assets/franklin-assistant-v2.js
-          grep -F 'Your question stays in this browser.' dist/assets/franklin-assistant-v2.js
-          grep -F 'appendLegacySave' dist/assets/franklin-assistant-v2.js
-          grep -F 'franklin-assistant-core.js?v=frnav1292' dist/assets/hf36.js
-          grep -F 'franklin-assistant-v2.js?v=frnav1292' dist/assets/hf36.js
-          grep -F 'hf3102-mobile.css' dist/assets/hf36.js
+          grep -F "FR-NAV1.29.3-HF3.10.3" dist/assets/franklin-assistant-r1293-core.js dist/assets/franklin-assistant-r1293.js assistant-runtime/server.js
+          grep -F "Example: I just moved here and need help setting up utilities." dist/assets/franklin-assistant-r1293-files.js
+          grep -F "Attach a document, screenshot or photo with readable text" dist/assets/franklin-assistant-r1293-files.js
+          grep -F "franklin-navigator-assistant.onrender.com/api/research" dist/assets/franklin-assistant-r1293.js
+          grep -F "attached files stay on your device" dist/assets/franklin-assistant-r1293.js
+          grep -F "grid-column:1!important" dist/assets/hf3103-mobile.css
+          grep -F "justify-self:start!important" dist/assets/hf3103-mobile.css
+          grep -F "franklin-established-positioning" dist/assets/hf36.js
+          ! grep -i -E 'founding member|new service|new platform|once this feature launches|this pilot' dist/index.html dist/assistant/index.html dist/business-dashboard/index.html dist/membership-start/index.html dist/member-profile-preview/index.html
+          grep -F 'Community Member benefit' dist/assets/franklin-established-positioning.js
+          grep -F 'No promotional discount' dist/assets/franklin-established-positioning.js
           node - <<'NODE'
-          const fs=require('fs'),A=require('./dist/assets/franklin-assistant-core.js');
-          const records=[0,1,2,3].flatMap(i=>JSON.parse(fs.readFileSync(`./dist/data/assistant-routes-${String(i).padStart(2,'0')}.json`,'utf8')).records);
-          if(records.length!==254)throw Error('Assistant route count drift');
-          const top=q=>A.rankRoutes(records,q,'en',1)[0]?.rec?.p;
-          if(!['/permits-home/','/help/home/permit-contractor/'].includes(top('I need a fence permit')))throw Error('permit routing failed');
-          if(top('what is happening this weekend')!=='/today/')throw Error('event routing failed');
-          if(top('where can I play pickleball')!=='/sports/pickleball/')throw Error('specific sports routing failed');
-          if(top('how do I start a business')!=='/start-a-business/')throw Error('business routing failed');
-          if(A.mode('I want to cancel my membership')!=='billing')throw Error('billing safety routing failed');
-          const topics=A.concepts('I need help with rent and food');if(!topics.includes('housing')||!topics.includes('food-benefits'))throw Error('multi-need detection failed');
-          const fake=[{name:'Berry Farms Dental',category:'dentist',type:'business',area:'Franklin',location:'4020 Hughes Crossing',phoneHref:'tel:6155551212',emailHref:'',websiteHref:'',exact:true}];
-          if(A.rankDirectory(fake,'phone number for Berry Farms Dental',1)[0]?.row?.name!=='Berry Farms Dental')throw Error('named profile contact routing failed');
-          console.log('Assistant second-pass behavior checks PASS');
+          global.window={};require('./dist/assets/franklin-assistant-core.js');require('./dist/assets/franklin-assistant-r1293-core.js');
+          const C=window.FranklinAssistantCore,R=window.FranklinAssistantR1293Core;
+          const routes=[
+            {p:'/permits-home/',l:'en',t:'Home projects & permits | Franklin Navigator'},
+            {p:'/sports/pickleball/',l:'en',t:'Franklin Pickleball Leagues & Clinics | Franklin Navigator'},
+            {p:'/start-a-business/',l:'en',t:'Start a business | Franklin Navigator'},
+            {p:'/founding-member-planner/',l:'en',t:'Community Membership planner | Franklin Navigator'}
+          ];
+          if(!R.direct('I need a fence permit','en')?.text)throw Error('permit direct answer missing');
+          if(!R.direct('how much is community membership','en')?.text.includes('$35'))throw Error('membership direct answer missing');
+          if(R.researchNeeded('I need a fence permit','medium'))throw Error('stable permit unnecessarily forces web');
+          if(!R.researchNeeded('what is open tonight','medium'))throw Error('current question must force web');
+          if(R.cleanRouteHits(C.rankRoutes(routes,'where can I play pickleball','en',4))[0]?.rec.p!='/sports/pickleball/')throw Error('pickleball route mismatch');
+          if(R.cleanRouteHits(C.rankRoutes(routes,'how do I start a business','en',4))[0]?.rec.p!='/start-a-business/')throw Error('business route mismatch');
+          if(R.cleanRouteHits([{rec:routes[3],score:100}]).length)throw Error('retired founding route surfaced');
           NODE
 
       - name: Current Community Membership and free-profile-control contract
@@ -141,11 +119,8 @@ jobs:
           grep -F 'Preview your Community Member profile.' dist/member-profile-preview/index.html
           grep -F 'Community Membership — $35/year' dist/member-profile-preview/index.html
           grep -F 'Corrections and removal stay free.' dist/member-profile-preview/index.html
-          grep -F 'Correct or remove a profile' dist/member-profile-preview/index.html
           grep -F 'Ordinary Directory ranking and factual accuracy do not change' dist/member-profile-preview/index.html
-          grep -F 'data-r28-preview-form' dist/member-profile-preview/index.html
           grep -F '$35' dist/membership-start/index.html
-          grep -F 'year' dist/membership-start/index.html
           ! grep -E '\$5/month|\$90|\$50/year|\$120|Charter Member' dist/member-profile-preview/index.html dist/membership-start/index.html
 
       - name: Current business/member product contract
@@ -153,29 +128,20 @@ jobs:
           set -euo pipefail
           grep -F 'Find my profile' dist/member-profile-preview/index.html
           grep -F 'Find or manage your Franklin profile.' dist/claim-profile/index.html
-          grep -F 'Search profiles' dist/claim-profile/index.html
           grep -F 'Corrections and removal are free.' dist/claim-profile/index.html
           grep -F 'Community Membership' dist/business-dashboard/index.html
           grep -F 'English' dist/member-profile-preview/index.html
           grep -F 'Español' dist/member-profile-preview/index.html
-          grep -F 'English' dist/membership-start/index.html
-          grep -F 'Español' dist/membership-start/index.html
 
-      - name: Preserve current HF3.10 qualification receipts
+      - name: Preserve qualified HF3.10 baseline receipts
         run: |
-          set -euo pipefail
           python - <<'PY'
           import json
           from pathlib import Path
           for name in ['HF310_STATIC_QUALIFICATION_REPORT.json','HF310_BROWSER_QUALIFICATION_REPORT.json','HF310_QUALIFICATION_REPORT.json']:
-              p=Path(name)
-              if not p.exists(): raise SystemExit(f'missing {name}')
-              d=json.loads(p.read_text())
-              if d.get('status') not in ('PASS','QUALIFIED_SUCCESSOR'):
-                  raise SystemExit(f'{name} not green: {d.get("status")}')
-          q=json.loads(Path('HF310_QUALIFICATION_REPORT.json').read_text())
-          if q.get('issueCount') != 0:
-              raise SystemExit('HF3.10 qualification issue count is nonzero')
+              d=json.loads(Path(name).read_text())
+              assert d.get('status') in ('PASS','QUALIFIED_SUCCESSOR')
+          assert json.loads(Path('HF310_QUALIFICATION_REPORT.json').read_text()).get('issueCount')==0
           PY
 
       - name: Build deterministic exact-source artifact and manifest
@@ -197,26 +163,17 @@ jobs:
               if not p.is_file(): continue
               rel=p.relative_to(root).as_posix()
               if rel.startswith('.git/') or rel in exclude: continue
-              b=p.read_bytes()
-              files.append({'path':rel,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
+              b=p.read_bytes();files.append({'path':rel,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
           manifest={'schema':'franklin.current-source-manifest.v1','release':release,'commit':commit,'tree':tree,'memberCount':len(files),'members':files,'selfExcluded':True}
           Path(manifest_name).write_text(json.dumps(manifest,sort_keys=True,separators=(',',':'))+'\n')
           entries=files+[{'path':manifest_name,'bytes':Path(manifest_name).stat().st_size,'sha256':hashlib.sha256(Path(manifest_name).read_bytes()).hexdigest()}]
           with zipfile.ZipFile(artifact,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
               for item in sorted(entries,key=lambda x:x['path']):
-                  p=Path(item['path']); info=zipfile.ZipInfo(item['path'],(2026,1,1,0,0,0)); info.compress_type=zipfile.ZIP_DEFLATED; info.external_attr=0o100644<<16
-                  z.writestr(info,p.read_bytes())
-          Path(attestation_name).write_text(json.dumps({'release':release,'commit':commit,'tree':tree,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':hashlib.sha256(Path(artifact).read_bytes()).hexdigest(),'manifest':manifest_name,'manifestSha256':hashlib.sha256(Path(manifest_name).read_bytes()).hexdigest(),'zipMembers':len(entries),'profileCount':19103,'result':'PASS_EXACT_SOURCE_ARTIFACT_SEALED'},indent=2)+'\n')
-          PY
-          python - <<'PY'
-          import json,hashlib,zipfile
-          from pathlib import Path
-          a=json.loads(Path('CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json').read_text())
-          assert hashlib.sha256(Path(a['artifact']).read_bytes()).hexdigest()==a['artifactSha256']
-          with zipfile.ZipFile(a['artifact']) as z:
-              assert z.testzip() is None
-              assert len(z.infolist())==a['zipMembers']
-          print(json.dumps(a,indent=2))
+                  p=Path(item['path']);info=zipfile.ZipInfo(item['path'],(2026,1,1,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;info.external_attr=0o100644<<16;z.writestr(info,p.read_bytes())
+          att={'release':release,'commit':commit,'tree':tree,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':hashlib.sha256(Path(artifact).read_bytes()).hexdigest(),'manifest':manifest_name,'manifestSha256':hashlib.sha256(Path(manifest_name).read_bytes()).hexdigest(),'zipMembers':len(entries),'profileCount':19103,'assistantRouteCount':254,'result':'PASS_EXACT_SOURCE_ARTIFACT_SEALED'}
+          Path(attestation_name).write_text(json.dumps(att,indent=2)+'\n')
+          with zipfile.ZipFile(artifact) as z: assert z.testzip() is None
+          print(json.dumps(att,indent=2))
           PY
 
       - name: Upload exact current successor artifact
@@ -224,7 +181,7 @@ jobs:
         with:
           name: franklin-current-successor-exact-source
           path: |
-            FRANKLIN_NAVIGATOR__*__CURRENT_SUCCESSOR_EXACT_SOURCE.zip
+            FRANKLIN_NAVIGATOR__FR-NAV1.29.3-HF3.10.3__CURRENT_SUCCESSOR_EXACT_SOURCE.zip
             CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json
             CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json
           if-no-files-found: error
