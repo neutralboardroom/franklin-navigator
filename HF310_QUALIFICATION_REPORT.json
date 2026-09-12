@@ -1,0 +1,32 @@
+{
+  "release": "FR-NAV1.29.0-HF3.10",
+  "base": "FR-NAV1.28.0-HF3.9",
+  "status": "QUALIFIED_SUCCESSOR",
+  "counts": {
+    "pages": 19358,
+    "profiles": 19103
+  },
+  "profileSourceSha256": "a70510bfb65c76749dd0121fbd3988040ed8147140756f0d8055d23dfc2578bf",
+  "staticQualification": "PASS",
+  "browserQualification": "PASS",
+  "issueCount": 0,
+  "issues": [],
+  "changedProductSlices": [
+    "member-profile-preview",
+    "membership-start",
+    "business-dashboard",
+    "local-growth-engine",
+    "navigator-growth-desk",
+    "claim-profile",
+    "shared-button-contrast"
+  ],
+  "preserved": [
+    "Sports static-first/no-JS",
+    "Directory membership-neutral ranking",
+    "public profile direct contacts",
+    "free corrections/removal",
+    "active-member Similar local profiles suppression",
+    "$35/year membership"
+  ],
+  "deployment": "PENDING_AUTOMATIC_OWNER_PROMOTION_AFTER_QUALIFICATION"
+}

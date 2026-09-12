@@ -11,4 +11,9 @@ main [id]{scroll-margin-top:112px}
   input,select,textarea{font-size:16px}
   .button,button,summary{min-height:44px}
 }
+/* HF3.10 site-wide button contrast hardening */
+a.button:not(.primary),button.button:not(.primary){color:#03454b!important;background:#fff!important;border-color:#03454b!important}
+a.button:not(.primary):hover,button.button:not(.primary):hover{color:#03454b!important;background:#f3f8f7!important}
+a.button.primary,button.button.primary{color:#fff!important;background:#03454b!important;border-color:#03454b!important}
+a.button.primary:hover,button.button.primary:hover{color:#fff!important;background:#075f66!important;border-color:#075f66!important}
 

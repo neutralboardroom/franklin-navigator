@@ -1,0 +1,9 @@
+{
+  "release": "FR-NAV1.29.0-HF3.10",
+  "expectedProductionMainSha": "f60e2b330da45c2096da4d801f5521e8b9b9073c",
+  "observedProductionMainSha": "f60e2b330da45c2096da4d801f5521e8b9b9073c",
+  "productionBaseStillCurrent": true,
+  "profileSourceRecordCount": 19103,
+  "profileSourceSha256": "a70510bfb65c76749dd0121fbd3988040ed8147140756f0d8055d23dfc2578bf",
+  "status": "PASS"
+}
