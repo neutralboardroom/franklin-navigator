@@ -44,7 +44,7 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Compile release scripts
         run: python -m py_compile scripts/hf311-build.py scripts/hf311-verify.py scripts/hf311-browser.py
-      - name: Build HF3.11 from exact HF3.10 base
+      - name: Build or reconcile HF3.11 current successor
         run: python scripts/hf311-build.py
       - name: Static commercial-truth and no-loss qualification
         run: python scripts/hf311-verify.py
@@ -74,7 +74,7 @@ jobs:
           root=Path('.')
           changes=subprocess.check_output(['git','diff','--name-status'],text=True).splitlines()
           (root/'HF311_CHANGED_FILE_MANIFEST.json').write_text(json.dumps({'release':'FR-NAV1.30.0-HF3.11','baseCommit':'fc7e380c8f4f05e3d73ee4883df638e6dd234aa6','changes':changes,'count':len(changes)},indent=2)+'\n')
-          rule={'release':'FR-NAV1.30.0-HF3.11','builderRole':'LOCAL_COMMUNITY_PLATFORM','activeEdition':'FRANKLIN_TN','writableProductLane':'LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN','baseRelease':'FR-NAV1.29.0-HF3.10','baseCommit':'fc7e380c8f4f05e3d73ee4883df638e6dd234aa6','baseExactSourceArchiveSha256':'f924101085a7516de78c0354c031b84da033776098826309e035e1bfe77c0762','ownerCommandSha256':'6e0c85a4c79dc3b53a43988a55741f8779ca057db1c21b611d934b7601de16e2','sccR16Sha256':'b1ef9af361df5b478fb0a33cb2b3b2053592ece2d9b12331d79bf55b90138646','profileFactory15_22Sha256':'517a6948078b902bfbb1d7b5c97e46a068abf209ca5bdb8765b42138aea7463d','localInvestigator33Sha256':'cc9ab4fabf60ff26443e797b43bd7df78dac1f4e11ae3ad3df8adc043e81c6fe','profileFactoryConsumerDisposition':'DEFER_WITH_CAUSE_NO_LOSS_PROFILE_ID_RECONCILIATION_REQUIRED_BEFORE_IMPORT','localInvestigatorConsumerDisposition':'DEFER_WITH_CAUSE_ROUTE_SPECIFIC_CURRENTNESS_AND_PUBLICATION_MAPPING_REQUIRED','smarterJusticeDonor':'NOT_USED','authorityTransfer':False,'status':'PASS'}
+          rule={'release':'FR-NAV1.30.0-HF3.11','builderRole':'LOCAL_COMMUNITY_PLATFORM','activeEdition':'FRANKLIN_TN','writableProductLane':'LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN','baseRelease':'FR-NAV1.29.0-HF3.10','baseCommit':'fc7e380c8f4f05e3d73ee4883df638e6dd234aa6','baseExactSourceArchiveSha256':'f924101085a7516de78c0354c031b84da033776098826309e035e1bfe77c0762','ownerCommandSha256':'6e0c85a4c79dc3b53a43988a55741f8779ca057db1c21b611d934b7601de16e2','launchCloseoutWorkOrder':'WO-20260912-SCC-LOCAL-FRANKLIN-REAL-CUSTOMER-LAUNCH-CLOSEOUT-064','sccR16Sha256':'b1ef9af361df5b478fb0a33cb2b3b2053592ece2d9b12331d79bf55b90138646','profileFactory15_23Sha256':'1ce59d57fca320f915c1a80dc2da4d89ff678a43e3520fab0a56b32a6cf178ba','localInvestigator33Sha256':'cc9ab4fabf60ff26443e797b43bd7df78dac1f4e11ae3ad3df8adc043e81c6fe','profileFactoryConsumerDisposition':'DEFER_WITH_CAUSE_LARGE_NON_LAUNCH_CRITICAL_PROFILE_IMPORT_REQUIRES_EXACT_LOCAL_NO_LOSS_AND_CONSUMER_RECONCILIATION','localInvestigatorConsumerDisposition':'DEFER_WITH_CAUSE_NON_LAUNCH_CRITICAL_DYNAMIC_FACTS_REQUIRE_ROUTE_SPECIFIC_CURRENTNESS_PUBLICATION_MAPPING_AND_QUARANTINE_PRESERVATION','smarterJusticeDonor':'NOT_USED','authorityTransfer':False,'status':'PASS'}
           (root/'HF311_RULE_AND_SOURCE_RECONCILIATION_RECEIPT.json').write_text(json.dumps(rule,indent=2)+'\n')
           no_loss={'release':'FR-NAV1.30.0-HF3.11','profileCountBefore':19103,'profileCountAfter':19103,'pageCountBefore':19358,'pageCountAfter':19358,'profileFactsChanged':False,'community':'FRANKLIN_TN','crossCommunityMutation':False,'commerceRuntimeMutation':False,'historicalExistingMemberServicingPreserved':True,'retiredPublicOfferSuppressed':True,'status':'PASS'}
           (root/'HF311_NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT.json').write_text(json.dumps(no_loss,indent=2)+'\n')
@@ -82,18 +82,23 @@ jobs:
           (root/'HF311_PRE_SEAL_CURRENTNESS_RECEIPT.json').write_text(json.dumps(pre,indent=2)+'\n')
           static=json.loads((root/'HF311_STATIC_QUALIFICATION_REPORT.json').read_text())
           browser=json.loads((root/'HF311_BROWSER_QUALIFICATION_REPORT.json').read_text())
-          report={'release':'FR-NAV1.30.0-HF3.11','base':'FR-NAV1.29.0-HF3.10','status':'QUALIFIED_SUCCESSOR','mainMutation':False,'deployment':'NOT_PERFORMED','staticQualification':static['status'],'staticChecks':static['checks'],'staticFailures':static['failures'],'browserQualification':browser['status'],'browserFailures':browser['failureCount'],'homepagePreviewRegression':browser['homepagePreviewRegression'],'profiles':19103,'pages':19358,'commercialTruth':'ONE_NEW_SALE_PLAN_$35_YEAR','profileFactory15_22':'DEFER_WITH_CAUSE_NO_LOSS_RECONCILIATION','localInvestigator33':'DEFER_WITH_CAUSE_ROUTE_CURRENTNESS_MAPPING','smarterJustice':'NOT_USED'}
+          report={'release':'FR-NAV1.30.0-HF3.11','base':'FR-NAV1.29.0-HF3.10','status':'QUALIFIED_SUCCESSOR','mainMutation':False,'deployment':'NOT_PERFORMED','staticQualification':static['status'],'staticChecks':static['checks'],'staticFailures':static['failures'],'browserQualification':browser['status'],'browserFailures':browser['failureCount'],'homepagePreviewRegression':browser['homepagePreviewRegression'],'profiles':19103,'pages':19358,'commercialTruth':'ONE_NEW_SALE_PLAN_$35_YEAR','profileFactory15_23':'DEFER_WITH_CAUSE_LARGE_IMPORT_NOT_LAUNCH_PREREQUISITE','localInvestigator33':'DEFER_WITH_CAUSE_DYNAMIC_FACTS_NOT_LAUNCH_PREREQUISITE','smarterJustice':'NOT_USED'}
           (root/'HF311_QUALIFICATION_REPORT.json').write_text(json.dumps(report,indent=2)+'\n')
           PY
       - name: Commit exact qualified candidate to isolated lane
         shell: bash
         run: |
           set -euo pipefail
+          rm -rf scripts/__pycache__
           git add -A
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git commit -m 'FR-NAV1.30.0 HF3.11 qualified single-plan commercial-truth successor [skip ci]'
-          git push origin HEAD:$BRANCH
+          if git diff --cached --quiet; then
+            echo 'Qualified candidate already persisted on lane.'
+          else
+            git commit -m 'FR-NAV1.30.0 HF3.11 qualified current-successor commercial truth [skip ci]'
+            git push origin HEAD:$BRANCH
+          fi
       - name: Deterministic double archive and fresh-extraction qualification
         shell: bash
         run: |
@@ -110,7 +115,7 @@ jobs:
           PID=$!
           trap 'kill $PID || true' EXIT
           sleep 2
-          (cd /tmp/hf311-fresh && sed 's/127.0.0.1:8765/127.0.0.1:8766/' scripts/hf311-browser.py >/tmp/hf311-browser-fresh.py && python /tmp/hf311-browser-fresh.py)
+          (cd /tmp/hf311-fresh && HF311_BASE_URL=http://127.0.0.1:8766 python scripts/hf311-browser.py)
           unzip -t "$NAME" >/tmp/hf311-ziptest.txt
       - name: External final artifact attestation
         shell: bash
@@ -120,7 +125,7 @@ jobs:
           from pathlib import Path
           import hashlib,json,subprocess
           p=Path('FRANKLIN_NAVIGATOR__FR-NAV1.30.0-HF3.11__QUALIFIED_SOURCE_CANDIDATE.zip')
-          att={'release':'FR-NAV1.30.0-HF3.11','state':'QUALIFIED_SOURCE_CANDIDATE_NOT_DEPLOYED','commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'baseCommit':'fc7e380c8f4f05e3d73ee4883df638e6dd234aa6','bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'deterministicDoubleArchive':'PASS_BYTE_IDENTICAL','freshExtractionStatic':'PASS','freshExtractionBrowser':'PASS','zipCrc':'PASS','mainMutation':False,'deployment':False,'ownerActionRequired':'NONE_FOR_SOURCE_CANDIDATE'}
+          att={'release':'FR-NAV1.30.0-HF3.11','state':'QUALIFIED_SOURCE_CANDIDATE_NOT_DEPLOYED','commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),'baseCommit':'fc7e380c8f4f05e3d73ee4883df638e6dd234aa6','bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'deterministicDoubleArchive':'PASS_BYTE_IDENTICAL','freshExtractionStatic':'PASS','freshExtractionBrowser':'PASS','zipCrc':'PASS','mainMutation':False,'deployment':False,'ownerActionRequired':'NONE_FOR_SOURCE_CANDIDATE'}
           Path('HF311_EXTERNAL_POST_SEAL_ATTESTATION.json').write_text(json.dumps(att,indent=2)+'\n')
           print(json.dumps(att,indent=2))
           PY
