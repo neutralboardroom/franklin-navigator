@@ -1,0 +1,81 @@
+{
+  "schema": "local.no-loss-ledger.v1",
+  "release": "FR-NAV1.29.4-HF3.10.4",
+  "activeEdition": "FRANKLIN_TN",
+  "items": [
+    {
+      "capability": "Assistant answer-first behavior",
+      "status": "IMPROVED",
+      "evidence": "intent-first direct answers and deterministic preferred-route planner"
+    },
+    {
+      "capability": "English high-value task routing",
+      "status": "IMPROVED",
+      "evidence": "22 high-value intent rules plus golden regression"
+    },
+    {
+      "capability": "Spanish high-value task routing",
+      "status": "IMPROVED",
+      "evidence": "Spanish intent recognizers, Spanish edition preferred routes, 15 Spanish golden cases"
+    },
+    {
+      "capability": "Official-first current web research",
+      "status": "RETAINED",
+      "evidence": "existing live assistant research service retained; currentness invoked only when material"
+    },
+    {
+      "capability": "On-device document/photo reading",
+      "status": "RETAINED",
+      "evidence": "r1293 files and file-analysis modules remain loaded unchanged"
+    },
+    {
+      "capability": "19,103-profile verified discovery index",
+      "status": "RETAINED",
+      "evidence": "profile count and verified manifest contract unchanged"
+    },
+    {
+      "capability": "Profile Factory authority",
+      "status": "RETAINED",
+      "evidence": "no canonical profile fact mutation; PF15.23 deferred with cause"
+    },
+    {
+      "capability": "Local Investigator authority/currentness",
+      "status": "RETAINED",
+      "evidence": "LI35 deferred pending gate; no candidate activity published"
+    },
+    {
+      "capability": "Community Membership $35/year",
+      "status": "RETAINED",
+      "evidence": "no pricing, checkout, entitlement, billing or cancellation code changed"
+    },
+    {
+      "capability": "Free factual correction/removal",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "Membership-neutral ordinary Directory ranking",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "Emergency/crisis routing",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "Voice input",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "My Franklin saved follow-through",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "Established-community public positioning",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "Sitewide mobile layout",
+      "status": "RETAINED"
+    }
+  ],
+  "result": "PASS_NO_SILENT_LOSS"
+}

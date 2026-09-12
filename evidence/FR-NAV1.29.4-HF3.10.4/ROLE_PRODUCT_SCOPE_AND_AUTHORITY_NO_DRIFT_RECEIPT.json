@@ -1,0 +1,41 @@
+{
+  "schema": "local.role-product-scope-authority-no-drift.v1",
+  "release": "FR-NAV1.29.4-HF3.10.4",
+  "canonicalRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "authorityTransfer": false,
+  "localOwns": [
+    "Franklin product source",
+    "Assistant UI/orchestration",
+    "edition routes",
+    "product tests",
+    "static deployment and rollback"
+  ],
+  "profileFactoryOwns": [
+    "canonical profile identity",
+    "profile evidence/provenance",
+    "profile fact currentness"
+  ],
+  "localInvestigatorOwns": [
+    "qualified dynamic local research",
+    "events/resources/currentness candidates"
+  ],
+  "sreOwns": [
+    "commercial intent",
+    "approved price/offer/outreach contracts"
+  ],
+  "sccOwns": [
+    "coordination/currentness gates",
+    "accepted lineage",
+    "promotion-state governance"
+  ],
+  "prohibitedMutationsThisBuild": {
+    "smarterJustice": 0,
+    "profileCanonicalFacts": 0,
+    "localInvestigatorFacts": 0,
+    "sreOutreach": 0,
+    "payments": 0,
+    "membershipState": 0
+  },
+  "result": "PASS_NO_AUTHORITY_DRIFT"
+}

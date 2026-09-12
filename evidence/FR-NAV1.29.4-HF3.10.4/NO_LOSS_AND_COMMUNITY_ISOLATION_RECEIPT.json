@@ -1,0 +1,16 @@
+{
+  "schema": "local.no-loss-community-isolation-receipt.v1",
+  "release": "FR-NAV1.29.4-HF3.10.4",
+  "activeEdition": "FRANKLIN_TN",
+  "communityIsolation": {
+    "otherEditionBrandingImported": false,
+    "otherEditionFactsImported": false,
+    "otherEditionProfilesImported": false,
+    "otherEditionAccountsOrPaymentsImported": false,
+    "otherEditionAnalyticsImported": false
+  },
+  "noLossLedger": "evidence/FR-NAV1.29.4-HF3.10.4/NO_LOSS_LEDGER.json",
+  "profileProjectionCount": 19103,
+  "assistantRouteCount": 254,
+  "result": "PASS_FRANKLIN_ONLY_NO_LOSS"
+}

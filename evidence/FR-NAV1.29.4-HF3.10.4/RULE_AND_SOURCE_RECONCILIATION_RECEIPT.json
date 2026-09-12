@@ -1,0 +1,74 @@
+{
+  "schema": "local.rule-and-source-reconciliation.v1",
+  "release": "FR-NAV1.29.4-HF3.10.4",
+  "governingCommand": {
+    "name": "UNIVERSAL_SMARTER_LOCAL_COMMUNITY_PLATFORM_NEXT_VERSION_BUILD_COMMAND",
+    "revision": "2026-09-03-R2",
+    "boundaryAmendment": "SMARTER_JUSTICE_STRICT_READ_ONLY_LEGAL_MODULE_DONOR"
+  },
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "authorityTransfer": false,
+  "workOrder": {
+    "id": "WO-20260912-SCC-LOCAL-FRANKLIN-REAL-CUSTOMER-LAUNCH-CLOSEOUT-064B",
+    "rule": "STRICT_CURRENT_SUCCESSOR",
+    "state": "ISSUED_PERSISTED"
+  },
+  "predecessor": {
+    "release": "FR-NAV1.29.3-HF3.10.3",
+    "commit": "0a1ea0eb01653a5a4d5df8812c104f7a4c5ace3a",
+    "tree": "d153bd48e63b9fe81cc926bc88bc3b33ab40c313",
+    "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.29.3-HF3.10.3__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "artifactBytes": 84222673,
+    "artifactSha256": "2b0c3e1b69183dce7abaa82272a814366fe4b447c257a845b71fd2adbf897d4c",
+    "manifestSha256": "a1e59e6f8df1637e05f39d626ef43db7665b26121b144991552d2ba93a3f3900",
+    "staticDeploy": "dep-daitblu7bikc73a0kio0",
+    "liveState": "PASS_DEPLOYED_CURRENT_SUCCESSOR"
+  },
+  "runtime": {
+    "staticService": "srv-da8tg6rbc2fs73crru2g",
+    "staticBranch": "main",
+    "staticAutoDeploy": false,
+    "assistantResearchService": "srv-dail9ubm8hqs73db5o60",
+    "assistantResearchLiveDeploy": "dep-dait8coae00c73frvg1g",
+    "assistantResearchSourceCommit": "aaec65cd33bbafe735991e32815a4ad0ce3b79bf",
+    "assistantResearchRelease": "FR-NAV1.29.3-HF3.10.3",
+    "assistantResearchMode": "OFFICIAL_FIRST_WITH_VERIFIED_SNAPSHOT_FAILSAFE_THEN_RELEVANCE_FILTERED_PUBLIC_WEB"
+  },
+  "upstream": {
+    "profileFactory": {
+      "id": "FR-PF-PLATFORM-15.23",
+      "artifactSha256": "1ce59d57fca320f915c1a80dc2da4d89ff678a43e3520fab0a56b32a6cf178ba",
+      "readyProfiles": 22907,
+      "state": "TESTED_AND_LIBRARY_PERSISTED_QUALIFIED_SUCCESSOR_CANDIDATE_NOT_SELF_ACCEPTED",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "No canonical profile mutation is needed for the Assistant-quality slice; current live 19,103-profile projection remains sufficient and same-release import would add unrelated profile-authority risk."
+    },
+    "localInvestigator": {
+      "id": "SLI-FRANKLIN-HANDOFF-20260912-035",
+      "artifactSha256": "da79409ed19785cd83dac200d7e1a57933a07e64414dbca4284cf491d904c5b0",
+      "state": "QUALIFIED_RESEARCH_HANDOFF_WITH_QUARANTINED_ITEMS_AWAITING_SCC_GATE",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "V35-specific SCC/consumer acceptance is pending and all 510 activity records remain blocked for direct display without point-of-use currentness; the current official-first Assistant research path already fails closed for changing facts."
+    },
+    "sre": {
+      "membershipPolicy": "$35/year recurring annually until canceled",
+      "state": "CARRY_FORWARD_FROM_PROVEN_REAL_CUSTOMER_PATH",
+      "financialMutationThisBuild": false
+    },
+    "smarterJustice": {
+      "used": false,
+      "disposition": "SMARTER_JUSTICE_DONOR_NOT_USED",
+      "reason": "No bounded legal-module donor capability question is needed for this Assistant routing successor."
+    }
+  },
+  "releaseLease": {
+    "formalExternalLeaseArtifact": "NOT_OBSERVED",
+    "method": "GITHUB_EXACT_BASE_BRANCH_PLUS_FAST_FORWARD_COMPARE_AND_SET",
+    "immutableBaseCommit": "0a1ea0eb01653a5a4d5df8812c104f7a4c5ace3a",
+    "rule": "Promotion is permitted only if main remains the immutable base and the candidate is ahead with behind_by=0; otherwise rebase/requalify."
+  },
+  "decision": "BUILD_CONTINUES",
+  "recordedDate": "2026-09-13"
+}

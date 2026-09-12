@@ -1,0 +1,70 @@
+{
+  "schema": "local.platform-priority-queue.v1",
+  "release": "FR-NAV1.29.4-HF3.10.4",
+  "activeEdition": "FRANKLIN_TN",
+  "completed": [
+    {
+      "priority": "P1",
+      "slice": "Intent-first Assistant answers and routing",
+      "result": "IMPLEMENTED_AND_BRANCH_QUALIFIED"
+    },
+    {
+      "priority": "P1",
+      "slice": "High-value English routing golden set",
+      "result": "IMPLEMENTED"
+    },
+    {
+      "priority": "P1",
+      "slice": "High-value Spanish routing and preferred Spanish edition routes",
+      "result": "IMPLEMENTED"
+    },
+    {
+      "priority": "P0",
+      "slice": "Route pollution suppression for unrelated member/business destinations",
+      "result": "IMPLEMENTED"
+    },
+    {
+      "priority": "P0",
+      "slice": "Current official-source research fail-safe preservation",
+      "result": "RETAINED_AND_LIVE_CHECKED"
+    }
+  ],
+  "remaining": [
+    {
+      "priority": "P1",
+      "slice": "Privacy-bounded multi-turn continuity",
+      "disposition": "DEFER_WITH_CAUSE",
+      "dependency": "Reviewed conversation state/retention contract",
+      "qualifiedNow": false
+    },
+    {
+      "priority": "P1",
+      "slice": "Privacy-safe answer-quality telemetry",
+      "disposition": "DEFER_WITH_CAUSE",
+      "dependency": "Accepted analytics semantics that do not retain raw sensitive questions by default",
+      "qualifiedNow": false
+    },
+    {
+      "priority": "P1",
+      "slice": "Broader web-source coverage",
+      "disposition": "DEFER_WITH_CAUSE",
+      "dependency": "Additional source-quality/locality/freshness/prompt-injection controls",
+      "qualifiedNow": false
+    },
+    {
+      "priority": "P2",
+      "slice": "PF15.23 import",
+      "disposition": "DEFER_WITH_CAUSE",
+      "dependency": "Separate accepted profile-consumer gate and profile-import release",
+      "qualifiedNow": false
+    },
+    {
+      "priority": "P2",
+      "slice": "LI35 activity/currentness import",
+      "disposition": "DEFER_WITH_CAUSE",
+      "dependency": "V35 SCC/consumer acceptance and point-of-use currentness qualification",
+      "qualifiedNow": false
+    }
+  ],
+  "conclusion": "NO_REMAINING_QUALIFIED_NOW_ASSISTANT_SLICE_AFTER_CURRENT_PASS"
+}

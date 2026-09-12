@@ -1,0 +1,32 @@
+{
+  "schema": "local.donor-capability-registry.v1",
+  "release": "FR-NAV1.29.4-HF3.10.4",
+  "activeEdition": "FRANKLIN_TN",
+  "entries": [
+    {
+      "donor": "Smarter Justice",
+      "used": false,
+      "disposition": "SMARTER_JUSTICE_DONOR_NOT_USED",
+      "reason": "No Local legal-module donor question is required; strict read-only donor boundary preserved."
+    },
+    {
+      "donor": "Smarter Health",
+      "used": false,
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "No bounded donor capability was required for this Assistant routing slice."
+    },
+    {
+      "donor": "Smarter Auto",
+      "used": false,
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "Current Local auto routes already exist; no donor snapshot was necessary for deterministic routing improvement."
+    },
+    {
+      "donor": "National Home / Smarter Navigator",
+      "used": false,
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "No shared-core donor inheritance was needed; this change is Franklin edition Assistant orchestration only."
+    }
+  ],
+  "authorityTransfer": false
+}

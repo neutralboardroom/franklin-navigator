@@ -1,0 +1,16 @@
+{
+  "schema": "local.pre-seal-currentness-receipt.v1",
+  "release": "FR-NAV1.29.4-HF3.10.4",
+  "activeEdition": "FRANKLIN_TN",
+  "observedMainBeforeSeal": "0a1ea0eb01653a5a4d5df8812c104f7a4c5ace3a",
+  "observedPredecessor": "FR-NAV1.29.3-HF3.10.3",
+  "newestPFObserved": "FR-PF-PLATFORM-15.23",
+  "newestLIObserved": "SLI-FRANKLIN-HANDOFF-20260912-035",
+  "PFDisposition": "DEFER_WITH_CAUSE",
+  "LIDisposition": "DEFER_WITH_CAUSE",
+  "smarterJusticeDonorUsed": false,
+  "noNewerAcceptedLocalSuccessorObserved": true,
+  "sealCondition": "Re-read main immediately before promotion; require candidate ahead and behind_by=0. Full production qualification must seal exact main bytes.",
+  "qualifiedNowQuestion": "No additional safe, evidence-backed, complete Assistant improvement remains after English/Spanish routing, currentness gating, profile-search tightening and route pollution suppression without introducing a new privacy/analytics/upstream-acceptance dependency.",
+  "recordedDate": "2026-09-13"
+}

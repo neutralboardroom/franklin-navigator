@@ -21,7 +21,7 @@ jobs:
           node --check dist/assets/franklin-assistant-r1294.js
           node --check dist/assets/hf36.js
           node --check scripts/test-assistant-r1294.js
-          node -e "const d=require('./PRODUCTION_RELEASE.json');if(d.release!=='FR-NAV1.29.4-HF3.10.4'||d.base!=='FR-NAV1.29.3-HF3.10.3'||d.assistant.mode!=='INTENT_FIRST_ANSWER_FIRST_LOCAL_VERIFIED_THEN_CURRENT_WEB_RESEARCH'||d.assistant.highValueIntentRules<22)process.exit(1)"
+          node -e "const d=require('./PRODUCTION_RELEASE.json');if(d.release!=='FR-NAV1.29.4-HF3.10.4'||d.base!=='FR-NAV1.29.3-HF3.10.3'||d.assistant.mode!=='INTENT_FIRST_ANSWER_FIRST_LOCAL_VERIFIED_THEN_CURRENT_WEB_RESEARCH'||d.assistant.highValueIntentRules<22||d.assistant.spanishIntentRegressionCases<15)process.exit(1)"
           node scripts/test-assistant-r1294.js
           grep -F 'franklin-assistant-r1294-core.js' dist/assets/hf36.js
           grep -F 'franklin-assistant-r1294.js' dist/assets/hf36.js
