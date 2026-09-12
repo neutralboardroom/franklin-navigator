@@ -1,0 +1,66 @@
+name: Franklin R1293 pre-merge qualification
+
+on:
+  push:
+    branches: [franklin-r1293-established-answer-first]
+    paths:
+      - 'dist/**'
+      - 'assistant-runtime/**'
+      - 'PRODUCTION_RELEASE.json'
+      - '.github/workflows/r1293-branch-qualify.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-r1293:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Syntax and release identity
+        run: |
+          set -euo pipefail
+          node --check dist/assets/hf36.js
+          node --check dist/assets/franklin-assistant-r1293-core.js
+          node --check dist/assets/franklin-assistant-r1293-files.js
+          node --check dist/assets/franklin-assistant-r1293.js
+          node --check dist/assets/franklin-established-positioning.js
+          node --check assistant-runtime/server.js
+          node -e "const d=require('./PRODUCTION_RELEASE.json');if(d.release!=='FR-NAV1.29.3-HF3.10.3'||d.branding.mobileBrandPosition!=='UPPER_LEFT'||d.assistant.mode!=='ANSWER_FIRST_LOCAL_VERIFIED_THEN_PUBLIC_WEB_RESEARCH')process.exit(1)"
+      - name: Product contracts
+        run: |
+          set -euo pipefail
+          grep -F 'Example: I just moved here and need help setting up utilities.' dist/assets/franklin-assistant-r1293-files.js
+          grep -F 'Attach a document, screenshot or photo with readable text' dist/assets/franklin-assistant-r1293-files.js
+          grep -F 'file.size>8*1024*1024' dist/assets/franklin-assistant-r1293-files.js
+          grep -F 'attachmentNetworkSubmission' PRODUCTION_RELEASE.json
+          grep -F 'franklin-navigator-assistant.onrender.com/api/research' dist/assets/franklin-assistant-r1293.js
+          grep -F 'grid-column:1!important' dist/assets/hf3103-mobile.css
+          grep -F 'justify-self:start!important' dist/assets/hf3103-mobile.css
+          grep -F 'The whole-situation planner' dist/assets/franklin-established-positioning.js
+          grep -F 'No promotional discount' dist/assets/franklin-established-positioning.js
+          node - <<'NODE'
+          global.window={};require('./dist/assets/franklin-assistant-core.js');require('./dist/assets/franklin-assistant-r1293-core.js');
+          const R=window.FranklinAssistantR1293Core;
+          if(!R.direct('I need a fence permit','en')?.text)throw Error('direct answer missing');
+          if(!R.direct('how much is community membership','en')?.text.includes('$35'))throw Error('membership answer missing');
+          if(R.researchNeeded('I need a fence permit','medium'))throw Error('stable answer should stay local');
+          if(!R.researchNeeded('what is open tonight','medium'))throw Error('fresh question should research');
+          NODE
+      - name: Live research service health and answer
+        run: |
+          set -euo pipefail
+          health=$(curl -fsS --retry 5 --retry-all-errors --retry-delay 3 --max-time 30 https://franklin-navigator-assistant.onrender.com/health)
+          echo "$health"
+          node -e 'const d=JSON.parse(process.argv[1]);if(!d.ok||d.release!=="FR-NAV1.29.3-HF3.10.3")process.exit(1)' "$health"
+          answer=$(curl -fsS --retry 3 --retry-all-errors --retry-delay 3 --max-time 35 -H 'Origin: https://franklinnavigator.com' -H 'Content-Type: application/json' --data '{"q":"What are the current Franklin Tennessee City Hall hours?"}' https://franklin-navigator-assistant.onrender.com/api/research)
+          echo "$answer"
+          node -e 'const d=JSON.parse(process.argv[1]);if(!d.ok||!Array.isArray(d.sources)||d.sources.length<1||!d.researchedAt)process.exit(1)' "$answer"
