@@ -1,0 +1,143 @@
+name: Franklin HF3.10 build and qualify
+
+on:
+  push:
+    branches: [fr-nav1-29-0-hf310-business-profile-tools-20260912]
+    paths:
+      - 'scripts/hf310-build.py'
+      - 'scripts/hf310-fix.py'
+      - 'scripts/hf310-verify.py'
+      - 'scripts/hf310-browser.py'
+      - '.github/workflows/hf310-build-qualify.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      EXPECTED_MAIN_SHA: f60e2b330da45c2096da4d801f5521e8b9b9073c
+      RELEASE_BRANCH: fr-nav1-29-0-hf310-business-profile-tools-20260912
+    steps:
+      - name: Check out exact candidate branch
+        uses: actions/checkout@v4
+        with:
+          ref: fr-nav1-29-0-hf310-business-profile-tools-20260912
+          fetch-depth: 0
+
+      - name: Verify exact production base before build
+        run: |
+          set -euo pipefail
+          git fetch origin main --quiet
+          test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN_SHA"
+          test "$(git merge-base HEAD origin/main)" = "$EXPECTED_MAIN_SHA"
+          test "$(git show origin/main:PRODUCTION_RELEASE.json | python -c 'import json,sys; print(json.load(sys.stdin)["release"])')" = "FR-NAV1.28.0-HF3.9"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install qualification dependencies
+        run: |
+          python -m pip install --disable-pip-version-check beautifulsoup4==4.13.4 playwright==1.55.0
+          python -m playwright install --with-deps chromium
+
+      - name: Compile release scripts
+        run: python -m py_compile scripts/hf310-build.py scripts/hf310-fix.py scripts/hf310-verify.py scripts/hf310-browser.py
+
+      - name: Build candidate from HF3.9
+        run: |
+          set -euo pipefail
+          python scripts/hf310-build.py
+          python scripts/hf310-fix.py
+
+      - name: Static no-loss and owner-review qualification
+        run: python scripts/hf310-verify.py
+
+      - name: Representative desktop mobile and contrast qualification
+        run: |
+          set -euo pipefail
+          python -m http.server 8765 --directory dist > /tmp/hf310-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 2
+          python scripts/hf310-browser.py
+
+      - name: Upload visual-review screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: hf310-review-screenshots
+          path: hf310-review-screenshots/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Verify production base still current and seal receipts
+        run: |
+          set -euo pipefail
+          git fetch origin main --quiet
+          test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN_SHA"
+          test "$(git merge-base HEAD origin/main)" = "$EXPECTED_MAIN_SHA"
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,subprocess
+          root=Path('.'); dist=root/'dist'
+          manifest=json.loads((dist/'data/discovery/manifest.json').read_text())
+          idx=dist/manifest['index']['file'].lstrip('/')
+          digest=hashlib.sha256(idx.read_bytes()).hexdigest()
+          pages=sum(1 for _ in dist.rglob('*.html'))
+          static=json.loads((root/'HF310_STATIC_QUALIFICATION_REPORT.json').read_text())
+          browser=json.loads((root/'HF310_BROWSER_QUALIFICATION_REPORT.json').read_text())
+          if manifest['recordCount']!=19103 or digest!='a70510bfb65c76749dd0121fbd3988040ed8147140756f0d8055d23dfc2578bf': raise SystemExit('profile source drift')
+          if pages!=19358: raise SystemExit(f'page-count drift {pages}')
+          if static.get('status')!='PASS' or browser.get('status')!='PASS': raise SystemExit('qualification not green')
+          observed=subprocess.check_output(['git','rev-parse','origin/main'],text=True).strip()
+          current={'release':'FR-NAV1.29.0-HF3.10','expectedProductionMainSha':'f60e2b330da45c2096da4d801f5521e8b9b9073c','observedProductionMainSha':observed,'productionBaseStillCurrent':observed=='f60e2b330da45c2096da4d801f5521e8b9b9073c','profileSourceRecordCount':19103,'profileSourceSha256':digest,'status':'PASS'}
+          (root/'HF310_PRE_SEAL_CURRENTNESS_RECEIPT.json').write_text(json.dumps(current,indent=2)+'\n')
+          report={'release':'FR-NAV1.29.0-HF3.10','base':'FR-NAV1.28.0-HF3.9','status':'QUALIFIED_SUCCESSOR','counts':{'pages':pages,'profiles':19103},'profileSourceSha256':digest,'staticQualification':'PASS','browserQualification':'PASS','issueCount':0,'issues':[],'changedProductSlices':['member-profile-preview','membership-start','business-dashboard','local-growth-engine','navigator-growth-desk','claim-profile','shared-button-contrast'],'preserved':['Sports static-first/no-JS','Directory membership-neutral ranking','public profile direct contacts','free corrections/removal','active-member Similar local profiles suppression','$35/year membership'],'deployment':'PENDING_AUTOMATIC_OWNER_PROMOTION_AFTER_QUALIFICATION'}
+          (root/'HF310_QUALIFICATION_REPORT.json').write_text(json.dumps(report,indent=2)+'\n')
+          PY
+
+      - name: Guard exact qualified change set
+        run: |
+          set -euo pipefail
+          rm -rf hf310-review-screenshots scripts/__pycache__
+          if git diff --name-only | grep -E '^(dist/profiles/|dist/data/discovery/)'; then
+            echo 'Forbidden profile/discovery mutation detected.' >&2
+            exit 1
+          fi
+          cat > /tmp/hf310-allowed.txt <<'EOF'
+          HF310_BROWSER_QUALIFICATION_REPORT.json
+          HF310_PRE_SEAL_CURRENTNESS_RECEIPT.json
+          HF310_QUALIFICATION_REPORT.json
+          HF310_STATIC_QUALIFICATION_REPORT.json
+          NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_29_0_HF310.md
+          PRODUCTION_RELEASE.json
+          dist/assets/accessibility.css
+          dist/assets/hf310.css
+          dist/assets/hf310.js
+          dist/business-dashboard/index.html
+          dist/claim-profile/index.html
+          dist/local-growth-engine/index.html
+          dist/member-profile-preview/index.html
+          dist/membership-start/index.html
+          dist/navigator-growth-desk/index.html
+          EOF
+          sort -u /tmp/hf310-allowed.txt -o /tmp/hf310-allowed.txt
+          git add $(cat /tmp/hf310-allowed.txt)
+          git diff --cached --name-only | sort -u > /tmp/hf310-actual.txt
+          if ! diff -u /tmp/hf310-allowed.txt /tmp/hf310-actual.txt; then
+            echo 'Qualified candidate changed-file set is outside allowlist.' >&2
+            exit 1
+          fi
+          test -z "$(git status --porcelain | grep '^??' || true)"
+
+      - name: Persist qualified successor candidate
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git commit -m 'FR-NAV1.29.0 HF3.10 qualified business/profile tools successor [skip ci]'
+          git push origin HEAD:$RELEASE_BRANCH
