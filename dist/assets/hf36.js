@@ -10,6 +10,7 @@ const loadAssistantR1293=()=>{
   load('/assets/franklin-assistant-core.js?v=frnav1292','franklin-assistant-core')
     .then(()=>load('/assets/franklin-assistant-r1293-core.js?v=frnav1293','franklin-assistant-r1293-core'))
     .then(()=>load('/assets/franklin-assistant-r1293-files.js?v=frnav1293','franklin-assistant-r1293-files'))
+    .then(()=>load('/assets/franklin-assistant-r1293-file-analysis.js?v=frnav1293','franklin-assistant-r1293-file-analysis'))
     .then(()=>load('/assets/franklin-assistant-r1293.js?v=frnav1293','franklin-assistant-r1293'))
     .catch(()=>{});
 };
