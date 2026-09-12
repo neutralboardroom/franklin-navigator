@@ -1,18 +1,20 @@
 {
-  "release": "FR-NAV1.29.0-HF3.10",
+  "release": "FR-NAV1.29.1-HF3.10.1",
   "date": "2026-09-12",
-  "base": "FR-NAV1.28.0-HF3.9",
-  "scope": "Owner-reviewed business/member journey finishing: profile-aware preview, membership conversion simplification, state-aware business dashboard, compact growth planner/guides, single profile-search flow and site-wide button contrast hardening",
+  "base": "FR-NAV1.29.0-HF3.10",
+  "scope": "P0 Franklin Assistant usefulness and mobile-homepage hotfix: verified on-device local-profile lookup, canonical profile routing, direct task answers, safer fallbacks, preserved voice and legacy next-step support, plus compact mobile header/hero/assistant presentation",
   "counts": {
     "profiles": 19103
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
-    "pf15_21": "DEFER_WITH_CAUSE",
-    "li31": "DEFER_WITH_CAUSE",
+    "directoryReadMode": "VERIFIED_CURRENT_LOCAL_DISCOVERY_INDEX_READ_ONLY",
+    "pf15_23": "DEFER_WITH_CAUSE",
+    "li33": "DEFER_WITH_CAUSE",
     "smarterJustice": "NOT_USED"
   },
   "preserved": [
+    "FR-NAV1.29.0-HF3.10 real-customer membership and fulfillment path",
     "Sports static-first and no-JS usefulness",
     "Directory membership-neutral ordinary ranking",
     "public profile direct contact actions",
@@ -20,6 +22,17 @@
     "active-member Similar local profiles suppression",
     "member publication review/provenance/representation gates",
     "Community Membership $35/year",
-    "privacy and no-public-rating boundaries"
-  ]
+    "privacy and no-public-rating boundaries",
+    "English and Spanish assistant support",
+    "voice input where supported",
+    "My Franklin legacy assistant next-step fallback"
+  ],
+  "assistantHotfix": {
+    "version": "FR-NAV1.29.1-HF3.10.1",
+    "verifiedDirectoryBinding": "/data/discovery/manifest.json",
+    "profileCount": 19103,
+    "profileRoute": "/profiles/{FRANKLIN_PROFILE_ID}/",
+    "rawQuestionNetworkSubmission": false,
+    "paidRanking": false
+  }
 }
