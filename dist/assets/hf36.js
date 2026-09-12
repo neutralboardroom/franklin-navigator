@@ -2,10 +2,17 @@
 (()=>{'use strict';
 const mobileCss='/assets/hf3102-mobile.css?v=frnav1292';
 if(!document.querySelector('link[data-franklin-mobile-3102]')){const l=document.createElement('link');l.rel='stylesheet';l.href=mobileCss;l.dataset.franklinMobile3102='1';document.head.append(l)}
+const loadAssistantV2=()=>{
+  if(!document.querySelector('[data-navigator-bot]')||document.querySelector('script[data-franklin-assistant-v2]'))return;
+  const core=document.createElement('script');core.src='/assets/franklin-assistant-core.js?v=frnav1292';core.defer=true;core.dataset.franklinAssistantCore='1';
+  const app=document.createElement('script');app.src='/assets/franklin-assistant-v2.js?v=frnav1292';app.defer=true;app.dataset.franklinAssistantV2='1';
+  core.addEventListener('load',()=>document.head.append(app),{once:true});document.head.append(core);
+};
 const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn,{once:true}):fn();
 ready(()=>{
   const body=document.body;
   if(!body)return;
+  loadAssistantV2();
   // Homepage: suppress an empty saved-checklist box without touching real saved content.
   if(body.classList.contains('hf36-home')){
     const clean=()=>document.querySelectorAll('.navigator-bot .empty-state,.navigator-bot [class*="empty"]').forEach(n=>{if(/No detailed Assistant checklists saved yet|No Assistant/i.test(n.textContent||''))n.dataset.hf36HomeEmpty='1'});
