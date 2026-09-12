@@ -2,6 +2,7 @@
   "release": "FR-NAV1.29.2-HF3.10.2",
   "date": "2026-09-12",
   "base": "FR-NAV1.29.1-HF3.10.1",
+  "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
   "scope": "Sitewide mobile usability plus Franklin Assistant second-pass successor: true-centered compact mobile header and touch/form/layout hardening across all public pages; verified on-device search across 254 Franklin guide/tool routes and 19,103 public profiles; stronger natural-language topic detection, multi-need planning, direct contact/profile answers, direct route selection, safer high-stakes membership/emergency handling, and no raw-question submission to a new AI service.",
   "counts": {
     "profiles": 19103
