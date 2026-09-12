@@ -12,12 +12,16 @@ BASE_COMMIT='fc7e380c8f4f05e3d73ee4883df638e6dd234aa6'
 BASE_ARCHIVE_SHA256='f924101085a7516de78c0354c031b84da033776098826309e035e1bfe77c0762'
 OWNER_COMMAND_SHA256='6e0c85a4c79dc3b53a43988a55741f8779ca057db1c21b611d934b7601de16e2'
 LI33_SHA256='cc9ab4fabf60ff26443e797b43bd7df78dac1f4e11ae3ad3df8adc043e81c6fe'
-PF1522_SHA256='517a6948078b902bfbb1d7b5c97e46a068abf209ca5bdb8765b42138aea7463d'
+PF1523_SHA256='1ce59d57fca320f915c1a80dc2da4d89ff678a43e3520fab0a56b32a6cf178ba'
 SCCR16_SHA256='b1ef9af361df5b478fb0a33cb2b3b2053592ece2d9b12331d79bf55b90138646'
+CLOSEOUT_WO='WO-20260912-SCC-LOCAL-FRANKLIN-REAL-CUSTOMER-LAUNCH-CLOSEOUT-064'
 
 prod=json.loads((ROOT/'PRODUCTION_RELEASE.json').read_text())
-if prod.get('release') != BASE_RELEASE:
-    raise SystemExit(f'wrong base release: {prod.get("release")} != {BASE_RELEASE}')
+current=prod.get('release')
+if current not in {BASE_RELEASE,RELEASE}:
+    raise SystemExit(f'wrong current release for HF3.11 lane: {current}')
+if current==RELEASE and prod.get('base')!=BASE_RELEASE:
+    raise SystemExit('HF3.11 candidate has unexpected base identity')
 
 archive_rels=[
  'dist/data/r28-community-strategy-receipt.json',
@@ -29,11 +33,12 @@ archive_rels=[
 archived=[]
 for rel in archive_rels:
     p=ROOT/rel
+    dest=EVID/Path(rel).name
     if p.exists():
-        dest=EVID/p.name
         shutil.copy2(p,dest)
-        archived.append({'source':rel,'archive':dest.relative_to(ROOT).as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size})
         p.unlink()
+    if dest.exists():
+        archived.append({'source':rel,'archive':dest.relative_to(ROOT).as_posix(),'sha256':hashlib.sha256(dest.read_bytes()).hexdigest(),'bytes':dest.stat().st_size})
 
 current_plan={
   'id':'ANNUAL','amountUsd':35,'billing':'RECURRING_ANNUAL','autoRenew':True,
@@ -106,21 +111,26 @@ if esp.exists():
     d['count']=len(d['translations']); d['hf311RetiredMembershipOfferScrub']=True
     esp.write_text(json.dumps(d,ensure_ascii=False,separators=(',',':'))+'\n')
 
-prod.update({'release':RELEASE,'date':'2026-09-12','base':BASE_RELEASE,'scope':'Commercial-truth hardening: remove retired public membership offers from all current sale-facing assets/catalogs/translations while preserving internal historical servicing; upstream handoff reconciliation continues.'})
+prod.update({'release':RELEASE,'date':'2026-09-12','base':BASE_RELEASE,'scope':'Commercial-truth hardening and real-customer launch closeout preparation: remove retired public membership offers from current sale-facing assets/catalogs/translations while preserving internal historical servicing and all newer valid HF3.10 product work.'})
 (ROOT/'PRODUCTION_RELEASE.json').write_text(json.dumps(prod,indent=2)+'\n')
 
-(ROOT/'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_30_0_HF311.md').write_text('''# Next Version Improvement List — FR-NAV1.30.0-HF3.11\n\n1. Continue owner laptop/mobile review after deployment; any retired-plan display is P0 and must fail closed.\n2. Complete PF15.22 profile migration only after every predecessor-only profile has an explicit no-loss disposition.\n3. Integrate LI33 consumer-safe records only through route-specific currentness and product tests; keep blocked point-of-use alert state quarantined.\n4. Continue verified profile-link enrichment from accepted Profile Factory handoffs.\n5. Keep the single new-sale Community Membership at $35/year unless a newer explicit owner-authorized commercial contract supersedes it.\n6. Preserve historical-plan recognition only for existing-member servicing; never render retired plans as new-sale choices.\n7. Continue accessibility, mobile, currentness, SEO, performance and no-loss regression checks.\n''')
+(ROOT/'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_30_0_HF311.md').write_text('''# Next Version Improvement List — FR-NAV1.30.0-HF3.11\n\n1. Continue owner laptop/mobile review after deployment; any retired-plan display is P0 and must fail closed.\n2. Reevaluate FR-PF-PLATFORM-15.23 import after launch; it is qualified producer evidence with 22,907 ready profiles, but a large profile migration is not a launch prerequisite and must pass exact Local no-loss/consumer reconciliation before import.\n3. Reevaluate LI33 after launch through route-specific currentness/publication mapping; keep point-of-use or conflict-quarantined facts fail-closed.\n4. Continue verified profile-link enrichment from the newest accepted Profile Factory handoffs.\n5. Keep the single new-sale Community Membership at $35/year unless a newer explicit owner-authorized commercial contract supersedes it.\n6. Preserve historical-plan recognition only for existing-member servicing; never render retired plans as new-sale choices.\n7. Continue accessibility, mobile, currentness, SEO, performance, real-customer fulfillment and no-loss regression checks.\n''')
 
 receipt={
- 'schemaVersion':'franklin.hf311.commercial-truth-receipt.v1','release':RELEASE,'base':BASE_RELEASE,
+ 'schemaVersion':'franklin.hf311.commercial-truth-receipt.v2','release':RELEASE,'base':BASE_RELEASE,
  'baseCommit':BASE_COMMIT,'baseExactSourceArchiveSha256':BASE_ARCHIVE_SHA256,'ownerCommandSha256':OWNER_COMMAND_SHA256,
- 'upstreamEvidence':{'sccR16Sha256':SCCR16_SHA256,'profileFactory15_22Sha256':PF1522_SHA256,'localInvestigator33Sha256':LI33_SHA256},
+ 'currentSuccessorRule':True,'launchCloseoutWorkOrder':CLOSEOUT_WO,
+ 'upstreamEvidence':{'sccR16Sha256':SCCR16_SHA256,'profileFactory15_23Sha256':PF1523_SHA256,'localInvestigator33Sha256':LI33_SHA256},
  'currentNewSalePlan':{'amountUsd':35,'billing':'RECURRING_ANNUAL','renewal':'UNTIL_CANCELED'},
  'retiredNewSalePlansRemovedFromPublicPresentation':True,'historicalExistingMemberServicingPreserved':True,
  'archivedFormerPublicAssets':archived,'homepagePreviewRoute':'/member-profile-preview/','homepagePreviewExpectedPlan':'$35/year only',
  'publicCatalogs':['dist/data/membership-checkout-catalog.json','dist/data/membership-pricing.json','dist/data/community-membership-v4.json','dist/data/r29-v6-public-offer.json'],
- 'profileFactory15_22ConsumerDisposition':'DEFER_WITH_CAUSE_NO_LOSS_PROFILE_ID_RECONCILIATION_REQUIRED_BEFORE_IMPORT',
- 'localInvestigator33ConsumerDisposition':'DEFER_WITH_CAUSE_ROUTE_SPECIFIC_CURRENTNESS_AND_PUBLICATION_MAPPING_REQUIRED',
+ 'profileFactory15_23ConsumerDisposition':'DEFER_WITH_CAUSE_LARGE_NON_LAUNCH_CRITICAL_PROFILE_IMPORT_REQUIRES_EXACT_LOCAL_NO_LOSS_AND_CONSUMER_RECONCILIATION',
+ 'localInvestigator33ConsumerDisposition':'DEFER_WITH_CAUSE_NON_LAUNCH_CRITICAL_DYNAMIC_FACTS_REQUIRE_ROUTE_SPECIFIC_CURRENTNESS_PUBLICATION_MAPPING_AND_QUARANTINE_PRESERVATION',
  'smarterJusticeDonor':'NOT_USED','status':'BUILT_PENDING_QUALIFICATION'
 }
 (ROOT/'HF311_COMMERCIAL_TRUTH_RECEIPT.json').write_text(json.dumps(receipt,indent=2)+'\n')
+
+# Release artifacts must not contain compiled caches.
+cache=ROOT/'scripts'/'__pycache__'
+if cache.exists(): shutil.rmtree(cache)
