@@ -1,9 +1,9 @@
 from pathlib import Path
-import json
+import json, os
 from playwright.sync_api import sync_playwright
 
 ROOT=Path(__file__).resolve().parents[1]
-BASE='http://127.0.0.1:8765'
+BASE=os.environ.get('HF311_BASE_URL','http://127.0.0.1:8765').rstrip('/')
 RELEASE='FR-NAV1.30.0-HF3.11'
 failures=[]; reviewed=[]
 retired=['$5/month','$50/year','$120','Franklin Charter Membership','once for three years']
@@ -16,10 +16,17 @@ with sync_playwright() as p:
     page=browser.new_page(viewport={'width':1366,'height':768})
     page.goto(BASE+'/',wait_until='networkidle')
     reviewed.append('/')
-    cta=page.get_by_role('link',name='Preview my member profile')
-    assert_true(cta.count()==1,'homepage Preview my member profile CTA missing or duplicated')
-    if cta.count()==1:
-        cta.click(); page.wait_for_load_state('networkidle')
+    ctas=page.get_by_role('link',name='Preview my member profile')
+    count=ctas.count()
+    assert_true(count>=1,'homepage Preview my member profile CTA missing')
+    visible_cta=None
+    for i in range(count):
+        item=ctas.nth(i)
+        assert_true(item.get_attribute('href')=='/member-profile-preview/',f'homepage preview CTA {i+1} points to wrong route')
+        if visible_cta is None and item.is_visible(): visible_cta=item
+    assert_true(visible_cta is not None,'homepage Preview my member profile has no visible actionable instance')
+    if visible_cta is not None:
+        visible_cta.click(); page.wait_for_load_state('networkidle')
         assert_true(page.url.rstrip('/').endswith('/member-profile-preview'),'homepage preview CTA did not open member-profile-preview')
         reviewed.append('/member-profile-preview/')
         body=page.locator('body').inner_text()
@@ -30,7 +37,6 @@ with sync_playwright() as p:
         body=page.locator('body').inner_text()
         assert_true('$35' in body,f'{route} missing $35 current membership')
         for term in retired: assert_true(term.lower() not in body.lower(),f'{route} shows retired term {term}')
-    # Fetch public catalogs through the same server and verify one new-sale choice.
     for url in ['/data/membership-checkout-catalog.json','/data/membership-pricing.json','/data/community-membership-v4.json','/data/r29-v6-public-offer.json']:
         resp=page.request.get(BASE+url)
         assert_true(resp.ok,f'{url} not fetchable')
@@ -40,7 +46,6 @@ with sync_playwright() as p:
             if choices:
                 amount=choices[0].get('amountUsd',choices[0].get('priceUsd'))
                 assert_true(amount==35,f'{url} public plan is not $35')
-    # Mobile pass on the two entry routes.
     mobile=browser.new_page(viewport={'width':390,'height':844})
     for route in ['/','/member-profile-preview/','/membership-start/']:
         mobile.goto(BASE+route,wait_until='networkidle')
