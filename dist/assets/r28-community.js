@@ -3,12 +3,8 @@
   const $=(s,r=document)=>r.querySelector(s);
   const $$=(s,r=document)=>[...r.querySelectorAll(s)];
   const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
-  const plans={
-    monthly:{label:'Monthly Community Membership',price:5,billing:'per month',renewal:'renews monthly until canceled',autoRenew:true,termMonths:1},
-    annual:{label:'Annual Community Membership',price:50,billing:'per year',renewal:'renews annually until canceled',autoRenew:true,termMonths:12},
-    charter:{label:'Franklin Charter Membership',price:120,billing:'once for 36 months',renewal:'does not automatically renew; a fresh choice is required at expiration',autoRenew:false,termMonths:36,bestLongTermValue:true}
-  };
-  const selectedPlan=form=>plans[String(new FormData(form).get('plan')||'charter')]||plans.charter;
+  const plans={annual:{label:'Franklin Navigator Community Membership',price:35,billing:'per year',renewal:'renews annually until canceled',autoRenew:true,termMonths:12}};
+  const selectedPlan=()=>plans.annual;
   const buildSummary=(form)=>{
     const data=new FormData(form),plan=selectedPlan(form);
     const name=String(data.get('name')||'').trim()||'My organization';

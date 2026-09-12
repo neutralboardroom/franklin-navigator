@@ -1,0 +1,20 @@
+{
+  "release": "FR-NAV1.30.0-HF3.11",
+  "baseCommit": "fc7e380c8f4f05e3d73ee4883df638e6dd234aa6",
+  "changes": [
+    "M\tPRODUCTION_RELEASE.json",
+    "D\tdist/assets/r25-membership.js",
+    "D\tdist/assets/r26-membership.js",
+    "M\tdist/assets/r28-community.js",
+    "M\tdist/data/community-membership-v4.json",
+    "M\tdist/data/membership-pricing.json",
+    "D\tdist/data/r23-pricing-preview.json",
+    "D\tdist/data/r28-community-strategy-receipt.json",
+    "D\tdist/data/r29-payment-readiness.json",
+    "M\tdist/data/r29-v6-public-offer.json",
+    "M\tdist/data/r37-en-public-strings.json",
+    "M\tdist/data/r37-es-public-strings.json",
+    "M\tdist/member-support/index.html"
+  ],
+  "count": 13
+}

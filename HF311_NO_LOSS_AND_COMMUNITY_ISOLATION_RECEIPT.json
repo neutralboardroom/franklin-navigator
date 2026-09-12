@@ -1,0 +1,14 @@
+{
+  "release": "FR-NAV1.30.0-HF3.11",
+  "profileCountBefore": 19103,
+  "profileCountAfter": 19103,
+  "pageCountBefore": 19358,
+  "pageCountAfter": 19358,
+  "profileFactsChanged": false,
+  "community": "FRANKLIN_TN",
+  "crossCommunityMutation": false,
+  "commerceRuntimeMutation": false,
+  "historicalExistingMemberServicingPreserved": true,
+  "retiredPublicOfferSuppressed": true,
+  "status": "PASS"
+}

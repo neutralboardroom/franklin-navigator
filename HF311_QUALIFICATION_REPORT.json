@@ -1,0 +1,19 @@
+{
+  "release": "FR-NAV1.30.0-HF3.11",
+  "base": "FR-NAV1.29.0-HF3.10",
+  "status": "QUALIFIED_SUCCESSOR",
+  "mainMutation": false,
+  "deployment": "NOT_PERFORMED",
+  "staticQualification": "PASS",
+  "staticChecks": 175923,
+  "staticFailures": 0,
+  "browserQualification": "PASS",
+  "browserFailures": 0,
+  "homepagePreviewRegression": "PASS",
+  "profiles": 19103,
+  "pages": 19358,
+  "commercialTruth": "ONE_NEW_SALE_PLAN_$35_YEAR",
+  "profileFactory15_22": "DEFER_WITH_CAUSE_NO_LOSS_RECONCILIATION",
+  "localInvestigator33": "DEFER_WITH_CAUSE_ROUTE_CURRENTNESS_MAPPING",
+  "smarterJustice": "NOT_USED"
+}

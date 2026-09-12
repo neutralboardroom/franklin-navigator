@@ -1,0 +1,9 @@
+{
+  "release": "FR-NAV1.30.0-HF3.11",
+  "observedMainSha": "fc7e380c8f4f05e3d73ee4883df638e6dd234aa6",
+  "baseStillCurrent": true,
+  "releaseLane": "fr-nav1-30-0-hf311-upstream-integration-20260912",
+  "mainMutation": false,
+  "deploymentAuthorizedByThisWorkflow": false,
+  "status": "PASS"
+}

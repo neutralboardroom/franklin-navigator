@@ -1,42 +1,29 @@
 {
   "community": "FRANKLIN_TN",
-  "coordinationCurrentness": "SCCC37.0_UEC1.35",
   "currency": "USD",
   "existingPaidMembershipActive": true,
   "factualCorrectionsFree": true,
   "freePresenceUsd": 0,
-  "legacy84ChoicePresentation": false,
-  "newPublicPaidEnrollmentOpen": false,
+  "historicalPlanRecognition": "INTERNAL_ONLY_FOR_EXISTING_MEMBER_SERVICING",
+  "newPublicPaidEnrollmentOpen": true,
   "noGuaranteedOutcomes": true,
   "noPayToRank": true,
   "paidChoices": [
     {
-      "amountUsd": 5,
-      "autoRenew": true,
-      "billing": "RECURRING_MONTHLY",
-      "id": "MONTHLY"
-    },
-    {
-      "amountUsd": 50,
+      "amountUsd": 35,
       "autoRenew": true,
       "billing": "RECURRING_ANNUAL",
-      "id": "ANNUAL"
-    },
-    {
-      "amountUsd": 120,
-      "autoRenew": false,
-      "badge": "BEST LONG-TERM VALUE",
-      "billing": "ONE_TIME_36_MONTHS",
-      "id": "CHARTER",
-      "termMonths": 36
+      "id": "ANNUAL",
+      "label": "Franklin Navigator Community Membership",
+      "publicCheckoutAvailable": true,
+      "renewal": "UNTIL_CANCELED"
     }
   ],
   "paidEntitlementsActive": true,
-  "paymentCollectionOpen": false,
-  "preCheckoutPrimaryAction": "START_MEMBERSHIP_FLOW_CHECKOUT_FAILS_CLOSED_UNTIL_ACCEPTED",
-  "publicCheckoutOpen": false,
-  "publicFoundingDiscountActive": false,
-  "release": "FR-NAV1.15.0-CANDIDATE-R40",
-  "schemaVersion": "franklin.public-membership-pricing.v7.currentness.v1",
-  "status": "EXACT_PRICES_PUBLISHED_EXISTING_MEMBER_ACTIVE_NEW_CHECKOUT_CLOSED"
+  "publicCheckoutOpen": true,
+  "publicProfileRemovalFree": true,
+  "release": "FR-NAV1.30.0-HF3.11",
+  "retiredPlansAvailableForNewSale": false,
+  "schemaVersion": "franklin.public-membership-pricing.v8.single-annual.v1",
+  "status": "PUBLIC_SINGLE_ANNUAL_35_ONLY"
 }

@@ -1,0 +1,11 @@
+{
+  "release": "FR-NAV1.30.0-HF3.11",
+  "status": "PASS",
+  "checks": 175923,
+  "failures": 0,
+  "issues": [],
+  "pageCount": 19358,
+  "profileCount": 19103,
+  "commercialTruth": "SINGLE_NEW_SALE_PLAN_35_YEAR",
+  "retiredPublicOfferHits": 0
+}

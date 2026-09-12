@@ -1,0 +1,18 @@
+{
+  "release": "FR-NAV1.30.0-HF3.11",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "baseRelease": "FR-NAV1.29.0-HF3.10",
+  "baseCommit": "fc7e380c8f4f05e3d73ee4883df638e6dd234aa6",
+  "baseExactSourceArchiveSha256": "f924101085a7516de78c0354c031b84da033776098826309e035e1bfe77c0762",
+  "ownerCommandSha256": "6e0c85a4c79dc3b53a43988a55741f8779ca057db1c21b611d934b7601de16e2",
+  "sccR16Sha256": "b1ef9af361df5b478fb0a33cb2b3b2053592ece2d9b12331d79bf55b90138646",
+  "profileFactory15_22Sha256": "517a6948078b902bfbb1d7b5c97e46a068abf209ca5bdb8765b42138aea7463d",
+  "localInvestigator33Sha256": "cc9ab4fabf60ff26443e797b43bd7df78dac1f4e11ae3ad3df8adc043e81c6fe",
+  "profileFactoryConsumerDisposition": "DEFER_WITH_CAUSE_NO_LOSS_PROFILE_ID_RECONCILIATION_REQUIRED_BEFORE_IMPORT",
+  "localInvestigatorConsumerDisposition": "DEFER_WITH_CAUSE_ROUTE_SPECIFIC_CURRENTNESS_AND_PUBLICATION_MAPPING_REQUIRED",
+  "smarterJusticeDonor": "NOT_USED",
+  "authorityTransfer": false,
+  "status": "PASS"
+}

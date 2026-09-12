@@ -1,6 +1,7 @@
 {
   "boundaries": [
     "FREE_FACTUAL_CORRECTIONS",
+    "FREE_PUBLIC_PROFILE_REMOVAL",
     "NO_PAY_TO_RANK",
     "NO_ENDORSEMENT",
     "NO_GUARANTEED_RESULTS"
@@ -8,32 +9,25 @@
   "canonicalCatalog": "/data/membership-checkout-catalog.json",
   "canonicalPricing": "/data/membership-pricing.json",
   "community": "FRANKLIN_TN",
-  "legacy84": {
-    "publiclySuppressed": true,
-    "retainedInGitHistoryForRollbackEvidence": true
-  },
-  "publicCheckoutOpen": false,
+  "publicCheckoutOpen": true,
   "publicChoices": [
     {
-      "amountUsd": 5,
-      "billing": "RECURRING_MONTHLY",
-      "id": "MONTHLY"
-    },
-    {
-      "amountUsd": 50,
+      "amountUsd": 35,
+      "autoRenew": true,
       "billing": "RECURRING_ANNUAL",
-      "id": "ANNUAL"
-    },
-    {
-      "amountUsd": 120,
-      "autoRenew": false,
-      "billing": "ONE_TIME_36_MONTHS",
-      "id": "CHARTER",
-      "termMonths": 36
+      "id": "ANNUAL",
+      "label": "Franklin Navigator Community Membership",
+      "publicCheckoutAvailable": true,
+      "renewal": "UNTIL_CANCELED"
     }
   ],
-  "publicCta": "SHOW ME",
-  "release": "FR-NAV1.15.0-CANDIDATE-R40",
-  "schemaVersion": "franklin.community-membership.compatibility-pointer.v1",
-  "status": "V4_COMPATIBILITY_POINTER_TO_R37_CURRENT_MEMBERSHIP_CATALOG"
+  "publicCta": "PREVIEW_MEMBER_PROFILE",
+  "release": "FR-NAV1.30.0-HF3.11",
+  "retiredPlans": {
+    "historicalServicingInternalOnly": true,
+    "newSaleEligible": false,
+    "publiclySuppressed": true
+  },
+  "schemaVersion": "franklin.community-membership.compatibility-pointer.v2",
+  "status": "CURRENT_SINGLE_ANNUAL_COMPATIBILITY_POINTER"
 }

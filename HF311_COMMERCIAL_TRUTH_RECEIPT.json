@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "franklin.hf311.commercial-truth-receipt.v1",
+  "release": "FR-NAV1.30.0-HF3.11",
+  "base": "FR-NAV1.29.0-HF3.10",
+  "baseCommit": "fc7e380c8f4f05e3d73ee4883df638e6dd234aa6",
+  "baseExactSourceArchiveSha256": "f924101085a7516de78c0354c031b84da033776098826309e035e1bfe77c0762",
+  "ownerCommandSha256": "6e0c85a4c79dc3b53a43988a55741f8779ca057db1c21b611d934b7601de16e2",
+  "upstreamEvidence": {
+    "sccR16Sha256": "b1ef9af361df5b478fb0a33cb2b3b2053592ece2d9b12331d79bf55b90138646",
+    "profileFactory15_22Sha256": "517a6948078b902bfbb1d7b5c97e46a068abf209ca5bdb8765b42138aea7463d",
+    "localInvestigator33Sha256": "cc9ab4fabf60ff26443e797b43bd7df78dac1f4e11ae3ad3df8adc043e81c6fe"
+  },
+  "currentNewSalePlan": {
+    "amountUsd": 35,
+    "billing": "RECURRING_ANNUAL",
+    "renewal": "UNTIL_CANCELED"
+  },
+  "retiredNewSalePlansRemovedFromPublicPresentation": true,
+  "historicalExistingMemberServicingPreserved": true,
+  "archivedFormerPublicAssets": [
+    {
+      "source": "dist/data/r28-community-strategy-receipt.json",
+      "archive": "evidence/hf311/historical_public_asset_archive/r28-community-strategy-receipt.json",
+      "sha256": "87d0f6db97d42b8db0fb7955df7e8b73e6e377c9fd9aeae3b5b3205ae171e0e3",
+      "bytes": 1286
+    },
+    {
+      "source": "dist/data/r29-payment-readiness.json",
+      "archive": "evidence/hf311/historical_public_asset_archive/r29-payment-readiness.json",
+      "sha256": "af360bbaee342826d8a610bfc3b3bfe53cab7e986ede6c0fab5ce8554e3c9e89",
+      "bytes": 1507
+    },
+    {
+      "source": "dist/data/r23-pricing-preview.json",
+      "archive": "evidence/hf311/historical_public_asset_archive/r23-pricing-preview.json",
+      "sha256": "b49a25ae24fabaa30f3992f0b9af9fead6304d1a99931c49aa9a2f9381cbbfaa",
+      "bytes": 13823
+    },
+    {
+      "source": "dist/assets/r25-membership.js",
+      "archive": "evidence/hf311/historical_public_asset_archive/r25-membership.js",
+      "sha256": "a67811d6669855800afa0dd59c23a6149c5bffeee8745167f1684659a4428f2f",
+      "bytes": 2427
+    },
+    {
+      "source": "dist/assets/r26-membership.js",
+      "archive": "evidence/hf311/historical_public_asset_archive/r26-membership.js",
+      "sha256": "84b6b6902509ab60c89e08df945c00e9e6c340ecb53c59e03a5394d4b36ce98e",
+      "bytes": 3128
+    }
+  ],
+  "homepagePreviewRoute": "/member-profile-preview/",
+  "homepagePreviewExpectedPlan": "$35/year only",
+  "publicCatalogs": [
+    "dist/data/membership-checkout-catalog.json",
+    "dist/data/membership-pricing.json",
+    "dist/data/community-membership-v4.json",
+    "dist/data/r29-v6-public-offer.json"
+  ],
+  "profileFactory15_22ConsumerDisposition": "DEFER_WITH_CAUSE_NO_LOSS_PROFILE_ID_RECONCILIATION_REQUIRED_BEFORE_IMPORT",
+  "localInvestigator33ConsumerDisposition": "DEFER_WITH_CAUSE_ROUTE_SPECIFIC_CURRENTNESS_AND_PUBLICATION_MAPPING_REQUIRED",
+  "smarterJusticeDonor": "NOT_USED",
+  "status": "BUILT_PENDING_QUALIFICATION"
+}

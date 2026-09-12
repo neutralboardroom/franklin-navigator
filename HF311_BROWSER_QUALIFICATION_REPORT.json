@@ -1,0 +1,17 @@
+{
+  "release": "FR-NAV1.30.0-HF3.11",
+  "status": "PASS",
+  "routesReviewed": [
+    "/",
+    "/member-profile-preview/",
+    "/membership-start/",
+    "/business-dashboard/",
+    "/membership-pricing/",
+    "/member-support/"
+  ],
+  "failureCount": 0,
+  "failures": [],
+  "homepagePreviewRegression": "PASS",
+  "desktopWidth": 1366,
+  "mobileWidth": 390
+}

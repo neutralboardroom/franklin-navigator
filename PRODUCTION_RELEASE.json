@@ -1,8 +1,8 @@
 {
-  "release": "FR-NAV1.29.0-HF3.10",
+  "release": "FR-NAV1.30.0-HF3.11",
   "date": "2026-09-12",
-  "base": "FR-NAV1.28.0-HF3.9",
-  "scope": "Owner-reviewed business/member journey finishing: profile-aware preview, membership conversion simplification, state-aware business dashboard, compact growth planner/guides, single profile-search flow and site-wide button contrast hardening",
+  "base": "FR-NAV1.29.0-HF3.10",
+  "scope": "Commercial-truth hardening: remove retired public membership offers from all current sale-facing assets/catalogs/translations while preserving internal historical servicing; upstream handoff reconciliation continues.",
   "counts": {
     "profiles": 19103
   },
