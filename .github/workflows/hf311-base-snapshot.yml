@@ -1,0 +1,39 @@
+name: Franklin HF3.11 exact base snapshot
+
+on:
+  push:
+    branches: [fr-nav1-30-0-hf311-upstream-integration-20260912]
+    paths:
+      - '.github/workflows/hf311-base-snapshot.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      BASE_SHA: fc7e380c8f4f05e3d73ee4883df638e6dd234aa6
+    steps:
+      - name: Check out repository history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify and archive exact HF3.10 base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git cat-file -e "$BASE_SHA^{commit}"
+          test "$(git show "$BASE_SHA:PRODUCTION_RELEASE.json" | python -c 'import json,sys; print(json.load(sys.stdin)["release"])')" = "FR-NAV1.29.0-HF3.10"
+          git archive --format=zip --output=FRANKLIN_NAVIGATOR__FR-NAV1.29.0-HF3.10__EXACT_SOURCE.zip "$BASE_SHA"
+          sha256sum FRANKLIN_NAVIGATOR__FR-NAV1.29.0-HF3.10__EXACT_SOURCE.zip > FRANKLIN_NAVIGATOR__FR-NAV1.29.0-HF3.10__EXACT_SOURCE.sha256
+      - name: Upload exact source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: hf310-exact-source-snapshot
+          path: |
+            FRANKLIN_NAVIGATOR__FR-NAV1.29.0-HF3.10__EXACT_SOURCE.zip
+            FRANKLIN_NAVIGATOR__FR-NAV1.29.0-HF3.10__EXACT_SOURCE.sha256
+          if-no-files-found: error
+          retention-days: 2
