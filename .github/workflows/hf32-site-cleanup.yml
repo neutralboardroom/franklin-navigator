@@ -92,7 +92,9 @@ jobs:
         run: |
           set -euo pipefail
           grep -F 'Find my profile' dist/member-profile-preview/index.html
-          grep -F 'Find my profile' dist/claim-profile/index.html
+          grep -F 'Find or manage your Franklin profile.' dist/claim-profile/index.html
+          grep -F 'Search profiles' dist/claim-profile/index.html
+          grep -F 'Corrections and removal are free.' dist/claim-profile/index.html
           grep -F 'Community Membership' dist/business-dashboard/index.html
           grep -F 'English' dist/member-profile-preview/index.html
           grep -F 'Español' dist/member-profile-preview/index.html
@@ -128,7 +130,8 @@ jobs:
           release=json.loads(Path('PRODUCTION_RELEASE.json').read_text())['release']
           artifact=f'FRANKLIN_NAVIGATOR__{release}__CURRENT_SUCCESSOR_EXACT_SOURCE.zip'
           manifest_name='CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json'
-          exclude={artifact,manifest_name}
+          attestation_name='CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json'
+          exclude={artifact,manifest_name,attestation_name}
           files=[]
           for p in sorted(root.rglob('*')):
               if not p.is_file(): continue
@@ -143,7 +146,7 @@ jobs:
               for item in sorted(entries,key=lambda x:x['path']):
                   p=Path(item['path']); info=zipfile.ZipInfo(item['path'],(2026,1,1,0,0,0)); info.compress_type=zipfile.ZIP_DEFLATED; info.external_attr=0o100644<<16
                   z.writestr(info,p.read_bytes())
-          Path('CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json').write_text(json.dumps({'release':release,'commit':commit,'tree':tree,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':hashlib.sha256(Path(artifact).read_bytes()).hexdigest(),'manifest':manifest_name,'manifestSha256':hashlib.sha256(Path(manifest_name).read_bytes()).hexdigest(),'zipMembers':len(entries),'profileCount':19103,'result':'PASS_EXACT_SOURCE_ARTIFACT_SEALED'},indent=2)+'\n')
+          Path(attestation_name).write_text(json.dumps({'release':release,'commit':commit,'tree':tree,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':hashlib.sha256(Path(artifact).read_bytes()).hexdigest(),'manifest':manifest_name,'manifestSha256':hashlib.sha256(Path(manifest_name).read_bytes()).hexdigest(),'zipMembers':len(entries),'profileCount':19103,'result':'PASS_EXACT_SOURCE_ARTIFACT_SEALED'},indent=2)+'\n')
           PY
           python - <<'PY'
           import json,hashlib,zipfile
