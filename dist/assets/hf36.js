@@ -1,5 +1,7 @@
-/* FR-NAV1.25.0-HF3.6 progressive simplification helpers */
+/* FR-NAV1.29.2-HF3.10.2 progressive simplification + sitewide mobile loader */
 (()=>{'use strict';
+const mobileCss='/assets/hf3102-mobile.css?v=frnav1292';
+if(!document.querySelector('link[data-franklin-mobile-3102]')){const l=document.createElement('link');l.rel='stylesheet';l.href=mobileCss;l.dataset.franklinMobile3102='1';document.head.append(l)}
 const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn,{once:true}):fn();
 ready(()=>{
   const body=document.body;
