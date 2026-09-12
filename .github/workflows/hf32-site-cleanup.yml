@@ -40,12 +40,18 @@ jobs:
           python - <<'PY'
           import json, hashlib
           from pathlib import Path
-          release=json.loads(Path('PRODUCTION_RELEASE.json').read_text())['release']
+          release_data=json.loads(Path('PRODUCTION_RELEASE.json').read_text())
+          release=release_data['release']
+          base=release_data.get('base','')
           if not release.startswith('FR-NAV1.'):
               raise SystemExit(f'unexpected current release {release}')
-          html=Path('dist/member-profile-preview/index.html').read_text()
-          if f'meta content="{release}" name="franklin-release"' not in html:
-              raise SystemExit('member preview release marker does not match PRODUCTION_RELEASE')
+          bot=Path('dist/assets/navigator-bot.js').read_text()
+          if f"const VERSION='{release}'" not in bot:
+              raise SystemExit('Assistant hotfix version does not match PRODUCTION_RELEASE')
+          # This scoped hotfix intentionally preserves unchanged HF3.10 product pages.
+          preview=Path('dist/member-profile-preview/index.html').read_text()
+          if base and f'meta content="{base}" name="franklin-release"' not in preview:
+              raise SystemExit('unchanged member preview no longer carries the accepted predecessor release marker')
           manifest=json.loads(Path('dist/data/discovery/manifest.json').read_text())
           idx=Path('dist')/manifest['index']['file'].lstrip('/')
           digest=hashlib.sha256(idx.read_bytes()).hexdigest()
@@ -53,16 +59,18 @@ jobs:
               raise SystemExit('profile discovery index hash drift')
           if manifest['recordCount'] != 19103:
               raise SystemExit(f'unexpected live profile projection count {manifest["recordCount"]}')
-          print(release, manifest['recordCount'], digest)
+          print(release, base, manifest['recordCount'], digest)
           PY
 
       - name: JavaScript syntax and shared route integrity
         run: |
           set -euo pipefail
+          node --check dist/assets/navigator-bot.js
           node --check dist/assets/hf32-site-cleanup.js
           node --check dist/assets/hf27-navigation.js
           node --check dist/assets/community-explorer.js
           test -f dist/index.html
+          test -f dist/assistant/index.html
           test -f dist/corrections/index.html
           test -f dist/sports/index.html
           test -f dist/today/index.html
@@ -74,6 +82,19 @@ jobs:
           test -f dist/member-profile-preview/index.html
           test -f dist/membership-start/index.html
           test -f dist/claim-profile/index.html
+
+      - name: Current Franklin Assistant hotfix contract
+        run: |
+          set -euo pipefail
+          grep -F "const MANIFEST='/data/discovery/manifest.json'" dist/assets/navigator-bot.js
+          grep -F "MANIFEST_SHA='d97640231d541f5a4f67ac26782806fc933237a39566e6e59561ea82e894e225'" dist/assets/navigator-bot.js
+          grep -F '/profiles/${encodeURIComponent(x.id)}/' dist/assets/navigator-bot.js
+          ! grep -F '/profile/${encodeURIComponent(x.id)}/' dist/assets/navigator-bot.js
+          grep -F 'franklin-assistant-mobile-hotfix' dist/assets/navigator-bot.js
+          grep -F 'Franklin-area matches' dist/assets/navigator-bot.js
+          grep -F 'Coincidencias del área de Franklin' dist/assets/navigator-bot.js
+          grep -F 'navigator-bot.js' dist/index.html
+          grep -F 'navigator-bot.js' dist/assistant/index.html
 
       - name: Current Community Membership and free-profile-control contract
         run: |
@@ -164,7 +185,7 @@ jobs:
         with:
           name: franklin-current-successor-exact-source
           path: |
-            FRANKLIN_NAVIGATOR__FR-NAV1.29.0-HF3.10__CURRENT_SUCCESSOR_EXACT_SOURCE.zip
+            FRANKLIN_NAVIGATOR__*__CURRENT_SUCCESSOR_EXACT_SOURCE.zip
             CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json
             CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json
           if-no-files-found: error
