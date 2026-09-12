@@ -49,7 +49,9 @@ jobs:
           assert d['branding']['foundingMemberPublicLanguage'] is False
           assert d['branding']['newServicePublicLanguage'] is False
           a=d['assistant']
-          assert a['mode']=='INTENT_FIRST_ANSWER_FIRST_LOCAL_VERIFIED_THEN_CURRENT_WEB_RESEARCH'\n          assert a['qualityRegression']=='scripts/test-assistant-r1294.js'\n          assert a['highValueIntentRules']>=22
+          assert a['mode']=='INTENT_FIRST_ANSWER_FIRST_LOCAL_VERIFIED_THEN_CURRENT_WEB_RESEARCH'
+          assert a['qualityRegression']=='scripts/test-assistant-r1294.js'
+          assert a['highValueIntentRules']>=22
           assert a['spanishIntentRegressionCases']>=15
           assert a['routeDataRelease']=='FR-NAV1.29.2-HF3.10.2'
           assert a['routeCount']==254 and a['profileCount']==19103
