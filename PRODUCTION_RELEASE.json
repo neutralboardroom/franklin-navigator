@@ -1,6 +1,6 @@
 {
   "release": "FR-NAV1.29.3-HF3.10.3",
-  "date": "2026-09-12",
+  "date": "2026-09-13",
   "base": "FR-NAV1.29.2-HF3.10.2",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
   "scope": "Established-community positioning plus Franklin Assistant answer-first successor: mobile brand moved to upper-left; public founding/new-service/pilot language removed from current experience; example prompts labeled as examples; direct answers from verified Franklin information first; current public-web research fallback when local evidence is insufficient; optional on-device PDF/DOCX/text/image reading with OCR and no attachment upload to web search; preserved 19,103-profile directory and Community Membership fulfillment path.",
@@ -44,7 +44,8 @@
     "profileCount": 19103,
     "profileRoute": "/profiles/{FRANKLIN_PROFILE_ID}/",
     "researchEndpoint": "https://franklin-navigator-assistant.onrender.com/api/research",
-    "researchFallback": "PUBLIC_WEB_EXTRACTIVE_WITH_SOURCE_LINKS",
+    "researchFallback": "OFFICIAL_FIRST_WITH_VERIFIED_SNAPSHOT_FAILSAFE_THEN_RELEVANCE_FILTERED_PUBLIC_WEB",
+    "researchVerifiedSnapshotDate": "2026-09-13",
     "rawQuestionNetworkSubmission": "ONLY_WHEN_CURRENT_WEB_RESEARCH_IS_NEEDED",
     "attachmentNetworkSubmission": false,
     "attachmentProcessing": "ON_DEVICE_WHEN_POSSIBLE",
