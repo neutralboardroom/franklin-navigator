@@ -1,0 +1,161 @@
+/* FR-NAV1.29.2-HF3.10.2 — sitewide mobile usability pass. */
+@media (max-width: 720px) {
+  html,body{max-width:100%;overflow-x:clip}
+  body{font-size:16px}
+  .wrap{width:100%;padding-inline:16px!important}
+  main{min-width:0}
+  main img,main video,main iframe,main canvas,main svg{max-width:100%;height:auto}
+
+  /* True-center the Franklin brand while keeping Menu and language controls usable. */
+  header .wrap.top{
+    display:grid!important;
+    grid-template-columns:minmax(72px,1fr) auto minmax(72px,1fr)!important;
+    align-items:center!important;
+    min-height:58px!important;
+    padding:7px 14px!important;
+    gap:6px 8px!important;
+  }
+  header .wrap.top>.menu-toggle{
+    display:inline-flex!important;
+    grid-column:1!important;
+    grid-row:1!important;
+    justify-self:start!important;
+    align-self:center!important;
+    min-height:44px!important;
+    padding:8px 11px!important;
+    border-radius:10px!important;
+    font-size:.96rem!important;
+  }
+  header .wrap.top>a.brand{
+    grid-column:2!important;
+    grid-row:1!important;
+    justify-self:center!important;
+    align-self:center!important;
+    margin:0!important;
+    min-width:0!important;
+    gap:7px!important;
+  }
+  header .wrap.top>a.brand img{width:30px!important;height:30px!important;flex:0 0 30px}
+  header .brand-wordmark{line-height:1.02}
+  header .brand-name{font-size:1.02rem!important;letter-spacing:-.02em}
+  header .brand-subname{font-size:.64rem!important;letter-spacing:.08em}
+  header .wrap.top>.r37-language-switch{
+    grid-column:3!important;
+    grid-row:1!important;
+    justify-self:end!important;
+    align-self:center!important;
+    margin:0!important;
+    padding:0!important;
+    display:flex!important;
+    gap:2px!important;
+    min-width:0!important;
+    white-space:nowrap!important;
+  }
+  header .r37-language-switch button{
+    min-height:38px!important;
+    padding:5px 6px!important;
+    font-size:.78rem!important;
+    line-height:1!important;
+    border-radius:9px!important;
+  }
+  header .wrap.top>nav.nav{
+    grid-column:1/-1!important;
+    grid-row:2!important;
+    width:100%!important;
+    margin:0!important;
+    min-width:0!important;
+  }
+  header.nav-ready .nav{display:none!important}
+  header.nav-ready .nav.is-open{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:0 14px!important;
+    padding:8px 0 4px!important;
+    border-top:1px solid var(--line)!important;
+  }
+  header.nav-ready .nav.is-open a,header.nav-ready .nav.is-open summary{
+    min-height:44px!important;
+    display:flex!important;
+    align-items:center!important;
+    padding:9px 0!important;
+    font-size:.94rem!important;
+  }
+  .hf34-nav-more-menu{position:static!important;min-width:0!important;box-shadow:none!important;margin-top:4px!important}
+
+  /* Mobile typography and vertical rhythm. */
+  .hero,.r22-hero,.r29-hero,.today-hero,.my-franklin-hero,.business-dashboard-hero{padding-block:30px!important}
+  body.hf34 main h1,.r22-hero h1,.r29-hero h1,.r22-profile-hero h1{font-size:clamp(2rem,10vw,2.45rem)!important;line-height:1.04!important;letter-spacing:-.035em!important;overflow-wrap:anywhere}
+  .section{padding-block:34px!important}
+  .section h2{font-size:clamp(1.45rem,7vw,1.9rem)!important}
+  .eyebrow{font-size:.74rem!important;line-height:1.35}
+  p,li{overflow-wrap:anywhere}
+
+  /* Touch targets and forms. 16px prevents unwanted mobile zoom. */
+  .button,.menu-toggle,button,input,select,textarea,summary{touch-action:manipulation}
+  .button{min-height:46px!important;padding:10px 14px!important}
+  .button.small{min-height:42px!important;padding:8px 11px!important}
+  input,select,textarea{font-size:16px!important;max-width:100%!important;min-width:0!important}
+  textarea{line-height:1.45}
+  details>summary{min-height:44px;display:flex;align-items:center}
+  .actions{gap:8px!important;margin-top:16px}
+  .actions>.button{flex:1 1 145px}
+
+  /* Homepage hierarchy: keep the Assistant above the fold without crowding it. */
+  body.hf36-home .r24-home-hero{padding-top:20px!important;padding-bottom:24px!important}
+  body.hf36-home .r24-hero-grid{gap:16px!important}
+  body.hf36-home .r24-hero-copy h1{font-size:clamp(2.18rem,10.5vw,2.55rem)!important;margin-bottom:10px!important}
+  body.hf36-home .r24-hero-lead{font-size:1rem!important;line-height:1.5!important;margin-bottom:12px!important}
+  body.hf36-home .r24-trust-line{gap:7px 10px!important;margin-top:12px!important;font-size:.84rem!important}
+  body.hf36-home .r24-hero-photos{gap:8px!important;margin-top:14px!important}
+  body.hf36-home .r24-hero-photos img{height:78px!important}
+  body.hf36-home .navigator-bot{padding:15px!important;border-radius:16px!important;margin-top:0!important}
+  body.hf36-home .r24-ask label{font-size:1.06rem!important;line-height:1.3!important}
+  body.hf36-home .navigator-form textarea{min-height:98px!important}
+  body.hf36-home .r24-ask-actions{
+    display:grid!important;
+    grid-template-columns:minmax(0,1.45fr) minmax(108px,.8fr)!important;
+    gap:8px!important;
+  }
+  body.hf36-home .r24-ask-actions .button{width:100%!important;min-width:0!important;margin:0!important}
+  body.hf36-home .r24-ask-actions .button.primary{font-size:.96rem!important}
+  body.hf36-home .r24-privacy-line{font-size:.8rem!important;line-height:1.45!important;margin-top:10px!important}
+  body.hf36-home .r24-chips{gap:6px!important;margin-top:9px!important}
+  body.hf36-home .r24-chips button{min-height:40px!important;padding:7px 9px!important;font-size:.84rem!important}
+
+  /* Cards, grids and results: remove desktop-sized padding and horizontal pressure. */
+  .card,.r22-card,.r22-profile-result,.r22-dashboard-card,.r29-panel,.tool{padding:16px!important;min-width:0!important}
+  .grid,.r22-directory-grid,.r22-dashboard-grid,.r22-free-member-compare,.r22-profile-layout,.r22-studio,.r29-plan-grid,.r29-assistant-grid,.help-planner-layout,.core-planner-layout,.growth-workspace-layout{min-width:0!important}
+  .r22-directory-toolbar,.directory-controls,.explorer-controls{position:static!important;grid-template-columns:1fr!important;width:100%!important;min-width:0!important}
+  .r22-directory-meta,.r22-directory-pager{gap:8px!important;flex-wrap:wrap!important}
+  .r22-directory-pager .button{flex:1 1 120px}
+  .result-actions,.profile-primary-actions,.profile-utility-actions,.r22-inline-actions{gap:8px!important;flex-wrap:wrap!important}
+  .result-actions .button,.profile-primary-actions .button{flex:1 1 140px}
+  .compare-table-wrap,.table-wrap,[role="region"]{max-width:100%;overflow-x:auto}
+  .member-preview-gallery{grid-template-columns:1fr 1fr!important}
+  .member-preview-logo{width:72px!important;height:72px!important}
+  .r22-profile-hero{padding-block:28px!important}
+  .r22-profile-hero-grid{gap:14px!important}
+  .r22-profile-side{grid-template-columns:1fr!important}
+
+  /* Business/member and account journeys should read as one clear vertical path. */
+  .r38-business-step,.r38-business-membership,.hf36-membership-card{padding:16px!important}
+  .r29-price{font-size:1.8rem!important}
+  .r22-reminder-form{grid-template-columns:1fr!important}
+  .r22-interest-grid,.hf34-my-tools{grid-template-columns:1fr!important}
+
+  /* Footer remains compact and touch friendly. */
+  .footer{padding-block:26px 34px!important}
+  .footer-grid{grid-template-columns:1fr!important;gap:20px!important}
+  .footer-links{grid-template-columns:1fr 1fr!important;gap:4px 14px!important}
+  .footer-links a{min-height:40px;display:flex;align-items:center}
+}
+
+@media (max-width: 380px) {
+  header .wrap.top{grid-template-columns:minmax(64px,1fr) auto minmax(64px,1fr)!important;padding-inline:10px!important}
+  header .wrap.top>a.brand img{width:28px!important;height:28px!important;flex-basis:28px}
+  header .brand-name{font-size:.96rem!important}
+  header .brand-subname{font-size:.6rem!important}
+  header .r37-language-switch button{font-size:.72rem!important;padding-inline:4px!important}
+  body.hf36-home .r24-ask-actions{grid-template-columns:minmax(0,1.4fr) minmax(94px,.75fr)!important}
+  .footer-links{grid-template-columns:1fr!important}
+}
