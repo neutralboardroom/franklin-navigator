@@ -1,0 +1,36 @@
+name: Franklin R1294 Assistant quality pre-merge qualification
+on:
+  push:
+    branches: [franklin-r1294-assistant-quality]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qualify-r1294:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {persist-credentials: false, fetch-depth: 1}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: {node-version: '22'}
+      - name: Syntax release and Assistant quality
+        run: |
+          set -euo pipefail
+          node --check dist/assets/franklin-assistant-r1294-core.js
+          node --check dist/assets/franklin-assistant-r1294.js
+          node --check dist/assets/hf36.js
+          node --check scripts/test-assistant-r1294.js
+          node -e "const d=require('./PRODUCTION_RELEASE.json');if(d.release!=='FR-NAV1.29.4-HF3.10.4'||d.base!=='FR-NAV1.29.3-HF3.10.3'||d.assistant.mode!=='INTENT_FIRST_ANSWER_FIRST_LOCAL_VERIFIED_THEN_CURRENT_WEB_RESEARCH'||d.assistant.highValueIntentRules<22)process.exit(1)"
+          node scripts/test-assistant-r1294.js
+          grep -F 'franklin-assistant-r1294-core.js' dist/assets/hf36.js
+          grep -F 'franklin-assistant-r1294.js' dist/assets/hf36.js
+          grep -F 'Example: I just moved here and need help setting up utilities.' dist/assets/franklin-assistant-r1293-files.js
+          grep -F 'Attach a document, screenshot or photo with readable text' dist/assets/franklin-assistant-r1293-files.js
+      - name: Live research service remains healthy
+        run: |
+          set -euo pipefail
+          h=$(curl -fsS --retry 6 --retry-all-errors --retry-delay 3 --max-time 75 https://franklin-navigator-assistant.onrender.com/health)
+          node -e 'const d=JSON.parse(process.argv[1]);if(!d.ok||d.release!=="FR-NAV1.29.3-HF3.10.3")process.exit(1)' "$h"
+          a=$(curl -fsS --retry 3 --retry-all-errors --retry-delay 3 --max-time 45 -H 'Origin: https://franklinnavigator.com' -H 'Content-Type: application/json' --data '{"q":"What are the current Franklin Tennessee City Hall hours?"}' https://franklin-navigator-assistant.onrender.com/api/research)
+          node -e 'const d=JSON.parse(process.argv[1]);if(!d.ok||!d.answer||!Array.isArray(d.sources)||!d.sources.some(x=>x.official===true)||/Paycheck Advance|Current \| Future of Banking/i.test(d.answer+JSON.stringify(d.sources)))process.exit(1)' "$a"
