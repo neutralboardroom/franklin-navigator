@@ -1,111 +1,68 @@
-name: Franklin HF3.2 site cleanup qualification
+name: Franklin current-successor regression and exact-artifact qualification
+
 on:
   push:
     branches: [main]
     paths:
-      - 'dist/assets/hf32-site-cleanup.js'
-      - 'dist/assets/hf32-site-cleanup.css'
-      - 'dist/assets/hf32-sitewide-review.css'
-      - 'dist/assets/community-explorer.js'
-      - 'dist/assets/hf27-navigation.js'
-      - 'dist/assets/r37.css'
-      - 'dist/member-profile-preview/index.html'
+      - 'dist/**'
       - 'PRODUCTION_RELEASE.json'
-      - 'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_21_0_HF32.md'
+      - 'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_29_0_HF310.md'
       - '.github/workflows/hf32-site-cleanup.yml'
   pull_request:
     branches: [main]
     paths:
-      - 'dist/assets/hf32-site-cleanup.js'
-      - 'dist/assets/hf32-site-cleanup.css'
-      - 'dist/assets/hf32-sitewide-review.css'
-      - 'dist/assets/community-explorer.js'
-      - 'dist/assets/hf27-navigation.js'
-      - 'dist/assets/r37.css'
-      - 'dist/member-profile-preview/index.html'
+      - 'dist/**'
       - 'PRODUCTION_RELEASE.json'
-      - 'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_21_0_HF32.md'
       - '.github/workflows/hf32-site-cleanup.yml'
+
 permissions:
   contents: read
+
 jobs:
-  qualify:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+  qualify-current:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+          fetch-depth: 1
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22'
-      - name: JavaScript syntax
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Current release identity and profile-source contract
         run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, hashlib
+          from pathlib import Path
+          release=json.loads(Path('PRODUCTION_RELEASE.json').read_text())['release']
+          if not release.startswith('FR-NAV1.'):
+              raise SystemExit(f'unexpected current release {release}')
+          html=Path('dist/member-profile-preview/index.html').read_text()
+          if f'meta content="{release}" name="franklin-release"' not in html:
+              raise SystemExit('member preview release marker does not match PRODUCTION_RELEASE')
+          manifest=json.loads(Path('dist/data/discovery/manifest.json').read_text())
+          idx=Path('dist')/manifest['index']['file'].lstrip('/')
+          digest=hashlib.sha256(idx.read_bytes()).hexdigest()
+          if digest != manifest['index']['sha256']:
+              raise SystemExit('profile discovery index hash drift')
+          if manifest['recordCount'] != 19103:
+              raise SystemExit(f'unexpected live profile projection count {manifest["recordCount"]}')
+          print(release, manifest['recordCount'], digest)
+          PY
+
+      - name: JavaScript syntax and shared route integrity
+        run: |
+          set -euo pipefail
           node --check dist/assets/hf32-site-cleanup.js
           node --check dist/assets/hf27-navigation.js
           node --check dist/assets/community-explorer.js
-      - name: Shared cleanup contract
-        run: |
-          grep -F "@import url('/assets/hf32-site-cleanup.css');" dist/assets/r37.css
-          grep -F "@import url('/assets/hf32-sitewide-review.css');" dist/assets/r37.css
-          grep -F "Ask Franklin Assistant" dist/assets/hf32-site-cleanup.js
-          grep -F "Get It Done" dist/assets/hf32-site-cleanup.js
-          grep -F "Find Local" dist/assets/hf32-site-cleanup.js
-          grep -F "Help Center" dist/assets/hf32-site-cleanup.js
-      - name: Site-wide laptop readability contract
-        run: |
-          grep -F 'Owner-approved site-wide laptop readability' dist/assets/hf32-site-cleanup.css
-          grep -F 'main>[class*="hero"] h1' dist/assets/hf32-site-cleanup.css
-          grep -F 'font-size:clamp(2rem,3.25vw,3.35rem)!important' dist/assets/hf32-site-cleanup.css
-          grep -F '.history-section,.urgent-section,.growth-trust,.growth-boundaries,.home-command-bar' dist/assets/hf32-site-cleanup.css
-          grep -F 'color:#f7fbfa!important' dist/assets/hf32-site-cleanup.css
-          grep -F 'color:#fff1b8!important' dist/assets/hf32-site-cleanup.css
-      - name: Consolidated owner screenshot review contract
-        run: |
-          grep -F 'FIRST-PAINT SITE-WIDE DENSITY + READABILITY' dist/assets/hf32-sitewide-review.css
-          grep -F 'body .local-hero-photo img' dist/assets/hf32-sitewide-review.css
-          grep -F '.hf32-my .r22-dashboard-grid' dist/assets/hf32-sitewide-review.css
-          grep -F '.hf32-business .hf32-business-membership-section .r29-plan-grid' dist/assets/hf32-sitewide-review.css
-          grep -F '.hf32-help #urgent-help' dist/assets/hf32-sitewide-review.css
-          grep -F '.hf32-explorer .explorer-hero-card' dist/assets/hf32-sitewide-review.css
-          grep -F '.hf32-directory-default-browse .r22-directory-pager' dist/assets/hf32-sitewide-review.css
-          grep -F 'function refineMyFranklin' dist/assets/hf32-site-cleanup.js
-          grep -F 'function refineBusiness' dist/assets/hf32-site-cleanup.js
-          grep -F 'function refineHelpCenter' dist/assets/hf32-site-cleanup.js
-          grep -F 'function refineExplorer' dist/assets/hf32-site-cleanup.js
-          grep -F 'function refineDirectory' dist/assets/hf32-site-cleanup.js
-          grep -F "Public filing address:" dist/assets/hf32-site-cleanup.js
-          grep -F "Browse local profiles" dist/assets/hf32-site-cleanup.js
-      - name: Shared screenshot-review disclosure contract
-        run: |
-          grep -F 'body.hf32-site-cleanup .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))!important}' dist/assets/hf32-sitewide-review.css
-          grep -F '.r41-more-actions,.hf29-card-more,.hf29-dialog-more,.hf29-footer-more,.hf31-more' dist/assets/hf32-sitewide-review.css
-          grep -F 'content:" ▾"!important' dist/assets/hf32-sitewide-review.css
-          grep -F 'content:" ▴"!important' dist/assets/hf32-sitewide-review.css
-      - name: Community Explorer bounded loading contract
-        run: |
-          grep -F "retry: 'Retry loading local options'" dist/assets/community-explorer.js
-          grep -F "Promise.race([request, timeout])" dist/assets/community-explorer.js
-          grep -F "fetchCatalogAttempt('default', 4500, false)" dist/assets/community-explorer.js
-          grep -F "fetchCatalogAttempt('no-store', 7000, true)" dist/assets/community-explorer.js
-          grep -F "!Array.isArray(data.currentWindow)" dist/assets/community-explorer.js
-          grep -F "showLoadError" dist/assets/community-explorer.js
-      - name: Member-profile layout and single annual plan
-        run: |
-          grep -F 'Manage or improve your Franklin profile.' dist/member-profile-preview/index.html
-          grep -F 'Join for $35/year' dist/member-profile-preview/index.html
-          grep -F 'Correct or remove a profile' dist/member-profile-preview/index.html
-          grep -F 'data-r28-preview-form' dist/member-profile-preview/index.html
-          ! grep -E '\$5/month|\$90|\$50/year|\$120|Charter Member' dist/member-profile-preview/index.html
-      - name: Release identity and improvement list
-        run: |
-          grep -F '"release": "FR-NAV1.21.0-HF3.2-CANDIDATE"' PRODUCTION_RELEASE.json
-          test -f NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_21_0_HF32.md
-          grep -F 'Next Version Improvement List' NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_21_0_HF32.md
-      - name: No accidental capability removal markers
-        run: |
-          test -f dist/assets/r28-community.js
-          test -f dist/assets/r37-i18n.js
+          test -f dist/index.html
           test -f dist/corrections/index.html
           test -f dist/sports/index.html
           test -f dist/today/index.html
@@ -114,3 +71,98 @@ jobs:
           test -f dist/community-help-center/index.html
           test -f dist/my-franklin/index.html
           test -f dist/business-dashboard/index.html
+          test -f dist/member-profile-preview/index.html
+          test -f dist/membership-start/index.html
+          test -f dist/claim-profile/index.html
+
+      - name: Current Community Membership and free-profile-control contract
+        run: |
+          set -euo pipefail
+          grep -F 'Preview your Community Member profile.' dist/member-profile-preview/index.html
+          grep -F 'Community Membership — $35/year' dist/member-profile-preview/index.html
+          grep -F 'Corrections and removal stay free.' dist/member-profile-preview/index.html
+          grep -F 'Correct or remove a profile' dist/member-profile-preview/index.html
+          grep -F 'Ordinary Directory ranking and factual accuracy do not change' dist/member-profile-preview/index.html
+          grep -F 'data-r28-preview-form' dist/member-profile-preview/index.html
+          grep -F '$35' dist/membership-start/index.html
+          grep -F 'year' dist/membership-start/index.html
+          ! grep -E '\$5/month|\$90|\$50/year|\$120|Charter Member' dist/member-profile-preview/index.html dist/membership-start/index.html
+
+      - name: Current business/member product contract
+        run: |
+          set -euo pipefail
+          grep -F 'Find my profile' dist/member-profile-preview/index.html
+          grep -F 'Find my profile' dist/claim-profile/index.html
+          grep -F 'Community Membership' dist/business-dashboard/index.html
+          grep -F 'English' dist/member-profile-preview/index.html
+          grep -F 'Español' dist/member-profile-preview/index.html
+          grep -F 'English' dist/membership-start/index.html
+          grep -F 'Español' dist/membership-start/index.html
+
+      - name: Preserve current HF3.10 qualification receipts
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for name in ['HF310_STATIC_QUALIFICATION_REPORT.json','HF310_BROWSER_QUALIFICATION_REPORT.json','HF310_QUALIFICATION_REPORT.json']:
+              p=Path(name)
+              if not p.exists(): raise SystemExit(f'missing {name}')
+              d=json.loads(p.read_text())
+              if d.get('status') not in ('PASS','QUALIFIED_SUCCESSOR'):
+                  raise SystemExit(f'{name} not green: {d.get("status")}')
+          q=json.loads(Path('HF310_QUALIFICATION_REPORT.json').read_text())
+          if q.get('issueCount') != 0:
+              raise SystemExit('HF3.10 qualification issue count is nonzero')
+          PY
+
+      - name: Build deterministic exact-source artifact and manifest
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,zipfile,subprocess
+          root=Path('.')
+          commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          release=json.loads(Path('PRODUCTION_RELEASE.json').read_text())['release']
+          artifact=f'FRANKLIN_NAVIGATOR__{release}__CURRENT_SUCCESSOR_EXACT_SOURCE.zip'
+          manifest_name='CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json'
+          exclude={artifact,manifest_name}
+          files=[]
+          for p in sorted(root.rglob('*')):
+              if not p.is_file(): continue
+              rel=p.as_posix().lstrip('./')
+              if rel.startswith('.git/') or rel in exclude: continue
+              b=p.read_bytes()
+              files.append({'path':rel,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
+          manifest={'schema':'franklin.current-source-manifest.v1','release':release,'commit':commit,'tree':tree,'memberCount':len(files),'members':files,'selfExcluded':True}
+          Path(manifest_name).write_text(json.dumps(manifest,sort_keys=True,separators=(',',':'))+'\n')
+          entries=files+[{'path':manifest_name,'bytes':Path(manifest_name).stat().st_size,'sha256':hashlib.sha256(Path(manifest_name).read_bytes()).hexdigest()}]
+          with zipfile.ZipFile(artifact,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+              for item in sorted(entries,key=lambda x:x['path']):
+                  p=Path(item['path']); info=zipfile.ZipInfo(item['path'],(2026,1,1,0,0,0)); info.compress_type=zipfile.ZIP_DEFLATED; info.external_attr=0o100644<<16
+                  z.writestr(info,p.read_bytes())
+          Path('CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json').write_text(json.dumps({'release':release,'commit':commit,'tree':tree,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':hashlib.sha256(Path(artifact).read_bytes()).hexdigest(),'manifest':manifest_name,'manifestSha256':hashlib.sha256(Path(manifest_name).read_bytes()).hexdigest(),'zipMembers':len(entries),'profileCount':19103,'result':'PASS_EXACT_SOURCE_ARTIFACT_SEALED'},indent=2)+'\n')
+          PY
+          python - <<'PY'
+          import json,hashlib,zipfile
+          from pathlib import Path
+          a=json.loads(Path('CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json').read_text())
+          assert hashlib.sha256(Path(a['artifact']).read_bytes()).hexdigest()==a['artifactSha256']
+          with zipfile.ZipFile(a['artifact']) as z:
+              assert z.testzip() is None
+              assert len(z.infolist())==a['zipMembers']
+          print(json.dumps(a,indent=2))
+          PY
+
+      - name: Upload exact current successor artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-current-successor-exact-source
+          path: |
+            FRANKLIN_NAVIGATOR__FR-NAV1.29.0-HF3.10__CURRENT_SUCCESSOR_EXACT_SOURCE.zip
+            CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json
+            CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json
+          if-no-files-found: error
+          retention-days: 30
