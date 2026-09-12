@@ -1,8 +1,8 @@
 {
-  "release": "FR-NAV1.29.1-HF3.10.1",
+  "release": "FR-NAV1.29.2-HF3.10.2",
   "date": "2026-09-12",
-  "base": "FR-NAV1.29.0-HF3.10",
-  "scope": "P0 Franklin Assistant usefulness and mobile-homepage hotfix: verified on-device local-profile lookup, canonical profile routing, direct task answers, safer fallbacks, preserved voice and legacy next-step support, plus compact mobile header/hero/assistant presentation",
+  "base": "FR-NAV1.29.1-HF3.10.1",
+  "scope": "Sitewide mobile usability plus Franklin Assistant second-pass successor: true-centered compact mobile header and touch/form/layout hardening across all public pages; verified on-device search across 254 Franklin guide/tool routes and 19,103 public profiles; stronger natural-language topic detection, multi-need planning, direct contact/profile answers, direct route selection, safer high-stakes membership/emergency handling, and no raw-question submission to a new AI service.",
   "counts": {
     "profiles": 19103
   },
@@ -28,11 +28,35 @@
     "My Franklin legacy assistant next-step fallback"
   ],
   "assistantHotfix": {
-    "version": "FR-NAV1.29.1-HF3.10.1",
+    "version": "FR-NAV1.29.2-HF3.10.2",
     "verifiedDirectoryBinding": "/data/discovery/manifest.json",
+    "routeCount": 254,
     "profileCount": 19103,
     "profileRoute": "/profiles/{FRANKLIN_PROFILE_ID}/",
     "rawQuestionNetworkSubmission": false,
-    "paidRanking": false
+    "paidRanking": false,
+    "assistantMode": "ON_DEVICE_VERIFIED_ROUTE_AND_PUBLIC_PROFILE_RETRIEVAL",
+    "verifiedRouteShards": [
+      {
+        "path": "/data/assistant-routes-00.json",
+        "sha256": "c86c5a4458943af460a8cdae0efb41eb17f4b7a23c377eedd497ca51607f3e5e",
+        "count": 64
+      },
+      {
+        "path": "/data/assistant-routes-01.json",
+        "sha256": "3a08eb625f60db39a2bf46c6f6da1e494cb964560d588fa9d7680cb2f7af09d3",
+        "count": 64
+      },
+      {
+        "path": "/data/assistant-routes-02.json",
+        "sha256": "11aa07eb8af07c97fea6075dd307ecc1066edf4632bfc4e3ba91d28c493b0638",
+        "count": 64
+      },
+      {
+        "path": "/data/assistant-routes-03.json",
+        "sha256": "a5fa101d3fc916c549782171caee2a1f7d5906c420057736725a9e10d4f8c5ab",
+        "count": 62
+      }
+    ]
   }
 }
