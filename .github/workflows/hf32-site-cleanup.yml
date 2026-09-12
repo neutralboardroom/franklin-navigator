@@ -135,7 +135,7 @@ jobs:
           files=[]
           for p in sorted(root.rglob('*')):
               if not p.is_file(): continue
-              rel=p.as_posix().lstrip('./')
+              rel=p.relative_to(root).as_posix()
               if rel.startswith('.git/') or rel in exclude: continue
               b=p.read_bytes()
               files.append({'path':rel,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
