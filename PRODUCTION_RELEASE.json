@@ -3,7 +3,7 @@
   "date": "2026-09-13",
   "base": "FR-NAV1.29.3-HF3.10.3",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "Franklin Assistant quality successor: intent-first direct answers for high-value Franklin tasks; deterministic task-specific routing; route-pollution suppression; tighter profile-search triggering; current web research only where freshness is material; preserved document/photo reading, 19,103-profile directory, established-community positioning, mobile layout, and Community Membership fulfillment.",
+  "scope": "Franklin Assistant quality successor: intent-first direct answers for high-value Franklin tasks; deterministic task-specific routing; English and Spanish high-value intent routing; route-pollution suppression; tighter profile-search triggering; current web research only where freshness is material; preserved document/photo reading, 19,103-profile directory, established-community positioning, mobile layout, and Community Membership fulfillment.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -71,14 +71,18 @@
     ],
     "qualityRegression": "scripts/test-assistant-r1294.js",
     "highValueIntentRules": 22,
-    "researchEndpointRelease": "FR-NAV1.29.3-HF3.10.3"
+    "researchEndpointRelease": "FR-NAV1.29.3-HF3.10.3",
+    "spanishIntentRegressionCases": 15,
+    "multilingualIntentRouting": "ENGLISH_AND_SPANISH_HIGH_VALUE_TASKS"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
     "directoryReadMode": "VERIFIED_CURRENT_LOCAL_DISCOVERY_INDEX_READ_ONLY",
     "pf15_23": "DEFER_WITH_CAUSE",
-    "li33": "DEFER_WITH_CAUSE",
-    "smarterJustice": "NOT_USED"
+    "smarterJustice": "NOT_USED_NO_LEGAL_DONOR_REVIEW",
+    "li35": "DEFER_WITH_CAUSE",
+    "li35Reason": "SLI-FRANKLIN-HANDOFF-20260912-035 is a qualified research handoff awaiting SCC gate/consumer acceptance; all 510 activity records remain blocked for direct display absent point-of-use currentness. Import is not required for this Assistant-quality successor.",
+    "pf15_23Reason": "FR-PF-PLATFORM-15.23 is a tested and Library-persisted qualified candidate pending external acceptance; current live profile facts remain sufficient for this Assistant-quality slice and same-release import would add unrelated canonical-data risk."
   },
   "preserved": [
     "FR-NAV1.29.0-HF3.10 real-customer membership and fulfillment path",
