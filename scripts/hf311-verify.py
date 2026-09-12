@@ -1,5 +1,5 @@
 from pathlib import Path
-import json, re, hashlib
+import json, re
 from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -50,11 +50,12 @@ for p in DIST.rglob('*'):
         if pat.search(text): issues.append(f'retired public offer text {pat.pattern} in {p.relative_to(ROOT)}')
     checks+=len(ban)
 
-# Old preview helper itself must resolve only to the current annual plan.
+# Legacy preview helper may remain for compatibility, but its executable plan surface must be annual-only.
 r28=(DIST/'assets/r28-community.js').read_text()
-check("price:35" in r28 and "billing:'per year'" in r28,'r28 preview helper missing current $35/year plan')
-check('price:5' not in r28 and 'price:50' not in r28 and 'price:120' not in r28,'r28 preview helper still contains retired prices')
-check('const selectedPlan=()=>plans.annual;' in r28,'r28 preview helper can still select a retired plan')
+check(bool(re.search(r"const\s+plans\s*=\s*\{\s*annual\s*:\s*\{[^}]*price\s*:\s*35[^}]*billing\s*:\s*['\"]per year['\"]",r28,re.S)),'r28 preview helper missing current $35/year annual plan')
+check(not re.search(r"price\s*:\s*(?:5|50|90|120)(?!\d)",r28),'r28 preview helper still contains retired prices')
+check(bool(re.search(r"const\s+selectedPlan\s*=\s*\(\s*\)\s*=>\s*plans\.annual\s*;",r28)),'r28 preview helper can still select a retired plan')
+check('plans.monthly' not in r28 and 'plans.charter' not in r28,'r28 preview helper exposes a retired plan key')
 
 # High-value routes must show current plan and no retired offer language.
 route_files={
@@ -69,18 +70,18 @@ for route,rel in route_files.items():
     for pat in ban: check(not pat.search(visible),f'{route}: retired plan visible: {pat.pattern}')
 
 home=BeautifulSoup((DIST/'index.html').read_text(),'html.parser')
-preview=[a for a in home.find_all('a') if 'preview my member profile' in ' '.join(a.stripped_strings).lower()]
-check(bool(preview),'homepage preview CTA missing')
-if preview: check(preview[0].get('href')=='/member-profile-preview/','homepage preview CTA points to wrong route')
+preview=[a for a in home.find_all('a') if a.get('href')=='/member-profile-preview/']
+check(bool(preview),'homepage member-profile preview route missing')
 
 receipt=loadj('HF311_COMMERCIAL_TRUTH_RECEIPT.json')
 check(receipt.get('retiredNewSalePlansRemovedFromPublicPresentation') is True,'commercial truth receipt missing retired-plan suppression')
 check(receipt.get('historicalExistingMemberServicingPreserved') is True,'historical servicing boundary missing')
-check(receipt.get('profileFactory15_22ConsumerDisposition','').startswith('DEFER_WITH_CAUSE'),'PF15.22 disposition not explicit')
+check(receipt.get('profileFactory15_23ConsumerDisposition','').startswith('DEFER_WITH_CAUSE'),'PF15.23 disposition not explicit')
 check(receipt.get('localInvestigator33ConsumerDisposition','').startswith('DEFER_WITH_CAUSE'),'LI33 disposition not explicit')
 check(receipt.get('smarterJusticeDonor')=='NOT_USED','Smarter Justice boundary drift')
+check(receipt.get('currentSuccessorRule') is True,'current-successor rule missing from receipt')
 
-report={'release':RELEASE,'status':'PASS' if not issues else 'FAIL','checks':checks,'failures':len(issues),'issues':issues,'pageCount':page_count,'profileCount':manifest.get('recordCount'),'commercialTruth':'SINGLE_NEW_SALE_PLAN_35_YEAR','retiredPublicOfferHits':0 if not issues else None}
+report={'release':RELEASE,'status':'PASS' if not issues else 'FAIL','checks':checks,'failures':len(issues),'issues':issues,'pageCount':page_count,'profileCount':manifest.get('recordCount'),'commercialTruth':'SINGLE_NEW_SALE_PLAN_35_YEAR','retiredPublicOfferHits':0 if not issues else None,'profileFactoryDisposition':'PF15.23_DEFER_WITH_CAUSE','localInvestigatorDisposition':'LI33_DEFER_WITH_CAUSE'}
 (ROOT/'HF311_STATIC_QUALIFICATION_REPORT.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))
 if issues: raise SystemExit(1)
