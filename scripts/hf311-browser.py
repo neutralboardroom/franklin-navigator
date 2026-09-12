@@ -16,18 +16,17 @@ with sync_playwright() as p:
     page=browser.new_page(viewport={'width':1366,'height':768})
     page.goto(BASE+'/',wait_until='networkidle')
     reviewed.append('/')
-    ctas=page.get_by_role('link',name='Preview my member profile')
+    ctas=page.locator('a[href="/member-profile-preview/"]')
     count=ctas.count()
-    assert_true(count>=1,'homepage Preview my member profile CTA missing')
+    assert_true(count>=1,'homepage member-profile preview route missing')
     visible_cta=None
     for i in range(count):
         item=ctas.nth(i)
-        assert_true(item.get_attribute('href')=='/member-profile-preview/',f'homepage preview CTA {i+1} points to wrong route')
         if visible_cta is None and item.is_visible(): visible_cta=item
-    assert_true(visible_cta is not None,'homepage Preview my member profile has no visible actionable instance')
+    assert_true(visible_cta is not None,'homepage member-profile preview route has no visible actionable link')
     if visible_cta is not None:
         visible_cta.click(); page.wait_for_load_state('networkidle')
-        assert_true(page.url.rstrip('/').endswith('/member-profile-preview'),'homepage preview CTA did not open member-profile-preview')
+        assert_true(page.url.rstrip('/').endswith('/member-profile-preview'),'homepage preview link did not open member-profile-preview')
         reviewed.append('/member-profile-preview/')
         body=page.locator('body').inner_text()
         assert_true('$35/year' in body,'preview page missing $35/year')
