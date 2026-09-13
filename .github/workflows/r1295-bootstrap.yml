@@ -1,0 +1,40 @@
+name: Apply Franklin R1295 prepared successor
+on:
+  push:
+    branches: [franklin-r1295-logo-assistant]
+    paths: ['.github/workflows/r1295-bootstrap.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: franklin-r1295-logo-assistant
+          fetch-depth: 1
+      - name: Apply exact prepared changes
+        env:
+          BLOB_SHA: 40e0cb74de57451a8ee3fe472327934d8ac05e69
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/neutralboardroom/franklin-navigator/git/blobs/$BLOB_SHA" > /tmp/blob.json
+          python - <<'PY'
+          import json,base64
+          d=json.load(open('/tmp/blob.json'))
+          assert d['sha']=='40e0cb74de57451a8ee3fe472327934d8ac05e69'
+          open('/tmp/r1295.tgz','wb').write(base64.b64decode(d['content']))
+          PY
+          tar -xzf /tmp/r1295.tgz
+          rm -f .github/workflows/r1295-bootstrap.yml
+          node --check dist/assets/franklin-assistant-r1295-core.js
+          node --check dist/assets/franklin-assistant-r1295.js
+          node scripts/test-assistant-r1294.js
+          node scripts/test-assistant-r1295.js
+          git config user.name "Franklin Platform Builder"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Adopt approved Franklin logo and improve Assistant"
+          git push origin HEAD:franklin-r1295-logo-assistant
