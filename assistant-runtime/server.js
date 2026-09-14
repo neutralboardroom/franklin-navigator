@@ -1,5 +1,6 @@
 'use strict';
 const http=require('node:http');
+const fs=require('node:fs');
 const dns=require('node:dns');
 const net=require('node:net');
 const {URL}=require('node:url');
@@ -118,6 +119,7 @@ function selfTest(){
   if(!/address/i.test(school))throw Error('selftest_school_zone');
   if(askedForSource('Do I need a permit?'))throw Error('selftest_source_gate');
   if(!askedForSource('What is your source for that?'))throw Error('selftest_source_request');
+  const ui='dist/assets/franklin-assistant-r1302.js';if(fs.existsSync(ui))new Function(fs.readFileSync(ui,'utf8'));
   return true;
 }
 selfTest();
