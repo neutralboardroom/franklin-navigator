@@ -15,8 +15,8 @@
     const publicSection=document.querySelector('.r24-business-section');
     const applyStaticCopy=()=>{
       const isEs=pageIsEs();
-      if(formLabel)formLabel.textContent=isEs?'Cuéntele a Franklin Assistant lo que necesita':'Tell Franklin Assistant what you need';
-      if(submit)submit.textContent=isEs?'Encontrar mi próximo paso':'Find my next step';
+      if(formLabel)formLabel.textContent=isEs?'Pregúntele cualquier cosa a Franklin Assistant':'Ask Franklin Assistant anything';
+      if(submit)submit.textContent=isEs?'Preguntar a Franklin':'Ask Franklin';
       close.setAttribute('aria-label',isEs?'Cerrar respuesta':'Close answer');
       if(dialogMode==='idle')title.textContent=isEs?'Elija qué quiere hacer ahora.':'Choose what you want to do now.';
       if(publicSection){
@@ -44,7 +44,7 @@
         '<h3>Start with your community presence.</h3><p>Review the profile, see the member version, or use a free planning tool. No payment is requested.</p><div class="r27-business-actions"><a class="button primary" href="/member-profile-preview/">See member options</a><a class="button" href="/claim-profile/">Find or review my profile</a><a class="button" href="/membership-start/">See Community Membership</a><a class="button" href="/local-growth-engine/">Use the free Growth Planner</a></div><p class="r27-business-note">Basic public profiles and factual corrections remain free. Membership supports richer participation and tools; it does not buy ranking, endorsement, leads, customers, sales or guaranteed results.</p>';
       body.append(section);output.hidden=true;output.replaceChildren();card.classList.remove('has-answer');card.dataset.answerState='dialog';openDialog();moving=false;
     };
-    const showGeneratedAnswer=()=>{if(moving||output.hidden||!String(output.textContent||'').trim())return;moving=true;const isEs=pageIsEs();dialogMode='answer';title.textContent=isEs?'Estos son sus próximos pasos en Franklin.':'Here are your Franklin next steps.';body.replaceChildren();dialog.querySelector('.r31-dialog-language')?.remove();dialog.querySelector('.r27-navigator-head')?.append(languageLink(isEs));addQuestion(input.value.trim(),isEs);for(const node of [...output.childNodes])body.append(node);
+    const showGeneratedAnswer=()=>{if(card.dataset.franklinAssistantR1296==='1'||moving||output.hidden||!String(output.textContent||'').trim())return;moving=true;const isEs=pageIsEs();dialogMode='answer';title.textContent=isEs?'Estos son sus próximos pasos en Franklin.':'Here are your Franklin next steps.';body.replaceChildren();dialog.querySelector('.r31-dialog-language')?.remove();dialog.querySelector('.r27-navigator-head')?.append(languageLink(isEs));addQuestion(input.value.trim(),isEs);for(const node of [...output.childNodes])body.append(node);
       const next=document.createElement('div');next.className='r30-dialog-next';next.dataset.franklinNativeLocale='true';next.innerHTML=isEs?'<p><strong>¿Tiene más de una necesidad?</strong> Cree un plan privado en este dispositivo para necesidades relacionadas en Franklin.</p><a class="button" href="/situation-planner/">Crear un plan para necesidades conectadas</a>':'<p><strong>More than one need?</strong> Build one private, device-only plan across connected Franklin needs.</p><a class="button" href="/situation-planner/">Build one plan for connected needs</a>';body.append(next);output.hidden=true;output.replaceChildren();card.classList.remove('has-answer');card.dataset.answerState='dialog';openDialog();moving=false};
     form.addEventListener('submit',()=>{returnFocus=input},true);
     card.addEventListener('click',event=>{const trigger=event.target instanceof Element?event.target.closest('button,a'):null;if(trigger)returnFocus=trigger},true);
