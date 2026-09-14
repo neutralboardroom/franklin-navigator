@@ -123,6 +123,16 @@ async function verifyLlm(){
     llmState.verified=true;llmState.error=null;console.log(JSON.stringify({event:'franklin_llm_verified',release:RELEASE,model:OPENAI_MODEL,smoke:'ROOF_PERMIT_GROUNDED_DIRECT_ANSWER',at:now()}));return true
   }catch(e){llmState.error=e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED';console.error(JSON.stringify({event:'franklin_llm_verification_failed',release:RELEASE,model:OPENAI_MODEL,status:llmState.error,at:now()}));return false}
 }
+async function verifyLiveEndpoint(){
+  const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),24000);
+  try{
+    const r=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers:{'Content-Type':'application/json','Origin':'https://franklinnavigator.com'},body:JSON.stringify({q:'Do I need a permit for my roof?',contextualQ:'Do I need a permit for my roof?',language:'en',history:[]}),signal:ctl.signal});
+    const d=await r.json().catch(()=>({}));
+    const ok=r.ok&&d?.ok===true&&d?.llmUsed===true&&/^llm_grounded_/.test(String(d?.answerMode||''))&&/(permit|roof)/i.test(String(d?.answer||''));
+    if(!ok){console.error(JSON.stringify({event:'franklin_live_api_smoke_failed',release:RELEASE,httpStatus:r.status,answerMode:d?.answerMode||null,llmUsed:d?.llmUsed===true,error:d?.error||null,at:now()}));return false}
+    console.log(JSON.stringify({event:'franklin_live_api_smoke_passed',release:RELEASE,httpStatus:r.status,answerMode:d.answerMode,llmUsed:true,check:'LIVE_HTTP_API_ROOF_PERMIT',at:now()}));return true
+  }catch(e){console.error(JSON.stringify({event:'franklin_live_api_smoke_failed',release:RELEASE,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));return false}finally{clearTimeout(timer)}
+}
 function selfTest(){
   const roof=knownAnswer('Do I need a permit for my roof?','en');
   const hall=knownAnswer('What time is City Hall open?','en');
@@ -175,4 +185,4 @@ const server=http.createServer(async(req,res)=>{try{
   console.log(JSON.stringify({event:'franklin_assistant_answer_complete',release:RELEASE,answerMode,llmUsed,confidence:known?'high':result.confidence,sourceCount:(result.sources||[]).length,at:now()}));
   return json(req,res,200,{ok:true,question:q,answer,answerMode,llmUsed,confidence:known?'high':result.confidence,sources:result.sources||[],researchedAt:now(),usedVerifiedSnapshot:Boolean(result.usedVerifiedSnapshot)});
 }catch(e){console.error(JSON.stringify({event:'assistant_runtime_error',message:String(e.message||e).slice(0,160),at:now()}));return json(req,res,Number(e.status||503),{ok:false,error:'ANSWER_UNAVAILABLE',message:'Franklin Assistant could not complete the answer right now.'})}});
-server.requestTimeout=25000;server.headersTimeout=10000;server.listen(PORT,'0.0.0.0',()=>{console.log(JSON.stringify({event:'franklin_assistant_runtime_listening',release:RELEASE,port:PORT,ready:true,llmConfigured:llmState.configured,llmVerified:llmState.verified,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()}));verifyLlm().catch(()=>{})});
+server.requestTimeout=25000;server.headersTimeout=10000;server.listen(PORT,'0.0.0.0',()=>{console.log(JSON.stringify({event:'franklin_assistant_runtime_listening',release:RELEASE,port:PORT,ready:true,llmConfigured:llmState.configured,llmVerified:llmState.verified,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()}));(async()=>{if(await verifyLlm())await verifyLiveEndpoint()})().catch(()=>{})});
