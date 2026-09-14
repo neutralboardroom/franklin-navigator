@@ -5,11 +5,12 @@ const dns=require('node:dns');
 const net=require('node:net');
 const {URL}=require('node:url');
 const PORT=Number(process.env.PORT||10000);
-const RELEASE='FR-NAV1.30.2-HF3.11.2';
+const RELEASE='FR-NAV1.30.3-HF3.11.3';
 const ORIGINS=new Set(['https://franklinnavigator.com','https://www.franklinnavigator.com','https://franklin-navigator.onrender.com']);
 const BODY_LIMIT=32*1024,rate=new Map(),VERIFIED_AT='2026-09-14';
 const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||'').trim();
 const OPENAI_MODEL=String(process.env.OPENAI_MODEL||'gpt-5.6-luna').trim();
+const llmState={configured:Boolean(OPENAI_API_KEY),verified:false,lastCheckAt:null,error:null};
 const now=()=>new Date().toISOString();
 const text=v=>String(v||'').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s+/g,' ').trim();
 const norm=v=>text(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9\s'&.-]/g,' ').replace(/\s+/g,' ').trim();
@@ -109,6 +110,21 @@ async function llmAnswer(q,language,history,context,sources){
     return cleanAnswer(extractOpenAIText(await r.json()));
   }catch{return''}finally{clearTimeout(timer)}
 }
+function sourceRowsFromSeeds(q){
+  return officialSeeds(q).map(x=>({title:x.title,url:x.url,snippet:x.snapshot||'',official:true,liveRead:false,verifiedAt:x.verifiedAt||VERIFIED_AT}));
+}
+async function verifyLlm(){
+  llmState.lastCheckAt=now();llmState.verified=false;llmState.error=null;
+  if(!OPENAI_API_KEY){llmState.error='NOT_CONFIGURED';return false}
+  const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),12000);
+  try{
+    const r=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:'Bearer '+OPENAI_API_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:OPENAI_MODEL,instructions:'Return a short plain-text health acknowledgement.',input:'Franklin Assistant runtime health check.',max_output_tokens:32}),signal:ctl.signal});
+    if(!r.ok){llmState.error='OPENAI_HTTP_'+r.status;console.error(JSON.stringify({event:'franklin_llm_verification_failed',release:RELEASE,model:OPENAI_MODEL,status:r.status,at:now()}));return false}
+    const out=cleanAnswer(extractOpenAIText(await r.json()));
+    if(!out){llmState.error='EMPTY_RESPONSE';console.error(JSON.stringify({event:'franklin_llm_verification_failed',release:RELEASE,model:OPENAI_MODEL,status:'EMPTY_RESPONSE',at:now()}));return false}
+    llmState.verified=true;llmState.error=null;console.log(JSON.stringify({event:'franklin_llm_verified',release:RELEASE,model:OPENAI_MODEL,at:now()}));return true
+  }catch(e){llmState.error=e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED';console.error(JSON.stringify({event:'franklin_llm_verification_failed',release:RELEASE,model:OPENAI_MODEL,status:llmState.error,at:now()}));return false}finally{clearTimeout(timer)}
+}
 async function research(q){const official=officialSeeds(q),combined=[],seen=new Set();const add=list=>{for(const r of list||[])if(r.url&&!seen.has(r.url)){seen.add(r.url);combined.push(r)}};add(official);add(await searchWeb(q));if(!combined.length)return{answer:'',sources:[],confidence:'low'};const enriched=await enrich(combined,q),syn=synthesize(enriched,q);return{answer:cleanAnswer(syn.answer),sources:enriched.slice(0,5).map(x=>({title:x.title,url:x.url,snippet:text(x.best).slice(0,360),official:sourceRank(x.url)>=35,liveRead:Boolean(x.liveRead),verifiedAt:x.verifiedAt||null})),confidence:syn.confidence,usedVerifiedSnapshot:enriched.some(x=>x.origin==='official'&&!x.liveRead&&x.snapshot)}}
 function selfTest(){
   const roof=knownAnswer('Do I need a permit for my roof?','en');
@@ -126,25 +142,40 @@ selfTest();
 const server=http.createServer(async(req,res)=>{try{
   const u=new URL(req.url,'http://localhost');
   if(req.method==='OPTIONS'){allow(req,res);res.statusCode=204;return res.end()}
-  if(req.method==='GET'&&u.pathname==='/health')return json(req,res,200,{ok:true,release:RELEASE,mode:'DIRECT_ANSWER_ONLY_WITH_OPTIONAL_LLM_AND_OFFICIAL_FIRST_RESEARCH',verifiedSnapshotDate:VERIFIED_AT,llmConfigured:Boolean(OPENAI_API_KEY),model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()});
+  if(req.method==='GET'&&u.pathname==='/health')return json(req,res,200,{ok:true,release:RELEASE,mode:'DIRECT_ANSWER_WITH_GROUNDED_LLM_PRIMARY_AND_OFFICIAL_FIRST_FALLBACK',verifiedSnapshotDate:VERIFIED_AT,llmConfigured:llmState.configured,llmVerified:llmState.verified,llmLastCheckAt:llmState.lastCheckAt,llmVerificationError:llmState.error,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()});
   if(req.method!=='POST'||(u.pathname!=='/api/research'&&u.pathname!=='/api/answer'))return json(req,res,404,{ok:false,error:'NOT_FOUND'});
   const o=String(req.headers.origin||'');if(o&&!ORIGINS.has(o))return json(req,res,403,{ok:false,error:'ORIGIN_NOT_ALLOWED'});
   if(!limited(clientKey(req),60))return json(req,res,429,{ok:false,error:'RATE_LIMITED'});
-  const b=await body(req),q=text(b.q).slice(0,500),language=text(b.language||'en').slice(0,8);
+  const b=await body(req),q=text(b.q).slice(0,500),contextQ=text(b.contextualQ||b.q).slice(0,700),language=text(b.language||'en').slice(0,8);
   if(q.length<1)return json(req,res,400,{ok:false,error:'QUESTION_REQUIRED'});
-  const known=knownAnswer(q,language);
-  let result={answer:'',sources:[],confidence:'low',usedVerifiedSnapshot:false},answer=known,answerMode=known?'known':'';
-  if(!answer){
-    result=await research(q);
-    const llm=await llmAnswer(q,language,b.history,result.answer,result.sources);
-    if(llm){answer=llm;answerMode='llm'}
-    else if(result.answer){answer=result.answer;answerMode='research'}
+  const known=knownAnswer(contextQ,language),simple=/^(hi|hello|hey|good morning|good afternoon|good evening|hola|buenos dias|buenas tardes|buenas noches|thank you|thanks|gracias)[!. ]*$/i.test(norm(q));
+  let result={answer:'',sources:[],confidence:'low',usedVerifiedSnapshot:false},answer='',answerMode='',llmUsed=false;
+  if(simple&&known){answer=known;answerMode='known_simple'}
+  else if(OPENAI_API_KEY){
+    if(known){
+      result={answer:known,sources:sourceRowsFromSeeds(contextQ),confidence:'high',usedVerifiedSnapshot:true};
+      const llm=await llmAnswer(q,language,b.history,known,result.sources);
+      if(llm){answer=llm;answerMode='llm_grounded_known';llmUsed=true}
+      else{answer=known;answerMode='known_fallback'}
+    }else{
+      result=await research(contextQ);
+      const llm=await llmAnswer(q,language,b.history,result.answer,result.sources);
+      if(llm){answer=llm;answerMode='llm_grounded_research';llmUsed=true}
+      else if(result.answer){answer=result.answer;answerMode='research_fallback'}
+    }
+  }else{
+    if(known){answer=known;answerMode='known_no_llm'}
+    else{
+      result=await research(contextQ);
+      if(result.answer){answer=result.answer;answerMode='research_no_llm'}
+    }
   }
   if(answer&&askedForSource(q)&&result.sources?.length){
     const urls=result.sources.slice(0,2).map(x=>x.url).filter(Boolean);
-    if(urls.length)answer=cleanAnswer(answer+' '+urls.join(' '));
+    if(urls.length&&!urls.some(u=>answer.includes(u)))answer=cleanAnswer(answer+' '+urls.join(' '));
   }
   if(!answer){answer=String(language||'').startsWith('es')?'No pude verificar una respuesta confiable con la información disponible. ¿Puede darme un detalle más?':'I could not verify a reliable answer from the information available. Can you give me one more detail?';answerMode='clarify'}
-  return json(req,res,200,{ok:true,question:q,answer,answerMode,confidence:known?'high':result.confidence,sources:result.sources||[],researchedAt:now(),usedVerifiedSnapshot:Boolean(result.usedVerifiedSnapshot)});
+  console.log(JSON.stringify({event:'franklin_assistant_answer_complete',release:RELEASE,answerMode,llmUsed,confidence:known?'high':result.confidence,sourceCount:(result.sources||[]).length,at:now()}));
+  return json(req,res,200,{ok:true,question:q,answer,answerMode,llmUsed,confidence:known?'high':result.confidence,sources:result.sources||[],researchedAt:now(),usedVerifiedSnapshot:Boolean(result.usedVerifiedSnapshot)});
 }catch(e){console.error(JSON.stringify({event:'assistant_runtime_error',message:String(e.message||e).slice(0,160),at:now()}));return json(req,res,Number(e.status||503),{ok:false,error:'ANSWER_UNAVAILABLE',message:'Franklin Assistant could not complete the answer right now.'})}});
-server.requestTimeout=20000;server.headersTimeout=10000;server.listen(PORT,'0.0.0.0',()=>console.log(JSON.stringify({event:'franklin_assistant_runtime_listening',release:RELEASE,port:PORT,ready:true,llmConfigured:Boolean(OPENAI_API_KEY),model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()})));
+server.requestTimeout=25000;server.headersTimeout=10000;server.listen(PORT,'0.0.0.0',()=>{console.log(JSON.stringify({event:'franklin_assistant_runtime_listening',release:RELEASE,port:PORT,ready:true,llmConfigured:llmState.configured,llmVerified:llmState.verified,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()}));verifyLlm().catch(()=>{})});
