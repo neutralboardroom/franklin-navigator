@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="Franklin Navigator"><image width="192" height="192" href="/assets/franklin-icon-192.png" preserveAspectRatio="xMidYMid meet"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="112" viewBox="0 0 112 112" role="img" aria-label="Franklin Navigator">
+<rect width="112" height="112" rx="27" fill="#03454b"/>
+<rect x="5" y="5" width="102" height="102" rx="23" fill="none" stroke="#d8e7e5" stroke-opacity=".3"/>
+<path d="M30 29h54v15H48v15h30v15H48v27H30z" fill="#fff"/>
+<path d="m82 55 20 10.5L82 76l5.9-10.5z" fill="#c5943a"/>
+</svg>
