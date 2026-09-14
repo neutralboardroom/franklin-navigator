@@ -23,6 +23,12 @@ ready(()=>{
   const body=document.body;
   if(!body)return;
   loadAssistantR1295();
+  // R1295 owner-approved Franklin mark + favicon/install icon binding.
+  document.querySelectorAll('header .brand img').forEach(img=>{img.src='/assets/franklin-icon-192.png?v=frnav1295';img.alt='Franklin Navigator';img.width=38;img.height=38});
+  const icon=(rel,href,sizes)=>{let l=document.querySelector(`link[rel="${rel}"]`);if(!l){l=document.createElement('link');l.rel=rel;document.head.append(l)}l.href=href;if(sizes)l.sizes=sizes};
+  icon('icon','/favicon.ico?v=frnav1295');icon('shortcut icon','/favicon.ico?v=frnav1295');icon('apple-touch-icon','/assets/franklin-icon-192.png?v=frnav1295','192x192');
+  let mf=document.querySelector('link[rel="manifest"]');if(!mf){mf=document.createElement('link');mf.rel='manifest';document.head.append(mf)}mf.href='/site.webmanifest?v=frnav1295';
+
   // Homepage: suppress an empty saved-checklist box without touching real saved content.
   if(body.classList.contains('hf36-home')){
     const clean=()=>document.querySelectorAll('.navigator-bot .empty-state,.navigator-bot [class*="empty"]').forEach(n=>{if(/No detailed Assistant checklists saved yet|No Assistant/i.test(n.textContent||''))n.dataset.hf36HomeEmpty='1'});

@@ -1,0 +1,37 @@
+{
+  "schema": "franklin.r1295.closeout-preseal.v1",
+  "release": "FR-NAV1.29.5-HF3.10.5",
+  "base": "FR-NAV1.29.4-HF3.10.4",
+  "activeEdition": "FRANKLIN_TN",
+  "scope": [
+    "OWNER_APPROVED_LOGO_FAVICON",
+    "ASSISTANT_QUALITY"
+  ],
+  "logo": {
+    "source": "owner-uploaded Franklin Navigator Logo.png",
+    "header": "/assets/franklin-icon-192.png",
+    "favicon": "/favicon.ico",
+    "install192": "/assets/franklin-icon-192.png",
+    "install512": "/assets/franklin-icon-512.png",
+    "desktopPx": 38,
+    "mobilePx": 32,
+    "narrowPx": 30,
+    "redesign": false
+  },
+  "assistant": {
+    "priorRegression": "scripts/test-assistant-r1294.js",
+    "newRegression": "scripts/test-assistant-r1295.js",
+    "additionalIntentRules": 12,
+    "additionalEnglishCases": 12,
+    "additionalSpanishCases": 7,
+    "currentResearchServicePreserved": true
+  },
+  "authority": {
+    "profileFactsChanged": false,
+    "paymentsChanged": false,
+    "membershipPriceChanged": false,
+    "outboundChanged": false,
+    "smarterJusticeUsed": false
+  },
+  "result": "READY_FOR_BRANCH_QUALIFICATION"
+}

@@ -1,0 +1,48 @@
+name: Franklin R1295 logo and Assistant pre-merge qualification
+on:
+  push:
+    branches: [franklin-r1295-logo-assistant-quality]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qualify-r1295:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: R1295 release, logo and Assistant regressions
+        run: |
+          set -euo pipefail
+          node --check dist/assets/hf36.js
+          node --check dist/assets/franklin-assistant-r1295-core.js
+          node --check scripts/test-assistant-r1295.js
+          node scripts/test-assistant-r1294.js
+          node scripts/test-assistant-r1295.js
+          node - <<'NODE'
+          const d=require('./PRODUCTION_RELEASE.json');
+          if(d.release!=='FR-NAV1.29.5-HF3.10.5'||d.base!=='FR-NAV1.29.4-HF3.10.4')process.exit(1);
+          if(d.assistant.additionalIntentRules<12||d.assistant.additionalSpanishRegressionCases<7)process.exit(1);
+          if(d.branding.headerAsset!=='/assets/franklin-icon-192.png'||d.branding.favicon!=='/favicon.ico')process.exit(1);
+          NODE
+          test -s dist/assets/franklin-icon-192.png
+          test -s dist/assets/franklin-icon-512.png
+          test -s dist/favicon.ico
+          grep -F "franklin-icon-192.png?v=frnav1295" dist/assets/hf36.js
+          grep -F "favicon.ico?v=frnav1295" dist/assets/hf36.js
+          grep -F "width:38px!important" dist/assets/hf3105-brand.css
+          grep -F "width:32px!important" dist/assets/hf3105-brand.css
+          grep -F "width:30px!important" dist/assets/hf3105-brand.css
+      - name: Live research service remains healthy
+        run: |
+          set -euo pipefail
+          h=$(curl -fsS --retry 6 --retry-all-errors --retry-delay 3 --max-time 75 https://franklin-navigator-assistant.onrender.com/health)
+          node -e 'const d=JSON.parse(process.argv[1]);if(!d.ok||d.release!=="FR-NAV1.29.3-HF3.10.3")process.exit(1)' "$h"
+          a=$(curl -fsS --retry 3 --retry-all-errors --retry-delay 3 --max-time 45 -H 'Origin: https://franklinnavigator.com' -H 'Content-Type: application/json' --data '{"q":"What are the current Franklin Tennessee City Hall hours?"}' https://franklin-navigator-assistant.onrender.com/api/research)
+          node -e 'const d=JSON.parse(process.argv[1]);if(!d.ok||!d.answer||!Array.isArray(d.sources)||!d.sources.some(x=>x.official===true))process.exit(1);if(/Paycheck Advance|Current \\| Future of Banking/i.test(d.answer+JSON.stringify(d.sources)))process.exit(1)' "$a"

@@ -7,7 +7,7 @@ on:
       - 'dist/**'
       - 'assistant-runtime/**'
       - 'PRODUCTION_RELEASE.json'
-      - 'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_29_4_HF3104.md'
+      - 'NEXT_VERSION_IMPROVEMENT_LIST__FR_NAV1_29_5_HF3105.md'
       - '.github/workflows/hf32-site-cleanup.yml'
   pull_request:
     branches: [main]
@@ -43,16 +43,21 @@ jobs:
           import json, hashlib
           from pathlib import Path
           d=json.loads(Path('PRODUCTION_RELEASE.json').read_text())
-          assert d['release']=='FR-NAV1.29.4-HF3.10.4'
-          assert d['base']=='FR-NAV1.29.3-HF3.10.3'
+          assert d['release']=='FR-NAV1.29.5-HF3.10.5'
+          assert d['base']=='FR-NAV1.29.4-HF3.10.4'
           assert d['branding']['mobileBrandPosition']=='UPPER_LEFT'
           assert d['branding']['foundingMemberPublicLanguage'] is False
           assert d['branding']['newServicePublicLanguage'] is False
           a=d['assistant']
-          assert a['mode']=='INTENT_FIRST_ANSWER_FIRST_LOCAL_VERIFIED_THEN_CURRENT_WEB_RESEARCH'
-          assert a['qualityRegression']=='scripts/test-assistant-r1294.js'
+          assert a['mode']=='INTENT_FIRST_ANSWER_FIRST_CONTEXTUAL_CLARIFICATION_LOCAL_VERIFIED_THEN_CURRENT_WEB_RESEARCH'
+          assert a['qualityRegression']=='scripts/test-assistant-r1295.js'
           assert a['highValueIntentRules']>=22
           assert a['spanishIntentRegressionCases']>=15
+          assert a['additionalIntentRules']>=12
+          assert a['additionalEnglishRegressionCases']>=12
+          assert a['additionalSpanishRegressionCases']>=7
+          assert d['branding']['headerAsset']=='/assets/franklin-icon-192.png'
+          assert d['branding']['favicon']=='/favicon.ico'
           assert a['routeDataRelease']=='FR-NAV1.29.2-HF3.10.2'
           assert a['routeCount']==254 and a['profileCount']==19103
           assert a['attachmentNetworkSubmission'] is False
@@ -83,6 +88,8 @@ jobs:
           node --check dist/assets/franklin-assistant-r1294-core.js
           node --check dist/assets/franklin-assistant-r1294.js
           node --check scripts/test-assistant-r1294.js
+          node --check dist/assets/franklin-assistant-r1295-core.js
+          node --check scripts/test-assistant-r1295.js
           node --check dist/assets/franklin-established-positioning.js
           node --check assistant-runtime/server.js
           test -f dist/assets/hf3103-mobile.css
@@ -91,7 +98,7 @@ jobs:
       - name: Franklin Assistant answer-first research, upload and mobile contract
         run: |
           set -euo pipefail
-          grep -F "FR-NAV1.29.4-HF3.10.4" dist/assets/franklin-assistant-r1294-core.js dist/assets/franklin-assistant-r1294.js PRODUCTION_RELEASE.json
+          grep -F "FR-NAV1.29.5-HF3.10.5" dist/assets/franklin-assistant-r1294-core.js dist/assets/franklin-assistant-r1294.js PRODUCTION_RELEASE.json
           grep -F "FR-NAV1.29.3-HF3.10.3" assistant-runtime/server.js
           grep -F "Example: I just moved here and need help setting up utilities." dist/assets/franklin-assistant-r1293-files.js
           grep -F "Attach a document, screenshot or photo with readable text" dist/assets/franklin-assistant-r1293-files.js
@@ -106,8 +113,15 @@ jobs:
           grep -F 'No promotional discount' dist/assets/franklin-established-positioning.js
           grep -F 'Community Membership conversation' dist/assets/franklin-established-positioning.js
           node scripts/test-assistant-r1294.js
+          node scripts/test-assistant-r1295.js
           grep -F 'franklin-assistant-r1294-core.js' dist/assets/hf36.js
           grep -F 'franklin-assistant-r1294.js' dist/assets/hf36.js
+          grep -F 'franklin-assistant-r1295-core.js' dist/assets/hf36.js
+          grep -F 'franklin-icon-192.png?v=frnav1295' dist/assets/hf36.js
+          grep -F 'favicon.ico?v=frnav1295' dist/assets/hf36.js
+          test -s dist/assets/franklin-icon-192.png
+          test -s dist/assets/franklin-icon-512.png
+          test -s dist/favicon.ico
           node - <<'NODE'
           global.window={};require('./dist/assets/franklin-assistant-core.js');require('./dist/assets/franklin-assistant-r1293-core.js');
           const C=window.FranklinAssistantCore,R=window.FranklinAssistantR1293Core;
@@ -204,7 +218,7 @@ jobs:
         with:
           name: franklin-current-successor-exact-source
           path: |
-            FRANKLIN_NAVIGATOR__FR-NAV1.29.4-HF3.10.4__CURRENT_SUCCESSOR_EXACT_SOURCE.zip
+            FRANKLIN_NAVIGATOR__FR-NAV1.29.5-HF3.10.5__CURRENT_SUCCESSOR_EXACT_SOURCE.zip
             CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json
             CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json
           if-no-files-found: error

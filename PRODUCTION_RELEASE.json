@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.29.4-HF3.10.4",
-  "date": "2026-09-13",
-  "base": "FR-NAV1.29.3-HF3.10.3",
+  "release": "FR-NAV1.29.5-HF3.10.5",
+  "date": "2026-09-14",
+  "base": "FR-NAV1.29.4-HF3.10.4",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "Franklin Assistant quality successor: intent-first direct answers for high-value Franklin tasks; deterministic task-specific routing; English and Spanish high-value intent routing; route-pollution suppression; tighter profile-search triggering; current web research only where freshness is material; preserved document/photo reading, 19,103-profile directory, established-community positioning, mobile layout, and Community Membership fulfillment.",
+  "scope": "Owner-approved Franklin logo/favicon adoption plus Franklin Assistant quality successor: approved F/compass/gold-arrow PNG mark in header and favicon/install icons; intent-first direct answers expanded across housing/rent, child/family, parks/outdoors, property/zoning, jobs/career, legal help, health providers, home services, pets/animals, restaurants, money/tax and city meetings; stronger contextual clarifiers, selective profile lookup, current-information research gating, English/Spanish routing, and preservation of existing R1294 safety/privacy/membership behavior.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -12,11 +12,18 @@
     "positioning": "ESTABLISHED_COMMUNITY_NATIVE_WITHOUT_FALSE_LONGEVITY_CLAIMS",
     "foundingMemberPublicLanguage": false,
     "newServicePublicLanguage": false,
-    "mobileBrandPosition": "UPPER_LEFT"
+    "mobileBrandPosition": "UPPER_LEFT",
+    "ownerApprovedMark": "F_COMPASS_GOLD_ARROW_UPLOADED_2026-09-14",
+    "headerAsset": "/assets/franklin-icon-192.png",
+    "favicon": "/favicon.ico",
+    "webManifest": "/site.webmanifest",
+    "headerDesktopPx": 38,
+    "headerMobilePx": 32,
+    "headerNarrowPx": 30
   },
   "assistant": {
-    "version": "FR-NAV1.29.4-HF3.10.4",
-    "mode": "INTENT_FIRST_ANSWER_FIRST_LOCAL_VERIFIED_THEN_CURRENT_WEB_RESEARCH",
+    "version": "FR-NAV1.29.5-HF3.10.5",
+    "mode": "INTENT_FIRST_ANSWER_FIRST_CONTEXTUAL_CLARIFICATION_LOCAL_VERIFIED_THEN_CURRENT_WEB_RESEARCH",
     "routeDataRelease": "FR-NAV1.29.2-HF3.10.2",
     "verifiedDirectoryBinding": "/data/discovery/manifest.json",
     "routeCount": 254,
@@ -69,11 +76,14 @@
         "count": 62
       }
     ],
-    "qualityRegression": "scripts/test-assistant-r1294.js",
+    "qualityRegression": "scripts/test-assistant-r1295.js",
     "highValueIntentRules": 22,
     "researchEndpointRelease": "FR-NAV1.29.3-HF3.10.3",
     "spanishIntentRegressionCases": 15,
-    "multilingualIntentRouting": "ENGLISH_AND_SPANISH_HIGH_VALUE_TASKS"
+    "multilingualIntentRouting": "ENGLISH_AND_SPANISH_HIGH_VALUE_TASKS",
+    "additionalIntentRules": 12,
+    "additionalEnglishRegressionCases": 12,
+    "additionalSpanishRegressionCases": 7
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
