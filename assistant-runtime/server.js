@@ -4,7 +4,7 @@ const dns=require('node:dns');
 const net=require('node:net');
 const {URL}=require('node:url');
 const PORT=Number(process.env.PORT||10000);
-const RELEASE='FR-NAV1.30.1-HF3.11.1';
+const RELEASE='FR-NAV1.30.2-HF3.11.2';
 const ORIGINS=new Set(['https://franklinnavigator.com','https://www.franklinnavigator.com','https://franklin-navigator.onrender.com']);
 const BODY_LIMIT=32*1024,rate=new Map(),VERIFIED_AT='2026-09-14';
 const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||'').trim();
@@ -109,6 +109,18 @@ async function llmAnswer(q,language,history,context,sources){
   }catch{return''}finally{clearTimeout(timer)}
 }
 async function research(q){const official=officialSeeds(q),combined=[],seen=new Set();const add=list=>{for(const r of list||[])if(r.url&&!seen.has(r.url)){seen.add(r.url);combined.push(r)}};add(official);add(await searchWeb(q));if(!combined.length)return{answer:'',sources:[],confidence:'low'};const enriched=await enrich(combined,q),syn=synthesize(enriched,q);return{answer:cleanAnswer(syn.answer),sources:enriched.slice(0,5).map(x=>({title:x.title,url:x.url,snippet:text(x.best).slice(0,360),official:sourceRank(x.url)>=35,liveRead:Boolean(x.liveRead),verifiedAt:x.verifiedAt||null})),confidence:syn.confidence,usedVerifiedSnapshot:enriched.some(x=>x.origin==='official'&&!x.liveRead&&x.snapshot)}}
+function selfTest(){
+  const roof=knownAnswer('Do I need a permit for my roof?','en');
+  const hall=knownAnswer('What time is City Hall open?','en');
+  const school=knownAnswer('Which school is this address zoned for?','en');
+  if(!/permit/i.test(roof)||!/615-794-7012/.test(roof))throw Error('selftest_roof_permit');
+  if(!/7:30/.test(hall)||!/5:00/.test(hall))throw Error('selftest_city_hours');
+  if(!/address/i.test(school))throw Error('selftest_school_zone');
+  if(askedForSource('Do I need a permit?'))throw Error('selftest_source_gate');
+  if(!askedForSource('What is your source for that?'))throw Error('selftest_source_request');
+  return true;
+}
+selfTest();
 const server=http.createServer(async(req,res)=>{try{
   const u=new URL(req.url,'http://localhost');
   if(req.method==='OPTIONS'){allow(req,res);res.statusCode=204;return res.end()}
