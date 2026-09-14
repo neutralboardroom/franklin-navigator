@@ -1,0 +1,5 @@
+/* FR-NAV1.29.5-HF3.10.5 — supplied Franklin Navigator mark sizing */
+header .brand img{object-fit:contain;object-position:center;display:block}
+@media(min-width:901px){header .brand img{width:38px!important;height:38px!important;flex:0 0 38px!important}}
+@media(max-width:900px){header .wrap.top>a.brand img{width:32px!important;height:32px!important;flex:0 0 32px!important}}
+@media(max-width:390px){header .wrap.top>a.brand img{width:30px!important;height:30px!important;flex:0 0 30px!important}}
