@@ -116,16 +116,13 @@ function sourceRowsFromSeeds(q){
 async function verifyLlm(){
   llmState.lastCheckAt=now();llmState.verified=false;llmState.error=null;
   if(!OPENAI_API_KEY){llmState.error='NOT_CONFIGURED';return false}
-  const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),12000);
   try{
-    const r=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:'Bearer '+OPENAI_API_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:OPENAI_MODEL,instructions:'Return a short plain-text health acknowledgement.',input:'Franklin Assistant runtime health check.',max_output_tokens:32}),signal:ctl.signal});
-    if(!r.ok){llmState.error='OPENAI_HTTP_'+r.status;console.error(JSON.stringify({event:'franklin_llm_verification_failed',release:RELEASE,model:OPENAI_MODEL,status:r.status,at:now()}));return false}
-    const out=cleanAnswer(extractOpenAIText(await r.json()));
-    if(!out){llmState.error='EMPTY_RESPONSE';console.error(JSON.stringify({event:'franklin_llm_verification_failed',release:RELEASE,model:OPENAI_MODEL,status:'EMPTY_RESPONSE',at:now()}));return false}
-    llmState.verified=true;llmState.error=null;console.log(JSON.stringify({event:'franklin_llm_verified',release:RELEASE,model:OPENAI_MODEL,at:now()}));return true
-  }catch(e){llmState.error=e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED';console.error(JSON.stringify({event:'franklin_llm_verification_failed',release:RELEASE,model:OPENAI_MODEL,status:llmState.error,at:now()}));return false}finally{clearTimeout(timer)}
+    const q='Do I need a permit for my roof?',context=knownAnswer(q,'en');
+    const out=await llmAnswer(q,'en',[],context,sourceRowsFromSeeds(q));
+    if(!out||!/(permit|roof)/i.test(out)){llmState.error='FRANKLIN_SMOKE_FAILED';console.error(JSON.stringify({event:'franklin_llm_verification_failed',release:RELEASE,model:OPENAI_MODEL,status:llmState.error,at:now()}));return false}
+    llmState.verified=true;llmState.error=null;console.log(JSON.stringify({event:'franklin_llm_verified',release:RELEASE,model:OPENAI_MODEL,smoke:'ROOF_PERMIT_GROUNDED_DIRECT_ANSWER',at:now()}));return true
+  }catch(e){llmState.error=e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED';console.error(JSON.stringify({event:'franklin_llm_verification_failed',release:RELEASE,model:OPENAI_MODEL,status:llmState.error,at:now()}));return false}
 }
-async function research(q){const official=officialSeeds(q),combined=[],seen=new Set();const add=list=>{for(const r of list||[])if(r.url&&!seen.has(r.url)){seen.add(r.url);combined.push(r)}};add(official);add(await searchWeb(q));if(!combined.length)return{answer:'',sources:[],confidence:'low'};const enriched=await enrich(combined,q),syn=synthesize(enriched,q);return{answer:cleanAnswer(syn.answer),sources:enriched.slice(0,5).map(x=>({title:x.title,url:x.url,snippet:text(x.best).slice(0,360),official:sourceRank(x.url)>=35,liveRead:Boolean(x.liveRead),verifiedAt:x.verifiedAt||null})),confidence:syn.confidence,usedVerifiedSnapshot:enriched.some(x=>x.origin==='official'&&!x.liveRead&&x.snapshot)}}
 function selfTest(){
   const roof=knownAnswer('Do I need a permit for my roof?','en');
   const hall=knownAnswer('What time is City Hall open?','en');
