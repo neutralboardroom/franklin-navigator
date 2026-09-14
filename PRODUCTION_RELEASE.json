@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.0-HF3.11.0",
+  "release": "FR-NAV1.30.1-HF3.11.1",
   "date": "2026-09-14",
-  "base": "FR-NAV1.29.9-HF3.10.9",
+  "base": "FR-NAV1.30.0-HF3.11.0",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "Launch-day answer-only simplification for Franklin Assistant. The Assistant now answers the question in the conversation and suppresses route cards, navigation prompts, profile cards, optional next-step blocks, repeated privacy text, and redirect-oriented failure recovery. Local profile data may be used internally when the user explicitly asks to find/contact a provider, but the response is plain conversational text. Current-information checks replace generic filler rather than stacking another answer. Follow-up context, reading-first scrolling, Spanish, attachments, voice, safety, local data, 19,103 profiles, 254 route records, logo and loader fail-safes are preserved.",
+  "scope": "Launch-day thorough Franklin Assistant correction. The Assistant now uses one backend-first answer path for ordinary questions instead of composing route cards, guide recommendations, or layered site-navigation output. It returns one direct conversational answer in the chat, preserves multi-turn context, uses verified Franklin/public-source research behind the scenes, and uses the local 19,103-profile directory only when the user explicitly asks to find or contact a provider. The runtime includes an optional OpenAI Responses API path when an OPENAI_API_KEY is configured, but safely falls back to source-backed deterministic answers when no external LLM key is present. Common launch intents such as roof/building permits, City office hours, utility billing, sanitation and school-zone questions have concise direct fallbacks. Safety, Spanish, attachments, voice, reading-first scrolling, logo/loader fail-safes and all 254 route records are preserved.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -24,8 +24,8 @@
     "corruptRasterReplaced": true
   },
   "assistant": {
-    "version": "FR-NAV1.30.0-HF3.11.0",
-    "mode": "ANSWER_ONLY_IN_PLATFORM_CHAT",
+    "version": "FR-NAV1.30.1-HF3.11.1",
+    "mode": "BACKEND_FIRST_ONE_ANSWER_CHAT",
     "routeDataRelease": "FR-NAV1.29.2-HF3.10.2",
     "verifiedDirectoryBinding": "/data/discovery/manifest.json",
     "routeCount": 254,
@@ -78,7 +78,7 @@
         "count": 62
       }
     ],
-    "qualityRegression": "answer-only launch smoke: permit, follow-up, find provider, website follow-up, current-info replacement, no route/profile cards",
+    "qualityRegression": "runtime syntax gate; launch intent direct-answer fallbacks; backend-first chat; provider plain-text follow-up; source-link gating; no route/profile cards",
     "highValueIntentRules": 22,
     "researchEndpointRelease": "FR-NAV1.29.3-HF3.10.3",
     "spanishIntentRegressionCases": 15,
@@ -94,12 +94,12 @@
     "fullScreenControl": true,
     "legacyR27ModalSuperseded": true,
     "stuckLoadingRaceFixed": true,
-    "canonicalController": "/assets/franklin-assistant-r1300.js",
+    "canonicalController": "/assets/franklin-assistant-r1301.js",
     "chatStyles": "/assets/franklin-assistant-chat-r1298.css",
     "contextualFollowUps": "SHORT_OR_PRONOUN_FOLLOWUPS_REUSE_CURRENT_PAGE_CONTEXT_WITHOUT_PERSISTENCE",
     "failureFallback": "VISIBLE_NON_STUCK_ERROR_WITH_FRANKLIN_HELP_LINKS",
     "loaderFailureFallback": "VISIBLE_CHAT_STYLE_RETRY_PANEL_WITH_LEGACY_POPUP_SUPPRESSED",
-    "productionPromotionFrom": "FR-NAV1.29.9-HF3.10.9",
+    "productionPromotionFrom": "FR-NAV1.30.0-HF3.11.0",
     "readingFirstScroll": true,
     "composerFocusAfterAnswer": false,
     "respectUserScroll": true,
@@ -110,8 +110,15 @@
     "genericFallback": "CURRENT_PUBLIC_FRANKLIN_WEB_RESEARCH_BEFORE_DEAD_END",
     "repeatedPerAnswerPrivacyBlock": false,
     "profileCards": false,
-    "responsePolicy": "ANSWER_THE_QUESTION_ONLY",
-    "failureLinks": false
+    "responsePolicy": "ONE_DIRECT_ANSWER_ONLY",
+    "failureLinks": false,
+    "answerRuntime": "https://franklin-navigator-assistant.onrender.com/api/answer",
+    "runtimeRelease": "FR-NAV1.30.1-HF3.11.1",
+    "runtimeLlmOptional": true,
+    "runtimeLlmConfigured": false,
+    "profileUse": "INTERNAL_PLAIN_TEXT_ONLY_ON_EXPLICIT_FIND_OR_CONTACT_INTENT",
+    "sourceLinks": "ONLY_WHEN_USER_EXPLICITLY_ASKS_FOR_SOURCE_LINK_OR_WEBSITE",
+    "followUpContext": "LAST_8_CHAT_MESSAGES_PLUS_LOCAL_SERVICE_CONTEXT"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
