@@ -1,13 +1,13 @@
-/* FR-NAV1.29.7-HF3.10.7 canonical conversational Franklin Assistant + fail-safe logo/loader hardening */
+/* FR-NAV1.29.8-HF3.10.8 reading-first conversational Franklin Assistant + fail-safe logo/loader hardening */
 (()=>{'use strict';
 const loadCss=(href,key)=>{if(document.querySelector(`link[data-${key}]`))return;const l=document.createElement('link');l.rel='stylesheet';l.href=href;l.dataset[key.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]='1';document.head.append(l)};
 loadCss('/assets/hf3102-mobile.css?v=frnav1292','franklin-mobile-3102');
 loadCss('/assets/hf3103-mobile.css?v=frnav1293','franklin-mobile-3103');
 loadCss('/assets/hf3105-brand.css?v=frnav1295','franklin-brand-3105');
-loadCss('/assets/franklin-assistant-chat-r1296.css?v=frnav1296','franklin-assistant-chat-r1296');
+loadCss('/assets/franklin-assistant-chat-r1298.css?v=frnav1298','franklin-assistant-chat-r1298');
 if(!document.querySelector('script[data-franklin-established-positioning]')){const p=document.createElement('script');p.src='/assets/franklin-established-positioning.js?v=frnav1293';p.defer=true;p.dataset.franklinEstablishedPositioning='1';document.head.append(p)}
-const loadAssistantR1297=()=>{
-  if(!document.querySelector('[data-navigator-bot]')||document.querySelector('script[data-franklin-assistant-r1297]'))return;
+const loadAssistantR1298=()=>{
+  if(!document.querySelector('[data-navigator-bot]')||document.querySelector('script[data-franklin-assistant-r1298]'))return;
   const load=(src,key)=>new Promise((resolve,reject)=>{const old=document.querySelector(`script[data-${key}]`);if(old){if(old.dataset.loaded==='1')return resolve();old.addEventListener('load',resolve,{once:true});old.addEventListener('error',reject,{once:true});return}const s=document.createElement('script');s.src=src;s.defer=true;s.dataset[key.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]='1';s.addEventListener('load',()=>{s.dataset.loaded='1';resolve()},{once:true});s.addEventListener('error',reject,{once:true});document.head.append(s)});
   load('/assets/franklin-assistant-core.js?v=frnav1292','franklin-assistant-core')
     .then(()=>load('/assets/franklin-assistant-r1293-core.js?v=frnav1293','franklin-assistant-r1293-core'))
@@ -16,8 +16,8 @@ const loadAssistantR1297=()=>{
     .then(()=>load('/assets/franklin-assistant-r1296-core.js?v=frnav1296','franklin-assistant-r1296-core'))
     .then(()=>load('/assets/franklin-assistant-r1293-files.js?v=frnav1293','franklin-assistant-r1293-files'))
     .then(()=>load('/assets/franklin-assistant-r1293-file-analysis.js?v=frnav1293','franklin-assistant-r1293-file-analysis'))
-    .then(()=>load('/assets/franklin-assistant-r1297.js?v=frnav1297','franklin-assistant-r1297'))
-    .then(()=>{if(!window.FranklinAssistantR1296)throw new Error('Canonical Assistant did not initialize')})
+    .then(()=>load('/assets/franklin-assistant-r1298.js?v=frnav1298','franklin-assistant-r1298'))
+    .then(()=>{if(!window.FranklinAssistantR1298)throw new Error('Canonical Assistant did not initialize')})
     .catch(err=>installAssistantFailureFallback(err));
 };
 
@@ -42,13 +42,13 @@ const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMCo
 ready(()=>{
   const body=document.body;
   if(!body)return;
-  loadAssistantR1297();
+  loadAssistantR1298();
   // R1297 fail-safe Franklin mark + favicon/install icon binding. The header uses the valid vector asset directly; if the request ever fails, the same mark is supplied as an inline data URI so a broken-image glyph is never shown.
   const markFallback="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22112%22%20height%3D%22112%22%20viewBox%3D%220%200%20112%20112%22%20role%3D%22img%22%20aria-label%3D%22Franklin%20Navigator%22%3E%3Crect%20width%3D%22112%22%20height%3D%22112%22%20rx%3D%2227%22%20fill%3D%22%2303454b%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%225%22%20width%3D%22102%22%20height%3D%22102%22%20rx%3D%2223%22%20fill%3D%22none%22%20stroke%3D%22%23d8e7e5%22%20stroke-opacity%3D%22.3%22%2F%3E%3Cpath%20d%3D%22M30%2029h54v15H48v15h30v15H48v27H30z%22%20fill%3D%22%23fff%22%2F%3E%3Cpath%20d%3D%22m82%2055%2020%2010.5L82%2076l5.9-10.5z%22%20fill%3D%22%23c5943a%22%2F%3E%3C%2Fsvg%3E";
-  document.querySelectorAll('header .brand img').forEach(img=>{img.alt='Franklin Navigator';img.width=38;img.height=38;img.onerror=()=>{if(img.dataset.franklinMarkFallback==='1')return;img.dataset.franklinMarkFallback='1';img.src=markFallback};img.src='/assets/franklin-mark.svg?v=frnav1297'});
+  document.querySelectorAll('header .brand img').forEach(img=>{img.alt='Franklin Navigator';img.width=38;img.height=38;img.onerror=()=>{if(img.dataset.franklinMarkFallback==='1')return;img.dataset.franklinMarkFallback='1';img.src=markFallback};img.src='/assets/franklin-mark.svg?v=frnav1298'});
   const icon=(rel,href,sizes,type)=>{let l=document.querySelector(`link[rel="${rel}"]`);if(!l){l=document.createElement('link');l.rel=rel;document.head.append(l)}l.href=href;if(sizes)l.sizes=sizes;if(type)l.type=type};
-  icon('icon','/assets/favicon.svg?v=frnav1297','any','image/svg+xml');icon('shortcut icon','/favicon.ico?v=frnav1297');icon('apple-touch-icon','/assets/franklin-icon-192.png?v=frnav1297','192x192','image/png');
-  let mf=document.querySelector('link[rel="manifest"]');if(!mf){mf=document.createElement('link');mf.rel='manifest';document.head.append(mf)}mf.href='/site.webmanifest?v=frnav1297';
+  icon('icon','/assets/favicon.svg?v=frnav1298','any','image/svg+xml');icon('shortcut icon','/favicon.ico?v=frnav1298');icon('apple-touch-icon','/assets/franklin-icon-192.png?v=frnav1298','192x192','image/png');
+  let mf=document.querySelector('link[rel="manifest"]');if(!mf){mf=document.createElement('link');mf.rel='manifest';document.head.append(mf)}mf.href='/site.webmanifest?v=frnav1298';
 
   // Homepage: suppress an empty saved-checklist box without touching real saved content.
   if(body.classList.contains('hf36-home')){
