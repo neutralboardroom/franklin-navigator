@@ -1,25 +1,28 @@
-/* FR-NAV1.29.4-HF3.10.4 progressive simplification + sitewide mobile/positioning/Assistant loader */
+/* FR-NAV1.29.5-HF3.10.5 progressive simplification + sitewide mobile/positioning/Assistant loader */
 (()=>{'use strict';
 const loadCss=(href,key)=>{if(document.querySelector(`link[data-${key}]`))return;const l=document.createElement('link');l.rel='stylesheet';l.href=href;l.dataset[key.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]='1';document.head.append(l)};
 loadCss('/assets/hf3102-mobile.css?v=frnav1292','franklin-mobile-3102');
 loadCss('/assets/hf3103-mobile.css?v=frnav1293','franklin-mobile-3103');
+loadCss('/assets/hf3105-brand.css?v=frnav1295','franklin-brand-3105');
 if(!document.querySelector('script[data-franklin-established-positioning]')){const p=document.createElement('script');p.src='/assets/franklin-established-positioning.js?v=frnav1293';p.defer=true;p.dataset.franklinEstablishedPositioning='1';document.head.append(p)}
-const loadAssistantR1294=()=>{
+const loadAssistantR1295=()=>{
   if(!document.querySelector('[data-navigator-bot]')||document.querySelector('script[data-franklin-assistant-r1293]'))return;
   const load=(src,key)=>new Promise((resolve,reject)=>{const old=document.querySelector(`script[data-${key}]`);if(old){if(old.dataset.loaded==='1')return resolve();old.addEventListener('load',resolve,{once:true});old.addEventListener('error',reject,{once:true});return}const s=document.createElement('script');s.src=src;s.defer=true;s.dataset[key.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]='1';s.addEventListener('load',()=>{s.dataset.loaded='1';resolve()},{once:true});s.addEventListener('error',reject,{once:true});document.head.append(s)});
   load('/assets/franklin-assistant-core.js?v=frnav1292','franklin-assistant-core')
     .then(()=>load('/assets/franklin-assistant-r1293-core.js?v=frnav1293','franklin-assistant-r1293-core'))
     .then(()=>load('/assets/franklin-assistant-r1294-core.js?v=frnav1294','franklin-assistant-r1294-core'))
+    .then(()=>load('/assets/franklin-assistant-r1295-core.js?v=frnav1295','franklin-assistant-r1295-core'))
+    .then(()=>{window.FranklinAssistantR1294Core=window.FranklinAssistantR1295Core})
     .then(()=>load('/assets/franklin-assistant-r1293-files.js?v=frnav1293','franklin-assistant-r1293-files'))
     .then(()=>load('/assets/franklin-assistant-r1293-file-analysis.js?v=frnav1293','franklin-assistant-r1293-file-analysis'))
-    .then(()=>load('/assets/franklin-assistant-r1294.js?v=frnav1294','franklin-assistant-r1294'))
+    .then(()=>load('/assets/franklin-assistant-r1294.js?v=frnav1295','franklin-assistant-r1294'))
     .catch(()=>{});
 };
 const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn,{once:true}):fn();
 ready(()=>{
   const body=document.body;
   if(!body)return;
-  loadAssistantR1294();
+  loadAssistantR1295();
   // Homepage: suppress an empty saved-checklist box without touching real saved content.
   if(body.classList.contains('hf36-home')){
     const clean=()=>document.querySelectorAll('.navigator-bot .empty-state,.navigator-bot [class*="empty"]').forEach(n=>{if(/No detailed Assistant checklists saved yet|No Assistant/i.test(n.textContent||''))n.dataset.hf36HomeEmpty='1'});
