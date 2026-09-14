@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.2-HF3.11.2",
+  "release": "FR-NAV1.30.3-HF3.11.3",
   "date": "2026-09-14",
-  "base": "FR-NAV1.30.1-HF3.11.1",
+  "base": "FR-NAV1.30.2-HF3.11.2",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "Launch-day thorough Franklin Assistant simplification. Franklin Assistant is now presented and operated as one direct-answer conversation: ordinary questions go to the dedicated answer runtime first; profile data is used only for explicit provider/contact requests; route cards, guide stacks, saved-next-step prompts, business/membership detours and redirect-style failure recovery are removed from the Assistant entry experience. The Assistant page itself is reduced to the chat, a few example questions, and privacy/safety guidance. Home-page copy and example prompts now describe direct answers instead of navigation. Legacy R38 follow-through is no longer loaded on the home or Assistant entry pages. Runtime self-tests enforce core launch answers and source-link gating. All 19,103 profiles, 254 route records, Spanish, attachments, voice, safety, reading-first scrolling and logo/loader safeguards remain preserved.",
+  "scope": "Launch-day grounded-OpenAI Franklin Assistant successor. The existing direct-answer chat remains the resident experience, but substantive questions now use the configured OpenAI Responses API path as the primary language layer while preserving Franklin source grounding, deterministic/source-backed fallback, official-first current-web research, direct-answer-only UX, reading-first scrolling, short current-tab follow-up context, explicit provider/contact search behavior, and non-AI safety fallbacks. The runtime now verifies the configured OpenAI key/model through an actual grounded Franklin roof-permit smoke request at boot; the browser sends the resident's natural question plus a separate contextual grounding query; client/server timeouts are aligned for the live AI path; and English/Spanish Assistant and privacy pages accurately disclose server/OpenAI processing while preserving device-local attachment handling. All 19,103 profiles, 254 Assistant route records, membership, safety, Spanish, voice, attachments, logo/loader hardening and prior no-loss protections remain preserved.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -24,8 +24,8 @@
     "corruptRasterReplaced": true
   },
   "assistant": {
-    "version": "FR-NAV1.30.2-HF3.11.2",
-    "mode": "ONE_DIRECT_ANSWER_CHAT",
+    "version": "FR-NAV1.30.3-HF3.11.3",
+    "mode": "ONE_DIRECT_ANSWER_CHAT_GROUNDED_LLM_PRIMARY",
     "routeDataRelease": "FR-NAV1.29.2-HF3.10.2",
     "verifiedDirectoryBinding": "/data/discovery/manifest.json",
     "routeCount": 254,
@@ -34,7 +34,7 @@
     "researchEndpoint": "https://franklin-navigator-assistant.onrender.com/api/research",
     "researchFallback": "OFFICIAL_FIRST_WITH_VERIFIED_SNAPSHOT_FAILSAFE_THEN_RELEVANCE_FILTERED_PUBLIC_WEB",
     "researchVerifiedSnapshotDate": "2026-09-13",
-    "rawQuestionNetworkSubmission": "ONLY_WHEN_CURRENT_WEB_RESEARCH_IS_NEEDED",
+    "rawQuestionNetworkSubmission": "ORDINARY_ASSISTANT_QUESTIONS_AND_SHORT_CURRENT_TAB_CONTEXT_GO_TO_THE_FRANKLIN_ASSISTANT_RUNTIME_AND_MAY_BE_SENT_TO_OPENAI_FOR_ANSWER_GENERATION; PUBLIC_WEB_SEARCH_ONLY_WHEN_CURRENT_RESEARCH_IS_NEEDED",
     "attachmentNetworkSubmission": false,
     "attachmentProcessing": "ON_DEVICE_WHEN_POSSIBLE",
     "supportedAttachments": [
@@ -78,7 +78,7 @@
         "count": 62
       }
     ],
-    "qualityRegression": "runtime node syntax + runtime self-tests + direct-answer launch fallbacks + source-link gating + no legacy R38 entry binding + simplified assistant page",
+    "qualityRegression": "runtime node syntax + runtime self-tests + boot grounded roof-permit OpenAI smoke + browser-controller syntax/static contract checks + direct-answer/fallback/privacy/no-loss checks",
     "highValueIntentRules": 22,
     "researchEndpointRelease": "FR-NAV1.29.3-HF3.10.3",
     "spanishIntentRegressionCases": 15,
@@ -94,12 +94,12 @@
     "fullScreenControl": true,
     "legacyR27ModalSuperseded": true,
     "stuckLoadingRaceFixed": true,
-    "canonicalController": "/assets/franklin-assistant-r1302.js",
+    "canonicalController": "/assets/franklin-assistant-r1303.js",
     "chatStyles": "/assets/franklin-assistant-chat-r1298.css",
     "contextualFollowUps": "SHORT_OR_PRONOUN_FOLLOWUPS_REUSE_CURRENT_PAGE_CONTEXT_WITHOUT_PERSISTENCE",
     "failureFallback": "VISIBLE_NON_STUCK_ERROR_WITH_FRANKLIN_HELP_LINKS",
     "loaderFailureFallback": "VISIBLE_CHAT_STYLE_RETRY_PANEL_WITH_LEGACY_POPUP_SUPPRESSED",
-    "productionPromotionFrom": "FR-NAV1.30.1-HF3.11.1",
+    "productionPromotionFrom": "FR-NAV1.30.2-HF3.11.2",
     "readingFirstScroll": true,
     "composerFocusAfterAnswer": false,
     "respectUserScroll": true,
@@ -113,18 +113,24 @@
     "responsePolicy": "ONE_DIRECT_ANSWER_ONLY",
     "failureLinks": false,
     "answerRuntime": "https://franklin-navigator-assistant.onrender.com/api/answer",
-    "runtimeRelease": "FR-NAV1.30.2-HF3.11.2",
-    "runtimeLlmOptional": true,
-    "runtimeLlmConfigured": false,
+    "runtimeRelease": "FR-NAV1.30.3-HF3.11.3",
+    "runtimeLlmOptional": false,
+    "runtimeLlmConfigured": true,
     "profileUse": "INTERNAL_PLAIN_TEXT_ONLY_ON_EXPLICIT_FIND_OR_CONTACT_INTENT",
     "sourceLinks": "ONLY_WHEN_USER_EXPLICITLY_ASKS_FOR_SOURCE_LINK_OR_WEBSITE",
-    "followUpContext": "LAST_8_CHAT_MESSAGES_PLUS_LOCAL_SERVICE_CONTEXT",
+    "followUpContext": "RAW_CURRENT_QUESTION_PLUS_SEPARATE_CONTEXTUAL_GROUNDING_QUERY_AND_LAST_8_CHAT_MESSAGES",
     "assistantPage": "SIMPLIFIED_CHAT_ONLY_ENTRY",
     "homeEntryCopy": "DIRECT_ANSWER_POSITIONING",
     "legacyR38FollowthroughLoadedOnAssistantEntry": false,
     "legacyR38FollowthroughLoadedOnHomeEntry": false,
     "failureRecovery": "RETRY_ONLY_NO_REDIRECT_BUTTONS",
-    "runtimeSelfTests": true
+    "runtimeSelfTests": true,
+    "runtimeLlmVerified": true,
+    "runtimeLlmModel": "gpt-5.6-luna",
+    "runtimeLlmVerification": "BOOT_GROUNDED_ROOF_PERMIT_SMOKE_THROUGH_OPENAI_RESPONSES_API",
+    "frontendRuntimeTimeoutMs": 24000,
+    "serverRequestTimeoutMs": 25000,
+    "privacyDisclosure": "ENGLISH_AND_SPANISH_HOME_ASSISTANT_AND_PRIVACY_PAGES_DISCLOSE_SERVER_OPENAI_PROCESSING; RAW_CHAT_NOT_SAVED_TO_MY_FRANKLIN; ATTACHMENTS_DEVICE_LOCAL_IN_CURRENT_FLOW"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -133,7 +139,11 @@
     "smarterJustice": "NOT_USED_NO_LEGAL_DONOR_REVIEW",
     "li35": "DEFER_WITH_CAUSE",
     "li35Reason": "SLI-FRANKLIN-HANDOFF-20260912-035 is a qualified research handoff awaiting SCC gate/consumer acceptance; all 510 activity records remain blocked for direct display absent point-of-use currentness. Import is not required for this Assistant-quality successor.",
-    "pf15_23Reason": "FR-PF-PLATFORM-15.23 is a tested and Library-persisted qualified candidate pending external acceptance; current live profile facts remain sufficient for this Assistant-quality slice and same-release import would add unrelated canonical-data risk."
+    "pf15_23Reason": "FR-PF-PLATFORM-15.23 is a tested and Library-persisted qualified candidate pending external acceptance; current live profile facts remain sufficient for this Assistant-quality slice and same-release import would add unrelated canonical-data risk.",
+    "pf15_26": "DEFER_WITH_CAUSE_PENDING_ACCEPTED_CONSUMER_POINTER",
+    "pf15_26Reason": "FR-PF-PLATFORM-15.26 is present as a qualified Profile Factory candidate, but this Local Platform release does not self-accept or import a newer profile handoff without the required accepted coordination/consumer pointer.",
+    "li38": "DEFER_WITH_CAUSE_PENDING_ACCEPTED_CONSUMER_POINTER_AND_POINT_OF_USE_CURRENTNESS",
+    "li38Reason": "Franklin Local Investigator v38 is present as qualified research evidence, but dynamic publication requires accepted Local consumer routing plus point-of-use currentness; no unaccepted dynamic records are imported in this Assistant reliability release."
   },
   "preserved": [
     "FR-NAV1.29.0-HF3.10 real-customer membership and fulfillment path",
