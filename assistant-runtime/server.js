@@ -4,9 +4,11 @@ const dns=require('node:dns');
 const net=require('node:net');
 const {URL}=require('node:url');
 const PORT=Number(process.env.PORT||10000);
-const RELEASE='FR-NAV1.29.3-HF3.10.3';
+const RELEASE='FR-NAV1.30.1-HF3.11.1';
 const ORIGINS=new Set(['https://franklinnavigator.com','https://www.franklinnavigator.com','https://franklin-navigator.onrender.com']);
-const BODY_LIMIT=16*1024,rate=new Map(),VERIFIED_AT='2026-09-13';
+const BODY_LIMIT=32*1024,rate=new Map(),VERIFIED_AT='2026-09-14';
+const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||'').trim();
+const OPENAI_MODEL=String(process.env.OPENAI_MODEL||'gpt-5.6-luna').trim();
 const now=()=>new Date().toISOString();
 const text=v=>String(v||'').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s+/g,' ').trim();
 const norm=v=>text(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9\s'&.-]/g,' ').replace(/\s+/g,' ').trim();
@@ -27,7 +29,7 @@ function stripPage(html){return unescapeHtml(String(html||'').replace(/<script[\
 const OFFICIAL=[
  {re:/\b(city hall|city office|city offices|city government|contact|address|administration|mayor|boma)\b/i,title:'City of Franklin — Contact Us',url:'https://www.franklintn.gov/services/contact-us',snapshot:'Franklin City Hall functions are operating from interim locations: Administration is at 740 Columbia Avenue; Community Development is at 120 9th Ave South; Billing & Licensing and Technology are at 204 9th Ave South; Fire Administration is at 507 New Highway 96 West. The mailing address remains 109 3rd Ave South, Franklin, TN 37064, and the City main phone is 615-791-3217. The City contact page does not publish one universal all-department City Hall hours schedule.'},
  {re:/\b(city hall|billing|utility billing|water service|payment|pay|hours|open)\b/i,title:'City of Franklin — Water FAQ / Utility Billing',url:'https://www.franklintn.gov/government/departments-k-z/water-management-department/water-faq',snapshot:'The City lists Utility Billing hours as 8:00 AM to 5:00 PM Monday through Friday, except holidays, at 615-794-4572. Billing & Licensing is located at 204 9th Ave South.'},
- {re:/\b(permit|permits|building|inspection|inspections|zoning|construction|remodel|fence|deck)\b/i,title:'City of Franklin — Development & Building Services',url:'https://www.franklintn.gov/services/development-building-services-1813',snapshot:'Franklin development, building, planning and permitting functions are handled through the City Community Development offices at 120 9th Ave South. Requirements depend on the property and project, so permit status should be confirmed with the City before work begins.'},
+ {re:/\b(permit|permits|building|inspection|inspections|zoning|construction|remodel|renovation|repair|roof|roofing|fence|deck)\b/i,title:'City of Franklin — Residential & Commercial Construction',url:'https://www.franklintn.gov/government/departments-a-j/building-and-neighborhood-services/department-operations/department-information/residential-and-commercial-construction',snapshot:'The City of Franklin says a building permit is required for all new construction, additions, renovations, decks, pools and most repair work. Building & Neighborhood Services can confirm project-specific requirements at 615-794-7012. Residential permit applications are generally processed in 7 working days or less when complete. Separate electrical, plumbing, mechanical or low-voltage permits may also be required when that work is part of the project.'},
  {re:/\b(trash|garbage|recycling|recycle|brush|bulk|yard waste|sanitation|glass|cardboard)\b/i,title:'City of Franklin — Sanitation and Environmental Services',url:'https://www.franklintn.gov/government/departments-k-z/sanitation-and-environmental-services',snapshot:'Franklin Sanitation and Environmental Services handles municipal solid waste, curbside recycling, yard waste, bulk waste and brush collection within Franklin city limits. The office lists hours Monday through Friday, 7:00 AM to 4:00 PM, at 417 Century Court, phone 615-794-1516. Current glass and cardboard drop-off operating hours are Monday through Thursday 6:00 AM to 4:00 PM and the first Saturday of each month 8:00 AM to noon.'},
  {re:/\b(water|sewer|wastewater|leak|utility|utilities)\b/i,title:'City of Franklin — Water Management',url:'https://www.franklintn.gov/government/departments-k-z/water-management-department/water-faq',snapshot:'For Franklin water service and repair, the City lists 615-794-4554 from 7:00 AM to 4:00 PM except holidays. Utility Billing for starting or stopping water service is 615-794-4572, 8:00 AM to 5:00 PM Monday through Friday except holidays.'},
  {re:/\b(meeting|meetings|agenda|calendar|event|events|tonight|today|tomorrow|weekend|boma|commission)\b/i,title:'City of Franklin — Calendar',url:'https://www.franklintn.gov/our-city/calendar',snapshot:'The City of Franklin maintains an official calendar for current meetings and public events. Because dates and times change, open the linked official calendar to confirm the current item before going.'},
@@ -48,6 +50,87 @@ function sentences(s){return text(s).split(/(?<=[.!?])\s+/).map(x=>x.trim()).fil
 function scoreSentence(s,q,url){const st=norm(s),ts=terms(q);let n=sourceRank(url);for(const t of ts)if(st.includes(t))n+=7;if(/\b(when|date|today|tonight|tomorrow|weekend|hours|open|schedule)\b/i.test(q)&&/\b(am|pm|monday|tuesday|wednesday|thursday|friday|saturday|sunday|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|\d{1,2}[:/]\d{1,2})\b/i.test(s))n+=18;if(/\b(cost|price|fee|how much)\b/i.test(q)&&/\$\s?\d|fee|cost|price/i.test(s))n+=15;if(/\b(phone|call|number)\b/i.test(q)&&/(\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}/.test(s))n+=18;if(/\b(address|where|location)\b/i.test(q)&&/\b(st|street|rd|road|ave|avenue|dr|drive|blvd|boulevard|ln|lane|pkwy|parkway|franklin|tn)\b/i.test(s))n+=10;return n}
 async function enrich(rows,q){const out=[];for(const r of rows.slice(0,7)){let page='',liveRead=false;try{page=stripPage(await get(r.url,6500,1000000));liveRead=Boolean(page)}catch{}const base=[];if(r.snippet)base.push(...sentences(r.snippet));if(page)base.push(...sentences(page).slice(0,180));if(!base.length&&r.snapshot)base.push(...sentences(r.snapshot));const candidates=base.map(s=>({s,score:scoreSentence(s,q,r.url)})).sort((a,b)=>b.score-a.score);const best=candidates[0]?.s||'';if(best)out.push({...r,best,liveRead,verifiedAt:r.verifiedAt||null})}return out}
 function synthesize(rows,q){const pool=[];for(const r of rows)if(r.best)pool.push({s:r.best,url:r.url,title:r.title,score:scoreSentence(r.best,q,r.url)+(r.origin==='official'?10:0),liveRead:r.liveRead,verifiedAt:r.verifiedAt});pool.sort((a,b)=>b.score-a.score);const chosen=[],seen=new Set();for(const x of pool){const k=norm(x.s).slice(0,100);if(!k||seen.has(k))continue;seen.add(k);chosen.push(x);if(chosen.length===3)break}if(!chosen.length)return{answer:'',confidence:'low'};return{answer:chosen.map(x=>x.s).join(' '),confidence:chosen.some(x=>sourceRank(x.url)>=35)?'high':chosen.length>=2?'medium':'low'}}
-async function research(q){const official=officialSeeds(q),combined=[],seen=new Set();const add=list=>{for(const r of list||[])if(r.url&&!seen.has(r.url)){seen.add(r.url);combined.push(r)}};add(official);add(await searchWeb(q));if(!combined.length)return{answer:'',sources:[],confidence:'low'};const enriched=await enrich(combined,q),syn=synthesize(enriched,q);return{answer:syn.answer,sources:enriched.slice(0,5).map(x=>({title:x.title,url:x.url,snippet:text(x.best).slice(0,360),official:sourceRank(x.url)>=35,liveRead:Boolean(x.liveRead),verifiedAt:x.verifiedAt||null})),confidence:syn.confidence,usedVerifiedSnapshot:enriched.some(x=>x.origin==='official'&&!x.liveRead&&x.snapshot)}}
-const server=http.createServer(async(req,res)=>{try{const u=new URL(req.url,'http://localhost');if(req.method==='OPTIONS'){allow(req,res);res.statusCode=204;return res.end()}if(req.method==='GET'&&u.pathname==='/health')return json(req,res,200,{ok:true,release:RELEASE,mode:'OFFICIAL_FIRST_WITH_VERIFIED_SNAPSHOT_FAILSAFE',verifiedSnapshotDate:VERIFIED_AT,at:now()});if(req.method!=='POST'||u.pathname!=='/api/research')return json(req,res,404,{ok:false,error:'NOT_FOUND'});const o=String(req.headers.origin||'');if(o&&!ORIGINS.has(o))return json(req,res,403,{ok:false,error:'ORIGIN_NOT_ALLOWED'});if(!limited(clientKey(req)))return json(req,res,429,{ok:false,error:'RATE_LIMITED'});const b=await body(req),q=text(b.q).slice(0,320);if(q.length<3)return json(req,res,400,{ok:false,error:'QUESTION_REQUIRED'});const result=await research(q);return json(req,res,200,{ok:true,question:q,...result,researchedAt:now(),note:result.usedVerifiedSnapshot?`A current live read was attempted; where the official site could not be read automatically, Franklin Navigator used its latest official-source snapshot verified ${VERIFIED_AT} and linked the official source.`:'Current public sources were read for this answer. Confirm changing details at the linked source before acting.'})}catch(e){console.error(JSON.stringify({event:'assistant_runtime_error',message:String(e.message||e).slice(0,160),at:now()}));return json(req,res,Number(e.status||503),{ok:false,error:'RESEARCH_UNAVAILABLE',message:'Current web research could not be completed right now.'})}});
-server.requestTimeout=20000;server.headersTimeout=10000;server.listen(PORT,'0.0.0.0',()=>console.log(JSON.stringify({event:'franklin_assistant_runtime_listening',release:RELEASE,port:PORT,ready:true,at:now()})));
+function askedForSource(q){return /\b(source|sources|link|links|website|official page|where did you get|fuente|fuentes|enlace|sitio web|pagina oficial)\b/i.test(q)}
+function knownAnswer(q,language='en'){
+  const t=norm(q),es=String(language||'').toLowerCase().startsWith('es');
+  if(/^(hi|hello|hey|good morning|good afternoon|good evening|hola|buenos dias|buenas tardes|buenas noches)[!. ]*$/.test(t))return es?'Hola. ¿Qué le gustaría saber sobre Franklin?':'Hi. What would you like to know about Franklin?';
+  if(/\b(thank you|thanks|gracias)\b/.test(t)&&t.split(' ').length<8)return es?'Con gusto.':'You’re welcome.';
+  if(/\b(roof|roofing|techo|tejado)\b/.test(t)&&/\b(permit|permits|permiso|permisos)\b/.test(t)){
+    return es
+      ?'Para un reemplazo de techo o una reparación importante en Franklin, cuente con necesitar un permiso de construcción. La Ciudad indica que la mayoría de los trabajos de reparación requieren permiso. Para una reparación menor del mismo material, confirme el caso específico con Building & Neighborhood Services al 615-794-7012.'
+      :'For a roof replacement or substantial roof repair in Franklin, plan on needing a building permit. The City says most repair work requires a building permit. For a small in-kind repair, confirm the specific scope with Building & Neighborhood Services at 615-794-7012.';
+  }
+  if(/\b(permit|permits|permiso|permisos)\b/.test(t)&&/\b(home|house|residential|remodel|renovation|repair|deck|fence|casa|residencial|remodelacion|renovacion|reparacion|terraza|cerca)\b/.test(t)){
+    return es
+      ?'En Franklin, se requiere un permiso de construcción para construcción nueva, ampliaciones, renovaciones, terrazas, piscinas y la mayoría de las reparaciones. Building & Neighborhood Services puede confirmar el requisito de su proyecto al 615-794-7012.'
+      :'In Franklin, a building permit is required for new construction, additions, renovations, decks, pools and most repair work. Building & Neighborhood Services can confirm your exact project at 615-794-7012.';
+  }
+  if(/\b(city hall|city offices?|ayuntamiento|oficinas? de la ciudad)\b/.test(t)&&/\b(hours?|open|close|horario|abre|cierra)\b/.test(t)){
+    return es
+      ?'Franklin no tiene un solo horario universal de “City Hall” porque las oficinas municipales funcionan en varias ubicaciones. Building & Neighborhood Services abre de lunes a viernes de 7:30 a. m. a 5:00 p. m.; las solicitudes de permisos se aceptan hasta las 4:30 p. m. Si necesita otra oficina, dígame cuál.'
+      :'Franklin does not have one universal “City Hall” hours schedule because City offices operate from several locations. Building & Neighborhood Services is open Monday–Friday, 7:30 a.m.–5:00 p.m., with permit applications accepted until 4:30 p.m. If you mean another department, tell me which one.';
+  }
+  if(/\b(utility billing|water bill|water service|factura de agua|servicio de agua)\b/.test(t)&&/\b(hours?|open|horario|abre)\b/.test(t)){
+    return es?'Utility Billing de Franklin abre de lunes a viernes de 8:00 a. m. a 5:00 p. m., excepto días festivos. El teléfono es 615-794-4572.':'Franklin Utility Billing is open Monday–Friday, 8:00 a.m.–5:00 p.m., except holidays. The phone number is 615-794-4572.';
+  }
+  if(/\b(trash|garbage|recycling|sanitation|basura|reciclaje|saneamiento)\b/.test(t)&&/\b(hours?|open|horario|abre)\b/.test(t)){
+    return es?'Sanitation and Environmental Services de Franklin abre de lunes a viernes de 7:00 a. m. a 4:00 p. m. El teléfono es 615-794-1516.':'Franklin Sanitation and Environmental Services is open Monday–Friday, 7:00 a.m.–4:00 p.m. The phone number is 615-794-1516.';
+  }
+  if(/\b(which school|school zone|zoned school|que escuela|zona escolar|escuela asignada)\b/.test(t)){
+    return es?'Necesito la dirección exacta de la calle para decirle qué distrito o escuela corresponde, porque la asignación depende de la dirección.':'I need the exact street address to tell you the correct district or zoned school, because the assignment depends on the address.';
+  }
+  return '';
+}
+function cleanAnswer(v){
+  let x=text(v).replace(/\b(click|open|visit|go to) (the )?(link|page|guide|website)\b[^.?!]*[.?!]?/gi,'').replace(/\s+/g,' ').trim();
+  if(x.length>1400)x=x.slice(0,1397).replace(/\s+\S*$/,'')+'…';
+  return x;
+}
+function historyText(rows){
+  if(!Array.isArray(rows))return'';
+  return rows.slice(-8).map(x=>{const role=x&&x.role==='assistant'?'Assistant':'User',c=text(x?.content||x?.text||'').slice(0,700);return c?role+': '+c:''}).filter(Boolean).join('\n');
+}
+function extractOpenAIText(d){
+  if(typeof d?.output_text==='string'&&d.output_text.trim())return d.output_text.trim();
+  const parts=[];
+  for(const item of d?.output||[])for(const c of item?.content||[])if(c?.type==='output_text'&&c?.text)parts.push(c.text);
+  return parts.join('\n').trim();
+}
+async function llmAnswer(q,language,history,context,sources){
+  if(!OPENAI_API_KEY)return'';
+  const sourceLines=(sources||[]).slice(0,5).map((x,i)=>`${i+1}. ${x.title}: ${x.snippet||''} ${x.url}`).join('\n');
+  const instructions=`You are Franklin Assistant inside Franklin Navigator for Franklin, Tennessee. Answer ONLY the user's question. Be direct, useful, conversational and concise. Do not tell the user to navigate Franklin Navigator, open a guide, visit another page, or explore other features. Do not add unrelated next steps, marketing, profile cards, or generic offers to help. Ask one short clarifying question only when the answer genuinely depends on missing information. Use the supplied Franklin context and current-source excerpts when relevant. Do not invent facts. If a fact may have changed and the context is insufficient, say you could not verify it. Do not include links unless the user specifically asks for a source, link, website, or official page. For emergencies, tell the user to call 911; for suicide or mental-health crisis, call or text 988. Answer in ${String(language||'en').startsWith('es')?'Spanish':'English'}. Keep most answers to 1–5 short paragraphs.`;
+  const input=`${historyText(history)?'Conversation so far:\n'+historyText(history)+'\n\n':''}User question: ${q}\n\nFranklin context:\n${context||'No additional verified context was available.'}\n\nCurrent/source excerpts:\n${sourceLines||'None'}`;
+  const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),12000);
+  try{
+    const r=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:'Bearer '+OPENAI_API_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:OPENAI_MODEL,instructions,input,max_output_tokens:550}),signal:ctl.signal});
+    if(!r.ok)return'';
+    return cleanAnswer(extractOpenAIText(await r.json()));
+  }catch{return''}finally{clearTimeout(timer)}
+}
+async function research(q){const official=officialSeeds(q),combined=[],seen=new Set();const add=list=>{for(const r of list||[])if(r.url&&!seen.has(r.url)){seen.add(r.url);combined.push(r)}};add(official);add(await searchWeb(q));if(!combined.length)return{answer:'',sources:[],confidence:'low'};const enriched=await enrich(combined,q),syn=synthesize(enriched,q);return{answer:cleanAnswer(syn.answer),sources:enriched.slice(0,5).map(x=>({title:x.title,url:x.url,snippet:text(x.best).slice(0,360),official:sourceRank(x.url)>=35,liveRead:Boolean(x.liveRead),verifiedAt:x.verifiedAt||null})),confidence:syn.confidence,usedVerifiedSnapshot:enriched.some(x=>x.origin==='official'&&!x.liveRead&&x.snapshot)}}
+const server=http.createServer(async(req,res)=>{try{
+  const u=new URL(req.url,'http://localhost');
+  if(req.method==='OPTIONS'){allow(req,res);res.statusCode=204;return res.end()}
+  if(req.method==='GET'&&u.pathname==='/health')return json(req,res,200,{ok:true,release:RELEASE,mode:'DIRECT_ANSWER_ONLY_WITH_OPTIONAL_LLM_AND_OFFICIAL_FIRST_RESEARCH',verifiedSnapshotDate:VERIFIED_AT,llmConfigured:Boolean(OPENAI_API_KEY),model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()});
+  if(req.method!=='POST'||(u.pathname!=='/api/research'&&u.pathname!=='/api/answer'))return json(req,res,404,{ok:false,error:'NOT_FOUND'});
+  const o=String(req.headers.origin||'');if(o&&!ORIGINS.has(o))return json(req,res,403,{ok:false,error:'ORIGIN_NOT_ALLOWED'});
+  if(!limited(clientKey(req),60))return json(req,res,429,{ok:false,error:'RATE_LIMITED'});
+  const b=await body(req),q=text(b.q).slice(0,500),language=text(b.language||'en').slice(0,8);
+  if(q.length<1)return json(req,res,400,{ok:false,error:'QUESTION_REQUIRED'});
+  const known=knownAnswer(q,language);
+  let result={answer:'',sources:[],confidence:'low',usedVerifiedSnapshot:false},answer=known,answerMode=known?'known':'';
+  if(!answer){
+    result=await research(q);
+    const llm=await llmAnswer(q,language,b.history,result.answer,result.sources);
+    if(llm){answer=llm;answerMode='llm'}
+    else if(result.answer){answer=result.answer;answerMode='research'}
+  }
+  if(answer&&askedForSource(q)&&result.sources?.length){
+    const urls=result.sources.slice(0,2).map(x=>x.url).filter(Boolean);
+    if(urls.length)answer=cleanAnswer(answer+' '+urls.join(' '));
+  }
+  if(!answer){answer=String(language||'').startsWith('es')?'No pude verificar una respuesta confiable con la información disponible. ¿Puede darme un detalle más?':'I could not verify a reliable answer from the information available. Can you give me one more detail?';answerMode='clarify'}
+  return json(req,res,200,{ok:true,question:q,answer,answerMode,confidence:known?'high':result.confidence,sources:result.sources||[],researchedAt:now(),usedVerifiedSnapshot:Boolean(result.usedVerifiedSnapshot)});
+}catch(e){console.error(JSON.stringify({event:'assistant_runtime_error',message:String(e.message||e).slice(0,160),at:now()}));return json(req,res,Number(e.status||503),{ok:false,error:'ANSWER_UNAVAILABLE',message:'Franklin Assistant could not complete the answer right now.'})}});
+server.requestTimeout=20000;server.headersTimeout=10000;server.listen(PORT,'0.0.0.0',()=>console.log(JSON.stringify({event:'franklin_assistant_runtime_listening',release:RELEASE,port:PORT,ready:true,llmConfigured:Boolean(OPENAI_API_KEY),model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()})));
