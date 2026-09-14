@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.29.8-HF3.10.8",
+  "release": "FR-NAV1.29.9-HF3.10.9",
   "date": "2026-09-14",
-  "base": "FR-NAV1.29.7-HF3.10.7",
+  "base": "FR-NAV1.29.8-HF3.10.8",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "Launch-day Franklin Assistant usability successor: preserves the production conversational Assistant and all prior data/capabilities while changing chat behavior to reading-first. After a response completes, the transcript positions at the beginning of the newest Assistant reply instead of forcing the resident to the bottom/composer; user-initiated scrolling is never overridden; the composer no longer steals focus after answers; direct answers render without a redundant nested card; optional next steps are visually compact while remaining fully available. All 19,103 profiles, 254 Assistant routes, membership, safety, privacy, Spanish, file, voice, local routing, current-web research, logo and loader fail-safes are preserved.",
+  "scope": "Launch-day simplification successor for Franklin Assistant. Keeps the ChatGPT-style in-platform conversation but removes automatic route-card clutter and most redirect pressure: residents get a concise direct answer first, optional current-source facts when freshness matters, profiles only when they explicitly ask to find/contact a local provider, and links only as compact optional actions. Generic unanswered questions now fall back to current public Franklin web research instead of immediately dead-ending. Reading-first scrolling, no focus theft, follow-up context, Spanish, files, voice, safety, local data, 19,103 profiles, 254 routes, logo and loader fail-safes are preserved.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -24,8 +24,8 @@
     "corruptRasterReplaced": true
   },
   "assistant": {
-    "version": "FR-NAV1.29.8-HF3.10.8",
-    "mode": "CANONICAL_MULTI_TURN_CHAT_PANEL_INTENT_FIRST_LOCAL_VERIFIED_THEN_CURRENT_WEB_RESEARCH",
+    "version": "FR-NAV1.29.9-HF3.10.9",
+    "mode": "SIMPLE_DIRECT_FIRST_IN_PLATFORM_CHAT",
     "routeDataRelease": "FR-NAV1.29.2-HF3.10.2",
     "verifiedDirectoryBinding": "/data/discovery/manifest.json",
     "routeCount": 254,
@@ -78,7 +78,7 @@
         "count": 62
       }
     ],
-    "qualityRegression": "scripts/test-assistant-r1298-browser.py + scripts/test-assistant-r1298-static.py + scripts/test-assistant-r1295.js",
+    "qualityRegression": "production browser smoke: permit -> follow-up -> find roofers -> websites; generic Franklin question; manual scroll",
     "highValueIntentRules": 22,
     "researchEndpointRelease": "FR-NAV1.29.3-HF3.10.3",
     "spanishIntentRegressionCases": 15,
@@ -94,16 +94,21 @@
     "fullScreenControl": true,
     "legacyR27ModalSuperseded": true,
     "stuckLoadingRaceFixed": true,
-    "canonicalController": "/assets/franklin-assistant-r1298.js",
+    "canonicalController": "/assets/franklin-assistant-r1299.js",
     "chatStyles": "/assets/franklin-assistant-chat-r1298.css",
     "contextualFollowUps": "SHORT_OR_PRONOUN_FOLLOWUPS_REUSE_CURRENT_PAGE_CONTEXT_WITHOUT_PERSISTENCE",
     "failureFallback": "VISIBLE_NON_STUCK_ERROR_WITH_FRANKLIN_HELP_LINKS",
     "loaderFailureFallback": "VISIBLE_CHAT_STYLE_RETRY_PANEL_WITH_LEGACY_POPUP_SUPPRESSED",
-    "productionPromotionFrom": "FR-NAV1.29.7-HF3.10.7",
+    "productionPromotionFrom": "FR-NAV1.29.8-HF3.10.8",
     "readingFirstScroll": true,
     "composerFocusAfterAnswer": false,
     "respectUserScroll": true,
-    "primaryAnswerPresentation": "DIRECT_CHAT_TEXT_WITHOUT_REDUNDANT_NESTED_CARD"
+    "primaryAnswerPresentation": "DIRECT_CHAT_TEXT_WITHOUT_REDUNDANT_NESTED_CARD",
+    "automaticRouteCards": false,
+    "redirectPressure": "MINIMIZED",
+    "profileDisplay": "ONLY_ON_EXPLICIT_FIND_OR_CONTACT_INTENT",
+    "genericFallback": "CURRENT_PUBLIC_FRANKLIN_WEB_RESEARCH_BEFORE_DEAD_END",
+    "repeatedPerAnswerPrivacyBlock": false
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
