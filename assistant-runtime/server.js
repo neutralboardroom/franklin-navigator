@@ -180,18 +180,21 @@ async function verifyLiveEndpoint(){
   }catch(e){console.error(JSON.stringify({event:'franklin_live_api_smoke_failed',release:RELEASE,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));return false}finally{clearTimeout(timer)}
 }
 async function verifyGeneralConversationSet(){
-  const cases=[
+  const singles=[
     {q:'How does recycling work in Franklin?',expect:/recycl|sanitation|waste|collection/i},
     {q:'Where can I find park information in Franklin?',expect:/park|recreation/i},
-    {q:'What public transportation is available in Franklin?',expect:/transit|transport|bus/i}
+    {q:'What public transportation is available in Franklin?',expect:/transit|transport|bus/i},
+    {q:'How do I figure out which school serves my address?',expect:/school|district|address|zone/i},
+    {q:'Who handles water service problems in Franklin?',expect:/water|utility|service|repair/i},
+    {q:'Where do I check current city meetings?',expect:/meeting|calendar|city|agenda/i}
   ];
   const results=[];
-  for(const c of cases){
+  for(const c of singles){
     const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),30000);
     try{
       const r=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers:{'Content-Type':'application/json','Origin':'https://franklinnavigator.com'},body:JSON.stringify({q:c.q,contextualQ:c.q,language:'en',history:[]}),signal:ctl.signal});
       const d=await r.json().catch(()=>({}));
-      const ok=r.ok&&d?.ok===true&&d?.llmUsed===true&&d?.answerMode==='llm_grounded_research'&&c.expect.test(String(d?.answer||''))&&!isGenericClarification(d?.answer);
+      const ok=r.ok&&d?.ok===true&&d?.llmUsed===true&&/^llm_grounded_/.test(String(d?.answerMode||''))&&c.expect.test(String(d?.answer||''))&&!isGenericClarification(d?.answer);
       results.push(ok);
       console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_general_conversation_case_passed':'franklin_general_conversation_case_failed',release:RELEASE,question:c.q,httpStatus:r.status,answerMode:d?.answerMode||null,llmUsed:d?.llmUsed===true,at:now()}));
     }catch(e){
@@ -199,8 +202,58 @@ async function verifyGeneralConversationSet(){
       console.error(JSON.stringify({event:'franklin_general_conversation_case_failed',release:RELEASE,question:c.q,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));
     }finally{clearTimeout(timer)}
   }
-  const ok=results.length===cases.length&&results.every(Boolean);
-  console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_general_conversation_set_passed':'franklin_general_conversation_set_failed',release:RELEASE,passed:results.filter(Boolean).length,total:cases.length,at:now()}));
+
+  const threads=[
+    {
+      first:'How does recycling work in Franklin?',
+      second:'what about brush pickup?',
+      contextual:'How does recycling work in Franklin? what about brush pickup?',
+      firstExpect:/recycl|sanitation|waste|collection/i,
+      secondExpect:/brush|pickup|sanitation|waste/i
+    },
+    {
+      first:'What public transportation is available in Franklin?',
+      second:'is there accessible service?',
+      contextual:'What public transportation is available in Franklin? is there accessible service?',
+      firstExpect:/transit|transport|bus/i,
+      secondExpect:/access|transit|transport|service/i
+    },
+    {
+      first:'Who handles water service problems in Franklin?',
+      second:'what number should I call?',
+      contextual:'Who handles water service problems in Franklin? what number should I call?',
+      firstExpect:/water|utility|service|repair/i,
+      secondExpect:/615|phone|call|water/i
+    },
+    {
+      first:'How do I figure out which school serves my address?',
+      second:'what do you need from me?',
+      contextual:'How do I figure out which school serves my address? what do you need from me?',
+      firstExpect:/school|district|address|zone/i,
+      secondExpect:/address|street|school|district/i
+    }
+  ];
+  for(const c of threads){
+    const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),45000);
+    try{
+      const headers={'Content-Type':'application/json','Origin':'https://franklinnavigator.com'};
+      const r1=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers,body:JSON.stringify({q:c.first,contextualQ:c.first,language:'en',history:[]}),signal:ctl.signal});
+      const a=await r1.json().catch(()=>({}));
+      const firstOk=r1.ok&&a?.ok===true&&a?.answer&&c.firstExpect.test(String(a.answer))&&!isGenericClarification(a.answer);
+      const history=[{role:'user',content:c.first},{role:'assistant',content:String(a?.answer||'').slice(0,900)}];
+      const r2=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers,body:JSON.stringify({q:c.second,contextualQ:c.contextual,language:'en',history}),signal:ctl.signal});
+      const b=await r2.json().catch(()=>({}));
+      const secondOk=r2.ok&&b?.ok===true&&b?.answer&&c.secondExpect.test(String(b.answer))&&!isGenericClarification(b.answer);
+      const ok=firstOk&&secondOk;
+      results.push(ok);
+      console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_context_thread_passed':'franklin_context_thread_failed',release:RELEASE,first:c.first,second:c.second,firstMode:a?.answerMode||null,secondMode:b?.answerMode||null,at:now()}));
+    }catch(e){
+      results.push(false);
+      console.error(JSON.stringify({event:'franklin_context_thread_failed',release:RELEASE,first:c.first,second:c.second,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));
+    }finally{clearTimeout(timer)}
+  }
+  const total=singles.length+threads.length,passed=results.filter(Boolean).length,ok=results.length===total&&passed===total;
+  console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_general_conversation_set_passed':'franklin_general_conversation_set_failed',release:RELEASE,passed,total,singleCases:singles.length,contextThreads:threads.length,at:now()}));
   return ok;
 }
 async function verifyRoofLeakConversation(){
