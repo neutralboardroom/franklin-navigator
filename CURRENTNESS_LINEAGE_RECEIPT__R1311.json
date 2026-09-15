@@ -1,0 +1,33 @@
+{
+  "schema": "franklin.currentness-lineage-receipt.v1",
+  "release": "FR-NAV1.30.11-HF3.12.3",
+  "date": "2026-09-15",
+  "community": "FRANKLIN_TN",
+  "predecessor": {
+    "release": "FR-NAV1.30.10-HF3.12.2",
+    "productionCommit": "cc0108e85a43f7824db525ae4a2d74d0c78c4740",
+    "productionDeploy": "dep-dak9mttg1s2s73bhmt90"
+  },
+  "currentSourceQualifiedCommit": "98307d2f8c3e5148845c6dba5c62c9e429054b5a",
+  "currentSourceQualificationRun": 34920970447,
+  "qualificationConclusion": "success",
+  "exactArtifactAtQualification": {
+    "artifactId": 10378132242,
+    "digest": "sha256:c17934d41b3de1336c4b07874e4f31799c48c78f9e96f30b97112e402c53f60b"
+  },
+  "membershipRuntime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "liveCommit": "e2eb2d29091ef28c0c8ba1ab642c20766f87a971",
+    "liveDeploy": "dep-dak97kbm8hqs73docisg",
+    "monitoringAcceptanceCommit": "6ac728080c04ff1c3d15cb2252147421ba20e27c",
+    "monitoringAcceptanceRun": 34921029158,
+    "monitoringAcceptanceConclusion": "success"
+  },
+  "counts": {
+    "profiles": 19103,
+    "assistantRoutes": 254
+  },
+  "authorityTransfer": false,
+  "outreachSent": false,
+  "note": "Final exact-source artifact must be regenerated after all R1311 release-evidence files are committed."
+}
