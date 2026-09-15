@@ -1,0 +1,90 @@
+{
+  "contract": "SRE_OWNER_CONSOLE_ISSUE_HANDOFF_V1",
+  "release": "FR-NAV1.30.11-HF3.12.3",
+  "community": "FRANKLIN_TN",
+  "producer": "LOCAL_COMMUNITY_PLATFORM",
+  "consumer": "SRE_OWNER_CONSOLE",
+  "authority": {
+    "localPlatformOwns": [
+      "local instrumentation",
+      "Franklin incident truth",
+      "local issue persistence",
+      "safe local owner visibility"
+    ],
+    "consumerOwns": [
+      "cross-system alert orchestration",
+      "approved external notification delivery",
+      "cross-system incident coordination",
+      "prospect outreach readiness verification"
+    ],
+    "prohibited": [
+      "cross-community data mixing",
+      "Franklin mutating SRE state",
+      "Franklin sending prospect outreach"
+    ]
+  },
+  "transport": {
+    "mode": "SIGNED_PULL",
+    "endpoint": "https://franklin-navigator-membership.onrender.com/internal/sre/issues/query",
+    "method": "POST",
+    "authentication": "existing SRE_SHARED_SECRET signed-request contract",
+    "request": {
+      "community": "FRANKLIN_TN",
+      "status": "OPEN",
+      "severity": [
+        "CRITICAL",
+        "HIGH",
+        "NORMAL"
+      ],
+      "limit": 100
+    },
+    "externalPushState": "CONFIGURATION_AUTHORITY_REQUIRED"
+  },
+  "incidentFields": [
+    "incident_id",
+    "community",
+    "category",
+    "severity",
+    "workflow",
+    "safe_error_code",
+    "source",
+    "correlation_id",
+    "profile_id",
+    "account_ref_hash",
+    "membership_ref_hash",
+    "safe_context",
+    "status",
+    "first_seen",
+    "last_seen",
+    "occurrence_count",
+    "alert_delivery_state",
+    "resolution_note"
+  ],
+  "privacy": {
+    "rawSecretsForbidden": true,
+    "unnecessaryPiiForbidden": true,
+    "rawUserMessageForbidden": true,
+    "identityDetailLocation": "authenticated Franklin owner/admin access only when necessary"
+  },
+  "deduplication": "fingerprint_sha256 + occurrence_count + first_seen/last_seen",
+  "statuses": [
+    "OPEN",
+    "ACKNOWLEDGED",
+    "RESOLVED",
+    "SUPPRESSED"
+  ],
+  "severities": [
+    "CRITICAL",
+    "HIGH",
+    "NORMAL"
+  ],
+  "sourceAcceptance": {
+    "run": 34921029158,
+    "conclusion": "success",
+    "claimReviewerChecksPassed": 38,
+    "realCharges": 0,
+    "productionMutations": 0
+  },
+  "rollback": "incident/history tables are additive and retained during static-site rollback",
+  "authorityTransfer": false
+}
