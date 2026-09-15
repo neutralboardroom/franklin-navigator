@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.9-HF3.12.1",
-  "date": "2026-09-14",
-  "base": "FR-NAV1.30.8-HF3.12.0",
+  "release": "FR-NAV1.30.10-HF3.12.2",
+  "date": "2026-09-15",
+  "base": "FR-NAV1.30.9-HF3.12.1",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "Launch-day navigation and discoverability successor on top of the R1308 site-wide issue monitoring release. Makes the primary desktop navigation visibly prioritize resident and revenue-critical destinations in one compact line: Ask Franklin, Find Local, Get It Done, Today, Things to Do, Community, For Business and More. For Business is no longer buried inside Menu. More contains the lower-frequency My Franklin and Help Center items, and responsive breakpoints move only lower-priority items such as Today/Community into More when width requires it. Spanish localized routes are mapped explicitly rather than derived mechanically. The R1308 site-wide monitoring loader is retained and its script-loading bug is corrected so the public-site monitor actually loads before the Assistant. Progressive Franklin Assistant guide behavior, 19,103 profiles, 254 Assistant routes, membership/Stripe runtime, privacy and no-loss protections remain preserved.",
+  "scope": "Launch-day adaptive-navigation successor on top of the R1309 compact navigation and R1308 site-wide owner issue monitoring release. The primary header now follows an explicit maximum-visible single-line rule: every useful top-level destination is shown whenever the available width permits it, and only the lowest-priority items are moved into More as space tightens. The browser measures the actual rendered header width instead of relying on coarse fixed breakpoints, so My Franklin and Help Center can remain visible on wider desktops while shrinking layouts progressively move Help Center, My Franklin, Community, Today and other lower-priority destinations into More before higher-usage Ask Franklin, Find Local, Get It Done and revenue-critical For Business. English and Spanish routes are mapped explicitly. The existing progressive Franklin Assistant guide, 19,103 profiles, 254 Assistant routes, membership/Stripe runtime, persistent issue/incident monitoring, Owner Console visibility, privacy and no-loss protections remain preserved.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -179,7 +179,7 @@
     "guideNewChatReset": true,
     "guideStatePersistence": "MEMORY_ONLY_CURRENT_PAGE",
     "guideRepetitionSuppression": true,
-    "preservedInRelease": "FR-NAV1.30.9-HF3.12.1"
+    "preservedInRelease": "FR-NAV1.30.10-HF3.12.2"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -274,36 +274,50 @@
       "R1308 issue-monitoring HTTP/Postgres acceptance",
       "registration/claim/profile-review acceptance",
       "first-value acceptance"
-    ]
+    ],
+    "preservedInRelease": "FR-NAV1.30.10-HF3.12.2",
+    "durableRequirement": "CONTINUE_SITE_WIDE_USER_ISSUE_FRICTION_FAILURE_MONITORING_AND_OWNER_VISIBLE_INCIDENT_AWARENESS_EVERY_MATERIAL_RELEASE"
   },
   "navigation": {
-    "version": "FRANKLIN_PRIMARY_NAV_R1309",
-    "desktopVisible": [
+    "version": "FRANKLIN_PRIMARY_NAV_R1310",
+    "rule": "SHOW_MAXIMUM_PRACTICAL_TOP_LEVEL_ITEMS_WHILE_KEEPING_PRIMARY_NAV_ON_ONE_LINE",
+    "candidateOrder": [
       "Ask Franklin",
       "Find Local",
       "Get It Done",
       "Today",
       "Things to Do",
       "Community",
-      "For Business",
-      "More"
-    ],
-    "moreDefault": [
       "My Franklin",
+      "For Business",
       "Help Center"
     ],
-    "compactMoreAdds": [
-      "Today"
+    "overflowControl": "More",
+    "hiddenPriorityOrder": [
+      "Help Center",
+      "My Franklin",
+      "Community",
+      "Today",
+      "Things to Do",
+      "For Business",
+      "Get It Done",
+      "Find Local",
+      "Ask Franklin"
     ],
-    "narrowMoreAdds": [
-      "Community"
+    "highPriorityVisibleAsLongAsPossible": [
+      "Ask Franklin",
+      "Find Local",
+      "Get It Done",
+      "For Business"
     ],
-    "forBusinessTopLevel": true,
-    "singleLineDesktop": true,
-    "responsivePolicy": "KEEP_HIGHEST_USAGE_AND_REVENUE_CRITICAL_DESTINATIONS_VISIBLE; MOVE_LOWER_PRIORITY_ITEMS_TO_MORE_ONLY_WHEN_WIDTH_REQUIRES",
-    "englishBusinessLabel": "For Business",
-    "spanishBusinessLabel": "Para negocios",
-    "spanishLocalizedRoutes": true
+    "widthPolicy": "MEASURE_ACTUAL_RENDERED_AVAILABLE_WIDTH_AND_MOVE_ONLY_AS_MANY_LOW_PRIORITY_ITEMS_TO_MORE_AS_REQUIRED",
+    "fixedBreakpointHiding": false,
+    "singleLinePrimaryNav": true,
+    "wideDesktopCanShowAllCandidates": true,
+    "responsiveRefit": "ResizeObserver + font-ready + initial refit",
+    "englishSpanishParity": true,
+    "spanishLocalizedRoutes": true,
+    "noJsFallback": "existing static header preserved; runtime enhancement does not remove destination routes"
   },
-  "productionPromotionFrom": "FR-NAV1.30.8-HF3.12.0"
+  "productionPromotionFrom": "FR-NAV1.30.9-HF3.12.1"
 }
