@@ -31,11 +31,12 @@ function contextualize(raw,state,C){
   const lastService=state?.lastService||null,lastTopics=Array.isArray(state?.lastTopics)?state.lastTopics:[];
   const svc=inferService(q,C),topics=C?.concepts?.(q)||[],words=q.split(/\s+/).length;
   const refersBack=referenceCue.test(q),shortContinuation=words<=9&&continuationStart.test(q);
+  const freshSubject=/\b(city hall|city office|school|park|recycling|recycle|trash|garbage|sanitation|transit|transportation|bus|water|utility|meeting|agenda|event|restaurant|doctor|dentist|lawyer|attorney|housing|rent|landlord|property|business|job|childcare|daycare|permit|roof|car|vehicle|pet|veterinarian|ayuntamiento|oficina de la ciudad|escuela|parque|reciclaje|basura|saneamiento|transporte|autobus|autobús|agua|servicio publico|servicio público|reunion|reunión|agenda|evento|restaurante|medico|médico|dentista|abogado|vivienda|alquiler|propietario|propiedad|negocio|empleo|guarderia|guardería|permiso|techo|carro|vehiculo|vehículo|mascota|veterinario)\b/i.test(q);
   if(refersBack){
     const carry=[];if(lastService?.q)carry.push(lastService.q);for(const t of lastTopics.slice(0,2))carry.push(String(t).replace(/-/g,' '));
     return [lastEffective,carry.join(' '),q].filter(Boolean).join(' ');
   }
-  if((svc||topics.length>0)&&!(words<=7&&lastService&&topics.includes('permit')))return q;
+  if((svc||topics.length>0||freshSubject)&&!(words<=7&&lastService&&topics.includes('permit')&&!freshSubject))return q;
   if(shortContinuation||words<=6){
     const carry=[];if(lastService?.q)carry.push(lastService.q);for(const t of lastTopics.slice(0,2))carry.push(String(t).replace(/-/g,' '));
     return [lastEffective,carry.join(' '),q].filter(Boolean).join(' ');
