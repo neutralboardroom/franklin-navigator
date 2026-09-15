@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.3-HF3.11.3",
+  "release": "FR-NAV1.30.4-HF3.11.4",
   "date": "2026-09-14",
-  "base": "FR-NAV1.30.2-HF3.11.2",
+  "base": "FR-NAV1.30.3-HF3.11.3",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "Launch-day grounded-OpenAI Franklin Assistant successor. The existing direct-answer chat remains the resident experience, but substantive questions now use the configured OpenAI Responses API path as the primary language layer while preserving Franklin source grounding, deterministic/source-backed fallback, official-first current-web research, direct-answer-only UX, reading-first scrolling, short current-tab follow-up context, explicit provider/contact search behavior, and non-AI safety fallbacks. The runtime now verifies the configured OpenAI key/model through an actual grounded Franklin roof-permit smoke request at boot; the browser sends the resident's natural question plus a separate contextual grounding query; client/server timeouts are aligned for the live AI path; and English/Spanish Assistant and privacy pages accurately disclose server/OpenAI processing while preserving device-local attachment handling. All 19,103 profiles, 254 Assistant route records, membership, safety, Spanish, voice, attachments, logo/loader hardening and prior no-loss protections remain preserved.",
+  "scope": "Launch-day Franklin Assistant profile-conversation successor. Fixes a real service-provider conversation defect: requests such as 'name the 3 best roofers in town' now trigger the local profile path immediately instead of returning a generic offer, and short affirmative follow-ups such as 'ok', 'yes', 'sure' or 'show me' continue the prior local-service request instead of repeating the offer. The Assistant transparently avoids unsupported 'best' endorsements while naming the requested number of matching Franklin-area public profiles and showing their contact/profile actions. Grounded OpenAI answering, verified Franklin data, current-web fallback, reading-first chat behavior, privacy disclosures, emergency handling, Spanish, 19,103 profiles and 254 Assistant routes remain preserved.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -24,7 +24,7 @@
     "corruptRasterReplaced": true
   },
   "assistant": {
-    "version": "FR-NAV1.30.3-HF3.11.3",
+    "version": "FR-NAV1.30.4-HF3.11.4",
     "mode": "ONE_DIRECT_ANSWER_CHAT_GROUNDED_LLM_PRIMARY",
     "routeDataRelease": "FR-NAV1.29.2-HF3.10.2",
     "verifiedDirectoryBinding": "/data/discovery/manifest.json",
@@ -94,12 +94,12 @@
     "fullScreenControl": true,
     "legacyR27ModalSuperseded": true,
     "stuckLoadingRaceFixed": true,
-    "canonicalController": "/assets/franklin-assistant-r1303.js",
+    "canonicalController": "/assets/franklin-assistant-r1304.js",
     "chatStyles": "/assets/franklin-assistant-chat-r1298.css",
     "contextualFollowUps": "SHORT_OR_PRONOUN_FOLLOWUPS_REUSE_CURRENT_PAGE_CONTEXT_WITHOUT_PERSISTENCE",
     "failureFallback": "VISIBLE_NON_STUCK_ERROR_WITH_FRANKLIN_HELP_LINKS",
     "loaderFailureFallback": "VISIBLE_CHAT_STYLE_RETRY_PANEL_WITH_LEGACY_POPUP_SUPPRESSED",
-    "productionPromotionFrom": "FR-NAV1.30.2-HF3.11.2",
+    "productionPromotionFrom": "FR-NAV1.30.3-HF3.11.3",
     "readingFirstScroll": true,
     "composerFocusAfterAnswer": false,
     "respectUserScroll": true,
@@ -130,7 +130,10 @@
     "runtimeLlmVerification": "BOOT_GROUNDED_ROOF_PERMIT_SMOKE_THROUGH_OPENAI_RESPONSES_API",
     "frontendRuntimeTimeoutMs": 24000,
     "serverRequestTimeoutMs": 25000,
-    "privacyDisclosure": "ENGLISH_AND_SPANISH_HOME_ASSISTANT_AND_PRIVACY_PAGES_DISCLOSE_SERVER_OPENAI_PROCESSING; RAW_CHAT_NOT_SAVED_TO_MY_FRANKLIN; ATTACHMENTS_DEVICE_LOCAL_IN_CURRENT_FLOW"
+    "privacyDisclosure": "ENGLISH_AND_SPANISH_HOME_ASSISTANT_AND_PRIVACY_PAGES_DISCLOSE_SERVER_OPENAI_PROCESSING; RAW_CHAT_NOT_SAVED_TO_MY_FRANKLIN; ATTACHMENTS_DEVICE_LOCAL_IN_CURRENT_FLOW",
+    "profileConversationFix": true,
+    "bestProviderHandling": "DO_NOT_CLAIM_OBJECTIVE_BEST; IMMEDIATELY SHOW REQUESTED_COUNT_OF_RELEVANCE_MATCHED_PUBLIC_PROFILES WITH NON_ENDORSEMENT DISCLOSURE",
+    "affirmativeFollowUpHandling": "OK_YES_SURE_SHOW_ME_CONTINUE_PRIOR_LOCAL_SERVICE_PROFILE_REQUEST"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
