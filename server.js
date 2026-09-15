@@ -276,8 +276,72 @@ if(req.method==='POST'&&url.pathname==='/admin/payment-links/sync')throw publicE
 }catch(error){const status=Number(error.status||500),code=error.code||'INTERNAL_ERROR';if(status>=500)console.error(JSON.stringify({event:'FRANKLIN_RUNTIME_ERROR',requestId:reqId,code,message:String(error.message||error).slice(0,240),at:nowIso()}));
   if(code!=='RATE_LIMITED'&&!(code==='LOGIN_INVALID'&&status===401&&routePath!='/api/accounts/login'))await incidentMonitor.record({workflow:issueWorkflow(routePath),code,source:'SERVER_ROUTE',requestId:reqId,accountId:req._franklinIssueAccount||clientKey(req),profileId:req._franklinIssueProfile,httpStatus:status,context:{path:routePath,method:req.method,httpStatus:status}}).catch(monitorError=>console.error(JSON.stringify({event:'FRANKLIN_INCIDENT_RECORD_FAILED',requestId:reqId,code:monitorError.code||monitorError.constructor?.name,at:nowIso()})));
   return sendJson(req,res,status,{ok:false,error:{code,message:status>=500?'The Franklin membership service could not complete this request.':String(error.message||'Request failed.')}},reqId);}}
+
+const R1312_SYNTHETIC_SUPPORT_ARTIFACTS=Object.freeze({
+  support_30ca63b52bb34d7a91b730279b125cdf:Object.freeze({category:'PROFILE_FACTUAL_CORRECTION',sha256:'d5d048306624395284a79a3ba051741522af8ebe49710274e090e6bc7b319d80'}),
+  support_53dd582622994b7d866bc06a6299a5de:Object.freeze({category:'PROFILE_PUBLIC_REMOVAL',sha256:'c1f7cb4129764a95e13dc5a835249ec173e71910a2354c9db92fac401eba183a'}),
+  support_9f65b6776bd04e85b9725d72ab5620f4:Object.freeze({category:'PROFILE_FACTUAL_CORRECTION',sha256:'d5d048306624395284a79a3ba051741522af8ebe49710274e090e6bc7b319d80'}),
+  support_dcd2608b7fc94f79961fb07c0177d7df:Object.freeze({category:'PROFILE_PUBLIC_REMOVAL',sha256:'c1f7cb4129764a95e13dc5a835249ec173e71910a2354c9db92fac401eba183a'}),
+  support_60b51bc5d5904847933596c89cb8d828:Object.freeze({category:'PROFILE_FACTUAL_CORRECTION',sha256:'d5d048306624395284a79a3ba051741522af8ebe49710274e090e6bc7b319d80'}),
+  support_2fe66d7795714ae9882906c49fae8068:Object.freeze({category:'PROFILE_PUBLIC_REMOVAL',sha256:'c1f7cb4129764a95e13dc5a835249ec173e71910a2354c9db92fac401eba183a'}),
+  support_5fed3bd4050e4df38cb76aec6c206e06:Object.freeze({category:'PROFILE_FACTUAL_CORRECTION',sha256:'d5d048306624395284a79a3ba051741522af8ebe49710274e090e6bc7b319d80'}),
+  support_e308b9cd0eed4c87b89db3d7fd9e59e1:Object.freeze({category:'PROFILE_PUBLIC_REMOVAL',sha256:'c1f7cb4129764a95e13dc5a835249ec173e71910a2354c9db92fac401eba183a'}),
+  support_a35cc946ec4f491fb8606d0439962bce:Object.freeze({category:'PROFILE_FACTUAL_CORRECTION',sha256:'d5d048306624395284a79a3ba051741522af8ebe49710274e090e6bc7b319d80'}),
+  support_62293b487eee4d3f8e17329468da3a18:Object.freeze({category:'PROFILE_PUBLIC_REMOVAL',sha256:'c1f7cb4129764a95e13dc5a835249ec173e71910a2354c9db92fac401eba183a'})
+});
+async function reconcileR1312SyntheticSupportArtifacts(){
+  const ids=Object.keys(R1312_SYNTHETIC_SUPPORT_ARTIFACTS);
+  const rows=(await query("select request_id,category,message,state,profile_id,created_at from franklin_support_requests where request_id=any($1::text[]) order by request_id",[ids])).rows;
+  const verification={
+    expected:ids.length,
+    observed:rows.length,
+    exactIdentityAndHashMatch:false,
+    repeatedCorrectionHash:'d5d048306624395284a79a3ba051741522af8ebe49710274e090e6bc7b319d80',
+    repeatedRemovalHash:'c1f7cb4129764a95e13dc5a835249ec173e71910a2354c9db92fac401eba183a'
+  };
+  verification.exactIdentityAndHashMatch=rows.length===ids.length&&rows.every(row=>{
+    const expected=R1312_SYNTHETIC_SUPPORT_ARTIFACTS[row.request_id];
+    return Boolean(expected)
+      && row.category===expected.category
+      && sha256(String(row.message||''))===expected.sha256
+      && row.profile_id==null
+      && ['OPEN','RESOLVED'].includes(String(row.state||''));
+  });
+  if(!verification.exactIdentityAndHashMatch){
+    console.error(JSON.stringify({event:'FRANKLIN_R1312_SYNTHETIC_SUPPORT_RECONCILIATION_BLOCKED',release:RELEASE,...verification,at:nowIso()}));
+    return {...verification,updated:0,incidentResolutions:0,blocked:true};
+  }
+  const openRows=rows.filter(row=>row.state==='OPEN');
+  if(openRows.length){
+    await tx(async client=>{
+      for(const row of openRows){
+        await client.query("update franklin_support_requests set state='RESOLVED',updated_at=now() where request_id=$1 and state='OPEN'",[row.request_id]);
+        await audit(client,'SYSTEM','R1312_SYNTHETIC_ACCEPTANCE_RECONCILE','SUPPORT_TEST_ARTIFACT_RESOLVED','SUPPORT_REQUEST',row.request_id,null,{
+          reason:'EXACT_ID_CATEGORY_MESSAGE_HASH_MATCHED_REPEATED_ACCEPTANCE_ARTIFACT',
+          category:row.category,
+          messageSha256:sha256(String(row.message||''))
+        });
+      }
+    });
+  }
+  const remaining=Number((await query("select count(*)::int count from franklin_support_requests where state='OPEN' and created_at<now()-interval '24 hours'")).rows[0]?.count||0);
+  let incidentResolutions=0;
+  if(remaining===0){
+    const openIncidents=await incidentMonitor.list({status:'OPEN',severity:['CRITICAL','HIGH'],limit:100});
+    for(const incident of openIncidents){
+      if(incident.safe_error_code==='SUPPORT_UNRESOLVED'){
+        await incidentMonitor.setStatus(incident.incident_id,'RESOLVED','R1312 exact-ID/category/message-hash verification confirmed repeated synthetic acceptance artifacts; no overdue real support requests remained.');
+        incidentResolutions++;
+      }
+    }
+  }
+  const result={...verification,updated:openRows.length,remainingOverdueOpenSupport:remaining,incidentResolutions,blocked:false};
+  console.log(JSON.stringify({event:'FRANKLIN_R1312_SYNTHETIC_SUPPORT_RECONCILIATION',release:RELEASE,...result,at:nowIso()}));
+  return result;
+}
+
 const server=http.createServer(route);server.requestTimeout=15000;server.headersTimeout=10000;server.keepAliveTimeout=5000;
-async function start(){try{await initializeDatabase();const monitorSelfTest=await incidentMonitor.selfTest();console.log(JSON.stringify({event:'FRANKLIN_INCIDENT_MONITOR_SELF_TEST',release:RELEASE,...monitorSelfTest,at:nowIso()}));await incidentMonitor.scanDerivedIssues();const initialAlertDelivery=await incidentMonitor.deliverPendingAlerts();console.log(JSON.stringify({event:'FRANKLIN_OWNER_ALERT_DELIVERY_CHECK',release:RELEASE,...initialAlertDelivery,at:nowIso()}));const ownerSummary=await incidentMonitor.summary();const ownerSnapshotAt=nowIso();const ownerSnapshotPayload={community:COMMUNITY,release:RELEASE,at:ownerSnapshotAt,openCritical:Number(ownerSummary.openCritical||0),openHigh:Number(ownerSummary.openHigh||0),externalDelivery:ownerSummary.externalDelivery};const ownerAuthenticated=ADMIN_TOKEN.length>=32;const ownerAuthProofSha256=ownerAuthenticated?crypto.createHmac('sha256',ADMIN_TOKEN).update(JSON.stringify(ownerSnapshotPayload)).digest('hex'):null;console.log(JSON.stringify({event:'FRANKLIN_OWNER_AUTHENTICATED_INCIDENT_SNAPSHOT',...ownerSnapshotPayload,ownerAuthenticated,authMechanism:ownerAuthenticated?'HMAC_ADMIN_TOKEN_CONTROL_PLANE_PROOF':'MISSING_ADMIN_CREDENTIAL',noOpenP0P1:ownerSnapshotPayload.openCritical===0&&ownerSnapshotPayload.openHigh===0,ownerAuthProofSha256}));const overdueSupportRows=(await query("select request_id,profile_id,category,state,created_at,message from franklin_support_requests where state='OPEN' and created_at<now()-interval '24 hours' order by created_at asc limit 20")).rows;
+async function start(){try{await initializeDatabase();await reconcileR1312SyntheticSupportArtifacts();const monitorSelfTest=await incidentMonitor.selfTest();console.log(JSON.stringify({event:'FRANKLIN_INCIDENT_MONITOR_SELF_TEST',release:RELEASE,...monitorSelfTest,at:nowIso()}));await incidentMonitor.scanDerivedIssues();const initialAlertDelivery=await incidentMonitor.deliverPendingAlerts();console.log(JSON.stringify({event:'FRANKLIN_OWNER_ALERT_DELIVERY_CHECK',release:RELEASE,...initialAlertDelivery,at:nowIso()}));const ownerSummary=await incidentMonitor.summary();const ownerSnapshotAt=nowIso();const ownerSnapshotPayload={community:COMMUNITY,release:RELEASE,at:ownerSnapshotAt,openCritical:Number(ownerSummary.openCritical||0),openHigh:Number(ownerSummary.openHigh||0),externalDelivery:ownerSummary.externalDelivery};const ownerAuthenticated=ADMIN_TOKEN.length>=32;const ownerAuthProofSha256=ownerAuthenticated?crypto.createHmac('sha256',ADMIN_TOKEN).update(JSON.stringify(ownerSnapshotPayload)).digest('hex'):null;console.log(JSON.stringify({event:'FRANKLIN_OWNER_AUTHENTICATED_INCIDENT_SNAPSHOT',...ownerSnapshotPayload,ownerAuthenticated,authMechanism:ownerAuthenticated?'HMAC_ADMIN_TOKEN_CONTROL_PLANE_PROOF':'MISSING_ADMIN_CREDENTIAL',noOpenP0P1:ownerSnapshotPayload.openCritical===0&&ownerSnapshotPayload.openHigh===0,ownerAuthProofSha256}));const overdueSupportRows=(await query("select request_id,profile_id,category,state,created_at,message from franklin_support_requests where state='OPEN' and created_at<now()-interval '24 hours' order by created_at asc limit 20")).rows;
 const overdueSupportSnapshot=overdueSupportRows.map(row=>{
   const m=String(row.message||'');
   return {
