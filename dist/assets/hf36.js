@@ -1,11 +1,11 @@
-/* FR-NAV1.30.9-HF3.12.1 compact primary navigation + site-wide issue monitoring + progressive Franklin Assistant */
+/* FR-NAV1.30.10-HF3.12.2 adaptive maximum-visible one-line navigation + site-wide issue monitoring + progressive Franklin Assistant */
 (()=>{'use strict';
 const loadCss=(href,key)=>{if(document.querySelector(`link[data-${key}]`))return;const l=document.createElement('link');l.rel='stylesheet';l.href=href;l.dataset[key.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]='1';document.head.append(l)};
 loadCss('/assets/hf3102-mobile.css?v=frnav1292','franklin-mobile-3102');
 loadCss('/assets/hf3103-mobile.css?v=frnav1293','franklin-mobile-3103');
 loadCss('/assets/hf3105-brand.css?v=frnav1295','franklin-brand-3105');
 loadCss('/assets/franklin-assistant-chat-r1306.css?v=frnav1306','franklin-assistant-chat-r1306');
-loadCss('/assets/franklin-nav-r1309.css?v=frnav1309','franklin-nav-r1309');
+loadCss('/assets/franklin-nav-r1310.css?v=frnav1310','franklin-nav-r1310');
 if(!document.querySelector('script[data-franklin-established-positioning]')){const p=document.createElement('script');p.src='/assets/franklin-established-positioning.js?v=frnav1293';p.defer=true;p.dataset.franklinEstablishedPositioning='1';document.head.append(p)}
 const loadAssistantR1307=()=>{
   if(!document.querySelector('[data-navigator-bot]')||document.querySelector('script[data-franklin-assistant-r1307]'))return;
@@ -49,38 +49,76 @@ const normalizePrimaryNav=()=>{
   const nav=document.querySelector('header nav.hf34-nav');if(!nav)return;
   const es=location.pathname==='/es/'||location.pathname.startsWith('/es/');
   const routes=es?{
-    assistant:'/es/asistente/',directory:'/es/directorio/',tasks:'/es/hacerlo/',today:'/es/hoy/',activities:'/es/actividades/',community:'/es/comunidad/',business:'/es/negocios/',mine:'/es/mi-franklin/',help:'/es/centro-de-ayuda/'
+    assistant:'/es/asistente/',directory:'/es/directorio/',tasks:'/es/hacerlo/',today:'/es/hoy/',activities:'/es/actividades/',community:'/es/comunidad/',mine:'/es/mi-franklin/',business:'/es/negocios/',help:'/es/centro-de-ayuda/'
   }:{
-    assistant:'/assistant/',directory:'/directory/',tasks:'/get-it-done/',today:'/today/',activities:'/activities/',community:'/community/',business:'/business-dashboard/',mine:'/my-franklin/',help:'/community-help-center/'
+    assistant:'/assistant/',directory:'/directory/',tasks:'/get-it-done/',today:'/today/',activities:'/activities/',community:'/community/',mine:'/my-franklin/',business:'/business-dashboard/',help:'/community-help-center/'
   };
-  const item=(label,path,cls='')=>`<a class="${cls}" href="${path}">${label}</a>`;
   const labels=es?{
-    ask:'Preguntar a Franklin',find:'Buscar local',tasks:'Resolver',today:'Hoy',things:'Qué hacer',community:'Comunidad',business:'Para negocios',more:'Más',mine:'Mi Franklin',help:'Centro de ayuda'
+    ask:'Preguntar a Franklin',find:'Buscar local',tasks:'Resolver',today:'Hoy',things:'Qué hacer',community:'Comunidad',mine:'Mi Franklin',business:'Para negocios',help:'Centro de ayuda',more:'Más'
   }:{
-    ask:'Ask Franklin',find:'Find Local',tasks:'Get It Done',today:'Today',things:'Things to Do',community:'Community',business:'For Business',more:'More',mine:'My Franklin',help:'Help Center'
+    ask:'Ask Franklin',find:'Find Local',tasks:'Get It Done',today:'Today',things:'Things to Do',community:'Community',mine:'My Franklin',business:'For Business',help:'Help Center',more:'More'
   };
-  nav.innerHTML=[
-    item(labels.ask,routes.assistant,'franklin-nav-ask'),
-    item(labels.find,routes.directory,'franklin-nav-find'),
-    item(labels.tasks,routes.tasks,'franklin-nav-tasks'),
-    item(labels.today,routes.today,'franklin-nav-today'),
-    item(labels.things,routes.activities,'franklin-nav-things'),
-    item(labels.community,routes.community,'franklin-nav-community'),
-    item(labels.business,routes.business,'franklin-nav-priority-business'),
-    `<details class="hf34-nav-more franklin-nav-more"><summary>${labels.more}</summary><div class="hf34-nav-more-menu">`+
-      item(labels.today,routes.today,'franklin-nav-more-compact-only')+
-      item(labels.community,routes.community,'franklin-nav-more-community franklin-nav-more-compact-only')+
-      item(labels.mine,routes.mine)+
-      item(labels.help,routes.help)+
-    `</div></details>`
-  ].join('');
-  const path=location.pathname.replace(/\/+$/,'/')||'/';
-  nav.querySelectorAll(':scope>a').forEach(a=>{
+  const defs=[
+    {key:'ask',label:labels.ask,path:routes.assistant,cls:'franklin-nav-ask',hide:0},
+    {key:'find',label:labels.find,path:routes.directory,cls:'franklin-nav-find',hide:10},
+    {key:'tasks',label:labels.tasks,path:routes.tasks,cls:'franklin-nav-tasks',hide:20},
+    {key:'today',label:labels.today,path:routes.today,cls:'franklin-nav-today',hide:60},
+    {key:'things',label:labels.things,path:routes.activities,cls:'franklin-nav-things',hide:50},
+    {key:'community',label:labels.community,path:routes.community,cls:'franklin-nav-community',hide:70},
+    {key:'mine',label:labels.mine,path:routes.mine,cls:'franklin-nav-mine',hide:80},
+    {key:'business',label:labels.business,path:routes.business,cls:'franklin-nav-priority-business',hide:30},
+    {key:'help',label:labels.help,path:routes.help,cls:'franklin-nav-help',hide:90}
+  ];
+  const top=d=>`<a class="franklin-nav-candidate ${d.cls}" data-nav-key="${d.key}" data-hide-priority="${d.hide}" href="${d.path}">${d.label}</a>`;
+  const moreItem=d=>`<a class="franklin-nav-more-item" data-more-key="${d.key}" href="${d.path}" hidden>${d.label}</a>`;
+  nav.innerHTML=defs.map(top).join('')+
+    `<details class="hf34-nav-more franklin-nav-more" hidden><summary>${labels.more}</summary><div class="hf34-nav-more-menu">${defs.map(moreItem).join('')}</div></details>`;
+
+  const currentPath=location.pathname.replace(/\/+$/,'/')||'/';
+  nav.querySelectorAll('a').forEach(a=>{
     const target=new URL(a.href,location.href).pathname.replace(/\/+$/,'/')||'/';
-    const active=target!=='/'&&(path===target||path.startsWith(target));
+    const active=target!=='/'&&(currentPath===target||currentPath.startsWith(target));
     if(active)a.setAttribute('aria-current','page');
   });
+
   const more=nav.querySelector('.franklin-nav-more');
+  const tops=[...nav.querySelectorAll('.franklin-nav-candidate')];
+  const moreItems=new Map([...nav.querySelectorAll('.franklin-nav-more-item')].map(a=>[a.dataset.moreKey,a]));
+  const lowPriorityFirst=[...tops].sort((a,b)=>Number(b.dataset.hidePriority)-Number(a.dataset.hidePriority));
+  let fitting=false,raf=0;
+  const setHidden=(a,hidden)=>{a.hidden=hidden;a.setAttribute('aria-hidden',hidden?'true':'false')};
+  const fits=()=>nav.scrollWidth<=nav.clientWidth+1;
+  const txMore=n=>es?`Más opciones (${n})`:`More options (${n})`;
+  const refit=()=>{
+    if(fitting||!nav.isConnected)return;fitting=true;
+    more.removeAttribute('open');
+    tops.forEach(a=>setHidden(a,false));
+    moreItems.forEach(a=>setHidden(a,true));
+    more.hidden=true;
+    nav.dataset.navOverflow='0';
+
+    if(!fits()){
+      more.hidden=false;
+      for(const a of lowPriorityFirst){
+        setHidden(a,true);
+        const duplicate=moreItems.get(a.dataset.navKey);if(duplicate)setHidden(duplicate,false);
+        if(fits())break;
+      }
+      if(!fits())nav.dataset.navOverflow='1';
+    }
+    const hiddenCount=tops.filter(a=>a.hidden).length;
+    if(hiddenCount===0)more.hidden=true;
+    const summary=more.querySelector('summary');
+    if(summary)summary.setAttribute('aria-label',hiddenCount?txMore(hiddenCount):labels.more);
+    fitting=false;
+  };
+  const scheduleRefit=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(refit)};
+  scheduleRefit();
+  setTimeout(scheduleRefit,80);
+  if(document.fonts?.ready)document.fonts.ready.then(scheduleRefit).catch(()=>{});
+  if('ResizeObserver'in window)new ResizeObserver(scheduleRefit).observe(document.querySelector('header .top')||nav);
+  else window.addEventListener('resize',scheduleRefit,{passive:true});
+
   document.addEventListener('click',e=>{if(more?.open&&!more.contains(e.target))more.removeAttribute('open')});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&more?.open){more.removeAttribute('open');more.querySelector('summary')?.focus()}});
 };
