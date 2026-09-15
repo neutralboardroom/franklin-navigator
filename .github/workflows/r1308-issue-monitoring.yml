@@ -1,0 +1,69 @@
+name: FR-NAV1.30.8 issue monitoring acceptance
+on:
+  push:
+    branches: [franklin-commerce-runtime-r30]
+    paths:
+      - 'server.js'
+      - 'lib/incident-monitor.js'
+      - 'schema/005_issue_monitoring.sql'
+      - 'acceptance/issue-monitoring.integration.cjs'
+      - '.github/workflows/r1308-issue-monitoring.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: franklin_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d franklin_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      TEST_DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/franklin_test
+      TEST_REPORT_DIR: evidence/r1308
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Syntax and source contracts
+        run: |
+          node --check server.js
+          node --check lib/incident-monitor.js
+          test -f schema/005_issue_monitoring.sql
+          grep -F "FRANKLIN_ISSUE_MONITOR_1" lib/incident-monitor.js
+          grep -F "EXTERNAL_CONFIG_REQUIRED" schema/005_issue_monitoring.sql
+          grep -F "SRE_OWNER_CONSOLE_ISSUE_HANDOFF_V1" server.js
+      - name: Existing runtime unit tests
+        run: npm test
+      - name: R1308 issue monitoring HTTP acceptance
+        run: |
+          mkdir -p evidence/r1308
+          node acceptance/issue-monitoring.integration.cjs | tee evidence/r1308/ISSUE_MONITORING_HTTP_ACCEPTANCE.log
+      - name: Existing registration claim profile review acceptance
+        run: |
+          node acceptance/owner-review-setup.integration.cjs | tee evidence/r1308/MEMBER_CLAIM_PROFILE_ACCEPTANCE.log
+      - name: Existing first-value reconciliation acceptance
+        run: |
+          node acceptance/owner-first-value-reconcile.integration.cjs | tee evidence/r1308/FIRST_VALUE_ACCEPTANCE.log
+      - name: Upload R1308 acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: FR-NAV1.30.8-HF3.12.0-acceptance-evidence
+          path: evidence/r1308
+          if-no-files-found: warn
+          retention-days: 30
