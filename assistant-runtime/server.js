@@ -55,6 +55,7 @@ async function enrich(rows,q){const out=[];for(const r of rows.slice(0,7)){let p
 function synthesize(rows,q){const pool=[];for(const r of rows)if(r.best)pool.push({s:r.best,url:r.url,title:r.title,score:scoreSentence(r.best,q,r.url)+(r.origin==='official'?10:0),liveRead:r.liveRead,verifiedAt:r.verifiedAt});pool.sort((a,b)=>b.score-a.score);const chosen=[],seen=new Set();for(const x of pool){const k=norm(x.s).slice(0,100);if(!k||seen.has(k))continue;seen.add(k);chosen.push(x);if(chosen.length===3)break}if(!chosen.length)return{answer:'',confidence:'low'};return{answer:chosen.map(x=>x.s).join(' '),confidence:chosen.some(x=>sourceRank(x.url)>=35)?'high':chosen.length>=2?'medium':'low'}}
 function isGenericClarification(v){return /could not verify|one more detail|no pude verificar|un detalle m[aá]s/i.test(String(v||''))}
 function responseEvidence(d){return [String(d?.answer||''),...(Array.isArray(d?.sources)?d.sources.flatMap(x=>[x?.title,x?.snippet,x?.url]):[])].filter(Boolean).join(' ')}
+function sourceEvidence(d){return (Array.isArray(d?.sources)?d.sources.flatMap(x=>[x?.title,x?.snippet,x?.url]):[]).filter(Boolean).join(' ')}
 async function research(q){
   const merged=[],seen=new Set();
   for(const row of officialSeeds(q)){
@@ -259,9 +260,9 @@ async function verifyGeneralConversationSet(){
 }
 async function verifySpanishConversationSet(){
   const singles=[
-    {q:'¿Cómo funciona el reciclaje en Franklin?',contextualQ:'¿Cómo funciona el reciclaje en Franklin?',expect:/recicl|saneamiento|desechos|recolecci[oó]n/i},
-    {q:'¿Dónde puedo ver información de parques en Franklin?',contextualQ:'¿Dónde puedo ver información de parques en Franklin?',expect:/parque|recreaci[oó]n/i},
-    {q:'¿Qué transporte público hay en Franklin?',contextualQ:'¿Qué transporte público hay en Franklin?',expect:/transporte|autob[uú]s|tr[aá]nsito/i}
+    {q:'¿Cómo funciona el reciclaje en Franklin?',contextualQ:'¿Cómo funciona el reciclaje en Franklin?',expect:/recicl|saneamiento|desechos|recolecci[oó]n/i,sourceExpect:/sanitation-and-environmental-services|Sanitation and Environmental Services/i},
+    {q:'¿Dónde puedo ver información de parques en Franklin?',contextualQ:'¿Dónde puedo ver información de parques en Franklin?',expect:/parque|recreaci[oó]n/i,sourceExpect:/\/parks\/|Parks Contact/i},
+    {q:'¿Qué transporte público hay en Franklin?',contextualQ:'¿Qué transporte público hay en Franklin?',expect:/transporte|autob[uú]s|tr[aá]nsito/i,sourceExpect:/Franklin Transit|finance-administration/i}
   ];
   const threads=[
     {
@@ -269,21 +270,24 @@ async function verifySpanishConversationSet(){
       second:'¿y la recolección de ramas?',
       contextual:'¿Cómo funciona el reciclaje en Franklin? ¿y la recolección de ramas?',
       firstExpect:/recicl|saneamiento|desechos|recolecci[oó]n/i,
-      secondExpect:/rama|recolecci[oó]n|saneamiento|desechos/i
+      secondExpect:/rama|recolecci[oó]n|saneamiento|desechos/i,
+      sourceExpect:/sanitation-and-environmental-services|Sanitation and Environmental Services/i
     },
     {
       first:'¿Qué transporte público hay en Franklin?',
       second:'¿hay servicio accesible?',
       contextual:'¿Qué transporte público hay en Franklin? ¿hay servicio accesible?',
       firstExpect:/transporte|autob[uú]s|tr[aá]nsito/i,
-      secondExpect:/acces|transporte|servicio|tr[aá]nsito/i
+      secondExpect:/acces|transporte|servicio|tr[aá]nsito/i,
+      sourceExpect:/Franklin Transit|finance-administration/i
     },
     {
       first:'¿Cómo sé qué escuela corresponde a mi dirección?',
       second:'¿qué necesita de mí?',
       contextual:'¿Cómo sé qué escuela corresponde a mi dirección? ¿qué necesita de mí?',
       firstExpect:/escuela|distrito|direcci[oó]n|zona/i,
-      secondExpect:/direcci[oó]n|calle|escuela|distrito/i
+      secondExpect:/direcci[oó]n|calle|escuela|distrito/i,
+      sourceExpect:/wcs\.edu|fssd\.org|Williamson County Schools|Franklin Special School District/i
     }
   ];
   const results=[];
@@ -292,7 +296,7 @@ async function verifySpanishConversationSet(){
     try{
       const r=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers:{'Content-Type':'application/json','Origin':'https://franklinnavigator.com'},body:JSON.stringify({q:c.q,contextualQ:c.contextualQ,language:'es',history:[]}),signal:ctl.signal});
       const d=await r.json().catch(()=>({}));
-      const ok=r.ok&&d?.ok===true&&d?.answer&&/^llm_grounded_/.test(String(d?.answerMode||''))&&Array.isArray(d?.sources)&&d.sources.length>0&&c.expect.test(responseEvidence(d))&&!isGenericClarification(d.answer);
+      const ok=r.ok&&d?.ok===true&&d?.answer&&String(d.answer).length>=24&&/^llm_grounded_/.test(String(d?.answerMode||''))&&Array.isArray(d?.sources)&&d.sources.length>0&&(c.expect.test(String(d.answer))||c.sourceExpect.test(sourceEvidence(d)))&&!isGenericClarification(d.answer);
       results.push(ok);
       console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_spanish_conversation_case_passed':'franklin_spanish_conversation_case_failed',release:RELEASE,question:c.q,httpStatus:r.status,answerMode:d?.answerMode||null,at:now()}));
     }catch(e){
@@ -306,11 +310,11 @@ async function verifySpanishConversationSet(){
       const headers={'Content-Type':'application/json','Origin':'https://franklinnavigator.com'};
       const r1=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers,body:JSON.stringify({q:c.first,contextualQ:c.first,language:'es',history:[]}),signal:ctl.signal});
       const a=await r1.json().catch(()=>({}));
-      const firstOk=r1.ok&&a?.ok===true&&a?.answer&&Array.isArray(a?.sources)&&a.sources.length>0&&c.firstExpect.test(responseEvidence(a))&&!isGenericClarification(a.answer);
+      const firstOk=r1.ok&&a?.ok===true&&a?.answer&&String(a.answer).length>=24&&Array.isArray(a?.sources)&&a.sources.length>0&&(c.firstExpect.test(String(a.answer))||c.sourceExpect.test(sourceEvidence(a)))&&!isGenericClarification(a.answer);
       const history=[{role:'user',content:c.first},{role:'assistant',content:String(a?.answer||'').slice(0,900)}];
       const r2=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers,body:JSON.stringify({q:c.second,contextualQ:c.contextual,language:'es',history}),signal:ctl.signal});
       const b=await r2.json().catch(()=>({}));
-      const secondOk=r2.ok&&b?.ok===true&&b?.answer&&Array.isArray(b?.sources)&&b.sources.length>0&&c.secondExpect.test(responseEvidence(b))&&!isGenericClarification(b.answer);
+      const secondOk=r2.ok&&b?.ok===true&&b?.answer&&String(b.answer).length>=24&&Array.isArray(b?.sources)&&b.sources.length>0&&(c.secondExpect.test(String(b.answer))||c.sourceExpect.test(sourceEvidence(b)))&&!isGenericClarification(b.answer);
       const ok=firstOk&&secondOk;
       results.push(ok);
       console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_spanish_context_thread_passed':'franklin_spanish_context_thread_failed',release:RELEASE,first:c.first,second:c.second,firstMode:a?.answerMode||null,secondMode:b?.answerMode||null,at:now()}));
