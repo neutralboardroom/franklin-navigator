@@ -1,0 +1,48 @@
+{
+  "schema": "franklin.member-prospect-outreach-readiness.v1",
+  "release": "FR-NAV1.30.13-HF3.12.5",
+  "date": "2026-09-15",
+  "community": "FRANKLIN_TN",
+  "status": "NOT_READY_FOR_10_PROSPECT_TEST",
+  "productBuildStatus": "RUNTIME_LIVE_STATIC_PROMOTION_PENDING",
+  "reasons": [
+    "Independent SRE/Revenue Engine verification for the 10-prospect test has not yet been recorded.",
+    "Fresh live production truth shows zero active verified rich memberships on the 19,103-profile public scope, so the complete real-public-member claim → purchase → edit → reviewed publish → exact readback lifecycle has not yet been proven in production."
+  ],
+  "passedEvidence": {
+    "priorFullIsolatedMemberJourneyAcceptanceRun": 34921029158,
+    "priorFullIsolatedMemberJourneyAcceptanceConclusion": "success",
+    "profiles": 19103,
+    "assistantRoutes": 254,
+    "runtimeRelease": "FR-NAV1.30.13-HF3.12.5",
+    "runtimeDeploy": "dep-dakfu9h5efls73dsjct0",
+    "runtimeCommit": "0236a8ffe46e7b139ac1bfc57a6ba09e680f5bdd",
+    "runtimeStatus": "live",
+    "preflightSchema": "franklin.readonly-owner-preflight.v6",
+    "preflightObservedAt": "2026-09-15T08:18:04.018Z",
+    "reviewerControlConfigured": true,
+    "publicProfileScopeCount": 19103,
+    "activeVerifiedRichMembershipProfiles": 1,
+    "activeVerifiedRichMembershipProfilesInPublicScope": 0,
+    "realPublicMemberCandidateAvailable": false,
+    "activeReviewedPublications": 0,
+    "exactPublicReadbackReceipts": 0,
+    "ownerControlProfileExcludedFromPublicScope": true,
+    "latestOwnerAuthenticatedIncidentSnapshotAt": "2026-09-15T08:18:04.517Z",
+    "openCritical": 0,
+    "openHigh": 0,
+    "noOpenP0P1": true,
+    "externalOwnerAlertDelivery": "RESEND_EMAIL_CONFIGURED"
+  },
+  "requiredToOpenGate": [
+    "Complete and record one controlled real-public-profile member lifecycle in production without inventing representation authority or manufacturing a fake business.",
+    "SRE/Revenue Engine independently verifies the resulting live promotion and records approval for the 10-prospect test."
+  ],
+  "realChargeCreatedForAcceptance": false,
+  "fakePublicProfileCreated": false,
+  "outreachSent": false,
+  "platformAuthorityToSendOutreach": false,
+  "selfCertificationOfMissingEvidence": false,
+  "livePublicDeploy": null,
+  "livePublicCommit": null
+}
