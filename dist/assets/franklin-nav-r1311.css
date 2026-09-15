@@ -1,0 +1,64 @@
+/* FR-NAV1.30.11-HF3.12.3 — wide-header maximum-visible navigation correction.
+   Use the full safe header width before collapsing lower-priority destinations into More. */
+header .wrap.top{
+  width:min(1480px,100%)!important;
+  padding-inline:clamp(18px,2.2vw,34px)!important;
+}
+header .top{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:nowrap!important;
+  gap:clamp(10px,1.25vw,20px)!important;
+}
+header .brand{
+  order:1!important;
+  flex:0 0 auto!important;
+}
+header .nav.hf34-nav{
+  order:2!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  width:auto!important;
+  justify-content:flex-end!important;
+  margin-left:auto!important;
+  gap:clamp(8px,.85vw,14px)!important;
+}
+header .r37-language-switch.hf36-language-in-header{
+  order:3!important;
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+header .nav.hf34-nav>a,
+header .nav.hf34-nav>.hf34-nav-more>summary{
+  font-size:clamp(.80rem,.72vw,.89rem)!important;
+}
+header .franklin-nav-more{margin-left:1px!important}
+
+@media(max-width:1180px) and (min-width:901px){
+  header .wrap.top{padding-inline:16px!important}
+  header .top{gap:9px!important}
+  header .nav.hf34-nav{gap:8px!important}
+  header .r37-language-switch.hf36-language-in-header button{padding-inline:5px!important}
+}
+@media(max-width:900px){
+  header .wrap.top{
+    width:min(100%,1120px)!important;
+    padding-inline:20px!important;
+  }
+  header .top{
+    flex-wrap:wrap!important;
+    gap:8px 12px!important;
+  }
+  header .brand{order:1!important}
+  header .r37-language-switch.hf36-language-in-header{
+    order:2!important;
+    margin-left:auto!important;
+  }
+  header .nav.hf34-nav{
+    order:4!important;
+    width:100%!important;
+    flex:1 0 100%!important;
+    margin-left:0!important;
+    justify-content:flex-start!important;
+  }
+}
