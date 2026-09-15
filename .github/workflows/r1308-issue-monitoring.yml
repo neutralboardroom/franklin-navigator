@@ -51,13 +51,16 @@ jobs:
         run: npm test
       - name: R1308 issue monitoring HTTP acceptance
         run: |
+          set -o pipefail
           mkdir -p evidence/r1308
           node acceptance/issue-monitoring.integration.cjs | tee evidence/r1308/ISSUE_MONITORING_HTTP_ACCEPTANCE.log
       - name: Existing registration claim profile review acceptance
         run: |
+          set -o pipefail
           node acceptance/owner-review-setup.integration.cjs | tee evidence/r1308/MEMBER_CLAIM_PROFILE_ACCEPTANCE.log
       - name: Existing first-value reconciliation acceptance
         run: |
+          set -o pipefail
           node acceptance/owner-first-value-reconcile.integration.cjs | tee evidence/r1308/FIRST_VALUE_ACCEPTANCE.log
       - name: Upload R1308 acceptance evidence
         if: always()
