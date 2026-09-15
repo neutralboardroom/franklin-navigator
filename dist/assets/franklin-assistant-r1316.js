@@ -179,24 +179,39 @@ function saveSteps(q){try{const legacy=window.FranklinR38Assistant;if(!legacy?.r
 function inferService(raw){
   const direct=C.serviceFor(raw);if(direct)return direct;
   const t=C.norm(raw);
-  if(/\b(roof|roofing|roofer|shingle|shingles|techo|tejado)\b/.test(t))return{q:'roofing'};
-  if(/\b(plumb|plumber|pipe|pipes|sink|toilet|drain|faucet|water heater|plomero|tuberia|fregadero|inodoro|desague)\b/.test(t))return{q:'plumber'};
-  if(/\b(electric|electrical|electrician|outlet|breaker|power|wiring|electricista|enchufe|interruptor|cableado)\b/.test(t))return{q:'electrician'};
-  if(/\b(hvac|air conditioning|air conditioner|ac unit|heating|furnace|calefaccion|aire acondicionado)\b/.test(t))return{q:'hvac'};
-  return null;
+  const aliases=[
+    ['roofing',/\b(roof|shingle|shingles|gutter|gutters|techo|tejado|canaleta)\b/],
+    ['plumber',/\b(pipe|pipes|sink|toilet|drain|faucet|water heater|sewer line|tuberia|fregadero|inodoro|desague|grifo|calentador de agua)\b/],
+    ['electrician',/\b(outlet|breaker|electrical panel|wiring|power socket|enchufe|interruptor|panel electrico|cableado)\b/],
+    ['hvac',/\b(air conditioner|ac unit|furnace|heat pump|thermostat|calefaccion|aire acondicionado|termostato)\b/],
+    ['auto repair',/\b(car won t start|car won't start|engine|brakes|transmission|battery|motor|frenos|transmision|bateria)\b/],
+    ['towing',/\b(stranded car|stuck car|tow my car|car is stuck|remolcar|auto varado)\b/],
+    ['veterinary',/\b(my dog|my cat|pet is sick|dog is sick|cat is sick|mascota enferma|perro enfermo|gato enfermo)\b/],
+    ['cleaning',/\b(house needs cleaning|home cleaning|deep clean|limpiar la casa|limpieza profunda)\b/],
+    ['landscaping',/\b(yard|lawn|grass|landscape|tree trimming|jardin|cesped|pasto|paisajismo|poda)\b/]
+  ];
+  const hit=aliases.find(([,re])=>re.test(t));
+  return hit?{q:hit[0]}:null;
 }
 function serviceActionFollow(raw){
   const t=C.norm(raw);
   return /\b(need it repaired|need it fixed|repair it|fix it|need someone|need somebody|who can repair|who can fix|hire someone|have it repaired|have it fixed|necesito que lo reparen|necesito que lo arreglen|repararlo|arreglarlo|necesito alguien|quien puede repararlo|quien puede arreglarlo)\b/.test(t);
 }
 const conversation=[],chatHistory=[];const guideProgress={key:'',depth:0};let lastEffective='',lastService=null,lastTopics=[],lastProfileQuery='',busy=false,returnFocus=null;
-const followCue=/^(and |also |what about|how about|which |what |where |when |who |why |can |could |do |does |is |are |find |show |tell |give |help )|\b(those|them|these|ones|they|their|it|that|this|same|above|previous)\b/i;
+const referenceCue=/\b(those|them|these|ones|they|their|it|its|that|this|same|above|previous|there|that one|this one|lo|eso|esa|ese|ellos|ellas|su|sus|mismo|anterior|ahi)\b/i;
+const continuationStart=/^(and |also |which |what |where |when |who |why |how |can |could |do |does |did |is |are |was |were |should |would |find |show |tell |give |help |y |tambien |cual |cuales |que |donde |cuando |quien |por que |como |puede |puedo |debo |es |son |mostrar |dime |ayuda )/i;
 function contextualize(raw){
   const q=String(raw||'').trim();if(!q)return q;
-  const svc=inferService(q),topics=C.concepts(q);
   if(!lastEffective)return q;
-  if(svc||topics.length>0){return q}
-  if(followCue.test(q)||q.split(/\s+/).length<=7){
+  const svc=inferService(q),topics=C.concepts(q),words=q.split(/\s+/).length;
+  const refersBack=referenceCue.test(q);
+  const shortContinuation=words<=9&&continuationStart.test(q);
+  if(refersBack){
+    const carry=[];if(lastService?.q)carry.push(lastService.q);for(const t of lastTopics.slice(0,2))carry.push(t.replace(/-/g,' '));
+    return [lastEffective,carry.join(' '),q].filter(Boolean).join(' ');
+  }
+  if((svc||topics.length>0)&&!(words<=7&&lastService&&topics.includes('permit'))){return q}
+  if(shortContinuation||words<=6){
     const carry=[];if(lastService?.q)carry.push(lastService.q);for(const t of lastTopics.slice(0,2))carry.push(t.replace(/-/g,' '));
     return [lastEffective,carry.join(' '),q].filter(Boolean).join(' ');
   }
