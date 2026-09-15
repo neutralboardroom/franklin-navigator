@@ -5,7 +5,7 @@ const dns=require('node:dns');
 const net=require('node:net');
 const {URL}=require('node:url');
 const PORT=Number(process.env.PORT||10000);
-const RELEASE='FR-NAV1.30.5-HF3.11.5';
+const RELEASE='FR-NAV1.30.15-HF3.12.7';
 const ORIGINS=new Set(['https://franklinnavigator.com','https://www.franklinnavigator.com','https://franklin-navigator.onrender.com']);
 const BODY_LIMIT=32*1024,rate=new Map(),VERIFIED_AT='2026-09-14';
 const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||'').trim();
@@ -52,11 +52,37 @@ function sentences(s){return text(s).split(/(?<=[.!?])\s+/).map(x=>x.trim()).fil
 function scoreSentence(s,q,url){const st=norm(s),ts=terms(q);let n=sourceRank(url);for(const t of ts)if(st.includes(t))n+=7;if(/\b(when|date|today|tonight|tomorrow|weekend|hours|open|schedule)\b/i.test(q)&&/\b(am|pm|monday|tuesday|wednesday|thursday|friday|saturday|sunday|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|\d{1,2}[:/]\d{1,2})\b/i.test(s))n+=18;if(/\b(cost|price|fee|how much)\b/i.test(q)&&/\$\s?\d|fee|cost|price/i.test(s))n+=15;if(/\b(phone|call|number)\b/i.test(q)&&/(\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}/.test(s))n+=18;if(/\b(address|where|location)\b/i.test(q)&&/\b(st|street|rd|road|ave|avenue|dr|drive|blvd|boulevard|ln|lane|pkwy|parkway|franklin|tn)\b/i.test(s))n+=10;return n}
 async function enrich(rows,q){const out=[];for(const r of rows.slice(0,7)){let page='',liveRead=false;try{page=stripPage(await get(r.url,6500,1000000));liveRead=Boolean(page)}catch{}const base=[];if(r.snippet)base.push(...sentences(r.snippet));if(page)base.push(...sentences(page).slice(0,180));if(!base.length&&r.snapshot)base.push(...sentences(r.snapshot));const candidates=base.map(s=>({s,score:scoreSentence(s,q,r.url)})).sort((a,b)=>b.score-a.score);const best=candidates[0]?.s||'';if(best)out.push({...r,best,liveRead,verifiedAt:r.verifiedAt||null})}return out}
 function synthesize(rows,q){const pool=[];for(const r of rows)if(r.best)pool.push({s:r.best,url:r.url,title:r.title,score:scoreSentence(r.best,q,r.url)+(r.origin==='official'?10:0),liveRead:r.liveRead,verifiedAt:r.verifiedAt});pool.sort((a,b)=>b.score-a.score);const chosen=[],seen=new Set();for(const x of pool){const k=norm(x.s).slice(0,100);if(!k||seen.has(k))continue;seen.add(k);chosen.push(x);if(chosen.length===3)break}if(!chosen.length)return{answer:'',confidence:'low'};return{answer:chosen.map(x=>x.s).join(' '),confidence:chosen.some(x=>sourceRank(x.url)>=35)?'high':chosen.length>=2?'medium':'low'}}
+async function research(q){
+  const merged=[],seen=new Set();
+  for(const row of officialSeeds(q)){
+    if(row.url&&!seen.has(row.url)){seen.add(row.url);merged.push(row)}
+  }
+  try{
+    for(const row of await searchWeb(q)){
+      if(row.url&&!seen.has(row.url)){seen.add(row.url);merged.push(row)}
+      if(merged.length>=9)break
+    }
+  }catch{}
+  if(!merged.length)return{answer:'',sources:[],confidence:'low',usedVerifiedSnapshot:false};
+  const enriched=await enrich(merged,q);
+  const syn=synthesize(enriched,q);
+  return{
+    answer:syn.answer,
+    sources:enriched.slice(0,5).map(x=>({title:x.title,url:x.url,snippet:text(x.best||x.snippet||x.snapshot).slice(0,420),official:x.origin==='official',liveRead:Boolean(x.liveRead),verifiedAt:x.verifiedAt||null})),
+    confidence:syn.confidence,
+    usedVerifiedSnapshot:enriched.some(x=>x.origin==='official'&&!x.liveRead&&Boolean(x.verifiedAt))
+  };
+}
 function askedForSource(q){return /\b(source|sources|link|links|website|official page|where did you get|fuente|fuentes|enlace|sitio web|pagina oficial)\b/i.test(q)}
 function knownAnswer(q,language='en'){
   const t=norm(q),es=String(language||'').toLowerCase().startsWith('es');
   if(/^(hi|hello|hey|good morning|good afternoon|good evening|hola|buenos dias|buenas tardes|buenas noches)[!. ]*$/.test(t))return es?'Hola. ¿Qué le gustaría saber sobre Franklin?':'Hi. What would you like to know about Franklin?';
   if(/\b(thank you|thanks|gracias)\b/.test(t)&&t.split(' ').length<8)return es?'Con gusto.':'You’re welcome.';
+  if(/\b(roof|roofing|roofer|techo|tejado)\b/.test(t)&&/\b(leak|leaking|water|drip|repair|repaired|fix|fixed|gotea|filtracion|filtrando|agua|reparar|arreglar)\b/.test(t)){
+    return es
+      ?'Si el techo está filtrando ahora, proteja primero el interior: mueva objetos, recoja el agua y manténgase alejado de un cielo raso abombado. No suba a un techo mojado. Un techador puede inspeccionar la fuente y hacer una reparación o cubierta temporal; una reparación importante en Franklin también puede requerir permiso. Si quiere, puedo ayudarle a encontrar techadores locales.'
+      :'If the roof is leaking now, protect the inside first: move belongings, catch the water, and stay out from under a bulging ceiling. Do not climb onto a wet roof. A roofer can inspect the source and make a repair or temporary weatherproofing; a substantial repair in Franklin may also require a permit. If you want, I can help you find local roofers.';
+  }
   if(/\b(roof|roofing|techo|tejado)\b/.test(t)&&/\b(permit|permits|permiso|permisos)\b/.test(t)){
     return es
       ?'Para un reemplazo de techo o una reparación importante en Franklin, cuente con necesitar un permiso de construcción. La Ciudad indica que la mayoría de los trabajos de reparación requieren permiso. Para una reparación menor del mismo material, confirme el caso específico con Building & Neighborhood Services al 615-794-7012.'
@@ -139,11 +165,30 @@ async function verifyLiveEndpoint(){
     console.log(JSON.stringify({event:'franklin_live_api_smoke_passed',release:RELEASE,httpStatus:r.status,answerMode:d.answerMode,llmUsed:true,check:'LIVE_HTTP_API_ROOF_PERMIT',at:now()}));return true
   }catch(e){console.error(JSON.stringify({event:'franklin_live_api_smoke_failed',release:RELEASE,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));return false}finally{clearTimeout(timer)}
 }
+async function verifyRoofLeakConversation(){
+  const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),30000);
+  try{
+    const headers={'Content-Type':'application/json','Origin':'https://franklinnavigator.com'};
+    const first=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers,body:JSON.stringify({q:'my roof is leaking.',contextualQ:'my roof is leaking.',language:'en',history:[]}),signal:ctl.signal});
+    const a=await first.json().catch(()=>({}));
+    const firstOk=first.ok&&a?.ok===true&&a?.answer&&!/could not verify|one more detail/i.test(String(a.answer))&&/(roof|roofer|leak|water|repair)/i.test(String(a.answer));
+    const history=[{role:'user',content:'my roof is leaking.'},{role:'assistant',content:String(a?.answer||'').slice(0,900)}];
+    const second=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers,body:JSON.stringify({q:'i need it repaired.',contextualQ:'my roof is leaking. i need it repaired.',language:'en',history}),signal:ctl.signal});
+    const b=await second.json().catch(()=>({}));
+    const secondOk=second.ok&&b?.ok===true&&b?.answer&&!/could not verify|one more detail/i.test(String(b.answer))&&/(roof|roofer|repair|contractor)/i.test(String(b.answer));
+    const ok=firstOk&&secondOk;
+    console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_roof_leak_conversation_smoke_passed':'franklin_roof_leak_conversation_smoke_failed',release:RELEASE,firstStatus:first.status,firstMode:a?.answerMode||null,secondStatus:second.status,secondMode:b?.answerMode||null,check:'ROOF_LEAK_THEN_REPAIR_TWO_TURN',at:now()}));
+    return ok;
+  }catch(e){console.error(JSON.stringify({event:'franklin_roof_leak_conversation_smoke_failed',release:RELEASE,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',check:'ROOF_LEAK_THEN_REPAIR_TWO_TURN',at:now()}));return false}finally{clearTimeout(timer)}
+}
 function selfTest(){
   const roof=knownAnswer('Do I need a permit for my roof?','en');
+  const leakingRoof=knownAnswer('my roof is leaking.','en');
   const hall=knownAnswer('What time is City Hall open?','en');
   const school=knownAnswer('Which school is this address zoned for?','en');
   if(!/permit/i.test(roof)||!/615-794-7012/.test(roof))throw Error('selftest_roof_permit');
+  if(!/(roofer|roof)/i.test(leakingRoof)||!/wet roof/i.test(leakingRoof))throw Error('selftest_roof_leak');
+  if(typeof research!=='function')throw Error('selftest_research_missing');
   if(!/7:30/.test(hall)||!/5:00/.test(hall))throw Error('selftest_city_hours');
   if(!/address/i.test(school))throw Error('selftest_school_zone');
   if(askedForSource('Do I need a permit?'))throw Error('selftest_source_gate');
@@ -191,4 +236,4 @@ const server=http.createServer(async(req,res)=>{try{
   console.log(JSON.stringify({event:'franklin_assistant_answer_complete',release:RELEASE,answerMode,llmUsed,confidence:known?'high':result.confidence,sourceCount:(result.sources||[]).length,at:now()}));
   return json(req,res,200,{ok:true,question:q,answer,answerMode,llmUsed,confidence:known?'high':result.confidence,sources:result.sources||[],researchedAt:now(),usedVerifiedSnapshot:Boolean(result.usedVerifiedSnapshot)});
 }catch(e){console.error(JSON.stringify({event:'assistant_runtime_error',message:String(e.message||e).slice(0,160),at:now()}));return json(req,res,Number(e.status||503),{ok:false,error:'ANSWER_UNAVAILABLE',message:'Franklin Assistant could not complete the answer right now.'})}});
-server.requestTimeout=25000;server.headersTimeout=10000;server.listen(PORT,'0.0.0.0',()=>{console.log(JSON.stringify({event:'franklin_assistant_runtime_listening',release:RELEASE,port:PORT,ready:true,llmConfigured:llmState.configured,llmVerified:llmState.verified,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()}));(async()=>{if(await verifyLlm())await verifyLiveEndpoint()})().catch(()=>{})});
+server.requestTimeout=25000;server.headersTimeout=10000;server.listen(PORT,'0.0.0.0',()=>{console.log(JSON.stringify({event:'franklin_assistant_runtime_listening',release:RELEASE,port:PORT,ready:true,llmConfigured:llmState.configured,llmVerified:llmState.verified,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()}));(async()=>{const llmOk=await verifyLlm();const liveOk=llmOk?await verifyLiveEndpoint():false;const roofLeakOk=await verifyRoofLeakConversation();if(!liveOk||!roofLeakOk)console.error(JSON.stringify({event:'franklin_assistant_startup_acceptance_incomplete',release:RELEASE,llmOk,liveOk,roofLeakOk,at:now()}))})().catch(()=>{})});
