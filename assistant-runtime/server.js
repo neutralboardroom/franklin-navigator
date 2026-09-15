@@ -56,7 +56,7 @@ function synthesize(rows,q){const pool=[];for(const r of rows)if(r.best)pool.pus
 function isGenericClarification(v){return /could not verify|one more detail|no pude verificar|un detalle m[aá]s/i.test(String(v||''))}
 function responseEvidence(d){return [String(d?.answer||''),...(Array.isArray(d?.sources)?d.sources.flatMap(x=>[x?.title,x?.snippet,x?.url]):[])].filter(Boolean).join(' ')}
 function sourceEvidence(d){return (Array.isArray(d?.sources)?d.sources.flatMap(x=>[x?.title,x?.snippet,x?.url]):[]).filter(Boolean).join(' ')}
-function hasOfficialSource(d){return Array.isArray(d?.sources)&&d.sources.some(x=>x?.official===true)}
+function hasOfficialSource(d){return Array.isArray(d?.sources)&&d.sources.some(x=>{if(x?.official===true)return true;try{const h=new URL(String(x?.url||'')).hostname.toLowerCase();return h==='franklintn.gov'||h.endsWith('.franklintn.gov')||h==='williamsoncounty-tn.gov'||h.endsWith('.williamsoncounty-tn.gov')||h==='wcs.edu'||h.endsWith('.wcs.edu')||h==='fssd.org'||h.endsWith('.fssd.org')}catch{return false}})}
 function groundedSubstantive(d){return d?.ok===true&&String(d?.answer||'').length>=24&&/^llm_grounded_/.test(String(d?.answerMode||''))&&hasOfficialSource(d)&&!isGenericClarification(d?.answer)}
 async function research(q){
   const merged=[],seen=new Set();
