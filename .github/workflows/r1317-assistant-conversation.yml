@@ -1,0 +1,58 @@
+name: R1317 Franklin Assistant universal conversation acceptance
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/assets/franklin-assistant-context-r1317.js'
+      - 'dist/assets/franklin-assistant-r1317.js'
+      - 'dist/assets/hf36.js'
+      - 'dist/assets/r31-health.js'
+      - 'dist/index.html'
+      - 'dist/es/index.html'
+      - 'dist/assistant/index.html'
+      - 'dist/es/asistente/index.html'
+      - 'tests/r1317-assistant-context-acceptance.cjs'
+      - 'DURABLE_RULE__UNIVERSAL_FRANKLIN_ASSISTANT_CONVERSATION_STANDARD.md'
+      - '.github/workflows/r1317-assistant-conversation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  universal-conversation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check dist/assets/franklin-assistant-context-r1317.js
+          node --check dist/assets/franklin-assistant-r1317.js
+          node --check dist/assets/hf36.js
+          node --check dist/assets/r31-health.js
+      - name: Shared context acceptance
+        run: node tests/r1317-assistant-context-acceptance.cjs
+      - name: R1317 live-controller contracts
+        run: |
+          grep -F "FR-NAV1.30.17-HF3.12.9" dist/assets/franklin-assistant-r1317.js
+          grep -F "FranklinAssistantContextR1317" dist/assets/franklin-assistant-r1317.js
+          grep -F "ASSISTANT_REPEATED_CLARIFICATION" dist/assets/franklin-assistant-r1317.js
+          grep -F "CONSECUTIVE_CLARIFY_WITHOUT_RAW_CHAT" dist/assets/franklin-assistant-r1317.js
+          grep -F "assistant_answer_research" dist/assets/r31-health.js
+          grep -F "assistant_provider_handoff" dist/assets/r31-health.js
+          grep -F "/assets/franklin-assistant-context-r1317.js?v=frnav1317" dist/assets/hf36.js
+          grep -F "/assets/franklin-assistant-r1317.js?v=frnav1317" dist/assets/hf36.js
+          grep -F "/assets/hf36.js?v=frnav1317" dist/index.html
+          grep -F "/assets/hf36.js?v=frnav1317" dist/es/index.html
+          grep -F "/assets/hf36.js?v=frnav1317" dist/assistant/index.html
+          grep -F "/assets/hf36.js?v=frnav1317" dist/es/asistente/index.html
+      - name: Durable universal rule
+        run: |
+          test -f DURABLE_RULE__UNIVERSAL_FRANKLIN_ASSISTANT_CONVERSATION_STANDARD.md
+          grep -F "A specific owner test example never defines the scope" DURABLE_RULE__UNIVERSAL_FRANKLIN_ASSISTANT_CONVERSATION_STANDARD.md
+          grep -F "Passing one narrow example is never sufficient evidence" DURABLE_RULE__UNIVERSAL_FRANKLIN_ASSISTANT_CONVERSATION_STANDARD.md
+      - name: Preserve member and profile controls
+        run: |
+          grep -F '"memberProfileR1314ControlsPreserved": true' PRODUCTION_RELEASE.json
