@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.13-HF3.12.5",
+  "release": "FR-NAV1.30.14-HF3.12.6",
   "date": "2026-09-15",
-  "base": "FR-NAV1.30.12-HF3.12.4",
+  "base": "FR-NAV1.30.13-HF3.12.5",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1313 production successor focused on truthful live member-profile lifecycle readiness. It preserves the R1312 public experience, 19,103-profile corpus, 254 Assistant routes, adaptive navigation, monitoring, external owner alerts, pricing and member/reviewer architecture. The membership runtime now syntax-gates all critical member/reviewer/preflight modules before startup and performs a production-safe read-only preflight that requires a membership profile to exist in the accepted 19,103-profile public scope before it can count as edit/publish readiness evidence. Fresh live truth shows the single active verified rich membership is the bounded FR-TEST-SCC-OWNER-CONTROL profile, which is outside public scope and is therefore excluded from real-member proof. No fake public profile, fake representation authority, real charge or public member publication was manufactured to close the remaining evidence gap.",
+  "scope": "R1314 production successor focused on fail-closed member-profile production evidence. It preserves the R1313 public experience, 19,103-profile corpus, 254 Assistant routes, pricing, claim/reviewer/member architecture and owner alerting. R1314 adds an explicit durable control-profile registry, a reusable production-profile evidence policy, production-scoped owner member-lifecycle counts in the authenticated readiness API, and CI proving a control profile can never count as real public-member proof even if a future scope object accidentally contains it. Fresh live preflight v7 classifies the existing active membership as an explicit control profile and productionEvidenceEligible=false. No fake business, representation authority, real acceptance charge or public publication was manufactured.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -179,7 +179,7 @@
     "guideNewChatReset": true,
     "guideStatePersistence": "MEMORY_ONLY_CURRENT_PAGE",
     "guideRepetitionSuppression": true,
-    "preservedInRelease": "FR-NAV1.30.13-HF3.12.5"
+    "preservedInRelease": "FR-NAV1.30.14-HF3.12.6"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -195,7 +195,7 @@
     "li38Reason": "Franklin Local Investigator v38 is present as qualified research evidence, but dynamic publication requires accepted Local consumer routing plus point-of-use currentness; no unaccepted dynamic records are imported in this Assistant reliability release."
   },
   "preserved": [
-    "FR-NAV1.29.0-HF3.10 real-customer membership and fulfillment path",
+    "FR-NAV1.29.0-HF3.10 membership and fulfillment architecture",
     "Sports static-first and no-JS usefulness",
     "Directory membership-neutral ordinary ranking",
     "public profile direct contact actions",
@@ -275,7 +275,7 @@
       "registration/claim/profile-review acceptance",
       "first-value acceptance"
     ],
-    "preservedInRelease": "FR-NAV1.30.13-HF3.12.5",
+    "preservedInRelease": "FR-NAV1.30.14-HF3.12.6",
     "durableRequirement": "CONTINUE_SITE_WIDE_USER_ISSUE_FRICTION_FAILURE_MONITORING_AND_OWNER_VISIBLE_INCIDENT_AWARENESS_EVERY_MATERIAL_RELEASE",
     "navigationOverflowSignal": "PRIMARY_NAV_OVERFLOW",
     "navigationOverflowRule": "ONLY_EMIT_IF_PRIORITY_COLLAPSE_CANNOT_KEEP_PRIMARY_NAV_WITHIN_AVAILABLE_WIDTH",
@@ -294,14 +294,14 @@
       "HIGH": 60
     },
     "latestOwnerAuthenticatedIncidentSnapshot": {
-      "at": "2026-09-15T08:18:04.517Z",
+      "at": "2026-09-15T08:30:08.456Z",
       "ownerAuthenticated": true,
       "authMechanism": "HMAC_ADMIN_TOKEN_CONTROL_PLANE_PROOF",
       "openCritical": 0,
       "openHigh": 0,
       "noOpenP0P1": true,
       "externalDelivery": "RESEND_EMAIL_CONFIGURED",
-      "ownerAuthProofSha256": "c4b34ab69abe787171a1adba2653ca2509c08a3d925dc9c5c3eac323c89183e0"
+      "ownerAuthProofSha256": "a60e760db399541e89ddc0685677edae6381d9753288bf5c84d87d6b9f5b1cf7"
     },
     "syntheticSupportReconciliation": {
       "expected": 10,
@@ -313,8 +313,8 @@
       "mutationScope": "EXACT_IDS_ONLY_AFTER_ID_CATEGORY_NULL_PROFILE_AND_MESSAGE_HASH_MATCH"
     },
     "runtimeService": "srv-dabgvefqj5pc739vr4h0",
-    "runtimeDeploy": "dep-dakfu9h5efls73dsjct0",
-    "runtimeCommit": "0236a8ffe46e7b139ac1bfc57a6ba09e680f5bdd"
+    "runtimeDeploy": "dep-dakg3u5g1s2s73c7i5mg",
+    "runtimeCommit": "60bf4b1e48c2a124a4159b7caf0f7fe3485358a3"
   },
   "navigation": {
     "version": "FRANKLIN_PRIMARY_NAV_R1310",
@@ -356,10 +356,10 @@
     "englishSpanishParity": true,
     "spanishLocalizedRoutes": true,
     "noJsFallback": "existing static header preserved; runtime enhancement does not remove destination routes",
-    "preservedInRelease": "FR-NAV1.30.13-HF3.12.5",
+    "preservedInRelease": "FR-NAV1.30.14-HF3.12.6",
     "inactiveForBusinessColor": "MATCHES_OTHER_INACTIVE_PRIMARY_NAV_ITEMS"
   },
-  "productionPromotionFrom": "FR-NAV1.30.12-HF3.12.4",
+  "productionPromotionFrom": "FR-NAV1.30.13-HF3.12.5",
   "communityConnector": {
     "version": "FRANKLIN_COMMUNITY_CONNECTOR_R1311",
     "publicEntryPoint": "FRANKLIN_ASSISTANT_REMAINS_FIRST_TOP_OF_HOME_ACTION",
@@ -394,25 +394,31 @@
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1312.md"
   },
   "memberProfileProductionReadiness": {
-    "version": "FRANKLIN_MEMBER_PATH_PREFLIGHT_V6",
-    "preflightSchema": "franklin.readonly-owner-preflight.v6",
-    "observedAt": "2026-09-15T08:18:04.018Z",
+    "version": "FRANKLIN_MEMBER_PATH_PREFLIGHT_V7",
+    "preflightSchema": "franklin.readonly-owner-preflight.v7",
+    "observedAt": "2026-09-15T08:30:07.888Z",
     "publicProfileScopeCount": 19103,
     "reviewerControlConfigured": true,
     "activeVerifiedRichMembershipProfiles": 1,
+    "activeControlMembershipProfiles": 1,
     "activeVerifiedRichMembershipProfilesInPublicScope": 0,
     "realPublicMemberCandidateAvailable": false,
     "ownerControlProfile": "FR-TEST-SCC-OWNER-CONTROL",
+    "ownerControlProfileExplicitlyRegistered": true,
     "ownerControlProfilePublicScopePresent": false,
+    "ownerControlProfileProductionEvidenceEligible": false,
     "activeReviewedPublications": 0,
     "exactPublicReadbackReceipts": 0,
     "readyForControlledRealPublicMemberPublication": false,
     "productionProofComplete": false,
     "priorFullIsolatedAcceptanceRun": 34921029158,
     "priorFullIsolatedAcceptanceConclusion": "success",
+    "r1314CiRun": 34947222070,
+    "r1314CiConclusion": "success",
     "realChargeCreatedForAcceptance": false,
     "fakePublicProfileCreated": false,
-    "evidence": "MEMBER_PROFILE_PRODUCTION_PATH_READINESS__R1313.md"
+    "authenticatedOwnerLifecycleSummary": "AVAILABLE_ON_ADMIN_READINESS_PRODUCTION_SCOPE_AND_CONTROL_PROFILE_FILTERED",
+    "evidence": "MEMBER_PROFILE_PRODUCTION_PATH_READINESS__R1314.md"
   },
   "r1313": {
     "version": "FR-NAV1.30.13-HF3.12.5",
@@ -425,5 +431,23 @@
     "outreachGate": "NOT_READY_PENDING_REAL_PUBLIC_MEMBER_PRODUCTION_PROOF_AND_INDEPENDENT_SRE_REVENUE_VERIFICATION",
     "outreachSent": false,
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1313.md"
+  },
+  "r1314": {
+    "version": "FR-NAV1.30.14-HF3.12.6",
+    "runtimeCommit": "60bf4b1e48c2a124a4159b7caf0f7fe3485358a3",
+    "runtimeDeploy": "dep-dakg3u5g1s2s73c7i5mg",
+    "runtimeStatus": "LIVE",
+    "controlProfileRegistry": "data/member-control-profiles.json",
+    "productionProfilePolicy": "lib/member-profile-policy.js",
+    "controlProfileFailClosed": true,
+    "ownerMemberLifecycleCounts": "AUTHENTICATED_ADMIN_READINESS",
+    "ciRun": 34947222070,
+    "ciConclusion": "success",
+    "livePublicScopeProfiles": 19103,
+    "liveProductionEligibleMemberCandidates": 0,
+    "firstRealPublicMemberLifecycleProof": "PENDING_GENUINELY_AUTHORIZED_PUBLIC_PROFILE_MEMBER",
+    "outreachGate": "NOT_READY_PENDING_REAL_PUBLIC_MEMBER_PRODUCTION_PROOF_AND_INDEPENDENT_SRE_REVENUE_VERIFICATION",
+    "outreachSent": false,
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1314.md"
   }
 }
