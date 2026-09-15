@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.10-HF3.12.2",
+  "release": "FR-NAV1.30.11-HF3.12.3",
   "date": "2026-09-15",
-  "base": "FR-NAV1.30.9-HF3.12.1",
+  "base": "FR-NAV1.30.10-HF3.12.2",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "Launch-day adaptive-navigation successor on top of the R1309 compact navigation and R1308 site-wide owner issue monitoring release. The primary header now follows an explicit maximum-visible single-line rule: every useful top-level destination is shown whenever the available width permits it, and only the lowest-priority items are moved into More as space tightens. The browser measures the actual rendered header width instead of relying on coarse fixed breakpoints, so My Franklin and Help Center can remain visible on wider desktops while shrinking layouts progressively move Help Center, My Franklin, Community, Today and other lower-priority destinations into More before higher-usage Ask Franklin, Find Local, Get It Done and revenue-critical For Business. English and Spanish routes are mapped explicitly. The existing progressive Franklin Assistant guide, 19,103 profiles, 254 Assistant routes, membership/Stripe runtime, persistent issue/incident monitoring, Owner Console visibility, privacy and no-loss protections remain preserved.",
+  "scope": "Assistant-first Franklin community-connector successor on top of the R1310 adaptive maximum-visible one-line navigation and R1308 site-wide issue monitoring release. Franklin Assistant remains the first public action at the top of the homepage for residents and other non-business visitors. The surrounding opening copy now frames Franklin Navigator as a local community network, and an immediate community-action layer connects users to Today, Find Local, Get It Done, Things to Do, Community and My Franklin without displacing the Assistant. Business/professional/organization messaging emphasizes free profile claiming/correction and optional Community Membership as participation in the Franklin community rather than a paid directory upgrade. English and Spanish home experiences are enhanced in parity by the existing homepage runtime. Existing 19,103 profiles, 254 Assistant routes, adaptive navigation, membership/Stripe runtime, monitoring, owner incident visibility, SEO routes, privacy, accessibility and no-loss protections remain preserved.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -179,7 +179,7 @@
     "guideNewChatReset": true,
     "guideStatePersistence": "MEMORY_ONLY_CURRENT_PAGE",
     "guideRepetitionSuppression": true,
-    "preservedInRelease": "FR-NAV1.30.10-HF3.12.2"
+    "preservedInRelease": "FR-NAV1.30.11-HF3.12.3"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -275,7 +275,7 @@
       "registration/claim/profile-review acceptance",
       "first-value acceptance"
     ],
-    "preservedInRelease": "FR-NAV1.30.10-HF3.12.2",
+    "preservedInRelease": "FR-NAV1.30.11-HF3.12.3",
     "durableRequirement": "CONTINUE_SITE_WIDE_USER_ISSUE_FRICTION_FAILURE_MONITORING_AND_OWNER_VISIBLE_INCIDENT_AWARENESS_EVERY_MATERIAL_RELEASE",
     "navigationOverflowSignal": "PRIMARY_NAV_OVERFLOW",
     "navigationOverflowRule": "ONLY_EMIT_IF_PRIORITY_COLLAPSE_CANNOT_KEEP_PRIMARY_NAV_WITHIN_AVAILABLE_WIDTH",
@@ -320,7 +320,27 @@
     "responsiveRefit": "ResizeObserver + font-ready + initial refit",
     "englishSpanishParity": true,
     "spanishLocalizedRoutes": true,
-    "noJsFallback": "existing static header preserved; runtime enhancement does not remove destination routes"
+    "noJsFallback": "existing static header preserved; runtime enhancement does not remove destination routes",
+    "preservedInRelease": "FR-NAV1.30.11-HF3.12.3"
   },
-  "productionPromotionFrom": "FR-NAV1.30.9-HF3.12.1"
+  "productionPromotionFrom": "FR-NAV1.30.10-HF3.12.2",
+  "communityConnector": {
+    "version": "FRANKLIN_COMMUNITY_CONNECTOR_R1311",
+    "publicEntryPoint": "FRANKLIN_ASSISTANT_REMAINS_FIRST_TOP_OF_HOME_ACTION",
+    "implementation": "EXISTING_HF36_HOMEPAGE_ENHANCEMENT_LAYER_PLUS_R1311_CSS",
+    "positioning": "LOCAL_COMMUNITY_NETWORK_AND_CONNECTOR_WITHOUT_FALSE_INSTITUTIONAL_STATUS",
+    "immediateCommunityPaths": [
+      "Today",
+      "Find Local",
+      "Get It Done",
+      "Things to Do",
+      "Community",
+      "My Franklin"
+    ],
+    "directoryRole": "STRONG_DISCOVERY_LAYER_INSIDE_BROADER_COMMUNITY_EXPERIENCE",
+    "businessParticipation": "FREE_PROFILE_CLAIM_AND_FACT_CORRECTION_PLUS_OPTIONAL_COMMUNITY_MEMBERSHIP",
+    "paidAccuracyGate": false,
+    "englishSpanishParity": true,
+    "noGenericHomepageDetourForProfileOutreach": true
+  }
 }
