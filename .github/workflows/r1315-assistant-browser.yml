@@ -1,0 +1,34 @@
+name: R1315 Franklin Assistant browser acceptance
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/assets/franklin-assistant-r1315.js'
+      - 'dist/assets/hf36.js'
+      - 'dist/index.html'
+      - 'dist/assistant/index.html'
+      - 'dist/es/asistente/index.html'
+      - '.github/workflows/r1315-assistant-browser.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-controller:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check dist/assets/franklin-assistant-r1315.js
+          node --check dist/assets/hf36.js
+      - name: R1315 contracts
+        run: |
+          grep -F "FR-NAV1.30.15-HF3.12.7" dist/assets/franklin-assistant-r1315.js
+          grep -F "If the roof is leaking now" dist/assets/franklin-assistant-r1315.js
+          grep -F "/assets/franklin-assistant-r1315.js?v=frnav1315" dist/assets/hf36.js
+          grep -F "/assets/hf36.js?v=frnav1315" dist/assistant/index.html
+          grep -F "/assets/hf36.js?v=frnav1315" dist/es/asistente/index.html
