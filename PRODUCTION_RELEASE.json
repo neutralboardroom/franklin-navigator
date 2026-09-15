@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.4-HF3.11.4",
+  "release": "FR-NAV1.30.5-HF3.11.5",
   "date": "2026-09-14",
-  "base": "FR-NAV1.30.3-HF3.11.3",
+  "base": "FR-NAV1.30.4-HF3.11.4",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "Launch-day Franklin Assistant profile-conversation successor. Fixes a real service-provider conversation defect: requests such as 'name the 3 best roofers in town' now trigger the local profile path immediately instead of returning a generic offer, and short affirmative follow-ups such as 'ok', 'yes', 'sure' or 'show me' continue the prior local-service request instead of repeating the offer. The Assistant transparently avoids unsupported 'best' endorsements while naming the requested number of matching Franklin-area public profiles and showing their contact/profile actions. Grounded OpenAI answering, verified Franklin data, current-web fallback, reading-first chat behavior, privacy disclosures, emergency handling, Spanish, 19,103 profiles and 254 Assistant routes remain preserved.",
+  "scope": "Launch-day Franklin Assistant generalized conversation-routing successor. Extends the R1304 roofer/service repair to all local-provider categories and the full 254-route Assistant surface: explicit find/show/name/best/top/recommend/contact requests attempt directory matches even outside the fixed service taxonomy; requested counts 1-5 work in numerals and common English/Spanish number words; short affirmative and contact follow-ups continue the prior directory request; website/phone/email follow-ups filter to profiles that actually expose those fields; unsupported 'best' claims are transparently converted to relevance matches rather than endorsements; explicit source/link/application/more-details requests can surface the best relevant Franklin route from the 254-route set; and the runtime now forces plain-text AI answers so Markdown markers such as ** no longer appear literally. Grounded OpenAI answering, official/source-backed fallback, reading-first chat UX, privacy disclosures, Spanish, 19,103 profiles, 254 Assistant routes, membership and safety protections remain preserved.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -24,7 +24,7 @@
     "corruptRasterReplaced": true
   },
   "assistant": {
-    "version": "FR-NAV1.30.4-HF3.11.4",
+    "version": "FR-NAV1.30.5-HF3.11.5",
     "mode": "ONE_DIRECT_ANSWER_CHAT_GROUNDED_LLM_PRIMARY",
     "routeDataRelease": "FR-NAV1.29.2-HF3.10.2",
     "verifiedDirectoryBinding": "/data/discovery/manifest.json",
@@ -94,12 +94,12 @@
     "fullScreenControl": true,
     "legacyR27ModalSuperseded": true,
     "stuckLoadingRaceFixed": true,
-    "canonicalController": "/assets/franklin-assistant-r1304.js",
+    "canonicalController": "/assets/franklin-assistant-r1305.js",
     "chatStyles": "/assets/franklin-assistant-chat-r1298.css",
     "contextualFollowUps": "SHORT_OR_PRONOUN_FOLLOWUPS_REUSE_CURRENT_PAGE_CONTEXT_WITHOUT_PERSISTENCE",
     "failureFallback": "VISIBLE_NON_STUCK_ERROR_WITH_FRANKLIN_HELP_LINKS",
     "loaderFailureFallback": "VISIBLE_CHAT_STYLE_RETRY_PANEL_WITH_LEGACY_POPUP_SUPPRESSED",
-    "productionPromotionFrom": "FR-NAV1.30.3-HF3.11.3",
+    "productionPromotionFrom": "FR-NAV1.30.4-HF3.11.4",
     "readingFirstScroll": true,
     "composerFocusAfterAnswer": false,
     "respectUserScroll": true,
@@ -132,8 +132,14 @@
     "serverRequestTimeoutMs": 25000,
     "privacyDisclosure": "ENGLISH_AND_SPANISH_HOME_ASSISTANT_AND_PRIVACY_PAGES_DISCLOSE_SERVER_OPENAI_PROCESSING; RAW_CHAT_NOT_SAVED_TO_MY_FRANKLIN; ATTACHMENTS_DEVICE_LOCAL_IN_CURRENT_FLOW",
     "profileConversationFix": true,
-    "bestProviderHandling": "DO_NOT_CLAIM_OBJECTIVE_BEST; IMMEDIATELY SHOW REQUESTED_COUNT_OF_RELEVANCE_MATCHED_PUBLIC_PROFILES WITH NON_ENDORSEMENT DISCLOSURE",
-    "affirmativeFollowUpHandling": "OK_YES_SURE_SHOW_ME_CONTINUE_PRIOR_LOCAL_SERVICE_PROFILE_REQUEST"
+    "bestProviderHandling": "RELEVANCE_MATCHES_NOT_OBJECTIVE_BEST_OR_ENDORSEMENTS",
+    "affirmativeFollowUpHandling": "OK_YES_SURE_SHOW_ME_CONTINUE_PRIOR_LOCAL_SERVICE_PROFILE_REQUEST",
+    "generalizedProfileIntent": true,
+    "genericDirectoryFallback": true,
+    "profileFollowUpContinuity": "AFFIRMATIVE_AND_CONTACT_FOLLOWUPS_REUSE_PRIOR_DIRECTORY_QUERY",
+    "requestedProfileCount": "1_TO_5_NUMERALS_AND_COMMON_ENGLISH_SPANISH_NUMBER_WORDS",
+    "routeFollowUpHandling": "EXPLICIT_SOURCE_LINK_APPLICATION_DETAILS_REQUESTS_USE_ALL_254_ASSISTANT_ROUTES",
+    "runtimePlainTextAnswers": true
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
