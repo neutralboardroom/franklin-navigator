@@ -2,14 +2,23 @@
 // Optional, bounded READ-ONLY deployment check. Never grants a role, changes account
 // verification, creates a session, publishes content, or performs a provider write.
 const crypto=require('node:crypto');
+const fs=require('node:fs');
+const path=require('node:path');
 const digest=value=>crypto.createHash('sha256').update(String(value)).digest('hex');
+function publicProfileScope(){
+  try{const parsed=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/member-profile-scope.json'),'utf8'));return parsed?.profiles&&typeof parsed.profiles==='object'?parsed.profiles:{};}catch{return {};}
+}
 function settings(env){
   const accountId=String(env.OWNER_REVIEW_PREFLIGHT_ACCOUNT||'').trim();
   if(!accountId)return null;
   const emailSha256=String(env.OWNER_REVIEW_PREFLIGHT_EMAIL_SHA256||'').trim();
   const assignmentSha256=String(env.OWNER_REVIEW_PREFLIGHT_ASSIGNMENT_SHA256||'').trim();
   if(!/^acct_[A-Za-z0-9]{8,80}$/.test(accountId)||!(/^[a-f0-9]{64}$/.test(emailSha256)&&/^[a-f0-9]{64}$/.test(assignmentSha256)))throw Error('PREFLIGHT_CONFIGURATION_INVALID');
-  return{accountId,emailSha256,assignmentSha256};
+  const memberReviewersConfigured=String(env.MEMBER_REVIEWERS||'').split(',').map(x=>x.trim()).filter(Boolean).length>0;
+  const ownerReviewerBindingConfigured=Boolean(String(env.OWNER_REVIEWER_BINDING||'').trim());
+  const reviewerAccountBindingsConfigured=Boolean(String(env.REVIEWER_ACCOUNT_BINDINGS||'').trim()&&String(env.REVIEWER_ACCOUNT_BINDINGS||'').trim()!=='[]');
+  const reviewerControlConfigured=ownerReviewerBindingConfigured||(memberReviewersConfigured&&reviewerAccountBindingsConfigured);
+  return{accountId,emailSha256,assignmentSha256,memberReviewersConfigured,ownerReviewerBindingConfigured,reviewerAccountBindingsConfigured,reviewerControlConfigured};
 }
 async function inspect(client,cfg){
   await client.query('BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
@@ -19,7 +28,7 @@ async function inspect(client,cfg){
     const a=found.rows.length===1?found.rows[0]:null;
     const checks={exactlyOneAccount:found.rows.length===1,franklinAccount:a?.community==='FRANKLIN_TN',active:a?.state==='ACTIVE',expectedEmailMatches:Boolean(a&&digest(a.email_normalized)===cfg.emailSha256),emailVerified:a?.email_verified===true,credentialPresent:a?.credential_present===true};
     const ok=Object.values(checks).every(x=>x===true);
-    let memberships=null,reviewHistory=null,authenticatedLifecycle=null,memberWorkflow=null;
+    let memberships=null,reviewHistory=null,authenticatedLifecycle=null,memberWorkflow=null,memberPathReadiness=null;
     if(ok){
       const m=await client.query(`SELECT count(*)::integer AS total,count(*) FILTER (WHERE m.status IN ('ACTIVE','ACTIVE_CANCELING','GRACE') AND e.access_state IN ('ACTIVE','ACTIVE_CANCELING','GRACE') AND (e.expires_at IS NULL OR e.expires_at>now()))::integer AS active_access,count(*) FILTER (WHERE m.first_value_completed_at IS NOT NULL)::integer AS first_value_recorded FROM franklin_memberships m LEFT JOIN franklin_entitlements e USING(membership_id) WHERE m.account_id=$1`,[cfg.accountId]);
       memberships=m.rows[0];
@@ -58,13 +67,23 @@ async function inspect(client,cfg){
         LEFT JOIN franklin_member_drafts d ON d.account_id=m.account_id AND d.profile_id=m.profile_id
         LEFT JOIN franklin_representation_reviews r ON r.account_id=m.account_id AND r.profile_id=m.profile_id
         WHERE m.account_id=$1 ORDER BY m.created_at LIMIT 5`,[cfg.accountId]);
-      const rs=reviewSession.rows[0],ra=recentAuth.rows[0],acctSession=regularSession.rows[0],lc=lifecycle.rows[0];
+      const rs=reviewSession.rows[0],ra=recentAuth.rows[0],acctSession=regularSession.rows[0],lc=lifecycle.rows[0],profileScope=publicProfileScope();
       reviewHistory={reviewerSchemaAvailable:schemas.reviewer_schema_available===true,publicationSchemaAvailable:schemas.publication_schema_available===true,valueSchemaAvailable:schemas.value_schema_available===true,draftSchemaAvailable:schemas.draft_schema_available===true,representationSchemaAvailable:schemas.representation_schema_available===true,activeReviewerSessions:Number(rs.active_sessions||0),latestReviewerSessionCreatedAt:rs.latest_created_at||null,latestReviewerSessionExpiresAt:rs.latest_expires_at||null,recentPasswordAuthenticatedReviewerEvents:Number(ra.recent_auth_events||0),latestPasswordAuthenticatedReviewerAt:ra.latest_auth_at||null};
       authenticatedLifecycle={activeRegularAccountSessions:Number(acctSession.active_sessions||0),latestRegularAccountSessionSeenAt:acctSession.latest_seen_at||null,activeMemberships:Number(lc.active_memberships||0),verifiedProfileLinks:Number(lc.verified_profile_links||0),customerBoundMemberships:Number(lc.customer_bound_memberships||0),recurringSubscriptionBoundMemberships:Number(lc.recurring_subscription_bound_memberships||0),richProfileEntitlements:Number(lc.rich_profile_entitlements||0),growthDeskEntitlements:Number(lc.growth_desk_entitlements||0),localVisibilityEntitlements:Number(lc.local_visibility_entitlements||0),activeReviewedPublications:Number(lc.active_reviewed_publications||0),membershipFirstValueFlags:Number(lc.membership_first_value_flags||0),exactPublicReadbackReceipts:Number(lc.exact_public_readback_receipts||0)};
-      memberWorkflow=workflow.rows.map(row=>({profileReferenceSha256:digest(row.profile_id),authorityState:row.authority_state||null,memberBenefits:{richProfile:row.rich_profile===true,growthDesk:row.growth_desk===true,localVisibilityTools:row.local_visibility_tools===true},draftState:row.draft_state||null,draftRevision:row.draft_revision==null?null:Number(row.draft_revision),rightsConfirmed:row.rights_confirmed===true,representationState:row.representation_state||null,representationRevision:row.representation_revision==null?null:Number(row.representation_revision),reviewDecisions:Number(row.review_decisions||0),activePublications:Number(row.active_publications||0),valueReceipts:Number(row.value_receipts||0)}));
+      memberWorkflow=workflow.rows.map(row=>({profileReferenceSha256:digest(row.profile_id),profileId:row.profile_id,profileName:profileScope[row.profile_id]?.name||null,publicProfilePath:`/profiles/${encodeURIComponent(row.profile_id)}/`,authorityState:row.authority_state||null,memberBenefits:{richProfile:row.rich_profile===true,growthDesk:row.growth_desk===true,localVisibilityTools:row.local_visibility_tools===true},draftState:row.draft_state||null,draftRevision:row.draft_revision==null?null:Number(row.draft_revision),rightsConfirmed:row.rights_confirmed===true,representationState:row.representation_state||null,representationRevision:row.representation_revision==null?null:Number(row.representation_revision),reviewDecisions:Number(row.review_decisions||0),activePublications:Number(row.active_publications||0),valueReceipts:Number(row.value_receipts||0)}));
+      const candidate=memberWorkflow.length===1?memberWorkflow[0]:null;
+      const schemasReady=Object.values(reviewHistory).slice(0,5).every(v=>v===true);
+      const claimVerified=Boolean(candidate&&candidate.authorityState==='VERIFIED');
+      const purchaseBound=authenticatedLifecycle.activeMemberships===1&&authenticatedLifecycle.customerBoundMemberships===1&&authenticatedLifecycle.recurringSubscriptionBoundMemberships===1;
+      const editEligible=Boolean(claimVerified&&candidate?.memberBenefits?.richProfile&&candidate?.memberBenefits?.growthDesk&&candidate?.memberBenefits?.localVisibilityTools);
+      const reviewConfigured=Boolean(cfg.reviewerControlConfigured&&schemasReady);
+      const publishEligible=Boolean(editEligible&&reviewConfigured);
+      const publicPublicationPresent=authenticatedLifecycle.activeReviewedPublications>0;
+      const exactPublicReadbackPresent=authenticatedLifecycle.exactPublicReadbackReceipts>0;
+      memberPathReadiness={claimVerified,purchaseBound,editEligible,reviewConfigured,publishEligible,publicPublicationPresent,exactPublicReadbackPresent,readyForControlledMemberPublication:publishEligible,productionProofComplete:Boolean(publishEligible&&publicPublicationPresent&&exactPublicReadbackPresent)};
     }
     await client.query('COMMIT');
-    return{event:'FRANKLIN_OWNER_REVIEW_PREFLIGHT',schemaVersion:'franklin.readonly-owner-preflight.v4',at:new Date().toISOString(),mode:'READ_ONLY_NO_SESSION_OR_ROLE_CHANGE',accountReferenceSha256:digest(cfg.accountId),assignmentSha256:cfg.assignmentSha256,checks,eligibleForExplicitReviewerBinding:ok,memberships,reviewHistory,authenticatedLifecycle,memberWorkflow,actualPasswordAuthenticationPerformed:Boolean(reviewHistory&&reviewHistory.recentPasswordAuthenticatedReviewerEvents>0),providerPaymentVerificationPerformed:false,productMutations:0};
+    return{event:'FRANKLIN_OWNER_REVIEW_PREFLIGHT',schemaVersion:'franklin.readonly-owner-preflight.v5',at:new Date().toISOString(),mode:'READ_ONLY_NO_SESSION_OR_ROLE_CHANGE',accountReferenceSha256:digest(cfg.accountId),assignmentSha256:cfg.assignmentSha256,checks,reviewerConfiguration:{memberReviewersConfigured:cfg.memberReviewersConfigured,ownerReviewerBindingConfigured:cfg.ownerReviewerBindingConfigured,reviewerAccountBindingsConfigured:cfg.reviewerAccountBindingsConfigured,reviewerControlConfigured:cfg.reviewerControlConfigured},eligibleForExplicitReviewerBinding:ok,memberships,reviewHistory,authenticatedLifecycle,memberWorkflow,memberPathReadiness,actualPasswordAuthenticationPerformed:Boolean(reviewHistory&&reviewHistory.recentPasswordAuthenticatedReviewerEvents>0),providerPaymentVerificationPerformed:false,productMutations:0};
   }catch(error){await client.query('ROLLBACK').catch(()=>{});throw error;}
 }
 async function main(env=process.env){
