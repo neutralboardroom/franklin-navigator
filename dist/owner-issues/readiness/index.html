@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Franklin Member Outreach Readiness</title>
+<meta name="robots" content="noindex,nofollow,noarchive"/>
+<meta name="franklin-release" content="FR-NAV1.30.8-HF3.12.0"/>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="/assets/styles.css"/>
+<link rel="stylesheet" href="/assets/accessibility.css"/>
+<link rel="stylesheet" href="/assets/owner-issues-r1308.css?v=frnav1308"/>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header><div class="wrap top"><a class="brand" href="/"><img alt="" src="/assets/franklin-mark.svg" width="38" height="38"/><span class="brand-wordmark"><span class="brand-name">Franklin</span><span class="brand-subname">Navigator</span></span></a></div></header>
+<main id="main" class="wrap owner-issues">
+<div class="eyebrow">Owner operations</div><h1>Member prospect outreach readiness</h1>
+<p>This surface reads the live Franklin membership runtime and incident ledger. It does not create a charge.</p>
+<p><a class="button" href="/owner-issues/">Back to incidents</a></p>
+<section class="card owner-auth">
+<h2>Owner access</h2>
+<p>Enter the existing Franklin admin token. The token stays in this page's memory only.</p>
+<div class="owner-auth-row"><label for="readiness-token">Admin token</label><input id="readiness-token" type="password" autocomplete="off"/><button class="button primary" data-readiness-check type="button">Check live readiness</button></div>
+</section>
+<section data-readiness-output hidden>
+<div class="owner-summary"><article class="card"><span>Database / ledger</span><strong data-r-ledger>—</strong></article><article class="card"><span>Critical open</span><strong data-r-critical>—</strong></article><article class="card"><span>High open</span><strong data-r-high>—</strong></article></div>
+<div class="card"><h2>Live configuration</h2><dl class="owner-readiness-dl" data-r-config></dl></div>
+<div class="notice" data-r-note></div>
+</section>
+<div class="notice" data-r-error hidden></div>
+</main>
+<script defer src="/assets/franklin-owner-readiness-r1308.js?v=frnav1308"></script>
+</body>
+</html>
