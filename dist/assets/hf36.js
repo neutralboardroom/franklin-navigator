@@ -48,26 +48,30 @@ const loadScript=(src,key)=>new Promise((resolve,reject)=>{
 const normalizePrimaryNav=()=>{
   const nav=document.querySelector('header nav.hf34-nav');if(!nav)return;
   const es=location.pathname==='/es/'||location.pathname.startsWith('/es/');
-  const href=p=>es?(p==='/'?'/es/':'/es'+p):p;
-  const item=(label,path,cls='')=>`<a class="${cls}" href="${href(path)}">${label}</a>`;
+  const routes=es?{
+    assistant:'/es/asistente/',directory:'/es/directorio/',tasks:'/es/hacerlo/',today:'/es/hoy/',activities:'/es/actividades/',community:'/es/comunidad/',business:'/es/negocios/',mine:'/es/mi-franklin/',help:'/es/centro-de-ayuda/'
+  }:{
+    assistant:'/assistant/',directory:'/directory/',tasks:'/get-it-done/',today:'/today/',activities:'/activities/',community:'/community/',business:'/business-dashboard/',mine:'/my-franklin/',help:'/community-help-center/'
+  };
+  const item=(label,path,cls='')=>`<a class="${cls}" href="${path}">${label}</a>`;
   const labels=es?{
     ask:'Preguntar a Franklin',find:'Buscar local',tasks:'Resolver',today:'Hoy',things:'Qué hacer',community:'Comunidad',business:'Para negocios',more:'Más',mine:'Mi Franklin',help:'Centro de ayuda'
   }:{
     ask:'Ask Franklin',find:'Find Local',tasks:'Get It Done',today:'Today',things:'Things to Do',community:'Community',business:'For Business',more:'More',mine:'My Franklin',help:'Help Center'
   };
   nav.innerHTML=[
-    item(labels.ask,es?'/asistente/':'/assistant/','franklin-nav-ask'),
-    item(labels.find,'/directory/','franklin-nav-find'),
-    item(labels.tasks,'/get-it-done/','franklin-nav-tasks'),
-    item(labels.today,'/today/','franklin-nav-today'),
-    item(labels.things,'/activities/','franklin-nav-things'),
-    item(labels.community,'/community/','franklin-nav-community'),
-    item(labels.business,'/business-dashboard/','franklin-nav-priority-business'),
+    item(labels.ask,routes.assistant,'franklin-nav-ask'),
+    item(labels.find,routes.directory,'franklin-nav-find'),
+    item(labels.tasks,routes.tasks,'franklin-nav-tasks'),
+    item(labels.today,routes.today,'franklin-nav-today'),
+    item(labels.things,routes.activities,'franklin-nav-things'),
+    item(labels.community,routes.community,'franklin-nav-community'),
+    item(labels.business,routes.business,'franklin-nav-priority-business'),
     `<details class="hf34-nav-more franklin-nav-more"><summary>${labels.more}</summary><div class="hf34-nav-more-menu">`+
-      item(labels.today,'/today/','franklin-nav-more-compact-only')+
-      item(labels.community,'/community/','franklin-nav-more-community franklin-nav-more-compact-only')+
-      item(labels.mine,'/my-franklin/')+
-      item(labels.help,'/community-help-center/')+
+      item(labels.today,routes.today,'franklin-nav-more-compact-only')+
+      item(labels.community,routes.community,'franklin-nav-more-community franklin-nav-more-compact-only')+
+      item(labels.mine,routes.mine)+
+      item(labels.help,routes.help)+
     `</div></details>`
   ].join('');
   const path=location.pathname.replace(/\/+$/,'/')||'/';
