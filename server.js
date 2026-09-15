@@ -12,10 +12,11 @@ const {startSafePurchase} = require('./lib/purchase-reservations');
 const {createMemberWorkflow,VERSION:MEMBER_FULFILLMENT_VERSION}=require('./lib/member-fulfillment');
 const {createReviewerConsole,VERSION:REVIEWER_CONSOLE_VERSION}=require('./lib/reviewer-console');
 const {createIncidentMonitor,VERSION:ISSUE_MONITOR_VERSION}=require('./lib/incident-monitor');
+const {loadControlProfileRegistry,productionProfileRows}=require('./lib/member-profile-policy');
 const CHECKOUT_SAFETY_VERSION='FRANKLIN_CHECKOUT_SAFETY_1';
 const ISSUE_MONITOR_MIGRATION='FRANKLIN_ISSUE_MONITOR_1';
 
-const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.13-HF3.12.5';
+const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.14-HF3.12.6';
 const SCHEMA_VERSION = 'FRANKLIN_COMMERCE_SCHEMA_2';
 const PORT = Number(process.env.PORT || 10000);
 const PUBLIC_ORIGIN = String(process.env.PUBLIC_ORIGIN || 'https://franklinnavigator.com').replace(/\/$/, '');
@@ -214,6 +215,28 @@ async function initializeMemberFulfillment(){const sql=fs.readFileSync(path.join
 async function initializeReviewerConsole(){const sql=fs.readFileSync(path.join(__dirname,'schema','004_reviewer_console.sql'),'utf8');const digest=sha256(sql);await tx(async c=>{await c.query('select pg_advisory_xact_lock(3316403,0)');const prior=(await c.query('select digest_sha256 from franklin_schema_migrations where version=$1',[REVIEWER_CONSOLE_VERSION])).rows[0];if(prior&&prior.digest_sha256!==digest)throw new Error('reviewer_console_migration_digest_mismatch');if(!prior){await c.query(sql);await c.query('insert into franklin_schema_migrations(version,digest_sha256) values($1,$2)',[REVIEWER_CONSOLE_VERSION,digest]);}});}
 async function initializeIssueMonitoring(){const sql=fs.readFileSync(path.join(__dirname,'schema','005_issue_monitoring.sql'),'utf8');const digest=sha256(sql);await tx(async c=>{await c.query('select pg_advisory_xact_lock(3316404,0)');const prior=(await c.query('select digest_sha256 from franklin_schema_migrations where version=$1',[ISSUE_MONITOR_MIGRATION])).rows[0];if(prior&&prior.digest_sha256!==digest)throw new Error('issue_monitor_migration_digest_mismatch');if(!prior){await c.query(sql);await c.query('insert into franklin_schema_migrations(version,digest_sha256) values($1,$2)',[ISSUE_MONITOR_MIGRATION,digest]);}});}
 const profileNames=JSON.parse(fs.readFileSync(path.join(__dirname,'data/member-profile-scope.json'),'utf8')).profiles;
+const controlProfileRegistry=loadControlProfileRegistry();
+async function memberLifecycleSummary(){
+  const [pendingClaims,verifiedLinks,activeMemberships,submittedDrafts,publishedProfiles,readbacks]=await Promise.all([
+    query("select distinct profile_id from franklin_representation_reviews where state='PENDING'"),
+    query("select distinct profile_id from franklin_profile_links where authority_state='VERIFIED'"),
+    query(`select distinct m.profile_id from franklin_memberships m join franklin_accounts a on a.account_id=m.account_id join franklin_profile_links l on l.account_id=m.account_id and l.profile_id=m.profile_id join franklin_entitlements e using(membership_id) where a.state='ACTIVE' and l.authority_state='VERIFIED' and m.status in ('ACTIVE','ACTIVE_CANCELING','GRACE') and (m.current_period_end is null or m.current_period_end>now()) and e.access_state='ACTIVE' and e.rich_profile=true and (e.expires_at is null or e.expires_at>now())`),
+    query("select distinct profile_id from franklin_member_drafts where state='SUBMITTED'"),
+    query("select distinct profile_id from franklin_member_publications where removed_at is null"),
+    query(`select distinct v.profile_id from franklin_member_value_receipts v join franklin_member_publications p on p.profile_id=v.profile_id and p.revision=v.revision and p.fields_sha256=v.fields_sha256 and p.removed_at is null`)
+  ]);
+  const count=result=>productionProfileRows(result.rows,profileNames,controlProfileRegistry).length;
+  return {
+    publicProfileScopeCount:Object.keys(profileNames).length,
+    explicitControlProfileCount:controlProfileRegistry.size,
+    pendingClaims:count(pendingClaims),
+    verifiedPublicProfiles:count(verifiedLinks),
+    activePaidPublicProfileMemberships:count(activeMemberships),
+    submittedDrafts:count(submittedDrafts),
+    publishedProfiles:count(publishedProfiles),
+    exactPublicReadbacks:count(readbacks)
+  };
+}
 const reviewerConsole=createReviewerConsole({query,tx,readBody,sendJson,audit,rateLimit,profileNames});
 const memberWorkflow=createMemberWorkflow({reviewers:reviewerConsole.allowedReviewerIds.length?reviewerConsole.allowedReviewerIds.join(','):process.env.MEMBER_REVIEWERS,query,tx,requireSession,readBody,sendJson:reviewerConsole.sendMemberJson,normalizeProfile,newId,audit,accessAllowed,safeEqual,adminToken:ADMIN_TOKEN,rateLimit,trustedReviewer:reviewerConsole.trustedReviewer,prepareReviewBody:reviewerConsole.prepareReviewBody,persistEvidence:reviewerConsole.persistEvidence,assertTrustedReviewer:reviewerConsole.assertTrustedReviewer});
 async function route(req,res){const reqId=requestId();let routePath='/';try{const url=new URL(req.url,`http://${req.headers.host||'localhost'}`);routePath=url.pathname;if(await reviewerConsole.route(req,res,url,reqId,memberWorkflow,readyError))return;if(req.method==='OPTIONS'){const origin=String(req.headers.origin||'');if(origin&&!ALLOWED_ORIGINS.has(origin))throw publicError('ORIGIN_NOT_ALLOWED','This request origin is not allowed.',403);return sendEmpty(req,res,204);}enforceOrigin(req);
@@ -265,7 +288,7 @@ async function route(req,res){const reqId=requestId();let routePath='/';try{cons
   if(url.pathname.startsWith('/admin/')){const token=String(req.headers.authorization||'').replace(/^Bearer\s+/i,'');if(!ADMIN_TOKEN||!safeEqual(token,ADMIN_TOKEN))throw publicError('ADMIN_AUTH_REQUIRED','Administrative authorization required.',401);
     if(req.method==='GET'&&url.pathname==='/admin/incidents/summary')return sendJson(req,res,200,{ok:true,...await incidentMonitor.summary()},reqId);
     if(req.method==='GET'&&url.pathname==='/admin/incidents'){const severity=String(url.searchParams.get('severity')||'').split(',').filter(Boolean);const incidents=await incidentMonitor.list({status:url.searchParams.get('status')||'OPEN',severity,limit:url.searchParams.get('limit')||100});return sendJson(req,res,200,{ok:true,community:COMMUNITY,incidents,externalDelivery:incidentMonitor.externalDeliveryStatus()},reqId);}
-    if(req.method==='GET'&&url.pathname==='/admin/readiness'){const monitoring=await incidentMonitor.readinessSnapshot();return sendJson(req,res,200,{ok:true,community:COMMUNITY,release:RELEASE,monitoring,commerceEnabled:COMMERCE_ENABLED,stripeCheckoutSessionConfigured:stripeKeyConfigured(),stripeWebhookConfigured:stripeWebhookConfigured(),portalSessionConfigured:stripeKeyConfigured(),profileScopeCount:Object.keys(profileNames||{}).length,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION},reqId);}
+    if(req.method==='GET'&&url.pathname==='/admin/readiness'){const monitoring=await incidentMonitor.readinessSnapshot(),memberLifecycle=await memberLifecycleSummary();return sendJson(req,res,200,{ok:true,community:COMMUNITY,release:RELEASE,monitoring,memberLifecycle,commerceEnabled:COMMERCE_ENABLED,stripeCheckoutSessionConfigured:stripeKeyConfigured(),stripeWebhookConfigured:stripeWebhookConfigured(),portalSessionConfigured:stripeKeyConfigured(),profileScopeCount:Object.keys(profileNames||{}).length,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION},reqId);}
     const incidentAction=url.pathname.match(/^\/admin\/incidents\/(incident_[A-Za-z0-9]+)\/(acknowledge|resolve|suppress)$/);
     if(req.method==='POST'&&incidentAction){const body=await readBody(req);const state={acknowledge:'ACKNOWLEDGED',resolve:'RESOLVED',suppress:'SUPPRESSED'}[incidentAction[2]];const incident=await incidentMonitor.setStatus(incidentAction[1],state,body.resolutionNote||'');return sendJson(req,res,200,{ok:true,incident},reqId);}
 if(req.method==='POST'&&url.pathname==='/admin/payment-links/sync')throw publicError('LEGACY_PAYMENT_LINK_SYNC_RETIRED','Franklin checkout now uses server-created Stripe Checkout Sessions.',410);
@@ -364,4 +387,4 @@ setInterval(async()=>{try{await incidentMonitor.scanDerivedIssues();const delive
 async function shutdown(signal){console.log(JSON.stringify({event:'FRANKLIN_RUNTIME_SHUTDOWN',signal,at:nowIso()}));server.close(async()=>{if(pool)await pool.end().catch(()=>{});process.exit(0);});setTimeout(()=>process.exit(1),10000).unref();}
 process.on('SIGTERM',()=>shutdown('SIGTERM'));process.on('SIGINT',()=>shutdown('SIGINT'));process.on('unhandledRejection',error=>console.error(JSON.stringify({event:'UNHANDLED_REJECTION',error:String(error),at:nowIso()})));
 if(require.main===module)start();
-module.exports={route,processCanonicalEvent,handleEvent,configStatus,normalizeProfile,incidentMonitor,commerceEnabled:COMMERCE_ENABLED};
+module.exports={route,processCanonicalEvent,handleEvent,configStatus,normalizeProfile,memberLifecycleSummary,incidentMonitor,commerceEnabled:COMMERCE_ENABLED};
