@@ -1,4 +1,4 @@
-/* FR-NAV1.30.10-HF3.12.2 adaptive maximum-visible one-line navigation + site-wide issue monitoring + progressive Franklin Assistant */
+/* FR-NAV1.30.11-HF3.12.3 adaptive maximum-visible one-line navigation + site-wide issue monitoring + progressive Franklin Assistant */
 (()=>{'use strict';
 const loadCss=(href,key)=>{if(document.querySelector(`link[data-${key}]`))return;const l=document.createElement('link');l.rel='stylesheet';l.href=href;l.dataset[key.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]='1';document.head.append(l)};
 loadCss('/assets/hf3102-mobile.css?v=frnav1292','franklin-mobile-3102');
@@ -6,6 +6,7 @@ loadCss('/assets/hf3103-mobile.css?v=frnav1293','franklin-mobile-3103');
 loadCss('/assets/hf3105-brand.css?v=frnav1295','franklin-brand-3105');
 loadCss('/assets/franklin-assistant-chat-r1306.css?v=frnav1306','franklin-assistant-chat-r1306');
 loadCss('/assets/franklin-nav-r1310.css?v=frnav1310','franklin-nav-r1310');
+loadCss('/assets/r1311-community.css?v=frnav1311','franklin-community-r1311');
 if(!document.querySelector('script[data-franklin-established-positioning]')){const p=document.createElement('script');p.src='/assets/franklin-established-positioning.js?v=frnav1293';p.defer=true;p.dataset.franklinEstablishedPositioning='1';document.head.append(p)}
 const loadAssistantR1307=()=>{
   if(!document.querySelector('[data-navigator-bot]')||document.querySelector('script[data-franklin-assistant-r1307]'))return;
@@ -125,11 +126,38 @@ const normalizePrimaryNav=()=>{
   document.addEventListener('click',e=>{if(more?.open&&!more.contains(e.target))more.removeAttribute('open')});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&more?.open){more.removeAttribute('open');more.querySelector('summary')?.focus()}});
 };
+const installCommunityConnectorR1311=()=>{
+  const path=location.pathname.replace(/\\/+$/,'/')||'/';
+  if(path!=='/'&&path!=='/es/')return;
+  const es=path==='/es/';
+  const hero=document.querySelector('.r24-home-hero');if(!hero||document.querySelector('.r1311-community-actions'))return;
+  const eyebrow=hero.querySelector('.r24-hero-copy .eyebrow');
+  const lead=hero.querySelector('.r24-hero-lead');
+  if(eyebrow)eyebrow.textContent=es?'Franklin, conectado':'Franklin, connected';
+  if(lead)lead.textContent=es?'Empiece con Franklin Assistant para obtener una respuesta local directa y luego conéctese con las personas, lugares, organizaciones, actividades y recursos que pueden ayudarle.':'Start with Franklin Assistant for a direct local answer, then move naturally into the people, places, organizations, activities and resources that can help.';
+  const s=document.createElement('section');s.className='r1311-community-actions';s.setAttribute('aria-labelledby','r1311-community-heading');
+  s.innerHTML=es
+    ? '<div class="wrap"><div class="r1311-head"><div><div class="eyebrow">Su red comunitaria de Franklin</div><h2 id="r1311-community-heading">Pregunte primero. Luego conéctese con lo que necesita.</h2><p>Franklin Navigator reúne respuestas locales, información comunitaria actual, negocios, profesionales, organizaciones y próximos pasos prácticos en un solo lugar.</p></div></div><div class="r1311-action-grid"><a class="r1311-action" href="/es/hoy/"><strong>Hoy en Franklin</strong><span>Vea información local actual y novedades útiles.</span></a><a class="r1311-action" href="/es/directorio/"><strong>Buscar en Franklin</strong><span>Encuentre negocios, profesionales y organizaciones.</span></a><a class="r1311-action" href="/es/hacerlo/"><strong>Resolver tareas</strong><span>Avance en tareas locales cotidianas y próximos pasos.</span></a><a class="r1311-action" href="/es/actividades/"><strong>Actividades</strong><span>Explore actividades, deportes, aprendizaje y eventos locales.</span></a><a class="r1311-action" href="/es/comunidad/"><strong>Comunidad</strong><span>Descubra grupos, recursos y organizaciones locales.</span></a><a class="r1311-action" href="/es/mi-franklin/"><strong>Mi Franklin</strong><span>Guarde lugares y próximos pasos útiles para después.</span></a></div><p class="r1311-community-note">Los negocios, profesionales y organizaciones también pueden <a href="/claim-profile/">reclamar o corregir un perfil público gratis</a> y, de forma opcional, convertirse en <a href="/es/iniciar-membresia/">Miembros de la Comunidad de Franklin Navigator</a>.</p></div>'
+    : '<div class="wrap"><div class="r1311-head"><div><div class="eyebrow">Your Franklin community network</div><h2 id="r1311-community-heading">Ask first. Then connect with what you need.</h2><p>Franklin Navigator brings local answers, current community information, businesses, professionals, organizations and practical next steps into one place.</p></div></div><div class="r1311-action-grid"><a class="r1311-action" href="/today/"><strong>Today in Franklin</strong><span>See current local items and useful updates.</span></a><a class="r1311-action" href="/directory/"><strong>Find Local</strong><span>Find businesses, professionals and organizations.</span></a><a class="r1311-action" href="/get-it-done/"><strong>Get It Done</strong><span>Work through everyday local tasks and next steps.</span></a><a class="r1311-action" href="/activities/"><strong>Things to Do</strong><span>Explore activities, sports, learning and local events.</span></a><a class="r1311-action" href="/community/"><strong>Community</strong><span>Discover local groups, resources and organizations.</span></a><a class="r1311-action" href="/my-franklin/"><strong>My Franklin</strong><span>Save useful places and next steps for later.</span></a></div><p class="r1311-community-note">Businesses, professionals and organizations can also <a href="/claim-profile/">claim or correct a public profile free</a> and optionally become a <a href="/membership-start/">Franklin Navigator Community Member</a>.</p></div>';
+  hero.insertAdjacentElement('afterend',s);
+  const business=document.querySelector('.r24-business-section');
+  const copy=business?.querySelector('.r22-split>div:first-child');
+  if(copy){
+    const e=copy.querySelector('.eyebrow'),h=copy.querySelector('h2'),p=copy.querySelector('p'),actions=copy.querySelector('.actions');
+    if(e)e.textContent=es?'Para negocios, profesionales y organizaciones de Franklin':'For Franklin businesses, professionals & organizations';
+    if(h)h.textContent=es?'Participe en la comunidad de Franklin.':'Take part in the Franklin community.';
+    if(p)p.textContent=es?'Encuentre o reclame su perfil público gratis, mantenga correctos los datos básicos y, de forma opcional, conviértase en Miembro de la Comunidad de Franklin Navigator para tener una presencia comunitaria más completa y herramientas adicionales.':'Find or claim your public profile free, keep factual information accurate, and optionally become a Franklin Navigator Community Member for a stronger community presence and additional member tools.';
+    if(actions){actions.innerHTML=es?'<a class="button primary" href="/claim-profile/">Buscar o reclamar mi perfil</a><a class="button" href="/es/iniciar-membresia/">Membresía Comunitaria</a><a class="button" href="/member-profile-preview/">Vista previa del perfil</a>':'<a class="button primary" href="/claim-profile/">Find or claim my profile</a><a class="button" href="/membership-start/">Community Membership</a><a class="button" href="/member-profile-preview/">Preview member profile</a>'}
+    if(!copy.querySelector('.r1311-accuracy-note')){const n=document.createElement('p');n.className='fine-print r1311-accuracy-note';n.textContent=es?'No se requiere pago para corregir información factual ni para mantener la precisión básica del perfil público.':'Payment is not required to correct factual information or maintain basic public profile accuracy.';copy.append(n)}
+  }
+  const meta=document.querySelector('meta[name="franklin-release"]');if(meta)meta.content='FR-NAV1.30.11-HF3.12.3';
+};
 const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn,{once:true}):fn();
 ready(()=>{
   const body=document.body;
   if(!body)return;
   normalizePrimaryNav();
+  installCommunityConnectorR1311();
   loadScript('/assets/franklin-site-monitor-r1308.js?v=frnav1308','franklin-site-monitor-r1308').catch(()=>{});
   loadAssistantR1307();
   // R1297 fail-safe Franklin mark + favicon/install icon binding. The header uses the valid vector asset directly; if the request ever fails, the same mark is supplied as an inline data URI so a broken-image glyph is never shown.
