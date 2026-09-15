@@ -1,6 +1,8 @@
 /* FR-NAV1.30.11-HF3.12.3 — community connector first-impression layer.
    Assistant remains the primary public entry point; this layer adds immediate
-   community pathways without weakening search, directory, membership, or nav. */
+   community pathways without weakening search, directory, membership, or nav.
+   Owner-directed homepage cleanup: the older connected-needs bridge is hidden
+   on the English and Spanish homepages; the Situation Planner route remains. */
 .r1311-community-actions{
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);
@@ -67,6 +69,11 @@
 }
 .r1311-business-copy .fine-print{
   max-width:68ch;
+}
+/* The Assistant now owns connected-needs guidance on the homepage. Keep the
+   standalone Situation Planner route available without duplicating its bridge. */
+.hf36-home .hf35-home-bridge{
+  display:none!important;
 }
 @media(max-width:980px){
   .r1311-action-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
