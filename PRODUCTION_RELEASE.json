@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.8-HF3.12.0",
+  "release": "FR-NAV1.30.9-HF3.12.1",
   "date": "2026-09-14",
-  "base": "FR-NAV1.30.7-HF3.11.7",
+  "base": "FR-NAV1.30.8-HF3.12.0",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "Material launch-day site-wide user-friction monitoring and live member-journey readiness successor. Preserves the progressive Franklin Assistant guide and all working Franklin functionality while adding privacy-safe site/client instrumentation, persistent incident/event ledgers in the live membership runtime, severity classification, deduplication/recurrence counts, owner-visible incident and readiness surfaces, safe state transitions, derived scans for dead letters, stale checkout outcomes, entitlement mismatches, stuck claims and unresolved support, a signed Franklin-only SRE issue handoff contract, and configuration/authority-required treatment when no approved external notification channel is configured. Client monitoring observes broken assets, JS failures, API 4xx/5xx, failed fetches, severe latency, failed navigation actions and checkout cancellation without sending raw user text, secrets, passwords, tokens, cookies or payment credentials. Runtime startup now requires a redaction/dedup/resolution self-test. No prospect outreach is sent by this release.",
+  "scope": "Launch-day navigation and discoverability successor on top of the R1308 site-wide issue monitoring release. Makes the primary desktop navigation visibly prioritize resident and revenue-critical destinations in one compact line: Ask Franklin, Find Local, Get It Done, Today, Things to Do, Community, For Business and More. For Business is no longer buried inside Menu. More contains the lower-frequency My Franklin and Help Center items, and responsive breakpoints move only lower-priority items such as Today/Community into More when width requires it. Spanish localized routes are mapped explicitly rather than derived mechanically. The R1308 site-wide monitoring loader is retained and its script-loading bug is corrected so the public-site monitor actually loads before the Assistant. Progressive Franklin Assistant guide behavior, 19,103 profiles, 254 Assistant routes, membership/Stripe runtime, privacy and no-loss protections remain preserved.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -24,7 +24,7 @@
     "corruptRasterReplaced": true
   },
   "assistant": {
-    "version": "FR-NAV1.30.8-HF3.12.0",
+    "version": "FR-NAV1.30.7-HF3.11.7",
     "mode": "ONE_DIRECT_ANSWER_CHAT_GROUNDED_LLM_PRIMARY",
     "routeDataRelease": "FR-NAV1.29.2-HF3.10.2",
     "verifiedDirectoryBinding": "/data/discovery/manifest.json",
@@ -178,7 +178,8 @@
     "guideTopicChangeReset": true,
     "guideNewChatReset": true,
     "guideStatePersistence": "MEMORY_ONLY_CURRENT_PAGE",
-    "guideRepetitionSuppression": true
+    "guideRepetitionSuppression": true,
+    "preservedInRelease": "FR-NAV1.30.9-HF3.12.1"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -262,6 +263,47 @@
       "resolution state",
       "ledger persistence"
     ],
-    "ownerAlertingAuthority": "LOCAL_VISIBILITY_ONLY_UNTIL_APPROVED_SRE_EXTERNAL_DELIVERY_IS_CONFIGURED"
-  }
+    "ownerAlertingAuthority": "LOCAL_VISIBILITY_ONLY_UNTIL_APPROVED_SRE_EXTERNAL_DELIVERY_IS_CONFIGURED",
+    "publicSiteLoaderBugFixed": true,
+    "publicSiteMonitorLoadsVia": "loadScript('/assets/franklin-site-monitor-r1308.js')",
+    "acceptanceWorkflowRun": 34914420138,
+    "acceptanceConclusion": "success",
+    "acceptanceScope": [
+      "syntax/source contracts",
+      "existing runtime unit tests",
+      "R1308 issue-monitoring HTTP/Postgres acceptance",
+      "registration/claim/profile-review acceptance",
+      "first-value acceptance"
+    ]
+  },
+  "navigation": {
+    "version": "FRANKLIN_PRIMARY_NAV_R1309",
+    "desktopVisible": [
+      "Ask Franklin",
+      "Find Local",
+      "Get It Done",
+      "Today",
+      "Things to Do",
+      "Community",
+      "For Business",
+      "More"
+    ],
+    "moreDefault": [
+      "My Franklin",
+      "Help Center"
+    ],
+    "compactMoreAdds": [
+      "Today"
+    ],
+    "narrowMoreAdds": [
+      "Community"
+    ],
+    "forBusinessTopLevel": true,
+    "singleLineDesktop": true,
+    "responsivePolicy": "KEEP_HIGHEST_USAGE_AND_REVENUE_CRITICAL_DESTINATIONS_VISIBLE; MOVE_LOWER_PRIORITY_ITEMS_TO_MORE_ONLY_WHEN_WIDTH_REQUIRES",
+    "englishBusinessLabel": "For Business",
+    "spanishBusinessLabel": "Para negocios",
+    "spanishLocalizedRoutes": true
+  },
+  "productionPromotionFrom": "FR-NAV1.30.8-HF3.12.0"
 }
