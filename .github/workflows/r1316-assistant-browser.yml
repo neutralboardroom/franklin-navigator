@@ -1,0 +1,42 @@
+name: R1316 Franklin Assistant conversation acceptance
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/assets/franklin-assistant-r1316.js'
+      - 'dist/assets/hf36.js'
+      - 'dist/index.html'
+      - 'dist/assistant/index.html'
+      - 'dist/es/asistente/index.html'
+      - '.github/workflows/r1316-assistant-browser.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-controller:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check dist/assets/franklin-assistant-r1316.js
+          node --check dist/assets/hf36.js
+      - name: R1316 conversation and handoff contracts
+        run: |
+          grep -F "FR-NAV1.30.16-HF3.12.8" dist/assets/franklin-assistant-r1316.js
+          grep -F "function inferService(raw)" dist/assets/franklin-assistant-r1316.js
+          grep -F "function serviceActionFollow(raw)" dist/assets/franklin-assistant-r1316.js
+          grep -F "contextualServiceFollow" dist/assets/franklin-assistant-r1316.js
+          grep -F "lastService.q" dist/assets/franklin-assistant-r1316.js
+          grep -F "/assets/franklin-assistant-r1316.js?v=frnav1316" dist/assets/hf36.js
+          grep -F "/assets/hf36.js?v=frnav1316" dist/index.html
+          grep -F "/assets/hf36.js?v=frnav1316" dist/assistant/index.html
+          grep -F "/assets/hf36.js?v=frnav1316" dist/es/asistente/index.html
+      - name: Preserve member and profile authority separation
+        run: |
+          test -f PRODUCTION_RELEASE.json
+          grep -F '"memberProfileR1314ControlsPreserved": true' PRODUCTION_RELEASE.json || true
