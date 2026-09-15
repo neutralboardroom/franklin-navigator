@@ -1,0 +1,36 @@
+{
+  "schema": "franklin.member-prospect-outreach-readiness.v1",
+  "release": "FR-NAV1.30.11-HF3.12.3",
+  "date": "2026-09-15",
+  "community": "FRANKLIN_TN",
+  "status": "NOT_READY_FOR_10_PROSPECT_TEST",
+  "productBuildStatus": "QUALIFIED_PENDING_PRODUCTION_PROMOTION",
+  "reasons": [
+    "The current owner-authenticated live incident summary has not been freshly observed in this build session, so the no-open-P0/P1 requirement cannot be self-certified.",
+    "External owner notification delivery remains CONFIGURATION_AUTHORITY_REQUIRED; owner-console persistence/visibility exists, but no external destination has been invented."
+  ],
+  "passedEvidence": {
+    "mainCurrentSuccessorQualificationRun": 34920970447,
+    "mainCurrentSuccessorQualificationConclusion": "success",
+    "monitoringAndMemberJourneyAcceptanceRun": 34921029158,
+    "monitoringAndMemberJourneyAcceptanceConclusion": "success",
+    "monitoringHttpPostgres": true,
+    "secretsExcluded": true,
+    "deduplication": true,
+    "recurrenceCount": true,
+    "ownerAuthFailClosed": true,
+    "claimReviewerChecksPassed": 38,
+    "firstValueAcceptance": true,
+    "realCharges": 0,
+    "productionMutations": 0,
+    "profiles": 19103,
+    "assistantRoutes": 254
+  },
+  "requiredToOpenGate": [
+    "SRE/Owner Console reads the live owner-authenticated readiness/incident snapshot and confirms no unresolved CRITICAL or HIGH blocker that could materially harm the 10-recipient test.",
+    "SRE/Revenue Engine independently verifies the live promotion and controls the outreach."
+  ],
+  "outreachSent": false,
+  "platformAuthorityToSendOutreach": false,
+  "selfCertificationOfMissingEvidence": false
+}
