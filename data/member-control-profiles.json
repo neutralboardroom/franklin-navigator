@@ -1,0 +1,11 @@
+{
+  "schema": "franklin.member-control-profiles.v1",
+  "community": "FRANKLIN_TN",
+  "profiles": [
+    {
+      "profileId": "FR-TEST-SCC-OWNER-CONTROL",
+      "purpose": "OWNER_CONTROL_SYNTHETIC_MEMBERSHIP",
+      "productionEvidenceEligible": false
+    }
+  ]
+}
