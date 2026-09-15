@@ -5,13 +5,13 @@ const dns=require('node:dns');
 const net=require('node:net');
 const {URL}=require('node:url');
 const PORT=Number(process.env.PORT||10000);
-const RELEASE='FR-NAV1.30.16-HF3.12.8';
+const RELEASE='FR-NAV1.30.17-HF3.12.9';
 const ORIGINS=new Set(['https://franklinnavigator.com','https://www.franklinnavigator.com','https://franklin-navigator.onrender.com']);
 const BODY_LIMIT=32*1024,rate=new Map(),VERIFIED_AT='2026-09-14';
 const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||'').trim();
 const OPENAI_MODEL=String(process.env.OPENAI_MODEL||'gpt-5.6-luna').trim();
 const llmState={configured:Boolean(OPENAI_API_KEY),verified:false,lastCheckAt:null,error:null};
-const startupState={qualified:false,researchOk:false,generalConversationOk:false,roofLeakOk:false,liveApiOk:false,lastQualifiedAt:null};
+const startupState={qualified:false,researchOk:false,generalConversationOk:false,spanishConversationOk:false,roofLeakOk:false,liveApiOk:false,lastQualifiedAt:null};
 const now=()=>new Date().toISOString();
 const text=v=>String(v||'').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s+/g,' ').trim();
 const norm=v=>text(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9\s'&.-]/g,' ').replace(/\s+/g,' ').trim();
@@ -256,6 +256,72 @@ async function verifyGeneralConversationSet(){
   console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_general_conversation_set_passed':'franklin_general_conversation_set_failed',release:RELEASE,passed,total,singleCases:singles.length,contextThreads:threads.length,at:now()}));
   return ok;
 }
+async function verifySpanishConversationSet(){
+  const singles=[
+    {q:'¿Cómo funciona el reciclaje en Franklin?',contextualQ:'¿Cómo funciona el reciclaje en Franklin?',expect:/recicl|saneamiento|desechos|recolecci[oó]n/i},
+    {q:'¿Dónde puedo ver información de parques en Franklin?',contextualQ:'¿Dónde puedo ver información de parques en Franklin?',expect:/parque|recreaci[oó]n/i},
+    {q:'¿Qué transporte público hay en Franklin?',contextualQ:'¿Qué transporte público hay en Franklin?',expect:/transporte|autob[uú]s|tr[aá]nsito/i}
+  ];
+  const threads=[
+    {
+      first:'¿Cómo funciona el reciclaje en Franklin?',
+      second:'¿y la recolección de ramas?',
+      contextual:'¿Cómo funciona el reciclaje en Franklin? ¿y la recolección de ramas?',
+      firstExpect:/recicl|saneamiento|desechos|recolecci[oó]n/i,
+      secondExpect:/rama|recolecci[oó]n|saneamiento|desechos/i
+    },
+    {
+      first:'¿Qué transporte público hay en Franklin?',
+      second:'¿hay servicio accesible?',
+      contextual:'¿Qué transporte público hay en Franklin? ¿hay servicio accesible?',
+      firstExpect:/transporte|autob[uú]s|tr[aá]nsito/i,
+      secondExpect:/acces|transporte|servicio|tr[aá]nsito/i
+    },
+    {
+      first:'¿Cómo sé qué escuela corresponde a mi dirección?',
+      second:'¿qué necesita de mí?',
+      contextual:'¿Cómo sé qué escuela corresponde a mi dirección? ¿qué necesita de mí?',
+      firstExpect:/escuela|distrito|direcci[oó]n|zona/i,
+      secondExpect:/direcci[oó]n|calle|escuela|distrito/i
+    }
+  ];
+  const results=[];
+  for(const c of singles){
+    const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),30000);
+    try{
+      const r=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers:{'Content-Type':'application/json','Origin':'https://franklinnavigator.com'},body:JSON.stringify({q:c.q,contextualQ:c.contextualQ,language:'es',history:[]}),signal:ctl.signal});
+      const d=await r.json().catch(()=>({}));
+      const ok=r.ok&&d?.ok===true&&d?.answer&&/^llm_grounded_/.test(String(d?.answerMode||''))&&c.expect.test(String(d.answer))&&!isGenericClarification(d.answer);
+      results.push(ok);
+      console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_spanish_conversation_case_passed':'franklin_spanish_conversation_case_failed',release:RELEASE,question:c.q,httpStatus:r.status,answerMode:d?.answerMode||null,at:now()}));
+    }catch(e){
+      results.push(false);
+      console.error(JSON.stringify({event:'franklin_spanish_conversation_case_failed',release:RELEASE,question:c.q,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));
+    }finally{clearTimeout(timer)}
+  }
+  for(const c of threads){
+    const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),45000);
+    try{
+      const headers={'Content-Type':'application/json','Origin':'https://franklinnavigator.com'};
+      const r1=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers,body:JSON.stringify({q:c.first,contextualQ:c.first,language:'es',history:[]}),signal:ctl.signal});
+      const a=await r1.json().catch(()=>({}));
+      const firstOk=r1.ok&&a?.ok===true&&a?.answer&&c.firstExpect.test(String(a.answer))&&!isGenericClarification(a.answer);
+      const history=[{role:'user',content:c.first},{role:'assistant',content:String(a?.answer||'').slice(0,900)}];
+      const r2=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers,body:JSON.stringify({q:c.second,contextualQ:c.contextual,language:'es',history}),signal:ctl.signal});
+      const b=await r2.json().catch(()=>({}));
+      const secondOk=r2.ok&&b?.ok===true&&b?.answer&&c.secondExpect.test(String(b.answer))&&!isGenericClarification(b.answer);
+      const ok=firstOk&&secondOk;
+      results.push(ok);
+      console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_spanish_context_thread_passed':'franklin_spanish_context_thread_failed',release:RELEASE,first:c.first,second:c.second,firstMode:a?.answerMode||null,secondMode:b?.answerMode||null,at:now()}));
+    }catch(e){
+      results.push(false);
+      console.error(JSON.stringify({event:'franklin_spanish_context_thread_failed',release:RELEASE,first:c.first,second:c.second,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));
+    }finally{clearTimeout(timer)}
+  }
+  const total=singles.length+threads.length,passed=results.filter(Boolean).length,ok=results.length===total&&passed===total;
+  console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_spanish_conversation_set_passed':'franklin_spanish_conversation_set_failed',release:RELEASE,passed,total,singleCases:singles.length,contextThreads:threads.length,at:now()}));
+  return ok;
+}
 async function verifyRoofLeakConversation(){
   const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),30000);
   try{
@@ -292,7 +358,7 @@ selfTest();
 const server=http.createServer(async(req,res)=>{try{
   const u=new URL(req.url,'http://localhost');
   if(req.method==='OPTIONS'){allow(req,res);res.statusCode=204;return res.end()}
-  if(req.method==='GET'&&u.pathname==='/health')return json(req,res,200,{ok:true,release:RELEASE,mode:'DIRECT_ANSWER_WITH_GROUNDED_LLM_PRIMARY_AND_OFFICIAL_FIRST_FALLBACK',verifiedSnapshotDate:VERIFIED_AT,llmConfigured:llmState.configured,llmVerified:llmState.verified,llmLastCheckAt:llmState.lastCheckAt,llmVerificationError:llmState.error,startupQualified:startupState.qualified,startupChecks:{researchOk:startupState.researchOk,generalConversationOk:startupState.generalConversationOk,roofLeakOk:startupState.roofLeakOk,liveApiOk:startupState.liveApiOk},lastQualifiedAt:startupState.lastQualifiedAt,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()});
+  if(req.method==='GET'&&u.pathname==='/health')return json(req,res,200,{ok:true,release:RELEASE,mode:'DIRECT_ANSWER_WITH_GROUNDED_LLM_PRIMARY_AND_OFFICIAL_FIRST_FALLBACK',verifiedSnapshotDate:VERIFIED_AT,llmConfigured:llmState.configured,llmVerified:llmState.verified,llmLastCheckAt:llmState.lastCheckAt,llmVerificationError:llmState.error,startupQualified:startupState.qualified,startupChecks:{researchOk:startupState.researchOk,generalConversationOk:startupState.generalConversationOk,spanishConversationOk:startupState.spanishConversationOk,roofLeakOk:startupState.roofLeakOk,liveApiOk:startupState.liveApiOk},lastQualifiedAt:startupState.lastQualifiedAt,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()});
   if(req.method!=='POST'||(u.pathname!=='/api/research'&&u.pathname!=='/api/answer'))return json(req,res,404,{ok:false,error:'NOT_FOUND'});
   const o=String(req.headers.origin||'');if(o&&!ORIGINS.has(o))return json(req,res,403,{ok:false,error:'ORIGIN_NOT_ALLOWED'});
   if(!limited(clientKey(req),60))return json(req,res,429,{ok:false,error:'RATE_LIMITED'});
@@ -333,9 +399,10 @@ server.requestTimeout=25000;server.headersTimeout=10000;server.listen(PORT,'0.0.
   const researchOk=await verifyResearchContract();
   const liveOk=llmOk&&researchOk?await verifyLiveEndpoint():false;
   const generalConversationOk=llmOk&&researchOk?await verifyGeneralConversationSet():false;
+  const spanishConversationOk=llmOk&&researchOk?await verifySpanishConversationSet():false;
   const roofLeakOk=await verifyRoofLeakConversation();
-  startupState.researchOk=researchOk;startupState.liveApiOk=liveOk;startupState.generalConversationOk=generalConversationOk;startupState.roofLeakOk=roofLeakOk;
-  startupState.qualified=Boolean(llmOk&&researchOk&&liveOk&&generalConversationOk&&roofLeakOk);
-  if(startupState.qualified){startupState.lastQualifiedAt=now();console.log(JSON.stringify({event:'franklin_assistant_startup_qualified',release:RELEASE,llmOk,researchOk,liveOk,generalConversationOk,roofLeakOk,at:startupState.lastQualifiedAt}))}
-  else console.error(JSON.stringify({event:'franklin_assistant_startup_acceptance_incomplete',release:RELEASE,llmOk,researchOk,liveOk,generalConversationOk,roofLeakOk,at:now()}))
+  startupState.researchOk=researchOk;startupState.liveApiOk=liveOk;startupState.generalConversationOk=generalConversationOk;startupState.spanishConversationOk=spanishConversationOk;startupState.roofLeakOk=roofLeakOk;
+  startupState.qualified=Boolean(llmOk&&researchOk&&liveOk&&generalConversationOk&&spanishConversationOk&&roofLeakOk);
+  if(startupState.qualified){startupState.lastQualifiedAt=now();console.log(JSON.stringify({event:'franklin_assistant_startup_qualified',release:RELEASE,llmOk,researchOk,liveOk,generalConversationOk,spanishConversationOk,roofLeakOk,at:startupState.lastQualifiedAt}))}
+  else console.error(JSON.stringify({event:'franklin_assistant_startup_acceptance_incomplete',release:RELEASE,llmOk,researchOk,liveOk,generalConversationOk,spanishConversationOk,roofLeakOk,at:now()}))
 })().catch(e=>console.error(JSON.stringify({event:'franklin_assistant_startup_acceptance_incomplete',release:RELEASE,error:String(e?.message||e).slice(0,120),at:now()}))) });
