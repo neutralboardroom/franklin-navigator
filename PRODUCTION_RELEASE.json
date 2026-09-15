@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.14-HF3.12.6",
+  "release": "FR-NAV1.30.15-HF3.12.7",
   "date": "2026-09-15",
-  "base": "FR-NAV1.30.13-HF3.12.5",
+  "base": "FR-NAV1.30.14-HF3.12.6",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1314 production successor focused on fail-closed member-profile production evidence. It preserves the R1313 public experience, 19,103-profile corpus, 254 Assistant routes, pricing, claim/reviewer/member architecture and owner alerting. R1314 adds an explicit durable control-profile registry, a reusable production-profile evidence policy, production-scoped owner member-lifecycle counts in the authenticated readiness API, and CI proving a control profile can never count as real public-member proof even if a future scope object accidentally contains it. Fresh live preflight v7 classifies the existing active membership as an explicit control profile and productionEvidenceEligible=false. No fake business, representation authority, real acceptance charge or public publication was manufactured.",
+  "scope": "R1315 production successor focused on Franklin Assistant conversational reliability while preserving R1314 member-profile readiness hardening, the 19,103-profile corpus, 254 Assistant routes, pricing, claim/reviewer/member architecture, monitoring and owner alerts. A live production bug was found in the general Assistant path: non-known questions could throw because the research function was missing, while narrower known-answer smoke tests still passed. R1315 restores the research path, adds exact roof-leak/repair two-turn acceptance, adds a resilient browser fallback and cache-busted browser controller, and keeps current-conversation context intact. No member-profile authority, payment, publication, directory ranking or public profile facts are weakened.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -24,7 +24,7 @@
     "corruptRasterReplaced": true
   },
   "assistant": {
-    "version": "FR-NAV1.30.7-HF3.11.7",
+    "version": "FR-NAV1.30.15-HF3.12.7",
     "mode": "ONE_DIRECT_ANSWER_CHAT_GROUNDED_LLM_PRIMARY",
     "routeDataRelease": "FR-NAV1.29.2-HF3.10.2",
     "verifiedDirectoryBinding": "/data/discovery/manifest.json",
@@ -94,7 +94,7 @@
     "fullScreenControl": true,
     "legacyR27ModalSuperseded": true,
     "stuckLoadingRaceFixed": true,
-    "canonicalController": "/assets/franklin-assistant-r1307.js",
+    "canonicalController": "/assets/franklin-assistant-r1315.js",
     "chatStyles": "/assets/franklin-assistant-chat-r1306.css",
     "contextualFollowUps": "SHORT_OR_PRONOUN_FOLLOWUPS_REUSE_CURRENT_PAGE_CONTEXT_WITHOUT_PERSISTENCE",
     "failureFallback": "VISIBLE_NON_STUCK_ERROR_WITH_FRANKLIN_HELP_LINKS",
@@ -113,7 +113,7 @@
     "responsePolicy": "ONE_DIRECT_ANSWER_ONLY",
     "failureLinks": false,
     "answerRuntime": "https://franklin-navigator-assistant.onrender.com/api/answer",
-    "runtimeRelease": "FR-NAV1.30.5-HF3.11.5",
+    "runtimeRelease": "FR-NAV1.30.15-HF3.12.7",
     "runtimeLlmOptional": false,
     "runtimeLlmConfigured": true,
     "profileUse": "INTERNAL_PLAIN_TEXT_ONLY_ON_EXPLICIT_FIND_OR_CONTACT_INTENT",
@@ -123,11 +123,11 @@
     "homeEntryCopy": "DIRECT_ANSWER_POSITIONING",
     "legacyR38FollowthroughLoadedOnAssistantEntry": false,
     "legacyR38FollowthroughLoadedOnHomeEntry": false,
-    "failureRecovery": "RETRY_ONLY_NO_REDIRECT_BUTTONS",
+    "failureRecovery": "DIRECT_SAFE_BROWSER_FALLBACK_FOR_QUALIFIED_KNOWN_INTENTS_PLUS_RETRY_FOR_RUNTIME_FAILURE",
     "runtimeSelfTests": true,
     "runtimeLlmVerified": true,
     "runtimeLlmModel": "gpt-5.6-luna",
-    "runtimeLlmVerification": "BOOT_GROUNDED_ROOF_PERMIT_SMOKE_THROUGH_OPENAI_RESPONSES_API",
+    "runtimeLlmVerification": "BOOT_GROUNDED_ROOF_PERMIT_PLUS_EXACT_TWO_TURN_ROOF_LEAK_REPAIR_LIVE_HTTP_SMOKES",
     "frontendRuntimeTimeoutMs": 24000,
     "serverRequestTimeoutMs": 25000,
     "privacyDisclosure": "ENGLISH_AND_SPANISH_HOME_ASSISTANT_AND_PRIVACY_PAGES_DISCLOSE_SERVER_OPENAI_PROCESSING; RAW_CHAT_NOT_SAVED_TO_MY_FRANKLIN; ATTACHMENTS_DEVICE_LOCAL_IN_CURRENT_FLOW",
@@ -179,7 +179,7 @@
     "guideNewChatReset": true,
     "guideStatePersistence": "MEMORY_ONLY_CURRENT_PAGE",
     "guideRepetitionSuppression": true,
-    "preservedInRelease": "FR-NAV1.30.14-HF3.12.6"
+    "preservedInRelease": "FR-NAV1.30.15-HF3.12.7"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -275,7 +275,7 @@
       "registration/claim/profile-review acceptance",
       "first-value acceptance"
     ],
-    "preservedInRelease": "FR-NAV1.30.14-HF3.12.6",
+    "preservedInRelease": "FR-NAV1.30.15-HF3.12.7",
     "durableRequirement": "CONTINUE_SITE_WIDE_USER_ISSUE_FRICTION_FAILURE_MONITORING_AND_OWNER_VISIBLE_INCIDENT_AWARENESS_EVERY_MATERIAL_RELEASE",
     "navigationOverflowSignal": "PRIMARY_NAV_OVERFLOW",
     "navigationOverflowRule": "ONLY_EMIT_IF_PRIORITY_COLLAPSE_CANNOT_KEEP_PRIMARY_NAV_WITHIN_AVAILABLE_WIDTH",
@@ -356,10 +356,10 @@
     "englishSpanishParity": true,
     "spanishLocalizedRoutes": true,
     "noJsFallback": "existing static header preserved; runtime enhancement does not remove destination routes",
-    "preservedInRelease": "FR-NAV1.30.14-HF3.12.6",
+    "preservedInRelease": "FR-NAV1.30.15-HF3.12.7",
     "inactiveForBusinessColor": "MATCHES_OTHER_INACTIVE_PRIMARY_NAV_ITEMS"
   },
-  "productionPromotionFrom": "FR-NAV1.30.13-HF3.12.5",
+  "productionPromotionFrom": "FR-NAV1.30.14-HF3.12.6",
   "communityConnector": {
     "version": "FRANKLIN_COMMUNITY_CONNECTOR_R1311",
     "publicEntryPoint": "FRANKLIN_ASSISTANT_REMAINS_FIRST_TOP_OF_HOME_ACTION",
@@ -449,5 +449,28 @@
     "outreachGate": "NOT_READY_PENDING_REAL_PUBLIC_MEMBER_PRODUCTION_PROOF_AND_INDEPENDENT_SRE_REVENUE_VERIFICATION",
     "outreachSent": false,
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1314.md"
+  },
+  "r1315": {
+    "version": "FR-NAV1.30.15-HF3.12.7",
+    "rootCause": "GENERAL_ASSISTANT_BRANCH_REFERENCED_MISSING_RESEARCH_FUNCTION",
+    "runtimeCommit": "8b0248bbf75da1d27f938bb4f77245c6f80dc48d",
+    "runtimeDeploy": "dep-dakg6mp42hec73afoob0",
+    "runtimeStatus": "LIVE",
+    "runtimeGeneralResearchRestored": true,
+    "roofLeakDirectGrounding": true,
+    "exactTwoTurnConversationAcceptance": "PASS",
+    "exactTwoTurnPrompts": [
+      "my roof is leaking.",
+      "i need it repaired."
+    ],
+    "browserController": "/assets/franklin-assistant-r1315.js",
+    "browserAcceptanceRun": 34948063356,
+    "browserAcceptanceConclusion": "success",
+    "homeAssistantLoaderCacheBusted": true,
+    "englishAssistantLoaderCacheBusted": true,
+    "spanishAssistantLoaderCacheBusted": true,
+    "memberProfileR1314ControlsPreserved": true,
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1315.md",
+    "evidence": "FRANKLIN_ASSISTANT_CONVERSATION_REPAIR_REPORT__R1315.md"
   }
 }
