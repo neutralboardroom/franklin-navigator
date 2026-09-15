@@ -128,7 +128,7 @@ const normalizePrimaryNav=()=>{
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&more?.open){more.removeAttribute('open');more.querySelector('summary')?.focus()}});
 };
 const installCommunityConnectorR1311=()=>{
-  const path=location.pathname.replace(/\\/+$/,'/')||'/';
+  const path=location.pathname.replace(/\/+$/,'/')||'/';
   if(path!=='/'&&path!=='/es/')return;
   const es=path==='/es/';
   const hero=document.querySelector('.r24-home-hero');if(!hero||document.querySelector('.r1311-community-actions'))return;
