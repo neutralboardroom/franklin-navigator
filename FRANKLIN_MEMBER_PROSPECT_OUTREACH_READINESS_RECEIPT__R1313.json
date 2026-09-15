@@ -4,7 +4,7 @@
   "date": "2026-09-15",
   "community": "FRANKLIN_TN",
   "status": "NOT_READY_FOR_10_PROSPECT_TEST",
-  "productBuildStatus": "RUNTIME_LIVE_STATIC_PROMOTION_PENDING",
+  "productBuildStatus": "LIVE",
   "reasons": [
     "Independent SRE/Revenue Engine verification for the 10-prospect test has not yet been recorded.",
     "Fresh live production truth shows zero active verified rich memberships on the 19,103-profile public scope, so the complete real-public-member claim → purchase → edit → reviewed publish → exact readback lifecycle has not yet been proven in production."
@@ -43,6 +43,7 @@
   "outreachSent": false,
   "platformAuthorityToSendOutreach": false,
   "selfCertificationOfMissingEvidence": false,
-  "livePublicDeploy": null,
-  "livePublicCommit": null
+  "livePublicDeploy": "dep-dakfvarm8hqs73efilm0",
+  "livePublicCommit": "642e139e145273e397ef745a30b47fa5482e1d50",
+  "livePublicFinishedAt": "2026-09-15T08:21:17.901665Z"
 }
