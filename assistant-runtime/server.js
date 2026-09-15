@@ -5,7 +5,7 @@ const dns=require('node:dns');
 const net=require('node:net');
 const {URL}=require('node:url');
 const PORT=Number(process.env.PORT||10000);
-const RELEASE='FR-NAV1.30.3-HF3.11.3';
+const RELEASE='FR-NAV1.30.5-HF3.11.5';
 const ORIGINS=new Set(['https://franklinnavigator.com','https://www.franklinnavigator.com','https://franklin-navigator.onrender.com']);
 const BODY_LIMIT=32*1024,rate=new Map(),VERIFIED_AT='2026-09-14';
 const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||'').trim();
@@ -84,7 +84,13 @@ function knownAnswer(q,language='en'){
   return '';
 }
 function cleanAnswer(v){
-  let x=text(v).replace(/\b(click|open|visit|go to) (the )?(link|page|guide|website)\b[^.?!]*[.?!]?/gi,'').replace(/\s+/g,' ').trim();
+  let x=text(v)
+    .replace(/\*\*([^*]+)\*\*/g,'$1')
+    .replace(/__([^_]+)__/g,'$1')
+    .replace(/\`([^\`]+)\`/g,'$1')
+    .replace(/^\s{0,3}#{1,6}\s*/gm,'')
+    .replace(/\b(click|open|visit|go to) (the )?(link|page|guide|website)\b[^.?!]*[.?!]?/gi,'')
+    .replace(/\s+/g,' ').trim();
   if(x.length>1400)x=x.slice(0,1397).replace(/\s+\S*$/,'')+'…';
   return x;
 }
@@ -101,7 +107,7 @@ function extractOpenAIText(d){
 async function llmAnswer(q,language,history,context,sources){
   if(!OPENAI_API_KEY)return'';
   const sourceLines=(sources||[]).slice(0,5).map((x,i)=>`${i+1}. ${x.title}: ${x.snippet||''} ${x.url}`).join('\n');
-  const instructions=`You are Franklin Assistant inside Franklin Navigator for Franklin, Tennessee. Answer ONLY the user's question. Be direct, useful, conversational and concise. Do not tell the user to navigate Franklin Navigator, open a guide, visit another page, or explore other features. Do not add unrelated next steps, marketing, profile cards, or generic offers to help. Ask one short clarifying question only when the answer genuinely depends on missing information. Use the supplied Franklin context and current-source excerpts when relevant. Do not invent facts. If a fact may have changed and the context is insufficient, say you could not verify it. Do not include links unless the user specifically asks for a source, link, website, or official page. For emergencies, tell the user to call 911; for suicide or mental-health crisis, call or text 988. Answer in ${String(language||'en').startsWith('es')?'Spanish':'English'}. Keep most answers to 1–5 short paragraphs.`;
+  const instructions=`You are Franklin Assistant inside Franklin Navigator for Franklin, Tennessee. Answer ONLY the user's question. Be direct, useful, conversational and concise. Do not tell the user to navigate Franklin Navigator, open a guide, visit another page, or explore other features. Do not add unrelated next steps, marketing, profile cards, or generic offers to help. Ask one short clarifying question only when the answer genuinely depends on missing information. Use the supplied Franklin context and current-source excerpts when relevant. Do not invent facts. If a fact may have changed and the context is insufficient, say you could not verify it. Do not include links unless the user specifically asks for a source, link, website, or official page. For emergencies, tell the user to call 911; for suicide or mental-health crisis, call or text 988. Answer in ${String(language||'en').startsWith('es')?'Spanish':'English'}. Return plain text only. Do not use Markdown, asterisks, headings, bullet syntax, code formatting, or tables. Keep most answers to 1–5 short paragraphs.`;
   const input=`${historyText(history)?'Conversation so far:\n'+historyText(history)+'\n\n':''}User question: ${q}\n\nFranklin context:\n${context||'No additional verified context was available.'}\n\nCurrent/source excerpts:\n${sourceLines||'None'}`;
   const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),12000);
   try{
@@ -142,7 +148,7 @@ function selfTest(){
   if(!/address/i.test(school))throw Error('selftest_school_zone');
   if(askedForSource('Do I need a permit?'))throw Error('selftest_source_gate');
   if(!askedForSource('What is your source for that?'))throw Error('selftest_source_request');
-  const ui='dist/assets/franklin-assistant-r1302.js';if(fs.existsSync(ui))new Function(fs.readFileSync(ui,'utf8'));
+  const ui='dist/assets/franklin-assistant-r1305.js';if(fs.existsSync(ui))new Function(fs.readFileSync(ui,'utf8'));
   return true;
 }
 selfTest();
