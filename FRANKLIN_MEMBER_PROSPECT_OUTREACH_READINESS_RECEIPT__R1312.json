@@ -1,0 +1,38 @@
+{
+  "schema": "franklin.member-prospect-outreach-readiness.v1",
+  "release": "FR-NAV1.30.12-HF3.12.4",
+  "date": "2026-09-15",
+  "community": "FRANKLIN_TN",
+  "status": "NOT_READY_FOR_10_PROSPECT_TEST",
+  "productBuildStatus": "STATIC_PROMOTION_PENDING",
+  "reasons": [
+    "Platform-side monitoring blockers are cleared, but the required independent SRE/Revenue Engine live-promotion verification has not yet been recorded for the 10-prospect test."
+  ],
+  "passedEvidence": {
+    "priorMonitoringAndMemberJourneyAcceptanceRun": 34921029158,
+    "priorMonitoringAndMemberJourneyAcceptanceConclusion": "success",
+    "profiles": 19103,
+    "assistantRoutes": 254,
+    "externalOwnerAlertDeliveryConfigured": true,
+    "externalOwnerAlertProvider": "RESEND",
+    "liveOwnerAlertDelivered": true,
+    "ownerAuthenticatedSnapshot": true,
+    "ownerAuthenticatedSnapshotAt": "2026-09-15T07:44:59.852Z",
+    "openCritical": 0,
+    "openHigh": 0,
+    "noOpenP0P1": true,
+    "syntheticSupportArtifactsVerifiedByExactIdentityAndHash": 10,
+    "remainingOverdueOpenSupport": 0,
+    "resolvedSupportIncidentCount": 1,
+    "runtimeDeploy": "dep-dakfep9594qs73dt62fg",
+    "runtimeCommit": "5c097774094fcae80f4a8a39f278a413d15a7273"
+  },
+  "requiredToOpenGate": [
+    "SRE/Revenue Engine independently verifies the live R1312 promotion and records approval for the 10-prospect test."
+  ],
+  "outreachSent": false,
+  "platformAuthorityToSendOutreach": false,
+  "selfCertificationOfMissingIndependentEvidence": false,
+  "livePublicDeploy": null,
+  "livePublicCommit": null
+}
