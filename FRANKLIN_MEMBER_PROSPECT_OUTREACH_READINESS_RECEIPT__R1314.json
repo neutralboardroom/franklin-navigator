@@ -1,0 +1,35 @@
+{
+  "schema": "franklin.member-prospect-outreach-readiness.v1",
+  "release": "FR-NAV1.30.14-HF3.12.6",
+  "date": "2026-09-15",
+  "community": "FRANKLIN_TN",
+  "status": "NOT_READY_FOR_10_PROSPECT_TEST",
+  "reasons": [
+    "No genuinely authorized public-scope member has yet completed the live $35/year V6 purchase-to-publication/readback sequence.",
+    "Independent SRE/Revenue Engine live-promotion verification remains required before the 10-prospect test."
+  ],
+  "passedEvidence": {
+    "finalMemberPathCiRun": 34947222070,
+    "finalMemberPathCiConclusion": "success",
+    "runtimeDeploy": "dep-dakg3u5g1s2s73c7i5mg",
+    "runtimeCommit": "60bf4b1e48c2a124a4159b7caf0f7fe3485358a3",
+    "runtimeRelease": "FR-NAV1.30.14-HF3.12.6",
+    "preflightSchema": "franklin.readonly-owner-preflight.v7",
+    "preflightObservedAt": "2026-09-15T08:30:07.888Z",
+    "profiles": 19103,
+    "activeVerifiedRichMembershipProfiles": 1,
+    "activeControlMembershipProfiles": 1,
+    "activeProductionEligiblePublicMembershipProfiles": 0,
+    "realPublicMemberCandidateAvailable": false,
+    "activeReviewedPublications": 0,
+    "exactPublicReadbackReceipts": 0,
+    "reviewerControlConfigured": true
+  },
+  "requiredToOpenGate": [
+    "Complete a genuinely authorized public-scope member purchase/edit/review/publication/readback proof.",
+    "SRE/Revenue Engine independently verifies the live release and records approval for the 10-prospect test."
+  ],
+  "outreachSent": false,
+  "platformAuthorityToSendOutreach": false,
+  "selfCertificationOfMissingIndependentEvidence": false
+}
