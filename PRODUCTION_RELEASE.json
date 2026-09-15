@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.6-HF3.11.6",
+  "release": "FR-NAV1.30.7-HF3.11.7",
   "date": "2026-09-14",
-  "base": "FR-NAV1.30.5-HF3.11.5",
+  "base": "FR-NAV1.30.6-HF3.11.6",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "Launch-day Franklin Assistant guided-conversation successor. Preserves the R1305 generalized profile/route behavior and adds an answer-first guide layer: after a substantive answer, Franklin asks one context-aware follow-up question designed to help the resident narrow the next step without turning the chat into an intake form. Major intent families now have tailored guide prompts and optional quick-choice buttons across permits/home projects, schools, transportation, senior help, health, legal, housing, food/benefits, business start/growth, jobs, events, sports/arts/parks, utilities, sanitation, child care, civic, property, auto, pets, membership, profiles and local-provider discovery. Profile results guide residents toward websites, phone numbers or more matches. Emergency/crisis, greetings, thanks and stop/no-thanks flows do not receive unnecessary follow-up prompts. Quick choices are real accessible buttons, preserve current conversation context, and continue through the same direct-answer/profile/254-route machinery. Reading-first scroll, grounded OpenAI answering, 19,103 profiles, 254 Assistant routes, English/Spanish, privacy and no-loss protections remain preserved.",
+  "scope": "Launch-day Franklin Assistant progressive-guide successor. Builds on R1306's answer-first follow-up behavior by making the guide stateful within the current page session so it does not ask the same question repeatedly. Each topic now has a two-stage guided path: the first follow-up narrows the resident's situation, and the second moves them toward the next useful action such as permit steps, a local provider, an official source, enrollment, transportation, court/forms, benefits, schedules, contacts or other route-specific help. After two guide prompts on the same topic, Franklin stops prompting unless the user changes topic, reducing intake-form fatigue. Topic changes reset the guide naturally. New chat resets guide state. Profile/provider conversations progress from matching options to website/phone/more-match actions. All guide state remains memory-only for the current page. Grounded OpenAI answers, reading-first scroll, direct-answer-first UX, English/Spanish support, 19,103 profiles, 254 Assistant routes, privacy, safety and no-loss protections remain preserved.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -24,7 +24,7 @@
     "corruptRasterReplaced": true
   },
   "assistant": {
-    "version": "FR-NAV1.30.6-HF3.11.6",
+    "version": "FR-NAV1.30.7-HF3.11.7",
     "mode": "ONE_DIRECT_ANSWER_CHAT_GROUNDED_LLM_PRIMARY",
     "routeDataRelease": "FR-NAV1.29.2-HF3.10.2",
     "verifiedDirectoryBinding": "/data/discovery/manifest.json",
@@ -94,12 +94,12 @@
     "fullScreenControl": true,
     "legacyR27ModalSuperseded": true,
     "stuckLoadingRaceFixed": true,
-    "canonicalController": "/assets/franklin-assistant-r1306.js",
+    "canonicalController": "/assets/franklin-assistant-r1307.js",
     "chatStyles": "/assets/franklin-assistant-chat-r1306.css",
     "contextualFollowUps": "SHORT_OR_PRONOUN_FOLLOWUPS_REUSE_CURRENT_PAGE_CONTEXT_WITHOUT_PERSISTENCE",
     "failureFallback": "VISIBLE_NON_STUCK_ERROR_WITH_FRANKLIN_HELP_LINKS",
     "loaderFailureFallback": "VISIBLE_CHAT_STYLE_RETRY_PANEL_WITH_LEGACY_POPUP_SUPPRESSED",
-    "productionPromotionFrom": "FR-NAV1.30.5-HF3.11.5",
+    "productionPromotionFrom": "FR-NAV1.30.6-HF3.11.6",
     "readingFirstScroll": true,
     "composerFocusAfterAnswer": false,
     "respectUserScroll": true,
@@ -141,7 +141,7 @@
     "routeFollowUpHandling": "EXPLICIT_SOURCE_LINK_APPLICATION_DETAILS_REQUESTS_USE_ALL_254_ASSISTANT_ROUTES",
     "runtimePlainTextAnswers": true,
     "guideMode": true,
-    "guidePattern": "ANSWER_FIRST_THEN_ONE_CONTEXT_AWARE_FOLLOWUP",
+    "guidePattern": "ANSWER_FIRST_THEN_PROGRESSIVE_CONTEXT_AWARE_FOLLOWUP",
     "guideQuickChoices": true,
     "guideExceptions": "NO_UNNECESSARY_GUIDE_AFTER_EMERGENCY_CRISIS_GREETING_THANKS_NO_THANKS_DONE_STOP",
     "guideCoverage": [
@@ -172,7 +172,13 @@
       "local-provider",
       "generic-next-step"
     ],
-    "profileGuideFollowUps": "WEBSITES_PHONE_NUMBERS_SHOW_5_MATCHES"
+    "profileGuideFollowUps": "WEBSITES_PHONE_NUMBERS_SHOW_5_MATCHES",
+    "guideProgression": "FIRST_PROMPT_NARROWS_CONTEXT_SECOND_PROMPT_MOVES_TO_ACTION",
+    "guideMaxPromptsPerTopic": 2,
+    "guideTopicChangeReset": true,
+    "guideNewChatReset": true,
+    "guideStatePersistence": "MEMORY_ONLY_CURRENT_PAGE",
+    "guideRepetitionSuppression": true
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
