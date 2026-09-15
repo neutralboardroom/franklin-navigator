@@ -104,7 +104,10 @@ const normalizePrimaryNav=()=>{
         const duplicate=moreItems.get(a.dataset.navKey);if(duplicate)setHidden(duplicate,false);
         if(fits())break;
       }
-      if(!fits())nav.dataset.navOverflow='1';
+      if(!fits()){
+        nav.dataset.navOverflow='1';
+        setTimeout(()=>window.FranklinIssueMonitorR1308?.report?.('PRIMARY_NAV_OVERFLOW',{workflow:'PUBLIC_SITE',action:'adaptive-nav-fit',clientSignal:'OVERFLOW_AFTER_PRIORITY_COLLAPSE'}),1200);
+      }
     }
     const hiddenCount=tops.filter(a=>a.hidden).length;
     if(hiddenCount===0)more.hidden=true;
