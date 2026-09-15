@@ -25,13 +25,18 @@ jobs:
         run: |
           node --check dist/assets/franklin-assistant-r1316.js
           node --check dist/assets/hf36.js
-      - name: R1316 conversation and handoff contracts
+      - name: R1316 universal conversation and handoff contracts
         run: |
           grep -F "FR-NAV1.30.16-HF3.12.8" dist/assets/franklin-assistant-r1316.js
+          grep -F "const referenceCue=" dist/assets/franklin-assistant-r1316.js
+          grep -F "const continuationStart=" dist/assets/franklin-assistant-r1316.js
+          grep -F "function contextualize(raw)" dist/assets/franklin-assistant-r1316.js
           grep -F "function inferService(raw)" dist/assets/franklin-assistant-r1316.js
           grep -F "function serviceActionFollow(raw)" dist/assets/franklin-assistant-r1316.js
           grep -F "contextualServiceFollow" dist/assets/franklin-assistant-r1316.js
           grep -F "lastService.q" dist/assets/franklin-assistant-r1316.js
+          grep -F "['auto repair'" dist/assets/franklin-assistant-r1316.js
+          grep -F "['veterinary'" dist/assets/franklin-assistant-r1316.js
           grep -F "/assets/franklin-assistant-r1316.js?v=frnav1316" dist/assets/hf36.js
           grep -F "/assets/hf36.js?v=frnav1316" dist/index.html
           grep -F "/assets/hf36.js?v=frnav1316" dist/assistant/index.html
