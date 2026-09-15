@@ -4,7 +4,7 @@
   "date": "2026-09-15",
   "community": "FRANKLIN_TN",
   "status": "NOT_READY_FOR_10_PROSPECT_TEST",
-  "productBuildStatus": "QUALIFIED_PENDING_PRODUCTION_PROMOTION",
+  "productBuildStatus": "LIVE",
   "reasons": [
     "The current owner-authenticated live incident summary has not been freshly observed in this build session, so the no-open-P0/P1 requirement cannot be self-certified.",
     "External owner notification delivery remains CONFIGURATION_AUTHORITY_REQUIRED; owner-console persistence/visibility exists, but no external destination has been invented."
@@ -32,5 +32,7 @@
   ],
   "outreachSent": false,
   "platformAuthorityToSendOutreach": false,
-  "selfCertificationOfMissingEvidence": false
+  "selfCertificationOfMissingEvidence": false,
+  "livePublicDeploy": "dep-dakaridg1s2s73blnil0",
+  "livePublicCommit": "4299bdf36981208a2bb6f115eaf4698d45d8aa1f"
 }
