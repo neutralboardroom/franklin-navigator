@@ -300,7 +300,7 @@ async function verifySpanishConversationSet(){
       const d=await r.json().catch(()=>({}));
       const ok=r.ok&&groundedSubstantive(d);
       results.push(ok);
-      console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_spanish_conversation_case_passed':'franklin_spanish_conversation_case_failed',release:RELEASE,question:c.q,httpStatus:r.status,answerMode:d?.answerMode||null,at:now()}));
+      console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_spanish_conversation_case_passed':'franklin_spanish_conversation_case_failed',release:RELEASE,question:c.q,httpStatus:r.status,answerMode:d?.answerMode||null,answerLength:String(d?.answer||'').length,groundedMode:/^llm_grounded_/.test(String(d?.answerMode||'')),officialSource:hasOfficialSource(d),genericClarification:isGenericClarification(d?.answer),sourceCount:Array.isArray(d?.sources)?d.sources.length:0,at:now()}));
     }catch(e){
       results.push(false);
       console.error(JSON.stringify({event:'franklin_spanish_conversation_case_failed',release:RELEASE,question:c.q,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));
