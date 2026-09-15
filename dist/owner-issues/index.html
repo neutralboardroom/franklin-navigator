@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Franklin Navigator Owner Issues</title>
+<meta name="robots" content="noindex,nofollow,noarchive"/>
+<meta name="franklin-release" content="FR-NAV1.30.8-HF3.12.0"/>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="/assets/styles.css"/>
+<link rel="stylesheet" href="/assets/accessibility.css"/>
+<link rel="stylesheet" href="/assets/owner-issues-r1308.css?v=frnav1308"/>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header><div class="wrap top"><a class="brand" href="/"><img alt="" src="/assets/franklin-mark.svg" width="38" height="38"/><span class="brand-wordmark"><span class="brand-name">Franklin</span><span class="brand-subname">Navigator</span></span></a></div></header>
+<main id="main" class="wrap owner-issues">
+<section class="owner-issues-head">
+<div><div class="eyebrow">Owner operations</div><h1>Live user issues &amp; friction</h1><p>Persistent Franklin-only incident awareness for public, account, claim, membership, billing, entitlement, profile-management and support workflows.</p></div>
+<div class="owner-issues-status" data-owner-connection>Not connected</div>
+</section>
+<section class="card owner-auth" aria-labelledby="owner-auth-title">
+<h2 id="owner-auth-title">Owner access</h2>
+<p>Enter the existing Franklin admin token. It stays in this page's memory only and is not saved to browser storage.</p>
+<div class="owner-auth-row"><label for="owner-token">Admin token</label><input id="owner-token" type="password" autocomplete="off" spellcheck="false"/><button class="button primary" data-owner-connect type="button">Open incident console</button></div>
+<p class="fine-print">Do not paste payment credentials, Stripe secrets, passwords, session cookies, or other user secrets into incident notes.</p>
+</section>
+<section data-owner-dashboard hidden>
+<div class="owner-summary" aria-label="Incident summary">
+<article class="card"><span>Critical open</span><strong data-summary-critical>—</strong></article>
+<article class="card"><span>High open</span><strong data-summary-high>—</strong></article>
+<article class="card"><span>External delivery</span><strong data-summary-delivery>—</strong></article>
+</div>
+<div class="owner-toolbar">
+<label>Status <select data-filter-status><option>OPEN</option><option>ACKNOWLEDGED</option><option>RESOLVED</option><option>SUPPRESSED</option></select></label>
+<label>Severity <select data-filter-severity><option value="">All</option><option>CRITICAL</option><option>HIGH</option><option>NORMAL</option></select></label>
+<button class="button" type="button" data-owner-refresh>Refresh</button>
+<a class="button" href="/owner-issues/readiness/">Outreach readiness</a>
+</div>
+<div class="notice owner-external-note">Immediate external alert delivery is shown as <strong>CONFIGURATION / AUTHORITY REQUIRED</strong> unless an approved SRE/Owner Console channel is configured. Incidents remain persisted and owner-visible here.</div>
+<div data-owner-error class="notice" hidden></div>
+<div class="owner-incidents" data-owner-incidents aria-live="polite"></div>
+</section>
+</main>
+<script defer src="/assets/franklin-owner-issues-r1308.js?v=frnav1308"></script>
+</body>
+</html>
