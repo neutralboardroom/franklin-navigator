@@ -19,7 +19,10 @@ header .top{gap:12px!important;flex-wrap:nowrap!important}
 .r37-language-switch.hf36-language-in-header{margin-left:2px!important;flex:0 0 auto}
 .r37-language-switch.hf36-language-in-header button{min-height:32px!important;padding:5px 7px!important;font-size:.8rem!important}
 .brand{flex:0 0 auto;min-width:0}
-.franklin-nav-priority-business{color:#07575d!important}
+/* All inactive primary-navigation items use the same color. For Business is
+   not a permanent CTA; it receives emphasis only from the normal hover/focus
+   and aria-current states shared with the rest of the navigation. */
+.franklin-nav-priority-business{color:inherit!important}
 .nav.hf34-nav[data-nav-overflow="1"]{overflow-x:auto!important;scrollbar-width:thin}
 
 @media(min-width:1200px){
