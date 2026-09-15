@@ -4,7 +4,7 @@
   "date": "2026-09-15",
   "community": "FRANKLIN_TN",
   "status": "NOT_READY_FOR_10_PROSPECT_TEST",
-  "productBuildStatus": "STATIC_PROMOTION_PENDING",
+  "productBuildStatus": "LIVE",
   "reasons": [
     "Platform-side monitoring blockers are cleared, but the required independent SRE/Revenue Engine live-promotion verification has not yet been recorded for the 10-prospect test."
   ],
@@ -33,6 +33,7 @@
   "outreachSent": false,
   "platformAuthorityToSendOutreach": false,
   "selfCertificationOfMissingIndependentEvidence": false,
-  "livePublicDeploy": null,
-  "livePublicCommit": null
+  "livePublicDeploy": "dep-dakfgfuk1f9s73d4vbbg",
+  "livePublicCommit": "e09327f1048d7c4801e08732fa494da8634d408f",
+  "livePublicFinishedAt": "2026-09-15T07:49:31.397692Z"
 }
