@@ -6,6 +6,7 @@ loadCss('/assets/hf3103-mobile.css?v=frnav1293','franklin-mobile-3103');
 loadCss('/assets/hf3105-brand.css?v=frnav1295','franklin-brand-3105');
 loadCss('/assets/franklin-assistant-chat-r1306.css?v=frnav1306','franklin-assistant-chat-r1306');
 loadCss('/assets/franklin-nav-r1310.css?v=frnav1310','franklin-nav-r1310');
+loadCss('/assets/franklin-nav-r1311.css?v=frnav1311','franklin-nav-r1311');
 loadCss('/assets/r1311-community.css?v=frnav1311','franklin-community-r1311');
 if(!document.querySelector('script[data-franklin-established-positioning]')){const p=document.createElement('script');p.src='/assets/franklin-established-positioning.js?v=frnav1293';p.defer=true;p.dataset.franklinEstablishedPositioning='1';document.head.append(p)}
 const loadAssistantR1307=()=>{
