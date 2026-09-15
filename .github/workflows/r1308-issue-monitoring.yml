@@ -7,6 +7,8 @@ on:
       - 'lib/incident-monitor.js'
       - 'schema/005_issue_monitoring.sql'
       - 'acceptance/issue-monitoring.integration.cjs'
+      - 'acceptance/owner-review-setup.integration.cjs'
+      - 'acceptance/owner-first-value-reconcile.integration.cjs'
       - '.github/workflows/r1308-issue-monitoring.yml'
   workflow_dispatch:
 permissions:
