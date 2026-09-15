@@ -1,0 +1,37 @@
+/* FR-NAV1.30.9-HF3.12.1 — compact one-line primary navigation */
+:root{--franklin-nav-gap:12px}
+header .top{gap:14px!important;flex-wrap:nowrap!important}
+.nav.hf34-nav{display:flex!important;align-items:center!important;flex-wrap:nowrap!important;gap:var(--franklin-nav-gap)!important;margin-left:auto!important;min-width:0}
+.nav.hf34-nav>a,.nav.hf34-nav>.hf34-nav-more>summary{font-size:.88rem!important;font-weight:800!important;white-space:nowrap!important;padding:8px 0!important;line-height:1.15}
+.nav.hf34-nav>a{flex:0 0 auto}
+.hf34-nav-more{flex:0 0 auto}
+.hf34-nav-more>summary{display:block}
+.hf34-nav-more-menu{min-width:210px}
+.r37-language-switch.hf36-language-in-header{margin-left:4px!important;flex:0 0 auto}
+.r37-language-switch.hf36-language-in-header button{min-height:32px!important;padding:5px 8px!important;font-size:.82rem!important}
+.brand{flex:0 0 auto}
+.franklin-nav-priority-business{color:#07575d!important}
+.franklin-nav-more-compact-only{display:none!important}
+
+@media(max-width:1100px) and (min-width:901px){
+  :root{--franklin-nav-gap:9px}
+  .nav.hf34-nav>a,.nav.hf34-nav>.hf34-nav-more>summary{font-size:.84rem!important}
+  .franklin-nav-today{display:none!important}
+  .franklin-nav-more-compact-only{display:block!important}
+}
+@media(max-width:900px){
+  header .top{flex-wrap:wrap!important;padding-block:8px!important;gap:8px 12px!important}
+  .brand{order:1}
+  .r37-language-switch.hf36-language-in-header{order:2!important;margin-left:auto!important}
+  .nav.hf34-nav{order:4!important;width:100%!important;max-width:100%!important;overflow-x:auto!important;overflow-y:visible!important;justify-content:flex-start!important;gap:14px!important;padding:2px 0 5px;scrollbar-width:thin}
+  .nav.hf34-nav>a,.nav.hf34-nav>.hf34-nav-more>summary{font-size:.9rem!important}
+  .franklin-nav-today{display:none!important}
+  .franklin-nav-more-compact-only{display:block!important}
+  .hf34-nav-more-menu{right:auto!important;left:0!important;position:fixed!important;top:auto!important;margin-top:10px!important}
+}
+@media(max-width:560px){
+  .nav.hf34-nav{gap:12px!important}
+  .nav.hf34-nav>a,.nav.hf34-nav>.hf34-nav-more>summary{font-size:.86rem!important}
+  .franklin-nav-community{display:none!important}
+  .franklin-nav-more-community{display:block!important}
+}
