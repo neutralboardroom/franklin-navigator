@@ -5,12 +5,13 @@ const dns=require('node:dns');
 const net=require('node:net');
 const {URL}=require('node:url');
 const PORT=Number(process.env.PORT||10000);
-const RELEASE='FR-NAV1.30.15-HF3.12.7';
+const RELEASE='FR-NAV1.30.16-HF3.12.8';
 const ORIGINS=new Set(['https://franklinnavigator.com','https://www.franklinnavigator.com','https://franklin-navigator.onrender.com']);
 const BODY_LIMIT=32*1024,rate=new Map(),VERIFIED_AT='2026-09-14';
 const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||'').trim();
 const OPENAI_MODEL=String(process.env.OPENAI_MODEL||'gpt-5.6-luna').trim();
 const llmState={configured:Boolean(OPENAI_API_KEY),verified:false,lastCheckAt:null,error:null};
+const startupState={qualified:false,researchOk:false,generalConversationOk:false,roofLeakOk:false,liveApiOk:false,lastQualifiedAt:null};
 const now=()=>new Date().toISOString();
 const text=v=>String(v||'').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s+/g,' ').trim();
 const norm=v=>text(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9\s'&.-]/g,' ').replace(/\s+/g,' ').trim();
@@ -52,6 +53,7 @@ function sentences(s){return text(s).split(/(?<=[.!?])\s+/).map(x=>x.trim()).fil
 function scoreSentence(s,q,url){const st=norm(s),ts=terms(q);let n=sourceRank(url);for(const t of ts)if(st.includes(t))n+=7;if(/\b(when|date|today|tonight|tomorrow|weekend|hours|open|schedule)\b/i.test(q)&&/\b(am|pm|monday|tuesday|wednesday|thursday|friday|saturday|sunday|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|\d{1,2}[:/]\d{1,2})\b/i.test(s))n+=18;if(/\b(cost|price|fee|how much)\b/i.test(q)&&/\$\s?\d|fee|cost|price/i.test(s))n+=15;if(/\b(phone|call|number)\b/i.test(q)&&/(\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}/.test(s))n+=18;if(/\b(address|where|location)\b/i.test(q)&&/\b(st|street|rd|road|ave|avenue|dr|drive|blvd|boulevard|ln|lane|pkwy|parkway|franklin|tn)\b/i.test(s))n+=10;return n}
 async function enrich(rows,q){const out=[];for(const r of rows.slice(0,7)){let page='',liveRead=false;try{page=stripPage(await get(r.url,6500,1000000));liveRead=Boolean(page)}catch{}const base=[];if(r.snippet)base.push(...sentences(r.snippet));if(page)base.push(...sentences(page).slice(0,180));if(!base.length&&r.snapshot)base.push(...sentences(r.snapshot));const candidates=base.map(s=>({s,score:scoreSentence(s,q,r.url)})).sort((a,b)=>b.score-a.score);const best=candidates[0]?.s||'';if(best)out.push({...r,best,liveRead,verifiedAt:r.verifiedAt||null})}return out}
 function synthesize(rows,q){const pool=[];for(const r of rows)if(r.best)pool.push({s:r.best,url:r.url,title:r.title,score:scoreSentence(r.best,q,r.url)+(r.origin==='official'?10:0),liveRead:r.liveRead,verifiedAt:r.verifiedAt});pool.sort((a,b)=>b.score-a.score);const chosen=[],seen=new Set();for(const x of pool){const k=norm(x.s).slice(0,100);if(!k||seen.has(k))continue;seen.add(k);chosen.push(x);if(chosen.length===3)break}if(!chosen.length)return{answer:'',confidence:'low'};return{answer:chosen.map(x=>x.s).join(' '),confidence:chosen.some(x=>sourceRank(x.url)>=35)?'high':chosen.length>=2?'medium':'low'}}
+function isGenericClarification(v){return /could not verify|one more detail|no pude verificar|un detalle m[aá]s/i.test(String(v||''))}
 async function research(q){
   const merged=[],seen=new Set();
   for(const row of officialSeeds(q)){
@@ -155,6 +157,18 @@ async function verifyLlm(){
     llmState.verified=true;llmState.error=null;console.log(JSON.stringify({event:'franklin_llm_verified',release:RELEASE,model:OPENAI_MODEL,smoke:'ROOF_PERMIT_GROUNDED_DIRECT_ANSWER',at:now()}));return true
   }catch(e){llmState.error=e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED';console.error(JSON.stringify({event:'franklin_llm_verification_failed',release:RELEASE,model:OPENAI_MODEL,status:llmState.error,at:now()}));return false}
 }
+async function verifyResearchContract(){
+  try{
+    if(typeof research!=='function')throw Error('RESEARCH_MISSING');
+    const r=await research('How does recycling work in Franklin?');
+    const ok=Boolean(r&&Array.isArray(r.sources)&&r.sources.length&&r.answer&&!isGenericClarification(r.answer)&&/(recycl|sanitation|waste|collection)/i.test(String(r.answer)));
+    console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_research_contract_passed':'franklin_research_contract_failed',release:RELEASE,sourceCount:Array.isArray(r?.sources)?r.sources.length:0,confidence:r?.confidence||'low',at:now()}));
+    return ok;
+  }catch(e){
+    console.error(JSON.stringify({event:'franklin_research_contract_failed',release:RELEASE,error:String(e?.message||e).slice(0,100),at:now()}));
+    return false;
+  }
+}
 async function verifyLiveEndpoint(){
   const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),24000);
   try{
@@ -165,17 +179,41 @@ async function verifyLiveEndpoint(){
     console.log(JSON.stringify({event:'franklin_live_api_smoke_passed',release:RELEASE,httpStatus:r.status,answerMode:d.answerMode,llmUsed:true,check:'LIVE_HTTP_API_ROOF_PERMIT',at:now()}));return true
   }catch(e){console.error(JSON.stringify({event:'franklin_live_api_smoke_failed',release:RELEASE,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));return false}finally{clearTimeout(timer)}
 }
+async function verifyGeneralConversationSet(){
+  const cases=[
+    {q:'How does recycling work in Franklin?',expect:/recycl|sanitation|waste|collection/i},
+    {q:'Where can I find park information in Franklin?',expect:/park|recreation/i},
+    {q:'What public transportation is available in Franklin?',expect:/transit|transport|bus/i}
+  ];
+  const results=[];
+  for(const c of cases){
+    const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),30000);
+    try{
+      const r=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers:{'Content-Type':'application/json','Origin':'https://franklinnavigator.com'},body:JSON.stringify({q:c.q,contextualQ:c.q,language:'en',history:[]}),signal:ctl.signal});
+      const d=await r.json().catch(()=>({}));
+      const ok=r.ok&&d?.ok===true&&d?.llmUsed===true&&d?.answerMode==='llm_grounded_research'&&c.expect.test(String(d?.answer||''))&&!isGenericClarification(d?.answer);
+      results.push(ok);
+      console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_general_conversation_case_passed':'franklin_general_conversation_case_failed',release:RELEASE,question:c.q,httpStatus:r.status,answerMode:d?.answerMode||null,llmUsed:d?.llmUsed===true,at:now()}));
+    }catch(e){
+      results.push(false);
+      console.error(JSON.stringify({event:'franklin_general_conversation_case_failed',release:RELEASE,question:c.q,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));
+    }finally{clearTimeout(timer)}
+  }
+  const ok=results.length===cases.length&&results.every(Boolean);
+  console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_general_conversation_set_passed':'franklin_general_conversation_set_failed',release:RELEASE,passed:results.filter(Boolean).length,total:cases.length,at:now()}));
+  return ok;
+}
 async function verifyRoofLeakConversation(){
   const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),30000);
   try{
     const headers={'Content-Type':'application/json','Origin':'https://franklinnavigator.com'};
     const first=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers,body:JSON.stringify({q:'my roof is leaking.',contextualQ:'my roof is leaking.',language:'en',history:[]}),signal:ctl.signal});
     const a=await first.json().catch(()=>({}));
-    const firstOk=first.ok&&a?.ok===true&&a?.answer&&!/could not verify|one more detail/i.test(String(a.answer))&&/(roof|roofer|leak|water|repair)/i.test(String(a.answer));
+    const firstOk=first.ok&&a?.ok===true&&a?.answer&&!isGenericClarification(a.answer)&&/(roof|roofer|leak|water|repair)/i.test(String(a.answer));
     const history=[{role:'user',content:'my roof is leaking.'},{role:'assistant',content:String(a?.answer||'').slice(0,900)}];
     const second=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers,body:JSON.stringify({q:'i need it repaired.',contextualQ:'my roof is leaking. i need it repaired.',language:'en',history}),signal:ctl.signal});
     const b=await second.json().catch(()=>({}));
-    const secondOk=second.ok&&b?.ok===true&&b?.answer&&!/could not verify|one more detail/i.test(String(b.answer))&&/(roof|roofer|repair|contractor)/i.test(String(b.answer));
+    const secondOk=second.ok&&b?.ok===true&&b?.answer&&!isGenericClarification(b.answer)&&/(roof|roofer|repair|contractor)/i.test(String(b.answer));
     const ok=firstOk&&secondOk;
     console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_roof_leak_conversation_smoke_passed':'franklin_roof_leak_conversation_smoke_failed',release:RELEASE,firstStatus:first.status,firstMode:a?.answerMode||null,secondStatus:second.status,secondMode:b?.answerMode||null,check:'ROOF_LEAK_THEN_REPAIR_TWO_TURN',at:now()}));
     return ok;
@@ -189,6 +227,7 @@ function selfTest(){
   if(!/permit/i.test(roof)||!/615-794-7012/.test(roof))throw Error('selftest_roof_permit');
   if(!/(roofer|roof)/i.test(leakingRoof)||!/wet roof/i.test(leakingRoof))throw Error('selftest_roof_leak');
   if(typeof research!=='function')throw Error('selftest_research_missing');
+  if(typeof isGenericClarification!=='function'||!isGenericClarification('I could not verify a reliable answer yet. Tell me one more detail.'))throw Error('selftest_clarification_guard');
   if(!/7:30/.test(hall)||!/5:00/.test(hall))throw Error('selftest_city_hours');
   if(!/address/i.test(school))throw Error('selftest_school_zone');
   if(askedForSource('Do I need a permit?'))throw Error('selftest_source_gate');
@@ -200,7 +239,7 @@ selfTest();
 const server=http.createServer(async(req,res)=>{try{
   const u=new URL(req.url,'http://localhost');
   if(req.method==='OPTIONS'){allow(req,res);res.statusCode=204;return res.end()}
-  if(req.method==='GET'&&u.pathname==='/health')return json(req,res,200,{ok:true,release:RELEASE,mode:'DIRECT_ANSWER_WITH_GROUNDED_LLM_PRIMARY_AND_OFFICIAL_FIRST_FALLBACK',verifiedSnapshotDate:VERIFIED_AT,llmConfigured:llmState.configured,llmVerified:llmState.verified,llmLastCheckAt:llmState.lastCheckAt,llmVerificationError:llmState.error,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()});
+  if(req.method==='GET'&&u.pathname==='/health')return json(req,res,200,{ok:true,release:RELEASE,mode:'DIRECT_ANSWER_WITH_GROUNDED_LLM_PRIMARY_AND_OFFICIAL_FIRST_FALLBACK',verifiedSnapshotDate:VERIFIED_AT,llmConfigured:llmState.configured,llmVerified:llmState.verified,llmLastCheckAt:llmState.lastCheckAt,llmVerificationError:llmState.error,startupQualified:startupState.qualified,startupChecks:{researchOk:startupState.researchOk,generalConversationOk:startupState.generalConversationOk,roofLeakOk:startupState.roofLeakOk,liveApiOk:startupState.liveApiOk},lastQualifiedAt:startupState.lastQualifiedAt,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()});
   if(req.method!=='POST'||(u.pathname!=='/api/research'&&u.pathname!=='/api/answer'))return json(req,res,404,{ok:false,error:'NOT_FOUND'});
   const o=String(req.headers.origin||'');if(o&&!ORIGINS.has(o))return json(req,res,403,{ok:false,error:'ORIGIN_NOT_ALLOWED'});
   if(!limited(clientKey(req),60))return json(req,res,429,{ok:false,error:'RATE_LIMITED'});
@@ -236,4 +275,14 @@ const server=http.createServer(async(req,res)=>{try{
   console.log(JSON.stringify({event:'franklin_assistant_answer_complete',release:RELEASE,answerMode,llmUsed,confidence:known?'high':result.confidence,sourceCount:(result.sources||[]).length,at:now()}));
   return json(req,res,200,{ok:true,question:q,answer,answerMode,llmUsed,confidence:known?'high':result.confidence,sources:result.sources||[],researchedAt:now(),usedVerifiedSnapshot:Boolean(result.usedVerifiedSnapshot)});
 }catch(e){console.error(JSON.stringify({event:'assistant_runtime_error',message:String(e.message||e).slice(0,160),at:now()}));return json(req,res,Number(e.status||503),{ok:false,error:'ANSWER_UNAVAILABLE',message:'Franklin Assistant could not complete the answer right now.'})}});
-server.requestTimeout=25000;server.headersTimeout=10000;server.listen(PORT,'0.0.0.0',()=>{console.log(JSON.stringify({event:'franklin_assistant_runtime_listening',release:RELEASE,port:PORT,ready:true,llmConfigured:llmState.configured,llmVerified:llmState.verified,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()}));(async()=>{const llmOk=await verifyLlm();const liveOk=llmOk?await verifyLiveEndpoint():false;const roofLeakOk=await verifyRoofLeakConversation();if(!liveOk||!roofLeakOk)console.error(JSON.stringify({event:'franklin_assistant_startup_acceptance_incomplete',release:RELEASE,llmOk,liveOk,roofLeakOk,at:now()}))})().catch(()=>{})});
+server.requestTimeout=25000;server.headersTimeout=10000;server.listen(PORT,'0.0.0.0',()=>{console.log(JSON.stringify({event:'franklin_assistant_runtime_listening',release:RELEASE,port:PORT,ready:true,llmConfigured:llmState.configured,llmVerified:llmState.verified,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()}));(async()=>{
+  const llmOk=await verifyLlm();
+  const researchOk=await verifyResearchContract();
+  const liveOk=llmOk&&researchOk?await verifyLiveEndpoint():false;
+  const generalConversationOk=llmOk&&researchOk?await verifyGeneralConversationSet():false;
+  const roofLeakOk=await verifyRoofLeakConversation();
+  startupState.researchOk=researchOk;startupState.liveApiOk=liveOk;startupState.generalConversationOk=generalConversationOk;startupState.roofLeakOk=roofLeakOk;
+  startupState.qualified=Boolean(llmOk&&researchOk&&liveOk&&generalConversationOk&&roofLeakOk);
+  if(startupState.qualified){startupState.lastQualifiedAt=now();console.log(JSON.stringify({event:'franklin_assistant_startup_qualified',release:RELEASE,llmOk,researchOk,liveOk,generalConversationOk,roofLeakOk,at:startupState.lastQualifiedAt}))}
+  else console.error(JSON.stringify({event:'franklin_assistant_startup_acceptance_incomplete',release:RELEASE,llmOk,researchOk,liveOk,generalConversationOk,roofLeakOk,at:now()}))
+})().catch(e=>console.error(JSON.stringify({event:'franklin_assistant_startup_acceptance_incomplete',release:RELEASE,error:String(e?.message||e).slice(0,120),at:now()}))) });
