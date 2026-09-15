@@ -1,10 +1,11 @@
-/* FR-NAV1.30.8-HF3.12.0 site-wide issue monitoring + progressive Franklin Assistant + fail-safe logo/loader hardening */
+/* FR-NAV1.30.9-HF3.12.1 compact primary navigation + site-wide issue monitoring + progressive Franklin Assistant */
 (()=>{'use strict';
 const loadCss=(href,key)=>{if(document.querySelector(`link[data-${key}]`))return;const l=document.createElement('link');l.rel='stylesheet';l.href=href;l.dataset[key.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]='1';document.head.append(l)};
 loadCss('/assets/hf3102-mobile.css?v=frnav1292','franklin-mobile-3102');
 loadCss('/assets/hf3103-mobile.css?v=frnav1293','franklin-mobile-3103');
 loadCss('/assets/hf3105-brand.css?v=frnav1295','franklin-brand-3105');
 loadCss('/assets/franklin-assistant-chat-r1306.css?v=frnav1306','franklin-assistant-chat-r1306');
+loadCss('/assets/franklin-nav-r1309.css?v=frnav1309','franklin-nav-r1309');
 if(!document.querySelector('script[data-franklin-established-positioning]')){const p=document.createElement('script');p.src='/assets/franklin-established-positioning.js?v=frnav1293';p.defer=true;p.dataset.franklinEstablishedPositioning='1';document.head.append(p)}
 const loadAssistantR1307=()=>{
   if(!document.querySelector('[data-navigator-bot]')||document.querySelector('script[data-franklin-assistant-r1307]'))return;
@@ -38,11 +39,53 @@ const installAssistantFailureFallback=(err)=>{
   console.error('Franklin Assistant canonical loader failed',err);
 };
 
+const loadScript=(src,key)=>new Promise((resolve,reject)=>{
+  const sel=`script[data-${key}]`,old=document.querySelector(sel);
+  if(old){if(old.dataset.loaded==='1')return resolve();old.addEventListener('load',resolve,{once:true});old.addEventListener('error',reject,{once:true});return}
+  const s=document.createElement('script');s.src=src;s.defer=true;s.dataset[key.replace(/-([a-z])/g,(_,ch)=>ch.toUpperCase())]='1';
+  s.addEventListener('load',()=>{s.dataset.loaded='1';resolve()},{once:true});s.addEventListener('error',reject,{once:true});document.head.append(s);
+});
+const normalizePrimaryNav=()=>{
+  const nav=document.querySelector('header nav.hf34-nav');if(!nav)return;
+  const es=location.pathname==='/es/'||location.pathname.startsWith('/es/');
+  const href=p=>es?(p==='/'?'/es/':'/es'+p):p;
+  const item=(label,path,cls='')=>`<a class="${cls}" href="${href(path)}">${label}</a>`;
+  const labels=es?{
+    ask:'Preguntar a Franklin',find:'Buscar local',tasks:'Resolver',today:'Hoy',things:'Qué hacer',community:'Comunidad',business:'Para negocios',more:'Más',mine:'Mi Franklin',help:'Centro de ayuda'
+  }:{
+    ask:'Ask Franklin',find:'Find Local',tasks:'Get It Done',today:'Today',things:'Things to Do',community:'Community',business:'For Business',more:'More',mine:'My Franklin',help:'Help Center'
+  };
+  nav.innerHTML=[
+    item(labels.ask,es?'/asistente/':'/assistant/','franklin-nav-ask'),
+    item(labels.find,'/directory/','franklin-nav-find'),
+    item(labels.tasks,'/get-it-done/','franklin-nav-tasks'),
+    item(labels.today,'/today/','franklin-nav-today'),
+    item(labels.things,'/activities/','franklin-nav-things'),
+    item(labels.community,'/community/','franklin-nav-community'),
+    item(labels.business,'/business-dashboard/','franklin-nav-priority-business'),
+    `<details class="hf34-nav-more franklin-nav-more"><summary>${labels.more}</summary><div class="hf34-nav-more-menu">`+
+      item(labels.today,'/today/','franklin-nav-more-compact-only')+
+      item(labels.community,'/community/','franklin-nav-more-community franklin-nav-more-compact-only')+
+      item(labels.mine,'/my-franklin/')+
+      item(labels.help,'/community-help-center/')+
+    `</div></details>`
+  ].join('');
+  const path=location.pathname.replace(/\/+$/,'/')||'/';
+  nav.querySelectorAll(':scope>a').forEach(a=>{
+    const target=new URL(a.href,location.href).pathname.replace(/\/+$/,'/')||'/';
+    const active=target!=='/'&&(path===target||path.startsWith(target));
+    if(active)a.setAttribute('aria-current','page');
+  });
+  const more=nav.querySelector('.franklin-nav-more');
+  document.addEventListener('click',e=>{if(more?.open&&!more.contains(e.target))more.removeAttribute('open')});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&more?.open){more.removeAttribute('open');more.querySelector('summary')?.focus()}});
+};
 const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn,{once:true}):fn();
 ready(()=>{
   const body=document.body;
   if(!body)return;
-  load('/assets/franklin-site-monitor-r1308.js?v=frnav1308','franklin-site-monitor-r1308').catch(()=>{});
+  normalizePrimaryNav();
+  loadScript('/assets/franklin-site-monitor-r1308.js?v=frnav1308','franklin-site-monitor-r1308').catch(()=>{});
   loadAssistantR1307();
   // R1297 fail-safe Franklin mark + favicon/install icon binding. The header uses the valid vector asset directly; if the request ever fails, the same mark is supplied as an inline data URI so a broken-image glyph is never shown.
   const markFallback="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22112%22%20height%3D%22112%22%20viewBox%3D%220%200%20112%20112%22%20role%3D%22img%22%20aria-label%3D%22Franklin%20Navigator%22%3E%3Crect%20width%3D%22112%22%20height%3D%22112%22%20rx%3D%2227%22%20fill%3D%22%2303454b%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%225%22%20width%3D%22102%22%20height%3D%22102%22%20rx%3D%2223%22%20fill%3D%22none%22%20stroke%3D%22%23d8e7e5%22%20stroke-opacity%3D%22.3%22%2F%3E%3Cpath%20d%3D%22M30%2029h54v15H48v15h30v15H48v27H30z%22%20fill%3D%22%23fff%22%2F%3E%3Cpath%20d%3D%22m82%2055%2020%2010.5L82%2076l5.9-10.5z%22%20fill%3D%22%23c5943a%22%2F%3E%3C%2Fsvg%3E";
