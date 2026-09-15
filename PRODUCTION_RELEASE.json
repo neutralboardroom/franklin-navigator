@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.12-HF3.12.4",
+  "release": "FR-NAV1.30.13-HF3.12.5",
   "date": "2026-09-15",
-  "base": "FR-NAV1.30.11-HF3.12.3",
+  "base": "FR-NAV1.30.12-HF3.12.4",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1312 production successor preserving the R1311 Assistant-first Franklin community connector while completing two owner-directed public cleanups and closing the Platform-side live monitoring gaps. The redundant connected-needs bridge remains removed from the homepage, Situation Planner remains available on its dedicated route, and inactive For Business now uses the same primary-navigation color as other inactive items. The existing maximum-visible one-line navigation, English/Spanish parity, 19,103 profiles and 254 Assistant routes are preserved. FRANKLIN_ISSUE_MONITOR_1 now has authorized privacy-safe external owner email delivery for OPEN CRITICAL/HIGH incidents, a fresh owner-authenticated control-plane incident snapshot, and exact fail-closed reconciliation of ten repeated synthetic correction/removal acceptance artifacts. Latest live snapshot confirms zero OPEN CRITICAL and zero OPEN HIGH incidents. Membership, Stripe, claim/reviewer, privacy, accessibility, SEO and no-loss protections remain preserved.",
+  "scope": "R1313 production successor focused on truthful live member-profile lifecycle readiness. It preserves the R1312 public experience, 19,103-profile corpus, 254 Assistant routes, adaptive navigation, monitoring, external owner alerts, pricing and member/reviewer architecture. The membership runtime now syntax-gates all critical member/reviewer/preflight modules before startup and performs a production-safe read-only preflight that requires a membership profile to exist in the accepted 19,103-profile public scope before it can count as edit/publish readiness evidence. Fresh live truth shows the single active verified rich membership is the bounded FR-TEST-SCC-OWNER-CONTROL profile, which is outside public scope and is therefore excluded from real-member proof. No fake public profile, fake representation authority, real charge or public member publication was manufactured to close the remaining evidence gap.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -179,7 +179,7 @@
     "guideNewChatReset": true,
     "guideStatePersistence": "MEMORY_ONLY_CURRENT_PAGE",
     "guideRepetitionSuppression": true,
-    "preservedInRelease": "FR-NAV1.30.12-HF3.12.4"
+    "preservedInRelease": "FR-NAV1.30.13-HF3.12.5"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -275,7 +275,7 @@
       "registration/claim/profile-review acceptance",
       "first-value acceptance"
     ],
-    "preservedInRelease": "FR-NAV1.30.12-HF3.12.4",
+    "preservedInRelease": "FR-NAV1.30.13-HF3.12.5",
     "durableRequirement": "CONTINUE_SITE_WIDE_USER_ISSUE_FRICTION_FAILURE_MONITORING_AND_OWNER_VISIBLE_INCIDENT_AWARENESS_EVERY_MATERIAL_RELEASE",
     "navigationOverflowSignal": "PRIMARY_NAV_OVERFLOW",
     "navigationOverflowRule": "ONLY_EMIT_IF_PRIORITY_COLLAPSE_CANNOT_KEEP_PRIMARY_NAV_WITHIN_AVAILABLE_WIDTH",
@@ -294,14 +294,14 @@
       "HIGH": 60
     },
     "latestOwnerAuthenticatedIncidentSnapshot": {
-      "at": "2026-09-15T07:44:59.852Z",
+      "at": "2026-09-15T08:18:04.517Z",
       "ownerAuthenticated": true,
       "authMechanism": "HMAC_ADMIN_TOKEN_CONTROL_PLANE_PROOF",
       "openCritical": 0,
       "openHigh": 0,
       "noOpenP0P1": true,
       "externalDelivery": "RESEND_EMAIL_CONFIGURED",
-      "ownerAuthProofSha256": "051fedbf1b75bf293da1a49762e37e4f2bf49a000051158439a1b366c8be6c4b"
+      "ownerAuthProofSha256": "c4b34ab69abe787171a1adba2653ca2509c08a3d925dc9c5c3eac323c89183e0"
     },
     "syntheticSupportReconciliation": {
       "expected": 10,
@@ -313,8 +313,8 @@
       "mutationScope": "EXACT_IDS_ONLY_AFTER_ID_CATEGORY_NULL_PROFILE_AND_MESSAGE_HASH_MATCH"
     },
     "runtimeService": "srv-dabgvefqj5pc739vr4h0",
-    "runtimeDeploy": "dep-dakfep9594qs73dt62fg",
-    "runtimeCommit": "5c097774094fcae80f4a8a39f278a413d15a7273"
+    "runtimeDeploy": "dep-dakfu9h5efls73dsjct0",
+    "runtimeCommit": "0236a8ffe46e7b139ac1bfc57a6ba09e680f5bdd"
   },
   "navigation": {
     "version": "FRANKLIN_PRIMARY_NAV_R1310",
@@ -356,10 +356,10 @@
     "englishSpanishParity": true,
     "spanishLocalizedRoutes": true,
     "noJsFallback": "existing static header preserved; runtime enhancement does not remove destination routes",
-    "preservedInRelease": "FR-NAV1.30.12-HF3.12.4",
+    "preservedInRelease": "FR-NAV1.30.13-HF3.12.5",
     "inactiveForBusinessColor": "MATCHES_OTHER_INACTIVE_PRIMARY_NAV_ITEMS"
   },
-  "productionPromotionFrom": "FR-NAV1.30.11-HF3.12.3",
+  "productionPromotionFrom": "FR-NAV1.30.12-HF3.12.4",
   "communityConnector": {
     "version": "FRANKLIN_COMMUNITY_CONNECTOR_R1311",
     "publicEntryPoint": "FRANKLIN_ASSISTANT_REMAINS_FIRST_TOP_OF_HOME_ACTION",
@@ -392,5 +392,38 @@
     "outreachGate": "PLATFORM_BLOCKERS_CLEARED_INDEPENDENT_SRE_REVENUE_VERIFICATION_STILL_REQUIRED",
     "outreachSent": false,
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1312.md"
+  },
+  "memberProfileProductionReadiness": {
+    "version": "FRANKLIN_MEMBER_PATH_PREFLIGHT_V6",
+    "preflightSchema": "franklin.readonly-owner-preflight.v6",
+    "observedAt": "2026-09-15T08:18:04.018Z",
+    "publicProfileScopeCount": 19103,
+    "reviewerControlConfigured": true,
+    "activeVerifiedRichMembershipProfiles": 1,
+    "activeVerifiedRichMembershipProfilesInPublicScope": 0,
+    "realPublicMemberCandidateAvailable": false,
+    "ownerControlProfile": "FR-TEST-SCC-OWNER-CONTROL",
+    "ownerControlProfilePublicScopePresent": false,
+    "activeReviewedPublications": 0,
+    "exactPublicReadbackReceipts": 0,
+    "readyForControlledRealPublicMemberPublication": false,
+    "productionProofComplete": false,
+    "priorFullIsolatedAcceptanceRun": 34921029158,
+    "priorFullIsolatedAcceptanceConclusion": "success",
+    "realChargeCreatedForAcceptance": false,
+    "fakePublicProfileCreated": false,
+    "evidence": "MEMBER_PROFILE_PRODUCTION_PATH_READINESS__R1313.md"
+  },
+  "r1313": {
+    "version": "FR-NAV1.30.13-HF3.12.5",
+    "runtimeSyntaxGate": "SERVER_MEMBER_FULFILLMENT_REVIEWER_CONSOLE_OWNER_PREFLIGHT",
+    "publicScopeMemberReadinessEnforced": true,
+    "ownerControlMembershipExcludedFromRealPublicMemberProof": true,
+    "livePublicScopeProfiles": 19103,
+    "livePublicMemberCandidates": 0,
+    "firstRealPublicMemberLifecycleProof": "PENDING_GENUINELY_AUTHORIZED_PUBLIC_PROFILE_MEMBER",
+    "outreachGate": "NOT_READY_PENDING_REAL_PUBLIC_MEMBER_PRODUCTION_PROOF_AND_INDEPENDENT_SRE_REVENUE_VERIFICATION",
+    "outreachSent": false,
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1313.md"
   }
 }
