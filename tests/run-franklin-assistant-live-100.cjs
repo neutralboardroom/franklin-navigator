@@ -174,4 +174,4 @@ async function ask(row){
   console.log(JSON.stringify({shard,passed,total:results.length}));
 })().catch(error=>{console.error(error);process.exit(1)});
 
-// LIVE_RERUN_TARGET: FRANKLIN-ASSISTANT2-0.3.0
+// LIVE_RERUN_TARGET: FRANKLIN-ASSISTANT2-0.3.0-FINAL
