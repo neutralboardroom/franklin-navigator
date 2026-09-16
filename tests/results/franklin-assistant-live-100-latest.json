@@ -1,5 +1,5 @@
 {
-  "runAt": "2026-09-16T09:10:41.687Z",
+  "runAt": "2026-09-16T09:46:30.231Z",
   "total": 100,
   "passed": 99,
   "failed": 1,
@@ -136,7 +136,7 @@
           "url": "/directory/?q=an%20auto%20repair%20shop"
         }
       ],
-      "elapsedMs": 64
+      "elapsedMs": 86
     },
     {
       "id": "AUTO-02",
@@ -155,7 +155,7 @@
           "url": "/directory/?q=a%20tow%20truck"
         }
       ],
-      "elapsedMs": 86
+      "elapsedMs": 55
     },
     {
       "id": "AUTO-03",
@@ -166,11 +166,11 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "In Franklin, renew your vehicle registration through the Williamson County Clerk: In person: Williamson County Clerk 1320 W. Main Street, Suite 135 Franklin, TN 37064 Monday–Friday, 8:00 a.m.–4:30 p.m. Phone: 615-790-5712 Other options: Online through the Tennessee County Clerk’s plate-renewal service 24/7 drive-up kiosk at 1320 W. Main Street Renewal kiosks at Franklin Recreation Center and other Williamson County recreation centers By mail: Williamson County Clerk, P.O. Box 624, Franklin, TN 37065 Kiosks process renewals only; bring your registration or renewal notice. Renewals more than 90 days overdue must be completed in person or by mail.",
+      "answer": "You can renew your vehicle registration in Franklin through the Williamson County Clerk: In person: Williamson County Clerk 1320 West Main Street, Suite 135 Franklin, TN 37064 Monday–Friday, 8:00 a.m.–4:30 p.m. Phone: 615-790-5712 Other options: 24/7 drive-up renewal kiosk at 1320 W. Main Street Renewal kiosks at Franklin Recreation Center and other Williamson County recreation centers Online through the Tennessee County Clerk’s plate-renewal service By mail: Williamson County Clerk, P.O. Box 624, Franklin, TN 37065 Kiosks process renewals only and require your registration or renewal notice. Renewals more than 90 days overdue must be completed in person or by mail.",
       "sources": [
         {
           "title": "Williamson County",
-          "url": "https://williamsoncounty-tn.gov/1795/Renewals",
+          "url": "https://www.williamsoncounty-tn.gov/1795/Renewals",
           "official": true
         },
         {
@@ -180,7 +180,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4929
+      "elapsedMs": 4889
     },
     {
       "id": "AUTO-04",
@@ -191,16 +191,11 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "You don’t need an emissions test in Franklin or Williamson County. Tennessee eliminated the vehicle emissions-testing requirement there, and no emissions-testing stations currently operate. For registration help, contact the Williamson County Clerk or visit a Tennessee Driver Services location.",
+      "answer": "You don’t need an emissions test in Franklin or elsewhere in Williamson County. Tennessee ended mandatory vehicle emissions testing in Williamson County. For registration or renewal, contact the Williamson County Clerk at 615-790-5712 or use a county clerk kiosk.",
       "sources": [
         {
           "title": "safetysupport.tn.gov",
           "url": "https://safetysupport.tn.gov/hc/en-us/articles/51013024806291-Driver-Service-Locations",
-          "official": true
-        },
-        {
-          "title": "comptroller.aem.tn.extglb.tn.gov",
-          "url": "https://comptroller.aem.tn.extglb.tn.gov/safety/driver-services/locations.html",
           "official": true
         },
         {
@@ -209,18 +204,23 @@
           "official": true
         },
         {
-          "title": "capitol.tn.gov",
-          "url": "https://capitol.tn.gov/Archives/Joint/committees/gov-opps/com/TDEC%20and%20Related%20Boards%20PA.pdf",
+          "title": "extglb.tn.gov",
+          "url": "https://www.extglb.tn.gov/environment/contacts/field-offices/nashville.html",
           "official": true
         },
         {
-          "title": "extglb.tn.gov",
-          "url": "https://www.extglb.tn.gov/environment/contacts/field-offices/nashville.html",
+          "title": "capitol.tn.gov",
+          "url": "https://capitol.tn.gov/Archives/Joint/committees/gov-opps/com/TDEC%20PA.pdf",
+          "official": true
+        },
+        {
+          "title": "preprod.tn.gov",
+          "url": "https://preprod.tn.gov/safety/driver-services/locations/county.html",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4593
+      "elapsedMs": 6046
     },
     {
       "id": "AUTO-05",
@@ -231,10 +231,10 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "general_ai",
-      "answer": "First, get yourself and others to safety: 1. Turn on your hazard lights and move the car as far off the road as possible, if it can move safely. 2. If you’re on a highway or dangerous roadway, stay inside with your seat belt fastened unless there’s immediate danger, such as smoke or fire. 3. Call emergency services if anyone is injured, the vehicle is creating a hazard, or you’re in danger. Otherwise, contact roadside assistance or a towing service. 4. Don’t stand behind or in front of the vehicle, and avoid accepting help from strangers if you feel unsafe. 5. If safe, note your location, nearest intersection or exit, and any warning lights or unusual symptoms to tell the tow provider.",
+      "answer": "First, get yourself and other people out of danger. Turn on your hazard lights, steer to the shoulder or another safe location if possible, and stay in the vehicle with your seat belt on if you’re near moving traffic. Then call roadside assistance or a tow service. If anyone is injured, there’s immediate danger, or the vehicle is blocking traffic, call 911. Avoid standing behind or in front of the car, and don’t attempt repairs in a traffic lane.",
       "sources": [],
       "links": [],
-      "elapsedMs": 3266
+      "elapsedMs": 2845
     },
     {
       "id": "BUSINESS-01",
@@ -253,7 +253,7 @@
           "url": "/directory/?q=a%20plumber"
         }
       ],
-      "elapsedMs": 21
+      "elapsedMs": 24
     },
     {
       "id": "BUSINESS-02",
@@ -272,7 +272,7 @@
           "url": "/directory/?q=a%20roofer"
         }
       ],
-      "elapsedMs": 61
+      "elapsedMs": 106
     },
     {
       "id": "BUSINESS-03",
@@ -291,7 +291,7 @@
           "url": "/directory/?q=an%20electrician"
         }
       ],
-      "elapsedMs": 65
+      "elapsedMs": 84
     },
     {
       "id": "BUSINESS-04",
@@ -302,7 +302,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Requested window: now — Wednesday, September 16, 2026 at 4:09 AM CDT\nNo Franklin restaurants with verified official hours are confirmed open at this time.",
+      "answer": "Wednesday, September 16, 2026 at 4:45 AM CDT — No Franklin restaurants with verifiable official hours are confirmed open now.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -311,12 +311,12 @@
         },
         {
           "title": "Visit Franklin",
-          "url": "https://visitfranklin.com/food-and-drink/1799-kitchen-bar-room/",
+          "url": "https://visitfranklin.com/food-and-drink/",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 3153
+      "elapsedMs": 3209
     },
     {
       "id": "BUSINESS-05",
@@ -327,7 +327,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 16, 2026 — Downtown Franklin coffee options:\nWednesday, September 16 — Frothy Monkey — opens 7:00 AM — Downtown Franklin\nWednesday, September 16 — The Coffee House at Second & Bridge — 144 Second Avenue North\nWednesday, September 16 — McGavock’s Coffee Bar & Provisions — 130 2nd Avenue North, The Harpeth Hotel\nWednesday, September 16 — Onyx + Alabaster Coffee Lounge — Historic Downtown Franklin",
+      "answer": "Requested date: Wednesday, September 16, 2026.\nFrothy Monkey — 7:00 AM daily — 125 5th Avenue South, downtown Franklin\nMcGavock’s Coffee Bar & Provisions — downtown Franklin — 130 2nd Avenue North, Harpeth Hotel\nCoffee House at Second & Bridge — downtown Franklin — 144 2nd Avenue North\nStable Reserve — earlier hours — Main Street, historic downtown Franklin",
       "sources": [
         {
           "title": "City of Franklin",
@@ -336,12 +336,12 @@
         },
         {
           "title": "Visit Franklin",
-          "url": "https://visitfranklin.com/food-and-drink/the-coffee-house-at-second-bridge/",
+          "url": "https://visitfranklin.com/blog/8-digital-passports-for-your-next-franklin-visit/",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4042
+      "elapsedMs": 3863
     },
     {
       "id": "CIVIC-01",
@@ -362,7 +362,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 59
+      "elapsedMs": 95
     },
     {
       "id": "CIVIC-02",
@@ -383,7 +383,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 66
+      "elapsedMs": 82
     },
     {
       "id": "CIVIC-03",
@@ -394,7 +394,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "For a City of Franklin utility bill, you can pay: Online through the City’s utility billing portal. In person, Monday–Friday, 8 a.m.–5 p.m., at: 204 9th Ave. South Franklin, TN 37064 By phone: 866-696-1916 By mail: City of Franklin 109 3rd Ave. South Franklin, TN 37064 You may also use the 24-hour drop box behind 204 9th Ave. South. For questions, call Utility Billing at 615-794-4572.",
+      "answer": "For a City of Franklin utility bill, you can pay: Online: City of Franklin customer portal In person: Monday–Friday, 8 a.m.–5 p.m., at 204 9th Avenue South, Franklin By phone: 866-696-1916 Drop box: 24 hours a day behind 204 9th Avenue South By mail: City of Franklin, 109 3rd Avenue South, Franklin, TN 37064 Utility Billing customer service: 615-794-4572.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -408,7 +408,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4506
+      "elapsedMs": 3592
     },
     {
       "id": "CIVIC-04",
@@ -419,7 +419,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Report a pothole to the City of Franklin through its online service request form. Select “Pothole” and provide the location and details. You can also call the City at 615-791-3217.",
+      "answer": "Report it through the City of Franklin’s online service request system by selecting “Pothole.” You can also call the City at 615-791-3217. Include the street name, nearest address or landmark, and details about the pothole.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -433,7 +433,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4729
+      "elapsedMs": 4693
     },
     {
       "id": "CIVIC-05",
@@ -444,7 +444,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Current City meetings: September 16–22, 2026\nWednesday, September 16 — Franklin Public Arts Commission — 4:00–5:30 PM — Location not listed\nTuesday, September 22 — Board of Mayor and Aldermen Meeting — 7:00–9:00 PM — Location not listed\nSee the City of Franklin online calendar for current meeting listings.",
+      "answer": "Current meetings for September 16–23, 2026 are listed on the City of Franklin Calendar:\nWednesday, September 16 — Franklin Public Arts Commission — 4:00–5:30 PM — Location not listed\nTuesday, September 22 — Board of Mayor and Aldermen Meeting — 7:00–9:00 PM — Location not listed",
       "sources": [
         {
           "title": "City of Franklin",
@@ -453,7 +453,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 3580
+      "elapsedMs": 4138
     },
     {
       "id": "COMM-01",
@@ -464,16 +464,21 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 19–20, 2026: No verifiable volunteer events found for this weekend.\nThe Williamson County Animal Center offers volunteer opportunities, but weekend availability must be arranged in advance; 1006 Grigsby Hayes Court, Franklin.",
+      "answer": "September 19–20, 2026: No verifiable volunteer opportunities found for this weekend.",
       "sources": [
         {
-          "title": "Williamson County Animal Center",
-          "url": "https://www.adoptwcac.org/",
+          "title": "City of Franklin",
+          "url": "https://www.franklintn.gov/our-city/calendar",
+          "official": true
+        },
+        {
+          "title": "Williamson County",
+          "url": "https://www.williamsoncounty-tn.gov/calendar.aspx?CID=0&month=9&view=week&year=2026",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 5216
+      "elapsedMs": 4805
     },
     {
       "id": "COMM-02",
@@ -484,7 +489,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Franklin-area nonprofits that help families include: GraceWorks Ministries — food, clothing, emergency financial assistance, and other basic-needs support for Williamson County residents. Bridges Domestic Violence Center — confidential shelter, crisis support, and advocacy for people and families affected by domestic violence. Shelter information: 615-599-5777. Call 911 for emergencies. Williamson County Homeless Alliance — homelessness prevention, emergency shelter, rapid rehousing, and support for families experiencing homelessness. My Friend’s House — services for children and families, including support for youth and family stability. Habitat for Humanity of Williamson-Maury — affordable homeownership and housing-related assistance for qualifying families. United Way 211 — call 211 for current referrals to local food, housing, utility, health-care, transportation, and family-support programs. Specialists are available 24/7. For the fastest match, call 211 and explain your family’s specific need, income situation, ZIP code, and whether there are children or an immediate safety concern.",
+      "answer": "Franklin-area nonprofits that help families include: Williamson County Homeless Alliance — Emergency, temporary, transitional, and permanent housing support for individuals and families experiencing homelessness. Bridges Domestic Violence Center — Free shelter and support for families affected by domestic violence. Shelter information: 615-599-5777. In an emergency, call 911. GraceWorks Ministries — Emergency assistance with food, clothing, household needs, and financial support for eligible Williamson County residents. My Friend’s House — Residential and transitional support for young men and youth who need family, foster-care, adoption, or independent-living support. Boys & Girls Clubs of Franklin/Williamson County — Youth programs, mentoring, and supervised activities for children and teens. Habitat for Humanity of Williamson-Maury — Homeownership and housing support for qualifying families. United Way 211 — The fastest way to find currently available local help with food, rent, utilities, childcare, transportation, and caregiving. Call 211. For housing, food, or urgent financial needs, start with 211 and ask specifically for Franklin or Williamson County family-assistance programs.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -493,7 +498,7 @@
         },
         {
           "title": "211",
-          "url": "https://www.211.org/about-us",
+          "url": "https://www.211.org/food",
           "official": true
         },
         {
@@ -503,7 +508,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 6537
+      "elapsedMs": 4140
     },
     {
       "id": "COMM-03",
@@ -514,16 +519,26 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "You can donate nonperishable food to One Generation Away, a Franklin-based nonprofit that distributes food to people facing food insecurity across Middle Tennessee. For current drop-off locations, accepted items, and donation hours, call 615-300-0474 or check with One Generation Away before going. You may also donate food through GraceWorks Ministries in Franklin. Call 615-794-9055 for current food-donation needs and drop-off instructions.",
+      "answer": "You can donate food to One Generation Away, a Franklin-based hunger-relief nonprofit. A City of Franklin food-drive notice says donations go directly to OneGenAway for distribution to people facing food insecurity. For current drop-off locations, accepted items, and hours, contact the City of Franklin at 615-794-1516 or check with OneGenAway before bringing food. Donate only unopened, unexpired, nonperishable food unless the organization confirms it accepts fresh or prepared food.",
       "sources": [
         {
           "title": "City of Franklin",
           "url": "https://www.franklintn.gov/government/departments-k-z/sanitation-and-environmental-services/bopae",
           "official": true
+        },
+        {
+          "title": "Williamson County",
+          "url": "https://williamsoncounty-tn.gov/1846/Convenience-Centers",
+          "official": true
+        },
+        {
+          "title": "Visit Franklin",
+          "url": "https://visitfranklin.com/wp-content/uploads/2024/07/Merchandise-Donation-Request-Form.pdf",
+          "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4176
+      "elapsedMs": 4127
     },
     {
       "id": "COMM-04",
@@ -534,21 +549,21 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 16–20, 2026: Yes—one verified community class found.\nWednesday, September 16 — Franklin Computer Classes — 1:30–3:00 PM — Williamson County Public Library, Franklin",
+      "answer": "September 16–20, 2026\nTuesday, September 15 — Rock City Music Class — time not listed — Franklin Public Library, Franklin\nThursday, September 17 — Teen Art After School — time not listed — Franklin Public Library, Franklin\nNo other verifiable community classes were found for this week.",
       "sources": [
         {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/our-city/calendar",
+          "url": "https://www.franklintn.gov/services/advanced-components/event-list-view/-sortn-EName/-toggle-next7days/-sortd-asc",
           "official": true
         },
         {
           "title": "Williamson County Public Library",
-          "url": "https://wcpltn.org/Calendar.aspx?EID=11808&calType=0&day=14&month=9&year=2026",
+          "url": "https://www.wcpltn.org/calendar.aspx?CID=28&month=9&view=week&year=2026",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4144
+      "elapsedMs": 2994
     },
     {
       "id": "COMM-05",
@@ -559,7 +574,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Start with the City of Franklin’s “Information for New Residents” page. For personalized help, call City Hall at 615-791-3217. It covers: City services and your alderman Driver’s license: 3830 Carothers Parkway, 615-790-5515 Vehicle registration: Williamson County Clerk, 1320 W. Main Street, Suite 135, 615-790-5712 Voter registration: 1320 W. Main Street, 615-790-5711 Utilities, trash, water, schools, libraries, hospitals, and post offices For city service requests—such as water, sanitation, streets, parks, police, or fire—use the City of Franklin Customer Service Portal or call 615-791-3217.",
+      "answer": "Start with the City of Franklin’s Information for New Residents page. For help navigating local services, call 615-791-3217. Useful first steps: Driver’s license: 3830 Carothers Parkway, 615-790-5515. Vehicle registration: Williamson County Clerk, 1320 W. Main Street, Suite 135, Franklin; 615-790-5712. New residents can register vehicles there. Voter registration: Williamson County Administrative Complex; 615-790-5711. Schools: Franklin Special School District, fssd.org, or Williamson County Schools, wcs.edu. Libraries: Williamson County Public Library. Utilities: Contact your local provider; the City lists major water districts and contacts. Local events, attractions, maps, and community information: Visit Franklin Visitor Center, 400 Main Street, Suite 130; 615-591-8514. The City’s new-resident information also includes post offices, hospitals, waste services, and city maps.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -567,18 +582,18 @@
           "official": true
         },
         {
-          "title": "dynamicportal.franklintn.gov",
-          "url": "https://dynamicportal.franklintn.gov/CRM/Views/CRM/CRMWelcome.aspx",
+          "title": "Williamson County",
+          "url": "https://williamsoncounty-tn.gov/161/County-Clerk",
           "official": true
         },
         {
-          "title": "Williamson County",
-          "url": "https://williamsoncounty-tn.gov/161/County-Clerk",
+          "title": "Visit Franklin",
+          "url": "https://visitfranklin.com/",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 5829
+      "elapsedMs": 5026
     },
     {
       "id": "ES-01",
@@ -599,7 +614,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 58
+      "elapsedMs": 102
     },
     {
       "id": "ES-02",
@@ -610,16 +625,16 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Fin de semana del viernes 18 al domingo 20 de septiembre de 2026 en Franklin:\nViernes 18 de septiembre — Forever Abbey Road — 8:00 p. m. — The Franklin Theatre, 419 Main St.\nViernes 18 de septiembre — Audiencia especial del Beer Board — 2:30–5:00 p. m. — Franklin; lugar no indicado.\nSábado 19 de septiembre — BoDeans: 40 Years of Love & Hope & Sex & Dreams...and Good Things — 8:00 p. m. — The Franklin Theatre, 419 Main St.\ndomingo 20 de septiembre — No encontré otros eventos verificables en las fuentes oficiales consultadas.",
+      "answer": "Fin de semana del viernes 18 al domingo 20 de septiembre de 2026 en Franklin:\nViernes 18 — Fiddler on the Roof — 2:00–4:00 p. m. — Williamson County Performing Arts Center, 112 Everbright Avenue\nViernes 18 — Forever Abbey Road — 8:00 p. m. — Franklin Theatre\nSábado 19 — BoDeans: 40 Years of Love & Hope & Sex & Dreams...and Good Things — 8:00 p. m. — Franklin Theatre\nNo encontré otros eventos verificables en fuentes locales oficiales para ese período.",
       "sources": [
         {
-          "title": "Visit Franklin",
-          "url": "https://visitfranklin.com/things-to-do-events/",
+          "title": "City of Franklin",
+          "url": "https://www.franklintn.gov/our-city/calendar",
           "official": true
         },
         {
-          "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/government/departments-a-j/communications/public-outreach-special-events/special-events-calendar",
+          "title": "Visit Franklin",
+          "url": "https://visitfranklin.com/events/franklin-light-opera-presents-fiddler-on-the-roof/2026-09-18/",
           "official": true
         },
         {
@@ -629,7 +644,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4199
+      "elapsedMs": 3703
     },
     {
       "id": "ES-03",
@@ -650,7 +665,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 94
+      "elapsedMs": 62
     },
     {
       "id": "ES-04",
@@ -669,7 +684,7 @@
           "url": "/es/directorio/?q=un%20plomero"
         }
       ],
-      "elapsedMs": 20
+      "elapsedMs": 21
     },
     {
       "id": "ES-05",
@@ -696,7 +711,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 67
+      "elapsedMs": 91
     },
     {
       "id": "EVENT-01",
@@ -707,31 +722,31 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 19–20, 2026 — Franklin weekend events\nSaturday, September 19 — Factory Farmers Market — 8:00 AM–12:00 PM — The Factory at Franklin\nSaturday, September 19 — Big Little Stories Camp — 9:00 AM–12:00 PM — Location not specified\nSaturday, September 19 — Phyllis Narus Weaving Demonstration — 1:00–3:00 PM — Location not specified\nSaturday, September 19 — Fiddler on the Roof — 2:00–4:00 PM — Location not specified\nSaturday, September 19 — Sunsets & Cider — 5:00–7:00 PM — Location not specified\nSaturday, September 19 — Lotz House Ghost Tour — 6:00–7:30 PM — Lotz House\nSaturday, September 19 — Fiddler on the Roof — 8:00–10:00 PM — Location not specified",
+      "answer": "September 19–20, 2026 (Saturday–Sunday)\nSaturday, September 19 — Factory Farmers Market — 8:00 AM–12:00 PM — The Factory at Franklin\nSaturday, September 19 — Big Little Stories Camp — 9:00 AM–12:00 PM — Franklin\nSaturday, September 19 — Phyllis Narus Weaving Demonstration — 1:00–3:00 PM — Franklin\nSaturday, September 19 — Fiddler on the Roof — 2:00–4:00 PM — Franklin Light Opera\nSaturday, September 19 — Sunsets & Cider — 5:00–7:00 PM — Franklin\nSaturday, September 19 — Lotz House Ghost Tour — 6:00–7:30 PM — Lotz House\nSaturday, September 19 — BoDeans: 40 Years of Love & Hope & Sex & Dreams...and Good Things — 8:00 PM — Franklin Theatre, 419 Main Street",
       "sources": [
-        {
-          "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/our-city/calendar",
-          "official": true
-        },
         {
           "title": "Franklin Theatre",
           "url": "https://www.franklintheatre.com/",
           "official": true
         },
         {
-          "title": "Visit Franklin",
-          "url": "https://visitfranklin.com/page/4/?eventDisplay=day&post_type=tribe_events&tag=franklin",
+          "title": "City of Franklin",
+          "url": "https://www.franklintn.gov/our-city/calendar",
           "official": true
         },
         {
           "title": "secure.franklintheatre.com",
           "url": "https://secure.franklintheatre.com/websales/pages/list.aspx?epguid=608cb8b6-970e-4b26-a544-a85501465748",
           "official": true
+        },
+        {
+          "title": "Visit Franklin",
+          "url": "https://visitfranklin.com/page/4/?eventDisplay=day&post_type=tribe_events&tag=franklin",
+          "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 3855
+      "elapsedMs": 4349
     },
     {
       "id": "EVENT-02",
@@ -742,26 +757,26 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Tonight, Wednesday, September 16, 2026:\nWednesday, September 16 — Finding Fantasy — 7:00 PM — The Franklin Theatre, 419 Main St\nWednesday, September 16 — Franklin Public Arts Commission meeting — 4:00–5:30 PM — Franklin city offices; public meeting details should be confirmed with the city",
+      "answer": "September 16, 2026 — tonight\nWednesday, September 16 — Franklin Public Arts Commission — 4:00–5:30 PM — Eastern Flank Battlefield Park, 1368 Eastern Flank Circle\nNo other verifiable Franklin events were found for Wednesday evening.",
       "sources": [
+        {
+          "title": "City of Franklin",
+          "url": "https://www.franklintn.gov/our-city/calendar",
+          "official": true
+        },
         {
           "title": "Visit Franklin",
           "url": "https://visitfranklin.com/things-to-do-events/",
           "official": true
         },
         {
-          "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/our-city/links",
-          "official": true
-        },
-        {
-          "title": "Franklin Theatre",
-          "url": "https://www.franklintheatre.com/",
+          "title": "secure.franklintheatre.com",
+          "url": "https://secure.franklintheatre.com/websales/pages/list.aspx?epguid=608cb8b6-970e-4b26-a544-a85501465748",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 3786
+      "elapsedMs": 3911
     },
     {
       "id": "EVENT-03",
@@ -772,21 +787,11 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Free events for Thursday, September 17, 2026:\nThursday, September 17 — Teen Art After School — 4:00–5:30 PM — Williamson County Public Library, Teen Room\nThursday, September 17 — Mahjong Meetup — 5:30–7:30 PM — Williamson County Public Library, Learning Center",
+      "answer": "September 17, 2026: No verifiable free events found in Franklin.\nThursday, September 17, 2026 — No confirmed free event — — —",
       "sources": [
         {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/our-city/calendar",
-          "official": true
-        },
-        {
-          "title": "Williamson County Public Library",
-          "url": "https://www.wcpltn.org/calendar.aspx",
-          "official": true
-        },
-        {
-          "title": "Williamson County",
-          "url": "https://www.williamsoncounty-tn.gov/calendar.aspx?CID=23%2C38%2C14",
+          "url": "https://www.franklintn.gov/government/departments-a-j/communications/public-outreach-special-events/special-events-calendar",
           "official": true
         },
         {
@@ -796,7 +801,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4440
+      "elapsedMs": 3454
     },
     {
       "id": "EVENT-04",
@@ -807,16 +812,11 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 16–20, 2026\nWednesday, September 16 — Franklin Public Arts Commission — 4:00 PM — Location not listed\nWednesday, September 16 — Williamson County Law Enforcement / Public Safety Committee Meeting — 5:30–6:30 PM — Williamson County Administrative Complex, Executive Conference Room, 1320 West Main Street, Franklin\nFriday, September 18 — Special Called Beer Board Hearing — 2:30 PM — Location not listed",
+      "answer": "September 16–20, 2026: No verifiable public meetings found in Franklin or Williamson County during this date window.",
       "sources": [
         {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/our-city/calendar",
-          "official": true
-        },
-        {
-          "title": "Williamson County",
-          "url": "https://www.williamsoncounty-tn.gov/calendar.aspx?day=16&month=9&view=list&year=2026",
+          "url": "https://www.franklintn.gov/home/showpublisheddocument/40708/639007835309630000",
           "official": true
         },
         {
@@ -830,13 +830,18 @@
           "official": true
         },
         {
+          "title": "web.franklintn.gov",
+          "url": "https://web.franklintn.gov/flippingbook/FranklinZoningOrdinance/324/",
+          "official": true
+        },
+        {
           "title": "fhs.wcs.edu",
           "url": "https://fhs.wcs.edu/",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4347
+      "elapsedMs": 4362
     },
     {
       "id": "EVENT-05",
@@ -847,10 +852,10 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "general_ai",
-      "answer": "It starts at 9:00 AM on Saturday, September 19.",
+      "answer": "It starts at 9:00 AM.",
       "sources": [],
       "links": [],
-      "elapsedMs": 2653
+      "elapsedMs": 1947
     },
     {
       "id": "FOLLOW-01",
@@ -864,7 +869,7 @@
       "answer": "Call Franklin Water Management at 615-794-4554.",
       "sources": [],
       "links": [],
-      "elapsedMs": 1298
+      "elapsedMs": 1264
     },
     {
       "id": "FOLLOW-02",
@@ -875,16 +880,16 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Wednesday, September 16, 2026 — Yes, but not yet. Utility Billing opens at 8:00 AM and is open until 5:00 PM at 204 9th Ave. South, Franklin.",
+      "answer": "Wednesday, September 16, 2026: Yes. Utility Billing is scheduled to be open today from 8:00 AM to 5:00 PM. At 4:45 AM CDT, it is not open yet.",
       "sources": [
         {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/government/departments-a-j/billing-and-licensing/utility-services/faq",
+          "url": "https://www.franklintn.gov/government/departments-a-j/communications/public-outreach-special-events/special-events-calendar",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 3390
+      "elapsedMs": 2879
     },
     {
       "id": "FOLLOW-03",
@@ -895,7 +900,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Tomorrow: Thursday, September 17, 2026\nThursday, September 17 — Big Little Stories Camp — 9:00 AM–12:00 PM — Location not listed\nThursday, September 17 — Mahjong at Meridian — 4:30–7:00 PM — Location not listed\nThursday, September 17 — The Franklin Theatre Songwriters Series: Bowen*Young, Ryan Kinder, Justin Halpin, and Cale Dodds — 7:30–10:00 PM — The Franklin Theatre\nThursday, September 17 — NEEDTOBREATHE & Drew and Ellie Holcomb: The Long Surrender Tour — 8:00–11:00 PM — Location not listed",
+      "answer": "Tomorrow: Thursday, September 17, 2026\nThursday, September 17 — Pre-K Story Time — 9:30–10:00 AM — Franklin Main Library, Children’s Activity Room\nThursday, September 17 — League of Women Voters meeting with Williamson County Mayor Andy Marshall — 11:00 AM–12:00 PM — Franklin Main Library\nThursday, September 17 — Teen Art After School — 4:00–5:30 PM — Franklin Main Library, Teen Room\nThursday, September 17 — The Franklin Theatre Songwriters Series: Bowen*Young, Ryan Kinder, Justin Halpin, and Cale Dodds — 7:30–10:00 PM — Franklin Theatre, 419 Main St",
       "sources": [
         {
           "title": "City of Franklin",
@@ -908,13 +913,18 @@
           "official": true
         },
         {
+          "title": "Williamson County Public Library",
+          "url": "https://www.wcpltn.org/calendar.aspx?CID=51",
+          "official": true
+        },
+        {
           "title": "secure.franklintheatre.com",
           "url": "https://secure.franklintheatre.com/websales/pages/list.aspx?epguid=608cb8b6-970e-4b26-a544-a85501465748",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 2975
+      "elapsedMs": 3856
     },
     {
       "id": "FOLLOW-04",
@@ -925,10 +935,10 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "general_ai",
-      "answer": "I can’t confirm the current Franklin Transit fare from the available sources. Fares may vary by service and can change, so please check Franklin Transit’s official fare information for the current amount.",
+      "answer": "I can’t verify the current Franklin Transit fare from the information provided, so I don’t want to quote an inaccurate price. Please check Franklin Transit’s official fare information for the latest cost.",
       "sources": [],
       "links": [],
-      "elapsedMs": 3195
+      "elapsedMs": 3151
     },
     {
       "id": "FOLLOW-05",
@@ -939,7 +949,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Building & Neighborhood Services is at 120 9th Ave. South, Franklin, TN 37064. The office phone is 615-794-7012.",
+      "answer": "Building & Neighborhood Services is at 120 9th Avenue South, Franklin, TN. Phone: 615-794-7012. Hours: Monday–Friday, 7:30 a.m.–5:00 p.m.; permit applications are accepted until 4:30 p.m.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -948,7 +958,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 3092
+      "elapsedMs": 2914
     },
     {
       "id": "HEALTH-01",
@@ -967,7 +977,7 @@
           "url": "/directory/?q=where%20can%20i%20urgent%20care"
         }
       ],
-      "elapsedMs": 64
+      "elapsedMs": 86
     },
     {
       "id": "HEALTH-02",
@@ -986,7 +996,7 @@
           "url": "/directory/?q=a%20dentist"
         }
       ],
-      "elapsedMs": 64
+      "elapsedMs": 84
     },
     {
       "id": "HEALTH-03",
@@ -997,13 +1007,8 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 16, 2026 — Flu shots are available through Tennessee providers and local health departments. Use Vaccines.gov to find nearby pharmacies and confirm availability or appointments.",
+      "answer": "September 16, 2026 — No specific flu-shot event or appointment was verifiably listed for today.\nWilliamson County Health Department Franklin Clinic — Call for flu-shot availability and appointments — Monday–Friday, 8:00 a.m.–4:30 p.m. — 1324 W. Main Street, Franklin; 615-794-1542\nYou can also search nearby pharmacies through Vaccines.gov.",
       "sources": [
-        {
-          "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/our-city/calendar",
-          "official": true
-        },
         {
           "title": "Vaccines.gov",
           "url": "https://www.vaccines.gov/en/",
@@ -1015,18 +1020,23 @@
           "official": true
         },
         {
-          "title": "comptroller.extglb.tn.gov",
-          "url": "https://comptroller.extglb.tn.gov/content/dam/tn/health/division-of-health-disparities/Faith%20Leaders%20Resp%20Viruses%2010.21.24.pdf",
+          "title": "Williamson County",
+          "url": "https://williamsoncounty-tn.gov/1752/Clinics",
           "official": true
         },
         {
-          "title": "Williamson County",
-          "url": "https://www.williamsoncounty-tn.gov/DocumentCenter/View/26142/Vaccine-clinics--County-newsletter?bidId=",
+          "title": "benefitssupport.tn.gov",
+          "url": "https://benefitssupport.tn.gov/hc/en-us/articles/47447427094931-What-other-vaccines-are-covered-under-my-plan",
+          "official": true
+        },
+        {
+          "title": "comptroller.extglb.tn.gov",
+          "url": "https://comptroller.extglb.tn.gov/content/dam/tn/health/division-of-health-disparities/Faith%20Leaders%20Resp%20Viruses%2010.21.24.pdf",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4174
+      "elapsedMs": 6085
     },
     {
       "id": "HEALTH-04",
@@ -1037,7 +1047,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Wednesday, September 16, 2026 at 4:09 AM CDT — no verifiable Franklin pharmacy open now found in official local sources.",
+      "answer": "Requested date window: Now — Wednesday, September 16, 2026 at 4:44 AM CDT\nNo verifiable pharmacy open now was found from the required official local sources. Call 911 for a medical emergency.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -1045,23 +1055,13 @@
           "official": true
         },
         {
-          "title": "State of Tennessee",
-          "url": "https://www.tn.gov/content/dam/tn/health/documents/PHARM031015.pdf",
-          "official": true
-        },
-        {
-          "title": "comptroller.tn.gov",
-          "url": "https://comptroller.tn.gov/content/dam/cot/orea/advanced-search/2014/2014_OREA_MethFollowup.pdf",
-          "official": true
-        },
-        {
-          "title": "comptroller.extglb.tn.gov",
-          "url": "https://comptroller.extglb.tn.gov/content/dam/tn/partnersforhealth/documents/bc_network_p_508C_92823.pdf",
+          "title": "Williamson County",
+          "url": "https://www.williamsoncounty-tn.gov/1752/Clinics",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4442
+      "elapsedMs": 4813
     },
     {
       "id": "HEALTH-05",
@@ -1072,7 +1072,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "If you need help now in Franklin: Mental health crisis or thoughts of suicide: Call or text 988, then press 0. Trained counselors are available 24/7, and Tennessee’s mobile crisis response can come to you. (tn.gov) Immediate danger or medical emergency: Call 911 or go to the nearest emergency department. Non-emergency referrals: Call the Tennessee Behavioral Health Helpline at 800-560-5767, Monday–Friday, 8:00 a.m.–4:30 p.m. (tn.gov) Local Franklin resource directory: The City of Franklin’s Find Hope Franklin resource offers local mental-health and crisis information. (franklintn.gov)",
+      "answer": "If you need help right now in Franklin or Williamson County: Call or text 988, then press 0. Tennessee’s 24/7 crisis system can connect you with a local counselor, mobile crisis response, crisis evaluation, and ongoing care. For non-emergency help finding local counseling or treatment: Call 211 for confidential referrals to mental-health services, including options based on location, insurance, and cost. For substance-use treatment referrals: Call or text the Tennessee REDLINE at 800-889-9789. If someone is in immediate danger, call 911 or go to the nearest emergency department.",
       "sources": [
         {
           "title": "State of Tennessee",
@@ -1080,13 +1080,28 @@
           "official": true
         },
         {
-          "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/government/departments-a-j/fire",
+          "title": "211",
+          "url": "https://www.211.org/get-help/mental-health",
+          "official": true
+        },
+        {
+          "title": "extglb.tn.gov",
+          "url": "https://www.extglb.tn.gov/behavioral-health/crisis/disaster-response.html",
+          "official": true
+        },
+        {
+          "title": "comptroller.extglb.tn.gov",
+          "url": "https://comptroller.extglb.tn.gov/behavioral-health/crisis/suicide-prevention.html",
+          "official": true
+        },
+        {
+          "title": "capitol.tn.gov",
+          "url": "https://capitol.tn.gov/bills/113/scheduledocs/34788727-519e-45e3-9c29-b54540b720d4.pdf",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4936
+      "elapsedMs": 4148
     },
     {
       "id": "HOUSING-01",
@@ -1097,11 +1112,26 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "For rental-assistance options in Franklin and Williamson County: 1. Call 2-1-1 or 866-211-9966 and ask for emergency rent, eviction-prevention, or housing assistance in Williamson County. Have your ZIP code ready. 2. Contact the City of Franklin Community Development Department: 109 3rd Avenue South, Franklin 615-550-6608 Ask whether current Community Development Block Grant-funded housing or emergency-assistance programs are accepting applications. 3. If you are facing eviction, call Tennessee’s free legal-help referral line at 855-898-0677 or visit Free Legal Answers Tennessee. Ask for help responding to an eviction notice and for local rental-assistance referrals. Have these ready: photo ID, lease, eviction or late-rent notice, proof of income, household information, and landlord contact information. Availability and eligibility can change, so call before visiting.",
+      "answer": "Start with these Franklin-area resources: Call 2-1-1 and ask for emergency rent, eviction-prevention, or housing assistance in Williamson County. Tennessee 2-1-1 connects residents with local housing resources. Contact the City of Franklin Housing Development program at 615-550-6608. Staff can explain current affordable-housing and housing-assistance programs. Office: 109 3rd Avenue South, Franklin. Check Tennessee Housing Development Agency programs, including rental assistance and other housing support, through the Tennessee Department of Human Services’ housing resources. Have your lease, landlord contact information, eviction notice if applicable, identification, proof of income, and utility bills ready. Availability and eligibility vary, so call 2-1-1 first.",
       "sources": [
+        {
+          "title": "dynamicportal.franklintn.gov",
+          "url": "https://dynamicportal.franklintn.gov/CRM/Views/CRM/CRMWelcome.aspx",
+          "official": true
+        },
         {
           "title": "City of Franklin",
           "url": "https://www.franklintn.gov/government/departments-k-z/parks/rental-information",
+          "official": true
+        },
+        {
+          "title": "State of Tennessee",
+          "url": "https://www.tn.gov/humanservices/information-and-resources/tdhs-resource-library/community-resources.html",
+          "official": true
+        },
+        {
+          "title": "lwdsupport.tn.gov",
+          "url": "https://lwdsupport.tn.gov/hc/en-us/articles/360047341314-What-other-resources-might-be-available-to-me",
           "official": true
         },
         {
@@ -1111,7 +1141,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4956
+      "elapsedMs": 6865
     },
     {
       "id": "HOUSING-02",
@@ -1122,21 +1152,16 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "For a dangerous rental condition inside the City of Franklin, contact the City of Franklin Building and Neighborhood Services Department, which enforces property-maintenance and housing-safety codes. Call 615-791-3217 to report the condition or request an inspection. If it involves an immediate fire or life-safety danger, call 911. For apartment-building fire-code concerns, contact the Franklin Fire Marshal’s Office.",
+      "answer": "For a dangerous rental condition inside Franklin city limits, contact the City of Franklin Building and Neighborhood Services Department. It handles property-maintenance and housing-code enforcement. Report it through the City’s property-maintenance/code-enforcement process. If the danger involves fire or an immediate life-safety hazard, contact the Franklin Fire Marshal’s Office; call 911 for an immediate emergency. Outside Franklin city limits, contact Williamson County or your local municipality.",
       "sources": [
         {
           "title": "City of Franklin",
           "url": "https://www.franklintn.gov/government/departments-a-j/building-and-neighborhood-services/permit-applications-information/adopted-codes",
           "official": true
-        },
-        {
-          "title": "Williamson County",
-          "url": "https://www.williamsoncounty-tn.gov/DocumentCenter/View/16259/ADA-Grievance-Procedure-Form?bidId=",
-          "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4442
+      "elapsedMs": 4716
     },
     {
       "id": "HOUSING-03",
@@ -1147,7 +1172,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Yes. Franklin has several affordable-housing resources: City of Franklin Housing Development Office: Call 615-550-6608 for affordable/workforce housing information and local programs. Office: 109 3rd Avenue South, Franklin. Community Development Block Grant program: Supports safe and affordable housing and assistance for low- and moderate-income residents. Contact Kathleen Sauseda at 615-550-6608. HUD housing assistance: For Housing Choice Vouchers, public housing, housing counseling, and affordable rentals, call HUD at 800-569-4287 or 800-955-2232. Fair-housing help: For discrimination or reasonable-accommodation concerns, contact HUD at 800-440-8091.",
+      "answer": "Yes. Franklin-specific affordable housing resources include: City of Franklin Housing Development The City supports affordable, workforce, and moderate-income housing initiatives through its Housing Commission and housing-development programs. Contact: Housing Development Coordinator, 615-550-6608 Address: 120 9th Avenue South, Franklin Mailing address: 109 3rd Avenue South, Franklin Community Development Block Grant (CDBG) CDBG funding supports affordable-housing rehabilitation, neighborhood improvements, and services for low- and moderate-income residents. Ask whether current programs or partner agencies can help with your situation. Phone: 615-550-6608 Franklin Housing Commission The commission advises the city on affordable and workforce housing and helps encourage development and preservation of affordable units. State rental and housing assistance Tennessee’s Targeted Transitional Support program may help eligible people with rental deposits, rent, utility deposits, or utility payments, particularly individuals receiving treatment for mental illness or co-occurring substance-use disorders. Ask your treatment provider or local behavioral-health agency about eligibility. For help identifying currently available apartments or assistance programs, call 211 and ask specifically for Franklin or Williamson County affordable-housing resources.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -1160,13 +1185,18 @@
           "official": true
         },
         {
-          "title": "U.S. Department of Housing and Urban Development",
-          "url": "https://www.hud.gov/states/tennessee",
+          "title": "State of Tennessee",
+          "url": "https://www.tn.gov/behavioral-health/housing/ctts-itts.html",
+          "official": true
+        },
+        {
+          "title": "Williamson County",
+          "url": "https://www.williamsoncounty-tn.gov/",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4007
+      "elapsedMs": 5106
     },
     {
       "id": "HOUSING-04",
@@ -1177,7 +1207,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Report it to the City of Franklin’s Building and Neighborhood Services Department. For property maintenance, zoning, or other code violations: Call 615-794-7012 or submit a property standards service request online through the City of Franklin. You may also contact Neighborhood Resources Supervisor Ben Onisa at 615-550-6727. For emergencies or immediate hazards, call 911.",
+      "answer": "Report it to the City of Franklin’s Building and Neighborhood Services through the City’s online service request system. You can also call 615-794-7012. Common complaints include high grass, rubbish, inoperable vehicles, parking on lawns, zoning issues, and other property-maintenance violations. For general assistance, call 615-791-3217.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -1186,7 +1216,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 3577
+      "elapsedMs": 4651
     },
     {
       "id": "HOUSING-05",
@@ -1205,7 +1235,7 @@
           "url": "/directory/?q=a%20real%20estate%20agent"
         }
       ],
-      "elapsedMs": 90
+      "elapsedMs": 60
     },
     {
       "id": "JOB-01",
@@ -1216,26 +1246,21 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Start with these Franklin-area job sources: City of Franklin jobs: franklintn.gov/services/advanced-components/job. For questions, call Human Resources at 615-791-3216. Franklin Special School District careers: fssd.org/careers. Williamson County Schools employment: wcs.edu/careers. Statewide and local job listings: Jobs4TN.gov. Search for Franklin, TN. You can also visit the Tennessee Department of Labor and Workforce Development for employment assistance and training programs.",
+      "answer": "You can find Franklin-area jobs at: City of Franklin employment: Search current openings with the City of Franklin, including parks and other municipal departments. Williamson County Government jobs: Current openings include 911 dispatcher, library positions, deputy clerk, veterans service officer, and other full- and part-time roles in Franklin. Apply through the county’s Job Postings page. Tennessee Job Center: Search Franklin jobs and get help with applications, resumes, and training through Jobs4TN.gov. For the most local listings, start with the City of Franklin and Williamson County Government job pages.",
       "sources": [
+        {
+          "title": "Williamson County",
+          "url": "https://www.williamsoncounty-tn.gov/Jobs.aspx",
+          "official": true
+        },
         {
           "title": "City of Franklin",
           "url": "https://www.franklintn.gov/services/advanced-components/job",
           "official": true
-        },
-        {
-          "title": "mooreelementary.fssd.org",
-          "url": "https://mooreelementary.fssd.org/about-us/calendar",
-          "official": true
-        },
-        {
-          "title": "Franklin Special School District",
-          "url": "https://www.fssd.org/careers",
-          "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4311
+      "elapsedMs": 3979
     },
     {
       "id": "JOB-02",
@@ -1246,21 +1271,31 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 16–20, 2026: No verifiable local job fairs found for this week.",
+      "answer": "September 16–20, 2026: Yes—one local job fair.\nThursday, September 17 — Job Fair — 10:00 AM–1:00 PM — Embassy Suites, 820 Crescent Centre Drive, Franklin.",
       "sources": [
         {
+          "title": "State of Tennessee",
+          "url": "https://www.tn.gov/workforce/jobs-and-education/job-search1/hiring-events.html",
+          "official": true
+        },
+        {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/our-city/calendar",
+          "url": "https://www.franklintn.gov/services/advanced-components/event-calendar-view/-curm-9/-cury-2026",
+          "official": true
+        },
+        {
+          "title": "homebuilding.tn.gov",
+          "url": "https://homebuilding.tn.gov/agriculture/farms/fairs/fair-information.html",
           "official": true
         },
         {
           "title": "Williamson County",
-          "url": "https://williamsoncounty-tn.gov/AgendaCenter/ViewFile/Agenda/_01012026-649",
+          "url": "https://williamsoncounty-tn.gov/jobs.aspx",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 3893
+      "elapsedMs": 4933
     },
     {
       "id": "JOB-03",
@@ -1271,16 +1306,36 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "A teenager in Franklin can start with: City of Franklin seasonal jobs: Check the City’s Jobs page for part-time positions such as athletic-field, facilities, grounds, landscaping, and recreation program work. Call City Hall at 615-791-3217 if help is needed with applications. Williamson County Parks and Recreation: Look for seasonal positions at pools, recreation centers, camps, and parks. Lifeguard and camp jobs may require training or certification. Tennessee’s Jobs4TN: Search for youth-friendly summer jobs in Franklin and Williamson County, and check age requirements before applying. It’s best to begin looking several months before summer and ask local restaurants, retailers, camps, farms, and recreation programs directly about hiring.",
+      "answer": "A teenager in Franklin can start with: City of Franklin jobs: Check the City’s employment page for seasonal positions, especially Parks and Recreation jobs such as camp staff, program assistants, and lifeguards. Tennessee’s Jobs4TN.gov: Search for youth-friendly summer jobs in Franklin and Williamson County, and check age requirements before applying. Local employers: Apply directly to restaurants, retail stores, grocery stores, camps, pools, farms, and recreation programs. Many begin hiring for summer in January through April. School resources: Ask a school counselor or career-and-technical education teacher about local employers, internships, and summer work programs. For ages 14–19, the Franklin Fire Department also offers Fire Explorers, an excellent career-exploration opportunity, although it is not a paid summer job.",
       "sources": [
         {
           "title": "City of Franklin",
           "url": "https://www.franklintn.gov/services/advanced-components/job",
           "official": true
+        },
+        {
+          "title": "fhs.wcs.edu",
+          "url": "https://fhs.wcs.edu/",
+          "official": true
+        },
+        {
+          "title": "pms.wcs.edu",
+          "url": "https://pms.wcs.edu/",
+          "official": true
+        },
+        {
+          "title": "rnhs.wcs.edu",
+          "url": "https://rnhs.wcs.edu/",
+          "official": true
+        },
+        {
+          "title": "lms.wcs.edu",
+          "url": "https://lms.wcs.edu/",
+          "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4452
+      "elapsedMs": 5529
     },
     {
       "id": "JOB-04",
@@ -1291,21 +1346,21 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Williamson County Public Library’s Main Library can help with resume preparation, career planning, job searching, computer access, and printing. Main Library 1314 Columbia Avenue Franklin, TN 37064 Phone: 615-794-3105 Learning Center: 615-595-1243 Ask the reference desk or Learning Center about resume resources and available computer assistance. The library is open Wednesday, September 16, 2026, from 9:00 a.m. to 8:00 p.m.",
+      "answer": "You can get resume help at: American Job Center – Williamson County Career Center 118 Seaboard Lane, Franklin, TN 37067 Phone: 615-370-6004 They provide career assistance, including resume guidance and job-search support. Call first to ask about appointments and current hours. The Main Library in Franklin may also help you use computers, printers, and career-planning resources: 1314 Columbia Avenue, Franklin, TN 37064 Phone: 615-794-3105",
       "sources": [
         {
           "title": "Williamson County Public Library",
-          "url": "https://wcpltn.org/Facilities/Facility/Details/Main-Library-Franklin-1",
+          "url": "https://www.wcpltn.org/calendar.aspx?CID=14%2C28%2C29%2C30&day=15&month=9&view=list&year=2026",
           "official": true
         },
         {
           "title": "Williamson County",
-          "url": "https://williamsoncounty-tn.gov/Jobs.aspx",
+          "url": "https://www.williamsoncounty-tn.gov/121/Human-Resources",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4413
+      "elapsedMs": 3777
     },
     {
       "id": "JOB-05",
@@ -1319,10 +1374,10 @@
       ],
       "httpStatus": 200,
       "mode": "general_ai",
-      "answer": "I can help, but I don’t have a verified Franklin-specific staffing agency listing in the provided sources. What type of work are you seeking—office, healthcare, hospitality, skilled trades, or something else?",
+      "answer": "What type of staffing do you need—office/administrative, healthcare, warehouse, skilled trades, or another field? Also, are you seeking temporary, temp-to-hire, or permanent work?",
       "sources": [],
       "links": [],
-      "elapsedMs": 3957
+      "elapsedMs": 3194
     },
     {
       "id": "LEGAL-01",
@@ -1333,7 +1388,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "If you have received eviction papers in Franklin or Williamson County, act immediately: 1. Call Legal Aid Society of Middle Tennessee and the Cumberlands at 615-244-6610 and ask about eviction defense or a tenant consultation. Have your lease, notices, court papers, rent receipts, and messages with your landlord available. 2. Contact Williamson County General Sessions Court at 615-790-5454 to confirm your court date and case information. Eviction cases are civil matters handled through the court—not the Magistrate’s Office. 3. If you have not yet received court papers, contact your landlord in writing and request a payment arrangement. Keep copies of everything, and do not ignore any summons. 4. For emergency housing or basic-needs referrals, call 211. If you are in immediate danger of losing housing tonight, say that clearly. 5. Apply for available Tennessee assistance through the One DHS Customer Portal or call 833-772-8347. Ask about emergency assistance and benefits that may help with rent or household expenses. Williamson County General Sessions Court: 135 South 4th Avenue Franklin, TN 37064 Do not wait for the court date to seek legal help.",
+      "answer": "For an eviction in Franklin or Williamson County, take these steps today: 1. Call Legal Aid Society of Middle Tennessee and the Cumberlands at 615-244-6610 and ask for eviction or landlord-tenant assistance. Tell them you are in Williamson County and whether you have already received court papers. 2. Call 211 for local rent, emergency housing, utility, and shelter referrals. Explain that you are at risk of eviction and ask specifically about Williamson County assistance. 3. If you received a court summons, do not ignore it. Attend the General Sessions Court hearing listed on the paperwork, bring your lease, payment records, notices, texts, photos, and any proof of assistance applications. 4. Contact your landlord in writing and ask for a written payment plan or agreement. Keep copies of everything and avoid moving out or signing an agreement without understanding its effect. 5. Apply for available Tennessee assistance through the One DHS Customer Portal or call 833-772-8347. This may help with emergency benefits, although it does not automatically stop a court case. If you are already locked out, threatened with immediate displacement, or have nowhere safe to stay, call 211 immediately. If you share the exact notice you received—written notice, court summons, or eviction judgment—I can explain the next Franklin-specific step.",
       "sources": [
         {
           "title": "State of Tennessee",
@@ -1341,8 +1396,8 @@
           "official": true
         },
         {
-          "title": "Williamson County",
-          "url": "https://williamsoncounty-tn.gov/228/Magistrates",
+          "title": "211",
+          "url": "https://211.org/get-help/housing-expenses",
           "official": true
         },
         {
@@ -1357,7 +1412,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 5828
+      "elapsedMs": 5831
     },
     {
       "id": "LEGAL-02",
@@ -1376,7 +1431,7 @@
           "url": "/directory/?q=a%20family%20lawyer"
         }
       ],
-      "elapsedMs": 87
+      "elapsedMs": 59
     },
     {
       "id": "LEGAL-03",
@@ -1387,7 +1442,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "For free civil legal advice in Franklin and Williamson County: TN Free Legal Answers Online help from volunteer Tennessee attorneys for eligible low-income adults. Covers non-criminal matters such as housing, debt, family law, and benefits. You must qualify financially, and attorneys generally provide advice—not courtroom representation. Apply at: tn.freelegalanswers.org Important: This service may not respond before a court date or legal deadline. It does not handle criminal cases.",
+      "answer": "For free civil legal help in Franklin and Williamson County: Tennessee Free Legal Answers: Apply online to ask a volunteer Tennessee attorney a specific civil-law question. Help may cover housing, family law, debt, and other civil matters. You must meet income and asset requirements. Attorneys provide advice through the website, not courtroom representation, and responses may take time. Legal Aid Society of Middle Tennessee and the Cumberlands: Provides free legal assistance to eligible low-income residents, including people in Williamson County. Call 615-244-6610 to apply or ask about eligibility. If you have a criminal case, contact the Williamson County Public Defender’s Office or ask the court about appointed counsel. Tennessee Free Legal Answers does not handle criminal matters. If you have a court date or filing deadline, seek help immediately; free online advice may not arrive in time.",
       "sources": [
         {
           "title": "tn.freelegalanswers.org",
@@ -1396,17 +1451,17 @@
         },
         {
           "title": "cle.tba.org",
-          "url": "https://cle.tba.org/faculty/directory/S/80",
+          "url": "https://cle.tba.org/faculty/profile/21216",
           "official": true
         },
         {
           "title": "Legal Aid Society of Middle Tennessee and the Cumberlands",
-          "url": "https://las.org/wp-content/uploads/2016/10/2014AnnualReport.pdf",
+          "url": "https://las.org/wp-content/uploads/2016/10/2013AnnualReport.pdf",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 5653
+      "elapsedMs": 6720
     },
     {
       "id": "LEGAL-04",
@@ -1417,11 +1472,11 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "For Williamson County court information: 1. Contact the appropriate clerk at the Williamson County Judicial Center, 135 4th Avenue South, Franklin, TN 37064. Hours are Monday–Friday, 8:00 a.m.–4:30 p.m. 2. For case records or court dates, call the Circuit Court Clerk at 615-790-5454: Circuit civil: 615-790-5432 Circuit criminal: 615-790-5411 General Sessions civil: 615-790-5483 General Sessions criminal: 615-790-5478 3. For Chancery Court or probate matters, contact the Clerk and Master at 615-790-5428. 4. For juvenile cases, contact the Juvenile Court Clerk at 615-790-5814, 408 Century Court, Franklin. You can also check Williamson County’s official Court Schedules page for scheduled hearings. Tennessee’s Administrative Office of the Courts can help identify the correct clerk if you are unsure which court handles your case.",
+      "answer": "For Williamson County court information: Start with the Williamson County Court System page for court types, locations, and schedules. For case records, court dates, dockets, or court documents, contact the appropriate clerk: Circuit Court Clerk: 615-790-5454 Circuit Civil: 615-790-5432 Circuit Criminal: 615-790-5411 General Sessions Civil: 615-790-5483 General Sessions Criminal: 615-790-5478 Chancery Court Clerk and Master: 615-790-5428 Juvenile Court Clerk: 615-790-5814 Most clerk offices are at the Williamson County Judicial Center, 135 4th Avenue South, Franklin, TN 37064, and are open Monday–Friday, 8:00 a.m.–4:30 p.m. For online court schedules, use the Williamson County Court Schedules page. Court clerks maintain case records and docket information.",
       "sources": [
         {
           "title": "Williamson County",
-          "url": "https://www.williamsoncounty-tn.gov/221/Court-System",
+          "url": "https://www.williamsoncounty-tn.gov/161/County-Clerk",
           "official": true
         },
         {
@@ -1431,7 +1486,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 3932
+      "elapsedMs": 4595
     },
     {
       "id": "LEGAL-05",
@@ -1442,16 +1497,16 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Requested date window: September 16, 2026 — today\nFirst, read the paper for the court name, case number, hearing date, and response deadline; do not ignore it. A Tennessee summons warns that failing to respond may result in a default judgment. Contact the court clerk listed on the paper today to confirm the deadline and required response. For free legal information or referrals, call 1-844-435-7486. (tncourts.gov)",
+      "answer": "Requested date window: Wednesday, September 16, 2026 — today\nFirst, read the entire paper and identify the court, case number, hearing date, and response deadline. Do not ignore it or miss the deadline. Photograph or copy every page, then contact the court clerk and a Tennessee lawyer or legal-aid service immediately. If served by mail, Tennessee civil rules may add three days to some deadlines, but do not rely on that without confirming. (tncourts.gov)",
       "sources": [
         {
           "title": "Tennessee Courts",
-          "url": "https://www.tncourts.gov/courts/rules-civil-procedure/rules/rules-civil-procedure-rules/rule-402-summons-form",
+          "url": "https://www.tncourts.gov/courts/rules-civil-procedure/rules/rules-civil-procedure-rules/rule-605-additional-time-after",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4226
+      "elapsedMs": 3795
     },
     {
       "id": "PARK-01",
@@ -1462,7 +1517,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Find park information through the City of Franklin Parks and Recreation Department: City parks information: franklintn.gov/government/departments-k-z/parks For questions, call 615-794-2103 or visit the Parks Administrative Office at 705 Boyd Mill Avenue, located at Jim Warren Park. Office hours are Monday–Friday, 7:30 AM–4:30 PM. The City manages 18 parks with amenities including trails, playgrounds, sports fields, fishing, disc golf, canoe access, and mountain biking.",
+      "answer": "Find park information on the City of Franklin Parks and Recreation webpage. It includes park locations, amenities, historic parks, trails, rentals, and hours. For assistance, contact Franklin Parks and Recreation at 615-794-2103 or parksinfo@franklintn.gov. Administrative office: 705 Boyd Mill Avenue, at Jim Warren Park. City parks are generally open daily from dawn until dark.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -1471,7 +1526,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4213
+      "elapsedMs": 5412
     },
     {
       "id": "PARK-02",
@@ -1482,7 +1537,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Franklin city parks with playgrounds are: Aspen Grove Park Del Rio Park Fieldstone Park Jim Warren Park Liberty Park Pinkerton Park For details, call Franklin Parks and Recreation at 615-794-2103.",
+      "answer": "Franklin parks with playgrounds are: Aspen Grove Park Del Rio Park Fieldstone Park Jim Warren Park Liberty Park Pinkerton Park Parks Department: 615-791-3217.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -1491,7 +1546,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 5083
+      "elapsedMs": 7064
     },
     {
       "id": "PARK-03",
@@ -1502,16 +1557,21 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 16, 2026 — Sports fields appear open tonight, but no field-specific closure notice was found. City parks are open dawn to dark; after dark requires prior written approval.",
+      "answer": "September 16, 2026 — No verifiable city notice found confirming whether Franklin sports fields are open tonight.",
       "sources": [
         {
+          "title": "web.franklintn.gov",
+          "url": "https://web.franklintn.gov/flippingbook/FranklinZoningOrdinance/212/",
+          "official": true
+        },
+        {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/government/departments-a-j/communications/public-outreach-special-events/special-events-calendar",
+          "url": "https://www.franklintn.gov/home/showpublisheddocument/41224/639095228013800000",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 3669
+      "elapsedMs": 3511
     },
     {
       "id": "PARK-04",
@@ -1522,7 +1582,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "You can walk your dog at these Franklin spots: The Park at Harlinsdale Farm, 239 Franklin Road — includes a 4-acre off-leash dog park. Dogs must be leashed outside the designated dog park. Winstead Hill Park, Columbia Highway — walking trail and open space. Aspen Grove Park — paved trail loop along Spencer Creek. Bicentennial Park — walking trails near downtown. Liberty Park — walking trail and dog park access. Keep your dog leashed unless you’re inside a designated off-leash area. Dogs are not allowed in park lakes, ponds, streams, tennis courts, basketball courts, or fenced manicured sports fields. (franklintn.gov)",
+      "answer": "You can walk your leashed dog at many Franklin parks and trails, including: The Park at Harlinsdale Farm — 239 Franklin Road; walking trails plus a designated off-leash dog park. Liberty Park — 1020 Fulton Greer Lane; walking trail plus a dog park. Pinkerton Park — 405 Murfreesboro Road; paved walking trail. Fort Granger Park — 1705 General George Patton Drive; approximately 1-mile trail. Winstead Hill Park — 4023 Columbia Pike; approximately 0.75-mile trail. Eastern Flank Battlefield — 1345 Eastern Flank Circle; historic walking trails. Roper’s Knob — 2032 Chickering Road; approximately 1-mile trail. Dogs must be leashed in City parks unless they are inside a designated dog park.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -1531,7 +1591,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4568
+      "elapsedMs": 5049
     },
     {
       "id": "PARK-05",
@@ -1542,21 +1602,16 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Date window: September 16–23, 2026\nNo verifiable kids’ recreation programs with specific dates, times, and locations were found for this date window. Available youth programs include baseball, football, cheerleading, and other organized sports through local leagues.",
+      "answer": "September 16–22, 2026 — Current kids’ recreation options in Franklin\nOngoing — Youth baseball — Registration and schedules through Franklin Baseball Club; City fields including Jim Warren, Liberty, and Fieldstone Parks\nOngoing — Youth tackle football and cheerleading — Franklin Cowboys Association; City athletic fields\nDaily — Playgrounds, tennis, basketball, fishing, trails, and other park amenities — Dawn to dusk — Franklin city parks",
       "sources": [
         {
-          "title": "cses.wcs.edu",
-          "url": "https://cses.wcs.edu/",
+          "title": "City of Franklin",
+          "url": "https://www.franklintn.gov/government/departments-k-z/parks/athletics-sports/sports-programs",
           "official": true
         },
         {
           "title": "fhs.wcs.edu",
           "url": "https://fhs.wcs.edu/",
-          "official": true
-        },
-        {
-          "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/our-city/calendar",
           "official": true
         },
         {
@@ -1571,7 +1626,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 5291
+      "elapsedMs": 3417
     },
     {
       "id": "PERMIT-01",
@@ -1592,7 +1647,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 22
+      "elapsedMs": 24
     },
     {
       "id": "PERMIT-02",
@@ -1613,7 +1668,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 54
+      "elapsedMs": 113
     },
     {
       "id": "PERMIT-03",
@@ -1624,7 +1679,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "official_research_ai",
-      "answer": "It depends. The City of Franklin source does not specifically state whether a fence requires a permit. Contact Building & Neighborhood Services at 615-794-7012 to confirm the requirement for your project.",
+      "answer": "It depends. The provided City of Franklin source does not specifically state whether a fence requires a permit. Contact Building & Neighborhood Services at 615-794-7012 to confirm the requirement for your property and fence project.",
       "sources": [
         {
           "id": "building",
@@ -1634,7 +1689,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 2588
+      "elapsedMs": 2930
     },
     {
       "id": "PERMIT-04",
@@ -1645,7 +1700,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "official_research_ai",
-      "answer": "No. In Franklin, a building permit is required for renovations, which generally includes finishing a basement. Separate electrical, plumbing, mechanical, or low-voltage permits may also be required for that work. Call Building & Neighborhood Services at 615-794-7012 to confirm your project’s specific requirements.",
+      "answer": "No. In Franklin, a building permit is generally required to finish or renovate a basement. Separate electrical, plumbing, mechanical, or low-voltage permits may also be required depending on the work. For project-specific requirements, contact Building & Neighborhood Services at 615-794-7012.",
       "sources": [
         {
           "id": "building",
@@ -1655,7 +1710,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 1739
+      "elapsedMs": 2427
     },
     {
       "id": "PERMIT-05",
@@ -1666,21 +1721,16 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Apply through the City of Franklin’s online electronic plan review portal for building permits. Submit the application and construction plans in PDF format. For help, contact Building and Neighborhood Services at 615-794-7012. The office is at the One Stop Development Center in Franklin and is open Monday–Friday, 7:30 a.m.–5:00 p.m.",
+      "answer": "Apply through the City of Franklin’s online permitting and electronic plan review system. Building and Neighborhood Services requires residential and commercial construction plans to be submitted electronically. For assistance or to confirm whether your project requires a permit, call 615-794-7012. Building and Neighborhood Services: 120 9th Avenue South, Franklin, TN 37064 Permit applications are accepted Monday–Friday, 7:30 a.m.–4:30 p.m.",
       "sources": [
         {
           "title": "City of Franklin",
           "url": "https://www.franklintn.gov/government/departments-a-j/building-and-neighborhood-services/permit-applications-information",
           "official": true
-        },
-        {
-          "title": "dynamicportal.franklintn.gov",
-          "url": "https://dynamicportal.franklintn.gov/CRM/Views/CRM/CRMWelcome.aspx",
-          "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 3957
+      "elapsedMs": 4212
     },
     {
       "id": "PET-01",
@@ -1691,21 +1741,11 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "If your dog is sick, call your regular veterinarian first for a same-day appointment. For a serious or after-hours emergency, take him to BluePearl Pet Hospital Nashville, which Williamson County Animal Center lists as open 24 hours: 2400 Patterson St., Nashville; 615-333-1212. Go immediately if he has trouble breathing, collapse, seizures, severe bleeding, suspected poisoning, repeated vomiting, or a swollen abdomen. For suspected poisoning, call ASPCA Animal Poison Control at 888-426-4435 or Pet Poison Helpline at 800-213-6680; fees may apply. Williamson County Animal Center, 1006 Grigsby Hayes Court, Franklin, handles animal-control emergencies—not routine veterinary care. Its after-hours officer is for injured animals, bites, or aggressive animals at large.",
+      "answer": "If your dog is sick, call your regular veterinarian first for a same-day appointment. If it’s after hours or an emergency, go to BluePearl Veterinary Partners Emergency, open 24 hours: BluePearl Veterinary Partners Emergency 615-333-1212 Go immediately for trouble breathing, collapse, severe bleeding, repeated vomiting, suspected poisoning, seizures, or serious injury. Do not give human medication unless a veterinarian directs you. For an injured animal or animal-control emergency after hours, Williamson County Animal Control’s emergency officer can be reached through Franklin Police Dispatch at 615-794-2513.",
       "sources": [
         {
-          "title": "State of Tennessee",
-          "url": "https://www.tn.gov/content/tn/agriculture/topic/emergency-response---resources/dart.html",
-          "official": true
-        },
-        {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/home/showpublisheddocument/32699/637392958050130000",
-          "official": true
-        },
-        {
-          "title": "comptroller.aem.tn.extglb.tn.gov",
-          "url": "https://comptroller.aem.tn.extglb.tn.gov/content/tn/health/rpd/ricin.html",
+          "url": "https://www.franklintn.gov/government/departments-k-z/police/tips",
           "official": true
         },
         {
@@ -1714,13 +1754,13 @@
           "official": true
         },
         {
-          "title": "capitol.tn.gov",
-          "url": "https://www.capitol.tn.gov/Bills/114/Bill/SB2069.pdf",
+          "title": "Williamson County",
+          "url": "https://www.williamsoncounty-tn.gov/Archive.aspx?ADID=2397",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 5878
+      "elapsedMs": 4408
     },
     {
       "id": "PET-02",
@@ -1739,7 +1779,7 @@
           "url": "/directory/?q=a%20veterinarian"
         }
       ],
-      "elapsedMs": 62
+      "elapsedMs": 83
     },
     {
       "id": "PET-03",
@@ -1750,7 +1790,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Williamson County Animal Center is at 1006 Grigsby Hayes Court, Franklin, TN 37064. Phone: 615-790-5590 Hours: Monday–Friday, 10 a.m.–6 p.m.; Saturday, 11 a.m.–3 p.m.",
+      "answer": "Williamson County Animal Center is at 1006 Grigsby Hayes Court, Franklin, TN 37064. Phone: 615-790-5590 Hours: Monday–Friday, 10 a.m.–6 p.m.; Saturday, 11 a.m.–3 p.m. After-hours animal control: 629-235-6477",
       "sources": [
         {
           "title": "Williamson County Animal Center",
@@ -1759,7 +1799,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4524
+      "elapsedMs": 4160
     },
     {
       "id": "PET-04",
@@ -1770,7 +1810,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "If you find a stray dog in Franklin or elsewhere in Williamson County: 1. Safely secure the dog only if you can do so without risking a bite. Keep it separated from your pets. 2. Check for tags or a rabies tag. 3. Call Williamson County Animal Center at 615-790-5590. After hours, call Animal Control at 629-235-6477—especially if the dog is injured, ill, aggressive, or unsafe to approach. 4. Have the dog scanned for a microchip at Williamson County Animal Center, 1006 Grigsby Hayes Court, Franklin, or at a veterinary clinic. WCAC also has a self-service scanner kiosk outside its Medical Clinic after hours. 5. Report the found dog through Petco Love Lost and local neighborhood groups, including the location and clear photos. 6. If someone claims the dog, request proof such as veterinary records or photos. WCAC business hours are Monday–Friday, 10 a.m.–6 p.m., and Saturday, 11 a.m.–3 p.m.",
+      "answer": "If you find a stray dog in Franklin or elsewhere in Williamson County: 1. Keep yourself and the dog safe. Don’t approach if it is aggressive, injured, ill, or frightened. 2. Check for a collar, tags, or contact information. 3. If safe, secure the dog in a fenced area or separate room from your pets. 4. Have the dog scanned for a microchip at Williamson County Animal Center, a veterinarian, or another animal-welfare agency. 5. Report the found dog to Williamson County Animal Center and post a photo in local lost-pet groups. Think “lost,” not “abandoned.” 6. If you cannot safely approach the dog, call Animal Control. Williamson County Animal Center 1006 Grigsby Hayes Court, Franklin 615-790-5590 Animal Control after hours: 629-235-6477 Hours: Monday–Friday, 10 a.m.–6 p.m.; Saturday, 11 a.m.–3 p.m. Since it is 4:45 a.m. on Wednesday, September 16, 2026, call the after-hours Animal Control number for immediate help.",
       "sources": [
         {
           "title": "Williamson County Animal Center",
@@ -1779,12 +1819,12 @@
         },
         {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/government/departments-k-z/street-department/streets-pg1-hb4-non-streets-department-services",
+          "url": "https://www.franklintn.gov/government/departments-a-j/building-and-neighborhood-services/zoning-administration-and-inquiries/animal-husbandry",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 5605
+      "elapsedMs": 4633
     },
     {
       "id": "PET-05",
@@ -1795,21 +1835,21 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 19–20, 2026: No verifiable dog-friendly events found this weekend.",
+      "answer": "September 19–20, 2026: No verifiable dog-friendly events found in Franklin.",
       "sources": [
+        {
+          "title": "Visit Franklin",
+          "url": "https://visitfranklin.com/events/tasting-experience/2026-09-19/",
+          "official": true
+        },
         {
           "title": "City of Franklin",
           "url": "https://www.franklintn.gov/government/departments-a-j/communications/public-outreach-special-events/special-events-calendar",
           "official": true
-        },
-        {
-          "title": "Visit Franklin",
-          "url": "https://visitfranklin.com/page/4/?eventDisplay=day&post_type=tribe_events&tag=franklin",
-          "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 3005
+      "elapsedMs": 4735
     },
     {
       "id": "SAFETY-01",
@@ -1820,16 +1860,16 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "If the tree is blocking a road or creating an immediate danger, call 911. For a non-emergency roadway obstruction within Franklin city limits, call Franklin Police non-emergency dispatch at 615-794-2513. The Streets Department is 615-791-3254 during business hours. Outside Franklin city limits, call the Williamson County Sheriff’s Office at 615-790-5550. If power lines are involved, stay away and report it to 911.",
+      "answer": "If the tree is blocking traffic or creating immediate danger, call 911. If it’s inside Franklin city limits but not an immediate emergency, call Franklin Police non-emergency at 615-794-2513. For a county road outside Franklin city limits, call Williamson County Sheriff’s non-emergency line at 615-790-5550. Stay in your vehicle if the roadway is unsafe, and do not approach the tree if power lines are involved.",
       "sources": [
         {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/government/departments-k-z/street-department/winter-weather-guide",
+          "url": "https://www.franklintn.gov/government/departments-a-j/fire/emergency-operations",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 3475
+      "elapsedMs": 3294
     },
     {
       "id": "SAFETY-02",
@@ -1840,10 +1880,10 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "general_ai",
-      "answer": "If you smell gas in your house: 1. Leave immediately—do not turn lights or appliances on or off, use a phone inside, smoke, or create sparks. 2. Warn others as you leave, if you can do so safely. Don’t stop to search for the leak or retrieve belongings. 3. Once outside and away from the building, call 911 and your gas utility’s emergency line. Report a gas odor and give your exact address. 4. Do not reenter until emergency responders or the gas utility say it is safe. If anyone feels dizzy, weak, nauseated, or has trouble breathing, tell 911 immediately.",
+      "answer": "Leave the house immediately and get everyone outside. Do not turn lights or appliances on or off, use a phone, smoke, light flames, or start a car inside or near the smell. Once outside and away from the building, call 911 and your natural-gas utility’s emergency line. Do not reenter until emergency responders or the utility says it is safe. If you can safely do so without going near the smell, shut off the gas at the main valve; otherwise, leave it alone.",
       "sources": [],
       "links": [],
-      "elapsedMs": 2504
+      "elapsedMs": 3391
     },
     {
       "id": "SAFETY-03",
@@ -1854,13 +1894,8 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 16, 2026 — If anyone is in immediate danger, call 911 now. If you cannot safely call, text 911 with your location and emergency. For non-life-threatening flood coordination, call Williamson County Emergency Management at (615) 790-5752.",
+      "answer": "Wednesday, September 16, 2026 — Flooding emergency — Call or text 911 now. If power or gas may be affected, call Middle Tennessee Electric at 1-877-777-9111 and Atmos Gas at 1-888-286-6700. Do not enter moving water; evacuate if instructed.",
       "sources": [
-        {
-          "title": "Williamson County",
-          "url": "https://www.williamsoncounty-tn.gov/m/directory/department?did=41",
-          "official": true
-        },
         {
           "title": "City of Franklin",
           "url": "https://www.franklintn.gov/government/departments-k-z/police",
@@ -1868,7 +1903,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 3402
+      "elapsedMs": 4918
     },
     {
       "id": "SAFETY-04",
@@ -1879,7 +1914,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "I can’t determine the nearest station without your specific address or cross streets. Franklin’s fire stations include: Station 1: 500 New Highway 96 West Station 2: 907 Murfreesboro Road Station 3: 298 Mallory Station Road Station 4: 2039 Fieldstone Parkway Station 5: 215 Noah Drive Station 6: 1061 Cool Springs Boulevard Station 7: 1972 John Fitzgerald Drive Station 8: 200 Front Street For an emergency, call 911.",
+      "answer": "Please provide your current address or nearest intersection in Franklin so I can identify the closest fire station. Franklin fire stations include: Station 1: 500 New Highway 96 West Station 2: 907 Murfreesboro Road Station 3: 298 Mallory Station Road Station 4: 2039 Fieldstone Parkway Station 5: 215 Noah Drive Station 6: 1061 Cool Springs Boulevard Station 7: 1972 John Fitzgerald Drive Station 8: 200 Front Street For an emergency, call 911.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -1888,7 +1923,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 8132
+      "elapsedMs": 4720
     },
     {
       "id": "SAFETY-05",
@@ -1899,7 +1934,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Sign up for the Williamson County Emergency Alert System, which serves Franklin and the surrounding county. 1. Go to the Williamson County emergency-alert registration page. 2. Select “Sign up.” 3. Create an account and add your Franklin home address. 4. Choose text messages, phone calls, email, and/or mobile-app alerts. 5. Select weather and community alerts, including severe weather, road closures, missing persons, and other emergencies. Register each additional address separately, such as your workplace or a family member’s home. The system is shared by Franklin and other Williamson County communities. (williamsoncounty-tn.gov) For Franklin Police neighborhood-level alerts, the Franklin Police Department also offers Nixle alerts by text and email. (franklintn.gov)",
+      "answer": "Sign up for the Williamson County Emergency Alert System, which serves Franklin and the surrounding county. 1. Go to the Williamson County emergency-alert registration page. 2. Select “Sign up.” 3. Create an account and add your Franklin address. 4. Choose text messages, phone calls, email, and the alert types you want. You can also register separate addresses, such as your workplace or a family member’s home. Franklin Police neighborhood alerts are additionally available through Nixle.",
       "sources": [
         {
           "title": "Williamson County",
@@ -1913,12 +1948,12 @@
         },
         {
           "title": "apregistration.franklintn.gov",
-          "url": "https://apregistration.franklintn.gov/",
+          "url": "https://apregistration.franklintn.gov/RegForm/NewRegForm2.aspx",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4108
+      "elapsedMs": 3935
     },
     {
       "id": "SAN-01",
@@ -1929,7 +1964,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "official_research_ai",
-      "answer": "Please provide your Franklin service address so I can determine your trash pickup day. The city’s sanitation service applies within Franklin city limits; you can also call 615-794-1516 for assistance.",
+      "answer": "What is your Franklin service address? The pickup day depends on the address, and the provided source does not list individual collection schedules.",
       "sources": [
         {
           "id": "sanitation",
@@ -1939,7 +1974,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 2234
+      "elapsedMs": 3419
     },
     {
       "id": "SAN-02",
@@ -1950,7 +1985,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "In Franklin city limits, recycling works this way: 1. Put clean, loose recyclables in your blue recycling bin. 2. Set the bin at the curb on your scheduled collection day, with the lid closed and space around it for the truck. 3. Do not bag recyclables. Plastic bags, glass, Styrofoam, food waste, and trash do not belong in the blue bin. 4. Glass must be taken to a glass-recycling drop-off location, not placed curbside. 5. Large amounts of flattened cardboard can be dropped off at BOPAE Recycling, 417 Century Court, Monday–Thursday, 6:00 a.m.–4:00 p.m., or the first Saturday of each month, 8:00 a.m.–noon. Check in with the attendant. 6. Batteries, oil, paint, antifreeze, and electronics are accepted at BOPAE, 417 Century Court. For questions or service assistance, call Franklin Sanitation and Environmental Services at 615-794-1516.",
+      "answer": "In Franklin, city sanitation customers use a City-provided 64-gallon Blue Bin for curbside recycling. Put clean, loose recyclables at the curb by 7:00 a.m. on your scheduled collection day. Accepted curbside items generally include: Paper and cardboard Aluminum cans Plastic containers labeled 1 or 2 Do not put glass, Styrofoam, plastic bags, food-contaminated items, or garbage in the Blue Bin. Glass can be taken to designated drop-off dumpsters around Franklin or to the BOPAE facility at 417 Century Court. Large amounts of flattened cardboard can also be dropped off there. BOPAE accepts batteries, oil, paint, antifreeze, and electronics. For recycling questions, call Franklin Sanitation and Environmental Services at 615-794-1516.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -1959,7 +1994,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 6103
+      "elapsedMs": 6083
     },
     {
       "id": "SAN-03",
@@ -1970,7 +2005,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "official_research_ai",
-      "answer": "Brush pickup is handled by Franklin Sanitation and Environmental Services for properties within Franklin city limits. For details about scheduling, accepted brush, or placement requirements, call 615-794-1516, Monday through Friday, 7:00 AM–4:00 PM.",
+      "answer": "Brush pickup is handled by Franklin Sanitation and Environmental Services for residents within Franklin city limits. For details about scheduling or preparation requirements, call 615-794-1516, Monday through Friday, 7:00 AM–4:00 PM.",
       "sources": [
         {
           "id": "sanitation",
@@ -1980,7 +2015,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 1756
+      "elapsedMs": 1772
     },
     {
       "id": "SAN-04",
@@ -1991,7 +2026,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "You can recycle a television at: City of Franklin BOPAE drop-off 417 Century Court, Franklin Monday–Thursday, 6:00 a.m.–4:00 p.m. First Saturday of each month, 8:00 a.m.–noon This free service is for Williamson County residents. Do not leave items after hours or place them at the regular curbside recycling. For questions, call 615-794-1516. Another option is a Williamson County eWaste drop-off station, including: 5750 Pinewood Road, Franklin Open daily, 7:00 a.m.–5:00 p.m. Tell the attendant you have electronics to recycle.",
+      "answer": "You can recycle a television at the City of Franklin’s BOPAE drop-off: 417 Century Court, Franklin, TN 37064 Accepted: flat-screen and tube televisions. Hours: Monday–Thursday, 6:00 AM–4:00 PM First Saturday of each month, 8:00 AM–noon It’s free for Williamson County residents. Do not leave items after hours. For questions, call 615-794-1516.",
       "sources": [
         {
           "title": "Williamson County",
@@ -2002,15 +2037,10 @@
           "title": "City of Franklin",
           "url": "https://www.franklintn.gov/government/departments-k-z/sanitation-and-environmental-services/bopae",
           "official": true
-        },
-        {
-          "title": "State of Tennessee",
-          "url": "https://www.tn.gov/environment/program-areas/solid-waste/materials-management/bopae.html",
-          "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4756
+      "elapsedMs": 4743
     },
     {
       "id": "SAN-05",
@@ -2021,7 +2051,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 14–20, 2026 — No holiday trash schedule changes this week; Labor Day adjustments occurred the week of September 7.",
+      "answer": "September 14–20, 2026 — No holiday trash schedule changes. The only September holiday adjustment was for Labor Day, Monday, September 7, 2026.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -2030,7 +2060,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 3836
+      "elapsedMs": 2740
     },
     {
       "id": "SCHOOL-01",
@@ -2057,7 +2087,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 80
+      "elapsedMs": 94
     },
     {
       "id": "SCHOOL-02",
@@ -2068,7 +2098,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "For Williamson County Schools (WCS): 1. Find your child’s zoned school using the WCS school-zone lookup. 2. If you are new to Williamson County, request a Skyward Family Access account. 3. If you already have a WCS Skyward account, log in and select “New Student Online Enrollment.” 4. Complete the application and upload the required enrollment documents, including proof of residence and immunization records. 5. Contact your zoned school if you need help or have questions. For Franklin Special District (FSD, pre-K–8): Use the district’s online Skyward enrollment portal. Families with an existing FSD account should select “New Student Online Enrollment.” Families enrolling for the first time must create a Skyward account. Required documents may be uploaded online or submitted at the zoned school. For assistance, call FSD Central Office at 615-794-6624.",
+      "answer": "For a new student in Franklin, first determine the school district and zoned school. Williamson County Schools: 1. Find your child’s zoned school through the WCS enrollment page. 2. If you are new to Williamson County, request a Skyward account. 3. If you already have a WCS Skyward account, log in and select “New Student Online Enrollment.” 4. Submit the required enrollment documents and follow instructions from the zoned school. Franklin Special District: 1. Verify your address and zoned school. Call Central Office at 615-794-6624 if needed. 2. If you have a current FSD student, log in to Skyward Family Access and select “New Student Online Enrollment.” 3. If this is your first FSD student, create a new Skyward account and complete the online application. 4. Upload the required documents or submit them in person at the zoned school. FSD serves pre-K through eighth grade. Enrollment may also be completed in person at the child’s school.",
       "sources": [
         {
           "title": "Franklin Special School District",
@@ -2097,7 +2127,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4469
+      "elapsedMs": 6426
     },
     {
       "id": "SCHOOL-03",
@@ -2108,21 +2138,11 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 17, 2026 — No. Williamson County Schools’ calendar lists students in school on Thursday, September 17, 2026.",
+      "answer": "September 17, 2026: No—schools are scheduled to be open in Williamson County Schools and Franklin Special School District.",
       "sources": [
         {
-          "title": "fhs.wcs.edu",
-          "url": "https://fhs.wcs.edu/",
-          "official": true
-        },
-        {
-          "title": "phs.wcs.edu",
-          "url": "https://phs.wcs.edu/",
-          "official": true
-        },
-        {
-          "title": "docs.wcs.edu",
-          "url": "https://docs.wcs.edu/pdf/hr/Staff-School-Calendar-2026-2027.pdf",
+          "title": "Franklin Special School District",
+          "url": "https://www.fssd.org/about-us/calendar",
           "official": true
         },
         {
@@ -2134,10 +2154,20 @@
           "title": "nhs.wcs.edu",
           "url": "https://nhs.wcs.edu/",
           "official": true
+        },
+        {
+          "title": "docs.wcs.edu",
+          "url": "https://docs.wcs.edu/pdf/hr/Staff-School-Calendar-2026-2027.pdf",
+          "official": true
+        },
+        {
+          "title": "wms.wcs.edu",
+          "url": "https://wms.wcs.edu/calendar",
+          "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 2900
+      "elapsedMs": 4016
     },
     {
       "id": "SCHOOL-04",
@@ -2148,7 +2178,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Requested date window: Fall 2026\nMonday, October 12–Friday, October 16, 2026 — Fall Break — No school — Williamson County Schools and Franklin Special District",
+      "answer": "October 12–16, 2026 — Fall break for Franklin Special District and Williamson County Schools.",
       "sources": [
         {
           "title": "Franklin Special School District",
@@ -2157,7 +2187,7 @@
         },
         {
           "title": "Williamson County Schools",
-          "url": "https://www.wcs.edu/about-us/calendar",
+          "url": "https://www.wcs.edu/about-us/school-start-end-times",
           "official": true
         },
         {
@@ -2177,7 +2207,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 3576
+      "elapsedMs": 3734
     },
     {
       "id": "SCHOOL-05",
@@ -2204,7 +2234,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 72
+      "elapsedMs": 92
     },
     {
       "id": "SENIOR-01",
@@ -2215,21 +2245,21 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Franklin seniors can access: Williamson County Enrichment Center For adults age 55 and older: social activities, classes, arts and crafts, music, dance, theater, and community programs. Open Monday–Friday, 7:00 a.m.–3:00 p.m. Phone: 615-786-0186 Franklin Transit Fixed-route and curb-to-curb Transit On Demand transportation operates throughout Franklin six days a week. Vehicles are ADA accessible. Transit On Demand requires advance scheduling, with priority for ADA-eligible riders. Website: franklintransit.org Senior Citizens Assurance Program Free daily telephone check-ins for seniors who live alone or do not have nearby family. Phone: 615-790-5554 or 615-790-5560 Older-adult safety services The Franklin Fire Department provides fall-prevention information, fire-safety presentations, Silver Alert kits, key-vault assistance, alarm assistance, medication disposal information, and daily telephone-check resources. To schedule a fire- and fall-prevention presentation, call 615-550-6862. Williamson County Health Department The Franklin clinic offers health-promotion programs such as nutrition, walking clubs, chronic-disease self-management, diabetes education, physical activity, stress management, and yoga. Address: 1324 West Main Street, Franklin Phone: 615-794-1542 Williamson County Veterans Services Veterans and eligible dependents can receive assistance with veterans’ benefits and related services. Address: 1320 West Main Street, Suite 102, Franklin Phone: 615-790-5623",
+      "answer": "Franklin-area seniors can access: Williamson County Enrichment Center: Programs and community activities for adults age 55+, including arts, crafts, music, dance, theater, classes, and events. Open Monday–Friday, 7:00 a.m.–3:00 p.m. Call 615-786-0186. Senior Citizens Assurance Program: Free daily telephone check-ins for seniors who live alone or have no nearby family. Williamson County Sheriff’s Department: 615-790-5554 or 615-790-5560. City of Franklin older-adult safety services: Fire-prevention presentations, fall-prevention resources, Silver Alert kits, key vaults/Knox Boxes, alarm assistance, daily telephone checks, and medication/sharps-disposal information. For a presentation, call 615-550-6862. Health services: Williamson County Health Department offers adult primary care, preventive screenings, flu and pneumonia vaccinations, referrals, and sliding-scale fees. Contact the Health Department for appointments and eligibility details. Transportation and city services: Franklin Transit and City of Franklin services may help with local transportation, trash, recycling, and other practical needs. City Parks and Recreation programming can provide additional activities. For help finding the right senior service, call 211 or contact the City of Franklin at 615-791-3217.",
       "sources": [
         {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/our-city/community-guide/p-s",
+          "url": "https://www.franklintn.gov/our-city/calendar",
           "official": true
         },
         {
           "title": "Williamson County",
-          "url": "https://williamsoncounty-tn.gov/1662/Retirement",
+          "url": "https://www.williamsoncounty-tn.gov/directory.aspx",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 7400
+      "elapsedMs": 5184
     },
     {
       "id": "SENIOR-02",
@@ -2240,7 +2270,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "official_research_ai",
-      "answer": "Yes. Franklin Transit is a City-supported transportation service that may serve seniors. Routes, fares, operating hours, and accessibility details can change, so please confirm current information with Franklin Transit through the City of Franklin’s official website.",
+      "answer": "Yes. Franklin Transit is a City-supported transportation service. Routes, fares, operating hours, and accessibility details can change, so please confirm current information through the City of Franklin’s official Franklin Transit source.",
       "sources": [
         {
           "id": "transit",
@@ -2250,7 +2280,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 1425
+      "elapsedMs": 2090
     },
     {
       "id": "SENIOR-03",
@@ -2261,16 +2291,11 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "For an older adult in Franklin or Williamson County: Call Tennessee’s Area Agency on Aging and Disability at 1-866-836-6678. They can screen for: Home-delivered meals for homebound adults Congregate meals at local senior/community sites Food boxes and grocery assistance Eligibility and enrollment requirements Meals are generally available to adults age 60 and older, and spouses may also qualify. Donations are welcome, but meals may be provided at no cost. For immediate food-assistance referrals, call 211 and ask for senior meal delivery or food pantry services in Franklin.",
+      "answer": "For an older adult in Franklin, call Tennessee’s Aging Nutrition Program at 866-836-6678. They can connect you with Williamson County options for home-delivered meals, congregate meals, food boxes, and grocery assistance. Eligibility may depend on age, mobility, income, or nutrition needs. You can also call 211 for current local food pantries, meal delivery, and food-assistance programs in Franklin and Williamson County. 211 is available 24/7.",
       "sources": [
         {
-          "title": "State of Tennessee",
-          "url": "https://www.tn.gov/content/tn/disability-and-aging/disability-aging-programs/aging-nutrition-program.html",
-          "official": true
-        },
-        {
-          "title": "comptroller.aem.extglb.tn.gov",
-          "url": "https://comptroller.aem.extglb.tn.gov/disability-and-aging/disability-aging-programs/aging-nutrition-program/meal-sites.html",
+          "title": "Williamson County",
+          "url": "https://williamsoncounty-tn.gov/1752/Clinics",
           "official": true
         },
         {
@@ -2279,18 +2304,13 @@
           "official": true
         },
         {
-          "title": "capitol.tn.gov",
-          "url": "https://www.capitol.tn.gov/Archives/Dashboard/HR%20Scanned%20Supplementals/HB1573_TN%20Dept%20of%20Disability%20and%20Aging_QA_2025.pdf",
-          "official": true
-        },
-        {
-          "title": "comptroller.extglb.tn.gov",
-          "url": "https://comptroller.extglb.tn.gov/content/dam/tn/disability-and-aging/documents/about-us/reports/2025%20Volunteer%20Impact%20Report.pdf",
+          "title": "State of Tennessee",
+          "url": "https://www.tn.gov/content/tn/disability-and-aging/disability-aging-programs/aging-nutrition-program.html",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 5030
+      "elapsedMs": 6130
     },
     {
       "id": "SENIOR-04",
@@ -2301,36 +2321,21 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "September 16–22, 2026: No senior-specific activities were verifiably listed on the official Franklin, Williamson County, or Visit Franklin calendars for this week.",
+      "answer": "September 16–22, 2026: No senior-specific activities were verifiable in the official local calendars.\nWednesday, September 16 — Franklin Public Arts Commission — 4:00–5:30 PM — Eastern Flank Battlefield Park, 1368 Eastern Flank Circle, Franklin",
       "sources": [
         {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/services/advanced-components/event-list-view/-sortd-asc/-sortn-EName/-toggle-next30days",
+          "url": "https://www.franklintn.gov/services/advanced-components/event-list-view/-sortn-EName/-toggle-next7days/-sortd-asc",
           "official": true
         },
         {
-          "title": "Visit Franklin",
-          "url": "https://visitfranklin.com/annual-events/",
-          "official": true
-        },
-        {
-          "title": "fhs.wcs.edu",
-          "url": "https://fhs.wcs.edu/",
-          "official": true
-        },
-        {
-          "title": "lms.wcs.edu",
-          "url": "https://lms.wcs.edu/",
-          "official": true
-        },
-        {
-          "title": "cces.wcs.edu",
-          "url": "https://cces.wcs.edu/",
+          "title": "Williamson County",
+          "url": "https://www.williamsoncounty-tn.gov/?mobile=ON&nid=1",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 5839
+      "elapsedMs": 5654
     },
     {
       "id": "SENIOR-05",
@@ -2341,31 +2346,31 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "For caregiver support in Franklin and Williamson County: Call Tennessee’s National Family Caregiver Support Program at 1-866-836-6678. It can connect you with local counseling, support groups, caregiver training, respite care, homemaker services, and adult day services. Williamson County also lists a National Caregiver Support Line at 1-855-260-3274. If you care for someone with Alzheimer’s or dementia, call the Alzheimer’s Association 24/7 Helpline at 1-800-272-3900. For urgent emotional support related to Alzheimer’s or dementia, Alzheimer’s Tennessee’s 24/7 helpline is 1-800-259-4283. Services and eligibility can vary by program and situation.",
+      "answer": "For caregiver support in Franklin and Williamson County: Call 211. United Way 211 can connect you with local respite care, support groups, caregiver services, and other assistance. Dial 211 and ask for caregiver support in Williamson County. Tennessee National Family Caregiver Support Program: 1-866-836-6678. It helps people caring for older relatives with chronic illness or disabilities and may provide information, counseling, support groups, training, and respite vouchers. If you care for a child or adult with a severe disability, ask about Tennessee’s Family Support Program. Services may include respite care, equipment, transportation, homemaker services, and counseling. For a relative caring for a child because the parents cannot provide care, Tennessee’s Relative Caregiver Program offers referrals, support groups, respite care, and family advocacy. Start with 211 for the most current Franklin-area referrals. (211.org)",
       "sources": [
-        {
-          "title": "State of Tennessee",
-          "url": "https://www.tn.gov/disability-and-aging/disability-aging-programs/caregiving.html",
-          "official": true
-        },
         {
           "title": "211",
           "url": "https://www.211.org/get-help/caregiver-resources",
           "official": true
         },
         {
-          "title": "Williamson County",
-          "url": "https://www.williamsoncounty-tn.gov/1818/Organizations-and-Resources",
+          "title": "State of Tennessee",
+          "url": "https://www.tn.gov/disability-and-aging/services.html",
           "official": true
         },
         {
-          "title": "capitol.tn.gov",
-          "url": "https://capitol.tn.gov/Archives/Joint/committees/gov-opps/ed/TN%20Dept%20of%20Disability%20and%20Aging_QA_2025.pdf",
+          "title": "preprod.tn.gov",
+          "url": "https://preprod.tn.gov/disability-and-aging/disability-aging-programs/caregiving.html",
+          "official": true
+        },
+        {
+          "title": "Williamson County",
+          "url": "https://www.williamsoncounty-tn.gov/DocumentCenter/View/20586/PUBLIC-SERVICE-LOCATIONS?bidId=",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 4159
+      "elapsedMs": 4279
     },
     {
       "id": "TRANSIT-01",
@@ -2376,11 +2381,11 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Franklin’s main public transportation is Franklin Transit: Fixed-route buses: Red Route 1 serves western Franklin and downtown; Blue Route 2 serves Cool Springs and connects with downtown. Buses generally run Monday–Saturday every 30 minutes. TODD (Transit on Demand): Prearranged, curb-to-curb service within Franklin, including accessible transportation for eligible riders. Reservations are required. Downtown Transit Center: 708 Columbia Avenue, Franklin. Fixed-route fare: $1 adult; $0.50 for seniors 65+, people with disabilities, and Medicare cardholders. Active-duty military and veterans ride fixed routes free with military ID. TODD reservations and information: 615-628-0260. Franklin Transit information: 615-628-0264.",
+      "answer": "Franklin’s public transportation is provided by Franklin Transit: Fixed-route bus service: Two routes, Red Route 1 and Blue Route 2, serving Franklin, downtown, Cool Springs, shopping areas, libraries, and neighborhoods. Service generally runs Monday–Saturday, about every 30 minutes. TODD (Transit on Demand): Prearranged, curb-to-curb service for trips within Franklin. Reservations are required, typically by the previous service day. Lunchtime Shuttle: Connects downtown Franklin and The Factory area during weekday lunch hours. Fares: Adult fixed route: $1 Seniors 65+, Medicare cardholders, and riders with disabilities: $0.50 Active military and veterans ride fixed routes free with military ID Downtown Transit Center: 708 Columbia Avenue, Franklin, TN 37064 TODD reservations and information: 615-628-0260 For current routes, schedules, and service notices, contact Franklin Transit or visit its official website.",
       "sources": [
         {
           "title": "Franklin Transit Authority",
-          "url": "https://franklintransit.org/franklin-transit-routes-schedules/",
+          "url": "https://franklintransit.org/",
           "official": true
         },
         {
@@ -2390,7 +2395,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4041
+      "elapsedMs": 4641
     },
     {
       "id": "TRANSIT-02",
@@ -2401,7 +2406,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "official_research_ai",
-      "answer": "Yes. Franklin Transit is a City-supported transportation service, and accessibility details are available through the official Franklin Transit source. Routes, fares, hours, and accessibility information can change, so please confirm current details at franklintn.gov.",
+      "answer": "Yes. Franklin Transit is a City-supported transportation service, and accessible transit details are available through Franklin Transit. Routes, fares, operating hours, and accessibility information can change, so confirm current details on the official City of Franklin source.",
       "sources": [
         {
           "id": "transit",
@@ -2411,7 +2416,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 1611
+      "elapsedMs": 1802
     },
     {
       "id": "TRANSIT-03",
@@ -2422,7 +2427,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Wednesday, September 16, 2026 — today’s service window\nWednesday, September 16 — Franklin Transit buses — approximately 6:30 AM–6:00 PM — Franklin Transit routes; Downtown Transit Center, 708 Columbia Avenue",
+      "answer": "Wednesday, September 16, 2026: Franklin Transit buses run until 6:18 PM on full routes.",
       "sources": [
         {
           "title": "Franklin Transit Authority",
@@ -2431,7 +2436,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 5416
+      "elapsedMs": 2594
     },
     {
       "id": "TRANSIT-04",
@@ -2442,7 +2447,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "For September 16, 2026: Franklin Transit fixed-route fares are $1 adult, $0.50 for seniors 65+/disabled/Medicare cardholders, $0.50 for children under 5, and free for lap children, active military, and veterans. Exact cash or tickets required. TODD on-demand fares are $3–$4 one way, or $2 for ADA-eligible riders and adults 65+.",
+      "answer": "September 16, 2026 — Franklin Transit costs $1 per one-way fixed-route ride; ages 12–18 ride for 50 cents. Seniors, Medicare cardholders, and riders with disabilities pay half fare. TODD fares include same-day, all-day fixed-route access.",
       "sources": [
         {
           "title": "Franklin Transit Authority",
@@ -2451,7 +2456,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4350
+      "elapsedMs": 3218
     },
     {
       "id": "TRANSIT-05",
@@ -2462,7 +2467,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "I need your current location or a nearby address/intersection to identify the nearest Franklin Transit stop. Franklin Transit’s main hub is the Franklin Transit Center, 708 Columbia Avenue, Franklin, TN 37064. You can call 615-628-0260 for stop assistance.",
+      "answer": "I need your current location or a nearby intersection to identify the nearest Franklin Transit stop. Franklin Transit serves Franklin with more than 160 stops; call 615-628-0260 for stop assistance.",
       "sources": [
         {
           "title": "Franklin Transit Authority",
@@ -2471,7 +2476,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 3118
+      "elapsedMs": 4046
     },
     {
       "id": "UTIL-01",
@@ -2492,7 +2497,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 270
+      "elapsedMs": 358
     },
     {
       "id": "UTIL-02",
@@ -2519,7 +2524,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 344
+      "elapsedMs": 263
     },
     {
       "id": "UTIL-03",
@@ -2540,7 +2545,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 192
+      "elapsedMs": 274
     },
     {
       "id": "UTIL-04",
@@ -2551,7 +2556,7 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "fresh_web_ai",
-      "answer": "Wednesday, September 16, 2026 — Yes. Franklin Water Management’s Service and Repair Department is open today from 7:00 AM to 4:00 PM. After-hours emergencies: 615-791-3260.",
+      "answer": "Wednesday, September 16, 2026: Yes. Franklin Water Management is open today; customer service hours are 8:00 AM–5:00 PM, Monday–Friday. Service and repairs: 7:00 AM–4:00 PM.",
       "sources": [
         {
           "title": "City of Franklin",
@@ -2560,7 +2565,7 @@
         }
       ],
       "links": [],
-      "elapsedMs": 4423
+      "elapsedMs": 3929
     },
     {
       "id": "UTIL-05",
@@ -2571,16 +2576,16 @@
       "reasons": [],
       "httpStatus": 200,
       "mode": "local_web_ai",
-      "answer": "Report a sewer problem to the City of Franklin Water Management Department: Monday–Friday, 7:00 a.m.–4:00 p.m.: 615-794-4554 After hours, weekends, and holidays: 615-791-3260 For a sewer release or overflow, use the same numbers.",
+      "answer": "Report sewer problems to the City of Franklin Water Management Department: Monday–Friday, 7:00 a.m.–4:00 p.m.: 615-794-4554 After hours, weekends, and holidays: 615-791-3260 Use these numbers for sewer overflows, releases, backups caused by the City system, or sewer main breaks.",
       "sources": [
         {
           "title": "City of Franklin",
-          "url": "https://www.franklintn.gov/government/departments-k-z/police/submit-a-police-complaint-or-concern",
+          "url": "https://www.franklintn.gov/government/departments-k-z/water-management-department/water-reclamation-division/sanitary-sewer-release-and-overflows",
           "official": true
         }
       ],
       "links": [],
-      "elapsedMs": 3042
+      "elapsedMs": 11303
     }
   ]
 }

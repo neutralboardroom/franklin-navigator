@@ -1,6 +1,6 @@
 # Franklin Assistant — Live 100-Question Acceptance Report
 
-Run: 2026-09-16T09:10:41.687Z
+Run: 2026-09-16T09:46:30.231Z
 
 Live endpoint: https://franklin-navigator-assistant.onrender.com/api/v2/answer
 
@@ -61,7 +61,7 @@ Expected: directory_handoff
 Mode: general_ai
 Reasons: expected_directory_handoff, missing_directory_link
 
-Answer: I can help, but I don’t have a verified Franklin-specific staffing agency listing in the provided sources. What type of work are you seeking—office, healthcare, hospitality, skilled trades, or something else?
+Answer: What type of staffing do you need—office/administrative, healthcare, warehouse, skilled trades, or another field? Also, are you seeking temporary, temp-to-hire, or permanent work?
 
 ## Full result inventory
 
