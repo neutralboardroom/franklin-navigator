@@ -1,0 +1,60 @@
+name: Franklin Assistant live 100-question run
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tests/run-franklin-assistant-live-100.cjs'
+      - 'tests/aggregate-franklin-assistant-live-100.cjs'
+      - '.github/workflows/franklin-assistant-live-100.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  live-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run shard
+        env:
+          SHARD_INDEX: \${{ matrix.shard }}
+          SHARD_COUNT: '4'
+        run: node tests/run-franklin-assistant-live-100.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: live-test-shard-\${{ matrix.shard }}
+          path: live-test-results/shard-\${{ matrix.shard }}.json
+          retention-days: 3
+
+  aggregate:
+    needs: live-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: live-test-shard-*
+          path: downloaded-results
+      - name: Aggregate report
+        run: node tests/aggregate-franklin-assistant-live-100.cjs
+      - name: Commit report
+        run: |
+          git config user.name "Franklin Assistant Acceptance"
+          git config user.email "actions@users.noreply.github.com"
+          git add tests/results/franklin-assistant-live-100-latest.json tests/results/franklin-assistant-live-100-latest.md
+          git commit -m "Record live Franklin Assistant 100-question acceptance report" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
