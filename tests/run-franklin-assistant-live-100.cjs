@@ -71,10 +71,11 @@ function score(row,data){
   const reasons=basicQuality(data);
   const fail=reason=>{if(!reasons.includes(reason))reasons.push(reason)};
 
+  const sourcedLocalModes=new Set(['verified_fact','official_research_ai','local_web_ai','fresh_web_ai','official_snapshot']);
+
   switch(row.expected){
     case 'direct_local_fact':
-      if(mode!=='verified_fact')fail('expected_verified_fact');
-      if(!sources.length)fail('missing_local_source');
+      if(!(sourcedLocalModes.has(mode)&&sources.length))fail('expected_source_backed_local_answer');
       break;
     case 'fresh_current':
       if(mode!=='fresh_web_ai')fail('expected_fresh_web_ai');
@@ -89,10 +90,10 @@ function score(row,data){
       if(!links.length)fail('missing_directory_link');
       break;
     case 'directory_or_local_research':
-      if(!(mode==='directory_handoff'||((mode==='official_research_ai'||mode==='fresh_web_ai'||mode==='verified_fact')&&sources.length)))fail('expected_directory_or_local_research');
+      if(!(mode==='directory_handoff'||(sourcedLocalModes.has(mode)&&sources.length)))fail('expected_directory_or_local_research');
       break;
     case 'local_research':
-      if(!((mode==='official_research_ai'||mode==='fresh_web_ai'||mode==='verified_fact')&&sources.length))fail('expected_local_research_with_source');
+      if(!(sourcedLocalModes.has(mode)&&sources.length))fail('expected_local_research_with_source');
       break;
     case 'needs_specific_detail':
       if(!/address|location|where|which|direcci[oó]n|ubicaci[oó]n|d[oó]nde/i.test(answer))fail('missing_specific_detail_request');
