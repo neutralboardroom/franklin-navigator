@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.17-HF3.12.9",
+  "release": "FR-NAV1.30.18-HF3.13.0",
   "date": "2026-09-15",
-  "base": "FR-NAV1.30.16-HF3.12.8",
+  "base": "FR-NAV1.30.17-HF3.12.9",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1317 production successor focused on universal bilingual Franklin Assistant conversation reliability. It preserves R1316 universal English conversation hardening, R1314 member-profile evidence controls, the 19,103-profile corpus, 254 Assistant routes, pricing, claim/reviewer/member architecture, monitoring and owner alerts. R1317 adds a reusable tested browser context core, explicit fresh-topic reset protection, English/Spanish continuation support, bilingual official-source grounding, authority-domain source classification, privacy-safe categorical Assistant quality signals, and stricter startup qualification. The final runtime qualified only after English 10/10, Spanish 6/6, research, live API and roof-regression gates all passed. No real-member checkout or publication proof is fabricated.",
+  "scope": "R1318 production successor focused on strict question responsiveness and verified-fact precedence. It preserves R1317 universal bilingual conversation reliability, R1314 member-profile evidence controls, the 19,103-profile corpus, 254 Assistant routes, pricing, claim/reviewer/member architecture, monitoring and owner alerts. R1318 fixes an owner-observed failure where a deck-permit question received a generic project workflow instead of a direct answer. Verified deterministic Franklin answers now bypass LLM rewriting; factual answers no longer automatically trigger questionnaires; and startup qualification separately proves grounding and exact-question responsiveness.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -24,7 +24,7 @@
     "corruptRasterReplaced": true
   },
   "assistant": {
-    "version": "FR-NAV1.30.17-HF3.12.9",
+    "version": "FR-NAV1.30.18-HF3.13.0",
     "mode": "ONE_DIRECT_ANSWER_CHAT_GROUNDED_LLM_PRIMARY",
     "routeDataRelease": "FR-NAV1.29.2-HF3.10.2",
     "verifiedDirectoryBinding": "/data/discovery/manifest.json",
@@ -78,7 +78,7 @@
         "count": 62
       }
     ],
-    "qualityRegression": "runtime syntax + runtime self-tests + research contract + live API smoke + English 10/10 universal conversation qualification + Spanish 6/6 grounded conversation qualification + roof leak/repair regression + shared browser context acceptance + fresh-topic reset + privacy-safe telemetry contracts",
+    "qualityRegression": "runtime syntax + research contract + live API smoke + English 10/10 + Spanish 6/6 + exact responsiveness 4/4 + roof two-turn regression + browser source syntax + strict guide suppression contracts",
     "highValueIntentRules": 22,
     "researchEndpointRelease": "FR-NAV1.29.3-HF3.10.3",
     "spanishIntentRegressionCases": 15,
@@ -94,7 +94,7 @@
     "fullScreenControl": true,
     "legacyR27ModalSuperseded": true,
     "stuckLoadingRaceFixed": true,
-    "canonicalController": "/assets/franklin-assistant-r1317.js",
+    "canonicalController": "/assets/franklin-assistant-r1318.js",
     "chatStyles": "/assets/franklin-assistant-chat-r1306.css",
     "contextualFollowUps": "UNIVERSAL_ENGLISH_SPANISH_CURRENT_PAGE_CONTEXT_WITH_REFERENCE_AND_SHORT_CONTINUATION_CARRY_FORWARD_PLUS_FRESH_TOPIC_RESET",
     "failureFallback": "VISIBLE_NON_STUCK_ERROR_WITH_FRANKLIN_HELP_LINKS",
@@ -113,7 +113,7 @@
     "responsePolicy": "ONE_DIRECT_ANSWER_ONLY",
     "failureLinks": false,
     "answerRuntime": "https://franklin-navigator-assistant.onrender.com/api/answer",
-    "runtimeRelease": "FR-NAV1.30.17-HF3.12.9",
+    "runtimeRelease": "FR-NAV1.30.18-HF3.13.0",
     "runtimeLlmOptional": false,
     "runtimeLlmConfigured": true,
     "profileUse": "INTERNAL_PLAIN_TEXT_ONLY_ON_EXPLICIT_FIND_OR_CONTACT_INTENT",
@@ -179,7 +179,7 @@
     "guideNewChatReset": true,
     "guideStatePersistence": "MEMORY_ONLY_CURRENT_PAGE",
     "guideRepetitionSuppression": true,
-    "preservedInRelease": "FR-NAV1.30.17-HF3.12.9",
+    "preservedInRelease": "FR-NAV1.30.18-HF3.13.0",
     "universalConversationStandard": true,
     "generalConversationAcceptance": {
       "passed": 10,
@@ -216,7 +216,16 @@
     ],
     "qualitySignalPrivacy": "CATEGORICAL_SESSION_ONLY_SIGNALS_AND_CATEGORICAL_INCIDENTS_NO_RAW_RESIDENT_QUESTION",
     "repeatedClarificationDetection": "ACTUAL_GENERIC_FALLBACK_PATTERN_ONLY_NOT_PARTIAL_UNCERTAINTY_INSIDE_SUBSTANTIVE_ANSWER",
-    "providerDisplay": "ONLY_ON_EXPLICIT_OR_CONTEXTUALLY_QUALIFIED_PROVIDER_CONTACT_SERVICE_ACTION_INTENT"
+    "providerDisplay": "ONLY_ON_EXPLICIT_OR_CONTEXTUALLY_QUALIFIED_PROVIDER_CONTACT_SERVICE_ACTION_INTENT",
+    "verifiedFactPrecedence": true,
+    "verifiedFactRewritePolicy": "DETERMINISTIC_VERIFIED_ANSWER_RENDERED_DIRECTLY_NO_LLM_REWRITE",
+    "directQuestionContract": "ANSWER_REQUESTED_FACT_FIRST; YES_NO_STARTS_YES_NO_OR_IT_DEPENDS_WHEN_ACCURATE",
+    "guidePolicy": "NOT_AUTOMATIC_FOR_FACTUAL_ANSWERS; ONLY_WHEN_PLANNING_NEXT_STEPS_OPTIONS_PROVIDER_CONTACT_APPLICATION_OR_DOCUMENT_WORKFLOW_MATERIALLY_HELP",
+    "responsivenessQualification": {
+      "passed": 4,
+      "total": 4
+    },
+    "responsivenessRule": "DURABLE_RULE__QUESTION_RESPONSIVENESS_AND_VERIFIED_FACT_PRECEDENCE.md"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -396,7 +405,7 @@
     "preservedInRelease": "FR-NAV1.30.15-HF3.12.7",
     "inactiveForBusinessColor": "MATCHES_OTHER_INACTIVE_PRIMARY_NAV_ITEMS"
   },
-  "productionPromotionFrom": "FR-NAV1.30.16-HF3.12.8",
+  "productionPromotionFrom": "FR-NAV1.30.17-HF3.12.9",
   "communityConnector": {
     "version": "FRANKLIN_COMMUNITY_CONNECTOR_R1311",
     "publicEntryPoint": "FRANKLIN_ASSISTANT_REMAINS_FIRST_TOP_OF_HOME_ACTION",
@@ -577,5 +586,48 @@
     "firstRealReviewedPublicationReadback": "PENDING_GENUINELY_AUTHORIZED_REAL_MEMBER",
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1317.md",
     "evidence": "FRANKLIN_ASSISTANT_BILINGUAL_UNIVERSAL_CONVERSATION_REPORT__R1317.md"
+  },
+  "r1318": {
+    "version": "FR-NAV1.30.18-HF3.13.0",
+    "purpose": "STRICT_ANSWER_FIRST_QUESTION_RESPONSIVENESS_AND_VERIFIED_FACT_PRECEDENCE",
+    "rootCause": "VERIFIED_LOCAL_FACTS_WERE_REWRITTEN_BY_LLM_AND_FACTUAL_ANSWERS_AUTOMATICALLY_APPENDED_GUIDE_QUESTIONNAIRES",
+    "ownerObservedRegression": "do i need a perit to repair my deck",
+    "runtimeCommit": "80827e5365c8d34ff2468431702bc3e02c556aff",
+    "runtimeDeploy": "dep-dal2mqqd0e5s738b8eu0",
+    "runtimeStatus": "LIVE",
+    "startupQualification": "PASS",
+    "runtimeResearchContract": "PASS",
+    "runtimeLiveApiSmoke": "PASS",
+    "englishConversationAcceptance": {
+      "passed": 10,
+      "total": 10,
+      "singleCases": 6,
+      "contextThreads": 4
+    },
+    "spanishConversationAcceptance": {
+      "passed": 6,
+      "total": 6,
+      "singleCases": 3,
+      "contextThreads": 3
+    },
+    "exactQuestionResponsiveness": {
+      "passed": 4,
+      "total": 4
+    },
+    "exactDeckPermitRegression": "PASS_VERIFIED_KNOWN_DIRECT",
+    "verifiedFactPrecedence": true,
+    "verifiedFactLlmRewrite": false,
+    "guideAutoAppendForFactualAnswers": false,
+    "browserController": "/assets/franklin-assistant-r1318.js",
+    "loader": "/assets/hf36.js?v=frnav1318",
+    "durableRules": [
+      "DURABLE_RULE__UNIVERSAL_FRANKLIN_ASSISTANT_CONVERSATION_STANDARD.md",
+      "DURABLE_RULE__QUESTION_RESPONSIVENESS_AND_VERIFIED_FACT_PRECEDENCE.md"
+    ],
+    "memberProfileR1314ControlsPreserved": true,
+    "firstRealProductionCheckoutProof": "PENDING_GENUINELY_AUTHORIZED_REAL_MEMBER",
+    "firstRealReviewedPublicationReadback": "PENDING_GENUINELY_AUTHORIZED_REAL_MEMBER",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1318.md",
+    "evidence": "FRANKLIN_ASSISTANT_STRICT_ANSWER_FIRST_REPORT__R1318.md"
   }
 }
