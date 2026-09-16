@@ -5,13 +5,13 @@ const dns=require('node:dns');
 const net=require('node:net');
 const {URL}=require('node:url');
 const PORT=Number(process.env.PORT||10000);
-const RELEASE='FR-NAV1.30.17-HF3.12.9';
+const RELEASE='FR-NAV1.30.18-HF3.13.0';
 const ORIGINS=new Set(['https://franklinnavigator.com','https://www.franklinnavigator.com','https://franklin-navigator.onrender.com']);
 const BODY_LIMIT=32*1024,rate=new Map(),VERIFIED_AT='2026-09-14';
 const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||'').trim();
 const OPENAI_MODEL=String(process.env.OPENAI_MODEL||'gpt-5.6-luna').trim();
 const llmState={configured:Boolean(OPENAI_API_KEY),verified:false,lastCheckAt:null,error:null};
-const startupState={qualified:false,researchOk:false,generalConversationOk:false,spanishConversationOk:false,roofLeakOk:false,liveApiOk:false,lastQualifiedAt:null};
+const startupState={qualified:false,researchOk:false,generalConversationOk:false,spanishConversationOk:false,responsivenessOk:false,roofLeakOk:false,liveApiOk:false,lastQualifiedAt:null};
 const now=()=>new Date().toISOString();
 const text=v=>String(v||'').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s+/g,' ').trim();
 const norm=v=>text(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9\s'&.-]/g,' ').replace(/\s+/g,' ').trim();
@@ -94,10 +94,15 @@ function knownAnswer(q,language='en'){
       ?'Para un reemplazo de techo o una reparación importante en Franklin, cuente con necesitar un permiso de construcción. La Ciudad indica que la mayoría de los trabajos de reparación requieren permiso. Para una reparación menor del mismo material, confirme el caso específico con Building & Neighborhood Services al 615-794-7012.'
       :'For a roof replacement or substantial roof repair in Franklin, plan on needing a building permit. The City says most repair work requires a building permit. For a small in-kind repair, confirm the specific scope with Building & Neighborhood Services at 615-794-7012.';
   }
+  if(/\b(deck|decks|terraza|terrazas)\b/.test(t)&&/\b(repair|repairs|repairing|fix|permit|permits|reparar|reparacion|reparación|permiso|permisos)\b/.test(t)){
+    return es
+      ?'Sí. Para reparar una terraza en Franklin, cuente con necesitar un permiso de construcción. La Ciudad indica que se requiere permiso para terrazas y para la mayoría de los trabajos de reparación. Si se trata de una reparación menor y exactamente igual a lo existente, confirme el alcance específico con Building & Neighborhood Services al 615-794-7012 antes de comenzar.'
+      :'Yes. For deck repair in Franklin, plan on needing a building permit. The City says building permits are required for decks and for most repair work. If this is a very minor in-kind repair, confirm the exact scope with Building & Neighborhood Services at 615-794-7012 before starting.';
+  }
   if(/\b(permit|permits|permiso|permisos)\b/.test(t)&&/\b(home|house|residential|remodel|renovation|repair|deck|fence|casa|residencial|remodelacion|renovacion|reparacion|terraza|cerca)\b/.test(t)){
     return es
-      ?'En Franklin, se requiere un permiso de construcción para construcción nueva, ampliaciones, renovaciones, terrazas, piscinas y la mayoría de las reparaciones. Building & Neighborhood Services puede confirmar el requisito de su proyecto al 615-794-7012.'
-      :'In Franklin, a building permit is required for new construction, additions, renovations, decks, pools and most repair work. Building & Neighborhood Services can confirm your exact project at 615-794-7012.';
+      ?'Sí, en muchos proyectos residenciales de Franklin necesitará un permiso. La Ciudad exige permiso de construcción para construcción nueva, ampliaciones, renovaciones, terrazas, piscinas y la mayoría de las reparaciones. Building & Neighborhood Services puede confirmar el requisito exacto de su proyecto al 615-794-7012.'
+      :'Yes, for many Franklin residential projects you should plan on needing a permit. The City requires building permits for new construction, additions, renovations, decks, pools and most repair work. Building & Neighborhood Services can confirm the exact requirement for your project at 615-794-7012.';
   }
   if(/\b(city hall|city offices?|ayuntamiento|oficinas? de la ciudad)\b/.test(t)&&/\b(hours?|open|close|horario|abre|cierra)\b/.test(t)){
     return es
@@ -150,6 +155,31 @@ async function llmAnswer(q,language,history,context,sources){
 }
 function sourceRowsFromSeeds(q){
   return officialSeeds(q).map(x=>({title:x.title,url:x.url,snippet:x.snapshot||'',official:true,liveRead:false,verifiedAt:x.verifiedAt||VERIFIED_AT}));
+}
+async function verifyExactQuestionResponsiveness(){
+  const cases=[
+    {q:'do i need a permit to repair my deck',language:'en',must:[/^yes\b/i,/\bdeck\b/i,/\bpermit\b/i,/615-794-7012/]},
+    {q:'what time is City Hall open?',language:'en',must:[/Monday/i,/7:30/i,/5:00/i]},
+    {q:'which school is this address zoned for?',language:'en',must:[/exact street address/i,/district|zoned school/i]},
+    {q:'¿necesito un permiso para reparar mi terraza?',language:'es',must:[/^s[ií]\b/i,/terraza/i,/permiso/i,/615-794-7012/]}
+  ];
+  let passed=0;
+  for(const c of cases){
+    const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),20000);
+    try{
+      const r=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers:{'Content-Type':'application/json','Origin':'https://franklinnavigator.com'},body:JSON.stringify({q:c.q,contextualQ:c.q,language:c.language,history:[]}),signal:ctl.signal});
+      const d=await r.json().catch(()=>({}));
+      const textOut=String(d?.answer||'');
+      const ok=r.ok&&d?.ok===true&&d?.answerMode==='verified_known_direct'&&c.must.every(re=>re.test(textOut));
+      if(ok)passed++;
+      console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_exact_question_responsiveness_passed':'franklin_exact_question_responsiveness_failed',release:RELEASE,question:c.q,httpStatus:r.status,answerMode:d?.answerMode||null,at:now()}));
+    }catch(e){
+      console.error(JSON.stringify({event:'franklin_exact_question_responsiveness_failed',release:RELEASE,question:c.q,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));
+    }finally{clearTimeout(timer)}
+  }
+  const ok=passed===cases.length;
+  console[ok?'log':'error'](JSON.stringify({event:ok?'franklin_exact_question_responsiveness_set_passed':'franklin_exact_question_responsiveness_set_failed',release:RELEASE,passed,total:cases.length,at:now()}));
+  return ok;
 }
 async function verifyLlm(){
   llmState.lastCheckAt=now();llmState.verified=false;llmState.error=null;
@@ -365,7 +395,7 @@ selfTest();
 const server=http.createServer(async(req,res)=>{try{
   const u=new URL(req.url,'http://localhost');
   if(req.method==='OPTIONS'){allow(req,res);res.statusCode=204;return res.end()}
-  if(req.method==='GET'&&u.pathname==='/health')return json(req,res,200,{ok:true,release:RELEASE,mode:'DIRECT_ANSWER_WITH_GROUNDED_LLM_PRIMARY_AND_OFFICIAL_FIRST_FALLBACK',verifiedSnapshotDate:VERIFIED_AT,llmConfigured:llmState.configured,llmVerified:llmState.verified,llmLastCheckAt:llmState.lastCheckAt,llmVerificationError:llmState.error,startupQualified:startupState.qualified,startupChecks:{researchOk:startupState.researchOk,generalConversationOk:startupState.generalConversationOk,spanishConversationOk:startupState.spanishConversationOk,roofLeakOk:startupState.roofLeakOk,liveApiOk:startupState.liveApiOk},lastQualifiedAt:startupState.lastQualifiedAt,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()});
+  if(req.method==='GET'&&u.pathname==='/health')return json(req,res,200,{ok:true,release:RELEASE,mode:'DIRECT_ANSWER_WITH_GROUNDED_LLM_PRIMARY_AND_OFFICIAL_FIRST_FALLBACK',verifiedSnapshotDate:VERIFIED_AT,llmConfigured:llmState.configured,llmVerified:llmState.verified,llmLastCheckAt:llmState.lastCheckAt,llmVerificationError:llmState.error,startupQualified:startupState.qualified,startupChecks:{researchOk:startupState.researchOk,generalConversationOk:startupState.generalConversationOk,spanishConversationOk:startupState.spanishConversationOk,responsivenessOk:startupState.responsivenessOk,roofLeakOk:startupState.roofLeakOk,liveApiOk:startupState.liveApiOk},lastQualifiedAt:startupState.lastQualifiedAt,model:OPENAI_API_KEY?OPENAI_MODEL:null,at:now()});
   if(req.method!=='POST'||(u.pathname!=='/api/research'&&u.pathname!=='/api/answer'))return json(req,res,404,{ok:false,error:'NOT_FOUND'});
   const o=String(req.headers.origin||'');if(o&&!ORIGINS.has(o))return json(req,res,403,{ok:false,error:'ORIGIN_NOT_ALLOWED'});
   if(!limited(clientKey(req),60))return json(req,res,429,{ok:false,error:'RATE_LIMITED'});
@@ -373,25 +403,20 @@ const server=http.createServer(async(req,res)=>{try{
   if(q.length<1)return json(req,res,400,{ok:false,error:'QUESTION_REQUIRED'});
   const known=knownAnswer(contextQ,language),simple=/^(hi|hello|hey|good morning|good afternoon|good evening|hola|buenos dias|buenas tardes|buenas noches|thank you|thanks|gracias)[!. ]*$/i.test(norm(q));
   let result={answer:'',sources:[],confidence:'low',usedVerifiedSnapshot:false},answer='',answerMode='',llmUsed=false;
-  if(simple&&known){answer=known;answerMode='known_simple'}
+  if(known){
+    result={answer:known,sources:sourceRowsFromSeeds(contextQ),confidence:'high',usedVerifiedSnapshot:true};
+    answer=known;answerMode=simple?'known_simple':'verified_known_direct';llmUsed=false;
+  }
   else if(OPENAI_API_KEY){
-    if(known){
-      result={answer:known,sources:sourceRowsFromSeeds(contextQ),confidence:'high',usedVerifiedSnapshot:true};
-      const llm=await llmAnswer(q,language,b.history,known,result.sources);
-      if(llm){answer=llm;answerMode='llm_grounded_known';llmUsed=true}
-      else{answer=known;answerMode='known_fallback'}
-    }else{
+    {
       result=await research(contextQ);
       const llm=await llmAnswer(q,language,b.history,result.answer,result.sources);
       if(llm){answer=llm;answerMode='llm_grounded_research';llmUsed=true}
       else if(result.answer){answer=result.answer;answerMode='research_fallback'}
     }
   }else{
-    if(known){answer=known;answerMode='known_no_llm'}
-    else{
-      result=await research(contextQ);
-      if(result.answer){answer=result.answer;answerMode='research_no_llm'}
-    }
+    result=await research(contextQ);
+    if(result.answer){answer=result.answer;answerMode='research_no_llm'}
   }
   if(answer&&askedForSource(q)&&result.sources?.length){
     const urls=result.sources.slice(0,2).map(x=>x.url).filter(Boolean);
@@ -407,9 +432,10 @@ server.requestTimeout=25000;server.headersTimeout=10000;server.listen(PORT,'0.0.
   const liveOk=llmOk&&researchOk?await verifyLiveEndpoint():false;
   const generalConversationOk=llmOk&&researchOk?await verifyGeneralConversationSet():false;
   const spanishConversationOk=llmOk&&researchOk?await verifySpanishConversationSet():false;
+  const responsivenessOk=await verifyExactQuestionResponsiveness();
   const roofLeakOk=await verifyRoofLeakConversation();
-  startupState.researchOk=researchOk;startupState.liveApiOk=liveOk;startupState.generalConversationOk=generalConversationOk;startupState.spanishConversationOk=spanishConversationOk;startupState.roofLeakOk=roofLeakOk;
-  startupState.qualified=Boolean(llmOk&&researchOk&&liveOk&&generalConversationOk&&spanishConversationOk&&roofLeakOk);
-  if(startupState.qualified){startupState.lastQualifiedAt=now();console.log(JSON.stringify({event:'franklin_assistant_startup_qualified',release:RELEASE,llmOk,researchOk,liveOk,generalConversationOk,spanishConversationOk,roofLeakOk,at:startupState.lastQualifiedAt}))}
-  else console.error(JSON.stringify({event:'franklin_assistant_startup_acceptance_incomplete',release:RELEASE,llmOk,researchOk,liveOk,generalConversationOk,spanishConversationOk,roofLeakOk,at:now()}))
+  startupState.researchOk=researchOk;startupState.liveApiOk=liveOk;startupState.generalConversationOk=generalConversationOk;startupState.spanishConversationOk=spanishConversationOk;startupState.responsivenessOk=responsivenessOk;startupState.roofLeakOk=roofLeakOk;
+  startupState.qualified=Boolean(llmOk&&researchOk&&liveOk&&generalConversationOk&&spanishConversationOk&&responsivenessOk&&roofLeakOk);
+  if(startupState.qualified){startupState.lastQualifiedAt=now();console.log(JSON.stringify({event:'franklin_assistant_startup_qualified',release:RELEASE,llmOk,researchOk,liveOk,generalConversationOk,spanishConversationOk,responsivenessOk,roofLeakOk,at:startupState.lastQualifiedAt}))}
+  else console.error(JSON.stringify({event:'franklin_assistant_startup_acceptance_incomplete',release:RELEASE,llmOk,researchOk,liveOk,generalConversationOk,spanishConversationOk,responsivenessOk,roofLeakOk,at:now()}))
 })().catch(e=>console.error(JSON.stringify({event:'franklin_assistant_startup_acceptance_incomplete',release:RELEASE,error:String(e?.message||e).slice(0,120),at:now()}))) });
