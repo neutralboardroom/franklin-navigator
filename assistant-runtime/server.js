@@ -209,6 +209,30 @@ function findFact(question){
   const q=norm(question);
   return FACTS.find(row=>row.match(q))||null;
 }
+function directoryRequest(question,language){
+  const q=norm(question);
+  const cue=/\b(find|show|looking for|need a|need an|buscar|busco|encontrar|muestre|necesito un|necesito una)\b/.test(q);
+  if(!cue)return null;
+  const cleaned=q
+    .replace(/\b(find|show|looking for|need a|need an|buscar|busco|encontrar|muestre|necesito un|necesito una|me|local|locals|near me|in franklin|franklin|tennessee|tn|por favor|please)\b/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+  if(!cleaned||cleaned.length>80)return null;
+  const lang=languageOf(language);
+  const label=cleaned;
+  return {
+    answer:lang==='es'
+      ? 'Sí. Puede usar Buscar Local de Franklin Navigator para ver perfiles públicos que coincidan con “'+label+'”. Los resultados son informativos y no implican recomendación ni disponibilidad.'
+      : 'Yes. You can use Franklin Navigator’s Find Local directory to browse public profiles matching “'+label+'”. Results are informational and do not imply endorsement or availability.',
+    mode:'directory_handoff',
+    sources:[],
+    links:[{
+      label:lang==='es'?'Buscar '+label:'Find '+label,
+      url:(lang==='es'?'/es/directorio/?q=':'/directory/?q=')+encodeURIComponent(label)
+    }],
+    needsDetail:false
+  };
+}
 
 function scoreSource(source,question){
   const q=norm(question);
@@ -340,9 +364,13 @@ async function answerQuestion({question,language,history}){
       answer:fact.answer[lang],
       mode:'verified_fact',
       sources:sourceRows(fact.sources),
+      links:[],
       needsDetail:fact.id==='school-zone'
     };
   }
+
+  const directory=directoryRequest(q,lang);
+  if(directory)return directory;
 
   const selected=chooseSources(q,3);
   const enriched=[];
@@ -368,6 +396,7 @@ async function answerQuestion({question,language,history}){
       answer,
       mode:selected.length?'official_research_ai':'general_ai',
       sources:selected.map(x=>({id:x.id,title:x.title,url:x.url,official:true})),
+      links:[],
       needsDetail:false
     };
   }
@@ -380,6 +409,7 @@ async function answerQuestion({question,language,history}){
         : first.snapshot+' Check the linked official source to confirm current details.',
       mode:'official_snapshot',
       sources:[{id:first.id,title:first.title,url:first.url,official:true}],
+      links:[],
       needsDetail:false
     };
   }
@@ -390,6 +420,7 @@ async function answerQuestion({question,language,history}){
       : 'I do not yet have enough verified local information to answer that confidently. I can still give general guidance, or you can name the Franklin service, place, or organization you mean.',
     mode:'insufficient_local_evidence',
     sources:[],
+    links:[],
     needsDetail:true
   };
 }
@@ -429,6 +460,13 @@ async function selfTest(){
       run:async()=>{
         const r=await answerQuestion({question:'Who do I call about a water service problem?',language:'en',history:[]});
         return r.mode==='verified_fact'&&/615-794-4554/.test(r.answer);
+      }
+    },
+    {
+      id:'directory-roofers',
+      run:async()=>{
+        const r=await answerQuestion({question:'Find me roofers in Franklin',language:'en',history:[]});
+        return r.mode==='directory_handoff'&&Array.isArray(r.links)&&r.links[0]?.url.includes('/directory/?q=roofers');
       }
     },
     {
@@ -522,6 +560,7 @@ const server=http.createServer(async(req,res)=>{
       answer:result.answer,
       mode:result.mode,
       sources:result.sources,
+      links:Array.isArray(result.links)?result.links:[],
       needsDetail:Boolean(result.needsDetail)
     });
   }catch(error){
