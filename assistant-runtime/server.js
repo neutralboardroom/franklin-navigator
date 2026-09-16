@@ -260,7 +260,7 @@ function findFact(question){
 }
 function directoryRequest(question,language){
   const q=norm(question);
-  const provider=/\b(plumber|plumbing|roofer|roofing contractor|electrician|dentist|doctor|physician|lawyer|attorney|family lawyer|veterinarian|vet|mechanic|auto repair|repair shop|real estate agent|realtor|staffing agency|tow truck|towing|urgent care|therapist|counselor|psychiatrist|psychologist|HVAC|heating and air|contractor|plomero|plomeria|techador|electricista|dentista|doctor|medico|abogado|abogada|veterinario|veterinaria|mecanico|taller|agente inmobiliario|grua|remolque|terapeuta|consejero|psiquiatra|psicologo)\b/.test(q);
+  const provider=/\b(plumbers?|plumbing|roofers?|roofing contractors?|electricians?|dentists?|doctors?|physicians?|lawyers?|attorneys?|family lawyers?|veterinarians?|vets?|mechanics?|auto repair|repair shops?|real estate agents?|realtors?|staffing agencies|tow trucks?|towing|urgent care|therapists?|counselors?|psychiatrists?|psychologists?|HVAC|heating and air|contractors?|plomeros?|plomeria|techadores?|electricistas?|dentistas?|doctores?|medicos?|abogados?|abogadas?|veterinarios?|veterinarias?|mecanicos?|talleres?|agentes inmobiliarios?|gruas?|remolque|terapeutas?|consejeros?|psiquiatras?|psicologos?)\b/.test(q);
   const explicit=/\b(find|show me|looking for|search for|i need|need a|need an|buscar|buscame|busco|encontrar|muestrame|necesito|necesito un|necesito una)\b/.test(q);
   if(!(provider&&explicit))return null;
 
