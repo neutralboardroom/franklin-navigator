@@ -1,7 +1,7 @@
 /* Franklin Assistant clean-room browser controller. Internal generation/version details are not public UI. */
 (()=>{'use strict';
 
-const VERSION='FRANKLIN-ASSISTANT2-0.2.0';
+const VERSION='FRANKLIN-ASSISTANT2-0.2.1';
 const API='https://franklin-navigator-assistant.onrender.com/api/v2/answer';
 const MAX_FILE_BYTES=8*1024*1024;
 
@@ -24,13 +24,44 @@ function ensureUtilityStyles(){
     .franklin-assistant-attach-label{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-weight:700}
     .franklin-assistant-file{max-width:100%;font-weight:400}
     .franklin-assistant-file-status{margin:4px 0 8px}
+    .franklin-assistant-answer-list{margin:.65rem 0 0;padding-left:1.2rem}
+    .franklin-assistant-answer-list li{margin:.45rem 0;line-height:1.45}
+    .franklin-assistant-sources{margin-top:1rem}
     .franklin-assistant-utility-row .link-button{white-space:nowrap}
     @media(max-width:640px){.franklin-assistant-utility-row{align-items:flex-start;flex-direction:column}.franklin-assistant-utility-row .link-button{align-self:flex-start}}
   `;
   document.head.append(style);
 }
+function sourceLabel(row){
+  const raw=text(row?.title||'');
+  let host='';
+  try{host=new URL(row.url).hostname.replace(/^www\./,'').toLowerCase()}catch{}
+  const map={
+    'franklintn.gov':'City of Franklin',
+    'visitfranklin.com':'Visit Franklin',
+    'wcparksandrec.com':'Williamson County Parks & Recreation',
+    'wcpltn.org':'Williamson County Public Library',
+    'franklintheatre.com':'Franklin Theatre',
+    'wcs.edu':'Williamson County Schools',
+    'fssd.org':'Franklin Special School District',
+    'williamsoncounty-tn.gov':'Williamson County',
+    'franklinnavigator.com':'Franklin Navigator'
+  };
+  if(!raw||raw===host||raw==='www.'+host)return map[host]||host||'Source';
+  return raw;
+}
 function sourceList(sources,lang){
-  const rows=Array.isArray(sources)?sources.filter(x=>x&&x.url&&x.title):[];
+  const seen=new Set();
+  const rows=[];
+  for(const row of Array.isArray(sources)?sources:[]){
+    if(!row?.url)continue;
+    let host='';
+    try{host=new URL(row.url).hostname.replace(/^www\./,'').toLowerCase()}catch{}
+    const key=host||row.url;
+    if(seen.has(key))continue;
+    seen.add(key);
+    rows.push(row);
+  }
   if(!rows.length)return null;
   const wrap=make('div','franklin-assistant-sources');
   wrap.append(make('div','fine-print',lang==='es'?'Fuentes':'Sources'));
@@ -40,11 +71,20 @@ function sourceList(sources,lang){
     a.href=row.url;
     a.target='_blank';
     a.rel='noopener';
-    a.textContent=row.title;
+    a.textContent=sourceLabel(row);
     actions.append(a);
   }
   wrap.append(actions);
   return wrap;
+}
+function answerLines(value){
+  return String(value||'')
+    .replace(/\r/g,'')
+    .replace(/\*\*/g,'')
+    .replace(/https?:\/\/\S+/gi,'')
+    .split(/\n+/)
+    .map(line=>text(line.replace(/^\s*[-*•]+\s*/,'')))
+    .filter(Boolean);
 }
 function hasSensitiveText(v){
   return /(\b\d{3}-\d{2}-\d{4}\b|social security|ssn|routing number|account number|medical record number|patient id|password|passcode|numero de cuenta|seguro social|contrase[nñ]a)/i.test(String(v||''));
@@ -124,14 +164,14 @@ async function extractAttachment(file,lang,onProgress){
 }
 
 function install(root){
-  if(root.dataset.franklinAssistant2==='1')return;
+  if(root.dataset.franklinAssistant==='1')return;
   const form=root.querySelector('form');
   const input=root.querySelector('[data-navigator-input]');
   const output=root.querySelector('[data-navigator-output]');
   if(!form||!input||!output)return;
 
   ensureUtilityStyles();
-  root.dataset.franklinAssistant2='1';
+  root.dataset.franklinAssistant='1';
   root.dataset.franklinAssistantR1296='1';
   root.dataset.franklinAssistantVersion=VERSION;
 
@@ -193,7 +233,16 @@ function install(root){
     const card=make('article','navigator-result franklin-assistant-answer');
     card.dataset.assistantMode=String(data.mode||'');
     card.append(make('div','eyebrow',lang==='es'?'Respuesta de Franklin':'Franklin answer'));
-    card.append(make('p','',text(data.answer)));
+
+    const lines=answerLines(data.answer);
+    if(String(data.mode||'')==='fresh_web_ai'&&lines.length>1){
+      card.append(make('p','',lines[0]));
+      const list=make('ul','franklin-assistant-answer-list');
+      for(const line of lines.slice(1,8))list.append(make('li','',line));
+      card.append(list);
+    }else{
+      card.append(make('p','',lines.join(' ')||text(data.answer)));
+    }
 
     const sources=sourceList(data.sources,lang);
     if(sources)card.append(sources);
@@ -366,7 +415,7 @@ function install(root){
     }
   });
 
-  window.FranklinAssistant2=Object.freeze({
+  window.FranklinAssistant=Object.freeze({
     version:VERSION,
     ask,
     clear:clearAll,
