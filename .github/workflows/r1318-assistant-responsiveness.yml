@@ -1,0 +1,47 @@
+name: R1318 Franklin Assistant direct-answer responsiveness
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/assets/franklin-assistant-r1318.js'
+      - 'dist/assets/hf36.js'
+      - 'dist/index.html'
+      - 'dist/es/index.html'
+      - 'dist/assistant/index.html'
+      - 'dist/es/asistente/index.html'
+      - 'DURABLE_RULE__QUESTION_RESPONSIVENESS_AND_VERIFIED_FACT_PRECEDENCE.md'
+      - '.github/workflows/r1318-assistant-responsiveness.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  direct-answer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check dist/assets/franklin-assistant-r1318.js
+          node --check dist/assets/hf36.js
+      - name: Strict answer-first contracts
+        run: |
+          grep -F "FR-NAV1.30.18-HF3.13.0" dist/assets/franklin-assistant-r1318.js
+          grep -F "For deck repair in Franklin, plan on needing a building permit" dist/assets/franklin-assistant-r1318.js
+          grep -F "function shouldRenderGuide" dist/assets/franklin-assistant-r1318.js
+          grep -F "answered&&shouldRenderGuide" dist/assets/franklin-assistant-r1318.js
+          grep -F "FranklinAssistantR1318" dist/assets/franklin-assistant-r1318.js
+          grep -F "/assets/franklin-assistant-r1318.js?v=frnav1318" dist/assets/hf36.js
+          grep -F "/assets/hf36.js?v=frnav1318" dist/index.html
+          grep -F "/assets/hf36.js?v=frnav1318" dist/es/index.html
+          grep -F "/assets/hf36.js?v=frnav1318" dist/assistant/index.html
+          grep -F "/assets/hf36.js?v=frnav1318" dist/es/asistente/index.html
+      - name: Durable responsiveness rule
+        run: |
+          test -f DURABLE_RULE__QUESTION_RESPONSIVENESS_AND_VERIFIED_FACT_PRECEDENCE.md
+          grep -F "A Franklin Assistant response is not acceptable merely because it is grounded" DURABLE_RULE__QUESTION_RESPONSIVENESS_AND_VERIFIED_FACT_PRECEDENCE.md
+          grep -F "do not require an LLM to rewrite or paraphrase it before display" DURABLE_RULE__QUESTION_RESPONSIVENESS_AND_VERIFIED_FACT_PRECEDENCE.md
+          grep -F "Guided buttons and follow-up questionnaires are secondary assistance, not answers" DURABLE_RULE__QUESTION_RESPONSIVENESS_AND_VERIFIED_FACT_PRECEDENCE.md
