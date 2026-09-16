@@ -211,10 +211,10 @@ function findFact(question){
 }
 function directoryRequest(question,language){
   const q=norm(question);
-  const cue=/\b(find|show|looking for|need a|need an|buscar|busco|encontrar|muestre|necesito un|necesito una)\b/.test(q);
+  const cue=/\b(find|show|looking for|search for|buscar|busco|encontrar|muestre)\b/.test(q);
   if(!cue)return null;
   const cleaned=q
-    .replace(/\b(find|show|looking for|need a|need an|buscar|busco|encontrar|muestre|necesito un|necesito una|me|local|locals|near me|in franklin|franklin|tennessee|tn|por favor|please)\b/g,' ')
+    .replace(/\b(find|show|looking for|search for|buscar|busco|encontrar|muestre|me|local|locals|near me|in franklin|franklin|tennessee|tn|por favor|please)\b/g,' ')
     .replace(/\s+/g,' ')
     .trim();
   if(!cleaned||cleaned.length>80)return null;
