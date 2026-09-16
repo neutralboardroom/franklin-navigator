@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.20-HF3.13.2",
+  "release": "FR-NAV1.30.21-HF3.13.3",
   "date": "2026-09-15",
-  "base": "FR-NAV1.30.19-HF3.13.1",
+  "base": "FR-NAV1.30.20-HF3.13.2",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1320 is an Assistant-subsystem-only clean-room improvement. Public branding remains Franklin Assistant with inline same-page answers. It restores Clear/new question, browser-supported Speak, and local attachment reading for documents/screenshots/photos, and repairs freshness-sensitive questions with required trusted-domain web search. No unrelated Franklin Navigator subsystem is intentionally changed.",
+  "scope": "R1321 is an Assistant-subsystem-only presentation repair for current-information answers. It preserves inline same-page answers, Clear/Speak/Attach controls and the clean-room runtime while removing raw Markdown and URLs from current-event answers, rendering readable item lists, deduplicating source hosts and using clear source labels. No unrelated Franklin Navigator subsystem is intentionally changed.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -27,11 +27,11 @@
     "version": "FRANKLIN-ASSISTANT2-0.1.0",
     "architecture": "CLEAN_ROOM_V2",
     "visualShell": "PRESERVED_EXISTING_FRANKLIN_HOME_AND_ASSISTANT_PRESENTATION",
-    "canonicalController": "/assets/franklin-assistant.js?v=assistant-020",
+    "canonicalController": "/assets/franklin-assistant.js?v=assistant-021",
     "runtimeEndpoint": "https://franklin-navigator-assistant.onrender.com/api/v2/answer",
-    "runtimeRelease": "FRANKLIN-ASSISTANT2-0.2.0",
-    "runtimeCommit": "ec9ec0bfbb8dfb18074ec701541c6a5303fc5b6e",
-    "runtimeDeploy": "dep-dal3cmad0e5s738dfc0g",
+    "runtimeRelease": "FRANKLIN-ASSISTANT2-0.2.1",
+    "runtimeCommit": "e9ee3e3393d614c8102679e4d89b4ccac03f6dfb",
+    "runtimeDeploy": "dep-dal40srm8hqs73er78c0",
     "runtimeStatus": "LIVE",
     "startupQualification": "PASS",
     "startupSelfTests": {
@@ -82,10 +82,10 @@
       "runtimeCommit": "80827e5365c8d34ff2468431702bc3e02c556aff"
     },
     "architectureDocument": "FRANKLIN_ASSISTANT2_CLEAN_ROOM_ARCHITECTURE.md",
-    "evidence": "FRANKLIN_ASSISTANT_CLEAN_ROOM_UPDATE__0.2.0.md",
-    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.2.0.md",
+    "evidence": "FRANKLIN_ASSISTANT_CURRENT_ANSWER_PRESENTATION_REPAIR__0.2.1.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.2.1.md",
     "publicName": "Franklin Assistant",
-    "internalVersion": "FRANKLIN-ASSISTANT2-0.2.0",
+    "internalVersion": "FRANKLIN-ASSISTANT2-0.2.1",
     "publicGenerationLabelVisible": false,
     "answerPresentation": "INLINE_SAME_PAGE_NO_NORMAL_MODAL_OR_POPUP",
     "controls": {
@@ -123,7 +123,15 @@
       "franklinnavigator.com"
     ],
     "freshSearchLocation": "Franklin, Tennessee, USA",
-    "publicPresentationRule": "DURABLE_RULE__FRANKLIN_ASSISTANT_PUBLIC_PRESENTATION.md"
+    "publicPresentationRule": "DURABLE_RULE__FRANKLIN_ASSISTANT_PUBLIC_PRESENTATION.md",
+    "currentAnswerFormatting": {
+      "plainTextModelContract": true,
+      "residualMarkdownSanitization": true,
+      "rawUrlSuppression": true,
+      "summaryPlusReadableItems": true,
+      "sourceHostnameDeduplication": true,
+      "humanReadableSourceLabels": true
+    }
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -303,7 +311,7 @@
     "preservedInRelease": "FR-NAV1.30.15-HF3.12.7",
     "inactiveForBusinessColor": "MATCHES_OTHER_INACTIVE_PRIMARY_NAV_ITEMS"
   },
-  "productionPromotionFrom": "FR-NAV1.30.19-HF3.13.1",
+  "productionPromotionFrom": "FR-NAV1.30.20-HF3.13.2",
   "communityConnector": {
     "version": "FRANKLIN_COMMUNITY_CONNECTOR_R1311",
     "publicEntryPoint": "FRANKLIN_ASSISTANT_REMAINS_FIRST_TOP_OF_HOME_ACTION",
@@ -577,5 +585,27 @@
     "firstRealReviewedPublicationReadback": "PENDING_GENUINELY_AUTHORIZED_REAL_MEMBER",
     "evidence": "FRANKLIN_ASSISTANT_CLEAN_ROOM_UPDATE__0.2.0.md",
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.2.0.md"
+  },
+  "r1321": {
+    "version": "FR-NAV1.30.21-HF3.13.3",
+    "scope": "ASSISTANT_CURRENT_INFORMATION_PRESENTATION_REPAIR",
+    "publicName": "Franklin Assistant",
+    "inlineSamePageAnswers": true,
+    "rawMarkdownInCurrentAnswers": false,
+    "rawUrlsInCurrentAnswerBody": false,
+    "currentAnswerReadableList": true,
+    "duplicateSourceHostsSuppressed": true,
+    "humanReadableSourceLabels": true,
+    "runtimeCommit": "e9ee3e3393d614c8102679e4d89b4ccac03f6dfb",
+    "runtimeDeploy": "dep-dal40srm8hqs73er78c0",
+    "runtimeQualification": {
+      "passed": 8,
+      "total": 8,
+      "status": "PASS"
+    },
+    "publicController": "/assets/franklin-assistant.js?v=assistant-021",
+    "unrelatedSiteChangesIntended": false,
+    "evidence": "FRANKLIN_ASSISTANT_CURRENT_ANSWER_PRESENTATION_REPAIR__0.2.1.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.2.1.md"
   }
 }
