@@ -57,7 +57,7 @@ function isGenericClarification(v){const x=String(v||'');return (/could not veri
 function responseEvidence(d){return [String(d?.answer||''),...(Array.isArray(d?.sources)?d.sources.flatMap(x=>[x?.title,x?.snippet,x?.url]):[])].filter(Boolean).join(' ')}
 function sourceEvidence(d){return (Array.isArray(d?.sources)?d.sources.flatMap(x=>[x?.title,x?.snippet,x?.url]):[]).filter(Boolean).join(' ')}
 function hasOfficialSource(d){return Array.isArray(d?.sources)&&d.sources.some(x=>{if(x?.official===true)return true;try{const h=new URL(String(x?.url||'')).hostname.toLowerCase();return h==='franklintn.gov'||h.endsWith('.franklintn.gov')||h==='williamsoncounty-tn.gov'||h.endsWith('.williamsoncounty-tn.gov')||h==='wcs.edu'||h.endsWith('.wcs.edu')||h==='fssd.org'||h.endsWith('.fssd.org')}catch{return false}})}
-function groundedSubstantive(d){return d?.ok===true&&d?.llmUsed===true&&String(d?.answer||'').length>=24&&/^llm_grounded_/.test(String(d?.answerMode||''))&&hasOfficialSource(d)&&!isGenericClarification(d?.answer)}
+function groundedSubstantive(d){const mode=String(d?.answerMode||'');const qualifiedMode=mode==='verified_known_direct'||(d?.llmUsed===true&&/^llm_grounded_/.test(mode));return d?.ok===true&&String(d?.answer||'').length>=24&&qualifiedMode&&hasOfficialSource(d)&&!isGenericClarification(d?.answer)}
 async function research(q){
   const merged=[],seen=new Set();
   for(const row of officialSeeds(q)){
@@ -161,7 +161,7 @@ async function verifyExactQuestionResponsiveness(){
     {q:'do i need a permit to repair my deck',language:'en',must:[/^yes\b/i,/\bdeck\b/i,/\bpermit\b/i,/615-794-7012/]},
     {q:'what time is City Hall open?',language:'en',must:[/Monday/i,/7:30/i,/5:00/i]},
     {q:'which school is this address zoned for?',language:'en',must:[/exact street address/i,/district|zoned school/i]},
-    {q:'¿necesito un permiso para reparar mi terraza?',language:'es',must:[/^s[ií]\b/i,/terraza/i,/permiso/i,/615-794-7012/]}
+    {q:'¿necesito un permiso para reparar mi terraza?',language:'es',must:[/^s[ií](?:[.!?,\s]|$)/i,/terraza/i,/permiso/i,/615-794-7012/]}
   ];
   let passed=0;
   for(const c of cases){
