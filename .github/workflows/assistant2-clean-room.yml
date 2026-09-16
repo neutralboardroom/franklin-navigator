@@ -1,9 +1,9 @@
-name: Franklin Assistant 2 clean-room boundary
+name: Franklin Assistant clean-room boundary
 on:
   push:
     branches: [main]
     paths:
-      - 'dist/assets/franklin-assistant-v2.js'
+      - 'dist/assets/franklin-assistant.js'
       - 'dist/assets/hf36.js'
       - 'dist/index.html'
       - 'dist/es/index.html'
@@ -25,7 +25,7 @@ jobs:
           node-version: '22'
       - name: JavaScript syntax
         run: |
-          node --check dist/assets/franklin-assistant-v2.js
+          node --check dist/assets/franklin-assistant.js
           node --check dist/assets/hf36.js
       - name: Clean-room boundary
         run: node tests/assistant2-clean-room-boundary.cjs
