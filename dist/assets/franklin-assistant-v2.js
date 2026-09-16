@@ -82,6 +82,19 @@ function install(root){
     const sources=sourceList(data.sources,lang);
     if(sources)card.append(sources);
 
+    const links=Array.isArray(data.links)?data.links.filter(x=>x&&x.url&&x.label):[];
+    if(links.length){
+      const actions=make('div','actions');
+      for(const row of links.slice(0,3)){
+        const a=document.createElement('a');
+        a.className='button';
+        a.href=row.url;
+        a.textContent=row.label;
+        actions.append(a);
+      }
+      card.append(actions);
+    }
+
     output.append(card);
     output.focus();
 
