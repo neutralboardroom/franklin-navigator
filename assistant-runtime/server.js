@@ -3,7 +3,7 @@
 const http=require('node:http');
 
 const PORT=Number(process.env.PORT||10000);
-const RELEASE='FRANKLIN-ASSISTANT2-0.2.0';
+const RELEASE='FRANKLIN-ASSISTANT2-0.2.1';
 const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||'').trim();
 const OPENAI_MODEL=String(process.env.OPENAI_MODEL||'gpt-5.6-luna').trim();
 const ORIGINS=new Set([
@@ -308,22 +308,53 @@ function needsFreshSearch(question){
   return /\b(today|tonight|tomorrow|this weekend|weekend|this week|happening|events?|meetings?|agenda|current|latest|right now|open now|schedule today|schedule tomorrow|hoy|esta noche|mañana|este fin de semana|fin de semana|esta semana|eventos?|reuniones?|agenda|actual|ahora mismo)\b/i.test(String(question||''));
 }
 
+function sourceTitleForHost(host){
+  const h=String(host||'').replace(/^www\./,'').toLowerCase();
+  if(h==='franklintn.gov')return'City of Franklin';
+  if(h==='visitfranklin.com')return'Visit Franklin';
+  if(h==='wcparksandrec.com')return'Williamson County Parks & Recreation';
+  if(h==='wcpltn.org')return'Williamson County Public Library';
+  if(h==='franklintheatre.com')return'Franklin Theatre';
+  if(h==='wcs.edu')return'Williamson County Schools';
+  if(h==='fssd.org')return'Franklin Special School District';
+  if(h==='williamsoncounty-tn.gov')return'Williamson County';
+  if(h==='franklinnavigator.com')return'Franklin Navigator';
+  return h||'Source';
+}
+
 function webSources(data){
-  const out=[],seen=new Set();
+  const out=[],seenHosts=new Set();
   for(const item of Array.isArray(data?.output)?data.output:[]){
     if(item?.type!=='web_search_call')continue;
     const rows=Array.isArray(item?.action?.sources)?item.action.sources:[];
     for(const row of rows){
       const url=clean(row?.url||row?.link||'');
-      if(!/^https:\/\//i.test(url)||seen.has(url))continue;
-      seen.add(url);
-      let title=clean(row?.title||'');
-      if(!title){try{title=new URL(url).hostname}catch{title='Source'}}
-      out.push({title,url,official:true});
-      if(out.length>=6)return out;
+      if(!/^https:\/\//i.test(url))continue;
+      let host='';
+      try{host=new URL(url).hostname.replace(/^www\./,'').toLowerCase()}catch{}
+      if(!host||seenHosts.has(host))continue;
+      seenHosts.add(host);
+      out.push({title:sourceTitleForHost(host),url,official:true});
+      if(out.length>=5)return out;
     }
   }
   return out;
+}
+
+function cleanFreshAnswer(value){
+  const raw=String(value||'')
+    .replace(/\r/g,'')
+    .replace(/\*\*/g,'')
+    .replace(/__+/g,'')
+    .replace(/\[([^\]]+)\]\(https?:\/\/[^)]+\)/gi,'$1')
+    .replace(/https?:\/\/\S+/gi,'')
+    .replace(/【[^】]+】/g,'')
+    .replace(/\((?:source|visitfranklin\.com|www\.franklintn\.gov|franklintn\.gov)[^)]*\)/gi,'');
+  const lines=raw.split(/\n+/)
+    .map(line=>line.replace(/^\s*[-*•]+\s*/,'').replace(/\s+/g,' ').trim())
+    .filter(Boolean)
+    .slice(0,8);
+  return lines.join('\n').trim();
 }
 
 async function callFreshWebSearch({question,language,history}){
@@ -331,8 +362,8 @@ async function callFreshWebSearch({question,language,history}){
   const lang=languageOf(language);
   const localNow=franklinNowLabel();
   const system=lang==='es'
-    ? 'Usted es Franklin Assistant para Franklin, Tennessee. Esta consulta depende de información actual. Debe usar búsqueda web y responder con los resultados concretos que correspondan al período solicitado. No se limite a decirle al usuario que consulte un calendario. Incluya nombres, fechas, horas y lugares cuando estén disponibles. Si no encuentra elementos verificables para el período, dígalo claramente. Priorice fuentes oficiales y locales permitidas. No invente eventos ni horarios.'
-    : 'You are Franklin Assistant for Franklin, Tennessee. This question depends on current information. You must use web search and answer with the actual matching items for the requested time window. Do not merely tell the user to check a calendar. Include names, dates, times, and locations when available. If you find no verifiable matching items, say that clearly. Prioritize the allowed official and trusted local sources. Do not invent events or schedules.';
+    ? 'Usted es Franklin Assistant para Franklin, Tennessee. Esta consulta depende de información actual. Debe usar búsqueda web y responder con los resultados concretos que correspondan al período solicitado. No se limite a decirle al usuario que consulte un calendario. Incluya nombres, fechas, horas y lugares cuando estén disponibles. Si no encuentra elementos verificables para el período, dígalo claramente. Priorice fuentes oficiales y locales permitidas. No invente eventos ni horarios. Devuelva solo texto plano: sin Markdown, sin asteriscos, sin URLs dentro de la respuesta y sin sintaxis de citas. Coloque el resumen del período en la primera línea y luego cada elemento en su propia línea con el formato Día/fecha — Evento — hora — lugar. Sea conciso.'
+    : 'You are Franklin Assistant for Franklin, Tennessee. This question depends on current information. You must use web search and answer with the actual matching items for the requested time window. Do not merely tell the user to check a calendar. Include names, dates, times, and locations when available. If you find no verifiable matching items, say that clearly. Prioritize the allowed official and trusted local sources. Do not invent events or schedules. Return plain text only: no Markdown, no asterisks, no inline URLs, no citation syntax. Put the date-window summary on the first line, then put each matching item on its own new line in the form Day/date — Event — time — location. Keep it concise.';
   const prompt=[
     'FRANKLIN LOCAL DATE/TIME: '+localNow,
     history?'CURRENT CONVERSATION:\n'+history:'',
@@ -387,7 +418,7 @@ async function callFreshWebSearch({question,language,history}){
     });
     if(!response.ok)throw new Error('OPENAI_WEB_'+response.status);
     const data=await response.json();
-    const answer=clean(extractOutput(data)).slice(0,2400);
+    const answer=cleanFreshAnswer(extractOutput(data)).slice(0,2400);
     if(!answer)return null;
     return {answer,sources:webSources(data)};
   }finally{
@@ -605,7 +636,7 @@ async function selfTest(){
       id:'fresh-weekend-search',
       run:async()=>{
         const r=await answerQuestion({question:'What is happening in Franklin this weekend?',language:'en',history:[]});
-        return r.mode==='fresh_web_ai'&&String(r.answer||'').length>=40&&!/official calendar has the current listings/i.test(String(r.answer||''))&&Array.isArray(r.sources);
+        return r.mode==='fresh_web_ai'&&String(r.answer||'').length>=40&&!/official calendar has the current listings/i.test(String(r.answer||''))&&!/\*\*|https?:\/\//i.test(String(r.answer||''))&&Array.isArray(r.sources)&&new Set(r.sources.map(x=>{try{return new URL(x.url).hostname.replace(/^www\./,'')}catch{return x.url}})).size===r.sources.length;
       }
     },
     {
