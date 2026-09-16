@@ -341,7 +341,7 @@ async function callFreshWebSearch({question,language,history}){
   ].filter(Boolean).join('\n\n');
 
   const ctl=new AbortController();
-  const timer=setTimeout(()=>ctl.abort(),22000);
+  const timer=setTimeout(()=>ctl.abort(),30000);
   try{
     const response=await fetch('https://api.openai.com/v1/responses',{
       method:'POST',
@@ -352,8 +352,10 @@ async function callFreshWebSearch({question,language,history}){
       },
       body:JSON.stringify({
         model:OPENAI_MODEL,
+        reasoning:{effort:'none'},
         tools:[{
           type:'web_search',
+          search_context_size:'low',
           filters:{
             allowed_domains:[
               'franklintn.gov',
@@ -380,7 +382,7 @@ async function callFreshWebSearch({question,language,history}){
           {role:'system',content:[{type:'input_text',text:system}]},
           {role:'user',content:[{type:'input_text',text:prompt}]}
         ],
-        max_output_tokens:650
+        max_output_tokens:450
       })
     });
     if(!response.ok)throw new Error('OPENAI_WEB_'+response.status);
@@ -712,7 +714,7 @@ const server=http.createServer(async(req,res)=>{
   }
 });
 
-server.requestTimeout=25000;
+server.requestTimeout=38000;
 server.headersTimeout=10000;
 
 server.listen(PORT,'0.0.0.0',()=>{
