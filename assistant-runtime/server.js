@@ -3,7 +3,7 @@
 const http=require('node:http');
 
 const PORT=Number(process.env.PORT||10000);
-const RELEASE='FRANKLIN-ASSISTANT2-0.2.1';
+const RELEASE='FRANKLIN-ASSISTANT2-0.3.0';
 const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||'').trim();
 const OPENAI_MODEL=String(process.env.OPENAI_MODEL||'gpt-5.6-luna').trim();
 const ORIGINS=new Set([
@@ -12,6 +12,28 @@ const ORIGINS=new Set([
   'https://franklin-navigator.onrender.com'
 ]);
 const BODY_LIMIT=24*1024;
+const TRUSTED_LOCAL_DOMAINS=[
+  'franklintn.gov',
+  'williamsoncounty-tn.gov',
+  'visitfranklin.com',
+  'wcparksandrec.com',
+  'wcpltn.org',
+  'franklintheatre.com',
+  'wcs.edu',
+  'fssd.org',
+  'franklintransit.org',
+  'adoptwcac.org',
+  'tn.gov',
+  'tncourts.gov',
+  'las.org',
+  'tba.org',
+  'freelegalanswers.org',
+  'hud.gov',
+  'jobs4tn.gov',
+  'tncountyclerk.com',
+  'vaccines.gov',
+  '211.org'
+];
 const rate=new Map();
 const startup={qualified:false,testsPassed:0,testsTotal:0,lastQualifiedAt:null};
 
@@ -191,6 +213,33 @@ const FACTS=[
     }
   },
   {
+    id:'city-main-phone',
+    match:q=>/\b(city|city hall|city government|franklin)\b/.test(q)&&/\b(number|phone|call|telefono|n[uú]mero|llamar)\b/.test(q)&&!/\b(water|utility|sanitation|police|fire|permit|agua|facturacion|saneamiento|policia|bomberos|permiso)\b/.test(q),
+    sources:['city-contact'],
+    answer:{
+      en:'The City of Franklin main phone number is 615-791-3217.',
+      es:'El teléfono principal de la Ciudad de Franklin es 615-791-3217.'
+    }
+  },
+  {
+    id:'start-water-service',
+    match:q=>/\b(start|begin|set up|new)\b/.test(q)&&/\b(water service|utility service|water account)\b/.test(q),
+    sources:['utility-billing','water'],
+    answer:{
+      en:'To start Franklin water service, contact Utility Billing at 615-794-4572. The City lists Utility Billing hours as 8:00 AM to 5:00 PM Monday through Friday except holidays.',
+      es:'Para iniciar el servicio de agua de Franklin, comuníquese con Utility Billing al 615-794-4572. La Ciudad indica horario de 8:00 a. m. a 5:00 p. m., de lunes a viernes, excepto días festivos.'
+    }
+  },
+  {
+    id:'water-bill-help',
+    match:q=>/\b(water bill|utility bill|bill seems wrong|billing)\b/.test(q)&&/\b(water|utility|bill|billing)\b/.test(q),
+    sources:['utility-billing'],
+    answer:{
+      en:'Utility Billing handles Franklin water-bill questions. Call 615-794-4572, Monday through Friday, 8:00 AM to 5:00 PM except holidays.',
+      es:'Utility Billing atiende preguntas sobre facturas de agua de Franklin. Llame al 615-794-4572, de lunes a viernes, de 8:00 a. m. a 5:00 p. m., excepto días festivos.'
+    }
+  },
+  {
     id:'sanitation-hours',
     match:q=>/\b(trash|garbage|recycling|sanitation|basura|reciclaje|saneamiento)\b/.test(q)&&/\b(hours?|open|phone|call|horario|abre|telefono|llamar)\b/.test(q),
     sources:['sanitation'],
@@ -211,19 +260,21 @@ function findFact(question){
 }
 function directoryRequest(question,language){
   const q=norm(question);
-  const cue=/\b(find|show|looking for|search for|buscar|busco|encontrar|muestre)\b/.test(q);
-  if(!cue)return null;
-  const cleaned=q
-    .replace(/\b(find|show|looking for|search for|buscar|busco|encontrar|muestre|me|local|locals|near me|in franklin|franklin|tennessee|tn|por favor|please)\b/g,' ')
+  const provider=/\b(plumber|plumbing|roofer|roofing contractor|electrician|dentist|doctor|physician|lawyer|attorney|family lawyer|veterinarian|vet|mechanic|auto repair|repair shop|real estate agent|realtor|staffing agency|tow truck|towing|urgent care|therapist|counselor|psychiatrist|psychologist|HVAC|heating and air|contractor|plomero|plomeria|techador|electricista|dentista|doctor|medico|abogado|abogada|veterinario|veterinaria|mecanico|taller|agente inmobiliario|grua|remolque|terapeuta|consejero|psiquiatra|psicologo)\b/.test(q);
+  const explicit=/\b(find|show me|looking for|search for|i need|need a|need an|buscar|buscame|busco|encontrar|muestrame|necesito|necesito un|necesito una)\b/.test(q);
+  if(!(provider&&explicit))return null;
+
+  let label=q
+    .replace(/\b(find|show me|looking for|search for|i need|need a|need an|buscar|buscame|busco|encontrar|muestrame|necesito|necesito un|necesito una|me|local|locals|near me|in franklin|franklin|tennessee|tn|por favor|please)\b/g,' ')
+    .replace(/[?.!,]+/g,' ')
     .replace(/\s+/g,' ')
     .trim();
-  if(!cleaned||cleaned.length>80)return null;
+  if(!label||label.length>80)return null;
   const lang=languageOf(language);
-  const label=cleaned;
   return {
     answer:lang==='es'
-      ? 'Sí. Puede usar Buscar Local de Franklin Navigator para ver perfiles públicos que coincidan con “'+label+'”. Los resultados son informativos y no implican recomendación ni disponibilidad.'
-      : 'Yes. You can use Franklin Navigator’s Find Local directory to browse public profiles matching “'+label+'”. Results are informational and do not imply endorsement or availability.',
+      ? 'Puede usar Buscar Local de Franklin Navigator para ver perfiles públicos que coincidan con “'+label+'”. Los resultados son informativos y no implican recomendación ni disponibilidad.'
+      : 'You can use Franklin Navigator’s Find Local directory to browse public profiles matching “'+label+'”. Results are informational and do not imply endorsement or availability.',
     mode:'directory_handoff',
     sources:[],
     links:[{
@@ -305,7 +356,17 @@ function franklinNowLabel(){
 }
 
 function needsFreshSearch(question){
-  return /\b(today|tonight|tomorrow|this weekend|weekend|this week|happening|events?|meetings?|agenda|current|latest|right now|open now|schedule today|schedule tomorrow|hoy|esta noche|mañana|este fin de semana|fin de semana|esta semana|eventos?|reuniones?|agenda|actual|ahora mismo)\b/i.test(String(question||''));
+  const q=norm(question);
+  return /\b(today|tonight|tomorrow|this weekend|weekend|this week|happening|events?|meetings?|agenda|current|latest|right now|open now|schedule today|schedule tomorrow|hoy|esta noche|manana|este fin de semana|fin de semana|esta semana|eventos?|reuniones?|agenda|actual|ahora mismo)\b/.test(q)
+    || /\b(flu shot|vaccine|vaccination|fall break|school break|fare|fares|transit cost|bus cost|recreation programs|kids programs|coffee near downtown|restaurants? open|pharmacy open)\b/.test(q)
+    || (/\b(available|availability|cost|price|hours|open)\b/.test(q)&&/\b(transit|bus|program|class|clinic|pharmacy|restaurant|coffee|school)\b/.test(q));
+}
+
+function needsLocalWebSearch(question){
+  const q=norm(question);
+  if(!q)return false;
+  return /\b(where can i|where do i|where is|who handles|who do i|how do i|what services|what nonprofits|help with|assistance|affordable housing|rental|resume|legal help|court|animal shelter|stray|emergency alerts|senior|caregiver|meal assistance|jobs|job|registration|emissions|pothole|donate|moved here|walk my dog|playgrounds|recycling|sewer|code problem|eviction|report|sign up|renew|apply|enroll|volunteer|food pantry|food bank|shelter|property condition|road|tree fell|stormwater)\b/.test(q)
+    || /\b(framework|franklin|williamson county)\b/.test(q);
 }
 
 function sourceTitleForHost(host){
@@ -319,6 +380,18 @@ function sourceTitleForHost(host){
   if(h==='fssd.org')return'Franklin Special School District';
   if(h==='williamsoncounty-tn.gov')return'Williamson County';
   if(h==='franklinnavigator.com')return'Franklin Navigator';
+  if(h==='franklintransit.org')return'Franklin Transit Authority';
+  if(h==='adoptwcac.org')return'Williamson County Animal Center';
+  if(h==='tn.gov')return'State of Tennessee';
+  if(h==='tncourts.gov')return'Tennessee Courts';
+  if(h==='las.org')return'Legal Aid Society of Middle Tennessee and the Cumberlands';
+  if(h==='tba.org')return'Tennessee Bar Association';
+  if(h==='freelegalanswers.org')return'Free Legal Answers';
+  if(h==='hud.gov')return'U.S. Department of Housing and Urban Development';
+  if(h==='jobs4tn.gov')return'Jobs4TN';
+  if(h==='tncountyclerk.com')return'Tennessee County Clerk';
+  if(h==='vaccines.gov')return'Vaccines.gov';
+  if(h==='211.org')return'211';
   return h||'Source';
 }
 
@@ -388,17 +461,7 @@ async function callFreshWebSearch({question,language,history}){
           type:'web_search',
           search_context_size:'low',
           filters:{
-            allowed_domains:[
-              'franklintn.gov',
-              'visitfranklin.com',
-              'wcparksandrec.com',
-              'wcpltn.org',
-              'franklintheatre.com',
-              'wcs.edu',
-              'fssd.org',
-              'williamsoncounty-tn.gov',
-              'franklinnavigator.com'
-            ]
+            allowed_domains:TRUSTED_LOCAL_DOMAINS
           },
           user_location:{
             type:'approximate',
@@ -419,6 +482,63 @@ async function callFreshWebSearch({question,language,history}){
     if(!response.ok)throw new Error('OPENAI_WEB_'+response.status);
     const data=await response.json();
     const answer=cleanFreshAnswer(extractOutput(data)).slice(0,2400);
+    if(!answer)return null;
+    return {answer,sources:webSources(data)};
+  }finally{
+    clearTimeout(timer);
+  }
+}
+
+function cleanAssistantAnswer(value){
+  return clean(String(value||'')
+    .replace(/\*\*/g,'')
+    .replace(/__+/g,'')
+    .replace(/\[([^\]]+)\]\(https?:\/\/[^)]+\)/gi,'$1')
+    .replace(/https?:\/\/\S+/gi,'')
+    .replace(/【[^】]+】/g,'')
+    .replace(/(^|\s)[-*•]+\s+/g,'$1'));
+}
+
+async function callLocalWebSearch({question,language,history}){
+  if(!OPENAI_API_KEY)return null;
+  const lang=languageOf(language);
+  const system=lang==='es'
+    ? 'Usted es Franklin Assistant para Franklin, Tennessee. Use búsqueda web para responder con información local concreta y verificable. Priorice la Ciudad de Franklin, Williamson County, Tennessee y organizaciones locales confiables dentro de los dominios permitidos. Dé primero la respuesta práctica: agencia, programa, lugar, teléfono, dirección, pasos o recurso según corresponda. No redirija a Buscar Local salvo que el usuario esté buscando explícitamente un profesional o negocio. Devuelva texto plano, sin Markdown, asteriscos, URLs incrustadas ni sintaxis de citas. No invente información.'
+    : 'You are Franklin Assistant for Franklin, Tennessee. Use web search to answer with concrete verified local information. Prioritize City of Franklin, Williamson County, Tennessee, and trusted local organizations within the allowed domains. Give the practical answer first: agency, program, place, phone, address, steps, or resource as appropriate. Do not redirect to Find Local unless the user is explicitly looking for a professional or business. Return plain text with no Markdown, asterisks, inline URLs, or citation syntax. Do not invent information.';
+  const prompt=[
+    'FRANKLIN LOCAL DATE/TIME: '+franklinNowLabel(),
+    history?'CURRENT CONVERSATION:\n'+history:'',
+    'USER QUESTION:\n'+question,
+    'Answer the Franklin-specific question directly and concisely.'
+  ].filter(Boolean).join('\n\n');
+  const ctl=new AbortController();
+  const timer=setTimeout(()=>ctl.abort(),30000);
+  try{
+    const response=await fetch('https://api.openai.com/v1/responses',{
+      method:'POST',
+      signal:ctl.signal,
+      headers:{'Authorization':'Bearer '+OPENAI_API_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:OPENAI_MODEL,
+        reasoning:{effort:'none'},
+        tools:[{
+          type:'web_search',
+          search_context_size:'low',
+          filters:{allowed_domains:TRUSTED_LOCAL_DOMAINS},
+          user_location:{type:'approximate',country:'US',city:'Franklin',region:'Tennessee'}
+        }],
+        tool_choice:'required',
+        include:['web_search_call.action.sources'],
+        input:[
+          {role:'system',content:[{type:'input_text',text:system}]},
+          {role:'user',content:[{type:'input_text',text:prompt}]}
+        ],
+        max_output_tokens:500
+      })
+    });
+    if(!response.ok)throw new Error('OPENAI_LOCAL_WEB_'+response.status);
+    const data=await response.json();
+    const answer=cleanAssistantAnswer(extractOutput(data)).slice(0,2200);
     if(!answer)return null;
     return {answer,sources:webSources(data)};
   }finally{
@@ -456,8 +576,8 @@ async function callModel({question,language,history,sources}){
   ].join('\n')).join('\n\n'):'No Franklin-specific source was selected for this question.';
 
   const system=es
-    ? 'Usted es Franklin Assistant 2 para Franklin, Tennessee. Responda la pregunta concreta del usuario primero. Si es una pregunta de sí/no, empiece con Sí, No o Depende, según corresponda. No sustituya una respuesta por un cuestionario genérico. Use solo los hechos locales de las fuentes proporcionadas; no invente hechos, horarios, requisitos, precios, eventos ni proveedores de Franklin. Si falta un dato realmente necesario, pida solo ese dato específico y explique brevemente por qué. Puede dar orientación general no local si la identifica claramente como general. Sea breve, útil y natural.'
-    : 'You are Franklin Assistant 2 for Franklin, Tennessee. Answer the user’s actual question first. For a yes/no question, begin with Yes, No, or It depends, whichever is accurate. Never replace an answer with a generic questionnaire or workflow. Use only the provided sources for Franklin-specific facts; do not invent Franklin facts, hours, requirements, prices, events, or providers. If one genuinely necessary detail is missing, ask only for that specific detail and briefly explain why. You may give clearly labeled general guidance when no local fact is available. Be concise, useful, and conversational.';
+    ? 'Usted es Franklin Assistant para Franklin, Tennessee. Responda la pregunta concreta del usuario primero. Si es una pregunta de sí/no, empiece con Sí, No o Depende, según corresponda. No sustituya una respuesta por un cuestionario genérico. Use solo los hechos locales de las fuentes proporcionadas; no invente hechos, horarios, requisitos, precios, eventos ni proveedores de Franklin. Si falta un dato realmente necesario, pida solo ese dato específico y explique brevemente por qué. Puede dar orientación general no local si la identifica claramente como general. Devuelva texto plano sin Markdown, asteriscos ni URLs incrustadas. Sea breve, útil y natural.'
+    : 'You are Franklin Assistant for Franklin, Tennessee. Answer the user’s actual question first. For a yes/no question, begin with Yes, No, or It depends, whichever is accurate. Never replace an answer with a generic questionnaire or workflow. Use only the provided sources for Franklin-specific facts; do not invent Franklin facts, hours, requirements, prices, events, or providers. If one genuinely necessary detail is missing, ask only for that specific detail and briefly explain why. You may give clearly labeled general guidance when no local fact is available. Return plain text with no Markdown, asterisks, or inline URLs. Be concise, useful, and conversational.';
 
   const input=[
     {role:'system',content:[{type:'input_text',text:system}]},
@@ -486,7 +606,7 @@ async function callModel({question,language,history,sources}){
     });
     if(!response.ok)throw new Error('OPENAI_'+response.status);
     const data=await response.json();
-    return clean(extractOutput(data)).slice(0,1800);
+    return cleanAssistantAnswer(extractOutput(data)).slice(0,1800);
   }finally{
     clearTimeout(timer);
   }
@@ -505,9 +625,6 @@ async function answerQuestion({question,language,history}){
       needsDetail:fact.id==='school-zone'
     };
   }
-
-  const directory=directoryRequest(q,lang);
-  if(directory)return directory;
 
   if(needsFreshSearch(q)){
     try{
@@ -528,6 +645,35 @@ async function answerQuestion({question,language,history}){
     }catch(error){
       console.error(JSON.stringify({
         event:'assistant_fresh_search_failed',
+        release:RELEASE,
+        error:clean(error?.message||error).slice(0,120),
+        at:now()
+      }));
+    }
+  }
+
+  const directory=directoryRequest(q,lang);
+  if(directory)return directory;
+
+  if(needsLocalWebSearch(q)){
+    try{
+      const local=await callLocalWebSearch({
+        question:q,
+        language:lang,
+        history:historyText(history)
+      });
+      if(local?.answer&&Array.isArray(local.sources)&&local.sources.length){
+        return {
+          answer:local.answer,
+          mode:'local_web_ai',
+          sources:local.sources,
+          links:[],
+          needsDetail:false
+        };
+      }
+    }catch(error){
+      console.error(JSON.stringify({
+        event:'assistant_local_search_failed',
         release:RELEASE,
         error:clean(error?.message||error).slice(0,120),
         at:now()
@@ -637,6 +783,55 @@ async function selfTest(){
       run:async()=>{
         const r=await answerQuestion({question:'What is happening in Franklin this weekend?',language:'en',history:[]});
         return r.mode==='fresh_web_ai'&&String(r.answer||'').length>=40&&!/official calendar has the current listings/i.test(String(r.answer||''))&&!/\*\*|https?:\/\//i.test(String(r.answer||''))&&Array.isArray(r.sources)&&new Set(r.sources.map(x=>{try{return new URL(x.url).hostname.replace(/^www\./,'')}catch{return x.url}})).size===r.sources.length;
+      }
+    },
+    {
+      id:'city-main-phone',
+      run:async()=>{
+        const r=await answerQuestion({question:'What number should I call for the City?',language:'en',history:[]});
+        return r.mode==='verified_fact'&&/615-791-3217/.test(r.answer);
+      }
+    },
+    {
+      id:'tow-truck-directory',
+      run:async()=>{
+        const r=await answerQuestion({question:'I need a tow truck.',language:'en',history:[]});
+        return r.mode==='directory_handoff'&&r.links?.length===1;
+      }
+    },
+    {
+      id:'spanish-plumber-directory',
+      run:async()=>{
+        const r=await answerQuestion({question:'Búscame un plomero.',language:'es',history:[]});
+        return r.mode==='directory_handoff'&&r.links?.length===1;
+      }
+    },
+    {
+      id:'rental-assistance-local',
+      run:async()=>{
+        const r=await answerQuestion({question:'Where can I find rental assistance?',language:'en',history:[]});
+        return r.mode==='local_web_ai'&&r.sources?.length>0;
+      }
+    },
+    {
+      id:'jobs-local-not-directory',
+      run:async()=>{
+        const r=await answerQuestion({question:'Where can I find jobs in Franklin?',language:'en',history:[]});
+        return r.mode==='local_web_ai'&&r.sources?.length>0;
+      }
+    },
+    {
+      id:'transit-fare-fresh',
+      run:async()=>{
+        const r=await answerQuestion({question:'How much does Franklin Transit cost?',language:'en',history:[]});
+        return r.mode==='fresh_web_ai'&&r.sources?.length>0;
+      }
+    },
+    {
+      id:'no-markdown-general',
+      run:async()=>{
+        const r=await answerQuestion({question:'My car broke down. What should I do first?',language:'en',history:[]});
+        return !/\*\*|https?:\/\//.test(String(r.answer||''));
       }
     },
     {
