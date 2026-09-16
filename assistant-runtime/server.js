@@ -260,7 +260,7 @@ function findFact(question){
 }
 function directoryRequest(question,language){
   const q=norm(question);
-  const provider=/\b(plumbers?|plumbing|roofers?|roofing contractors?|electricians?|dentists?|doctors?|physicians?|lawyers?|attorneys?|family lawyers?|veterinarians?|vets?|mechanics?|auto repair|repair shops?|real estate agents?|realtors?|staffing agencies|tow trucks?|towing|urgent care|therapists?|counselors?|psychiatrists?|psychologists?|HVAC|heating and air|contractors?|plomeros?|plomeria|techadores?|electricistas?|dentistas?|doctores?|medicos?|abogados?|abogadas?|veterinarios?|veterinarias?|mecanicos?|talleres?|agentes inmobiliarios?|gruas?|remolque|terapeutas?|consejeros?|psiquiatras?|psicologos?)\b/.test(q);
+  const provider=/\b(plumbers?|plumbing|roofers?|roofing contractors?|electricians?|dentists?|doctors?|physicians?|lawyers?|attorneys?|family lawyers?|veterinarians?|vets?|mechanics?|auto repair|repair shops?|real estate agents?|realtors?|staffing agenc(?:y|ies)|tow trucks?|towing|urgent care|therapists?|counselors?|psychiatrists?|psychologists?|HVAC|heating and air|contractors?|plomeros?|plomeria|techadores?|electricistas?|dentistas?|doctores?|medicos?|abogados?|abogadas?|veterinarios?|veterinarias?|mecanicos?|talleres?|agentes inmobiliarios?|gruas?|remolque|terapeutas?|consejeros?|psiquiatras?|psicologos?)\b/.test(q);
   const explicit=/\b(find|show me|looking for|search for|i need|need a|need an|buscar|buscame|busco|encontrar|muestrame|necesito|necesito un|necesito una)\b/.test(q);
   if(!(provider&&explicit))return null;
 
@@ -796,6 +796,13 @@ async function selfTest(){
       id:'tow-truck-directory',
       run:async()=>{
         const r=await answerQuestion({question:'I need a tow truck.',language:'en',history:[]});
+        return r.mode==='directory_handoff'&&r.links?.length===1;
+      }
+    },
+    {
+      id:'staffing-agency-directory',
+      run:async()=>{
+        const r=await answerQuestion({question:'Find me a staffing agency.',language:'en',history:[]});
         return r.mode==='directory_handoff'&&r.links?.length===1;
       }
     },
