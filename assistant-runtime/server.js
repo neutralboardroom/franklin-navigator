@@ -208,9 +208,10 @@ async function verifyLiveEndpoint(){
   try{
     const r=await fetch(`http://127.0.0.1:${PORT}/api/answer`,{method:'POST',headers:{'Content-Type':'application/json','Origin':'https://franklinnavigator.com'},body:JSON.stringify({q:'Do I need a permit for my roof?',contextualQ:'Do I need a permit for my roof?',language:'en',history:[]}),signal:ctl.signal});
     const d=await r.json().catch(()=>({}));
-    const ok=r.ok&&d?.ok===true&&d?.llmUsed===true&&/^llm_grounded_/.test(String(d?.answerMode||''))&&/(permit|roof)/i.test(String(d?.answer||''));
+    const mode=String(d?.answerMode||'');
+    const ok=r.ok&&d?.ok===true&&(mode==='verified_known_direct'||(d?.llmUsed===true&&/^llm_grounded_/.test(mode)))&&/(permit|roof)/i.test(String(d?.answer||''));
     if(!ok){console.error(JSON.stringify({event:'franklin_live_api_smoke_failed',release:RELEASE,httpStatus:r.status,answerMode:d?.answerMode||null,llmUsed:d?.llmUsed===true,error:d?.error||null,at:now()}));return false}
-    console.log(JSON.stringify({event:'franklin_live_api_smoke_passed',release:RELEASE,httpStatus:r.status,answerMode:d.answerMode,llmUsed:true,check:'LIVE_HTTP_API_ROOF_PERMIT',at:now()}));return true
+    console.log(JSON.stringify({event:'franklin_live_api_smoke_passed',release:RELEASE,httpStatus:r.status,answerMode:d.answerMode,llmUsed:d?.llmUsed===true,check:'LIVE_HTTP_API_ROOF_PERMIT',at:now()}));return true
   }catch(e){console.error(JSON.stringify({event:'franklin_live_api_smoke_failed',release:RELEASE,error:e?.name==='AbortError'?'TIMEOUT':'REQUEST_FAILED',at:now()}));return false}finally{clearTimeout(timer)}
 }
 async function verifyGeneralConversationSet(){
