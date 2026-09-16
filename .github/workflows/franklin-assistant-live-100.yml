@@ -24,13 +24,13 @@ jobs:
           node-version: '22'
       - name: Run shard
         env:
-          SHARD_INDEX: \${{ matrix.shard }}
+          SHARD_INDEX: ${{ matrix.shard }}
           SHARD_COUNT: '4'
         run: node tests/run-franklin-assistant-live-100.cjs
       - uses: actions/upload-artifact@v4
         with:
-          name: live-test-shard-\${{ matrix.shard }}
-          path: live-test-results/shard-\${{ matrix.shard }}.json
+          name: live-test-shard-${{ matrix.shard }}
+          path: live-test-results/shard-${{ matrix.shard }}.json
           retention-days: 3
 
   aggregate:
