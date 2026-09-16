@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.19-HF3.13.1",
+  "release": "FR-NAV1.30.20-HF3.13.2",
   "date": "2026-09-15",
-  "base": "FR-NAV1.30.18-HF3.13.0",
+  "base": "FR-NAV1.30.19-HF3.13.1",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1319 is an Assistant-subsystem-only clean-room rebuild. Franklin Assistant 1 is retired and archived. The existing Franklin home/Assistant visual shell is preserved, while the active browser controller and runtime are replaced by Franklin Assistant 2 v0.1.0. No unrelated Franklin Navigator product area is intentionally changed.",
+  "scope": "R1320 is an Assistant-subsystem-only clean-room improvement. Public branding remains Franklin Assistant with inline same-page answers. It restores Clear/new question, browser-supported Speak, and local attachment reading for documents/screenshots/photos, and repairs freshness-sensitive questions with required trusted-domain web search. No unrelated Franklin Navigator subsystem is intentionally changed.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -27,16 +27,16 @@
     "version": "FRANKLIN-ASSISTANT2-0.1.0",
     "architecture": "CLEAN_ROOM_V2",
     "visualShell": "PRESERVED_EXISTING_FRANKLIN_HOME_AND_ASSISTANT_PRESENTATION",
-    "canonicalController": "/assets/franklin-assistant-v2.js?v=assistant2-010",
+    "canonicalController": "/assets/franklin-assistant.js?v=assistant-020",
     "runtimeEndpoint": "https://franklin-navigator-assistant.onrender.com/api/v2/answer",
-    "runtimeRelease": "FRANKLIN-ASSISTANT2-0.1.0",
-    "runtimeCommit": "d8d1f02d750696d384c7960df3d912366693e2b5",
-    "runtimeDeploy": "dep-dal2ti2d0e5s738bu6cg",
+    "runtimeRelease": "FRANKLIN-ASSISTANT2-0.2.0",
+    "runtimeCommit": "ec9ec0bfbb8dfb18074ec701541c6a5303fc5b6e",
+    "runtimeDeploy": "dep-dal3cmad0e5s738dfc0g",
     "runtimeStatus": "LIVE",
     "startupQualification": "PASS",
     "startupSelfTests": {
-      "passed": 7,
-      "total": 7
+      "passed": 8,
+      "total": 8
     },
     "requestFlow": [
       "VERIFIED_DETERMINISTIC_FACT",
@@ -61,7 +61,7 @@
     "availableLegacyRouteCount": 254,
     "sessionContinuity": "CURRENT_PAGE_MEMORY_ONLY_LAST_RECENT_TURNS",
     "rawChatHistoryPersisted": false,
-    "attachmentProcessing": false,
+    "attachmentProcessing": "ON_DEVICE_TEXT_EXTRACTION",
     "fileAnalysis": false,
     "sourceLinks": "DISPLAYED_WHEN_RUNTIME_RETURNS_OFFICIAL_SOURCES",
     "providerHandling": "EXPLICIT_FIND_SEARCH_INTENT_ONLY_TO_NEUTRAL_FIND_LOCAL_DIRECTORY",
@@ -82,8 +82,48 @@
       "runtimeCommit": "80827e5365c8d34ff2468431702bc3e02c556aff"
     },
     "architectureDocument": "FRANKLIN_ASSISTANT2_CLEAN_ROOM_ARCHITECTURE.md",
-    "evidence": "FRANKLIN_ASSISTANT2_INITIAL_CLEAN_ROOM_RELEASE_EVIDENCE.md",
-    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.1.0.md"
+    "evidence": "FRANKLIN_ASSISTANT_CLEAN_ROOM_UPDATE__0.2.0.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.2.0.md",
+    "publicName": "Franklin Assistant",
+    "internalVersion": "FRANKLIN-ASSISTANT2-0.2.0",
+    "publicGenerationLabelVisible": false,
+    "answerPresentation": "INLINE_SAME_PAGE_NO_NORMAL_MODAL_OR_POPUP",
+    "controls": {
+      "clearNewQuestion": true,
+      "speak": "BROWSER_SPEECH_RECOGNITION_WHEN_SUPPORTED",
+      "attachments": true
+    },
+    "attachmentNetworkSubmission": false,
+    "attachmentMaxBytes": 8388608,
+    "supportedAttachments": [
+      "PDF",
+      "DOCX",
+      "TXT",
+      "MD",
+      "CSV",
+      "JSON",
+      "HTML",
+      "PNG",
+      "JPG",
+      "JPEG",
+      "WEBP"
+    ],
+    "freshnessSensitiveSearch": true,
+    "freshSearchTool": "OPENAI_RESPONSES_WEB_SEARCH",
+    "freshSearchPolicy": "REQUIRED_FOR_TODAY_TONIGHT_TOMORROW_WEEKEND_THIS_WEEK_CURRENT_EVENTS_MEETINGS_AGENDAS_AND_OTHER_FRESHNESS_SENSITIVE_QUESTIONS",
+    "freshSearchAllowedDomains": [
+      "franklintn.gov",
+      "visitfranklin.com",
+      "wcparksandrec.com",
+      "wcpltn.org",
+      "franklintheatre.com",
+      "wcs.edu",
+      "fssd.org",
+      "williamsoncounty-tn.gov",
+      "franklinnavigator.com"
+    ],
+    "freshSearchLocation": "Franklin, Tennessee, USA",
+    "publicPresentationRule": "DURABLE_RULE__FRANKLIN_ASSISTANT_PUBLIC_PRESENTATION.md"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -263,7 +303,7 @@
     "preservedInRelease": "FR-NAV1.30.15-HF3.12.7",
     "inactiveForBusinessColor": "MATCHES_OTHER_INACTIVE_PRIMARY_NAV_ITEMS"
   },
-  "productionPromotionFrom": "FR-NAV1.30.18-HF3.13.0",
+  "productionPromotionFrom": "FR-NAV1.30.19-HF3.13.1",
   "communityConnector": {
     "version": "FRANKLIN_COMMUNITY_CONNECTOR_R1311",
     "publicEntryPoint": "FRANKLIN_ASSISTANT_REMAINS_FIRST_TOP_OF_HOME_ACTION",
@@ -512,5 +552,30 @@
     "firstRealReviewedPublicationReadback": "PENDING_GENUINELY_AUTHORIZED_REAL_MEMBER",
     "evidence": "FRANKLIN_ASSISTANT2_INITIAL_CLEAN_ROOM_RELEASE_EVIDENCE.md",
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.1.0.md"
+  },
+  "r1320": {
+    "version": "FR-NAV1.30.20-HF3.13.2",
+    "scope": "ASSISTANT_SUBSYSTEM_ONLY_CONTROLS_AND_FRESH_INFORMATION",
+    "publicName": "Franklin Assistant",
+    "publicGenerationLabelVisible": false,
+    "inlineSamePageAnswers": true,
+    "clearNewQuestion": true,
+    "speakWhenSupported": true,
+    "localAttachments": true,
+    "freshWeekendSearch": true,
+    "runtimeCommit": "ec9ec0bfbb8dfb18074ec701541c6a5303fc5b6e",
+    "runtimeDeploy": "dep-dal3cmad0e5s738dfc0g",
+    "runtimeQualification": {
+      "passed": 8,
+      "total": 8,
+      "status": "PASS"
+    },
+    "publicController": "/assets/franklin-assistant.js?v=assistant-020",
+    "unrelatedSiteChangesIntended": false,
+    "memberProfileR1314ControlsPreserved": true,
+    "firstRealProductionCheckoutProof": "PENDING_GENUINELY_AUTHORIZED_REAL_MEMBER",
+    "firstRealReviewedPublicationReadback": "PENDING_GENUINELY_AUTHORIZED_REAL_MEMBER",
+    "evidence": "FRANKLIN_ASSISTANT_CLEAN_ROOM_UPDATE__0.2.0.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.2.0.md"
   }
 }
