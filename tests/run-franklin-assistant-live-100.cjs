@@ -173,3 +173,5 @@ async function ask(row){
   const passed=results.filter(x=>x.pass).length;
   console.log(JSON.stringify({shard,passed,total:results.length}));
 })().catch(error=>{console.error(error);process.exit(1)});
+
+// LIVE_RERUN_TARGET: FRANKLIN-ASSISTANT2-0.3.0
