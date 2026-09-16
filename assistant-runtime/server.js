@@ -3,7 +3,7 @@
 const http=require('node:http');
 
 const PORT=Number(process.env.PORT||10000);
-const RELEASE='FRANKLIN-ASSISTANT2-0.1.0';
+const RELEASE='FRANKLIN-ASSISTANT2-0.2.0';
 const OPENAI_API_KEY=String(process.env.OPENAI_API_KEY||'').trim();
 const OPENAI_MODEL=String(process.env.OPENAI_MODEL||'gpt-5.6-luna').trim();
 const ORIGINS=new Set([
@@ -289,6 +289,110 @@ async function fetchOfficial(source){
   }
 }
 
+function franklinNowLabel(){
+  try{
+    return new Intl.DateTimeFormat('en-US',{
+      timeZone:'America/Chicago',
+      weekday:'long',
+      year:'numeric',
+      month:'long',
+      day:'numeric',
+      hour:'numeric',
+      minute:'2-digit',
+      timeZoneName:'short'
+    }).format(new Date());
+  }catch{return new Date().toISOString()}
+}
+
+function needsFreshSearch(question){
+  return /\b(today|tonight|tomorrow|this weekend|weekend|this week|happening|events?|meetings?|agenda|current|latest|right now|open now|schedule today|schedule tomorrow|hoy|esta noche|mañana|este fin de semana|fin de semana|esta semana|eventos?|reuniones?|agenda|actual|ahora mismo)\b/i.test(String(question||''));
+}
+
+function webSources(data){
+  const out=[],seen=new Set();
+  for(const item of Array.isArray(data?.output)?data.output:[]){
+    if(item?.type!=='web_search_call')continue;
+    const rows=Array.isArray(item?.action?.sources)?item.action.sources:[];
+    for(const row of rows){
+      const url=clean(row?.url||row?.link||'');
+      if(!/^https:\/\//i.test(url)||seen.has(url))continue;
+      seen.add(url);
+      let title=clean(row?.title||'');
+      if(!title){try{title=new URL(url).hostname}catch{title='Source'}}
+      out.push({title,url,official:true});
+      if(out.length>=6)return out;
+    }
+  }
+  return out;
+}
+
+async function callFreshWebSearch({question,language,history}){
+  if(!OPENAI_API_KEY)return null;
+  const lang=languageOf(language);
+  const localNow=franklinNowLabel();
+  const system=lang==='es'
+    ? 'Usted es Franklin Assistant para Franklin, Tennessee. Esta consulta depende de información actual. Debe usar búsqueda web y responder con los resultados concretos que correspondan al período solicitado. No se limite a decirle al usuario que consulte un calendario. Incluya nombres, fechas, horas y lugares cuando estén disponibles. Si no encuentra elementos verificables para el período, dígalo claramente. Priorice fuentes oficiales y locales permitidas. No invente eventos ni horarios.'
+    : 'You are Franklin Assistant for Franklin, Tennessee. This question depends on current information. You must use web search and answer with the actual matching items for the requested time window. Do not merely tell the user to check a calendar. Include names, dates, times, and locations when available. If you find no verifiable matching items, say that clearly. Prioritize the allowed official and trusted local sources. Do not invent events or schedules.';
+  const prompt=[
+    'FRANKLIN LOCAL DATE/TIME: '+localNow,
+    history?'CURRENT CONVERSATION:\n'+history:'',
+    'USER QUESTION:\n'+question,
+    'Return a concise direct answer. Mention the requested date window explicitly.'
+  ].filter(Boolean).join('\n\n');
+
+  const ctl=new AbortController();
+  const timer=setTimeout(()=>ctl.abort(),22000);
+  try{
+    const response=await fetch('https://api.openai.com/v1/responses',{
+      method:'POST',
+      signal:ctl.signal,
+      headers:{
+        'Authorization':'Bearer '+OPENAI_API_KEY,
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        model:OPENAI_MODEL,
+        tools:[{
+          type:'web_search',
+          filters:{
+            allowed_domains:[
+              'franklintn.gov',
+              'visitfranklin.com',
+              'wcparksandrec.com',
+              'wcpltn.org',
+              'franklintheatre.com',
+              'wcs.edu',
+              'fssd.org',
+              'williamsoncounty-tn.gov',
+              'franklinnavigator.com'
+            ]
+          },
+          user_location:{
+            type:'approximate',
+            country:'US',
+            city:'Franklin',
+            region:'Tennessee'
+          }
+        }],
+        tool_choice:'required',
+        include:['web_search_call.action.sources'],
+        input:[
+          {role:'system',content:[{type:'input_text',text:system}]},
+          {role:'user',content:[{type:'input_text',text:prompt}]}
+        ],
+        max_output_tokens:650
+      })
+    });
+    if(!response.ok)throw new Error('OPENAI_WEB_'+response.status);
+    const data=await response.json();
+    const answer=clean(extractOutput(data)).slice(0,2400);
+    if(!answer)return null;
+    return {answer,sources:webSources(data)};
+  }finally{
+    clearTimeout(timer);
+  }
+}
+
 function historyText(rows){
   if(!Array.isArray(rows))return'';
   return rows.slice(-6).map(row=>{
@@ -371,6 +475,32 @@ async function answerQuestion({question,language,history}){
 
   const directory=directoryRequest(q,lang);
   if(directory)return directory;
+
+  if(needsFreshSearch(q)){
+    try{
+      const fresh=await callFreshWebSearch({
+        question:q,
+        language:lang,
+        history:historyText(history)
+      });
+      if(fresh?.answer){
+        return {
+          answer:fresh.answer,
+          mode:'fresh_web_ai',
+          sources:fresh.sources,
+          links:[],
+          needsDetail:false
+        };
+      }
+    }catch(error){
+      console.error(JSON.stringify({
+        event:'assistant_fresh_search_failed',
+        release:RELEASE,
+        error:clean(error?.message||error).slice(0,120),
+        at:now()
+      }));
+    }
+  }
 
   const selected=chooseSources(q,3);
   const enriched=[];
@@ -467,6 +597,13 @@ async function selfTest(){
       run:async()=>{
         const r=await answerQuestion({question:'Find me roofers in Franklin',language:'en',history:[]});
         return r.mode==='directory_handoff'&&Array.isArray(r.links)&&r.links[0]?.url.includes('/directory/?q=roofers');
+      }
+    },
+    {
+      id:'fresh-weekend-search',
+      run:async()=>{
+        const r=await answerQuestion({question:'What is happening in Franklin this weekend?',language:'en',history:[]});
+        return r.mode==='fresh_web_ai'&&String(r.answer||'').length>=40&&!/official calendar has the current listings/i.test(String(r.answer||''))&&Array.isArray(r.sources);
       }
     },
     {
