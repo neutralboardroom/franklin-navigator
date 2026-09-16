@@ -161,7 +161,7 @@ ready(()=>{
   normalizePrimaryNav();
   installCommunityConnectorR1311();
   loadScript('/assets/franklin-site-monitor-r1308.js?v=frnav1308','franklin-site-monitor-r1308').catch(()=>{});
-  loadAssistantR1318();
+  // Franklin Assistant 2 is loaded directly by the existing Assistant entry pages. Legacy Assistant injection is intentionally retired.
   // R1297 fail-safe Franklin mark + favicon/install icon binding. The header uses the valid vector asset directly; if the request ever fails, the same mark is supplied as an inline data URI so a broken-image glyph is never shown.
   const markFallback="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22112%22%20height%3D%22112%22%20viewBox%3D%220%200%20112%20112%22%20role%3D%22img%22%20aria-label%3D%22Franklin%20Navigator%22%3E%3Crect%20width%3D%22112%22%20height%3D%22112%22%20rx%3D%2227%22%20fill%3D%22%2303454b%22%2F%3E%3Crect%20x%3D%225%22%20y%3D%225%22%20width%3D%22102%22%20height%3D%22102%22%20rx%3D%2223%22%20fill%3D%22none%22%20stroke%3D%22%23d8e7e5%22%20stroke-opacity%3D%22.3%22%2F%3E%3Cpath%20d%3D%22M30%2029h54v15H48v15h30v15H48v27H30z%22%20fill%3D%22%23fff%22%2F%3E%3Cpath%20d%3D%22m82%2055%2020%2010.5L82%2076l5.9-10.5z%22%20fill%3D%22%23c5943a%22%2F%3E%3C%2Fsvg%3E";
   document.querySelectorAll('header .brand img').forEach(img=>{img.alt='Franklin Navigator';img.width=38;img.height=38;img.onerror=()=>{if(img.dataset.franklinMarkFallback==='1')return;img.dataset.franklinMarkFallback='1';img.src=markFallback};img.src='/assets/franklin-mark.svg?v=frnav1298'});
