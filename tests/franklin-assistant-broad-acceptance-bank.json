@@ -1,0 +1,619 @@
+{
+  "name": "Franklin Assistant broad resident acceptance bank",
+  "version": "2026-09-16",
+  "ownerRule": "Examples are regression samples, never the scope of Assistant capability.",
+  "total": 100,
+  "expectations": [
+    "Answer the actual question first.",
+    "Use current Franklin information when freshness matters.",
+    "Ask only for genuinely necessary missing detail.",
+    "Use neutral Find Local handoff only for explicit provider/business search intent.",
+    "Preserve same-page inline answer presentation.",
+    "No raw Markdown or raw URLs in normal answer text.",
+    "Do not invent local facts, hours, events, prices, providers, requirements or availability.",
+    "Preserve current-page conversational context and reset cleanly on a fresh topic.",
+    "Spanish should receive materially equivalent behavior."
+  ],
+  "cases": [
+    {
+      "id": "UTIL-01",
+      "category": "utilities",
+      "question": "Who do I call if water is leaking in the street?",
+      "expected": "direct_local_fact"
+    },
+    {
+      "id": "UTIL-02",
+      "category": "utilities",
+      "question": "How do I start water service at my new house?",
+      "expected": "direct_local_fact"
+    },
+    {
+      "id": "UTIL-03",
+      "category": "utilities",
+      "question": "My water bill seems wrong. Who handles that?",
+      "expected": "direct_local_fact"
+    },
+    {
+      "id": "UTIL-04",
+      "category": "utilities",
+      "question": "Is the water department open today?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "UTIL-05",
+      "category": "utilities",
+      "question": "Where do I report a sewer problem?",
+      "expected": "local_research"
+    },
+    {
+      "id": "SAN-01",
+      "category": "sanitation",
+      "question": "What day is my trash picked up?",
+      "expected": "needs_specific_detail"
+    },
+    {
+      "id": "SAN-02",
+      "category": "sanitation",
+      "question": "How does recycling work in Franklin?",
+      "expected": "local_research"
+    },
+    {
+      "id": "SAN-03",
+      "category": "sanitation",
+      "question": "What about brush pickup?",
+      "expected": "context_followup"
+    },
+    {
+      "id": "SAN-04",
+      "category": "sanitation",
+      "question": "Where can I recycle a television?",
+      "expected": "local_research"
+    },
+    {
+      "id": "SAN-05",
+      "category": "sanitation",
+      "question": "Are there any holiday trash schedule changes this week?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "PERMIT-01",
+      "category": "permits",
+      "question": "Do I need a permit to repair my deck?",
+      "expected": "direct_local_fact"
+    },
+    {
+      "id": "PERMIT-02",
+      "category": "permits",
+      "question": "Do I need a permit to replace my roof?",
+      "expected": "direct_local_fact"
+    },
+    {
+      "id": "PERMIT-03",
+      "category": "permits",
+      "question": "Do I need a permit for a fence?",
+      "expected": "local_research"
+    },
+    {
+      "id": "PERMIT-04",
+      "category": "permits",
+      "question": "Can I finish my basement without a permit?",
+      "expected": "local_research"
+    },
+    {
+      "id": "PERMIT-05",
+      "category": "permits",
+      "question": "Where do I apply for a building permit?",
+      "expected": "local_research"
+    },
+    {
+      "id": "SCHOOL-01",
+      "category": "schools",
+      "question": "What school will my child go to?",
+      "expected": "needs_specific_detail"
+    },
+    {
+      "id": "SCHOOL-02",
+      "category": "schools",
+      "question": "How do I enroll a new student?",
+      "expected": "local_research"
+    },
+    {
+      "id": "SCHOOL-03",
+      "category": "schools",
+      "question": "Are schools closed tomorrow?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "SCHOOL-04",
+      "category": "schools",
+      "question": "When is fall break?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "SCHOOL-05",
+      "category": "schools",
+      "question": "What do you need from me to tell me the zoned school?",
+      "expected": "context_followup"
+    },
+    {
+      "id": "PARK-01",
+      "category": "parks",
+      "question": "Where can I find park information in Franklin?",
+      "expected": "local_research"
+    },
+    {
+      "id": "PARK-02",
+      "category": "parks",
+      "question": "Which parks have playgrounds?",
+      "expected": "local_research"
+    },
+    {
+      "id": "PARK-03",
+      "category": "parks",
+      "question": "Are the sports fields open tonight?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "PARK-04",
+      "category": "parks",
+      "question": "Where can I walk my dog?",
+      "expected": "local_research"
+    },
+    {
+      "id": "PARK-05",
+      "category": "parks",
+      "question": "What recreation programs are available for kids?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "EVENT-01",
+      "category": "events",
+      "question": "What is happening in Franklin this weekend?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "EVENT-02",
+      "category": "events",
+      "question": "What can I do tonight?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "EVENT-03",
+      "category": "events",
+      "question": "Are there any free events tomorrow?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "EVENT-04",
+      "category": "events",
+      "question": "What public meetings are happening this week?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "EVENT-05",
+      "category": "events",
+      "question": "What time does that start?",
+      "expected": "context_followup"
+    },
+    {
+      "id": "TRANSIT-01",
+      "category": "transit",
+      "question": "What public transportation is available in Franklin?",
+      "expected": "local_research"
+    },
+    {
+      "id": "TRANSIT-02",
+      "category": "transit",
+      "question": "Is there accessible transit service?",
+      "expected": "local_research"
+    },
+    {
+      "id": "TRANSIT-03",
+      "category": "transit",
+      "question": "How late do the buses run today?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "TRANSIT-04",
+      "category": "transit",
+      "question": "How much does Franklin Transit cost?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "TRANSIT-05",
+      "category": "transit",
+      "question": "Where is the nearest transit stop?",
+      "expected": "needs_specific_detail"
+    },
+    {
+      "id": "HEALTH-01",
+      "category": "health",
+      "question": "Where can I find urgent care in Franklin?",
+      "expected": "directory_or_local_research"
+    },
+    {
+      "id": "HEALTH-02",
+      "category": "health",
+      "question": "Find me a dentist in Franklin.",
+      "expected": "directory_handoff"
+    },
+    {
+      "id": "HEALTH-03",
+      "category": "health",
+      "question": "Where can I get a flu shot?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "HEALTH-04",
+      "category": "health",
+      "question": "I need a pharmacy open now.",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "HEALTH-05",
+      "category": "health",
+      "question": "Where can I find mental health help locally?",
+      "expected": "local_research"
+    },
+    {
+      "id": "LEGAL-01",
+      "category": "legal",
+      "question": "I need help with an eviction.",
+      "expected": "local_research"
+    },
+    {
+      "id": "LEGAL-02",
+      "category": "legal",
+      "question": "Find me a family lawyer.",
+      "expected": "directory_handoff"
+    },
+    {
+      "id": "LEGAL-03",
+      "category": "legal",
+      "question": "Where can I get free legal help?",
+      "expected": "local_research"
+    },
+    {
+      "id": "LEGAL-04",
+      "category": "legal",
+      "question": "How do I find court information for Williamson County?",
+      "expected": "local_research"
+    },
+    {
+      "id": "LEGAL-05",
+      "category": "legal",
+      "question": "I got a court paper today. What should I do first?",
+      "expected": "general_plus_local"
+    },
+    {
+      "id": "HOUSING-01",
+      "category": "housing",
+      "question": "Where can I find rental assistance?",
+      "expected": "local_research"
+    },
+    {
+      "id": "HOUSING-02",
+      "category": "housing",
+      "question": "Who handles a dangerous rental condition?",
+      "expected": "local_research"
+    },
+    {
+      "id": "HOUSING-03",
+      "category": "housing",
+      "question": "Are there affordable housing resources in Franklin?",
+      "expected": "local_research"
+    },
+    {
+      "id": "HOUSING-04",
+      "category": "housing",
+      "question": "Where do I report a code problem at a property?",
+      "expected": "local_research"
+    },
+    {
+      "id": "HOUSING-05",
+      "category": "housing",
+      "question": "Find me a real estate agent.",
+      "expected": "directory_handoff"
+    },
+    {
+      "id": "BUSINESS-01",
+      "category": "business",
+      "question": "Find me a plumber.",
+      "expected": "directory_handoff"
+    },
+    {
+      "id": "BUSINESS-02",
+      "category": "business",
+      "question": "Find me a roofer.",
+      "expected": "directory_handoff"
+    },
+    {
+      "id": "BUSINESS-03",
+      "category": "business",
+      "question": "Find me an electrician.",
+      "expected": "directory_handoff"
+    },
+    {
+      "id": "BUSINESS-04",
+      "category": "business",
+      "question": "What restaurants are open now?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "BUSINESS-05",
+      "category": "business",
+      "question": "Where can I get coffee near downtown Franklin?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "PET-01",
+      "category": "pets",
+      "question": "Where can I take my dog if he is sick?",
+      "expected": "directory_or_local_research"
+    },
+    {
+      "id": "PET-02",
+      "category": "pets",
+      "question": "Find me a veterinarian.",
+      "expected": "directory_handoff"
+    },
+    {
+      "id": "PET-03",
+      "category": "pets",
+      "question": "Where is the local animal shelter?",
+      "expected": "local_research"
+    },
+    {
+      "id": "PET-04",
+      "category": "pets",
+      "question": "What do I do if I find a stray dog?",
+      "expected": "local_research"
+    },
+    {
+      "id": "PET-05",
+      "category": "pets",
+      "question": "Are there dog-friendly events this weekend?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "AUTO-01",
+      "category": "auto",
+      "question": "Find me an auto repair shop.",
+      "expected": "directory_handoff"
+    },
+    {
+      "id": "AUTO-02",
+      "category": "auto",
+      "question": "I need a tow truck.",
+      "expected": "directory_handoff"
+    },
+    {
+      "id": "AUTO-03",
+      "category": "auto",
+      "question": "Where can I renew my vehicle registration?",
+      "expected": "local_research"
+    },
+    {
+      "id": "AUTO-04",
+      "category": "auto",
+      "question": "Where can I get an emissions test?",
+      "expected": "local_research"
+    },
+    {
+      "id": "AUTO-05",
+      "category": "auto",
+      "question": "My car broke down. What should I do first?",
+      "expected": "general_plus_local"
+    },
+    {
+      "id": "JOB-01",
+      "category": "jobs",
+      "question": "Where can I find jobs in Franklin?",
+      "expected": "local_research"
+    },
+    {
+      "id": "JOB-02",
+      "category": "jobs",
+      "question": "Are there any job fairs this week?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "JOB-03",
+      "category": "jobs",
+      "question": "Where can a teenager look for a summer job?",
+      "expected": "local_research"
+    },
+    {
+      "id": "JOB-04",
+      "category": "jobs",
+      "question": "Where can I get help with a resume?",
+      "expected": "local_research"
+    },
+    {
+      "id": "JOB-05",
+      "category": "jobs",
+      "question": "Find me a staffing agency.",
+      "expected": "directory_handoff"
+    },
+    {
+      "id": "SENIOR-01",
+      "category": "senior",
+      "question": "What services are available for seniors in Franklin?",
+      "expected": "local_research"
+    },
+    {
+      "id": "SENIOR-02",
+      "category": "senior",
+      "question": "Is there transportation for seniors?",
+      "expected": "local_research"
+    },
+    {
+      "id": "SENIOR-03",
+      "category": "senior",
+      "question": "Where can I find meal assistance for an older adult?",
+      "expected": "local_research"
+    },
+    {
+      "id": "SENIOR-04",
+      "category": "senior",
+      "question": "What activities are available for seniors this week?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "SENIOR-05",
+      "category": "senior",
+      "question": "Where can I find caregiver support?",
+      "expected": "local_research"
+    },
+    {
+      "id": "CIVIC-01",
+      "category": "civic",
+      "question": "What time is City Hall open?",
+      "expected": "direct_local_fact"
+    },
+    {
+      "id": "CIVIC-02",
+      "category": "civic",
+      "question": "What number should I call for the City?",
+      "expected": "direct_local_fact"
+    },
+    {
+      "id": "CIVIC-03",
+      "category": "civic",
+      "question": "Where do I pay a City bill?",
+      "expected": "local_research"
+    },
+    {
+      "id": "CIVIC-04",
+      "category": "civic",
+      "question": "How do I report a pothole?",
+      "expected": "local_research"
+    },
+    {
+      "id": "CIVIC-05",
+      "category": "civic",
+      "question": "Where can I see current City meetings?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "SAFETY-01",
+      "category": "safety",
+      "question": "A tree fell across the road. Who should I call?",
+      "expected": "local_research"
+    },
+    {
+      "id": "SAFETY-02",
+      "category": "safety",
+      "question": "There is a gas smell in my house. What do I do?",
+      "expected": "emergency_first"
+    },
+    {
+      "id": "SAFETY-03",
+      "category": "safety",
+      "question": "My house is flooding right now. Who do I call?",
+      "expected": "emergency_first"
+    },
+    {
+      "id": "SAFETY-04",
+      "category": "safety",
+      "question": "Where is the nearest fire station?",
+      "expected": "needs_specific_detail"
+    },
+    {
+      "id": "SAFETY-05",
+      "category": "safety",
+      "question": "How do I sign up for local emergency alerts?",
+      "expected": "local_research"
+    },
+    {
+      "id": "COMM-01",
+      "category": "community",
+      "question": "Where can I volunteer this weekend?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "COMM-02",
+      "category": "community",
+      "question": "What nonprofits help families in Franklin?",
+      "expected": "local_research"
+    },
+    {
+      "id": "COMM-03",
+      "category": "community",
+      "question": "Where can I donate food?",
+      "expected": "local_research"
+    },
+    {
+      "id": "COMM-04",
+      "category": "community",
+      "question": "Are there community classes this week?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "COMM-05",
+      "category": "community",
+      "question": "Where can I get help if I just moved here?",
+      "expected": "local_research"
+    },
+    {
+      "id": "FOLLOW-01",
+      "category": "followup",
+      "question": "What number do I call?",
+      "expected": "context_followup"
+    },
+    {
+      "id": "FOLLOW-02",
+      "category": "followup",
+      "question": "Are they open today?",
+      "expected": "context_followup_fresh"
+    },
+    {
+      "id": "FOLLOW-03",
+      "category": "followup",
+      "question": "What about tomorrow?",
+      "expected": "context_followup_fresh"
+    },
+    {
+      "id": "FOLLOW-04",
+      "category": "followup",
+      "question": "How much does it cost?",
+      "expected": "context_followup"
+    },
+    {
+      "id": "FOLLOW-05",
+      "category": "followup",
+      "question": "Where is it?",
+      "expected": "context_followup"
+    },
+    {
+      "id": "ES-01",
+      "category": "spanish",
+      "question": "¿Necesito un permiso para reparar mi terraza?",
+      "expected": "direct_local_fact"
+    },
+    {
+      "id": "ES-02",
+      "category": "spanish",
+      "question": "¿Qué eventos hay en Franklin este fin de semana?",
+      "expected": "fresh_current"
+    },
+    {
+      "id": "ES-03",
+      "category": "spanish",
+      "question": "¿A quién llamo por un problema de agua?",
+      "expected": "direct_local_fact"
+    },
+    {
+      "id": "ES-04",
+      "category": "spanish",
+      "question": "Búscame un plomero.",
+      "expected": "directory_handoff"
+    },
+    {
+      "id": "ES-05",
+      "category": "spanish",
+      "question": "¿Qué escuela le corresponde a esta dirección?",
+      "expected": "needs_specific_detail"
+    }
+  ]
+}
