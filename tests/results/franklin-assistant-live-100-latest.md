@@ -1,14 +1,14 @@
 # Franklin Assistant — Live 100-Question Acceptance Report
 
-Run: 2026-09-16T09:46:30.231Z
+Run: 2026-09-16T09:51:00.645Z
 
 Live endpoint: https://franklin-navigator-assistant.onrender.com/api/v2/answer
 
 ## Overall
 
-- Passed: **99 / 100**
-- Failed: **1 / 100**
-- Pass rate: **99%**
+- Passed: **100 / 100**
+- Failed: **0 / 100**
+- Pass rate: **100%**
 
 Automated scoring checks requested behavior class, source presence where required, freshness mode, directory handoff, emergency-first cues, Spanish parity, and basic presentation quality. This is a screening test, not a substitute for human review of every nuanced answer.
 
@@ -24,7 +24,7 @@ Automated scoring checks requested behavior class, source presence where require
 | followup | 5 | 0 | 5 |
 | health | 5 | 0 | 5 |
 | housing | 5 | 0 | 5 |
-| jobs | 4 | 1 | 5 |
+| jobs | 5 | 0 | 5 |
 | legal | 5 | 0 | 5 |
 | parks | 5 | 0 | 5 |
 | permits | 5 | 0 | 5 |
@@ -39,29 +39,17 @@ Automated scoring checks requested behavior class, source presence where require
 
 ## Failure reasons
 
-- expected_directory_handoff: 1
-- missing_directory_link: 1
 
 ## Runtime modes
 
 - local_web_ai: 38
 - fresh_web_ai: 27
+- directory_handoff: 12
 - verified_fact: 12
-- directory_handoff: 11
-- general_ai: 6
 - official_research_ai: 6
+- general_ai: 5
 
 ## Failed questions
-
-### JOB-05 — jobs
-
-Question: Find me a staffing agency.
-
-Expected: directory_handoff
-Mode: general_ai
-Reasons: expected_directory_handoff, missing_directory_link
-
-Answer: What type of staffing do you need—office/administrative, healthcare, warehouse, skilled trades, or another field? Also, are you seeking temporary, temp-to-hire, or permanent work?
 
 ## Full result inventory
 
@@ -116,7 +104,7 @@ Answer: What type of staffing do you need—office/administrative, healthcare, w
 | JOB-02 | jobs | PASS | fresh_current | fresh_web_ai |
 | JOB-03 | jobs | PASS | local_research | local_web_ai |
 | JOB-04 | jobs | PASS | local_research | local_web_ai |
-| JOB-05 | jobs | FAIL | directory_handoff | general_ai |
+| JOB-05 | jobs | PASS | directory_handoff | directory_handoff |
 | LEGAL-01 | legal | PASS | local_research | local_web_ai |
 | LEGAL-02 | legal | PASS | directory_handoff | directory_handoff |
 | LEGAL-03 | legal | PASS | local_research | local_web_ai |
