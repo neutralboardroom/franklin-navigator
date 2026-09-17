@@ -1,0 +1,71 @@
+{
+  "receiptType": "RULE_AND_SOURCE_RECONCILIATION_RECEIPT",
+  "release": "FR-NAV1.30.29-HF3.13.11",
+  "releaseAlias": "R1329",
+  "recordedAt": "2026-09-17T10:09:00Z",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "neutralboardroom/franklin-navigator:main:FRANKLIN_TN",
+  "authorityTransfer": false,
+  "exactPlatformPredecessor": {
+    "release": "FR-NAV1.30.28-HF3.13.10",
+    "alias": "R1328",
+    "commit": "72ea3fcba5fac6a21ee54fe188d6402e78eecc0a",
+    "artifact": "FRANKLIN_NAVIGATOR__R1328__FR-NAV1.30.28-HF3.13.10__QUALIFIED_SUCCESSOR.zip",
+    "bytes": 84612769,
+    "sha256": "6fef1465dc6da439efcd926854658294ceb4c57f73a294500f7d512c952ebea6",
+    "deployment": "dep-dalri1tbedkc7382jodg",
+    "observedDeployState": "LIVE"
+  },
+  "ownerInstruction": {
+    "instruction": "Incorporate the completed canonical Franklin Navigator Profile Factory profile into the newest Franklin Navigator local Platform without using FR-TEST-SCC-OWNER-CONTROL or fabricating lifecycle state.",
+    "priority": "NEWEST_EXPLICIT_OWNER_INSTRUCTION"
+  },
+  "profileFactoryTargetedHandoff": {
+    "version": "FR-PF-PLATFORM-15.28",
+    "artifact": "FR-PF-PLATFORM-15.28__FINAL__MAILING_ADDRESS_CORRECTED.zip",
+    "bytes": 57431118,
+    "sha256": "0c2b2c7c298270aa861e6d3d6b9f3eb7c056d2f362725fe59535ec6df1c428b0",
+    "contentManifestSha256": "9c4ec55d6150ea11e5314b64d92f486befce2090ee7f4861f19fb2b04c886c30",
+    "handoffSha256": "80c6c1cdbf1498d3dceee1ebf3e76e16ac1a730269f84cdc55e41355c1cbb606",
+    "reportSha256": "d09dc861c2fc24529bf231a33d63ec26897112de4ab12fbf27afc9dcb45db5cb",
+    "profileRowSha256": "2476a5c5a2067a6ea0f4962b4affaecb8d92ae03777d1e452881c2da0125dae9",
+    "canonicalProfileId": "FR-ORG-b00c0ace7943973c",
+    "canonicalName": "Franklin Navigator",
+    "profileState": "UNCLAIMED_CLAIMABLE_SUBJECT_TO_REAL_PLATFORM_AUTHORITY_VERIFICATION",
+    "addressType": "MAILING_ADDRESS_ONLY",
+    "targetedConsumerDisposition": "QUALIFIED_NOW_OWNER_DIRECTED_PROFILE_SPECIFIC_INTEGRATION",
+    "fullSnapshotDisposition": "DEFER_WITH_CAUSE_BROADER_22910_RECORD_REPLACEMENT_NOT_REQUIRED_FOR_THIS_BOUNDED_OWNER_ORDER_AND_NOT_SELF_ACCEPTED_WHOLESALE_BY_PLATFORM"
+  },
+  "localInvestigator": {
+    "newestObservedProducerHandoff": "SLI-FRANKLIN-HANDOFF-20260917-042",
+    "state": "QUALIFIED_RESEARCH_HANDOFF_WITH_QUARANTINED_ITEMS_SCC_GATE_PENDING",
+    "consumerDisposition": "DEFER_WITH_CAUSE_NOT_REQUIRED_FOR_PROFILE_SPECIFIC_R1329_SLICE"
+  },
+  "commercialContract": {
+    "communityMembership": "$35/year",
+    "source": "current owner-directed Franklin profile/member lifecycle instruction plus preserved R1328 production implementation",
+    "noNewPricingOrOfferInvented": true,
+    "noPaymentOrMembershipStateInferred": true
+  },
+  "smarterJusticeDonor": "SMARTER_JUSTICE_DONOR_NOT_USED",
+  "duplicateCheckPlatformPreMutation": {
+    "nameOrDomainMatchesIn19103CompactProjection": 0,
+    "exactStaticProfileNameMatches": 0,
+    "testControlProfileSubstitution": false
+  },
+  "releaseLease": {
+    "supportedExternalLeaseMechanism": false,
+    "mainHeadAtBinding": "72ea3fcba5fac6a21ee54fe188d6402e78eecc0a",
+    "noConcurrentPlatformSuccessorObserved": true,
+    "compareAndSetRequiredBeforeSeal": true
+  },
+  "plannedQualifiedNowSlices": [
+    "Integrate exact PF15.28 Franklin Navigator canonical profile into public directory/search and claim/member profile resolution while preserving PF identity and mailing-only address semantics.",
+    "Render a normal source-backed public profile with exact verified links, source/currentness context, free correction/removal, and normal Review or claim path.",
+    "Repair the source-proven missing Spanish /es/iniciar-membresia/ entry route without changing pricing or payment state.",
+    "Add targeted regression tests covering identity, duplicate isolation, test-profile separation, claim/member binding, verified-link rendering, address semantics, Spanish membership entry, and no lifecycle-state fabrication."
+  ],
+  "unresolvedAuthorityConflicts": [],
+  "status": "PASS_SAFE_TO_IMPLEMENT"
+}
