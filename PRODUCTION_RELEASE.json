@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.24-HF3.13.6",
+  "release": "FR-NAV1.30.25-HF3.13.7",
   "date": "2026-09-15",
-  "base": "FR-NAV1.30.23-HF3.13.5",
+  "base": "FR-NAV1.30.24-HF3.13.6",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1324 is an Assistant + shared Find Local relevance repair. Provider/service searches now require the requested service concept to match profile name/category/type rather than being satisfied by unrelated address or field substrings. Place/address searches remain available. No unrelated Franklin Navigator subsystem is intentionally changed.",
+  "scope": "R1325 is an Assistant-subsystem-only conversation-composer layout improvement. Once a conversation starts, the existing Franklin Assistant form moves below the visible conversation and newest answer/results so the follow-up field is directly where users expect it. Clear / new question restores the original starting layout. No unrelated Franklin Navigator subsystem is intentionally changed.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -27,7 +27,7 @@
     "version": "FRANKLIN-ASSISTANT2-0.1.0",
     "architecture": "CLEAN_ROOM_V2",
     "visualShell": "PRESERVED_EXISTING_FRANKLIN_HOME_AND_ASSISTANT_PRESENTATION",
-    "canonicalController": "/assets/franklin-assistant.js?v=assistant-033",
+    "canonicalController": "/assets/franklin-assistant.js?v=assistant-034",
     "runtimeEndpoint": "https://franklin-navigator-assistant.onrender.com/api/v2/answer",
     "runtimeRelease": "FRANKLIN-ASSISTANT2-0.3.0",
     "runtimeCommit": "ca038b9db8d2b09d8eacc1aa2f5d0c61bea22859",
@@ -82,12 +82,12 @@
       "runtimeCommit": "80827e5365c8d34ff2468431702bc3e02c556aff"
     },
     "architectureDocument": "FRANKLIN_ASSISTANT2_CLEAN_ROOM_ARCHITECTURE.md",
-    "evidence": "FRANKLIN_ASSISTANT_PROVIDER_RELEVANCE_REPAIR__0.3.3.md",
-    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.3.3.md",
+    "evidence": "FRANKLIN_ASSISTANT_FOLLOWUP_COMPOSER_POSITION__0.3.4.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.3.4.md",
     "publicName": "Franklin Assistant",
-    "internalVersion": "FRANKLIN-ASSISTANT2-0.3.3",
+    "internalVersion": "FRANKLIN-ASSISTANT2-0.3.4",
     "publicGenerationLabelVisible": false,
-    "answerPresentation": "INLINE_SAME_PAGE_CONVERSATION_THREAD",
+    "answerPresentation": "INLINE_SAME_PAGE_CONVERSATION_THREAD_WITH_COMPOSER_AFTER_THREAD",
     "controls": {
       "clearNewQuestion": true,
       "speak": "BROWSER_SPEECH_RECOGNITION_WHEN_SUPPORTED",
@@ -184,7 +184,14 @@
     "placeSearchPreserved": true,
     "sharedDirectoryMatcher": "/assets/local-discovery-core.js?v=service-relevance-1",
     "providerRelevanceRegression": "tests/franklin-directory-service-relevance.cjs",
-    "providerRelevanceSyntheticResult": "PASS"
+    "providerRelevanceSyntheticResult": "PASS",
+    "followupComposerPosition": "DIRECTLY_AFTER_LATEST_CONVERSATION_OUTPUT",
+    "followupComposerReusesExistingForm": true,
+    "duplicateComposerControls": false,
+    "clearNewQuestionRestoresStartingLayout": true,
+    "fullComposerSticky": false,
+    "stickyReason": "FULL_ATTACH_VOICE_PRIVACY_COMPOSER_WOULD_OBSCURE_LONG_RESULTS",
+    "composerLayoutRegression": "tests/franklin-assistant-composer-layout.cjs"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -364,7 +371,7 @@
     "preservedInRelease": "FR-NAV1.30.15-HF3.12.7",
     "inactiveForBusinessColor": "MATCHES_OTHER_INACTIVE_PRIMARY_NAV_ITEMS"
   },
-  "productionPromotionFrom": "FR-NAV1.30.23-HF3.13.5",
+  "productionPromotionFrom": "FR-NAV1.30.24-HF3.13.6",
   "communityConnector": {
     "version": "FRANKLIN_COMMUNITY_CONNECTOR_R1311",
     "publicEntryPoint": "FRANKLIN_ASSISTANT_REMAINS_FIRST_TOP_OF_HOME_ACTION",
@@ -749,5 +756,30 @@
     "unrelatedSiteChangesIntended": false,
     "evidence": "FRANKLIN_ASSISTANT_PROVIDER_RELEVANCE_REPAIR__0.3.3.md",
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.3.3.md"
+  },
+  "r1325": {
+    "version": "FR-NAV1.30.25-HF3.13.7",
+    "scope": "ASSISTANT_FOLLOWUP_COMPOSER_AFTER_CONVERSATION",
+    "publicName": "Franklin Assistant",
+    "controller": "/assets/franklin-assistant.js?v=assistant-034",
+    "visibleConversationThread": true,
+    "composerAfterThread": true,
+    "followupLabel": true,
+    "clearRestoresInitialLayout": true,
+    "duplicateComposerControls": false,
+    "fullComposerSticky": false,
+    "inlineAnswersPreserved": true,
+    "providerInlineMatchesPreserved": true,
+    "runtimeRelease": "FRANKLIN-ASSISTANT2-0.3.0",
+    "runtimeCommit": "ca038b9db8d2b09d8eacc1aa2f5d0c61bea22859",
+    "runtimeDeploy": "dep-dal6bgdbedkc73be8kr0",
+    "existingLiveAcceptance": {
+      "passed": 100,
+      "total": 100,
+      "failed": 0
+    },
+    "unrelatedSiteChangesIntended": false,
+    "evidence": "FRANKLIN_ASSISTANT_FOLLOWUP_COMPOSER_POSITION__0.3.4.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.3.4.md"
   }
 }
