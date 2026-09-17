@@ -1,0 +1,905 @@
+{
+  "name": "Franklin Assistant adversarial resident acceptance bank",
+  "version": "2026-09-17",
+  "ownerRule": "Adversarial examples are regression samples, never the scope of Assistant capability.",
+  "total": 120,
+  "expectations": [
+    "Answer the actual question first.",
+    "Use current Franklin information when freshness matters.",
+    "Do not route informational public-resource questions to Find Local.",
+    "Use neutral Find Local only for explicit provider/business search intent.",
+    "Handle reasonable misspellings and natural paraphrases.",
+    "Preserve relevant recent conversation context.",
+    "Ask only for genuinely necessary missing detail.",
+    "Spanish should receive materially equivalent behavior.",
+    "No raw Markdown or raw URLs in answer text.",
+    "Do not invent Franklin facts, schedules, availability, prices, providers or requirements."
+  ],
+  "cases": [
+    {
+      "id": "ADV-TYPO-01",
+      "category": "typos",
+      "question": "whos do i call for a watter leak in the road",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-TYPO-02",
+      "category": "typos",
+      "question": "do i need a permitt for a fense",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-TYPO-03",
+      "category": "typos",
+      "question": "wheres the animel shelter",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-TYPO-04",
+      "category": "typos",
+      "question": "find me a plummer",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-TYPO-05",
+      "category": "typos",
+      "question": "whats going on in frankln this weakend",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-PARA-01",
+      "category": "paraphrase",
+      "question": "Who is responsible for fixing a broken water line outside?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PARA-02",
+      "category": "paraphrase",
+      "question": "I want to put up a fence. What approvals do I need?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PARA-03",
+      "category": "paraphrase",
+      "question": "Where do people here go for free legal assistance?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PARA-04",
+      "category": "paraphrase",
+      "question": "I need someone to repair my AC.",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-PARA-05",
+      "category": "paraphrase",
+      "question": "Anything fun happening around town Saturday?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-CTX-01",
+      "category": "context",
+      "question": "what number do i call",
+      "expected": "context_followup",
+      "history": [
+        {
+          "role": "user",
+          "content": "I have a sewer problem at my house."
+        },
+        {
+          "role": "assistant",
+          "content": "Franklin Water Management handles sewer and wastewater issues."
+        }
+      ]
+    },
+    {
+      "id": "ADV-CTX-02",
+      "category": "context",
+      "question": "are they open tomorrow",
+      "expected": "context_followup_fresh",
+      "history": [
+        {
+          "role": "user",
+          "content": "I need Utility Billing."
+        },
+        {
+          "role": "assistant",
+          "content": "Utility Billing handles Franklin water accounts and billing."
+        }
+      ]
+    },
+    {
+      "id": "ADV-CTX-03",
+      "category": "context",
+      "question": "how much is it",
+      "expected": "context_followup_fresh",
+      "history": [
+        {
+          "role": "user",
+          "content": "What public transportation is available in Franklin?"
+        },
+        {
+          "role": "assistant",
+          "content": "Franklin Transit provides local public transportation."
+        }
+      ]
+    },
+    {
+      "id": "ADV-CTX-04",
+      "category": "context",
+      "question": "where do i go",
+      "expected": "context_followup",
+      "history": [
+        {
+          "role": "user",
+          "content": "I need to renew my vehicle registration."
+        },
+        {
+          "role": "assistant",
+          "content": "Vehicle registration is handled through Tennessee/Williamson County services."
+        }
+      ]
+    },
+    {
+      "id": "ADV-CTX-05",
+      "category": "context",
+      "question": "what about sunday",
+      "expected": "context_followup_fresh",
+      "history": [
+        {
+          "role": "user",
+          "content": "What is happening in Franklin this weekend?"
+        },
+        {
+          "role": "assistant",
+          "content": "I found several current Franklin events for Friday and Saturday."
+        }
+      ]
+    },
+    {
+      "id": "ADV-ES-01",
+      "category": "spanish_adversarial",
+      "question": "¿dónde puedo conseguir ayuda con la renta?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-ES-02",
+      "category": "spanish_adversarial",
+      "question": "necesito un mecanico cerca de franklin",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-ES-03",
+      "category": "spanish_adversarial",
+      "question": "¿qué hay para hacer esta noche?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-ES-04",
+      "category": "spanish_adversarial",
+      "question": "¿a qué escuela va esta dirección?",
+      "expected": "needs_specific_detail",
+      "history": []
+    },
+    {
+      "id": "ADV-ES-05",
+      "category": "spanish_adversarial",
+      "question": "¿dónde reporto un bache?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-FRESH-01",
+      "category": "fresh",
+      "question": "Is the library open right now?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-FRESH-02",
+      "category": "fresh",
+      "question": "What are Franklin Transit fares today?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-FRESH-03",
+      "category": "fresh",
+      "question": "Are there any road closures in Franklin today?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-FRESH-04",
+      "category": "fresh",
+      "question": "What classes can I sign up for this month?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-FRESH-05",
+      "category": "fresh",
+      "question": "Where can I get a flu vaccine today?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-PROV-01",
+      "category": "provider",
+      "question": "Can you find an electrician for me?",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-PROV-02",
+      "category": "provider",
+      "question": "I need a family law attorney.",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-PROV-03",
+      "category": "provider",
+      "question": "show me local vets",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-PROV-04",
+      "category": "provider",
+      "question": "looking for an hvac contractor",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-PROV-05",
+      "category": "provider",
+      "question": "i need someone to tow my car",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-ANTI-01",
+      "category": "anti_directory",
+      "question": "Where can I find unemployment help?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-ANTI-02",
+      "category": "anti_directory",
+      "question": "Where can I find food assistance?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-ANTI-03",
+      "category": "anti_directory",
+      "question": "Where can I get help paying rent?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-ANTI-04",
+      "category": "anti_directory",
+      "question": "Where do I find court forms?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-ANTI-05",
+      "category": "anti_directory",
+      "question": "Where can I get caregiver support?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PERMIT-01",
+      "category": "permits_adversarial",
+      "question": "Can I build a shed without a permit?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PERMIT-02",
+      "category": "permits_adversarial",
+      "question": "Do I need permission to replace windows?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PERMIT-03",
+      "category": "permits_adversarial",
+      "question": "What permit do I need for electrical work?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PERMIT-04",
+      "category": "permits_adversarial",
+      "question": "Can I add a room onto my house?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PERMIT-05",
+      "category": "permits_adversarial",
+      "question": "How do I schedule a building inspection?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-UTIL-01",
+      "category": "utilities_adversarial",
+      "question": "How do I stop water service when I move?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-UTIL-02",
+      "category": "utilities_adversarial",
+      "question": "My sewer is backing up. Who handles it?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-UTIL-03",
+      "category": "utilities_adversarial",
+      "question": "Where can I pay my water bill online?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-UTIL-04",
+      "category": "utilities_adversarial",
+      "question": "Is there an after-hours water emergency number?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-UTIL-05",
+      "category": "utilities_adversarial",
+      "question": "Who do I contact about low water pressure?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SAN-01",
+      "category": "sanitation_adversarial",
+      "question": "Can I put a couch out with the trash?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SAN-02",
+      "category": "sanitation_adversarial",
+      "question": "How do I dispose of paint?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SAN-03",
+      "category": "sanitation_adversarial",
+      "question": "When is brush collected on my street?",
+      "expected": "needs_specific_detail",
+      "history": []
+    },
+    {
+      "id": "ADV-SAN-04",
+      "category": "sanitation_adversarial",
+      "question": "Can I recycle glass curbside?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SAN-05",
+      "category": "sanitation_adversarial",
+      "question": "Is trash delayed because of the holiday?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-SCHOOL-01",
+      "category": "schools_adversarial",
+      "question": "How do I transfer my child to another school?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SCHOOL-02",
+      "category": "schools_adversarial",
+      "question": "When does school start next year?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-SCHOOL-03",
+      "category": "schools_adversarial",
+      "question": "Where do I register for kindergarten?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SCHOOL-04",
+      "category": "schools_adversarial",
+      "question": "Is there pre-K in Franklin?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SCHOOL-05",
+      "category": "schools_adversarial",
+      "question": "What school serves 123 Main Street?",
+      "expected": "needs_specific_detail",
+      "history": []
+    },
+    {
+      "id": "ADV-PARK-01",
+      "category": "parks_adversarial",
+      "question": "Which park has a splash pad?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PARK-02",
+      "category": "parks_adversarial",
+      "question": "Can I reserve a park shelter?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PARK-03",
+      "category": "parks_adversarial",
+      "question": "Are dogs allowed at Pinkerton Park?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PARK-04",
+      "category": "parks_adversarial",
+      "question": "Are fields closed because of rain today?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-PARK-05",
+      "category": "parks_adversarial",
+      "question": "What youth sports are registering now?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-TRANSIT-01",
+      "category": "transit_adversarial",
+      "question": "How do I ride Franklin Transit?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-TRANSIT-02",
+      "category": "transit_adversarial",
+      "question": "Does the bus go to CoolSprings?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-TRANSIT-03",
+      "category": "transit_adversarial",
+      "question": "Can someone in a wheelchair use Franklin Transit?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-TRANSIT-04",
+      "category": "transit_adversarial",
+      "question": "When is the next trolley downtown?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-TRANSIT-05",
+      "category": "transit_adversarial",
+      "question": "Do kids pay to ride the bus?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-HEALTH-01",
+      "category": "health_adversarial",
+      "question": "Where can I get low-cost medical care?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-HEALTH-02",
+      "category": "health_adversarial",
+      "question": "I need a pediatrician.",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-HEALTH-03",
+      "category": "health_adversarial",
+      "question": "Where can I get tested for flu or COVID today?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-HEALTH-04",
+      "category": "health_adversarial",
+      "question": "Is there a health department clinic nearby?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-HEALTH-05",
+      "category": "health_adversarial",
+      "question": "I need counseling but cannot afford much.",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-LEGAL-01",
+      "category": "legal_adversarial",
+      "question": "Where do I file for an order of protection?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-LEGAL-02",
+      "category": "legal_adversarial",
+      "question": "I need a divorce lawyer.",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-LEGAL-03",
+      "category": "legal_adversarial",
+      "question": "How do I find my court date?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-LEGAL-04",
+      "category": "legal_adversarial",
+      "question": "Where can I get help responding to an eviction notice?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-LEGAL-05",
+      "category": "legal_adversarial",
+      "question": "Can I get free help with a consumer problem?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-HOUSE-01",
+      "category": "housing_adversarial",
+      "question": "My landlord won't fix the heat. Who can help?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-HOUSE-02",
+      "category": "housing_adversarial",
+      "question": "How do I report an unsafe apartment?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-HOUSE-03",
+      "category": "housing_adversarial",
+      "question": "Where do I look for affordable apartments?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-HOUSE-04",
+      "category": "housing_adversarial",
+      "question": "Are there first-time homebuyer programs here?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-HOUSE-05",
+      "category": "housing_adversarial",
+      "question": "I need a realtor.",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-JOB-01",
+      "category": "jobs_adversarial",
+      "question": "Where can I find city job openings?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-JOB-02",
+      "category": "jobs_adversarial",
+      "question": "Any hiring events coming up?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-JOB-03",
+      "category": "jobs_adversarial",
+      "question": "Where can I learn a trade nearby?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-JOB-04",
+      "category": "jobs_adversarial",
+      "question": "I need help applying for jobs online.",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-JOB-05",
+      "category": "jobs_adversarial",
+      "question": "Find a temp agency.",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-SENIOR-01",
+      "category": "senior_adversarial",
+      "question": "Who helps seniors with rides to appointments?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SENIOR-02",
+      "category": "senior_adversarial",
+      "question": "Are there senior centers in Franklin?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SENIOR-03",
+      "category": "senior_adversarial",
+      "question": "Where can an older adult get lunch assistance?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SENIOR-04",
+      "category": "senior_adversarial",
+      "question": "Any senior activities tomorrow?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-SENIOR-05",
+      "category": "senior_adversarial",
+      "question": "Where can I ask about Medicare counseling?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PET-01",
+      "category": "pets_adversarial",
+      "question": "I found a lost cat. What do I do?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PET-02",
+      "category": "pets_adversarial",
+      "question": "Where do I get a dog license?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-PET-03",
+      "category": "pets_adversarial",
+      "question": "Is the animal shelter open today?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-PET-04",
+      "category": "pets_adversarial",
+      "question": "Find an emergency vet.",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-PET-05",
+      "category": "pets_adversarial",
+      "question": "Where can I adopt a dog?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-AUTO-01",
+      "category": "auto_adversarial",
+      "question": "Where do I get a disabled parking placard?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-AUTO-02",
+      "category": "auto_adversarial",
+      "question": "Where can I replace a lost license plate?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-AUTO-03",
+      "category": "auto_adversarial",
+      "question": "Is emissions testing still required here?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-AUTO-04",
+      "category": "auto_adversarial",
+      "question": "Find a mechanic who works on brakes.",
+      "expected": "directory_handoff",
+      "history": []
+    },
+    {
+      "id": "ADV-AUTO-05",
+      "category": "auto_adversarial",
+      "question": "My battery died in a parking lot. Who can help?",
+      "expected": "general_plus_local",
+      "history": []
+    },
+    {
+      "id": "ADV-CIVIC-01",
+      "category": "civic_adversarial",
+      "question": "How do I report a broken streetlight?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-CIVIC-02",
+      "category": "civic_adversarial",
+      "question": "Where do I report a traffic signal problem?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-CIVIC-03",
+      "category": "civic_adversarial",
+      "question": "When is the next city board meeting?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-CIVIC-04",
+      "category": "civic_adversarial",
+      "question": "Where can I get a copy of a city record?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-CIVIC-05",
+      "category": "civic_adversarial",
+      "question": "How do I contact the City about a neighborhood issue?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SAFE-01",
+      "category": "safety_adversarial",
+      "question": "I smell gas outside. What should I do?",
+      "expected": "emergency_first",
+      "history": []
+    },
+    {
+      "id": "ADV-SAFE-02",
+      "category": "safety_adversarial",
+      "question": "Power lines are down in the road.",
+      "expected": "emergency_first",
+      "history": []
+    },
+    {
+      "id": "ADV-SAFE-03",
+      "category": "safety_adversarial",
+      "question": "There is water rushing into my basement right now.",
+      "expected": "emergency_first",
+      "history": []
+    },
+    {
+      "id": "ADV-SAFE-04",
+      "category": "safety_adversarial",
+      "question": "How do I get emergency alerts on my phone?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-SAFE-05",
+      "category": "safety_adversarial",
+      "question": "A traffic light is completely out right now.",
+      "expected": "emergency_first",
+      "history": []
+    },
+    {
+      "id": "ADV-COMM-01",
+      "category": "community_adversarial",
+      "question": "Where can I volunteer with animals?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-COMM-02",
+      "category": "community_adversarial",
+      "question": "Where can I donate clothes locally?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-COMM-03",
+      "category": "community_adversarial",
+      "question": "What free community programs are coming up?",
+      "expected": "fresh_current",
+      "history": []
+    },
+    {
+      "id": "ADV-COMM-04",
+      "category": "community_adversarial",
+      "question": "Where can a new resident learn about Franklin services?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-COMM-05",
+      "category": "community_adversarial",
+      "question": "Where can I find help learning English?",
+      "expected": "local_research",
+      "history": []
+    },
+    {
+      "id": "ADV-AMB-01",
+      "category": "ambiguity",
+      "question": "I need help with my water.",
+      "expected": "needs_specific_detail",
+      "history": []
+    },
+    {
+      "id": "ADV-AMB-02",
+      "category": "ambiguity",
+      "question": "I need help with a permit.",
+      "expected": "needs_specific_detail",
+      "history": []
+    },
+    {
+      "id": "ADV-AMB-03",
+      "category": "ambiguity",
+      "question": "I need somewhere to go tonight.",
+      "expected": "needs_specific_detail",
+      "history": []
+    },
+    {
+      "id": "ADV-AMB-04",
+      "category": "ambiguity",
+      "question": "Can you help me with court?",
+      "expected": "needs_specific_detail",
+      "history": []
+    },
+    {
+      "id": "ADV-AMB-05",
+      "category": "ambiguity",
+      "question": "I need somebody to help with my house.",
+      "expected": "needs_specific_detail",
+      "history": []
+    }
+  ]
+}
