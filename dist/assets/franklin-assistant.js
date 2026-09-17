@@ -1,7 +1,7 @@
 /* Franklin Assistant clean-room browser controller. Internal generation/version details are not public UI. */
 (()=>{'use strict';
 
-const VERSION='FRANKLIN-ASSISTANT2-0.3.2';
+const VERSION='FRANKLIN-ASSISTANT2-0.3.3';
 const API='https://franklin-navigator-assistant.onrender.com/api/v2/answer';
 const MAX_FILE_BYTES=8*1024*1024;
 
@@ -90,7 +90,7 @@ let assistantDirectoryRowsPromise;
 async function assistantDirectoryRows(){
   if(assistantDirectoryRowsPromise)return assistantDirectoryRowsPromise;
   assistantDirectoryRowsPromise=(async()=>{
-    await loadScript('/assets/local-discovery-core.js','assistant-directory-core','FranklinDiscoveryCore');
+    await loadScript('/assets/local-discovery-core.js?v=service-relevance-1','assistant-directory-core','FranklinDiscoveryCore');
     const C=window.FranklinDiscoveryCore;
     if(!C||!window.crypto?.subtle)throw new Error('DIRECTORY_CORE_UNAVAILABLE');
 
@@ -142,7 +142,7 @@ async function enrichDirectoryHandoff(data,language){
   try{
     const query=directoryQueryFromData(data);
     if(!query)return data;
-    const C=window.FranklinDiscoveryCore||await loadScript('/assets/local-discovery-core.js','assistant-directory-core','FranklinDiscoveryCore');
+    const C=window.FranklinDiscoveryCore||await loadScript('/assets/local-discovery-core.js?v=service-relevance-1','assistant-directory-core','FranklinDiscoveryCore');
     const rows=await assistantDirectoryRows();
     let matches=[];
     for(const variant of directoryQueryVariants(query)){
