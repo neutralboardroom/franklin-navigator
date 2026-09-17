@@ -36,6 +36,29 @@
     const meaningful = raw.filter(word => !noise.has(word));
     return [...new Set(meaningful.length ? meaningful : raw)].slice(0, 12).map(word => aliases.get(word) || [word]);
   }
+  function providerServiceMatcher(value) {
+    const q = norm(String(value || '').slice(0, 160));
+    const groups = [
+      {q:/\b(?:lawn|mow|mowing|grass|yard|landscap)/, row:/\b(?:lawn|mow|mowing|grass|yard|landscap)/},
+      {q:/\b(?:plumber|plumbing|plomero|fontanero)/, row:/\b(?:plumb|plomero|fontanero)/},
+      {q:/\b(?:roofer|roofing|techador)/, row:/\b(?:roof|techador)/},
+      {q:/\b(?:electrician|electricista)/, row:/\b(?:electric|electricista)/},
+      {q:/\b(?:hvac|heating and air|air conditioning)/, row:/\b(?:hvac|heating|air conditioning)/},
+      {q:/\b(?:dentist|dentistry|dental|dentista)/, row:/\b(?:dent|dental|dentista)/},
+      {q:/\b(?:attorney|lawyer|abogado|abogada)/, row:/\b(?:attorney|lawyer|law firm|legal|abogado|abogada)/},
+      {q:/\b(?:veterinarian|veterinary|vet|veterinario|veterinaria)/, row:/\b(?:veterinar|animal hospital|animal clinic)/},
+      {q:/\b(?:mechanic|auto repair|repair shop|mecanico|taller)/, row:/\b(?:mechanic|auto repair|automotive|vehicle repair|mecanico|taller)/},
+      {q:/\b(?:restaurant|restaurante)/, row:/\b(?:restaurant|restaurante|food service)/},
+      {q:/\b(?:pharmacy|farmacia)/, row:/\b(?:pharmacy|farmacia)/},
+      {q:/\b(?:pediatrician|pediatrics|pediatra)/, row:/\b(?:pediatr)/},
+      {q:/\b(?:therapist|counselor|psychiatrist|psychologist|terapeuta|consejero|psiquiatra|psicologo)/, row:/\b(?:therap|counsel|psychiatr|psycholog|terapeut|consejer|psiquiatr|psicolog)/},
+      {q:/\b(?:realtor|real estate agent|agente inmobiliario)/, row:/\b(?:realtor|real estate)/},
+      {q:/\b(?:tow truck|towing|grua|remolque)/, row:/\b(?:tow|towing|wrecker|grua|remolque)/},
+      {q:/\b(?:staffing agency|staffing agencies|temp agency|employment agency)/, row:/\b(?:staffing|employment agency|temp agency|recruit)/},
+      {q:/\b(?:urgent care)/, row:/\b(?:urgent care|walk in clinic)/}
+    ];
+    return groups.find(group => group.q.test(q))?.row || null;
+  }
   function plain(value, max) {
     if (typeof value !== 'string' || value.length > max || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(value)) throw Error('Invalid text');
     return value;
@@ -77,6 +100,7 @@
       row.websiteHref = safeWebsite(row.w);
       row.phoneHref = phoneHref(row.p);
       row.emailHref = emailHref(row.e);
+      row.serviceText = norm([row.n, row.c, row.t].join(' '));
       row.searchText = norm([row.n, row.c, row.t, row.g, row.l].join(' '));
       row.nameKey = norm(row.n);
       return Object.freeze(row);
@@ -101,8 +125,8 @@
     return p.toString();
   }
   function matchRows(rows, raw) {
-    const s = cleanState(raw), terms = queryTerms(s.q);
-    const matches = rows.filter(r => (!s.category || r.c === s.category) && (!s.type || r.t === s.type) && (!s.area || r.g === s.area) && terms.every(group => group.some(word => r.searchText.includes(word))) && s.facts.every(f => f === 'website' ? !!r.websiteHref : f === 'phone' ? !!r.phoneHref : f === 'email' ? !!r.emailHref : r.h));
+    const s = cleanState(raw), terms = queryTerms(s.q), serviceMatcher = providerServiceMatcher(s.q);
+    const matches = rows.filter(r => (!s.category || r.c === s.category) && (!s.type || r.t === s.type) && (!s.area || r.g === s.area) && (!serviceMatcher || serviceMatcher.test(r.serviceText)) && terms.every(group => group.some(word => r.searchText.includes(word))) && s.facts.every(f => f === 'website' ? !!r.websiteHref : f === 'phone' ? !!r.phoneHref : f === 'email' ? !!r.emailHref : r.h));
     const compare = (a, b) => a.nameKey < b.nameKey ? -1 : a.nameKey > b.nameKey ? 1 : a.i < b.i ? -1 : a.i > b.i ? 1 : 0;
     // HF3.6 local relevance and conservative duplicate suppression.
     const canonicalName = value => norm(value).replace(/\bone\b/g, '1').replace(/\btwo\b/g, '2').replace(/\b(?:llc|inc|incorporated|corp|corporation|pc|pllc|ltd)\b/g, '').replace(/\s+/g, ' ').trim();
@@ -165,5 +189,5 @@
     if (!ID.test(String(id || ''))) return '';
     return '/profiles/' + encodeURIComponent(id) + '/' + (language === 'es' ? '?lang=es' : '');
   }
-  return Object.freeze({EDITION, ID, norm, queryTerms, safeWebsite, phoneHref, emailHref, validDate, dateLabel, decodeIndex, cleanState, stateFromSearch, searchParams, matchRows, shardFor, canonicalProfile});
+  return Object.freeze({EDITION, ID, norm, queryTerms, providerServiceMatcher, safeWebsite, phoneHref, emailHref, validDate, dateLabel, decodeIndex, cleanState, stateFromSearch, searchParams, matchRows, shardFor, canonicalProfile});
 });
