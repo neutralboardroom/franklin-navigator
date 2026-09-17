@@ -1,0 +1,34 @@
+{
+  "receiptType": "PRE_SEAL_CURRENTNESS_RECEIPT",
+  "date": "2026-09-17",
+  "release": "R1328 / FR-NAV1.30.28-HF3.13.10",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "predecessor": "R1327 / FR-NAV1.30.27-HF3.13.9",
+  "predecessorCommit": "9505238f7a8ba100fc7399b0e0ad4e2323215260",
+  "observedMainHeadBeforeReceipt": "8a12ae106f815c2455fe3165bc6447f850c5d11c",
+  "concurrentUnexpectedSuccessorObserved": false,
+  "scc": {
+    "latestIndependentlyLocatedAcceptedPointer": "v0.30.0 / SCCC30.0 / UEC-1.28",
+    "laterQualifiedReplacementLocated": false,
+    "r1328AcceptanceSelfAsserted": false
+  },
+  "profileFactory": {
+    "newerCandidatesExist": true,
+    "acceptedConsumerCurrentPointerForNewCandidateLocated": false,
+    "disposition": "DEFER_WITH_CAUSE"
+  },
+  "localInvestigator": {
+    "newerQualifiedResearchExists": true,
+    "acceptedConsumerHeadAdvanceLocated": false,
+    "disposition": "DEFER_WITH_CAUSE"
+  },
+  "revenueCommercialTruth": {
+    "currentProductOfferPreserved": "$35/year Community Membership",
+    "newOwnerInstructionConflictLocated": false,
+    "noSecondChargeSafetyPreserved": true
+  },
+  "smarterJustice": "SMARTER_JUSTICE_DONOR_NOT_USED",
+  "remainingQualifiedNowProductWork": "R1328 implementation is complete; remaining work is qualification, deterministic seal, clean-extraction validation, authorized deployment, and live verification.",
+  "result": "PASS_TO_SEAL_WORKFLOW_WITH_ACCEPTANCE_STATE_DISTINCTION"
+}
