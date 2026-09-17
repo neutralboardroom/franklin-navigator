@@ -39,7 +39,7 @@
   function providerServiceMatcher(value) {
     const q = norm(String(value || '').slice(0, 160));
     const groups = [
-      {q:/\b(?:lawn|mow|mowing|grass|yard|landscap)/, row:/\b(?:lawn|mow|mowing|grass|yard|landscap)/},
+      {q:/\b(?:lawn|mow|mowing|grass|yard|landscape|landscaping)\b/, row:/\b(?:lawn|mow|mowing|grass|yard|landscape|landscaping)\b/},
       {q:/\b(?:plumber|plumbing|plomero|fontanero)/, row:/\b(?:plumb|plomero|fontanero)/},
       {q:/\b(?:roofer|roofing|techador)/, row:/\b(?:roof|techador)/},
       {q:/\b(?:electrician|electricista)/, row:/\b(?:electric|electricista)/},
