@@ -4,6 +4,7 @@ import argparse, hashlib, json, os, pathlib, shutil, subprocess, tempfile, zipfi
 RELEASE='FR-NAV1.30.28-HF3.13.10'
 MANIFEST='RELEASE_MANIFEST__R1328.json'
 QUALIFICATION='QUALIFICATION_RESULTS__R1328.json'
+RECEIPT='RELEASE_RECEIPT__R1328.json'
 FIXED_TIME=(2026,9,17,0,0,0)
 
 def sha256_bytes(data): return hashlib.sha256(data).hexdigest()
@@ -35,11 +36,15 @@ def tracked_files():
         pp=pathlib.PurePosixPath(p)
         if pp.is_absolute() or '..' in pp.parts or p.startswith('.git/'):
             raise SystemExit(f'unsafe tracked path: {p}')
-        if p in (MANIFEST,QUALIFICATION): raise SystemExit(f'{p} must be generated, not tracked')
+        if p in (MANIFEST,QUALIFICATION,RECEIPT): raise SystemExit(f'{p} must be generated, not tracked')
         if os.path.islink(p): raise SystemExit(f'symlink not permitted in release package: {p}')
         if not os.path.isfile(p): raise SystemExit(f'tracked member missing/not regular file: {p}')
         out.append(p)
     return sorted(out)
+
+def add_generated(root,members,name,obj):
+    data=(json.dumps(obj,indent=2,sort_keys=True)+'\n').encode('utf-8'); (root/name).write_bytes(data)
+    members.append({'path':name,'bytes':len(data),'sha256':sha256_bytes(data)})
 
 def stage(root, files, commit, checks):
     members=[]
@@ -50,16 +55,25 @@ def stage(root, files, commit, checks):
       'receiptType':'IN_PACKAGE_QUALIFICATION_RESULTS','release':RELEASE,'commit':commit,
       'sourceChecks':checks,'sourceChecksResult':'PASS','cleanExtractionValidation':'REQUIRED_AFTER_SEAL'
     }
-    qdata=(json.dumps(qualification,indent=2,sort_keys=True)+'\n').encode('utf-8'); (root/QUALIFICATION).write_bytes(qdata)
-    members.append({'path':QUALIFICATION,'bytes':len(qdata),'sha256':sha256_bytes(qdata)})
+    add_generated(root,members,QUALIFICATION,qualification)
+    receipt={
+      'receiptType':'LOCAL_COMMUNITY_PLATFORM_RELEASE_RECEIPT','binaryStatus':'QUALIFIED_SUCCESSOR',
+      'builderRole':'LOCAL_COMMUNITY_PLATFORM','activeEdition':'FRANKLIN_TN','authorityTransfer':False,
+      'predecessor':'R1327 / FR-NAV1.30.27-HF3.13.9','predecessorCommit':'9505238f7a8ba100fc7399b0e0ad4e2323215260',
+      'successor':'R1328 / '+RELEASE,'commit':commit,
+      'sourceState':'QUALIFIED_SOURCE_PACKAGE','sccAcceptedState':'NOT_SELF_ASSERTED / exact R1328 acceptance receipt not located at seal input',
+      'deploymentStateAtSeal':'NOT_YET_DEPLOYED','rollbackTarget':'R1327 commit 9505238f7a8ba100fc7399b0e0ad4e2323215260',
+      'profileProjectionCountPreserved':19103,'profileFactoryNewCandidate':'DEFER_WITH_CAUSE','localInvestigatorNewCandidate':'DEFER_WITH_CAUSE',
+      'smarterJusticeDonor':'SMARTER_JUSTICE_DONOR_NOT_USED','currentNewSaleOffer':'$35/year Community Membership',
+      'freeBoundary':'basic public profile accuracy, factual corrections, and public-profile removal remain free',
+      'binaryHashRule':'Final ZIP byte count/SHA-256 are recorded in the external R1328_BINARY_ATTESTATION.json because an archive cannot contain its own byte hash.'
+    }
+    add_generated(root,members,RECEIPT,receipt)
     members=sorted(members,key=lambda x:x['path'])
     manifest={
-      'schema':'FRANKLIN_NAVIGATOR_RELEASE_MANIFEST_V1',
-      'release':RELEASE,
-      'commit':commit,
+      'schema':'FRANKLIN_NAVIGATOR_RELEASE_MANIFEST_V1','release':RELEASE,'commit':commit,
       'generatedManifestSelfHashRule':'Manifest covers every packaged member except its own self-hash; archive byte hash is stored in external attestation.',
-      'memberCountExcludingManifest':len(members),
-      'members':members
+      'memberCountExcludingManifest':len(members),'members':members
     }
     (root/MANIFEST).write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n',encoding='utf-8')
     return manifest
@@ -84,9 +98,8 @@ def main():
         att={
           'receiptType':'EXTERNAL_RELEASE_BINARY_ATTESTATION','release':RELEASE,'commit':commit,
           'filename':final.name,'bytes':final.stat().st_size,'sha256':sha256_file(final),
-          'deterministicDoubleBuild':'PASS_BYTE_IDENTICAL','sourceChecks':'PASS',
-          'manifest':MANIFEST,'manifestMembersExcludingSelf':manifest['memberCountExcludingManifest'],
-          'cleanExtractionValidation':'PENDING_VALIDATOR'
+          'deterministicDoubleBuild':'PASS_BYTE_IDENTICAL','sourceChecks':'PASS','manifest':MANIFEST,
+          'manifestMembersExcludingSelf':manifest['memberCountExcludingManifest'],'cleanExtractionValidation':'PENDING_VALIDATOR'
         }
         (out/'R1328_BINARY_ATTESTATION.json').write_text(json.dumps(att,indent=2,sort_keys=True)+'\n',encoding='utf-8')
         print(json.dumps(att,sort_keys=True))
