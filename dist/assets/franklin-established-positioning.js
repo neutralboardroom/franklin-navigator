@@ -22,13 +22,17 @@ function loadScript(src,key){
     const s=document.createElement('script');s.src=src;s.defer=true;s.dataset[key.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]='1';s.addEventListener('load',()=>{s.dataset.loaded='1';resolve(s)},{once:true});s.addEventListener('error',reject,{once:true});document.head.append(s);
   });
 }
+function loadCss(href,key){if(document.querySelector(`link[data-${key}]`))return;const l=document.createElement('link');l.rel='stylesheet';l.href=href;l.dataset[key.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]='1';document.head.append(l)}
 function apply(){
   for(const meta of document.querySelectorAll('meta[name="description"],meta[property="og:description"],meta[name="twitter:description"]')){let v=meta.content||'';for(const[a,b]of replacements)v=v.replaceAll(a,b);meta.content=v}
   const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while((n=walker.nextNode())){if(!n.nodeValue||!n.nodeValue.trim())continue;let v=n.nodeValue;for(const[a,b]of replacements)v=v.replaceAll(a,b);n.nodeValue=v}
   for(const a of document.querySelectorAll('a[href^="mailto:"]')){let h=a.getAttribute('href')||'';for(const[x,y]of replacements)h=h.replaceAll(x,y);a.setAttribute('href',h)}
+  loadCss('/assets/r1328-quality.css?v=frnav1328','franklin-quality-r1328-css');
   loadScript('/assets/r1326-business-journey.js?v=frnav1326','franklin-business-journey-r1326')
     .catch(()=>null)
     .then(()=>loadScript('/assets/r1327-refinement.js?v=frnav1327','franklin-refinement-r1327'))
+    .catch(()=>null)
+    .then(()=>loadScript('/assets/r1328-quality.js?v=frnav1328','franklin-quality-r1328'))
     .catch(()=>{});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
