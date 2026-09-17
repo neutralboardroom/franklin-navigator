@@ -1,0 +1,74 @@
+{
+  "receiptType": "RULE_AND_SOURCE_RECONCILIATION_RECEIPT",
+  "date": "2026-09-17",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "authorityTransfer": false,
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": {
+    "repository": "neutralboardroom/franklin-navigator",
+    "branch": "main",
+    "scope": "Franklin Navigator isolated local edition only"
+  },
+  "governingCommand": {
+    "name": "UNIVERSAL_SMARTER_LOCAL_COMMUNITY_PLATFORM_NEXT_VERSION_BUILD_COMMAND_2026-09-03-R2",
+    "executionMode": "BUILD",
+    "boundaryAmendment": "SMARTER_JUSTICE_STRICT_READ_ONLY_LEGAL_MODULE_DONOR"
+  },
+  "executionBase": {
+    "release": "R1327 / FR-NAV1.30.27-HF3.13.9",
+    "commit": "9505238f7a8ba100fc7399b0e0ad4e2323215260",
+    "tree": "60cef9bdfa4356ffabe42374e59115035892c720",
+    "state": "OWNER_DIRECTED_SOURCE_AND_LIVE_DEPLOYMENT_VERIFIED",
+    "note": "This state is not represented as SCC ACCEPTED merely because it is live."
+  },
+  "proposedSuccessor": "R1328 / FR-NAV1.30.28-HF3.13.10",
+  "coordinationTruth": {
+    "latestIndependentlyLocatedAcceptedSccPointer": "v0.30.0 / SCCC30.0 / UEC-1.28",
+    "sccArchiveSha256": "95e30fd945fc39ea37727f33a24b5cb53e1587bc2718cf1207702a587100ede0",
+    "laterSccCandidate": "v0.31.0 remains unqualified in located evidence",
+    "knownControlPlaneLag": "Persistent SCC registry mirrors were reported behind the v0.30 published pointer; do not invent convergence.",
+    "r1327SccAcceptanceLocated": false,
+    "releaseLeaseMutationAvailableToThisBuilder": false,
+    "concurrencyGuard": "Exact Git main HEAD verified before implementation; repeat exact-head/currentness check immediately before seal."
+  },
+  "profileFactory": {
+    "canonicalAuthority": "PROFILE_FACTORY",
+    "currentProductProjectionCountPreserved": 19103,
+    "newerObservedCandidate": "FR-PF-PLATFORM-15.14",
+    "candidateState": "QUALIFIED_SUCCESSOR_CANDIDATE_PERSISTED_NOT_SELF_ACCEPTED",
+    "candidateDisposition": "DEFER_WITH_CAUSE",
+    "reason": "Gate D1/external acceptance and current-pointer advance are pending; Local must not self-accept profile truth."
+  },
+  "localInvestigator": {
+    "canonicalAuthority": "LOCAL_INVESTIGATOR",
+    "newerObservedCandidate": "SMARTER_LOCAL_INVESTIGATOR FRANKLIN V41",
+    "candidateState": "QUALIFIED_RESEARCH_HANDOFF_WITH_QUARANTINED_ITEMS / consumerAcceptance UNKNOWN / acceptedHeadAdvance NOT_EXECUTED",
+    "candidateDisposition": "DEFER_WITH_CAUSE",
+    "reason": "No accepted consumer/head-advance receipt located for this platform release."
+  },
+  "commercialAuthority": {
+    "authority": "SRE_OWNER_CONSOLE plus newer explicit owner direction",
+    "currentNewSaleOffer": "Franklin Navigator Community Membership — $35/year",
+    "basis": "Later explicit owner-approved Franklin product and outreach direction supersedes older dated plan anchors for current new-sale presentation.",
+    "freeBoundary": "Basic public profile accuracy, factual corrections, and removal remain free.",
+    "neutralityBoundary": "Payment does not buy factual accuracy, credentials, ordinary Directory ranking, endorsement, leads, or guaranteed results.",
+    "historicalPlans": "Historical existing-plan labels may remain read-only only where needed to service an existing member; retired plans must not re-enter new enrollment."
+  },
+  "smarterJustice": {
+    "disposition": "SMARTER_JUSTICE_DONOR_NOT_USED",
+    "reason": "No bounded Local legal-module donor capability question is required for this successor; no frozen donor snapshot or runtime connection is used."
+  },
+  "durableRules": [
+    "No changes merely for novelty/change-for-change's-sake",
+    "Builder Tool Payload and Timeout Resilience",
+    "Hard community isolation",
+    "Profile Factory owns canonical profile truth",
+    "Local Investigator owns qualified dynamic local research",
+    "SRE/owner authority controls commercial intent and approved pricing",
+    "Free factual corrections/removal and membership-neutral ordinary Directory ranking",
+    "No fabricated member/payment/test charge",
+    "No self-issued SCC acceptance"
+  ],
+  "preImplementationGate": "PASS_FOR_LOCAL_SOURCE_IMPLEMENTATION_WITH_SCC_ACCEPTANCE_STATE_EXPLICITLY_UNRESOLVED",
+  "sealConstraint": "Do not claim ACCEPTED unless an exact SCC acceptance/pointer receipt is independently located. Qualification, deployment, and live verification may be reported only with corresponding evidence."
+}
