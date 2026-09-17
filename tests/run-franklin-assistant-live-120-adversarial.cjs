@@ -137,3 +137,5 @@ async function ask(row){
   },null,2)+'\n');
   console.log(JSON.stringify({shard,passed:results.filter(x=>x.pass).length,total:results.length}));
 })().catch(error=>{console.error(error);process.exit(1)});
+
+// ADVERSARIAL_RUN_TRIGGER_2026_09_17
