@@ -15,10 +15,15 @@ const replacements=[
  ['Founding30 estimate','Current membership estimate'],
  ['FOUNDING30','current Community Membership offer']
 ];
+function loadR1326(){
+  if(document.querySelector('script[data-franklin-business-journey-r1326]'))return;
+  const s=document.createElement('script');s.src='/assets/r1326-business-journey.js?v=frnav1326';s.defer=true;s.dataset.franklinBusinessJourneyR1326='1';document.head.append(s);
+}
 function apply(){
   for(const meta of document.querySelectorAll('meta[name="description"],meta[property="og:description"],meta[name="twitter:description"]')){let v=meta.content||'';for(const[a,b]of replacements)v=v.replaceAll(a,b);meta.content=v}
   const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while((n=walker.nextNode())){if(!n.nodeValue||!n.nodeValue.trim())continue;let v=n.nodeValue;for(const[a,b]of replacements)v=v.replaceAll(a,b);n.nodeValue=v}
   for(const a of document.querySelectorAll('a[href^="mailto:"]')){let h=a.getAttribute('href')||'';for(const[x,y]of replacements)h=h.replaceAll(x,y);a.setAttribute('href',h)}
+  loadR1326();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
 })();
