@@ -10,3 +10,13 @@
 8. Keep homepage business acquisition useful but subordinate to the resident-first Franklin experience; do not turn the homepage into an advertisement.
 9. Continue accessibility, responsive/mobile, keyboard, contrast and reduced-motion checks on all changed business/member surfaces.
 10. Continue site-wide issue monitoring and owner-visible incident awareness for material releases.
+
+## Live homepage laptop screenshot review — 2026-09-17
+
+11. Improve the Franklin Assistant starting-state controls: hide or suppress “Clear / new question” until there is actually a conversation or state to clear. Preserve the R1325 follow-up behavior once a conversation has started.
+12. Refine the optional attachment control so it looks and reads like part of the Franklin design system rather than an unstyled native file picker. Keep attachment optional, accessible, keyboard-usable, privacy-safe and functionally unchanged.
+13. At common laptop widths, make the six “Your Franklin community network” cards easier to scan by using a roomier responsive layout when the current six-across layout makes each card too narrow. Prefer a balanced 3×2 presentation at widths where it materially improves readability; retain responsive 2/1-column behavior at smaller widths.
+14. Tighten excess vertical spacing around the collapsed activities/sports/learning/clubs disclosure. The collapsed state should not consume a large empty band of page height; preserve a comfortable target size and clear separation from adjacent sections.
+15. When the activities disclosure is expanded, avoid the visually unbalanced 4+2 card arrangement at laptop widths. Use a responsive grid that produces a more balanced layout (for example 3+3 when space supports it) without making cards unnecessarily narrow.
+16. Consolidate the two near-duplicate free-profile/membership policy notes in the homepage business section into one concise trust statement. Preserve all substantive protections: basic public profiles remain free, factual corrections/removal remain free, membership is optional, and payment does not buy ranking, endorsement or guaranteed leads.
+17. Preserve the homepage areas that are already working well in the supplied laptop screenshots unless new evidence justifies a change: the resident-first hero balance, top navigation at this width, current-events presentation, Everyday & Specialized Help section, Local Discovery split layout, Franklin Through Time section, and footer. Do not redesign them merely for visual novelty.
