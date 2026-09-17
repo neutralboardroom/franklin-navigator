@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.23-HF3.13.5",
+  "release": "FR-NAV1.30.24-HF3.13.6",
   "date": "2026-09-15",
-  "base": "FR-NAV1.30.22-HF3.13.4",
+  "base": "FR-NAV1.30.23-HF3.13.5",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1323 is an Assistant-subsystem-only browser experience and provider-completion release. It adds visible same-page conversation history, a true follow-up input flow, provider-context continuity, and inline real profile matches from the existing Franklin directory with integrity and suppression checks. No unrelated Franklin Navigator subsystem is intentionally changed.",
+  "scope": "R1324 is an Assistant + shared Find Local relevance repair. Provider/service searches now require the requested service concept to match profile name/category/type rather than being satisfied by unrelated address or field substrings. Place/address searches remain available. No unrelated Franklin Navigator subsystem is intentionally changed.",
   "counts": {
     "profiles": 19103,
     "assistantRoutes": 254
@@ -27,7 +27,7 @@
     "version": "FRANKLIN-ASSISTANT2-0.1.0",
     "architecture": "CLEAN_ROOM_V2",
     "visualShell": "PRESERVED_EXISTING_FRANKLIN_HOME_AND_ASSISTANT_PRESENTATION",
-    "canonicalController": "/assets/franklin-assistant.js?v=assistant-032",
+    "canonicalController": "/assets/franklin-assistant.js?v=assistant-033",
     "runtimeEndpoint": "https://franklin-navigator-assistant.onrender.com/api/v2/answer",
     "runtimeRelease": "FRANKLIN-ASSISTANT2-0.3.0",
     "runtimeCommit": "ca038b9db8d2b09d8eacc1aa2f5d0c61bea22859",
@@ -82,10 +82,10 @@
       "runtimeCommit": "80827e5365c8d34ff2468431702bc3e02c556aff"
     },
     "architectureDocument": "FRANKLIN_ASSISTANT2_CLEAN_ROOM_ARCHITECTURE.md",
-    "evidence": "FRANKLIN_ASSISTANT_INLINE_CONVERSATION_AND_PROVIDER_MATCHES__0.3.2.md",
-    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.3.2.md",
+    "evidence": "FRANKLIN_ASSISTANT_PROVIDER_RELEVANCE_REPAIR__0.3.3.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.3.3.md",
     "publicName": "Franklin Assistant",
-    "internalVersion": "FRANKLIN-ASSISTANT2-0.3.2",
+    "internalVersion": "FRANKLIN-ASSISTANT2-0.3.3",
     "publicGenerationLabelVisible": false,
     "answerPresentation": "INLINE_SAME_PAGE_CONVERSATION_THREAD",
     "controls": {
@@ -178,7 +178,13 @@
     "providerInlineSuppressionGate": true,
     "providerInlineNeutrality": "NO_ENDORSEMENT_NO_AVAILABILITY_CLAIM_NO_PAID_RANKING",
     "providerFollowupContinuity": true,
-    "qualifiedProviderProfileMatchesInline": true
+    "qualifiedProviderProfileMatchesInline": true,
+    "providerRelevanceGate": "SERVICE_CONCEPT_REQUIRED_IN_NAME_CATEGORY_OR_TYPE",
+    "providerLocationCannotCreateServiceMatch": true,
+    "placeSearchPreserved": true,
+    "sharedDirectoryMatcher": "/assets/local-discovery-core.js?v=service-relevance-1",
+    "providerRelevanceRegression": "tests/franklin-directory-service-relevance.cjs",
+    "providerRelevanceSyntheticResult": "PASS"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -358,7 +364,7 @@
     "preservedInRelease": "FR-NAV1.30.15-HF3.12.7",
     "inactiveForBusinessColor": "MATCHES_OTHER_INACTIVE_PRIMARY_NAV_ITEMS"
   },
-  "productionPromotionFrom": "FR-NAV1.30.22-HF3.13.4",
+  "productionPromotionFrom": "FR-NAV1.30.23-HF3.13.5",
   "communityConnector": {
     "version": "FRANKLIN_COMMUNITY_CONNECTOR_R1311",
     "publicEntryPoint": "FRANKLIN_ASSISTANT_REMAINS_FIRST_TOP_OF_HOME_ACTION",
@@ -715,5 +721,33 @@
     "unrelatedSiteChangesIntended": false,
     "evidence": "FRANKLIN_ASSISTANT_INLINE_CONVERSATION_AND_PROVIDER_MATCHES__0.3.2.md",
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.3.2.md"
+  },
+  "r1324": {
+    "version": "FR-NAV1.30.24-HF3.13.6",
+    "scope": "ASSISTANT_AND_FIND_LOCAL_PROVIDER_RELEVANCE_REPAIR",
+    "publicName": "Franklin Assistant",
+    "assistantController": "/assets/franklin-assistant.js?v=assistant-033",
+    "discoveryCore": "/assets/local-discovery-core.js?v=service-relevance-1",
+    "providerServiceFieldGate": true,
+    "providerLocationCannotCreateServiceMatch": true,
+    "placeSearchPreserved": true,
+    "syntheticRegression": {
+      "lawnCare": [
+        "Franklin Lawn Care",
+        "Thrifty Lawn Care"
+      ],
+      "lawn": [
+        "Franklin Lawn Care",
+        "Thrifty Lawn Care"
+      ],
+      "lawnview": [
+        "WHOLE CHILD SPEECH LLC"
+      ],
+      "status": "PASS"
+    },
+    "sharedAcrossAssistantAndFindLocal": true,
+    "unrelatedSiteChangesIntended": false,
+    "evidence": "FRANKLIN_ASSISTANT_PROVIDER_RELEVANCE_REPAIR__0.3.3.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.3.3.md"
   }
 }
