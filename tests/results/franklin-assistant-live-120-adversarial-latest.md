@@ -1,6 +1,6 @@
 # Franklin Assistant — Live 120-Question Adversarial Acceptance Report
 
-Run: 2026-09-17T00:23:34.198Z
+Run: 2026-09-17T00:24:08.788Z
 
 - Passed: **90 / 120**
 - Failed: **30 / 120**
@@ -57,7 +57,7 @@ Expected: needs_specific_detail
 Mode: fresh_web_ai
 Reasons: missing_targeted_clarification
 
-Answer: Tonight: Wednesday, September 16, 2026, after 7:23 PM — no verifiable remaining events found in Franklin’s official calendars.
+Answer: September 16, 2026, tonight: no verifiable evening events found in Franklin. Wednesday, September 16 — Franklin Public Arts Commission — 4:00–5:30 PM — City Hall, Franklin
 
 ### ADV-AUTO-03 — auto_adversarial
 
@@ -67,7 +67,7 @@ Expected: fresh_current
 Mode: local_web_ai
 Reasons: expected_fresh_web_ai
 
-Answer: No. Vehicle emissions testing is not currently required in Franklin or Williamson County for registration or renewal. Tennessee ended the requirement in Williamson County in 2018. Emissions testing is still required in Davidson County.
+Answer: No. Emissions testing is no longer required in Franklin or elsewhere in Williamson County for vehicle registration or renewal. The requirement was eliminated in June 2024. You may still need regular registration documents and fees. An emissions certificate is not required when transferring current plates.
 
 ### ADV-COMM-03 — community_adversarial
 
@@ -77,7 +77,7 @@ Expected: fresh_current
 Mode: general_ai
 Reasons: expected_fresh_web_ai, missing_fresh_sources
 
-Answer: I can’t reliably name upcoming free community programs because no current Franklin event source was provided. What date range are you interested in—this week, this month, or a specific date?
+Answer: I can’t reliably name upcoming free community programs because no Franklin-specific event source was provided. Please share an official Franklin events calendar or program listing, and I can identify the free options.
 
 ### ADV-CTX-03 — context
 
@@ -87,7 +87,7 @@ Expected: context_followup_fresh
 Mode: general_ai
 Reasons: expected_fresh_followup
 
-Answer: I don’t have Franklin Transit’s current fare information in the provided sources. Fares may differ by service, such as local bus or paratransit.
+Answer: I can’t verify the current Franklin Transit fare from the provided sources. Do you mean the fixed-route bus service or on-demand service?
 
 ### ADV-CTX-05 — context
 
@@ -97,7 +97,7 @@ Expected: context_followup_fresh
 Mode: general_ai
 Reasons: expected_fresh_followup
 
-Answer: I don’t have Franklin-specific Sunday listings in the information provided. Which Sunday date do you mean? Events change by weekend.
+Answer: I don’t have a verified Franklin source for Sunday’s events. Which Sunday date do you mean?
 
 ### ADV-ES-01 — spanish_adversarial
 
@@ -107,7 +107,7 @@ Expected: local_research
 Mode: general_ai
 Reasons: expected_source_backed_local_answer
 
-Answer: Como orientación general, puede llamar al 211 en Tennessee para preguntar por programas de ayuda con la renta, prevención de desalojo y servicios comunitarios. ¿Busca ayuda para pagar la renta, evitar un desalojo o encontrar vivienda? Esto determina el recurso adecuado.
+Answer: No puedo confirmar un proveedor específico de Franklin con las fuentes disponibles. Como orientación general, marca 211 para preguntar por programas de ayuda con la renta, prevención de desalojo o asistencia de vivienda en tu zona. ¿Buscas ayuda para renta atrasada, un desalojo o un depósito?
 
 ### ADV-ES-05 — spanish_adversarial
 
@@ -117,7 +117,7 @@ Expected: local_research
 Mode: general_ai
 Reasons: expected_source_backed_local_answer
 
-Answer: ¿En qué calle o zona de Franklin está el bache? Necesito esa ubicación para indicarle el canal local correcto.
+Answer: ¿En qué calle o zona está el bache? Necesito la ubicación para determinar si corresponde reportarlo a la ciudad de Franklin, al condado o al estado; no se proporcionó una fuente local con el canal correcto.
 
 ### ADV-FRESH-04 — fresh
 
@@ -127,7 +127,7 @@ Expected: fresh_current
 Mode: local_web_ai
 Reasons: expected_fresh_web_ai
 
-Answer: In Franklin this month, the main class openings I found are through Williamson County Public Library: Libby 101 September 24, 2026, 5:30–6:30 PM Learning Center, Franklin Learn to borrow e-books and audiobooks, place holds, and adjust reading settings. Computer Basics September 16, 2026, 10:00 AM Learning Center, Franklin Registration required; this session has already passed as of Wednesday, September 16, 2026. The library’s September calendar also lists a Creative Writing Class, but the available listing doesn’t show enough details to confirm its date or remaining seats. Check the Williamson County Public Library calendar or call the Franklin branch at 615-595-1246 to register and confirm availability.
+Answer: This month in Franklin, you can register for: Computer Basics — Wednesday, September 16, 2026, at 10:00 AM. Registration required. Libby 101 — Thursday, September 24, 2026, from 5:30–6:30 PM. Learn to borrow e-books and audiobooks. Book Repair Workshop — Saturday, September 19, 2026, from 2:00–3:30 PM. Learn to repair and preserve books and family Bibles. Adult Crafts: Coffee Filter Flowers — Tuesday, September 15, 2026, at 5:00 PM. Registration required. Scam Prevention for Seniors — Tuesday, September 15, 2026, from 6:00–7:00 PM. STEAM Club: Homeschool — Tuesday, September 15, 2026, from 2:00–3:30 PM. Registration opened August 27. These are offered through the Williamson County Public Library, Franklin Main Library, 1314 Columbia Avenue. Call 615-794-3105 for availability and registration.
 
 ### ADV-HEALTH-02 — health_adversarial
 
@@ -137,7 +137,7 @@ Expected: directory_handoff
 Mode: general_ai
 Reasons: expected_directory_handoff, missing_directory_link
 
-Answer: I can help you find a pediatrician, but I need your insurance plan and preferred Franklin ZIP code or area to identify appropriate in-network options. Availability and accepted insurance vary by practice.
+Answer: I can help you find a pediatrician, but I don’t have a verified Franklin provider list in the available sources. Please share your insurance plan, and I can help narrow down what to look for. You may also contact your insurer’s member-services line or your child’s current doctor for in-network referrals.
 
 ### ADV-HEALTH-04 — health_adversarial
 
@@ -147,7 +147,7 @@ Expected: local_research
 Mode: general_ai
 Reasons: expected_source_backed_local_answer
 
-Answer: I can’t confirm whether there’s a health department clinic nearby from the Franklin sources provided. For general guidance, check the Tennessee Department of Health’s county health department directory or call 2-1-1. Share your ZIP code if you want help narrowing the search.
+Answer: I can’t confirm a nearby health department clinic from the Franklin sources provided. What ZIP code or nearby intersection should I use to check proximity?
 
 ### ADV-HEALTH-05 — health_adversarial
 
@@ -157,7 +157,7 @@ Expected: local_research
 Mode: general_ai
 Reasons: expected_source_backed_local_answer
 
-Answer: You may still be able to get counseling at a reduced cost. General options: Ask therapists directly about sliding-scale fees, payment plans, or limited low-cost openings. Check whether your insurance, Medicaid, or an employer assistance program covers counseling. Look for community mental-health centers, nonprofit clinics, university training clinics, or support groups. In the U.S., call 211 and ask about low-cost behavioral-health services. Open Path Collective may offer lower-cost sessions from participating therapists. When contacting a provider, say: “I need counseling but can afford only about $ per session. Do you offer sliding-scale appointments or know of referrals?” If you might hurt yourself or are in immediate danger, call or text 988; call 911 for an immediate emergency.
+Answer: You may have low-cost counseling options: Call your insurance and ask for therapists with sliding-scale fees or low copays. Ask local nonprofit or community mental-health agencies about reduced-fee counseling. Search Open Path Psychotherapy Collective for therapists offering lower-cost sessions. Contact nearby university counseling or psychology training clinics; supervised trainees often charge less. Ask therapists directly about sliding-scale rates, shorter sessions, or payment plans. If your employer has an Employee Assistance Program, it may offer several free sessions. Support groups, peer counseling, and crisis lines can provide free help while you look for ongoing therapy. If you might hurt yourself or someone else, call or text 988 in the U.S. for immediate crisis support, or call 911 for an emergency.
 
 ### ADV-HOUSE-01 — housing_adversarial
 
@@ -167,7 +167,7 @@ Expected: local_research
 Mode: general_ai
 Reasons: expected_source_backed_local_answer
 
-Answer: If your landlord won’t fix the heat: 1. Notify the landlord in writing immediately, describing the problem and requesting a repair by a specific date. 2. Keep copies of messages, photos, temperature readings, and any repair requests. 3. If the lack of heat creates an immediate health or safety danger, seek a safe place to stay and call emergency services if necessary. 4. Contact your local housing or code-enforcement office and a tenant-rights attorney or legal-aid organization for advice. 5. Don’t stop paying rent, deduct repair costs, or break the lease without getting local legal advice first, since the rules and required steps vary. No Franklin-specific agency or phone number was provided in the available sources.
+Answer: If your landlord won’t fix the heat, notify them in writing immediately, keep copies, and document the indoor temperature, dates, and all repair requests. General guidance: If there is a gas smell, carbon-monoxide alarm, fire risk, or a vulnerable person is at risk, leave the property and call 911. Don’t stop paying rent or pay for major repairs yourself without legal advice; doing so can affect your rights. Contact a tenant-rights attorney or legal-aid organization for advice about enforcement, repair-and-deduct rules, or ending the lease. You can also ask the local housing or building-code office whether a no-heat complaint can be inspected. No Franklin-specific contact was provided, so I can’t reliably name the correct local office or provider.
 
 ### ADV-HOUSE-04 — housing_adversarial
 
@@ -177,7 +177,7 @@ Expected: fresh_current
 Mode: general_ai
 Reasons: expected_fresh_web_ai, missing_fresh_sources
 
-Answer: I can’t confirm current Franklin-specific programs from the sources provided. Generally, first-time buyers in Tennessee may find assistance through state housing programs, FHA or other government-backed loans, down-payment assistance, and local nonprofit or lender programs. Eligibility often depends on income, purchase price, credit, and whether you have owned a home recently. Check with the Tennessee Housing Development Agency or a HUD-approved housing counselor for current options.
+Answer: I can’t confirm a Franklin-specific first-time homebuyer program from the available sources. General guidance: First-time buyers may find down-payment or closing-cost assistance through state housing agencies, local nonprofits, or participating mortgage lenders. Eligibility often depends on income, credit, purchase price, and whether you have owned a home recently. Check with a HUD-approved housing counselor or local lender for current options.
 
 ### ADV-JOB-01 — jobs_adversarial
 
@@ -187,7 +187,7 @@ Expected: fresh_current
 Mode: local_web_ai
 Reasons: expected_fresh_web_ai
 
-Answer: Find City of Franklin job openings on the City’s Employment Opportunities page: franklintn.gov/services/advanced-components/job Current listings include seasonal positions such as athletic field worker, facilities worker, grounds worker, landscaping worker, and program specialist. For questions about city employment or benefits, call Human Resources at 615-791-3216.
+Answer: Find City of Franklin job openings on the city’s Employment Opportunities page: franklintn.gov/services/advanced-components/job The page lists current positions, employment type, deadlines, and pay. For questions, contact Human Resources at 615-791-3216.
 
 ### ADV-JOB-05 — jobs_adversarial
 
@@ -197,7 +197,7 @@ Expected: directory_handoff
 Mode: general_ai
 Reasons: expected_directory_handoff, missing_directory_link
 
-Answer: I can help find one, but no Franklin-specific agency listings were provided. What type of temporary work are you seeking—office, warehouse, healthcare, hospitality, or another field?
+Answer: I can help find a temp agency, but I don’t have a verified Franklin-specific agency listing in the provided sources. What type of work do you need—office, warehouse, healthcare, hospitality, or another field? That will determine which agency is most suitable.
 
 ### ADV-PARA-04 — paraphrase
 
@@ -207,7 +207,7 @@ Expected: directory_handoff
 Mode: official_research_ai
 Reasons: expected_directory_handoff, missing_directory_link
 
-Answer: For AC repair in Franklin, contact a local HVAC repair company. I don’t have a verified provider list or current service details in the provided sources. If the repair involves permitted mechanical work, the City says a permit may be required. Confirm project-specific requirements with Building & Neighborhood Services at 615-794-7012.
+Answer: A local HVAC repair technician can help with this. For Franklin permit requirements, the City says most repair work may require a building permit, and separate mechanical permits may apply. Confirm what’s needed with Building & Neighborhood Services at 615-794-7012.
 
 ### ADV-PARK-05 — parks_adversarial
 
@@ -217,7 +217,7 @@ Expected: fresh_current
 Mode: general_ai
 Reasons: expected_fresh_web_ai, missing_fresh_sources
 
-Answer: I can’t confirm which Franklin youth sports are registering now because no current Franklin-specific source was provided. In general, registration depends on the child’s age, sport, and season. Tell me the child’s age and preferred sport, and I can help narrow the search.
+Answer: I can’t reliably identify which Franklin youth sports are registering now because no Franklin-specific source was provided. Generally, seasonal registration often includes youth soccer, baseball, softball, basketball, flag football, and swim programs. Availability depends on the child’s age and the current season.
 
 ### ADV-PERMIT-02 — permits_adversarial
 
@@ -227,7 +227,7 @@ Expected: local_research
 Mode: general_ai
 Reasons: expected_source_backed_local_answer
 
-Answer: It depends. In general, replacing windows with the same size and style may not require permission, but permits can be required if you alter the opening, affect structural components, or the property is in a historic district. An HOA may also have separate approval requirements. I don’t have a Franklin-specific permitting source for this answer. Check with the applicable Franklin or Williamson County building department and, if relevant, your historic district or HOA.
+Answer: It depends. I don’t have a Franklin-specific source confirming the current requirements. Generally, replacing windows in the same openings may not require a building permit, while enlarging openings, changing structural elements, or work in a designated historic area may require approval. Check with the City of Franklin’s Building and Neighborhood Services Department before starting.
 
 ### ADV-PERMIT-04 — permits_adversarial
 
@@ -237,7 +237,7 @@ Expected: local_research
 Mode: general_ai
 Reasons: expected_source_backed_local_answer
 
-Answer: It depends. In general, you may be able to add a room, but approval typically depends on zoning, setbacks, lot coverage, building permits, utilities or septic capacity, and any HOA or historic-district restrictions. For a property-specific answer, you would need to check the applicable local planning and building authorities for the property’s jurisdiction. A contractor or architect can also help verify feasibility before design work begins.
+Answer: It depends. In general, you may be able to add a room, but approval can depend on zoning, property setbacks, lot coverage, building codes, utilities or septic capacity, floodplain rules, and any HOA restrictions. I don’t have a Franklin-specific source confirming the requirements. To determine whether your property qualifies, the key missing detail is the property address, since zoning and site restrictions vary by location.
 
 ### ADV-PET-01 — pets_adversarial
 
@@ -247,7 +247,7 @@ Expected: local_research
 Mode: general_ai
 Reasons: expected_source_backed_local_answer
 
-Answer: General guidance: 1. Check for a collar or identification tag. If the cat is friendly, a veterinarian or animal shelter can scan for a microchip. 2. Keep the cat safely separated from your pets, with food, water, and a quiet room. Avoid handling it if it appears aggressive, sick, or injured. 3. Take clear photos and note where and when you found it. Post a “found cat” notice in local neighborhood groups and check lost-pet listings. 4. Ask nearby residents and contact local animal shelters or animal control to report the found cat. 5. Require proof of ownership before releasing the cat, such as photos, veterinary records, or matching identification details. 6. If the cat is injured or in immediate danger, contact an emergency veterinarian or local animal-services provider.
+Answer: If you found a lost cat: 1. Approach calmly and keep it separate from your pets, especially if it seems sick, injured, or frightened. 2. Provide water, shelter, and a small amount of food. Avoid cow’s milk. 3. Check for a collar or ID tag. Have a veterinarian or animal shelter scan for a microchip. 4. Report the found cat to nearby animal shelters and post a photo in local lost-and-found pet groups. Include where and when you found it. 5. Ask nearby residents and check for “lost cat” notices, but don’t share every identifying detail so the owner can confirm ownership. 6. If the cat is injured, contact a veterinarian or animal welfare organization promptly. 7. Be cautious of scams; ask anyone claiming the cat for identifying details or proof. If you cannot safely hold the cat, contact a local animal shelter or animal control agency for guidance.
 
 ### ADV-PROV-05 — provider
 
@@ -257,7 +257,7 @@ Expected: directory_handoff
 Mode: general_ai
 Reasons: expected_directory_handoff, missing_directory_link
 
-Answer: I can help you find a tow provider, but I don’t have a verified Franklin-specific provider list. If this is an emergency or your car is blocking traffic, call 911. Otherwise, search for “24-hour towing near Franklin, TN” and confirm the price, pickup location, and destination before authorizing service.
+Answer: Call your auto insurer’s roadside assistance, AAA, or your vehicle manufacturer’s roadside service. If your car is blocking traffic or you’re in danger, call 911. To arrange a tow, have your exact location, vehicle make/model, destination, and payment method ready.
 
 ### ADV-SAN-05 — sanitation_adversarial
 
@@ -267,7 +267,7 @@ Expected: fresh_current
 Mode: official_research_ai
 Reasons: expected_fresh_web_ai
 
-Answer: I can’t confirm a holiday-related trash delay from the provided Franklin source. Which holiday or collection date do you mean? For confirmation, call Franklin Sanitation and Environmental Services at 615-794-1516, Monday–Friday, 7:00 AM–4:00 PM.
+Answer: It depends on the holiday. The provided Franklin source does not list holiday-related collection delays. Which holiday or collection date are you asking about?
 
 ### ADV-SCHOOL-02 — schools_adversarial
 
@@ -277,7 +277,7 @@ Expected: fresh_current
 Mode: official_research_ai
 Reasons: expected_fresh_web_ai
 
-Answer: Which district do you mean—Williamson County Schools or Franklin Special School District? The provided sources don’t list the next school year’s start date.
+Answer: I can’t determine the student start date from the provided information. Which district do you mean: Williamson County Schools or Franklin Special District?
 
 ### ADV-SENIOR-01 — senior_adversarial
 
@@ -287,7 +287,7 @@ Expected: local_research
 Mode: general_ai
 Reasons: expected_source_backed_local_answer
 
-Answer: No Franklin-specific provider was identified in the available sources. General options for seniors needing rides to appointments include: The doctor’s office or hospital social worker An Area Agency on Aging Calling 211 for local transportation referrals A Medicare Advantage or Medicaid plan, if applicable, to ask about covered rides A trusted family member, friend, or volunteer transportation program
+Answer: General guidance: Seniors may get ride help from: Family, friends, or volunteer driver programs Their healthcare provider or hospital social worker Their health insurance or Medicaid transportation benefit Local senior centers or Area Agencies on Aging 211, which can identify transportation programs by location Availability, eligibility, and advance notice requirements vary.
 
 ### ADV-TRANSIT-02 — transit_adversarial
 
@@ -297,7 +297,7 @@ Expected: fresh_current
 Mode: official_research_ai
 Reasons: expected_fresh_web_ai
 
-Answer: It depends. The provided information does not specify whether Franklin Transit serves CoolSprings. Please check the current routes with Franklin Transit before traveling.
+Answer: It depends on the route. Franklin Transit’s routes and service details can change, so please confirm with the official Franklin Transit source before traveling.
 
 ### ADV-TRANSIT-04 — transit_adversarial
 
@@ -307,7 +307,7 @@ Expected: fresh_current
 Mode: general_ai
 Reasons: expected_fresh_web_ai, missing_fresh_sources
 
-Answer: I can’t verify the next trolley from the available Franklin sources. Which downtown stop are you at, and do you mean the next departure now?
+Answer: I can’t determine the next trolley from the information provided. What downtown stop are you at? I’ll also need a current schedule or live-tracking source to give an accurate time.
 
 ### ADV-TRANSIT-05 — transit_adversarial
 
@@ -317,7 +317,7 @@ Expected: fresh_current
 Mode: official_research_ai
 Reasons: expected_fresh_web_ai
 
-Answer: I can’t confirm whether children pay to ride Franklin Transit from the available information. Fares can change, so please verify the current fare policy with Franklin Transit before riding.
+Answer: It depends. The provided Franklin Transit information does not specify whether children ride free or pay a fare, and fares can change. Check Franklin Transit’s current fare information before riding.
 
 ### ADV-TYPO-04 — typos
 
@@ -327,7 +327,7 @@ Expected: directory_handoff
 Mode: general_ai
 Reasons: expected_directory_handoff, missing_directory_link
 
-Answer: I can help find one, but I don’t have a verified Franklin plumber listing in the available sources. Is this an emergency or a routine repair?
+Answer: I can help, but I don’t have a verified Franklin plumber listing in the provided sources. What ZIP code or area of Franklin should I narrow it to?
 
 ### ADV-TYPO-05 — typos
 
@@ -337,7 +337,7 @@ Expected: fresh_current
 Mode: general_ai
 Reasons: expected_fresh_web_ai, missing_fresh_sources
 
-Answer: I don’t have a current Franklin event listing available to verify what’s happening this weekend. Which dates do you mean by “this weekend”? Then I can help narrow it down to concerts, festivals, family activities, or nightlife.
+Answer: I can’t verify current Franklin events because no local event source was provided. Which dates do you mean by “this weekend”? If you share an event listing or source, I can help summarize what’s happening.
 
 ### ADV-UTIL-04 — utilities_adversarial
 
