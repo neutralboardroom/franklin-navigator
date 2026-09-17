@@ -1,0 +1,71 @@
+name: R1328 qualify, deterministic seal and release package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/r1328-qualify-package.yml
+
+permissions:
+  contents: write
+
+jobs:
+  qualify-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Confirm exact R1328 source identity
+        run: |
+          test "$(git branch --show-current)" = "main"
+          grep -q "FR-NAV1.30.28-HF3.13.10" dist/assets/r1328-quality.js
+          grep -q "/assets/r1328-quality.js?v=frnav1328" dist/assets/franklin-established-positioning.js
+          test -f RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1328.json
+          test -f PRE_SEAL_CURRENTNESS_RECEIPT__R1328.json
+          test -f NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1328.json
+      - name: Run source checks and deterministic double package
+        run: python3 scripts/package-r1328.py --out-dir release-out
+      - name: Fresh-extraction validation
+        run: python3 scripts/validate-r1328-package.py release-out/FRANKLIN_NAVIGATOR__R1328__FR-NAV1.30.28-HF3.13.10__QUALIFIED_SUCCESSOR.zip
+      - name: Finalize external binary attestation
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('release-out/R1328_BINARY_ATTESTATION.json')
+          d=json.loads(p.read_text())
+          d['cleanExtractionValidation']='PASS'
+          d['freshExtractionSourceContracts']='PASS_R1327_AND_R1328'
+          d['archiveIntegrity']='PASS'
+          d['safePaths']='PASS'
+          p.write_text(json.dumps(d,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(d,sort_keys=True))
+          PY
+      - name: Upload immutable workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-navigator-r1328-qualified-successor
+          path: |
+            release-out/FRANKLIN_NAVIGATOR__R1328__FR-NAV1.30.28-HF3.13.10__QUALIFIED_SUCCESSOR.zip
+            release-out/R1328_BINARY_ATTESTATION.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Publish immutable GitHub release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG='franklin-r1328-fr-nav1.30.28-hf3.13.10'
+          ZIP='release-out/FRANKLIN_NAVIGATOR__R1328__FR-NAV1.30.28-HF3.13.10__QUALIFIED_SUCCESSOR.zip'
+          ATT='release-out/R1328_BINARY_ATTESTATION.json'
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ZIP" "$ATT" --clobber
+          else
+            gh release create "$TAG" "$ZIP" "$ATT" --target "$GITHUB_SHA" --title 'Franklin Navigator R1328 — FR-NAV1.30.28-HF3.13.10' --notes 'Qualified Local Community Platform source package. SCC acceptance is not self-asserted. See the packaged release receipt and external binary attestation for exact state.'
+          fi
