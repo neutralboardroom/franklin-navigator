@@ -1,0 +1,20 @@
+{
+  "receiptType": "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT",
+  "release": "R1328 / FR-NAV1.30.28-HF3.13.10",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableLane": "neutralboardroom/franklin-navigator@main",
+  "authorityTransfer": false,
+  "localOwns": ["Franklin product source", "UI/copy", "resident/account/member product workflows", "product analytics implementation", "runtime/deployment/rollback implementation when authorized"],
+  "profileFactoryOwns": "canonical profile identity, evidence, provenance, corrections/suppressions and qualified profile truth",
+  "localInvestigatorOwns": "qualified dynamic Franklin research and currentness evidence",
+  "sreOwnerConsoleOwns": "commercial intent, approved offers/pricing and acquisition/lifecycle strategy",
+  "sccOwns": "coordination, release/currentness gates, accepted lineage and acceptance receipts",
+  "nationalHomePlatformTouched": false,
+  "smarterJusticeTouched": false,
+  "profileCanonMutated": false,
+  "localResearchCanonMutated": false,
+  "commercialOfferInvented": false,
+  "crossCommunityStateTouched": false,
+  "result": "PASS_NO_AUTHORITY_DRIFT"
+}
