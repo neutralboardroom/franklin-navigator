@@ -1,7 +1,7 @@
 /* Franklin Assistant clean-room browser controller. Internal generation/version details are not public UI. */
 (()=>{'use strict';
 
-const VERSION='FRANKLIN-ASSISTANT2-0.3.1';
+const VERSION='FRANKLIN-ASSISTANT2-0.3.2';
 const API='https://franklin-navigator-assistant.onrender.com/api/v2/answer';
 const MAX_FILE_BYTES=8*1024*1024;
 
@@ -23,6 +23,7 @@ function styles(){
   .franklin-assistant-answer{max-width:100%}.franklin-assistant-answer-list{margin:.65rem 0 0;padding-left:1.2rem}
   .franklin-assistant-answer-list li{margin:.45rem 0;line-height:1.45}.franklin-assistant-sources{margin-top:1rem}
   .franklin-assistant-followup-note{margin:8px 0 0}.franklin-assistant-utility-row .link-button{white-space:nowrap}
+  .franklin-assistant-profile-matches{display:grid;gap:10px;margin-top:12px}.franklin-assistant-profile-match{border:1px solid #c8d9d9;border-radius:12px;padding:12px;background:#fff}.franklin-assistant-profile-match h3{margin:0 0 4px;font-size:1rem}.franklin-assistant-profile-match p{margin:2px 0}.franklin-assistant-profile-match .actions{margin-top:8px}
   @media(max-width:640px){.franklin-assistant-utility-row{align-items:flex-start;flex-direction:column}.franklin-assistant-utility-row .link-button{align-self:flex-start}.franklin-assistant-user{max-width:96%}}
   `;
   document.head.append(s);
@@ -84,6 +85,94 @@ async function extractAttachment(file,language,onProgress){
   throw new Error('UNSUPPORTED_FILE');
 }
 
+
+let assistantDirectoryRowsPromise;
+async function assistantDirectoryRows(){
+  if(assistantDirectoryRowsPromise)return assistantDirectoryRowsPromise;
+  assistantDirectoryRowsPromise=(async()=>{
+    await loadScript('/assets/local-discovery-core.js','assistant-directory-core','FranklinDiscoveryCore');
+    const C=window.FranklinDiscoveryCore;
+    if(!C||!window.crypto?.subtle)throw new Error('DIRECTORY_CORE_UNAVAILABLE');
+
+    const manifestResponse=await fetch('/data/discovery/manifest.json',{credentials:'omit',cache:'no-cache',referrerPolicy:'no-referrer'});
+    if(!manifestResponse.ok)throw new Error('DIRECTORY_MANIFEST_UNAVAILABLE');
+    const manifest=await manifestResponse.json();
+    if(manifest?.community!==C.EDITION||manifest?.schemaVersion!=='franklin.discovery-manifest.v1'||!manifest?.index?.file||!/^[a-f0-9]{64}$/.test(String(manifest?.index?.sha256||'')))throw new Error('DIRECTORY_MANIFEST_INVALID');
+
+    const indexResponse=await fetch(manifest.index.file,{credentials:'omit',cache:'no-cache',referrerPolicy:'no-referrer'});
+    if(!indexResponse.ok)throw new Error('DIRECTORY_INDEX_UNAVAILABLE');
+    const bytes=await indexResponse.arrayBuffer();
+    if(bytes.byteLength>12000000)throw new Error('DIRECTORY_INDEX_TOO_LARGE');
+    const digest=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('');
+    if(digest!==manifest.index.sha256)throw new Error('DIRECTORY_INDEX_CHANGED');
+    const raw=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));
+    let rows=C.decodeIndex(raw);
+
+    const suppressionResponse=await fetch('/data/public-profile-suppressions.json',{cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer'});
+    if(!suppressionResponse.ok)throw new Error('SUPPRESSION_LEDGER_UNAVAILABLE');
+    const suppressionData=await suppressionResponse.json();
+    const suppressed=new Set((suppressionData.entries||[]).filter(x=>x&&x.status==='SUPPRESSED').map(x=>x.profileId));
+    rows=rows.filter(r=>!suppressed.has(r.i));
+    return rows;
+  })().catch(error=>{assistantDirectoryRowsPromise=null;throw error});
+  return assistantDirectoryRowsPromise;
+}
+
+function directoryQueryFromData(data){
+  for(const row of Array.isArray(data?.links)?data.links:[]){
+    try{
+      const u=new URL(row.url,location.origin),q=text(u.searchParams.get('q')||'');
+      if(q)return q;
+    }catch{}
+  }
+  return '';
+}
+function directoryQueryVariants(query){
+  const q=text(query).toLowerCase();
+  const out=[query];
+  const add=v=>{if(v&&!out.some(x=>x.toLowerCase()===v.toLowerCase()))out.push(v)};
+  if(/lawn|mow|grass|yard|césped|cesped|jard[ií]n/.test(q)){add('landscaping');add('lawn');add('mowing')}
+  if(/hvac|heating|air conditioning/.test(q)){add('HVAC');add('heating air conditioning')}
+  if(/tow|towing/.test(q))add('towing');
+  if(/staffing|temp agency/.test(q)){add('staffing');add('employment agency')}
+  return out.slice(0,4);
+}
+async function enrichDirectoryHandoff(data,language){
+  if(String(data?.mode||'')!=='directory_handoff')return data;
+  try{
+    const query=directoryQueryFromData(data);
+    if(!query)return data;
+    const C=window.FranklinDiscoveryCore||await loadScript('/assets/local-discovery-core.js','assistant-directory-core','FranklinDiscoveryCore');
+    const rows=await assistantDirectoryRows();
+    let matches=[];
+    for(const variant of directoryQueryVariants(query)){
+      matches=C.matchRows(rows,{q:variant,sort:'local',page:1});
+      if(matches.length)break;
+    }
+    if(!matches.length)return data;
+    const profiles=matches.slice(0,3).map(r=>({
+      id:r.i,
+      name:r.n,
+      category:r.c||r.t||'',
+      location:r.l||r.g||'',
+      profile:C.canonicalProfile(r.i,language),
+      phone:r.p||'',
+      phoneHref:r.phoneHref||'',
+      websiteHref:r.websiteHref||''
+    }));
+    return {
+      ...data,
+      answer:language==='es'
+        ?'Encontré perfiles locales que coinciden con su solicitud. Estos resultados son informativos, no son recomendaciones ni clasificaciones pagadas; confirme directamente el servicio, precio y disponibilidad.'
+        :'I found local profiles that match what you asked for. These are informational matches, not recommendations or paid rankings; confirm the service, price, and availability directly.',
+      profiles,
+      directoryQuery:query
+    };
+  }catch{
+    return data;
+  }
+}
+
 function ordinaryLawnService(question,language){
   const q=text(question).toLowerCase();
   const lawn=/\b(mow(?:ing)?|lawn mow(?:ing)?|lawn care|yard work|landscap(?:e|ing)|cut (?:my |the )?grass)\b/.test(q);
@@ -111,7 +200,7 @@ function install(root){
   const setBusy=value=>{busy=value;const submit=form.querySelector('button[type="submit"]');if(submit){submit.disabled=value;submit.setAttribute('aria-busy',value?'true':'false')}input.disabled=value;attachInput.disabled=value;clearButton.disabled=value};
   const addUser=question=>{output.hidden=false;const turn=make('section','franklin-assistant-turn'),bubble=make('div','franklin-assistant-user');bubble.append(make('div','eyebrow',language==='es'?'Usted':'You'),make('p','',question));turn.append(bubble);output.append(turn);return turn};
   const addStatus=message=>{const turn=make('section','franklin-assistant-turn'),card=make('article','navigator-result franklin-assistant-answer');card.append(make('div','eyebrow','Franklin Assistant'),make('p','',message));turn.append(card);output.append(turn);statusTurn=turn;return turn};
-  const answerCard=data=>{const card=make('article','navigator-result franklin-assistant-answer');card.dataset.assistantMode=String(data.mode||'');card.append(make('div','eyebrow',language==='es'?'Respuesta de Franklin':'Franklin answer'));const lines=answerLines(data.answer);if(String(data.mode||'')==='fresh_web_ai'&&lines.length>1){card.append(make('p','',lines[0]));const list=make('ul','franklin-assistant-answer-list');for(const line of lines.slice(1,8))list.append(make('li','',line));card.append(list)}else card.append(make('p','',lines.join(' ')||text(data.answer)));const sources=sourceList(data.sources,language);if(sources)card.append(sources);const links=Array.isArray(data.links)?data.links.filter(x=>x&&x.url&&x.label):[];if(links.length){const actions=make('div','actions');for(const row of links.slice(0,3)){const a=document.createElement('a');a.className='button';a.href=row.url;a.textContent=row.label;actions.append(a)}card.append(actions)}return card};
+  const answerCard=data=>{const card=make('article','navigator-result franklin-assistant-answer');card.dataset.assistantMode=String(data.mode||'');card.append(make('div','eyebrow',language==='es'?'Respuesta de Franklin':'Franklin answer'));const lines=answerLines(data.answer);if(String(data.mode||'')==='fresh_web_ai'&&lines.length>1){card.append(make('p','',lines[0]));const list=make('ul','franklin-assistant-answer-list');for(const line of lines.slice(1,8))list.append(make('li','',line));card.append(list)}else card.append(make('p','',lines.join(' ')||text(data.answer)));const profiles=Array.isArray(data.profiles)?data.profiles:[];if(profiles.length){const wrap=make('div','franklin-assistant-profile-matches');wrap.append(make('div','fine-print',language==='es'?'Perfiles locales coincidentes':'Matching local profiles'));for(const p of profiles){const item=make('section','franklin-assistant-profile-match');item.append(make('h3','',p.name));if(p.category)item.append(make('p','fine-print',p.category));if(p.location)item.append(make('p','',p.location));const actions=make('div','actions');const open=document.createElement('a');open.className='button small primary';open.href=p.profile;open.textContent=language==='es'?'Abrir perfil':'Open profile';actions.append(open);if(p.phoneHref){const call=document.createElement('a');call.className='button small';call.href=p.phoneHref;call.textContent=language==='es'?'Llamar':'Call';actions.append(call)}if(p.websiteHref){const site=document.createElement('a');site.className='button small';site.href=p.websiteHref;site.target='_blank';site.rel='noopener';site.textContent=language==='es'?'Sitio web':'Website';actions.append(site)}item.append(actions);wrap.append(item)}card.append(wrap)}const sources=sourceList(data.sources,language);if(sources)card.append(sources);const links=Array.isArray(data.links)?data.links.filter(x=>x&&x.url&&x.label):[];if(links.length){const actions=make('div','actions');for(const row of links.slice(0,3)){const a=document.createElement('a');a.className='button';a.href=row.url;a.textContent=profiles.length?(language==='es'?'Ver más coincidencias':'See more matches'):row.label;actions.append(a)}card.append(actions)}return card};
   const finishTurn=(question,data)=>{if(statusTurn){statusTurn.remove();statusTurn=null}const turn=make('section','franklin-assistant-turn');turn.append(answerCard(data));output.append(turn);history.push({role:'user',content:question},{role:'assistant',content:text(data.answer)});if(history.length>12)history.splice(0,history.length-12);input.value='';input.placeholder=language==='es'?'Haga una pregunta de seguimiento…':'Ask a follow-up…';input.focus();turn.scrollIntoView({block:'nearest',behavior:'smooth'})};
   const clearAll=()=>{history.splice(0);attachment=null;attachInput.value='';attachStatus.textContent='';removeFile.hidden=true;input.value='';input.placeholder=language==='es'?'Pregunte sobre Franklin…':'Ask about Franklin…';output.replaceChildren();output.hidden=true;if(recognition){try{recognition.stop()}catch{}recognition=null}if(voiceStatus)voiceStatus.textContent='';input.focus()};
 
@@ -119,7 +208,7 @@ function install(root){
   if(voiceButton&&SpeechRecognition){voiceButton.hidden=false;voiceButton.addEventListener('click',()=>{if(recognition){try{recognition.stop()}catch{}return}recognition=new SpeechRecognition();recognition.lang=language==='es'?'es-US':'en-US';recognition.interimResults=false;recognition.maxAlternatives=1;if(voiceStatus)voiceStatus.textContent=language==='es'?'Escuchando…':'Listening…';voiceButton.setAttribute('aria-pressed','true');recognition.onresult=e=>{const said=text(e.results?.[0]?.[0]?.transcript||'');if(said){input.value=said;input.focus()}};recognition.onerror=()=>{if(voiceStatus)voiceStatus.textContent=language==='es'?'No pude escuchar la pregunta. Puede escribirla.':'I could not hear the question. You can type it instead.'};recognition.onend=()=>{recognition=null;voiceButton.setAttribute('aria-pressed','false');if(voiceStatus&&!/No pude|could not/i.test(voiceStatus.textContent||''))voiceStatus.textContent=''};recognition.start()})}
   attachInput.addEventListener('change',async()=>{const file=attachInput.files?.[0];attachment=null;removeFile.hidden=true;if(!file){attachStatus.textContent='';return}attachStatus.textContent=(language==='es'?'Leyendo ':'Reading ')+file.name+'…';try{const extracted=await extractAttachment(file,language,p=>attachStatus.textContent=(language==='es'?'Leyendo ':'Reading ')+file.name+'… '+p+'%');if(!text(extracted))throw new Error('NO_TEXT');attachment={name:file.name,type:file.type,text:extracted};attachStatus.textContent=language==='es'?file.name+' está listo. El texto permanece en este dispositivo.':file.name+' is ready. Its text stays on this device.';removeFile.hidden=false}catch(error){attachment=null;attachInput.value='';attachStatus.textContent=error.message==='FILE_TOO_LARGE'?(language==='es'?'Use un archivo menor de 8 MB.':'Use a file under 8 MB.'):(language==='es'?'No pude leer suficiente texto de ese archivo.':'I could not read enough text from that file.')}});
 
-  const ask=async raw=>{const question=text(raw).slice(0,600);if(busy||!question)return;setBusy(true);addUser(question);addStatus(language==='es'?'Buscando una respuesta clara…':'Finding a clear answer…');try{let data;if(attachment){data={answer:documentAnswer(attachment.text,question,language),mode:'attachment_on_device',sources:[],links:[]}}else{data=ordinaryLawnService(question,language);if(!data){const response=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question,language,history:history.slice(-6)})});data=await response.json().catch(()=>({}));if(!response.ok||data?.ok!==true||!data?.answer)throw new Error(data?.error||'ANSWER_UNAVAILABLE')}}finishTurn(question,data)}catch{if(statusTurn){statusTurn.remove();statusTurn=null}const turn=make('section','franklin-assistant-turn');turn.append(answerCard({answer:language==='es'?'No pude completar esa respuesta en este momento. Inténtelo de nuevo en un momento.':'I could not complete that answer right now. Please try again in a moment.',mode:'error',sources:[],links:[]}));output.append(turn);input.value=question;input.focus()}finally{setBusy(false)}};
+  const ask=async raw=>{const question=text(raw).slice(0,600);if(busy||!question)return;setBusy(true);addUser(question);addStatus(language==='es'?'Buscando una respuesta clara…':'Finding a clear answer…');try{let data;if(attachment){data={answer:documentAnswer(attachment.text,question,language),mode:'attachment_on_device',sources:[],links:[]}}else{data=ordinaryLawnService(question,language);if(!data){const response=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question,language,history:history.slice(-6)})});data=await response.json().catch(()=>({}));if(!response.ok||data?.ok!==true||!data?.answer)throw new Error(data?.error||'ANSWER_UNAVAILABLE')}}data=await enrichDirectoryHandoff(data,language);finishTurn(question,data)}catch{if(statusTurn){statusTurn.remove();statusTurn=null}const turn=make('section','franklin-assistant-turn');turn.append(answerCard({answer:language==='es'?'No pude completar esa respuesta en este momento. Inténtelo de nuevo en un momento.':'I could not complete that answer right now. Please try again in a moment.',mode:'error',sources:[],links:[]}));output.append(turn);input.value=question;input.focus()}finally{setBusy(false)}};
 
   form.addEventListener('submit',event=>{event.preventDefault();event.stopImmediatePropagation();ask(input.value)},true);
   root.addEventListener('click',event=>{const button=event.target.closest?.('[data-navigator-example]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();const q=text(button.dataset.navigatorExample||button.textContent);input.value=q;ask(q)},true);
