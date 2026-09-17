@@ -15,15 +15,21 @@ const replacements=[
  ['Founding30 estimate','Current membership estimate'],
  ['FOUNDING30','current Community Membership offer']
 ];
-function loadR1326(){
-  if(document.querySelector('script[data-franklin-business-journey-r1326]'))return;
-  const s=document.createElement('script');s.src='/assets/r1326-business-journey.js?v=frnav1326';s.defer=true;s.dataset.franklinBusinessJourneyR1326='1';document.head.append(s);
+function loadScript(src,key){
+  return new Promise((resolve,reject)=>{
+    const old=document.querySelector(`script[data-${key}]`);
+    if(old){if(old.dataset.loaded==='1')return resolve(old);old.addEventListener('load',()=>resolve(old),{once:true});old.addEventListener('error',reject,{once:true});return}
+    const s=document.createElement('script');s.src=src;s.defer=true;s.dataset[key.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]='1';s.addEventListener('load',()=>{s.dataset.loaded='1';resolve(s)},{once:true});s.addEventListener('error',reject,{once:true});document.head.append(s);
+  });
 }
 function apply(){
   for(const meta of document.querySelectorAll('meta[name="description"],meta[property="og:description"],meta[name="twitter:description"]')){let v=meta.content||'';for(const[a,b]of replacements)v=v.replaceAll(a,b);meta.content=v}
   const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while((n=walker.nextNode())){if(!n.nodeValue||!n.nodeValue.trim())continue;let v=n.nodeValue;for(const[a,b]of replacements)v=v.replaceAll(a,b);n.nodeValue=v}
   for(const a of document.querySelectorAll('a[href^="mailto:"]')){let h=a.getAttribute('href')||'';for(const[x,y]of replacements)h=h.replaceAll(x,y);a.setAttribute('href',h)}
-  loadR1326();
+  loadScript('/assets/r1326-business-journey.js?v=frnav1326','franklin-business-journey-r1326')
+    .catch(()=>null)
+    .then(()=>loadScript('/assets/r1327-refinement.js?v=frnav1327','franklin-refinement-r1327'))
+    .catch(()=>{});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
 })();
