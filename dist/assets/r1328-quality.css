@@ -1,0 +1,5 @@
+/* R1328 profile/membership flow quality */
+.r1328-context{margin-top:16px;max-width:900px;padding:12px 14px;border-left:4px solid #075e63;border-radius:10px;background:rgba(3,69,75,.055)}
+.r1328-result-status{min-height:1.4em;margin-top:10px}.r1328-link-note{margin:12px 0 0;padding:10px 12px;border-radius:9px;background:rgba(3,69,75,.05)}
+.r1328-enroll-preflight{max-width:820px;margin:0 auto}.r1328-enroll-trust{max-width:900px;margin:12px 0 22px}.r1328-enroll-progress>span{border:1px solid rgba(3,69,75,.18);border-radius:10px;background:#fff}.r1328-enroll-progress>span.is-complete{background:rgba(3,69,75,.06);border-color:rgba(3,69,75,.28)}.r1328-enroll-progress>span.is-current{border:2px solid #075e63;background:rgba(3,69,75,.08);font-weight:700}
+@media(max-width:650px){.r1328-enroll-preflight .r37-member-actions{display:grid}.r1328-enroll-preflight .button{width:100%;text-align:center}}
