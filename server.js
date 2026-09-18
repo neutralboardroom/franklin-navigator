@@ -19,7 +19,7 @@ const {loadControlProfileRegistry,productionProfileRows}=require('./lib/member-p
 const CHECKOUT_SAFETY_VERSION='FRANKLIN_CHECKOUT_SAFETY_1';
 const ISSUE_MONITOR_MIGRATION='FRANKLIN_ISSUE_MONITOR_1';
 
-const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.34-HF3.13.16';
+const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.35-HF3.13.17';
 const SCHEMA_VERSION = 'FRANKLIN_COMMERCE_SCHEMA_2';
 const PORT = Number(process.env.PORT || 10000);
 const PUBLIC_ORIGIN = String(process.env.PUBLIC_ORIGIN || 'https://franklinnavigator.com').replace(/\/$/, '');
