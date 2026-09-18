@@ -93,7 +93,10 @@ for p in (root/'dist').rglob('*.html'):
         active_scripts.add(Path(urlsplit(m.group(1)).path).name)
 for m in re.finditer(r"['\\\"](/assets/[^'\\\"]+\\.js)(?:\\?[^'\\\"]*)?['\\\"]",hf):
     active_scripts.add(Path(urlsplit(m.group(1)).path).name)
-writer_re=re.compile(r"franklin-release.{0,260}(?:\\.content\\s*=|setAttribute\\(\\s*['\\\"]content['\\\"])",re.I|re.S)
+writer_re=re.compile(
+    r"franklin-release.{0,260}(?:\.content\s*=|setAttribute\(\s*['\"]content['\"])",
+    re.I|re.S
+)
 release_owners=[]
 for name in sorted(active_scripts):
     p=root/'dist/assets'/name
