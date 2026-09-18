@@ -10,7 +10,7 @@ R1337 fixes a real release-truth defect rather than making cosmetic version chur
 
 The same pass improves public profiles: paid-member photo controls/dialogs have accessible names, profile section wording is public-facing and consistent, and the new dynamic accessibility labels work in Spanish through the existing translation layer.
 
-A concurrent repository writer created an unsupported “owner directive” and changed the approved Franklin Through Time — Then & Now heading. That unsupported file was removed and the approved heading was restored atomically with its CI guard.
+The newest owner instruction keeps the homepage unchanged except for the history heading: it now reads “Franklin Through Time.” “Then & Now” is removed, and the CI guard protects that exact heading without changing the section’s images, layout, links, colors, or spacing.
 
 R1337 membership runtime source commit 476805319613cb0781c3a288200d58f3ee60ac5c is live on Render deploy dep-damg83id0e5s73fb7610 with LOCAL_RELEASE=FR-NAV1.30.37-HF3.13.19 and 29/29 startup tests passing.
 

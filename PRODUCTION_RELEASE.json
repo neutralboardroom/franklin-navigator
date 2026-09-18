@@ -1455,10 +1455,17 @@
       "detected": true,
       "unsupportedOwnerDirectiveClaimRemoved": true,
       "conflictingHeadingMutationReconciled": true,
-      "approvedHeading": "Franklin Through Time — Then & Now",
+      "approvedHeading": "Franklin Through Time",
       "atomicCompareAndSetRepairCommit": "20b97ffd0fe216f4a334bffdf4fad39bc0bbf6b8",
       "note": "A concurrent repository writer created an unsupported owner-directive claim and changed the heading. The unsupported claim was removed and the previously approved heading was restored; final sealing requires another exact-head race check."
     },
-    "donorRegistry": "DONOR_CAPABILITY_REGISTRY__R1337.json"
+    "donorRegistry": "DONOR_CAPABILITY_REGISTRY__R1337.json",
+    "homepageHistoryHeading": {
+      "value": "Franklin Through Time",
+      "previousValue": "Franklin Through Time — Then & Now",
+      "ownerInstructionDate": "2026-09-18",
+      "changeScope": "HEADING_TEXT_ONLY",
+      "preserveRestOfHomepage": true
+    }
   }
 }
