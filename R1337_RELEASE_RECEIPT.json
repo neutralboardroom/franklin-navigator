@@ -73,5 +73,12 @@
     "fresh extraction validation",
     "final main-head race check"
   ],
-  "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/current-pointer promotion remains separate"
+  "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/current-pointer promotion remains separate",
+  "donorRegistry": "DONOR_CAPABILITY_REGISTRY__R1337.json",
+  "donorReview": {
+    "smarterHealth": "NOT_REVIEWED_NOT_NEEDED",
+    "smarterHome": "NOT_REVIEWED_NOT_NEEDED",
+    "smarterAuto": "NOT_REVIEWED_NOT_NEEDED",
+    "smarterJustice": "SMARTER_JUSTICE_DONOR_NOT_USED"
+  }
 }

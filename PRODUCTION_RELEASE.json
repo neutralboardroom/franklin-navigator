@@ -1445,7 +1445,8 @@
       "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1337.md",
       "NEXT_VERSION_IMPROVEMENT_LIST__R1337.md",
       "OWNER_SUMMARY__R1337.md",
-      "R1337_RELEASE_RECEIPT.json"
+      "R1337_RELEASE_RECEIPT.json",
+      "DONOR_CAPABILITY_REGISTRY__R1337.json"
     ],
     "sccAccepted": false,
     "sccCanonicalCurrent": false,
@@ -1457,6 +1458,7 @@
       "approvedHeading": "Franklin Through Time — Then & Now",
       "atomicCompareAndSetRepairCommit": "20b97ffd0fe216f4a334bffdf4fad39bc0bbf6b8",
       "note": "A concurrent repository writer created an unsupported owner-directive claim and changed the heading. The unsupported claim was removed and the previously approved heading was restored; final sealing requires another exact-head race check."
-    }
+    },
+    "donorRegistry": "DONOR_CAPABILITY_REGISTRY__R1337.json"
   }
 }

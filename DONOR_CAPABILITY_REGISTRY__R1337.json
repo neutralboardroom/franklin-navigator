@@ -1,0 +1,34 @@
+{
+  "schema": "franklin.local-community-platform.donor-capability-registry.v1",
+  "release": "FR-NAV1.30.37-HF3.13.19",
+  "activeEdition": "FRANKLIN_TN",
+  "activeCapabilityQuestion": "Public release-identity integrity and profile accessibility",
+  "authorityTransfer": false,
+  "reviewedDonorSnapshots": [],
+  "entries": [
+    {
+      "donor": "Smarter Health",
+      "reviewState": "NOT_REVIEWED_NOT_NEEDED",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "Not relevant to the bounded R1337 release-identity/profile-accessibility slice; no donor material inspected or imported."
+    },
+    {
+      "donor": "Smarter Home / Smarter Navigator",
+      "reviewState": "NOT_REVIEWED_NOT_NEEDED",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "Not relevant to the bounded R1337 release-identity/profile-accessibility slice; no donor material inspected or imported."
+    },
+    {
+      "donor": "Smarter Auto",
+      "reviewState": "NOT_REVIEWED_NOT_NEEDED",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "Not relevant to the bounded R1337 release-identity/profile-accessibility slice; no donor material inspected or imported."
+    },
+    {
+      "donor": "Smarter Justice",
+      "reviewState": "SMARTER_JUSTICE_DONOR_NOT_USED",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "No bounded Local legal-module capability question exists in R1337. No Smarter Justice snapshot, runtime, API, code, profile, state, or data was inspected, connected, copied, or imported."
+    }
+  ]
+}
