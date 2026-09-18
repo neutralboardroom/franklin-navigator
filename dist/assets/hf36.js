@@ -161,10 +161,15 @@ ready(()=>{
   if(location.pathname.startsWith('/profiles/')){
     loadCss('/assets/r1330-profile.css?v=frnav1330','franklin-profile-r1330');
     loadCss('/assets/r1332-profile.css?v=frnav1332','franklin-profile-r1332');
+    loadCss('/assets/r1333-profile.css?v=frnav1333','franklin-profile-r1333');
     loadScript('/assets/r1330-profile.js?v=frnav1330','franklin-profile-r1330')
       .then(()=>loadScript('/assets/r1332-profile.js?v=frnav1332','franklin-profile-r1332'))
       .then(()=>loadScript('/assets/r1332-member-offers.js?v=frnav1332','franklin-member-offers-r1332'))
-      .catch(()=>{loadScript('/assets/r1332-profile.js?v=frnav1332','franklin-profile-r1332').catch(()=>{});loadScript('/assets/r1332-member-offers.js?v=frnav1332','franklin-member-offers-r1332').catch(()=>{})});
+      .then(()=>loadScript('/assets/r1333-paid-sponsored.js?v=frnav1333','franklin-paid-sponsored-r1333'))
+      .catch(()=>{loadScript('/assets/r1332-profile.js?v=frnav1332','franklin-profile-r1332').catch(()=>{});loadScript('/assets/r1332-member-offers.js?v=frnav1332','franklin-member-offers-r1332').catch(()=>{});loadScript('/assets/r1333-paid-sponsored.js?v=frnav1333','franklin-paid-sponsored-r1333').catch(()=>{})});
+  }
+  if(location.pathname==='/directory/'||location.pathname==='/es/directorio/'){
+    loadCss('/assets/r1333-sponsored.css?v=frnav1333','franklin-sponsored-r1333');
   }
   normalizePrimaryNav();
   installCommunityConnectorR1311();
