@@ -1231,7 +1231,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CURRENT_HEAD_QUALIFICATION_PENDING",
+    "state": "QUALIFIED_SUCCESSOR",
     "acceptedCanonicalBase": {
       "version": "FR-NAV1.30.12-HF3.12.4",
       "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
@@ -1304,7 +1304,7 @@
     "runtime": {
       "branch": "franklin-commerce-runtime-r30",
       "commit": "6243e08d6944d541aa32a53b43b131f312ef7ff7",
-      "deploy": "PENDING_CURRENT_RUNTIME_DEPLOY_CONFIRMATION",
+      "deploy": "dep-dameqi8u01pc73a0fqfg",
       "releaseEnv": "FR-NAV1.30.36-HF3.13.18",
       "changedInR1336": true,
       "functionalChanges": false,
@@ -1318,7 +1318,30 @@
       },
       "ready": true,
       "openCritical": 0,
-      "openHigh": 0
+      "openHigh": 1,
+      "liveSince": "2026-09-18T07:51:03Z",
+      "liveProfileAcceptance": {
+        "status": "PASS",
+        "workflowGate": "Live profile runtime and browser-origin acceptance",
+        "checks": [
+          "health release/startupReady",
+          "public-profile endpoint",
+          "public media endpoint",
+          "Access-Control-Allow-Origin https://franklinnavigator.com"
+        ]
+      },
+      "monitoringAtRuntimeStartup": {
+        "observedAt": "2026-09-18T07:50:53Z",
+        "openCritical": 0,
+        "openHigh": 1,
+        "incidentId": "incident_fb34ef196b8843bf987420bb9f681122",
+        "code": "FETCH_FAILED",
+        "path": "/api/member/public-profile",
+        "profileId": "FR-ORG-b00c0ace7943973c",
+        "occurrences": 5,
+        "lastSeen": "2026-09-18T07:43:46Z",
+        "note": "Historical client-telemetry network failures were present in the ledger at runtime startup. The current release live browser-origin acceptance subsequently passed the public-profile and public-media endpoints; the ledger record is not erased or misreported."
+      }
     },
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1336.md",
     "proofBoundary": [
@@ -1329,6 +1352,7 @@
     ],
     "sccAccepted": false,
     "sccCanonicalCurrent": false,
-    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_DEPLOYMENT; SCC acceptance/promotion remains a separate external authority gate"
+    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_DEPLOYMENT; SCC acceptance/promotion remains a separate external authority gate",
+    "qualificationCondition": "CURRENT_HEAD_WORKFLOW_MUST_PASS"
   }
 }
