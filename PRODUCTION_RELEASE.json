@@ -941,5 +941,70 @@
       "No fabricated special offer was created.",
       "First genuine review, owner response, paid gallery and paid offer lifecycles remain real-user production proofs."
     ]
+  },
+  "r1333": {
+    "version": "FR-NAV1.30.33-HF3.13.15",
+    "date": "2026-09-18",
+    "purpose": "RICH_PAID_MEMBER_PROFILES_PLUS_CLEARLY_LABELED_SPONSORED_VISIBILITY",
+    "benchmarkReceipt": "R1333_SPONSORED_VISIBILITY_AND_RICH_MEMBER_PROFILE_RECEIPT.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1333.md",
+    "paidMemberProfile": {
+      "photoFirstMediaMosaic": true,
+      "reviewedCoverAndGallery": true,
+      "communityMemberBadge": true,
+      "tagline": true,
+      "atAGlanceCard": true,
+      "specialOffers": true,
+      "relatedCompetitorCardSuppressed": true,
+      "reviewsUnaffectedByPayment": true
+    },
+    "sponsoredVisibility": {
+      "enabled": true,
+      "labels": [
+        "Sponsored",
+        "Community Member"
+      ],
+      "unpaidCommercialProfilePages": true,
+      "directoryAndSearchResults": true,
+      "pageOneAboveOrdinaryResults": true,
+      "relevantFilterMatching": true,
+      "ordinaryResultOrderUnaffected": true,
+      "endorsementClaim": false,
+      "recommendationClaim": false,
+      "factualAccuracyAffected": false,
+      "reviewScoreAffected": false
+    },
+    "visualHierarchy": {
+      "primaryWebsiteCTA": "TEAL",
+      "phoneCTA": "SOFT_GREEN",
+      "emailCTA": "SOFT_BLUE",
+      "directionsCTA": "SOFT_GOLD",
+      "facts": [
+        "SOFT_TEAL",
+        "SOFT_BLUE",
+        "SOFT_GOLD",
+        "SOFT_VIOLET"
+      ],
+      "reviews": "SOFT_BLUE_PANEL",
+      "sponsored": "SOFT_GOLD_PANEL"
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "1e91cba020c25db8e8c15b7deef0d0c3bb9e1797",
+      "sponsoredApi": "/api/member/sponsored-profiles"
+    },
+    "publicSite": {
+      "branch": "main",
+      "currentCommit": "8989f01361113521bdd36466e6345a5d07f0fb68",
+      "profileScript": "/assets/r1333-paid-sponsored.js",
+      "profileCss": "/assets/r1333-profile.css",
+      "directorySponsorCss": "/assets/r1333-sponsored.css"
+    },
+    "proofBoundary": [
+      "No fabricated public paid member was created.",
+      "Sponsored placements become visible only when a genuine eligible public Community Member exists.",
+      "Control/test memberships are not production proof.",
+      "No fake review, offer, endorsement or recommendation was created."
+    ]
   }
 }
