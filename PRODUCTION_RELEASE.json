@@ -1474,7 +1474,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "state": "QUALIFIED_SUCCESSOR",
     "immediateLocalQualifiedParent": {
       "version": "FR-NAV1.30.37-HF3.13.19",
       "commit": "c4db63f6f992658da2603bf86ca9438ee17e1745",
@@ -1529,7 +1529,13 @@
       "releaseEnv": "FR-NAV1.30.38-HF3.13.20",
       "functionalChanges": true,
       "profileControlSafetyTestsAdded": true,
-      "liveSince": "2026-09-18T10:16:31.812892Z"
+      "liveSince": "2026-09-18T10:16:31.812892Z",
+      "tests": {
+        "total": 34,
+        "pass": 34,
+        "fail": 0,
+        "skipped": 0
+      }
     },
     "upstream": {
       "profileFactoryWholesalePf1528Promoted": false,
@@ -1549,6 +1555,25 @@
     ],
     "sccAccepted": false,
     "sccCanonicalCurrent": false,
-    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/current-pointer promotion remains separate"
+    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/current-pointer promotion remains separate",
+    "qualification": {
+      "workflowRun": 35335284124,
+      "qualifiedCandidateCommit": "75cc7da359350a3a9d0c788eebcc437b3fbe28fc",
+      "result": "PASS",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.38-HF3.13.20__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactBytes": 85500464,
+      "artifactSha256": "d5f1e46d550ade2af0efb8a005fcaa2e885ae1fe14d1c6bc178ce5e160381d50",
+      "secondBuildSha256": "d5f1e46d550ade2af0efb8a005fcaa2e885ae1fe14d1c6bc178ce5e160381d50",
+      "manifestSha256": "4bab93ed25c224d7b7e43b0f2557f5bf681a1f581d7285116ffff3513e51d724",
+      "deterministicDoubleBuild": true,
+      "freshExtraction": "PASS",
+      "runtimeTests": {
+        "total": 34,
+        "pass": 34,
+        "fail": 0,
+        "skipped": 0
+      },
+      "finalExactHeadWorkflowRequired": true
+    }
   }
 }

@@ -18,4 +18,11 @@ Current R1338 runtime:
 
 No new wholesale Profile Factory or Local Investigator dataset is promoted in this profile-control pass.
 
-Result: PRE_SEAL_CURRENTNESS_PASS_PENDING_EXACT_HEAD_QUALIFICATION
+Result: PRE_SEAL_CURRENTNESS_PASS; candidate exact-head qualification 35335284124 passed. Final sealed-head qualification remains required before static deployment.
+
+Candidate qualification:
+- commit 75cc7da359350a3a9d0c788eebcc437b3fbe28fc
+- workflow 35335284124 PASS
+- artifact SHA-256 d5f1e46d550ade2af0efb8a005fcaa2e885ae1fe14d1c6bc178ce5e160381d50
+- manifest SHA-256 4bab93ed25c224d7b7e43b0f2557f5bf681a1f581d7285116ffff3513e51d724
+- runtime tests 34/34 pass

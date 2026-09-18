@@ -1,6 +1,6 @@
 {
   "schema": "franklin.local-community-platform.release-receipt.v1",
-  "status": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+  "status": "QUALIFIED_SUCCESSOR",
   "recordedAt": "2026-09-18",
   "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
   "activeEdition": "FRANKLIN_TN",
@@ -12,7 +12,7 @@
   },
   "successor": {
     "version": "FR-NAV1.30.38-HF3.13.20",
-    "localQualification": "PENDING_EXACT_HEAD_WORKFLOW",
+    "localQualification": "QUALIFIED_CANDIDATE_FINAL_EXACT_HEAD_RECHECK_REQUIRED",
     "sccAccepted": false,
     "sccCanonicalCurrent": false
   },
@@ -34,5 +34,21 @@
     "paymentDoesNotChangeFacts": true
   },
   "homepageChanged": false,
-  "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/promotion remains separate"
+  "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/promotion remains separate",
+  "qualification": {
+    "workflowRun": 35335284124,
+    "qualifiedCandidateCommit": "75cc7da359350a3a9d0c788eebcc437b3fbe28fc",
+    "artifactBytes": 85500464,
+    "artifactSha256": "d5f1e46d550ade2af0efb8a005fcaa2e885ae1fe14d1c6bc178ce5e160381d50",
+    "manifestSha256": "4bab93ed25c224d7b7e43b0f2557f5bf681a1f581d7285116ffff3513e51d724",
+    "deterministicDoubleBuild": true,
+    "freshExtraction": "PASS",
+    "runtimeTests": {
+      "total": 34,
+      "pass": 34,
+      "fail": 0,
+      "skipped": 0
+    },
+    "finalAcceptanceRule": "This sealed receipt commit must pass the same exact-source qualification before production static deployment."
+  }
 }
