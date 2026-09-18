@@ -161,6 +161,12 @@ jobs:
           grep -F "Your selected profile stays with you through sign-in" dist/assets/membership-live.js
           grep -F "linked.authority_state==='VERIFIED'" dist/assets/membership-live.js
           grep -F "authorityConfirmed:true" dist/assets/member-profile-live.js
+          grep -F "PROFILE_MEMBERSHIP_ALREADY_ACTIVE" runtime/franklin-membership/server.js
+          grep -F "Profile Center" dist/profile-studio/index.html
+          grep -F "Open Profile Center" dist/assets/r1330-profile.js
+          grep -F "work or organization email" dist/assets/membership-live.js
+          grep -F "Transfer or end management — contact support" dist/assets/member-profile-live.js
+          ! grep -F "Profile Studio" dist/member-support/index.html
           grep -F "/api/member/representation/release" dist/assets/member-profile-live.js
           grep -F "Your profile-access request is waiting for review." dist/assets/member-profile-live.js
           grep -F "Correct public facts" dist/assets/r1330-profile.js
