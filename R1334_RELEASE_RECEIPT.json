@@ -1,0 +1,91 @@
+{
+  "schema": "franklin.local-community-platform.release-receipt.v1",
+  "status": "QUALIFIED_SUCCESSOR",
+  "recordedAt": "2026-09-18",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "authorityTransfer": false,
+  "workOrder": "WO-20260915-SCC-LOCAL-FRANKLIN-LI40-ACTIVITY-CURRENTNESS-069",
+  "predecessor": {
+    "version": "FR-NAV1.30.12-HF3.12.4",
+    "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+    "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.12-HF3.12.4__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "bytes": 84454176,
+    "sha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f",
+    "manifestSha256": "1382d0384c537e1ca43a142eea7ed203bf8fc8090e83bf9322dcc782a253d796"
+  },
+  "successor": {
+    "version": "FR-NAV1.30.34-HF3.13.16",
+    "localQualification": "QUALIFIED",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "artifactHashSource": "CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json"
+  },
+  "profileAuthority": {
+    "role": "PROFILE_FACTORY",
+    "canonicalDiscoveryProfiles": 19103,
+    "publicProfileScope": 19104,
+    "wholesalePf1528Promoted": false
+  },
+  "localInvestigator": {
+    "role": "LOCAL_INVESTIGATOR",
+    "latestObservedHandoff": "SLI-FRANKLIN-HANDOFF-20260917-042",
+    "sha256": "5c8c848e0b40b70b4e23d0df8469bced9ab38ff57cb19e6829cbf8f967ed2a4a",
+    "promoted": false
+  },
+  "smarterJustice": {
+    "disposition": "SMARTER_JUSTICE_DONOR_NOT_USED",
+    "runtimeConnection": false,
+    "dataTransfer": false,
+    "writeback": false
+  },
+  "improvements": [
+    "clean-room Assistant retained and current release qualification repaired",
+    "finished business/professional profile presentation",
+    "1–5 ratings plus written firsthand reviews and moderation",
+    "verified profile-manager responses",
+    "free reviewed profile photo/logo management",
+    "paid Community Member reviewed cover/gallery",
+    "paid Community Member Franklin Navigator special offers",
+    "clearly labeled relevant sponsored Community Member visibility without endorsement",
+    "restrained profile color hierarchy and richer member presentation",
+    "runtime review/sponsored qualification tests",
+    "expected-auth and inline-style monitoring false-positive corrections",
+    "complete public+runtime deterministic release packaging"
+  ],
+  "tests": {
+    "preSealWorkflowRun": 35306302298,
+    "publicQualification": "PASS",
+    "localAssetRefs": {
+      "checked": 86,
+      "missing": 0
+    },
+    "deterministicDoubleBuild": "PASS_BYTE_IDENTICAL",
+    "freshExtraction": "PASS",
+    "runtime": {
+      "total": 29,
+      "pass": 29,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "runtime": {
+    "sourceCommit": "d2a2cfb212e72325d84d01461ef672a1ec95ad79",
+    "renderDeploy": "dep-dambijtbedkc73apgdo0",
+    "state": "LIVE",
+    "ready": true,
+    "openCritical": 0,
+    "openHigh": 0
+  },
+  "requiredReceipts": [
+    "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1334.md",
+    "PRE_SEAL_CURRENTNESS_RECEIPT__R1334.md",
+    "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1334.md",
+    "NO_LOSS_LEDGER__R1334.md",
+    "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1334.md",
+    "NEXT_VERSION_IMPROVEMENT_LIST__R1334.md"
+  ],
+  "finalArchiveAttestation": "CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json",
+  "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION; SCC acceptance/promotion remains a separate external authority gate"
+}
