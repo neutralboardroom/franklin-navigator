@@ -83,6 +83,15 @@ need(checked>0,'no local asset references checked')
 hf=(root/'dist/assets/hf36.js').read_text(errors='replace')
 color=(root/color_rel).read_text(errors='replace') if color_rel and (root/color_rel).is_file() else ''
 need(bool(color_asset) and color_asset in hf,'current release color system not loaded')
+need(f"const CURRENT_RELEASE='{release}'" in hf,'shared loader current release mismatch')
+need('meta.content=CURRENT_RELEASE' in hf,'shared loader release canonicalizer missing')
+need('dataset.franklinRelease=CURRENT_RELEASE' in hf,'shared loader release dataset missing')
+release_owners=[]
+for p in (root/'dist/assets').glob('*.js'):
+    if p.name=='hf36.js': continue
+    if 'franklin-release' in p.read_text(errors='replace'):
+        release_owners.append(str(p.relative_to(root)))
+need(not release_owners,'feature-specific public release-meta ownership: '+repr(release_owners))
 for token in ['--fr-teal:','--fr-green:','--fr-blue:','--fr-gold:','--fr-violet:']:
     need(token in color,'missing color token '+token)
 
