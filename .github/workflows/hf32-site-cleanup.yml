@@ -77,9 +77,14 @@ jobs:
           assert nav['rule']=='SHOW_MAXIMUM_PRACTICAL_TOP_LEVEL_ITEMS_WHILE_KEEPING_PRIMARY_NAV_ON_ONE_LINE'
           assert nav['fixedBreakpointHiding'] is False and nav['singleLinePrimaryNav'] is True
           mon=d['monitoring']
-          assert mon['version']=='FRANKLIN_ISSUE_MONITOR_1'
+          assert mon['version']=='FRANKLIN_ISSUE_MONITOR_2'
           assert mon['durableRequirement'].startswith('CONTINUE_SITE_WIDE')
           assert mon['rawSecretsForbidden'] is True
+          fix=mon['r1334Corrections']
+          assert fix['expectedAuth401NotHighIncident'] is True
+          assert fix['inlineStyleWithoutExternalUrlNotBrokenAsset'] is True
+          assert fix['localAssetReferenceSweep']=={'checked':86,'missing':0,'workflowRun':35305543099}
+          assert fix['postCorrectionOpenCritical']==0 and fix['postCorrectionOpenHigh']==0
           cc=d.get('communityConnector',{})
           if cc:
               assert cc['publicEntryPoint']=='FRANKLIN_ASSISTANT_REMAINS_FIRST_TOP_OF_HOME_ACTION'
