@@ -16,9 +16,55 @@
  function renderQueue(){const root=$('queue');root.replaceChildren();if(!csrf)return;if(!items.length){const p=document.createElement('p');p.textContent=t('empty');root.append(p);}for(const item of items){const article=document.createElement('article');article.className='request';const h=document.createElement('h3');h.textContent=item.profileName;const b=document.createElement('button');b.type='button';b.textContent=t('open');b.addEventListener('click',()=>openItem(item));article.append(h,b);root.append(article);}$('more').hidden=nextOffset===null;}
  async function load(offset=0){const g=generation,seq=++queueSequence,kind=$('kind').value;items=[];nextOffset=null;$('queue').replaceChildren();$('more').hidden=true;status(t('loading'));try{const data=await request(kind==='media'?'media/queue?offset='+offset:'queue?kind='+kind+'&offset='+offset);if(g!==generation||seq!==queueSequence||!csrf)return;items=data.items.map(x=>({...x,kind}));nextOffset=data.nextOffset;renderQueue();status('');}catch(e){if(g===generation)explain(e);}}
  async function renderMediaImage(root,item){try{const headers={'X-Franklin-Review':'1','X-Franklin-Review-CSRF':csrf};const r=await fetch(item.previewUrl,{credentials:'same-origin',headers,cache:'no-store'});if(!r.ok)return;const blob=await r.blob();const url=URL.createObjectURL(blob),img=document.createElement('img');img.src=url;img.alt='Submitted profile media';img.style.maxWidth='100%';img.style.maxHeight='440px';img.style.objectFit='contain';img.addEventListener('load',()=>URL.revokeObjectURL(url),{once:true});root.append(img);}catch{}}
- function renderDetail(reset){if(!selected)return;$('detail-title').textContent=selected.profileName;const root=$('details');root.replaceChildren();if(selected.kind==='media'){paragraph(root,'revision','Media submission');paragraph(root,'statement',selected.slot+' · position '+selected.position+' · '+selected.mimeType+' · '+selected.byteSize+' bytes');renderMediaImage(root,selected);}else{paragraph(root,'revision',String(selected.revision));paragraph(root,'statement',selected.statement);if(selected.evidenceUrl)link(root,t('source'),selected.evidenceUrl);if(selected.fields){for(const [k,v]of Object.entries(selected.fields)){if(['website','contactUrl','bookingUrl'].includes(k)&&v){const p=document.createElement('p');link(p,t(k),v);root.append(p);}else paragraph(root,k,v);}const p=document.createElement('p');p.textContent=t(selected.rightsConfirmed?'rights':'missingRights');root.append(p);}
- if(selected.kind!=='media'&&selected.fields){ }const old=$('choice').value;$('choice').replaceChildren();for(const val of ['',...(selected.kind==='representation'?['VERIFIED','CHANGES_REQUESTED','REJECTED']:['PUBLISH','CHANGES_REQUESTED'])]){const o=document.createElement('option');o.value=val;o.textContent=t(val||'choose');if(val==='PUBLISH'&&!selected.rightsConfirmed)o.disabled=true;$('choice').append(o);}if(!reset)$('choice').value=old;$('save').disabled=blocked||pending;}
- async function history(){if(!selected)return;const g=generation,item=selected;try{const d=await request(item.kind==='media'?'media/history?profileId='+encodeURIComponent(item.profileId)+'&accountId='+encodeURIComponent(item.accountId):'history?profileId='+encodeURIComponent(item.profileId)+'&accountId='+encodeURIComponent(item.accountId));if(g!==generation||selected!==item)return;const root=$('history');root.replaceChildren();if(!d.history.length){const p=document.createElement('p');p.textContent=t('noHistory');root.append(p);}for(const h of d.history){const a=document.createElement('article');a.className='request';paragraph(a,'decided',t(h.decision));paragraph(a,'revision',String(h.revision));paragraph(a,'reason',h.public_reason);paragraph(a,'evidence',h.evidence_notes);root.append(a);}status(t('readHistory'));}catch(e){if(g===generation)explain(e);}}
+ function renderDetail(reset){
+  if(!selected)return;
+  $('detail-title').textContent=selected.profileName;
+  const root=$('details');root.replaceChildren();
+  if(selected.kind==='media'){
+    paragraph(root,'statement',selected.slot+' · position '+selected.position+' · '+selected.mimeType+' · '+selected.byteSize+' bytes');
+    renderMediaImage(root,selected);
+    const p=document.createElement('p');p.textContent=t(selected.rightsConfirmed?'rights':'missingRights');root.append(p);
+  }else{
+    paragraph(root,'revision',String(selected.revision));
+    paragraph(root,'statement',selected.statement);
+    if(selected.evidenceUrl)link(root,t('source'),selected.evidenceUrl);
+    if(selected.fields){
+      for(const [k,v]of Object.entries(selected.fields)){
+        if(['website','contactUrl','bookingUrl'].includes(k)&&v){const p=document.createElement('p');link(p,t(k),v);root.append(p);}
+        else paragraph(root,k,v);
+      }
+      const p=document.createElement('p');p.textContent=t(selected.rightsConfirmed?'rights':'missingRights');root.append(p);
+    }
+  }
+  const old=$('choice').value;$('choice').replaceChildren();
+  const choices=selected.kind==='representation'?['VERIFIED','CHANGES_REQUESTED','REJECTED']:['PUBLISH','CHANGES_REQUESTED'];
+  for(const val of ['',...choices]){
+    const o=document.createElement('option');o.value=val;o.textContent=t(val||'choose');
+    if(val==='PUBLISH'&&!selected.rightsConfirmed)o.disabled=true;
+    $('choice').append(o);
+  }
+  if(!reset)$('choice').value=old;
+  $('save').disabled=blocked||pending;
+ }
+ async function history(){
+  if(!selected)return;
+  const g=generation,item=selected;
+  try{
+    const d=await request(item.kind==='media'?'media/history?profileId='+encodeURIComponent(item.profileId)+'&accountId='+encodeURIComponent(item.accountId):'history?profileId='+encodeURIComponent(item.profileId)+'&accountId='+encodeURIComponent(item.accountId));
+    if(g!==generation||selected!==item)return;
+    const root=$('history');root.replaceChildren();
+    if(!d.history.length){const p=document.createElement('p');p.textContent=t('noHistory');root.append(p);}
+    for(const h of d.history){
+      const a=document.createElement('article');a.className='request';
+      paragraph(a,'decided',t(h.decision));
+      if(h.revision!==undefined&&h.revision!==null)paragraph(a,'revision',String(h.revision));
+      paragraph(a,'reason',h.public_reason);
+      paragraph(a,'evidence',h.evidence_notes);
+      root.append(a);
+    }
+    status(t('readHistory'));
+  }catch(e){if(g===generation)explain(e);}
+ }
  function openItem(item){selected=item;blocked=false;pending=false;saved=false;$('decision').reset();$('detail').hidden=false;$('workspace').hidden=true;renderDetail(true);$('detail-title').focus();history();}
  $('login').addEventListener('submit',async e=>{e.preventDefault();if(pending)return;pending=true;$('login-button').disabled=true;const g=++generation;try{const data=await request('login',{email:$('email').value,password:$('password').value,emailCode:$('email-code').value.trim()});if(g!==generation)return;csrf=data.csrf;expiry=Date.parse(data.expiresAt);$('signin').hidden=true;$('workspace').hidden=false;$('logout').hidden=false;$('expiry').textContent=t('expires')+new Date(expiry).toLocaleTimeString(lang);timer=setTimeout(()=>clear(t('sessionExpired')),Math.max(0,expiry-Date.now()));await load();$('queue-heading').focus();}catch(e){if(g===generation)explain(e);}finally{$('password').value='';$('email-code').value='';pending=false;$('login-button').disabled=false;}});
  $('decision').addEventListener('submit',async e=>{e.preventDefault();if(!selected||blocked||pending)return;const item=selected,g=generation;const decision=$('choice').value;const confirmText=t('confirmQuestion')+'\n\n'+item.profileName+'\n'+t(decision)+'\n\n'+$('reason').value;if(!window.confirm(confirmText))return;pending=true;$('save').disabled=true;try{await request(item.kind==='media'?'media/review':item.kind,item.kind==='media'?{mediaId:item.mediaId,decision,publicReason:$('reason').value,evidenceNotes:$('notes').value,evidenceChecked:$('evidence-checked').checked}:{accountId:item.accountId,profileId:item.profileId,expectedRevision:item.revision,decision,publicReason:$('reason').value,evidenceNotes:$('notes').value,evidenceChecked:$('evidence-checked').checked});if(g!==generation||selected!==item)return;saved=true;blocked=true;await history();status(t('saved'));}catch(err){if(g===generation)explain(err);}finally{pending=false;if(g===generation)$('save').disabled=blocked;}});
