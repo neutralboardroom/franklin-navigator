@@ -1,0 +1,61 @@
+{
+  "schema": "franklin.local-community-platform.release-receipt.v1",
+  "status": "QUALIFIED_SUCCESSOR",
+  "recordedAt": "2026-09-18",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "authorityTransfer": false,
+  "acceptedCanonicalBase": {
+    "version": "FR-NAV1.30.12-HF3.12.4",
+    "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+    "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+  },
+  "immediateLocalQualifiedParent": {
+    "version": "FR-NAV1.30.34-HF3.13.16",
+    "commit": "d7b672eb39cc0e6e1fad751c07b1804b4423ae99",
+    "artifactSha256": "bbf6119ce8ee3f5ee2437c12344c41633945aa72cdc9c85ddb3916bf4ab62300",
+    "manifestSha256": "1683d5552a8b05c816aeb4344e3529410831e835990ab8cb8ecf06276d1dc195"
+  },
+  "successor": {
+    "version": "FR-NAV1.30.35-HF3.13.17",
+    "localQualification": "QUALIFIED_IF_CURRENT_HEAD_WORKFLOW_PASSES",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "artifactHashSource": "CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json"
+  },
+  "materialImprovement": {
+    "ownerDecision": "USE_RESTRAINED_SEMANTIC_COLOR_SYSTEM_THROUGHOUT_SITE_AND_PROFILES",
+    "asset": "/assets/r1335-color-system.css",
+    "coverageGate": "ALL_FULL_PUBLIC_PAGES_MUST_USE_COMMON_LOADER",
+    "profilePaletteUnifiedWithSite": true,
+    "randomDecorativeColoring": false
+  },
+  "preservedIntegrity": {
+    "ordinaryUnpaidOrderingUnaffected": true,
+    "recommendationOrEndorsementClaim": false,
+    "paymentChangesFactualTruth": false,
+    "paymentChangesReviewScore": false,
+    "profileFactoryAuthorityTransfer": false,
+    "localInvestigatorPromotion": false,
+    "smarterJusticeDonorUsed": false
+  },
+  "runtime": {
+    "release": "FR-NAV1.30.35-HF3.13.17",
+    "sourceCommit": "646050ecab5e72af6316760b9e94426b218f3ac4",
+    "renderDeploy": "dep-damc21e7bikc73b2lmu0",
+    "tests": {"total":29,"pass":29,"fail":0,"skip":0},
+    "openCritical": 0,
+    "openHigh": 0
+  },
+  "requiredReceipts": [
+    "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1335.md",
+    "PRE_SEAL_CURRENTNESS_RECEIPT__R1335.md",
+    "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1335.md",
+    "NO_LOSS_LEDGER__R1335.md",
+    "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1335.md",
+    "NEXT_VERSION_IMPROVEMENT_LIST__R1335.md"
+  ],
+  "finalArchiveAttestation": "CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json",
+  "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION; SCC acceptance/promotion remains a separate external authority gate"
+}
