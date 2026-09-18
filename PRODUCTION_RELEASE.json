@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.35-HF3.13.17",
+  "release": "FR-NAV1.30.36-HF3.13.18",
   "date": "2026-09-18",
   "base": "FR-NAV1.30.12-HF3.12.4",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1335 preserves the qualified R1334 Franklin product and applies the owner-approved restrained semantic color system consistently across the full public site and profile experience. Teal remains the primary Franklin action/brand color; soft green, blue, gold and violet are used by meaning rather than decoration. Profile reviews, member galleries/offers, sponsored visibility, ordinary-result neutrality, Profile Factory/Local Investigator/SRE/SCC authority boundaries, monitoring and all accepted capabilities remain intact.",
+  "scope": "R1336 preserves the qualified R1335 Franklin product and completes the screenshot-driven public presentation pass for the live homepage, Ask Franklin and profiles without removing working capabilities. It keeps the restrained semantic color system, makes the active navigation state the only accented navigation item, gives Ask Franklin a resident-facing conversational layout, removes internal release/source qualification jargon from public profile and supporting copy, preserves richer Community Member profiles and clearly labeled sponsored visibility, and adds a repeatable public-language audit. Profile Factory, Local Investigator, SRE/SCC authority boundaries, monitoring, review neutrality, ordinary unpaid ordering and all accepted R1335 capabilities remain intact.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -1224,5 +1224,106 @@
       },
       "exactArtifactHashSource": "CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json"
     }
+  },
+  "r1336": {
+    "version": "FR-NAV1.30.36-HF3.13.18",
+    "date": "2026-09-18",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CURRENT_HEAD_QUALIFICATION_PENDING",
+    "acceptedCanonicalBase": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    },
+    "immediateLocalQualifiedParent": {
+      "version": "FR-NAV1.30.35-HF3.13.17",
+      "commit": "e6e90726f13e5d2d78363a5539d7f77d1f7d750f",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.35-HF3.13.17__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "bytes": 81617600,
+      "sha256": "20728dfeabc446224f5e00effe22f9eee046d3daa3d12144f329e4690da37c86",
+      "manifestSha256": "319f9a1ffe8365a3f9950a2e467a44cdf9554405d67b4de8c01a91301e12d2d0",
+      "sccAccepted": false
+    },
+    "ownerDirection": "FINISH_LIVE_PUBLIC_HOMEPAGE_ASK_FRANKLIN_AND_PROFILE_PRESENTATION_AND_REMOVE_INTERNAL_LANGUAGE",
+    "publicExperience": {
+      "homepageCurrentColorAndLoaderBinding": true,
+      "askFranklinResidentFacingLayout": true,
+      "askFranklinConversationFirst": true,
+      "activeNavigationItemOnlyAccented": true,
+      "profileExperienceCurrentAssetsBound": true,
+      "profileInternalReleaseJargonRemoved": true,
+      "profileSourceQualificationJargonRemoved": true,
+      "privacyAndActionCenterCopyRewrittenForPublic": true,
+      "noWorkingCapabilityIntentionallyRemoved": true
+    },
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "semanticAccents": {
+        "call": "SOFT_GREEN",
+        "contactInformation": "SOFT_BLUE",
+        "directionsOffersSponsored": "SOFT_GOLD",
+        "reviewsCommunitySupportingContent": "SOFT_VIOLET_OR_BLUE_BY_CONTEXT"
+      },
+      "randomDecorativeColoring": false,
+      "profilePaletteUnifiedWithSite": true,
+      "qualificationGate": "CURRENT_RELEASE_METADATA_DRIVEN_ASSET_AND_ALL_FULL_PUBLIC_PAGES_COMMON_LOADER"
+    },
+    "publicLanguageAudit": {
+      "script": "scripts/public-language-audit.py",
+      "latestPreSealRun": 35323747673,
+      "publicPagesChecked": 19362,
+      "findingCount": 0,
+      "status": "PASS_BEFORE_COLOR_GATE"
+    },
+    "profileExperience": {
+      "publicScopeProfiles": 19104,
+      "canonicalDiscoveryProfiles": 19103,
+      "richerPaidMemberProfilesPreserved": true,
+      "communityRatingsAndWrittenReviewsPreserved": true,
+      "reviewedPhotoLogoUploadPreserved": true,
+      "paidMemberGalleryPreserved": true,
+      "paidMemberSpecialOffersPreserved": true,
+      "sponsoredVisibilityClearlyLabeled": true,
+      "ordinaryUnpaidOrderingUnaffected": true,
+      "recommendationOrEndorsementClaim": false,
+      "paymentChangesFactualTruth": false,
+      "paymentChangesReviewScore": false
+    },
+    "upstream": {
+      "profileFactoryWholesalePf1528Promoted": false,
+      "localInvestigatorLatestObserved": "SLI-FRANKLIN-HANDOFF-20260917-042",
+      "localInvestigatorPromoted": false,
+      "smarterJustice": "SMARTER_JUSTICE_DONOR_NOT_USED"
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "646050ecab5e72af6316760b9e94426b218f3ac4",
+      "deploy": "dep-damc21e7bikc73b2lmu0",
+      "releaseEnv": "FR-NAV1.30.35-HF3.13.17",
+      "changedInR1336": false,
+      "tests": {
+        "total": 29,
+        "pass": 29,
+        "fail": 0,
+        "skipped": 0
+      },
+      "ready": true,
+      "openCritical": 0,
+      "openHigh": 0
+    },
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1336.md",
+    "proofBoundary": [
+      "R1336 public-source changes are not called live until the exact qualified source is deployed and verified on the public site.",
+      "No fabricated public paid member, review, gallery, offer, endorsement or recommendation was created.",
+      "Wholesale PF15.28 and LI42 are not promoted without their required acceptance/currentness gates.",
+      "R1336 is not SCC-accepted merely because Local qualification or deployment succeeds."
+    ],
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_DEPLOYMENT; SCC acceptance/promotion remains a separate external authority gate"
   }
 }
