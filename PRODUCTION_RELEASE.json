@@ -1303,10 +1303,13 @@
     },
     "runtime": {
       "branch": "franklin-commerce-runtime-r30",
-      "commit": "646050ecab5e72af6316760b9e94426b218f3ac4",
-      "deploy": "dep-damc21e7bikc73b2lmu0",
-      "releaseEnv": "FR-NAV1.30.35-HF3.13.17",
-      "changedInR1336": false,
+      "commit": "6243e08d6944d541aa32a53b43b131f312ef7ff7",
+      "deploy": "PENDING_CURRENT_RUNTIME_DEPLOY_CONFIRMATION",
+      "releaseEnv": "FR-NAV1.30.36-HF3.13.18",
+      "changedInR1336": true,
+      "functionalChanges": false,
+      "releaseIdentityAdvanced": true,
+      "parentCommit": "646050ecab5e72af6316760b9e94426b218f3ac4",
       "tests": {
         "total": 29,
         "pass": 29,
