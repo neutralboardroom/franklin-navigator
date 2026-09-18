@@ -14,7 +14,7 @@ body.hf35-profile.r1330-profile .profile-currentness{display:none!important}
 body.hf35-profile.r1330-profile .r22-profile-hero h1{font-size:clamp(2.1rem,4vw,3.35rem);line-height:1.04;margin:.12rem 0 .5rem}
 body.hf35-profile.r1330-profile .profile-location{font-size:1.05rem;color:var(--r1330-muted);margin:.25rem 0 .65rem}
 body.hf35-profile.r1330-profile .r1330-profile-state{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:13px 0 4px}
-body.hf35-profile.r1330-profile .r1330-state-label{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:.9rem;padding:7px 10px;border-radius:9px;background:#eef5f4;border:1px solid #c9dcda}
+body.hf35-profile.r1330-profile .r1330-state-label{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:.9rem;color:var(--r1330-muted)}
 body.hf35-profile.r1330-profile .r1330-state-label::before{content:'';width:8px;height:8px;border-radius:50%;background:#61777a}
 body.hf35-profile.r1330-profile .r1330-state-label.is-managed::before{background:#1e776f}
 body.hf35-profile.r1330-profile .r1330-claim-link{font-weight:800;text-underline-offset:3px}
