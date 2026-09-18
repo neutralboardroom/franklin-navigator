@@ -22,10 +22,22 @@
       'Basic factual corrections and requests to remove a profile from public view are free. No membership or payment is required.':'Las correcciones factuales básicas y las solicitudes para retirar un perfil de la vista pública son gratuitas. No se requiere membresía ni pago.',
       'Factual corrections and requests to remove a profile from public view are free and do not require membership. Membership does not buy factual accuracy, ranking, endorsement, credentials, leads or guaranteed results.':'Las correcciones factuales y las solicitudes para retirar un perfil de la vista pública son gratuitas y no requieren membresía. La membresía no compra exactitud factual, clasificación, respaldo, credenciales, clientes potenciales ni resultados garantizados.',
       'Continue — $35/year':'Continuar — $35/año',
-      'Profile verified. Franklin Navigator Community Membership is $35/year and renews annually until canceled.':'Perfil verificado. La Membresía Comunitaria de Franklin Navigator cuesta $35/año y se renueva anualmente hasta que se cancele.'
+      'Profile verified. Franklin Navigator Community Membership is $35/year and renews annually until canceled.':'Perfil verificado. La Membresía Comunitaria de Franklin Navigator cuesta $35/año y se renueva anualmente hasta que se cancele.',
+      'Profile photo viewer':'Visor de fotos del perfil',
+      'Close photo':'Cerrar foto',
+      'See all photos':'Ver todas las fotos',
+      'At a glance':'De un vistazo',
+      'Helpful links':'Enlaces útiles',
+      'Photos':'Fotos',
+      'Managed profile':'Perfil administrado',
+      'Unclaimed profile':'Perfil sin reclamar',
+      'Official Franklin Navigator profile':'Perfil oficial de Franklin Navigator',
+      'Upload your own image':'Subir su propia imagen',
+      'Claim this profile free to upload your own photo or logo.':'Reclame este perfil gratis para subir su propia foto o logotipo.'
     };
     if(fixed[s])return fixed[s];
     let m;
+    if((m=s.match(/^Open profile photo (\d+) of (\d+)$/)))return `Abrir foto del perfil ${m[1]} de ${m[2]}`;
     if((m=s.match(/^Signed in as (.+)\.$/)))return `Sesión iniciada como ${m[1]}.`;
     if((m=s.match(/^Selected: (.+)$/)))return `Seleccionado: ${m[1]}`;
     if((m=s.match(/^Continue with (.+)$/)))return `Continuar con ${m[1].replace('/month','/mes').replace('/year','/año')}`;
