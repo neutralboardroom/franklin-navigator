@@ -14,6 +14,7 @@ on:
       - '.github/workflows/hf32-site-cleanup.yml'
       - 'scripts/public-language-audit.py'
       - 'scripts/release-meta-integrity.py'
+      - 'scripts/validate-current-release.py'
   pull_request:
     branches: [main]
     paths:
@@ -134,6 +135,9 @@ jobs:
           node --check dist/assets/r1332-member-offers.js
           node --check dist/assets/r1333-paid-sponsored.js
           node --check dist/assets/local-discovery.js
+          grep -F "Profile photo viewer" dist/assets/r1333-paid-sponsored.js
+          grep -F "Open profile photo " dist/assets/r1333-paid-sponsored.js
+          grep -F "['official-links','Helpful links']" dist/assets/r1330-profile.js
           test -f dist/assets/r1330-profile.css
           test -f dist/assets/r1332-profile.css
           test -f dist/assets/r1333-profile.css
