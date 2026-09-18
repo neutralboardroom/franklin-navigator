@@ -188,13 +188,13 @@ jobs:
         run: |
           set -euo pipefail
           node --check dist/assets/hf36.js
-          test -f dist/assets/r1334-color-system.css
-          grep -F "r1334-color-system.css" dist/assets/hf36.js
+          test -f dist/assets/r1335-color-system.css
+          grep -F "r1335-color-system.css" dist/assets/hf36.js
           grep -F "franklin-color-system" dist/assets/hf36.js
-          grep -F -- "--fr-teal:" dist/assets/r1334-color-system.css
-          grep -F -- "--fr-blue:" dist/assets/r1334-color-system.css
-          grep -F -- "--fr-gold:" dist/assets/r1334-color-system.css
-          grep -F -- "--fr-violet:" dist/assets/r1334-color-system.css
+          grep -F -- "--fr-teal:" dist/assets/r1335-color-system.css
+          grep -F -- "--fr-blue:" dist/assets/r1335-color-system.css
+          grep -F -- "--fr-gold:" dist/assets/r1335-color-system.css
+          grep -F -- "--fr-violet:" dist/assets/r1335-color-system.css
           python - <<'PY'
           from pathlib import Path
           from html.parser import HTMLParser
