@@ -1127,7 +1127,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "QUALIFIED_SUCCESSOR_CANDIDATE_PENDING_FINAL_SEAL",
+    "state": "QUALIFIED_SUCCESSOR",
     "acceptedCanonicalBase": {
       "version": "FR-NAV1.30.12-HF3.12.4",
       "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
@@ -1209,6 +1209,20 @@
     ],
     "sccAccepted": false,
     "sccCanonicalCurrent": false,
-    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION; SCC acceptance/promotion remains separate"
+    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION; SCC acceptance/promotion remains separate",
+    "qualification": {
+      "currentHeadWorkflowRequired": true,
+      "expectedColorCoverage": {
+        "publicPages": 19363,
+        "missing": 0
+      },
+      "expectedRuntimeTests": {
+        "total": 29,
+        "pass": 29,
+        "fail": 0,
+        "skipped": 0
+      },
+      "exactArtifactHashSource": "CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json"
+    }
   }
 }
