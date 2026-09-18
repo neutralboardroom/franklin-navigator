@@ -158,6 +158,10 @@ const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMCo
 ready(()=>{
   const body=document.body;
   if(!body)return;
+  if(location.pathname.startsWith('/profiles/')){
+    loadCss('/assets/r1330-profile.css?v=frnav1330','franklin-profile-r1330');
+    loadScript('/assets/r1330-profile.js?v=frnav1330','franklin-profile-r1330').catch(()=>{});
+  }
   normalizePrimaryNav();
   installCommunityConnectorR1311();
   loadScript('/assets/franklin-site-monitor-r1308.js?v=frnav1308','franklin-site-monitor-r1308').catch(()=>{});
