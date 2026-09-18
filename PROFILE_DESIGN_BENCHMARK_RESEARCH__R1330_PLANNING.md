@@ -165,14 +165,24 @@ Secondary utilities:
 
 Do not show empty/invented actions.
 
-### 7. Trust/currentness made lighter
-Replace the large source-backed side card with compact, accessible trust chips/lines such as:
-- Source-backed profile
-- Checked Sep 17, 2026
-- Unclaimed / Claimed
-- Representation verified before management
+### 7. Remove routine sourcing/currentness metadata from the visible profile hero
+Do not show a permanent top-of-profile box containing routine metadata such as:
+- “Source-backed profile”
+- “Checked [date]”
+- “Representation is verified before management access”
+- a dedicated Sources link inside a large hero-side card
 
-Keep full provenance in the expandable Sources & listing details section.
+Owner-approved visible state:
+- show **Unclaimed profile** when applicable;
+- pair it with a clear **Claim / manage this profile** action;
+- after a genuine authority-verification event, show the appropriate claimed/managed state without implying endorsement.
+
+Keep source dates, provenance, evidence, and representation-verification mechanics available in:
+- the expandable **Sources & listing details** section;
+- the claim/authority-verification journey where the explanation is operationally relevant;
+- internal evidence/receipts.
+
+This frees prime profile-header space for identity, image/logo, category, local context and useful actions while preserving transparency on demand.
 
 ### 8. Better owner/member story
 Member profile should support a concise owner-provided “About” section near the top, clearly separated from source-backed facts and reviewed before publication.
@@ -218,3 +228,22 @@ Government/public agency:
 - no fabricated availability, credentials or endorsement;
 - no geocoding a mailing-only/service-area profile as a storefront;
 - no owner-uploaded image published before required authority/review checks.
+
+
+## Owner clarification — visible claim state vs. provenance
+
+Owner approved keeping a simple visible claim state such as **Unclaimed profile** plus **Claim / manage this profile**. Owner does not want routine provenance/currentness text or source dates displayed prominently on every profile. Treat this as the default profile-presentation rule unless a particular regulated or safety-sensitive profile needs stronger visible source disclosure.
+
+## Profile-image/upload requirement
+
+Current Profile Studio only accepts a public image URL and explicitly says no file is uploaded there. That is not the desired final UX.
+
+Next qualified implementation should, if the media pipeline can be made production-safe:
+- provide an actual **Upload your own photo or logo** control;
+- say clearly that the authorized profile manager can choose the image they want people to see;
+- support a logo, headshot, or representative business/organization image depending on entity type;
+- allow changing/replacing the chosen image later;
+- preserve review/moderation, file-type/size validation, safe storage, rights/consent, malware/content handling and rollback;
+- never imply that upload means immediate approval/publication.
+
+If a secure production upload pipeline is not yet ready, do not fake a file-upload control; keep the public-URL fallback temporarily but explain the planned upload path clearly.
