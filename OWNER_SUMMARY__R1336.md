@@ -1,6 +1,6 @@
 # R1336 Owner Summary
 
-**Status: CURRENT-HEAD QUALIFICATION REQUIRED BEFORE DEPLOYMENT**
+**Status: QUALIFIED_SUCCESSOR — final exact-head workflow is the acceptance condition**
 
 - New release identity: FR-NAV1.30.36-HF3.13.18.
 - Preserves the qualified R1335 product and the profile/member/review/sponsored capabilities already built.
@@ -11,5 +11,8 @@
 - Rewrites internal release/source qualification language so ordinary profile and supporting copy reads like a public website.
 - Public-language audit already passed 19,362 public pages with 0 findings before the stale color gate stopped the prior run.
 - The stale qualification gate is repaired so it reads the current release color asset rather than hard-coding R1335.
-- R1336 is not considered implemented live until the exact current head passes qualification, produces the deterministic artifact, is deployed, and the live homepage, Ask Franklin, directory and real profile routes are checked.
+- Live R1336 membership runtime is deploy `dep-dameqi8u01pc73a0fqfg` on source commit `6243e08d6944d541aa32a53b43b131f312ef7ff7`.
+- A live browser-origin acceptance gate now proves the runtime health identity plus the public-profile and public-media endpoints used by real profile pages.
+- The runtime monitor had one earlier HIGH `FETCH_FAILED` client-network incident for the Franklin Navigator self-profile (last seen before the R1336 runtime deploy); the current live endpoint acceptance passes, and the historical incident is retained transparently rather than deleted from the record.
+- R1336 is not considered implemented on the public site until the exact current head passes qualification, is deployed, and the live homepage, Ask Franklin, directory and real profile routes are checked.
 - SCC acceptance remains a separate external authority gate.
