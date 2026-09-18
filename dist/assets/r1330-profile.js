@@ -1,7 +1,7 @@
 /* R1330 — shared public profile presentation and reviewed-media projection */
 (()=>{'use strict';
  const match=location.pathname.match(/^\/profiles\/(FR-[A-Z0-9]+-[A-Za-z0-9][A-Za-z0-9._-]{2,100})\/$/);if(!match)return;
- const id=decodeURIComponent(match[1]),API='https://franklin-navigator-membership.onrender.com';
+ const id=decodeURIComponent(match[1]),API='https://franklin-navigator-membership.onrender.com',SELF_ID='FR-ORG-b00c0ace7943973c',isNavigatorSelf=id===SELF_ID;
  const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn,{once:true}):fn();
  const el=(t,txt,cls)=>{const n=document.createElement(t);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n};
  const abs=u=>{try{return new URL(u,API).href}catch{return''}};
@@ -53,7 +53,14 @@
  function stateRow(managed){
    const copy=document.querySelector('.r22-profile-hero-grid>div:nth-child(2)');if(!copy)return;
    let row=copy.querySelector('.r1330-profile-state');if(!row){row=el('div','', 'r1330-profile-state');const loc=copy.querySelector('.profile-location');(loc||copy.querySelector('h1'))?.insertAdjacentElement('afterend',row)}
-   row.replaceChildren();const label=el('span',managed?'Managed profile':'Unclaimed profile','r1330-state-label'+(managed?' is-managed':''));
+   row.replaceChildren();
+   if(isNavigatorSelf){
+     row.append(el('span','Official Franklin Navigator profile','r1330-state-label is-managed'));
+     copy.querySelector('.r1331-media-hint')?.remove();
+     document.querySelector('#manage')?.remove();
+     return;
+   }
+   const label=el('span',managed?'Managed profile':'Unclaimed profile','r1330-state-label'+(managed?' is-managed':''));
    const a=el('a',managed?'Manage this profile':'Claim or manage this profile','r1330-claim-link');a.href='/profile-access/?profile='+encodeURIComponent(id);row.append(label,a);
    let hint=copy.querySelector('.r1331-media-hint');if(!hint){hint=el('p','', 'r1331-media-hint');row.insertAdjacentElement('afterend',hint)}
    hint.replaceChildren();
@@ -69,8 +76,7 @@
  }
  ready(async()=>{
    document.body.classList.add('r1330-profile');
-   const releaseMeta=document.querySelector('meta[name="franklin-release"]');if(releaseMeta)releaseMeta.content='FR-NAV1.30.30-HF3.13.12';
-   const current=document.querySelector('.profile-currentness'),fallbackManaged=current?!/unclaimed/i.test(current.textContent||''):false;
+   const current=document.querySelector('.profile-currentness'),fallbackManaged=isNavigatorSelf?true:(current?!/unclaimed/i.test(current.textContent||''):false);
    current?.remove();cleanPublicLanguage();stateRow(fallbackManaged);
    try{
      const [profileRes,mediaRes]=await Promise.allSettled([
