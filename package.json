@@ -7,7 +7,7 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "start": "npm run check && node scripts/scc-runtime-route-guard.mjs && node scripts/owner-first-value-reconcile.cjs && node scripts/owner-review-preflight.cjs && node server.js",
+    "start": "npm test && npm run check && node scripts/scc-runtime-route-guard.mjs && node scripts/owner-first-value-reconcile.cjs && node scripts/owner-review-preflight.cjs && node server.js",
     "test": "node --test",
     "check": "node --check server.js && node --check lib/catalog.js && node --check lib/lifecycle.js && node --check lib/security.js && node --check lib/member-fulfillment.js && node --check lib/member-media.js && node --check lib/reviews.js && node --check lib/profile-scope.js && node --check lib/reviewer-console.js && node --check lib/member-profile-policy.js && node --check scripts/scc-runtime-route-guard.mjs && node --check scripts/owner-first-value-reconcile.cjs && node --check scripts/owner-review-preflight.cjs"
   },
