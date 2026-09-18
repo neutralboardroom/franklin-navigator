@@ -1,7 +1,7 @@
 /* R1332 — finished profile UX + Franklin community ratings and written reviews */
 (()=>{'use strict';
  const match=location.pathname.match(/^\/profiles\/(FR-[A-Z0-9]+-[A-Za-z0-9][A-Za-z0-9._-]{2,100})\/$/);if(!match)return;
- const id=decodeURIComponent(match[1]),API='https://franklin-navigator-membership.onrender.com',reviewable=/^FR-(?:ORG|HLT)-/.test(id);
+ const id=decodeURIComponent(match[1]),API='https://franklin-navigator-membership.onrender.com',reviewable=!/^FR-(?:GOV|CIV|NPO)-/.test(id);
  const q=(s,r=document)=>r.querySelector(s),qa=(s,r=document)=>[...r.querySelectorAll(s)];
  const el=(t,txt,cls)=>{const n=document.createElement(t);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n};
  const btn=(txt,cls='button')=>{const b=el('button',txt,cls);b.type='button';return b};
