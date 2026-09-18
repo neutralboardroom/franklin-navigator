@@ -198,13 +198,29 @@ jobs:
         run: |
           set -euo pipefail
           node --check dist/assets/hf36.js
-          test -f dist/assets/r1335-color-system.css
-          grep -F "r1335-color-system.css" dist/assets/hf36.js
+          color_asset="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('PRODUCTION_RELEASE.json').read_text())
+          release=d['release']
+          meta=next(
+              (v for v in d.values()
+               if isinstance(v,dict) and v.get('version')==release and isinstance(v.get('colorSystem'),dict)),
+              None
+          )
+          assert meta is not None, f'current release colorSystem metadata missing: {release}'
+          asset=meta['colorSystem']['asset']
+          assert asset.startswith('/assets/') and asset.endswith('.css'), asset
+          print('dist/'+asset.lstrip('/'))
+          PY
+          )"
+          test -f "$color_asset"
+          grep -F "$(basename "$color_asset")" dist/assets/hf36.js
           grep -F "franklin-color-system" dist/assets/hf36.js
-          grep -F -- "--fr-teal:" dist/assets/r1335-color-system.css
-          grep -F -- "--fr-blue:" dist/assets/r1335-color-system.css
-          grep -F -- "--fr-gold:" dist/assets/r1335-color-system.css
-          grep -F -- "--fr-violet:" dist/assets/r1335-color-system.css
+          grep -F -- "--fr-teal:" "$color_asset"
+          grep -F -- "--fr-blue:" "$color_asset"
+          grep -F -- "--fr-gold:" "$color_asset"
+          grep -F -- "--fr-violet:" "$color_asset"
           python - <<'PY'
           from pathlib import Path
           from html.parser import HTMLParser
