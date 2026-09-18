@@ -1,0 +1,171 @@
+/* R1335 — Franklin site-wide restrained color system
+   One shared semantic palette for public pages and profiles. */
+:root{
+  --fr-teal:#075d63;
+  --fr-teal-strong:#064f54;
+  --fr-teal-soft:#e8f5f3;
+  --fr-green:#2f6b4f;
+  --fr-green-soft:#edf7ef;
+  --fr-blue:#2e5f8f;
+  --fr-blue-soft:#eef5fb;
+  --fr-gold:#8a5a00;
+  --fr-gold-soft:#fff6df;
+  --fr-violet:#65539a;
+  --fr-violet-soft:#f3f0fb;
+  --fr-ink:#102b32;
+  --fr-muted:#5b6d72;
+  --fr-line:#d8e3e4;
+  --fr-surface:#ffffff;
+  --fr-soft:#f6f9f9;
+  --fr-shadow:0 9px 26px rgba(16,43,50,.07);
+}
+body.franklin-color-system{
+  color:var(--fr-ink);
+  background:#fff;
+}
+body.franklin-color-system .eyebrow{
+  color:var(--fr-teal);
+  letter-spacing:.055em;
+}
+body.franklin-color-system .button.primary,
+body.franklin-color-system button.primary,
+body.franklin-color-system input[type="submit"].primary{
+  background:var(--fr-teal)!important;
+  border-color:var(--fr-teal)!important;
+  color:#fff!important;
+}
+body.franklin-color-system .button.primary:hover,
+body.franklin-color-system button.primary:hover{
+  background:var(--fr-teal-strong)!important;
+  border-color:var(--fr-teal-strong)!important;
+}
+body.franklin-color-system .button:not(.primary){
+  border-color:#bfd0d2;
+}
+body.franklin-color-system a:not(.button){text-underline-offset:3px}
+
+/* Shared panels: white first, color used as hierarchy rather than decoration. */
+body.franklin-color-system .r29-panel,
+body.franklin-color-system .r22-card,
+body.franklin-color-system .hf35-member-module,
+body.franklin-color-system .r1311-action{
+  border-color:var(--fr-line);
+  box-shadow:0 3px 14px rgba(16,43,50,.035);
+}
+body.franklin-color-system .r29-panel:nth-of-type(4n+1),
+body.franklin-color-system .r1311-action:nth-child(4n+1){background:linear-gradient(145deg,#fff,var(--fr-teal-soft))}
+body.franklin-color-system .r29-panel:nth-of-type(4n+2),
+body.franklin-color-system .r1311-action:nth-child(4n+2){background:linear-gradient(145deg,#fff,var(--fr-blue-soft))}
+body.franklin-color-system .r29-panel:nth-of-type(4n+3),
+body.franklin-color-system .r1311-action:nth-child(4n+3){background:linear-gradient(145deg,#fff,var(--fr-gold-soft))}
+body.franklin-color-system .r29-panel:nth-of-type(4n),
+body.franklin-color-system .r1311-action:nth-child(4n){background:linear-gradient(145deg,#fff,var(--fr-violet-soft))}
+
+/* Page-family accents keep meaning consistent across the site. */
+body.franklin-page-home .r24-home-hero,
+body.franklin-page-assistant main>section:first-child{
+  background:linear-gradient(135deg,#f7fbfb 0%,var(--fr-teal-soft) 100%);
+}
+body.franklin-page-directory main>section:first-child,
+body.franklin-page-directory .r29-hero{
+  background:linear-gradient(135deg,#f8fbfd 0%,var(--fr-blue-soft) 100%);
+}
+body.franklin-page-community main>section:first-child,
+body.franklin-page-community .r29-hero,
+body.franklin-page-activities main>section:first-child{
+  background:linear-gradient(135deg,#fbf9ff 0%,var(--fr-violet-soft) 100%);
+}
+body.franklin-page-business main>section:first-child,
+body.franklin-page-membership main>section:first-child,
+body.franklin-page-business .r29-hero,
+body.franklin-page-membership .r29-hero{
+  background:linear-gradient(135deg,#fffdfa 0%,var(--fr-gold-soft) 100%);
+}
+body.franklin-page-help main>section:first-child,
+body.franklin-page-tasks main>section:first-child{
+  background:linear-gradient(135deg,#fbfdfb 0%,var(--fr-green-soft) 100%);
+}
+
+/* Navigation and useful status/action semantics. */
+body.franklin-color-system header nav a[aria-current="page"]{
+  color:var(--fr-teal);
+  background:var(--fr-teal-soft);
+  border-radius:8px;
+}
+body.franklin-color-system .franklin-nav-ask{color:var(--fr-teal)!important}
+body.franklin-color-system .franklin-nav-priority-business{color:var(--fr-gold)!important}
+body.franklin-color-system .success,
+body.franklin-color-system .is-success,
+body.franklin-color-system [data-status="success"]{color:var(--fr-green)}
+body.franklin-color-system .warning,
+body.franklin-color-system .is-warning,
+body.franklin-color-system [data-status="warning"]{color:var(--fr-gold)}
+
+/* Common conversion/action classes where they occur outside profiles. */
+body.franklin-color-system a[href^="tel:"].button{background:var(--fr-green-soft);border-color:#bdd9c5;color:#24563f}
+body.franklin-color-system a[href^="mailto:"].button{background:var(--fr-blue-soft);border-color:#c4d8ea;color:#244f78}
+body.franklin-color-system a[href*="maps.google"].button,
+body.franklin-color-system a[href*="google.com/maps"].button,
+body.franklin-color-system a[href*="maps.apple.com"].button{background:var(--fr-gold-soft);border-color:#ead29a;color:#704900}
+
+/* Assistant: user and Franklin turns stay visually distinct without becoming loud. */
+body.franklin-color-system .franklin-chat-row.is-assistant .franklin-chat-bubble{background:var(--fr-teal-soft);border-color:#bddbd7}
+body.franklin-color-system .franklin-chat-row.is-user .franklin-chat-bubble{background:var(--fr-blue-soft);border-color:#cbdceb}
+
+/* Directory/discovery cards get a subtle useful accent, not a rainbow. */
+body.franklin-page-directory [data-dir-results] article,
+body.franklin-page-directory .directory-card{
+  border-color:var(--fr-line);
+  box-shadow:0 4px 16px rgba(16,43,50,.04);
+}
+body.franklin-page-directory [data-dir-results] article:hover,
+body.franklin-page-directory .directory-card:hover{
+  border-color:#b7ced0;
+  box-shadow:var(--fr-shadow);
+}
+
+/* Business/member surfaces use warm membership accents, while facts remain neutral. */
+body.franklin-page-business .hf310-checks li::marker,
+body.franklin-page-membership .hf310-checks li::marker{color:var(--fr-green)}
+body.franklin-page-business .r29-panel strong,
+body.franklin-page-membership .r29-panel strong{color:var(--fr-ink)}
+
+/* Reviews/community feedback use the same blue trust surface site-wide. */
+body.franklin-color-system #reviews,
+body.franklin-color-system .reviews-section,
+body.franklin-color-system .community-feedback{
+  background:linear-gradient(135deg,#fff,var(--fr-blue-soft));
+  border-color:#d7e6f3;
+}
+
+/* Offers and paid visibility always use warm gold so users learn the visual meaning. */
+body.franklin-color-system .r1332-special-offer,
+body.franklin-color-system .r1333-sponsored-strip,
+body.franklin-color-system .r1333-directory-sponsored-section,
+body.franklin-color-system .sponsored,
+body.franklin-color-system [data-sponsored]{
+  --fr-context-accent:var(--fr-gold);
+}
+
+/* Footer gets a quiet visual finish instead of another white block. */
+body.franklin-color-system .footer{
+  background:linear-gradient(180deg,#f8fbfb,#f1f7f6);
+  border-top:1px solid var(--fr-line);
+}
+
+/* Profiles inherit the same variables so their existing richer palette is one system. */
+body.hf35-profile.franklin-color-system{
+  --r1333-teal:var(--fr-teal);
+  --r1333-teal-soft:var(--fr-teal-soft);
+  --r1333-green:var(--fr-green);
+  --r1333-green-soft:var(--fr-green-soft);
+  --r1333-gold:var(--fr-gold);
+  --r1333-gold-soft:var(--fr-gold-soft);
+  --r1333-blue:var(--fr-blue);
+  --r1333-blue-soft:var(--fr-blue-soft);
+  --r1333-violet:var(--fr-violet);
+  --r1333-violet-soft:var(--fr-violet-soft);
+}
+@media (prefers-reduced-motion:reduce){
+  body.franklin-color-system *,body.franklin-color-system *::before,body.franklin-color-system *::after{transition-duration:.01ms!important}
+}
