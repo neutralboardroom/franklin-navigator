@@ -245,11 +245,12 @@ jobs:
 
           # Main/public source bytes from the exact workflow commit.
           for p in sorted(root.rglob('*')):
+              rel0=p.relative_to(root).as_posix()
+              if rel0 in exclude or rel0.startswith('.git/'): continue
               if p.is_symlink():
                   raise AssertionError(f'symlink not allowed in release: {p}')
               if not p.is_file(): continue
-              rel=safe(p.relative_to(root).as_posix())
-              if rel in exclude or rel.startswith('.git/'): continue
+              rel=safe(rel0)
               if rel.endswith('/.env') or rel=='.env':
                   raise AssertionError(f'secret-bearing env file prohibited: {rel}')
               payload[rel]=p.read_bytes()
