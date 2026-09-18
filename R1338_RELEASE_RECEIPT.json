@@ -1,6 +1,6 @@
 {
   "schema": "franklin.local-community-platform.release-receipt.v1",
-  "status": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+  "status": "CURRENT_HEAD_QUALIFICATION_PENDING",
   "recordedAt": "2026-09-18",
   "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
   "activeEdition": "FRANKLIN_TN",
@@ -22,7 +22,10 @@
     "release": "FR-NAV1.30.38-HF3.13.20",
     "live": true,
     "claimReviewerAcceptance": "PASS",
-    "issueMonitoringAcceptance": "PASS"
+    "issueMonitoringAcceptance": "PASS",
+    "sourceCommit": "012697505ce1b353178df223bf98724a27bab610",
+    "renderDeploy": "dep-damhacdbedkc73boogfg",
+    "deployState": "LIVE"
   },
   "profilePath": {
     "exactProfileContinuity": true,
@@ -59,5 +62,14 @@
     "finalAcceptanceRule": "This sealed receipt commit must pass the same exact-source qualification before production static deployment.",
     "status": "SUPERSEDED_BY_FINAL_PROFILE_UX_REFINEMENT"
   },
-  "benchmarkReceipt": "PROFILE_CLAIM_MANAGEMENT_BENCHMARK__R1338.md"
+  "benchmarkReceipt": "PROFILE_CLAIM_MANAGEMENT_BENCHMARK__R1338.md",
+  "finalProfileCenterRefinement": {
+    "profileCenterNaming": true,
+    "publicManagementLabels": true,
+    "activePaidManagementEndToSupport": true,
+    "workEmailHint": true,
+    "exactMembershipDeepLink": true,
+    "correctionReturnPath": true,
+    "routeNavigationConsistency": true
+  }
 }
