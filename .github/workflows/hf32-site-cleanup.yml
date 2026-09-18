@@ -187,6 +187,11 @@ jobs:
           print({'unique_refs':len(refs),'local_refs_checked':checked,'missing':0})
           PY
 
+      - name: Public-facing language audit
+        run: |
+          set -euo pipefail
+          python scripts/public-language-audit.py
+
       - name: Site-wide Franklin color-system coverage
         run: |
           set -euo pipefail
