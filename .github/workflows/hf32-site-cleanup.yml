@@ -13,6 +13,7 @@ on:
       - '*RECEIPT*.json'
       - '.github/workflows/hf32-site-cleanup.yml'
       - 'scripts/public-language-audit.py'
+      - 'scripts/release-meta-integrity.py'
   pull_request:
     branches: [main]
     paths:
@@ -193,6 +194,11 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/public-language-audit.py
+
+      - name: Public release identity integrity
+        run: |
+          set -euo pipefail
+          python scripts/release-meta-integrity.py
 
       - name: Site-wide Franklin color-system coverage
         run: |
