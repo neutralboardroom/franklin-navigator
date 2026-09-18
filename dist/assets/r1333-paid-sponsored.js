@@ -13,7 +13,7 @@
    const b=el('span','Community Member','r1333-paid-badge');h.insertAdjacentElement('beforebegin',b);
  }
  function imageDialog(src){
-   let d=q('.r1333-media-dialog');if(!d){d=document.createElement('dialog');d.className='r1333-media-dialog';const img=document.createElement('img'),close=el('button','×');close.type='button';close.setAttribute('aria-label','Close photo');close.onclick=()=>d.close();d.onclick=e=>{if(e.target===d)d.close()};d.append(img,close);document.body.append(d)}
+   let d=q('.r1333-media-dialog');if(!d){d=document.createElement('dialog');d.className='r1333-media-dialog';d.setAttribute('aria-label','Profile photo viewer');const img=document.createElement('img'),close=el('button','×');close.type='button';close.setAttribute('aria-label','Close photo');close.onclick=()=>d.close();d.onclick=e=>{if(e.target===d)d.close()};d.append(img,close);document.body.append(d)}
    q('img',d).src=src;if(typeof d.showModal==='function')d.showModal();else d.setAttribute('open','');
  }
  function mediaMosaic(items){
@@ -24,7 +24,7 @@
    q('.r1330-cover')?.remove();
    const hero=q('.r22-profile-hero'),grid=q('.r22-profile-hero-grid');if(!hero||!grid||q('.r1333-media-mosaic'))return;
    const box=el('div','', 'r1333-media-mosaic count-'+media.length);
-   media.forEach((row,i)=>{const b=el('button','', 'r1333-media-tile tile-'+(i+1));b.type='button';const img=document.createElement('img');img.src=abs(row.url);img.alt='';img.loading=i<2?'eager':'lazy';b.append(img);b.onclick=()=>imageDialog(img.src);box.append(b)});
+   media.forEach((row,i)=>{const b=el('button','', 'r1333-media-tile tile-'+(i+1));b.type='button';b.setAttribute('aria-label','Open profile photo '+(i+1)+' of '+media.length);const img=document.createElement('img');img.src=abs(row.url);img.alt='';img.loading=i<2?'eager':'lazy';b.append(img);b.onclick=()=>imageDialog(img.src);box.append(b)});
    const target=q('#r1330-uploaded-photos')||q('#member-gallery');if(target){const all=el('a','See all photos','r1333-see-photos');all.href='#'+target.id;box.append(all)}
    hero.insertBefore(box,grid);hero.classList.add('r1333-has-media');
  }
