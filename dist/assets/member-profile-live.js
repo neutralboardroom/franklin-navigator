@@ -74,7 +74,7 @@
     const result=await request('/api/member/profiles');state.profiles=result.profiles||[];controls.replaceChildren();
     if(!state.profiles.length){
       message('No profile is connected to this account yet.');
-      controls.append(node('h2','Connect a Franklin profile'),node('p','Find your public profile and request management access. Claiming and basic profile management are free.'),link('Find or claim my profile','/profile-access/','button primary'));
+      controls.append(node('h2','Connect a Franklin profile'),node('p','Find your public profile and request management access. Claiming and basic profile management are free.'),link('Find or connect my profile','/profile-access/','button primary'));
       view.replaceChildren();return;
     }
     const l=node('label','Choose your linked profile'),select=node('select');select.id='member-profile-selection';l.htmlFor=select.id;
@@ -162,9 +162,9 @@
   }
   function renderManagedWorkspace(p){
     const basic=node('section',undefined,'r1330-studio-basic');
-    basic.append(node('div','Free profile management','eyebrow'),node('h3','Manage the essentials without paying.'),node('p','Your verified access lets you manage the profile relationship, request factual corrections or removal, and submit a profile photo or logo for review. Source-backed facts are not silently overwritten.'));
+    basic.append(node('div','Profile Center','eyebrow'),node('h3','Management verified'),node('p','Your verified access lets you manage the profile relationship, request factual corrections or removal, and submit a profile photo or logo for review. Public factual information is reviewed separately and is not changed merely because you manage the profile.'));
     const actions=node('div',undefined,'r38-member-actions');
-    actions.append(link('View public profile',publicProfileUrl(p),'button primary'),link('Request a factual correction',correctionUrl(p)),link('Request removal',correctionUrl(p,true)),link('Account & profile access','/profile-access/?profile='+encodeURIComponent(p.profile_id)),button('Stop managing this profile',()=>releaseAccess(p)),link('Access help','/member-support/?topic=PROFILE_MANAGEMENT&profile='+encodeURIComponent(p.profile_id)));
+    actions.append(link('View public profile',publicProfileUrl(p),'button primary'),link('Request a factual correction',correctionUrl(p)),link('Request removal',correctionUrl(p,true)),link('Account & profile access','/profile-access/?profile='+encodeURIComponent(p.profile_id)));if(state.activePaid)actions.append(link('Transfer or end management — contact support','/member-support/?topic=PROFILE_MANAGEMENT&profile='+encodeURIComponent(p.profile_id)));else actions.append(button('Stop managing this profile',()=>releaseAccess(p)));actions.append(link('Access help','/member-support/?topic=PROFILE_MANAGEMENT&profile='+encodeURIComponent(p.profile_id)));
     if(p.verified_at){const when=reviewedWhen(p.verified_at);if(when)basic.append(node('p','Management access verified '+when+'.','fine-print'))}
     basic.append(actions);view.append(basic);
     view.append(mediaManager(p,false));
@@ -175,7 +175,7 @@
     }else{
       const upsell=node('section',undefined,'r1330-studio-upgrade');
       upsell.append(node('div','Optional Community Membership','eyebrow'),node('h3','Want a richer profile?'),node('p','Community Membership is $35/year. It adds the richer reviewed profile, cover/gallery media and additional member tools. It is not required for accuracy, claim access, profile removal or your basic profile photo/logo.'));
-      const a=node('div',undefined,'r38-member-actions');a.append(link('See Community Membership — $35/year','/membership-start/','button primary'),link('Preview member profile','/member-profile-preview/?profile='+encodeURIComponent(p.profile_id)));upsell.append(a);view.append(upsell);
+      const a=node('div',undefined,'r38-member-actions');a.append(link('See Community Membership — $35/year','/membership-start/?profile='+encodeURIComponent(p.profile_id),'button primary'),link('Preview member profile','/member-profile-preview/?profile='+encodeURIComponent(p.profile_id)));upsell.append(a);view.append(upsell);
     }
   }
   function activeMedia(slot){return state.media.filter(m=>m.slot===slot&&m.state!=='REMOVED').sort((a,b)=>(a.position-b.position)||String(b.updated_at||'').localeCompare(String(a.updated_at||'')))}
@@ -262,7 +262,7 @@
   }
   function editor(p){
     const draft=state.draft,labels={DRAFT:'Saved member draft — not submitted',SUBMITTED:'Member draft submitted — awaiting review',CHANGES_REQUESTED:'Member changes requested',PUBLISHED:'Published member content',REMOVED:'Member content removed'};
-    const shell=node('section',undefined,'r1330-rich-editor');shell.append(node('h3','Richer Community Member profile'),node('p',labels[draft?.state]||'No saved member draft yet.'),node('p','These are optional member-provided additions. Source-backed identity facts and free factual corrections remain separate.'));
+    const shell=node('section',undefined,'r1330-rich-editor');shell.append(node('h3','Richer Community Member profile'),node('p',labels[draft?.state]||'No saved member draft yet.'),node('p','These are optional member-provided additions. Public factual information and free factual corrections remain separate.'));
     if(draft?.public_reason)shell.append(node('p',draft.public_reason,'r37-status warn'));
     const form=node('form'),inputs={};state.inputs=inputs;
     const specs=[
