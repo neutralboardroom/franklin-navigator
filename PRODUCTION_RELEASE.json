@@ -1026,7 +1026,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CANDIDATE_PENDING_FINAL_QUALIFICATION",
+    "state": "QUALIFIED_SUCCESSOR",
     "acceptedPredecessor": {
       "version": "FR-NAV1.30.12-HF3.12.4",
       "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
@@ -1094,13 +1094,31 @@
       "localAssetReferencesChecked": 86,
       "localAssetReferencesMissing": 0,
       "latestPassingWorkflowRun": 35305543099,
-      "exactArtifactWorkflow": "PASS_AT_PRESEAL_CANDIDATE_STAGE"
+      "exactArtifactWorkflow": "PASS_AT_PRESEAL_CANDIDATE_STAGE",
+      "preSealWorkflowRun": 35306302298,
+      "preSealResult": "PASS",
+      "deterministicDoubleBuild": "PASS_BYTE_IDENTICAL",
+      "freshExtraction": "PASS",
+      "runtimeFreshExtractionTests": {
+        "total": 29,
+        "pass": 29,
+        "fail": 0,
+        "skipped": 0
+      }
     },
     "proofBoundary": [
       "No fabricated public paid member was created.",
       "No fabricated review, gallery, offer, endorsement or recommendation was created.",
       "LI42 and wholesale PF15.28 are not promoted without their required acceptance.",
       "R1334 is not SCC-accepted merely because Local qualification or deployment succeeds."
-    ]
+    ],
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "preSealCurrentnessReceipt": "PRE_SEAL_CURRENTNESS_RECEIPT__R1334.md",
+    "roleAuthorityReceipt": "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1334.md",
+    "noLossIsolationReceipt": "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1334.md",
+    "machineReadableReleaseReceipt": "R1334_RELEASE_RECEIPT.json",
+    "ownerSummary": "OWNER_SUMMARY__R1334.md",
+    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION; SCC acceptance/promotion remains a separate external authority gate"
   }
 }
