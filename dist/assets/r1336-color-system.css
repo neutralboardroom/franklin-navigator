@@ -227,3 +227,36 @@ body.franklin-color-system header nav a:not([aria-current="page"]){
   color:var(--fr-ink)!important;
   background:transparent!important;
 }
+
+
+/* R1336 homepage visual hierarchy */
+body.franklin-page-home .r24-home-hero{
+  background:
+    radial-gradient(circle at 78% 18%,rgba(46,95,143,.08),transparent 28%),
+    linear-gradient(135deg,#f8fcfb 0%,var(--fr-teal-soft) 100%)!important;
+  border-bottom:1px solid #cfe3e1;
+}
+body.franklin-page-home .hf35-home-bridge{
+  background:linear-gradient(135deg,#fff 0%,var(--fr-green-soft) 100%)!important;
+  border-top:1px solid #d9e9dd;border-bottom:1px solid #d9e9dd;
+}
+body.franklin-page-home .r24-around{
+  background:linear-gradient(135deg,#fff 0%,var(--fr-blue-soft) 100%)!important;
+}
+body.franklin-page-home .r24-business-section{
+  background:linear-gradient(135deg,#fffdf8 0%,var(--fr-gold-soft) 100%)!important;
+  border-top:1px solid #eadcaf;border-bottom:1px solid #eadcaf;
+}
+body.franklin-page-home .r22-history,
+body.franklin-page-home .history-section{
+  background:linear-gradient(135deg,#fff 0%,var(--fr-violet-soft) 100%)!important;
+}
+body.franklin-page-home .r24-home-events article:nth-child(1){border-top:4px solid var(--fr-blue)!important}
+body.franklin-page-home .r24-home-events article:nth-child(2){border-top:4px solid var(--fr-gold)!important}
+body.franklin-page-home .r22-mini-list a:nth-child(1){background:var(--fr-violet-soft)}
+body.franklin-page-home .r22-mini-list a:nth-child(2){background:var(--fr-blue-soft)}
+body.franklin-page-home .r22-mini-list a:nth-child(3){background:var(--fr-green-soft)}
+body.franklin-page-home .r22-mini-list a:nth-child(4){background:var(--fr-gold-soft)}
+body.franklin-page-home .r22-mini-list a{
+  border:1px solid var(--fr-line);border-radius:10px;padding:10px 12px;
+}
