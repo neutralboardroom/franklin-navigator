@@ -46,3 +46,17 @@ test('runtime release and member fulfillment version advance together',()=>{
   assert.ok(src.includes("FRANKLIN_MEMBER_FULFILLMENT_HF3_4"));
   assert.ok(server.includes("FR-NAV1.30.38-HF3.13.20"));
 });
+
+
+test('one public profile cannot start a duplicate active Community Membership through another manager account',()=>{
+  const server=fs.readFileSync('server.js','utf8');
+  assert.ok(server.includes('PROFILE_MEMBERSHIP_ALREADY_ACTIVE'));
+  assert.match(server,/m\.profile_id=\$1 and m\.account_id<>\$2/);
+  assert.match(server,/l\.authority_state='VERIFIED'/);
+  assert.match(server,/e\.rich_profile=true/);
+});
+
+test('profile management status includes verified-at timestamp for clear account UX',()=>{
+  const src=member();
+  assert.ok(src.includes('l.verified_at'));
+});
