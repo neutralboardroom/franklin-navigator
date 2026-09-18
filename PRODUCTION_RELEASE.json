@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.30-HF3.13.12",
+  "release": "FR-NAV1.30.34-HF3.13.16",
   "date": "2026-09-18",
-  "base": "FR-NAV1.30.29-HF3.13.11",
+  "base": "FR-NAV1.30.12-HF3.12.4",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1330 modernizes the shared Franklin public profile presentation and separates free profile claim/management from optional paid Community Membership. Verified managers can claim/manage a real Franklin profile without payment, use free factual-correction/removal routes, and upload a reviewed profile photo/logo. Active Community Members retain richer reviewed content plus cover/gallery media and existing member benefits. Routine source/date provenance is removed from the profile hero and remains available on demand. The canonical profile scope is 19,104.",
+  "scope": "R1334 reconciles the exact accepted R1312 predecessor with the direct descendant Franklin source, preserves and qualifies the later Clean Room Assistant, finished profile/review, Community Member gallery/offer and clearly labeled sponsored-visibility improvements, repairs stale release qualification, hardens runtime review/sponsored tests, and corrects incident-monitor false positives. Profile Factory, Local Investigator, SRE and SCC authority boundaries remain intact; Smarter Justice donor material is not used.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -239,7 +239,7 @@
     "Profile Factory source facts remain separate from manager/member submissions"
   ],
   "monitoring": {
-    "version": "FRANKLIN_ISSUE_MONITOR_1",
+    "version": "FRANKLIN_ISSUE_MONITOR_2",
     "community": "FRANKLIN_TN",
     "siteWideClientMonitor": "/assets/franklin-site-monitor-r1308.js",
     "telemetryEndpoint": "https://franklin-navigator-membership.onrender.com/api/telemetry/issue",
@@ -313,14 +313,14 @@
       "HIGH": 60
     },
     "latestOwnerAuthenticatedIncidentSnapshot": {
-      "at": "2026-09-15T08:30:08.456Z",
+      "at": "2026-09-18T04:09:05.981Z",
       "ownerAuthenticated": true,
       "authMechanism": "HMAC_ADMIN_TOKEN_CONTROL_PLANE_PROOF",
       "openCritical": 0,
       "openHigh": 0,
       "noOpenP0P1": true,
       "externalDelivery": "RESEND_EMAIL_CONFIGURED",
-      "ownerAuthProofSha256": "a60e760db399541e89ddc0685677edae6381d9753288bf5c84d87d6b9f5b1cf7"
+      "ownerAuthProofSha256": "9021a02739504ca017d4638ce049bd10c4709699b7fc06affbf6686f68fa46ce"
     },
     "syntheticSupportReconciliation": {
       "expected": 10,
@@ -332,8 +332,21 @@
       "mutationScope": "EXACT_IDS_ONLY_AFTER_ID_CATEGORY_NULL_PROFILE_AND_MESSAGE_HASH_MATCH"
     },
     "runtimeService": "srv-dabgvefqj5pc739vr4h0",
-    "runtimeDeploy": "dep-dakg3u5g1s2s73c7i5mg",
-    "runtimeCommit": "60bf4b1e48c2a124a4159b7caf0f7fe3485358a3"
+    "runtimeDeploy": "dep-dambijtbedkc73apgdo0",
+    "runtimeCommit": "d2a2cfb212e72325d84d01461ef672a1ec95ad79",
+    "r1334Corrections": {
+      "expectedAuth401NotHighIncident": true,
+      "inlineStyleWithoutExternalUrlNotBrokenAsset": true,
+      "localAssetReferenceSweep": {
+        "checked": 86,
+        "missing": 0,
+        "workflowRun": 35305543099
+      },
+      "reconciledExpectedAuthHighIncidents": 2,
+      "reconciledHistoricalBrokenAssetIncidents": 1,
+      "postCorrectionOpenCritical": 0,
+      "postCorrectionOpenHigh": 0
+    }
   },
   "navigation": {
     "version": "FRANKLIN_PRIMARY_NAV_R1310",
@@ -1005,6 +1018,89 @@
       "Sponsored placements become visible only when a genuine eligible public Community Member exists.",
       "Control/test memberships are not production proof.",
       "No fake review, offer, endorsement or recommendation was created."
+    ]
+  },
+  "r1334": {
+    "version": "FR-NAV1.30.34-HF3.13.16",
+    "date": "2026-09-18",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_FINAL_QUALIFICATION",
+    "acceptedPredecessor": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.12-HF3.12.4__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "bytes": 84454176,
+      "sha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f",
+      "manifestSha256": "1382d0384c537e1ca43a142eea7ed203bf8fc8090e83bf9322dcc782a253d796"
+    },
+    "governingRule": "UNIVERSAL_SMARTER_LOCAL_COMMUNITY_PLATFORM_NEXT_VERSION_BUILD_COMMAND_2026-09-03-R2",
+    "reconciliationReceipt": "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1334.md",
+    "noLossLedger": "NO_LOSS_LEDGER__R1334.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1334.md",
+    "localProfileExperience": {
+      "finishedProfileHierarchy": true,
+      "communityRatingsAndWrittenReviews": true,
+      "profileManagerResponses": true,
+      "reviewedPhotoLogoUpload": true,
+      "paidMemberGallery": true,
+      "paidMemberSpecialOffers": true,
+      "sponsoredVisibilityClearlyLabeled": true,
+      "ordinaryUnpaidOrderingUnaffected": true,
+      "recommendationOrEndorsementClaim": false,
+      "paymentChangesFactualTruth": false,
+      "paymentChangesReviewScore": false
+    },
+    "profileFactory": {
+      "authority": "PROFILE_FACTORY",
+      "wholesalePf1528Promoted": false,
+      "targetedFranklinNavigatorSelfProfilePreserved": true,
+      "canonicalDiscoveryProfiles": 19103,
+      "publicScopeProfiles": 19104
+    },
+    "localInvestigator": {
+      "authority": "LOCAL_INVESTIGATOR",
+      "latestObservedHandoff": "SLI-FRANKLIN-HANDOFF-20260917-042",
+      "sha256": "5c8c848e0b40b70b4e23d0df8469bced9ab38ff57cb19e6829cbf8f967ed2a4a",
+      "consumerPromotion": false,
+      "reason": "SCC gate and consumer acceptance/head advancement remain pending"
+    },
+    "smarterJustice": {
+      "disposition": "SMARTER_JUSTICE_DONOR_NOT_USED",
+      "runtimeConnection": false,
+      "dataTransfer": false,
+      "writeback": false,
+      "customerFacingRelationship": false
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "d2a2cfb212e72325d84d01461ef672a1ec95ad79",
+      "deploy": "dep-dambijtbedkc73apgdo0",
+      "releaseEnv": "FR-NAV1.30.34-HF3.13.16",
+      "tests": {
+        "total": 29,
+        "pass": 29,
+        "fail": 0,
+        "skipped": 0
+      },
+      "syntaxGate": "PASS",
+      "ready": true,
+      "openCritical": 0,
+      "openHigh": 0
+    },
+    "publicQualification": {
+      "repairedStaleAssistantContract": true,
+      "localAssetReferencesChecked": 86,
+      "localAssetReferencesMissing": 0,
+      "latestPassingWorkflowRun": 35305543099,
+      "exactArtifactWorkflow": "PASS_AT_PRESEAL_CANDIDATE_STAGE"
+    },
+    "proofBoundary": [
+      "No fabricated public paid member was created.",
+      "No fabricated review, gallery, offer, endorsement or recommendation was created.",
+      "LI42 and wholesale PF15.28 are not promoted without their required acceptance.",
+      "R1334 is not SCC-accepted merely because Local qualification or deployment succeeds."
     ]
   }
 }
