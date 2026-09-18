@@ -266,8 +266,13 @@ jobs:
           tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
           release_meta=json.loads(Path('PRODUCTION_RELEASE.json').read_text())
           release=release_meta['release']
-          runtime_commit=release_meta['r1334']['runtime']['commit']
-          assert release=='FR-NAV1.30.34-HF3.13.16'
+          current_release_meta=next(
+              (v for v in release_meta.values()
+               if isinstance(v,dict) and v.get('version')==release and isinstance(v.get('runtime'),dict)),
+              None
+          )
+          assert current_release_meta is not None, 'current release runtime metadata missing'
+          runtime_commit=current_release_meta['runtime']['commit']
           assert len(runtime_commit)==40
 
           # Fetch the exact separately deployed Local-owned membership/runtime source
@@ -393,13 +398,14 @@ jobs:
       - name: Fresh extraction validation and tests
         run: |
           set -euo pipefail
-          rm -rf _r1334_fresh
-          mkdir _r1334_fresh
+          rm -rf _current_release_fresh
+          mkdir _current_release_fresh
           python - <<'PY'
           from pathlib import Path,PurePosixPath
           import hashlib,json,zipfile
-          zpath=next(Path('.').glob('FRANKLIN_NAVIGATOR__FR-NAV1.30.34-HF3.13.16__CURRENT_SUCCESSOR_EXACT_SOURCE.zip'))
-          out=Path('_r1334_fresh')
+          release=json.loads(Path('PRODUCTION_RELEASE.json').read_text())['release']
+          zpath=next(Path('.').glob(f'FRANKLIN_NAVIGATOR__{release}__CURRENT_SUCCESSOR_EXACT_SOURCE.zip'))
+          out=Path('_current_release_fresh')
           with zipfile.ZipFile(zpath) as z:
               assert z.testzip() is None
               for info in z.infolist():
@@ -417,8 +423,8 @@ jobs:
           print({'manifestMembersVerified':len(expected),'runtimeMembers':manifest['runtimeMemberCount'],'result':'PASS'})
           PY
           (
-            cd _r1334_fresh
-            python scripts/validate-r1334-release.py
+            cd _current_release_fresh
+            python scripts/validate-current-release.py
             node scripts/test-assistant-r1294.js
             node scripts/test-assistant-r1295.js
             node --check dist/assets/r1330-profile.js
@@ -428,12 +434,12 @@ jobs:
             node --check dist/assets/franklin-site-monitor-r1308.js
           )
           (
-            cd _r1334_fresh/runtime/franklin-membership
+            cd _current_release_fresh/runtime/franklin-membership
             npm ci --ignore-scripts --no-audit --no-fund
             npm test
             npm run check
           )
-          rm -rf _r1334_fresh
+          rm -rf _current_release_fresh
 
       - name: Upload exact current successor artifact
         uses: actions/upload-artifact@v4
