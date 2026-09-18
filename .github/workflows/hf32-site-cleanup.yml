@@ -145,6 +145,9 @@ jobs:
           grep -F "installCommunityConnectorR1311" dist/assets/hf36.js
           grep -F "franklin-nav-r1311.css" dist/assets/hf36.js
           grep -F "franklin-site-monitor-r1308.js" dist/assets/hf36.js
+          for page in dist/index.html dist/es/index.html dist/assistant/index.html dist/es/asistente/index.html; do
+            grep -E '/assets/hf36\.js\?v=frnav[0-9]+' "$page"
+          done
           grep -F "width:min(1480px,100%)" dist/assets/franklin-nav-r1311.css
           grep -F "r1311-community-actions" dist/assets/r1311-community.css
           for p in index.html assistant/index.html directory/index.html get-it-done/index.html today/index.html activities/index.html community/index.html community-help-center/index.html my-franklin/index.html business-dashboard/index.html member-profile-preview/index.html membership-start/index.html claim-profile/index.html corrections/index.html owner-issues/index.html owner-issues/readiness/index.html; do test -f "dist/$p"; done

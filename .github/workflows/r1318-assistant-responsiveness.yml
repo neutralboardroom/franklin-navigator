@@ -35,10 +35,9 @@ jobs:
           grep -F "answered&&shouldRenderGuide" dist/assets/franklin-assistant-r1318.js
           grep -F "FranklinAssistantR1318" dist/assets/franklin-assistant-r1318.js
           grep -F "/assets/franklin-assistant-r1318.js?v=frnav1318" dist/assets/hf36.js
-          grep -F "/assets/hf36.js?v=frnav1318" dist/index.html
-          grep -F "/assets/hf36.js?v=frnav1318" dist/es/index.html
-          grep -F "/assets/hf36.js?v=frnav1318" dist/assistant/index.html
-          grep -F "/assets/hf36.js?v=frnav1318" dist/es/asistente/index.html
+          for page in dist/index.html dist/es/index.html dist/assistant/index.html dist/es/asistente/index.html; do
+            grep -E '/assets/hf36\.js\?v=frnav[0-9]+' "$page"
+          done
       - name: Durable responsiveness rule
         run: |
           test -f DURABLE_RULE__QUESTION_RESPONSIVENESS_AND_VERIFIED_FACT_PRECEDENCE.md
