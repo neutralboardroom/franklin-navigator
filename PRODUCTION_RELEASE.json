@@ -1258,7 +1258,10 @@
       "privacyAndActionCenterCopyRewrittenForPublic": true,
       "noWorkingCapabilityIntentionallyRemoved": true,
       "redundantConnectedNeedsHomeBridgeRemoved": true,
-      "situationPlannerPreservedElsewhere": true
+      "situationPlannerPreservedElsewhere": true,
+      "selfProfileRawMarkupCleaned": true,
+      "selfProfileOfficialPresentation": true,
+      "futureProfileBuilderRemovesSourceCurrentnessUi": true
     },
     "colorSystem": {
       "asset": "/assets/r1336-color-system.css",
@@ -1279,7 +1282,8 @@
       "latestPreSealRun": 35323747673,
       "publicPagesChecked": 19362,
       "findingCount": 0,
-      "status": "PASS_BEFORE_COLOR_GATE"
+      "status": "PASS_BEFORE_COLOR_GATE",
+      "rawSelfProfileRegressionGate": true
     },
     "profileExperience": {
       "publicScopeProfiles": 19104,
