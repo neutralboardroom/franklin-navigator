@@ -7,3 +7,4 @@
 5. Continue Spanish parity for the full dynamic Profile Studio field editor where catalog coverage remains incomplete.
 6. Consume newer Profile Factory or Local Investigator handoffs only after their independent acceptance/currentness gates authorize them.
 7. Continue representative real-browser mobile/desktop accessibility regression on profile access, correction, request, studio and support routes.
+8. Add multi-user owner/manager role delegation or ownership transfer only after an accepted Local authority contract defines primary-owner semantics, invitations, revocation, audit and conflict handling; do not infer those rules from another platform.

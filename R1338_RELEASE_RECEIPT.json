@@ -1,6 +1,6 @@
 {
   "schema": "franklin.local-community-platform.release-receipt.v1",
-  "status": "QUALIFIED_SUCCESSOR",
+  "status": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
   "recordedAt": "2026-09-18",
   "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
   "activeEdition": "FRANKLIN_TN",
@@ -12,15 +12,17 @@
   },
   "successor": {
     "version": "FR-NAV1.30.38-HF3.13.20",
-    "localQualification": "QUALIFIED_CANDIDATE_FINAL_EXACT_HEAD_RECHECK_REQUIRED",
+    "localQualification": "PENDING_FINAL_EXACT_HEAD_WORKFLOW",
     "sccAccepted": false,
     "sccCanonicalCurrent": false
   },
   "runtime": {
-    "commit": "62cfb7a18fb2958394408c25d4f809f6b404e626",
-    "deploy": "dep-damguo942hec7392o1d0",
+    "commit": "012697505ce1b353178df223bf98724a27bab610",
+    "deploy": "dep-damh9cbm8hqs73d58pug",
     "release": "FR-NAV1.30.38-HF3.13.20",
-    "live": true
+    "live": true,
+    "claimReviewerAcceptance": "PASS",
+    "issueMonitoringAcceptance": "PASS"
   },
   "profilePath": {
     "exactProfileContinuity": true,
@@ -31,11 +33,16 @@
     "bilingualCorrectionParity": true,
     "profileRequestWebForm": true,
     "canonicalFactsUnchangedByClaim": true,
-    "paymentDoesNotChangeFacts": true
+    "paymentDoesNotChangeFacts": true,
+    "viewerAwarePublicManagementState": true,
+    "pendingRequestWithdrawal": true,
+    "inlineSupportForm": true,
+    "signInRecoverySupportRoute": true,
+    "duplicateActiveMembershipBlocked": true
   },
   "homepageChanged": false,
   "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/promotion remains separate",
-  "qualification": {
+  "priorQualification": {
     "workflowRun": 35335284124,
     "qualifiedCandidateCommit": "75cc7da359350a3a9d0c788eebcc437b3fbe28fc",
     "artifactBytes": 85500464,
@@ -49,6 +56,8 @@
       "fail": 0,
       "skipped": 0
     },
-    "finalAcceptanceRule": "This sealed receipt commit must pass the same exact-source qualification before production static deployment."
-  }
+    "finalAcceptanceRule": "This sealed receipt commit must pass the same exact-source qualification before production static deployment.",
+    "status": "SUPERSEDED_BY_FINAL_PROFILE_UX_REFINEMENT"
+  },
+  "benchmarkReceipt": "PROFILE_CLAIM_MANAGEMENT_BENCHMARK__R1338.md"
 }

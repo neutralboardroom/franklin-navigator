@@ -9,20 +9,23 @@ Immediate qualified public parent:
 - manifest SHA-256 5c1b2de66aee5a29620f5854d2a3ba15c80ec45de5a36788789039414b935e5d
 - static deploy dep-damgfnm1egvs73c5t3cg
 
-Current R1338 runtime:
+Prior R1338 candidate:
+- commit 75cc7da359350a3a9d0c788eebcc437b3fbe28fc
+- workflow 35335284124 PASS
+- exact artifact SHA-256 d5f1e46d550ade2af0efb8a005fcaa2e885ae1fe14d1c6bc178ce5e160381d50
+- superseded by the final profile UX/support/runtime-currentness refinement; retained as evidence, not final bytes
+
+Final bound R1338 runtime:
 - branch franklin-commerce-runtime-r30
-- commit 62cfb7a18fb2958394408c25d4f809f6b404e626
-- live deploy dep-damguo942hec7392o1d0
+- commit 012697505ce1b353178df223bf98724a27bab610
+- live deploy dep-damh9cbm8hqs73d58pug
 - release FR-NAV1.30.38-HF3.13.20
 - startup ready true
+- 34/34 unit tests pass
+- claim/reviewer acceptance PASS
+- issue-monitor HTTP acceptance PASS
+- duplicate active membership for one public profile across different verified manager accounts is blocked
 
 No new wholesale Profile Factory or Local Investigator dataset is promoted in this profile-control pass.
 
-Result: PRE_SEAL_CURRENTNESS_PASS; candidate exact-head qualification 35335284124 passed. Final sealed-head qualification remains required before static deployment.
-
-Candidate qualification:
-- commit 75cc7da359350a3a9d0c788eebcc437b3fbe28fc
-- workflow 35335284124 PASS
-- artifact SHA-256 d5f1e46d550ade2af0efb8a005fcaa2e885ae1fe14d1c6bc178ce5e160381d50
-- manifest SHA-256 4bab93ed25c224d7b7e43b0f2557f5bf681a1f581d7285116ffff3513e51d724
-- runtime tests 34/34 pass
+Result: PRE_SEAL_CURRENTNESS_PASS_PENDING_FINAL_EXACT_HEAD_QUALIFICATION

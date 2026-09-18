@@ -99,11 +99,24 @@
     message(state.activePaid?'Profile access verified. Free management and Community Member tools are available.':'Profile access verified. Free profile management is available; Community Membership is optional.','good');
   }
   const reviewedWhen=value=>{try{return value?new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(value)):''}catch{return''}};
-  async function releaseAccess(p){
-    if(!confirm(tr('Stop managing this profile from this Franklin account? Public factual corrections remain available.')))return;
-    const result=await request('/api/member/representation/release',{profileId:p.profile_id,expectedRevision:p.review_revision||0});
-    message(result.reused?'Profile management was already disconnected.':'This profile is no longer connected to your account.','good');
-    state.profile=null;state.dirty=false;await refresh();
+  async function releaseAccess(p,{pending=false}={}){
+    const question=pending?'Withdraw this profile-access request from this Franklin account?':'Stop managing this profile from this Franklin account? Public factual corrections remain available.';
+    if(!confirm(tr(question)))return;
+    try{
+      const result=await request('/api/member/representation/release',{profileId:p.profile_id,expectedRevision:p.review_revision||0});
+      message(result.reused?'Profile management was already disconnected.':pending?'Your profile-access request was withdrawn.':'This profile is no longer connected to your account.','good');
+      state.profile=null;state.dirty=false;await refresh();
+    }catch(e){
+      if(['ACTIVE_MEMBERSHIP_REQUIRES_SUPPORT','PUBLISHED_MEMBER_CONTENT_REQUIRES_SUPPORT','REPRESENTATION_DISPUTED'].includes(e.code)){
+        message(e.message,'warn');
+        if(!view.querySelector('[data-r1338-access-support]')){
+          const box=node('div',undefined,'r37-member-actions');box.dataset.r1338AccessSupport='1';
+          box.append(link('Get profile access support','/member-support/?topic=PROFILE_MANAGEMENT&profile='+encodeURIComponent(p.profile_id),'button primary'));view.prepend(box);
+        }
+        return;
+      }
+      throw e;
+    }
   }
   function representation(p){
     view.replaceChildren();
@@ -118,7 +131,7 @@
     if(p.review_state==='PENDING'){
       section.append(node('p','Your profile-access request is waiting for review.'+(when?' Last updated '+when+'.':''),'r37-status good'));
       const a=node('div',undefined,'r37-member-actions');
-      a.append(button('Refresh status',refresh,true),link('View public profile',publicProfileUrl(p)),link('Submit a factual correction',correctionUrl(p)),button('Stop managing this profile',()=>releaseAccess(p)));
+      a.append(button('Refresh status',refresh,true),link('View public profile',publicProfileUrl(p)),link('Submit a factual correction',correctionUrl(p)),button('Withdraw access request',()=>releaseAccess(p,{pending:true})));
       section.append(a);view.append(section);return;
     }
     const stateCopy={
@@ -151,7 +164,8 @@
     const basic=node('section',undefined,'r1330-studio-basic');
     basic.append(node('div','Free profile management','eyebrow'),node('h3','Manage the essentials without paying.'),node('p','Your verified access lets you manage the profile relationship, request factual corrections or removal, and submit a profile photo or logo for review. Source-backed facts are not silently overwritten.'));
     const actions=node('div',undefined,'r38-member-actions');
-    actions.append(link('View public profile',publicProfileUrl(p),'button primary'),link('Edit or correct public facts',correctionUrl(p)),link('Request removal',correctionUrl(p,true)),link('Account & profile access','/profile-access/?profile='+encodeURIComponent(p.profile_id)),button('Stop managing this profile',()=>releaseAccess(p)));
+    actions.append(link('View public profile',publicProfileUrl(p),'button primary'),link('Request a factual correction',correctionUrl(p)),link('Request removal',correctionUrl(p,true)),link('Account & profile access','/profile-access/?profile='+encodeURIComponent(p.profile_id)),button('Stop managing this profile',()=>releaseAccess(p)),link('Access help','/member-support/?topic=PROFILE_MANAGEMENT&profile='+encodeURIComponent(p.profile_id)));
+    if(p.verified_at){const when=reviewedWhen(p.verified_at);if(when)basic.append(node('p','Management access verified '+when+'.','fine-print'))}
     basic.append(actions);view.append(basic);
     view.append(mediaManager(p,false));
     if(state.activePaid){

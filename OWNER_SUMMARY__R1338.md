@@ -1,25 +1,21 @@
 # R1338 Owner Summary
 
-Status: QUALIFIED_SUCCESSOR — final sealed-head qualification required before static deployment
+Status: CANDIDATE_PENDING_FINAL_EXACT_HEAD_QUALIFICATION
 
-R1338 makes the entire profile ownership path operate as one coherent journey.
+R1338 now treats the full profile path as one coherent free-first workflow: public profile → exact claim/access → authority review → factual correction/removal → Profile Studio → optional member enrichment → support → safe disconnect.
 
-Key changes:
-- Clicking Claim or manage from an exact public profile keeps that exact profile selected through sign-in; users no longer need to search for it again.
-- Access status is evaluated for the selected profile, not any other profile attached to the account.
-- Claim requests require explicit authorization confirmation and show useful waiting, changes-requested, rejected, disputed and recovery states.
-- Users can stop managing the wrong profile when safe; active membership or published member content fails closed to support.
-- Public profile correction/removal actions are visible and exact-profile aware.
-- Correction/removal forms now preserve profile identity, auto-fill the profile name when possible, and have English/Spanish schema parity.
-- Missing profiles can be requested through a real no-account web form instead of email only.
-- Profile support is cleaned up around claim/access/correction/recovery instead of obsolete membership wording.
-- Community Membership remains optional. Canonical facts are not silently rewritten by a claim or payment.
-- The homepage is not changed by R1338.
+The first R1338 candidate passed exact-source qualification. This final refinement fixes the remaining profile-path UX gaps:
+- public profiles distinguish **your verified management access**, **your pending request**, **an access dispute**, **a profile managed by another authorized account**, and a genuinely unclaimed profile;
+- visitors who do not manage a profile are no longer told to upload its photo/logo;
+- pending claimants see **Withdraw access request**, not the misleading **Stop managing** wording;
+- verified managers see when management access was verified;
+- source-backed facts route through the free correction process instead of being described as directly editable;
+- sign-in trouble has a first-class support route;
+- the support page has one valid document header and a real in-page profile/account support form that keeps an exact profile reference when supplied;
+- the runtime prevents a second verified manager account from starting a duplicate active Community Membership for the same public profile.
 
-Qualification evidence:
-- Candidate commit: `75cc7da359350a3a9d0c788eebcc437b3fbe28fc`
-- Workflow: `35335284124` — PASS
-- Exact artifact SHA-256: `d5f1e46d550ade2af0efb8a005fcaa2e885ae1fe14d1c6bc178ce5e160381d50`
-- Manifest SHA-256: `4bab93ed25c224d7b7e43b0f2557f5bf681a1f581d7285116ffff3513e51d724`
-- Runtime tests: 34 passed, 0 failed, 0 skipped
-- Live R1338 runtime: `62cfb7a18fb2958394408c25d4f809f6b404e626` / `dep-damguo942hec7392o1d0`
+Claiming, factual corrections, public removal and the reviewed basic profile photo/logo remain free. Community Membership remains optional. Claiming or paying does not rewrite Profile Factory facts, change reviews, or buy ordinary unpaid ranking.
+
+Final bound R1338 runtime: `012697505ce1b353178df223bf98724a27bab610`, live on Render deploy `dep-damh9cbm8hqs73d58pug`. Runtime unit tests pass, claim/reviewer acceptance passes, and issue-monitor acceptance passes.
+
+The homepage remains unchanged by R1338. Final exact-head qualification is required before static deployment.

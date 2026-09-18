@@ -143,6 +143,7 @@ jobs:
           node --check dist/assets/member-profile-live.js
           node --check dist/assets/hf35-profile-control.js
           node --check dist/assets/r1338-profile-request.js
+          node --check dist/assets/member-support.js
           node --check dist/assets/local-discovery.js
           grep -F "Profile photo viewer" dist/assets/r1333-paid-sponsored.js
           grep -F "Open profile photo " dist/assets/r1333-paid-sponsored.js
@@ -163,12 +164,21 @@ jobs:
           grep -F "/api/member/representation/release" dist/assets/member-profile-live.js
           grep -F "Your profile-access request is waiting for review." dist/assets/member-profile-live.js
           grep -F "Correct public facts" dist/assets/r1330-profile.js
+          grep -F "Your managed profile" dist/assets/r1330-profile.js
+          grep -F "Request management access" dist/assets/r1330-profile.js
+          grep -F "/api/accounts/me" dist/assets/r1330-profile.js
+          grep -F "Withdraw access request" dist/assets/member-profile-live.js
+          grep -F "Management access verified " dist/assets/member-profile-live.js
+          grep -F "Need help signing in?" dist/assets/membership-live.js
           grep -F "data-profile-control-context" dist/corrections/index.html
           grep -F "data-profile-control-context" dist/es/correcciones/index.html
           grep -F "hf35-profile-control.js?v=frnav1338" dist/es/correcciones/index.html
           grep -F "data-profile-request-form" dist/profile-request/index.html
           grep -F "PROFILE_CREATION_REQUEST" dist/assets/r1338-profile-request.js
           grep -F "Claim or profile-access help" dist/member-support/index.html
+          grep -F "data-member-support-form" dist/member-support/index.html
+          grep -F "PROFILE_SUPPORT_" dist/assets/member-support.js
+          test "$(grep -c '<!DOCTYPE html>' dist/member-support/index.html)" -eq 1
           ! grep -i -E "recommended by Franklin|endorsed by Franklin|Franklin recommends|Franklin endorses" dist/assets/r1333-paid-sponsored.js dist/assets/r1333-profile.css dist/assets/r1333-sponsored.css
           test -f dist/assets/franklin-nav-r1310.css
           test -f dist/assets/franklin-nav-r1311.css

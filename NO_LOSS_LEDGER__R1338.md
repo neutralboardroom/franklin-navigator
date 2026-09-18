@@ -22,3 +22,9 @@ Improved:
 - profile-focused support recovery.
 
 Result: NO_KNOWN_INTENTIONAL_CAPABILITY_LOSS
+
+Final refinement also preserves and improves:
+- viewer-specific public management state without exposing another manager's identity;
+- clear pending-request withdrawal;
+- first-class profile/account support from sign-in and management failure states;
+- one-profile/one-active-membership safety across verified manager accounts.

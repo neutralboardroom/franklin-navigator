@@ -50,7 +50,8 @@
    for(const [i,label] of items){const a=el('a',label);a.href='#'+i;nav.append(a)}
    article.parentElement?.insertBefore(nav,article);
  }
- function stateRow(managed){
+ function viewerProfileLink(me){return (me?.profileLinks||[]).find(x=>x&&x.profile_id===id)||null;}
+ function stateRow(managed,viewerLink=null){
    const copy=document.querySelector('.r22-profile-hero-grid>div:nth-child(2)');if(!copy)return;
    let row=copy.querySelector('.r1330-profile-state');if(!row){row=el('div','', 'r1330-profile-state');const loc=copy.querySelector('.profile-location');(loc||copy.querySelector('h1'))?.insertAdjacentElement('afterend',row)}
    row.replaceChildren();
@@ -60,19 +61,29 @@
      document.querySelector('#manage')?.remove();
      return;
    }
-   const label=el('span',managed?'Managed profile':'Unclaimed profile','r1330-state-label'+(managed?' is-managed':''));
-   const a=el('a',managed?'Manage this profile':'Claim or manage this profile','r1330-claim-link');a.href='/profile-access/?profile='+encodeURIComponent(id);row.append(label,a);
+   const authority=String(viewerLink?.authority_state||'').toUpperCase();
+   let labelText='Unclaimed profile',actionText='Claim this profile free',href='/profile-access/?profile='+encodeURIComponent(id),hintText='Claim management access free. Factual corrections and removal also stay free.',managedForViewer=false;
+   if(authority==='VERIFIED'){
+     labelText='Your managed profile';actionText='Open Profile Studio';href='/profile-studio/?profile='+encodeURIComponent(id);hintText='You have verified management access. You can manage your photo or logo and request factual corrections.';managedForViewer=true;
+   }else if(authority==='PENDING'){
+     labelText='Access request pending';actionText='Check access request';href='/profile-studio/?profile='+encodeURIComponent(id);hintText='Your request is under review. No membership or payment is required.';
+   }else if(authority==='DISPUTED'){
+     labelText='Access review needed';actionText='Get profile access help';href='/member-support/?topic=PROFILE_ACCESS&profile='+encodeURIComponent(id);hintText='Franklin needs to review this access issue before management can continue.';
+   }else if(managed){
+     labelText='Managed profile';actionText='Request management access';href='/profile-access/?profile='+encodeURIComponent(id);hintText='This profile already has verified management access. If you are also authorized, you can request access; existing access is not removed automatically.';
+   }
+   const label=el('span',labelText,'r1330-state-label'+((managed||managedForViewer)?' is-managed':''));
+   const a=el('a',actionText,'r1330-claim-link');a.href=href;row.append(label,a);
    let hint=copy.querySelector('.r1331-media-hint');if(!hint){hint=el('p','', 'r1331-media-hint');row.insertAdjacentElement('afterend',hint)}
-   hint.replaceChildren();
-   if(managed){hint.append(document.createTextNode('Want to change the picture or logo? '));const upload=el('a','Upload your own image');upload.href='/profile-studio/?profile='+encodeURIComponent(id);hint.append(upload)}
-   else hint.textContent='Claim this profile free to upload your own photo or logo.';
+   hint.textContent=hintText;
    const manage=document.querySelector('#manage');if(manage){
-     const p=manage.querySelector('p');if(p)p.textContent=managed?'This profile has verified management access. Basic profile management, factual corrections and removal stay free; Community Membership is optional.':'Own or manage this business, practice or organization? Claim management access for free. Factual corrections and removal stay free; Community Membership is optional.';
+     const p=manage.querySelector('p');
+     if(p)p.textContent=managedForViewer?'You have verified management access. Source-backed facts still use the free correction process; Community Membership is optional.':managed?'This profile already has verified management access. Authorized additional managers may request access without displacing existing access. Factual corrections and removal stay free.':'Own or manage this business, practice or organization? Claim management access for free. Factual corrections and removal stay free; Community Membership is optional.';
      const actions=manage.querySelector('.actions'),primary=actions?.querySelector('.button.primary');
-     if(primary){primary.href=a.href;primary.textContent=managed?'Manage this profile':'Claim or manage this profile'}
+     if(primary){primary.href=href;primary.textContent=actionText}
      if(actions){
        const direct=[...actions.children].filter(x=>x.tagName==='A'),secondary=direct.find(x=>x!==primary);
-       if(secondary){secondary.href=(managed?'/profile-studio/?profile=':'/member-profile-preview/?profile=')+encodeURIComponent(id);secondary.textContent=managed?'Open Profile Studio':'Preview optional member profile'}
+       if(secondary){secondary.href=(managedForViewer?'/profile-studio/?profile=':'/member-profile-preview/?profile=')+encodeURIComponent(id);secondary.textContent=managedForViewer?'Open Profile Studio':'Preview optional member profile'}
        const details=actions.querySelector('details.hf35-admin-more');
        const profileName=document.querySelector('.r22-profile-hero h1')?.textContent?.trim()||'';
        const page=location.origin+'/profiles/'+id+'/';
@@ -95,11 +106,14 @@
    const current=document.querySelector('.profile-currentness'),fallbackManaged=isNavigatorSelf?true:(current?!/unclaimed/i.test(current.textContent||''):false);
    current?.remove();cleanPublicLanguage();stateRow(fallbackManaged);
    try{
-     const [profileRes,mediaRes]=await Promise.allSettled([
+     const [profileRes,mediaRes,accountRes]=await Promise.allSettled([
        fetch(API+'/api/member/public-profile?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()),
-       fetch(API+'/api/member/media/public?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject())
+       fetch(API+'/api/member/media/public?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()),
+       fetch(API+'/api/accounts/me',{credentials:'include',cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
      ]);
-     if(profileRes.status==='fulfilled'&&typeof profileRes.value.managedProfile==='boolean')stateRow(profileRes.value.managedProfile);
+     const managed=profileRes.status==='fulfilled'&&typeof profileRes.value.managedProfile==='boolean'?profileRes.value.managedProfile:fallbackManaged;
+     const viewerLink=accountRes.status==='fulfilled'?viewerProfileLink(accountRes.value):null;
+     stateRow(managed,viewerLink);
      if(mediaRes.status==='fulfilled'&&Array.isArray(mediaRes.value.media))media(mediaRes.value.media);
    }catch{}
    setTimeout(()=>{cleanPublicLanguage();sectionNav()},60);setTimeout(()=>{cleanPublicLanguage();sectionNav()},450);
