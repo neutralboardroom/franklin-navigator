@@ -7,6 +7,7 @@
 - Finishes the public-facing homepage, Ask Franklin and profile presentation work started before the prior chat hit its length limit.
 - Keeps Franklin teal as the primary action color and uses green, blue, gold and violet by meaning rather than random decoration.
 - Keeps only the active navigation section accented.
+- Keeps the previously approved removal of the redundant “Need help with several things at once?” homepage block in English and Spanish; the Situation Planner remains available elsewhere.
 - Rewrites internal release/source qualification language so ordinary profile and supporting copy reads like a public website.
 - Public-language audit already passed 19,362 public pages with 0 findings before the stale color gate stopped the prior run.
 - The stale qualification gate is repaired so it reads the current release color asset rather than hard-coding R1335.
