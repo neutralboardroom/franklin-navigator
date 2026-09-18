@@ -45,9 +45,12 @@
     "smarterJusticeDonorUsed": false
   },
   "runtime": {
-    "changedInR1336": false,
-    "sourceCommit": "646050ecab5e72af6316760b9e94426b218f3ac4",
-    "renderDeploy": "dep-damc21e7bikc73b2lmu0",
+    "release": "FR-NAV1.30.36-HF3.13.18",
+    "sourceCommit": "6243e08d6944d541aa32a53b43b131f312ef7ff7",
+    "parentCommit": "646050ecab5e72af6316760b9e94426b218f3ac4",
+    "functionalChanges": false,
+    "releaseIdentityAdvanced": true,
+    "renderDeploy": "PENDING_CURRENT_RUNTIME_DEPLOY_CONFIRMATION",
     "tests": {
       "total": 29,
       "pass": 29,
