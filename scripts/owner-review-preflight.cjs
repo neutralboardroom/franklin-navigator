@@ -2,12 +2,11 @@
 // Optional, bounded READ-ONLY deployment check. Never grants a role, changes account
 // verification, creates a session, publishes content, or performs a provider write.
 const crypto=require('node:crypto');
-const fs=require('node:fs');
-const path=require('node:path');
 const {loadControlProfileRegistry,isControlProfile,isProductionProfile}=require('../lib/member-profile-policy');
+const {loadProfileScope}=require('../lib/profile-scope');
 const digest=value=>crypto.createHash('sha256').update(String(value)).digest('hex');
 function publicProfileScope(){
-  try{const parsed=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/member-profile-scope.json'),'utf8'));return parsed?.profiles&&typeof parsed.profiles==='object'?parsed.profiles:{};}catch{return {};}
+  try{return loadProfileScope().profiles||{};}catch{return {};}
 }
 function settings(env){
   const accountId=String(env.OWNER_REVIEW_PREFLIGHT_ACCOUNT||'').trim();
