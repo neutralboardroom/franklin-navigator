@@ -1,0 +1,105 @@
+/* R1332 — finished local profile presentation, reviews, gallery and member offers */
+body.hf35-profile.r1332-profile{
+  --p-ink:#102b32;--p-muted:#5b6d72;--p-line:#d8e3e4;--p-soft:#f5f9f8;--p-accent:#005f66;
+  --p-warm:#fff8ea;--p-warm-line:#ead8a6;--p-shadow:0 12px 34px rgba(16,43,50,.08)
+}
+body.hf35-profile.r1332-profile .breadcrumbs{max-width:1180px}
+body.hf35-profile.r1332-profile .r22-profile-hero{background:#fff;border-bottom:1px solid var(--p-line);padding-bottom:28px}
+body.hf35-profile.r1332-profile .r22-profile-hero-grid{max-width:1180px!important;grid-template-columns:132px minmax(0,1fr)!important;gap:28px!important;padding-top:34px!important}
+body.hf35-profile.r1332-profile .profile-avatar.large{width:132px!important;height:132px!important;min-width:132px!important;border-radius:22px!important;border:1px solid #cbdadb!important;box-shadow:0 8px 24px rgba(16,43,50,.08);font-size:1.7rem!important}
+body.hf35-profile.r1332-profile .profile-avatar.large img{border-radius:21px!important}
+body.hf35-profile.r1332-profile .r22-profile-hero h1{font-size:clamp(2.25rem,4vw,3.5rem);letter-spacing:-.025em;margin:.15rem 0 .45rem}
+body.hf35-profile.r1332-profile .profile-location{font-size:1.06rem;margin:.25rem 0 .6rem;color:var(--p-muted)}
+body.hf35-profile.r1332-profile .r1332-rating-line{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:9px 0 5px}
+body.hf35-profile.r1332-profile .r1332-stars{font-size:1.05rem;letter-spacing:.06em;color:#a55b00}
+body.hf35-profile.r1332-profile .r1332-rating-link{font-weight:800;text-underline-offset:3px}
+body.hf35-profile.r1332-profile .r1331-media-hint{margin-top:6px}
+body.hf35-profile.r1332-profile .hf35-contact-label{margin-top:19px}
+body.hf35-profile.r1332-profile .profile-primary-actions{gap:10px}
+body.hf35-profile.r1332-profile .profile-primary-actions .button{border-radius:9px;min-height:46px;padding:11px 18px}
+body.hf35-profile.r1332-profile .profile-utility-actions{margin-top:14px;gap:15px}
+body.hf35-profile.r1332-profile .r1330-section-nav{max-width:1180px;margin:0 auto;padding:16px 0 14px;border-bottom:1px solid var(--p-line);gap:18px}
+body.hf35-profile.r1332-profile .r1330-section-nav a{border:0;border-radius:0;background:transparent;padding:7px 0;font-weight:800;color:var(--p-ink)}
+body.hf35-profile.r1332-profile .r22-profile-layout{display:grid!important;grid-template-columns:minmax(0,1fr) 310px;gap:42px!important;max-width:1180px!important;align-items:start}
+body.hf35-profile.r1332-profile .r22-profile-layout>article{min-width:0}
+body.hf35-profile.r1332-profile .r22-profile-layout>article>section{border:0!important;border-bottom:1px solid var(--p-line)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;padding:32px 0!important;margin:0!important}
+body.hf35-profile.r1332-profile .r22-profile-layout>article>section:first-child{padding-top:18px!important}
+body.hf35-profile.r1332-profile .r22-profile-layout>article>section h2{font-size:clamp(1.65rem,2.7vw,2.15rem);letter-spacing:-.02em;margin:0 0 15px}
+body.hf35-profile.r1332-profile .r22-profile-layout>article>section h3{font-size:1.25rem;margin:12px 0 8px}
+body.hf35-profile.r1332-profile .profile-facts-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+body.hf35-profile.r1332-profile .profile-facts-grid>div{border:0;background:var(--p-soft);border-radius:12px;padding:15px 16px}
+body.hf35-profile.r1332-profile .profile-facts-grid>div span{font-size:.8rem;color:var(--p-muted)}
+body.hf35-profile.r1332-profile .r22-profile-side{display:block!important;margin:20px 0 0!important;position:sticky;top:90px}
+body.hf35-profile.r1332-profile .r22-profile-side .r22-card{border:1px solid var(--p-line);border-radius:16px;padding:20px;background:#fff;box-shadow:0 5px 18px rgba(16,43,50,.04)}
+body.hf35-profile.r1332-profile .r22-profile-side .r22-card h2{font-size:1.22rem}
+body.hf35-profile.r1332-profile #manage{border:1px solid var(--p-line)!important;border-radius:16px!important;background:var(--p-soft)!important;padding:24px!important;margin:30px 0 0!important}
+body.hf35-profile.r1332-profile #manage h2{font-size:1.45rem}
+body.hf35-profile.r1332-profile #manage .actions{display:flex;gap:9px;flex-wrap:wrap}
+body.hf35-profile.r1332-profile #official-links .fine-print{display:none}
+body.hf35-profile.r1332-profile .hf35-member-gallery,
+body.hf35-profile.r1332-profile .r1330-gallery{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+body.hf35-profile.r1332-profile .hf35-member-gallery img,
+body.hf35-profile.r1332-profile .r1330-gallery img{aspect-ratio:4/3;border-radius:12px;cursor:zoom-in}
+body.hf35-profile.r1332-profile .r1332-special-offer{
+  background:linear-gradient(135deg,var(--p-warm),#fff)!important;border:1px solid var(--p-warm-line)!important;
+  border-radius:16px!important;padding:24px!important;margin:28px 0!important
+}
+body.hf35-profile.r1332-profile .r1332-special-offer .eyebrow{color:#7a4d00}
+body.hf35-profile.r1332-profile .r1332-offer-meta{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+body.hf35-profile.r1332-profile .r1332-offer-meta span{display:inline-block;background:#fff;border:1px solid var(--p-warm-line);border-radius:8px;padding:7px 9px;font-weight:800}
+body.hf35-profile.r1332-profile .r1332-reviews-header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:18px}
+body.hf35-profile.r1332-profile .r1332-review-summary{display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px;align-items:center;margin:12px 0 24px}
+body.hf35-profile.r1332-profile .r1332-review-score{text-align:center}
+body.hf35-profile.r1332-profile .r1332-review-score strong{display:block;font-size:2.8rem;line-height:1}
+body.hf35-profile.r1332-profile .r1332-review-bars{display:grid;gap:6px}
+body.hf35-profile.r1332-profile .r1332-review-bar{display:grid;grid-template-columns:34px 1fr 30px;gap:8px;align-items:center;font-size:.88rem;color:var(--p-muted)}
+body.hf35-profile.r1332-profile .r1332-review-bar progress{width:100%;height:8px}
+body.hf35-profile.r1332-profile .r1332-review-form,
+body.hf35-profile.r1332-profile .r1332-auth-panel{border:1px solid var(--p-line);border-radius:14px;background:var(--p-soft);padding:18px;margin:18px 0}
+body.hf35-profile.r1332-profile .r1332-review-form label,
+body.hf35-profile.r1332-profile .r1332-auth-panel label{display:grid;gap:6px;margin:12px 0;font-weight:750}
+body.hf35-profile.r1332-profile .r1332-review-form input[type="text"],
+body.hf35-profile.r1332-profile .r1332-review-form textarea,
+body.hf35-profile.r1332-profile .r1332-review-form select,
+body.hf35-profile.r1332-profile .r1332-auth-panel input{width:100%;max-width:680px;border:1px solid #aebfc2;border-radius:8px;padding:10px 11px;background:#fff}
+body.hf35-profile.r1332-profile .r1332-rating-input{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:3px;width:max-content}
+body.hf35-profile.r1332-profile .r1332-rating-input input{position:absolute;opacity:0;pointer-events:none}
+body.hf35-profile.r1332-profile .r1332-rating-input label{cursor:pointer;font-size:1.8rem;color:#9aa8aa;margin:0}
+body.hf35-profile.r1332-profile .r1332-rating-input input:checked~label,
+body.hf35-profile.r1332-profile .r1332-rating-input label:hover,
+body.hf35-profile.r1332-profile .r1332-rating-input label:hover~label{color:#a55b00}
+body.hf35-profile.r1332-profile .r1332-review-card{padding:22px 0;border-top:1px solid var(--p-line)}
+body.hf35-profile.r1332-profile .r1332-review-card:first-child{border-top:0}
+body.hf35-profile.r1332-profile .r1332-review-top{display:flex;justify-content:space-between;gap:18px}
+body.hf35-profile.r1332-profile .r1332-review-meta{font-size:.88rem;color:var(--p-muted)}
+body.hf35-profile.r1332-profile .r1332-owner-response{margin:15px 0 0 22px;border-left:3px solid #bdd5d2;padding:10px 14px;background:var(--p-soft);border-radius:0 10px 10px 0}
+body.hf35-profile.r1332-profile .r1332-review-controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:.9rem}
+body.hf35-profile.r1332-profile .r1332-review-empty{padding:20px;border-radius:12px;background:var(--p-soft)}
+body.hf35-profile.r1332-profile .r1332-status{margin:10px 0;font-weight:700}
+body.hf35-profile.r1332-profile .r1332-status.good{color:#1d655f}
+body.hf35-profile.r1332-profile .r1332-status.warn{color:#8b4d00}
+body.hf35-profile.r1332-profile .r1332-gallery-lightbox{border:0;padding:0;background:transparent;max-width:min(1000px,94vw)}
+body.hf35-profile.r1332-profile .r1332-gallery-lightbox::backdrop{background:rgba(0,0,0,.72)}
+body.hf35-profile.r1332-profile .r1332-gallery-lightbox img{max-width:94vw;max-height:86vh;display:block;border-radius:10px}
+body.hf35-profile.r1332-profile .r1332-gallery-lightbox button{position:absolute;right:8px;top:8px;border:0;border-radius:999px;width:38px;height:38px;font-size:1.4rem;cursor:pointer}
+@media(max-width:900px){
+  body.hf35-profile.r1332-profile .r22-profile-layout{grid-template-columns:1fr!important}
+  body.hf35-profile.r1332-profile .r22-profile-side{position:static;display:grid!important;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+  body.hf35-profile.r1332-profile .r1330-section-nav{padding-inline:16px}
+}
+@media(max-width:680px){
+  body.hf35-profile.r1332-profile .r22-profile-hero-grid{grid-template-columns:86px minmax(0,1fr)!important;gap:16px!important}
+  body.hf35-profile.r1332-profile .profile-avatar.large{width:86px!important;height:86px!important;min-width:86px!important}
+  body.hf35-profile.r1332-profile .profile-primary-actions .button{flex:1 1 140px;text-align:center}
+  body.hf35-profile.r1332-profile .profile-facts-grid{grid-template-columns:1fr!important}
+  body.hf35-profile.r1332-profile .hf35-member-gallery,
+  body.hf35-profile.r1332-profile .r1330-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.hf35-profile.r1332-profile .r1332-review-summary{grid-template-columns:1fr}
+  body.hf35-profile.r1332-profile .r1332-review-score{text-align:left}
+}
+@media(max-width:460px){
+  body.hf35-profile.r1332-profile .r22-profile-hero-grid{grid-template-columns:1fr!important}
+  body.hf35-profile.r1332-profile .r1332-reviews-header{display:block}
+  body.hf35-profile.r1332-profile .hf35-member-gallery,
+  body.hf35-profile.r1332-profile .r1330-gallery{grid-template-columns:1fr}
+}
