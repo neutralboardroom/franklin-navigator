@@ -144,6 +144,41 @@ jobs:
           grep -F "r1311-community-actions" dist/assets/r1311-community.css
           for p in index.html assistant/index.html directory/index.html get-it-done/index.html today/index.html activities/index.html community/index.html community-help-center/index.html my-franklin/index.html business-dashboard/index.html member-profile-preview/index.html membership-start/index.html claim-profile/index.html corrections/index.html owner-issues/index.html owner-issues/readiness/index.html; do test -f "dist/$p"; done
 
+      - name: Local static asset reference integrity
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          from urllib.parse import urlsplit, unquote
+
+          root=Path('dist')
+          refs=set()
+          class P(HTMLParser):
+              def handle_starttag(self, tag, attrs):
+                  a=dict(attrs)
+                  if tag=='script' and a.get('src'): refs.add(a['src'])
+                  elif tag=='img' and a.get('src'): refs.add(a['src'])
+                  elif tag=='source' and a.get('src'): refs.add(a['src'])
+                  elif tag=='link' and a.get('href') and str(a.get('rel','')).lower() in {'stylesheet','icon','apple-touch-icon','manifest'}:
+                      refs.add(a['href'])
+          for p in root.rglob('*.html'):
+              parser=P()
+              parser.feed(p.read_text(errors='replace'))
+          missing=[]
+          checked=0
+          for raw in sorted(refs):
+              u=urlsplit(raw)
+              if u.scheme or u.netloc or not u.path.startswith('/'): continue
+              if not (u.path.startswith('/assets/') or u.path.startswith('/data/') or u.path=='/site.webmanifest'): continue
+              target=root/unquote(u.path.lstrip('/'))
+              checked+=1
+              if not target.is_file(): missing.append((raw,str(target)))
+          assert not missing, 'Missing local resource references: '+repr(missing[:30])
+          assert checked>0
+          print({'unique_refs':len(refs),'local_refs_checked':checked,'missing':0})
+          PY
+
       - name: Assistant regression and public-language safety
         run: |
           set -euo pipefail
