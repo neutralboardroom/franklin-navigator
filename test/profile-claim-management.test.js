@@ -60,3 +60,10 @@ test('profile management status includes verified-at timestamp for clear account
   const src=member();
   assert.ok(src.includes('l.verified_at'));
 });
+
+
+test('support request endpoint is rate limited before database insertion',()=>{
+  const server=fs.readFileSync('server.js','utf8');
+  assert.ok(server.includes('support:${clientKey(req)}'));
+  assert.ok(server.includes("Too many support requests. Please wait before trying again."));
+});
