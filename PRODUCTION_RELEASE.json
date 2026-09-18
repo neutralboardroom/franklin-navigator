@@ -1256,7 +1256,9 @@
       "profileInternalReleaseJargonRemoved": true,
       "profileSourceQualificationJargonRemoved": true,
       "privacyAndActionCenterCopyRewrittenForPublic": true,
-      "noWorkingCapabilityIntentionallyRemoved": true
+      "noWorkingCapabilityIntentionallyRemoved": true,
+      "redundantConnectedNeedsHomeBridgeRemoved": true,
+      "situationPlannerPreservedElsewhere": true
     },
     "colorSystem": {
       "asset": "/assets/r1336-color-system.css",
