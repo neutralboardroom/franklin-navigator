@@ -22,6 +22,9 @@ for key,value in meta.items():
         current=value
         break
 need(current is not None,'current release metadata block missing')
+color_asset=((current or {}).get('colorSystem') or {}).get('asset','')
+need(color_asset.startswith('/assets/') and color_asset.endswith('.css'),'current release color asset metadata missing')
+color_rel='dist/'+color_asset.lstrip('/') if color_asset else ''
 
 a=meta.get('assistant',{})
 need(a.get('architecture')=='CLEAN_ROOM_V2','Assistant architecture mismatch')
@@ -33,10 +36,11 @@ required=[
  'dist/index.html','dist/directory/index.html','dist/review-guidelines/index.html',
  'dist/assets/r1330-profile.js','dist/assets/r1332-profile.js','dist/assets/r1332-member-offers.js',
  'dist/assets/r1333-paid-sponsored.js','dist/assets/r1333-profile.css','dist/assets/r1333-sponsored.css',
- 'dist/assets/r1335-color-system.css','dist/assets/franklin-site-monitor-r1308.js',
+ 'dist/assets/franklin-site-monitor-r1308.js',
  'runtime/franklin-membership/server.js','runtime/franklin-membership/lib/reviews.js',
  'runtime/franklin-membership/schema/007_reviews.sql','runtime/franklin-membership/package.json'
 ]
+if color_rel: required.append(color_rel)
 for p in required: need((root/p).is_file(),'missing required member: '+p)
 for p in (current or {}).get('receipts',[]):
     need((root/p).is_file(),'missing current release receipt: '+str(p))
@@ -77,8 +81,8 @@ need(full_pages>0 and covered==full_pages,'shared color-system coverage incomple
 need(checked>0,'no local asset references checked')
 
 hf=(root/'dist/assets/hf36.js').read_text(errors='replace')
-color=(root/'dist/assets/r1335-color-system.css').read_text(errors='replace')
-need('/assets/r1335-color-system.css?v=frnav1335' in hf,'R1335 color system not loaded')
+color=(root/color_rel).read_text(errors='replace') if color_rel and (root/color_rel).is_file() else ''
+need(bool(color_asset) and color_asset in hf,'current release color system not loaded')
 for token in ['--fr-teal:','--fr-green:','--fr-blue:','--fr-gold:','--fr-violet:']:
     need(token in color,'missing color token '+token)
 
