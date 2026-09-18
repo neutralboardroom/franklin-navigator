@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.34-HF3.13.16",
+  "release": "FR-NAV1.30.35-HF3.13.17",
   "date": "2026-09-18",
   "base": "FR-NAV1.30.12-HF3.12.4",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1334 reconciles the exact accepted R1312 predecessor with the direct descendant Franklin source, preserves and qualifies the later Clean Room Assistant, finished profile/review, Community Member gallery/offer and clearly labeled sponsored-visibility improvements, repairs stale release qualification, hardens runtime review/sponsored tests, and corrects incident-monitor false positives. Profile Factory, Local Investigator, SRE and SCC authority boundaries remain intact; Smarter Justice donor material is not used.",
+  "scope": "R1335 preserves the qualified R1334 Franklin product and applies the owner-approved restrained semantic color system consistently across the full public site and profile experience. Teal remains the primary Franklin action/brand color; soft green, blue, gold and violet are used by meaning rather than decoration. Profile reviews, member galleries/offers, sponsored visibility, ordinary-result neutrality, Profile Factory/Local Investigator/SRE/SCC authority boundaries, monitoring and all accepted capabilities remain intact.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -313,14 +313,14 @@
       "HIGH": 60
     },
     "latestOwnerAuthenticatedIncidentSnapshot": {
-      "at": "2026-09-18T04:09:05.981Z",
+      "at": "2026-09-18T04:42:09.152Z",
       "ownerAuthenticated": true,
       "authMechanism": "HMAC_ADMIN_TOKEN_CONTROL_PLANE_PROOF",
       "openCritical": 0,
       "openHigh": 0,
       "noOpenP0P1": true,
       "externalDelivery": "RESEND_EMAIL_CONFIGURED",
-      "ownerAuthProofSha256": "9021a02739504ca017d4638ce049bd10c4709699b7fc06affbf6686f68fa46ce"
+      "ownerAuthProofSha256": "93371129cc34b5c1dcff244d04af9e6581666a9ad1b8f81a7994a70b834443c3"
     },
     "syntheticSupportReconciliation": {
       "expected": 10,
@@ -1120,5 +1120,95 @@
     "machineReadableReleaseReceipt": "R1334_RELEASE_RECEIPT.json",
     "ownerSummary": "OWNER_SUMMARY__R1334.md",
     "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION; SCC acceptance/promotion remains a separate external authority gate"
+  },
+  "r1335": {
+    "version": "FR-NAV1.30.35-HF3.13.17",
+    "date": "2026-09-18",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "QUALIFIED_SUCCESSOR_CANDIDATE_PENDING_FINAL_SEAL",
+    "acceptedCanonicalBase": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    },
+    "immediateLocalQualifiedParent": {
+      "version": "FR-NAV1.30.34-HF3.13.16",
+      "commit": "d7b672eb39cc0e6e1fad751c07b1804b4423ae99",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.34-HF3.13.16__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "bytes": 85432811,
+      "sha256": "bbf6119ce8ee3f5ee2437c12344c41633945aa72cdc9c85ddb3916bf4ab62300",
+      "manifestSha256": "1683d5552a8b05c816aeb4344e3529410831e835990ab8cb8ecf06276d1dc195",
+      "sccAccepted": false
+    },
+    "ownerDecision": "USE_RESTRAINED_SEMANTIC_COLOR_SYSTEM_THROUGHOUT_SITE_AND_PROFILES",
+    "colorSystem": {
+      "asset": "/assets/r1335-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "semanticAccents": {
+        "call": "SOFT_GREEN",
+        "contactInformation": "SOFT_BLUE",
+        "directionsOffersSponsored": "SOFT_GOLD",
+        "reviewsCommunitySupportingContent": "SOFT_VIOLET_OR_BLUE_BY_CONTEXT"
+      },
+      "randomDecorativeColoring": false,
+      "profilePaletteUnifiedWithSite": true,
+      "publicPagesQualified": 19363,
+      "missingCoverage": 0,
+      "localResourceRefsChecked": 87,
+      "localResourceRefsMissing": 0
+    },
+    "preservedFromR1334": [
+      "Clean Room Franklin Assistant",
+      "19,103 canonical discovery profiles plus authorized Franklin Navigator self-profile overlay",
+      "free factual correction/removal/claim management",
+      "finished business/professional profiles",
+      "1–5 ratings and written firsthand reviews",
+      "review reporting/moderation and verified manager responses",
+      "free reviewed profile photo/logo upload",
+      "paid Community Member cover/gallery",
+      "paid Community Member special offers",
+      "clearly labeled sponsored visibility",
+      "ordinary unpaid result order unaffected by paid placement",
+      "payment does not change factual truth or review score",
+      "site-wide issue monitoring and owner alerting",
+      "0 open CRITICAL / 0 open HIGH after R1334 monitor corrections"
+    ],
+    "upstream": {
+      "profileFactoryWholesalePf1528Promoted": false,
+      "localInvestigatorLatestObserved": "SLI-FRANKLIN-HANDOFF-20260917-042",
+      "localInvestigatorPromoted": false,
+      "smarterJustice": "SMARTER_JUSTICE_DONOR_NOT_USED"
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "646050ecab5e72af6316760b9e94426b218f3ac4",
+      "deploy": "dep-damc21e7bikc73b2lmu0",
+      "releaseEnv": "FR-NAV1.30.35-HF3.13.17",
+      "tests": {
+        "total": 29,
+        "pass": 29,
+        "fail": 0,
+        "skipped": 0
+      },
+      "ready": true,
+      "openCritical": 0,
+      "openHigh": 0
+    },
+    "receipts": [
+      "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1335.md",
+      "NO_LOSS_LEDGER__R1335.md",
+      "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1335.md",
+      "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1335.md",
+      "PRE_SEAL_CURRENTNESS_RECEIPT__R1335.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1335.md",
+      "R1335_RELEASE_RECEIPT.json",
+      "OWNER_SUMMARY__R1335.md"
+    ],
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION; SCC acceptance/promotion remains separate"
   }
 }
