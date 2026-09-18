@@ -46,7 +46,7 @@ jobs:
           node --check server.js
           node --check lib/incident-monitor.js
           test -f schema/005_issue_monitoring.sql
-          grep -F "FRANKLIN_ISSUE_MONITOR_1" lib/incident-monitor.js
+          grep -F "const VERSION='FRANKLIN_ISSUE_MONITOR_2'" lib/incident-monitor.js
           grep -F "EXTERNAL_CONFIG_REQUIRED" schema/005_issue_monitoring.sql
           grep -F "SRE_OWNER_CONSOLE_ISSUE_HANDOFF_V1" server.js
       - name: Existing runtime unit tests
