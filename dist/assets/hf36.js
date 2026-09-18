@@ -8,6 +8,7 @@ loadCss('/assets/franklin-assistant-chat-r1306.css?v=frnav1306','franklin-assist
 loadCss('/assets/franklin-nav-r1310.css?v=frnav1310','franklin-nav-r1310');
 loadCss('/assets/franklin-nav-r1311.css?v=frnav1311','franklin-nav-r1311');
 loadCss('/assets/r1311-community.css?v=frnav1311','franklin-community-r1311');
+loadCss('/assets/r1334-color-system.css?v=frnav1334','franklin-color-system-r1334');
 if(!document.querySelector('script[data-franklin-established-positioning]')){const p=document.createElement('script');p.src='/assets/franklin-established-positioning.js?v=frnav1293';p.defer=true;p.dataset.franklinEstablishedPositioning='1';document.head.append(p)}
 const loadAssistantR1318=()=>{
   if(!document.querySelector('[data-navigator-bot]')||document.querySelector('script[data-franklin-assistant-r1318]'))return;
@@ -41,6 +42,23 @@ const installAssistantFailureFallback=(err)=>{
   root.addEventListener('click',e=>{const b=e.target.closest?.('[data-navigator-example]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();show(b.dataset.navigatorExample||b.textContent||'')},true);
   console.error('Franklin Assistant canonical loader failed',err);
 };
+
+const applyFranklinColorSystem=()=>{
+  const b=document.body;if(!b)return;
+  b.classList.add('franklin-color-system');
+  const p=location.pathname.replace(/\/+$/,'/')||'/';
+  const add=c=>b.classList.add(c);
+  if(p==='/'||p==='/es/')add('franklin-page-home');
+  if(p.startsWith('/assistant/')||p.startsWith('/es/asistente/'))add('franklin-page-assistant');
+  if(p.startsWith('/directory/')||p.startsWith('/es/directorio/')||p.startsWith('/profiles/'))add('franklin-page-directory');
+  if(p.startsWith('/community/')||p.startsWith('/es/comunidad/'))add('franklin-page-community');
+  if(p.startsWith('/activities/')||p.startsWith('/today/')||p.startsWith('/es/actividades/')||p.startsWith('/es/hoy/'))add('franklin-page-activities');
+  if(p.startsWith('/business-dashboard/')||p.startsWith('/es/negocios/'))add('franklin-page-business');
+  if(p.startsWith('/membership-')||p.startsWith('/profile-studio/')||p.startsWith('/claim-profile/')||p.startsWith('/es/iniciar-membresia/'))add('franklin-page-membership');
+  if(p.startsWith('/community-help-center/')||p.startsWith('/review-guidelines/')||p.startsWith('/es/centro-de-ayuda/'))add('franklin-page-help');
+  if(p.startsWith('/get-it-done/')||p.startsWith('/es/hacerlo/'))add('franklin-page-tasks');
+};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applyFranklinColorSystem,{once:true});else applyFranklinColorSystem();
 
 const loadScript=(src,key)=>new Promise((resolve,reject)=>{
   const sel=`script[data-${key}]`,old=document.querySelector(sel);
