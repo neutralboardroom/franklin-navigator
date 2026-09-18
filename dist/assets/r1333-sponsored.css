@@ -1,0 +1,10 @@
+/* R1333 sponsored Community Member visibility in Franklin directory/search surfaces */
+.r1333-directory-sponsored-section{grid-column:1/-1;border:1px solid #e2d3aa;border-radius:16px;background:linear-gradient(180deg,#fffaf0,#fff);padding:16px;margin:2px 0 8px}
+.r1333-directory-sponsored-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;color:#4f4329}
+.r1333-directory-sponsored-pill,.r1333-directory-sponsored-label{display:inline-flex;width:max-content;border-radius:6px;background:#fff0c8;border:1px solid #e3cc8e;color:#684600;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.045em;padding:4px 7px}
+.r1333-directory-sponsored-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.r1333-directory-sponsored-card{border-color:#dfd0a8!important;background:#fffdf8!important;box-shadow:0 7px 18px rgba(79,57,14,.06)!important}
+.r1333-directory-sponsored-card .r1333-directory-sponsored-label{margin-bottom:8px}
+.r1333-directory-sponsored-card .button.primary{background:#075d63!important;border-color:#075d63!important;color:#fff!important}
+.r1333-directory-sponsored-section>.fine-print{margin:10px 0 0;color:#6c6454}
+@media(max-width:760px){.r1333-directory-sponsored-grid{grid-template-columns:1fr}}
