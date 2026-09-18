@@ -19,6 +19,6 @@ Current R1336 source preserves the unfinished screenshot-driven homepage, Ask Fr
 
 The root-cause repair makes the color qualification gate read the current color asset from PRODUCTION_RELEASE metadata. R1336 identifies /assets/r1336-color-system.css as the shared color asset.
 
-No wholesale PF15.28 or LI42 promotion is asserted. Runtime functionality is unchanged from R1335 and remains bound to the existing Franklin membership runtime source commit 646050ecab5e72af6316760b9e94426b218f3ac4. SCC acceptance/current-pointer promotion remains external authority and is not self-asserted.
+No wholesale PF15.28 or LI42 promotion is asserted. Runtime functionality is unchanged from R1335, but the runtime release identity is advanced on the existing Franklin membership runtime branch by exact source commit 6243e08d6944d541aa32a53b43b131f312ef7ff7 (parent 646050ecab5e72af6316760b9e94426b218f3ac4) so the R1336 exact-source package and health identity remain consistent. SCC acceptance/current-pointer promotion remains external authority and is not self-asserted.
 
 Result: PRE_SEAL_CURRENTNESS_PASS_PENDING_CURRENT_HEAD_QUALIFICATION
