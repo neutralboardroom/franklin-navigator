@@ -63,7 +63,7 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
 
   const health=await call('GET','/health');
   assert.equal(health.body.release,'FR-NAV1.30.8-HF3.12.0');
-  assert.equal(health.body.issueMonitorVersion,'FRANKLIN_ISSUE_MONITOR_1');
+  assert.equal(health.body.issueMonitorVersion,'FRANKLIN_ISSUE_MONITOR_2');
 
   const unauth=await call('GET','/admin/incidents');
   assert.equal(unauth.status,401);
