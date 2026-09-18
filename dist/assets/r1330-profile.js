@@ -44,7 +44,7 @@
  function sectionNav(){
    if(document.querySelector('.r1330-section-nav'))return;
    const article=document.querySelector('.r22-profile-layout>article');if(!article)return;
-   const defs=[['about','Overview'],['details','Details'],['official-links','Official links'],['member-services','Services'],['member-details','More details'],['member-gallery','Photos'],['r1330-uploaded-photos','Photos'],['manage','Manage']];
+   const defs=[['about','Overview'],['details','Details'],['official-links','Helpful links'],['member-services','Services'],['member-details','More details'],['member-gallery','Photos'],['r1330-uploaded-photos','Photos'],['manage','Manage']];
    const seen=new Set(),items=defs.filter(([i])=>document.getElementById(i)&&!seen.has(i)&&seen.add(i));if(items.length<2)return;
    const nav=el('nav','', 'r1330-section-nav');nav.setAttribute('aria-label','Profile sections');
    for(const [i,label] of items){const a=el('a',label);a.href='#'+i;nav.append(a)}
