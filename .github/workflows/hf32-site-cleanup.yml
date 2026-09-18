@@ -132,6 +132,7 @@ jobs:
           node --check dist/assets/franklin-assistant-r1295-core.js
           node --check dist/assets/franklin-assistant-r1307.js
           node --check dist/assets/franklin-site-monitor-r1308.js
+          node --check dist/assets/r37-i18n.js
           node --check dist/assets/r1330-profile.js
           node --check dist/assets/r1332-profile.js
           node --check dist/assets/r1332-member-offers.js
@@ -140,6 +141,8 @@ jobs:
           grep -F "Profile photo viewer" dist/assets/r1333-paid-sponsored.js
           grep -F "Open profile photo " dist/assets/r1333-paid-sponsored.js
           grep -F "['official-links','Helpful links']" dist/assets/r1330-profile.js
+          grep -F "'Profile photo viewer':'Visor de fotos del perfil'" dist/assets/r37-i18n.js
+          grep -F "Abrir foto del perfil" dist/assets/r37-i18n.js
           test -f dist/assets/r1330-profile.css
           test -f dist/assets/r1332-profile.css
           test -f dist/assets/r1333-profile.css
