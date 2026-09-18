@@ -31,7 +31,9 @@
     "colorCoverageGate": "CURRENT_RELEASE_METADATA_DRIVEN",
     "publicLanguageAudit": "scripts/public-language-audit.py",
     "askFranklinResidentFacingLayout": true,
-    "profileInternalJargonRemoved": true
+    "profileInternalJargonRemoved": true,
+    "redundantConnectedNeedsHomeBridgeRemoved": true,
+    "situationPlannerPreservedElsewhere": true
   },
   "preservedIntegrity": {
     "ordinaryUnpaidOrderingUnaffected": true,
