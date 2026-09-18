@@ -219,6 +219,24 @@ def correction_page(soup,es=False):
 def profile_page(soup,route,es=False):
     if soup.body:
         soup.body['class']=list(set(soup.body.get('class',[])+['hf35-profile']))
+    # Public profile pages must not expose source qualification/currentness
+    # mechanics. Keep provenance in internal data/receipts, not resident UI.
+    current=soup.select_one('.profile-currentness')
+    if current: current.decompose()
+    sources=soup.select_one('#sources')
+    if sources: sources.decompose()
+    for note in soup.select('#official-links .fine-print'):
+        if re.search(r'source[- ]backed|source handoff|verified in the source',note.get_text(' ',strip=True),re.I):
+            note.string=tx(es,'Use these links to contact or learn more.','Use estos enlaces para contactar u obtener más información.')
+    if route=='/profiles/FR-ORG-b00c0ace7943973c/':
+        copy=soup.select_one('.r22-profile-hero-grid > div:nth-of-type(2)')
+        if copy and not copy.select_one('.r1330-profile-state'):
+            loc=copy.select_one('.profile-location')
+            state=tag(soup,'div',class_='r1330-profile-state')
+            state.append(tag(soup,'span',tx(es,'Official Franklin Navigator profile','Perfil oficial de Franklin Navigator'),class_='r1330-state-label is-managed'))
+            (loc or copy.find('h1')).insert_after(state)
+        manage=soup.select_one('#manage')
+        if manage: manage.decompose()
     hero=soup.select_one('.r22-profile-hero')
     actions=soup.select_one('.profile-primary-actions')
     if actions and not actions.previous_sibling:
