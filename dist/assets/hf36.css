@@ -44,3 +44,88 @@ body.hf36-directory .r22-directory-pager{min-width:0!important;max-width:100%!im
 body.hf36-directory input,body.hf36-directory select{min-width:0!important;max-width:100%!important;width:100%}
 body.hf36-directory .hf36-result-actions{flex-wrap:wrap}
 @media(max-width:620px){body.hf36-directory .r22-directory-toolbar{grid-template-columns:1fr!important}body.hf36-directory .hf35-directory-advanced .hf35-disclosure-body{grid-template-columns:1fr!important}body.hf36-directory .r22-directory-pager{gap:10px;flex-wrap:wrap}}
+
+
+/* R1336 CORE COLOR SYSTEM — loaded by the long-standing site stylesheet on every public page. */
+:root{
+  --fr-teal:#075d63;--fr-teal-strong:#064f54;--fr-teal-soft:#e8f5f3;
+  --fr-green:#2f6b4f;--fr-green-soft:#edf7ef;
+  --fr-blue:#2e5f8f;--fr-blue-soft:#eef5fb;
+  --fr-gold:#8a5a00;--fr-gold-soft:#fff6df;
+  --fr-violet:#65539a;--fr-violet-soft:#f3f0fb;
+  --fr-ink:#102b32;--fr-muted:#5b6d72;--fr-line:#d8e3e4
+}
+header .hf34-nav a{color:var(--fr-ink)!important;background:transparent!important}
+header .hf34-nav a[aria-current="page"]{
+  color:var(--fr-teal)!important;background:var(--fr-teal-soft)!important;border-radius:8px
+}
+.button.primary,button.primary{background:var(--fr-teal)!important;border-color:var(--fr-teal)!important;color:#fff!important}
+.button.primary:hover,button.primary:hover{background:var(--fr-teal-strong)!important;border-color:var(--fr-teal-strong)!important}
+a[href^="tel:"].button{background:var(--fr-green-soft)!important;border-color:#bdd9c5!important;color:#24563f!important}
+a[href^="mailto:"].button{background:var(--fr-blue-soft)!important;border-color:#c4d8ea!important;color:#244f78!important}
+a[href*="google.com/maps"].button,a[href*="maps.apple.com"].button{background:var(--fr-gold-soft)!important;border-color:#ead29a!important;color:#704900!important}
+
+/* Homepage: visible, restrained section hierarchy. */
+.hf36-home .r24-home-hero{
+  background:radial-gradient(circle at 80% 18%,rgba(46,95,143,.09),transparent 30%),linear-gradient(135deg,#f8fcfb,var(--fr-teal-soft))!important;
+  border-bottom:1px solid #cfe3e1
+}
+.hf36-home .hf35-home-bridge,.hf36-home .hf36-compact-bridge{
+  background:linear-gradient(135deg,#fff,var(--fr-green-soft))!important;
+  border-top:1px solid #d9e9dd;border-bottom:1px solid #d9e9dd
+}
+.hf36-home .r24-around,.hf36-home .hf36-everyday{
+  background:linear-gradient(135deg,#fff,var(--fr-blue-soft))!important
+}
+.hf36-home .r24-business-section{
+  background:linear-gradient(135deg,#fffdf8,var(--fr-gold-soft))!important;
+  border-top:1px solid #eadcaf;border-bottom:1px solid #eadcaf
+}
+.hf36-home .r22-history.hf36-history,.hf36-home .r22-history.hf36-history .hf36-history-visible{
+  background:linear-gradient(135deg,#fff,var(--fr-violet-soft))!important;color:var(--fr-ink)!important
+}
+.hf36-home .r22-mini-list a:nth-child(1){background:var(--fr-violet-soft)!important}
+.hf36-home .r22-mini-list a:nth-child(2){background:var(--fr-blue-soft)!important}
+.hf36-home .r22-mini-list a:nth-child(3){background:var(--fr-green-soft)!important}
+.hf36-home .r22-mini-list a:nth-child(4){background:var(--fr-gold-soft)!important}
+.hf36-home .r22-mini-list a{border:1px solid var(--fr-line)!important;border-radius:10px;padding:10px 12px}
+
+/* Directory, community, tasks, business and help families. */
+.hf36-directory main>section:first-child{background:linear-gradient(135deg,#fbfdff,var(--fr-blue-soft))!important}
+.hf36-community main>section:first-child{background:linear-gradient(135deg,#fcfbff,var(--fr-violet-soft))!important}
+.hf36-get-it-done main>section:first-child{background:linear-gradient(135deg,#fbfefc,var(--fr-green-soft))!important}
+.hf36-business main>section:first-child{background:linear-gradient(135deg,#fffdf8,var(--fr-gold-soft))!important}
+.hf36-help main>section:first-child{background:linear-gradient(135deg,#fbfefc,var(--fr-green-soft))!important}
+.hf36-directory .hf36-directory-card:nth-child(4n+1),.r29-panel:nth-child(4n+1){background:linear-gradient(145deg,#fff,var(--fr-teal-soft))!important}
+.hf36-directory .hf36-directory-card:nth-child(4n+2),.r29-panel:nth-child(4n+2){background:linear-gradient(145deg,#fff,var(--fr-blue-soft))!important}
+.hf36-directory .hf36-directory-card:nth-child(4n+3),.r29-panel:nth-child(4n+3){background:linear-gradient(145deg,#fff,var(--fr-gold-soft))!important}
+.hf36-directory .hf36-directory-card:nth-child(4n),.r29-panel:nth-child(4n){background:linear-gradient(145deg,#fff,var(--fr-violet-soft))!important}
+
+/* Profiles: real base styling even before enhancement JavaScript runs. */
+body.hf35-profile .profile-currentness,body.hf35-profile #sources,body.hf35-profile a[href="#sources"]{display:none!important}
+body.hf35-profile .r22-profile-hero{
+  background:linear-gradient(135deg,#fff 0%,var(--fr-teal-soft) 100%)!important;
+  border-bottom:1px solid #cfe3e1!important
+}
+body.hf35-profile #about{
+  background:linear-gradient(135deg,#fff,var(--fr-teal-soft))!important;
+  border:1px solid #cfe5e2!important;border-radius:16px!important;padding:26px!important;margin:18px 0!important
+}
+body.hf35-profile #official-links{
+  background:linear-gradient(135deg,#fff,var(--fr-blue-soft))!important;
+  border:1px solid #d5e5f2!important;border-radius:16px!important;padding:26px!important;margin:18px 0!important
+}
+body.hf35-profile #manage{
+  background:linear-gradient(135deg,#fff,var(--fr-green-soft))!important;
+  border:1px solid #cfe3d5!important;border-radius:16px!important
+}
+body.hf35-profile #details .profile-facts-grid>div:nth-child(4n+1){background:var(--fr-teal-soft)!important}
+body.hf35-profile #details .profile-facts-grid>div:nth-child(4n+2){background:var(--fr-blue-soft)!important}
+body.hf35-profile #details .profile-facts-grid>div:nth-child(4n+3){background:var(--fr-gold-soft)!important}
+body.hf35-profile #details .profile-facts-grid>div:nth-child(4n){background:var(--fr-violet-soft)!important}
+body.hf35-profile .r22-profile-side .r22-card{box-shadow:0 6px 20px rgba(16,43,50,.05)}
+body.hf35-profile #reviews{background:linear-gradient(135deg,#fff,var(--fr-blue-soft))!important;border-color:#d7e6f3!important}
+body.hf35-profile .r1332-special-offer,body.hf35-profile .r1333-sponsored-strip{background:linear-gradient(135deg,#fff,var(--fr-gold-soft))!important}
+
+/* Footer is deliberately not another blank white block. */
+.footer{background:linear-gradient(180deg,#f8fbfb,#f1f7f6)!important;border-top:1px solid var(--fr-line)!important}
