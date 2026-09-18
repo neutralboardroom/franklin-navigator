@@ -48,7 +48,7 @@
  }
  async function sponsoredCards(){
    if(!commercialPage)return;
-   let out;try{out=await get('/api/member/sponsored-profiles?excludeProfileId='+encodeURIComponent(id)+'&limit=2')}catch{return}
+   const category=q('.breadcrumbs a[href*="category="]')?.textContent?.trim()||'';let out;try{out=await get('/api/member/sponsored-profiles?excludeProfileId='+encodeURIComponent(id)+'&limit=2'+(category?'&category='+encodeURIComponent(category):''))}catch{return}
    const rows=Array.isArray(out?.profiles)?out.profiles:[];if(!rows.length)return;
    const hero=q('.r22-profile-hero');if(!hero||q('.r1333-sponsored-strip'))return;
    const section=el('section','', 'r1333-sponsored-strip'),wrap=el('div','', 'wrap r1333-sponsored-wrap');
