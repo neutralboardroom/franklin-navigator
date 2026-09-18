@@ -184,6 +184,48 @@ jobs:
           print({'unique_refs':len(refs),'local_refs_checked':checked,'missing':0})
           PY
 
+      - name: Site-wide Franklin color-system coverage
+        run: |
+          set -euo pipefail
+          node --check dist/assets/hf36.js
+          test -f dist/assets/r1334-color-system.css
+          grep -F "r1334-color-system.css" dist/assets/hf36.js
+          grep -F "franklin-color-system" dist/assets/hf36.js
+          grep -F -- "--fr-teal:" dist/assets/r1334-color-system.css
+          grep -F -- "--fr-blue:" dist/assets/r1334-color-system.css
+          grep -F -- "--fr-gold:" dist/assets/r1334-color-system.css
+          grep -F -- "--fr-violet:" dist/assets/r1334-color-system.css
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+
+          class Page(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.has_main=False
+                  self.has_hf36=False
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if tag=='main': self.has_main=True
+                  if tag=='script' and '/assets/hf36.js' in str(a.get('src','')): self.has_hf36=True
+
+          total=covered=0
+          missing=[]
+          for p in Path('dist').rglob('*.html'):
+              x=Page()
+              try:x.feed(p.read_text(errors='replace'))
+              except Exception:continue
+              if not x.has_main: continue
+              total+=1
+              if x.has_hf36: covered+=1
+              else: missing.append(str(p))
+          # Every full public page with a main region must use the common progressive
+          # Franklin loader so the color semantics remain one shared system.
+          assert total>0
+          assert not missing, 'Public pages missing hf36/color-system loader: '+repr(missing[:30])
+          print({'public_pages_checked':total,'color_system_covered':covered,'missing':0})
+          PY
+
       - name: Assistant regression and public-language safety
         run: |
           set -euo pipefail
