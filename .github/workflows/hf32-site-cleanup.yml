@@ -257,12 +257,13 @@ jobs:
 
           # Exact runtime branch snapshot, isolated inside the release namespace.
           ls=subprocess.check_output(
-              ['git','ls-tree','-r','--format=%(objectmode)%09%(path)',runtime_commit],
+              ['git','ls-tree','-r',runtime_commit],
               text=True
           ).splitlines()
           runtime_members=0
           for line in ls:
-              mode,rp=line.split('\t',1)
+              left,rp=line.split('\t',1)
+              mode=left.split()[0]
               if mode not in {'100644','100755'}:
                   raise AssertionError(f'unsafe runtime member mode {mode}: {rp}')
               rel=safe('runtime/franklin-membership/'+rp)
