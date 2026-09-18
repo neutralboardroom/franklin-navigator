@@ -28,6 +28,7 @@
     MEDIA_TYPE_INVALID:'Choose a valid JPG, PNG or WebP image.',
     MEDIA_WEBP_REQUIRED:'Your browser could not prepare this image safely. Try a different image or current browser.',
     MEDIA_METADATA_NOT_ALLOWED:'The image still contains unsupported metadata. Try exporting it again or choose another image.',
+    MEDIA_DIMENSIONS_INVALID:'Choose an image no larger than 3000 × 3000 pixels.',
     MEDIA_REVIEW_PENDING:'That image position already has a submission waiting for review.',
     RATE_LIMITED:'Too many requests. Please try again later.'
   };
@@ -134,7 +135,7 @@
       if(row.public_reason)meta.append(node('p',row.public_reason,'fine-print'));
       const acts=node('div',undefined,'r38-member-actions');
       if(['DRAFT','CHANGES_REQUESTED'].includes(row.state))acts.append(button('Submit for review',async()=>{if(!confirm(tr('Confirm that you have the right to publish this image publicly on this profile.')))return;await request('/api/member/media/submit',{profileId:state.profile.profile_id,mediaId:row.mediaId,rightsConfirmed:true});message('Image submitted for review. It is not public until approved.','good');await load()},true));
-      if(row.state!=='SUBMITTED'||confirm)acts.append(button(row.state==='PUBLISHED'?'Remove from profile':'Remove upload',async()=>{if(!confirm(tr('Remove this image from your Franklin profile workspace?')))return;await request('/api/member/media/remove',{profileId:state.profile.profile_id,mediaId:row.mediaId});message('Image removed.','good');await load()}));
+      acts.append(button(row.state==='PUBLISHED'?'Remove from profile':'Remove upload',async()=>{if(!confirm(tr('Remove this image from your Franklin profile workspace?')))return;await request('/api/member/media/remove',{profileId:state.profile.profile_id,mediaId:row.mediaId});message('Image removed.','good');await load()}));
       meta.append(acts);card.append(img,meta);list.append(card);
     });section.append(list);
   }
