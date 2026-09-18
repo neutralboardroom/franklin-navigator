@@ -252,6 +252,38 @@ jobs:
           print({'public_pages_checked':total,'color_system_covered':covered,'missing':0})
           PY
 
+      - name: Live profile runtime and browser-origin acceptance
+        run: |
+          set -euo pipefail
+          release="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          print(json.loads(Path('PRODUCTION_RELEASE.json').read_text())['release'])
+          PY
+          )"
+          origin='https://franklinnavigator.com'
+          api='https://franklin-navigator-membership.onrender.com'
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --connect-timeout 10 --max-time 35             -H "Origin: $origin" -D /tmp/fr-health.headers "$api/health" -o /tmp/fr-health.json
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --connect-timeout 10 --max-time 35             -H "Origin: $origin" -D /tmp/fr-profile.headers             "$api/api/member/public-profile?profileId=FR-ORG-b00c0ace7943973c" -o /tmp/fr-profile.json
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --connect-timeout 10 --max-time 35             -H "Origin: $origin" -D /tmp/fr-media.headers             "$api/api/member/media/public?profileId=FR-ORG-b00c0ace7943973c" -o /tmp/fr-media.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          release=json.loads(Path('PRODUCTION_RELEASE.json').read_text())['release']
+          health=json.loads(Path('/tmp/fr-health.json').read_text())
+          profile=json.loads(Path('/tmp/fr-profile.json').read_text())
+          media=json.loads(Path('/tmp/fr-media.json').read_text())
+          assert health.get('ok') is True, health
+          assert health.get('release')==release, (health.get('release'),release)
+          assert health.get('startupReady') is True, health
+          assert isinstance(profile,dict) and 'managedProfile' in profile and 'activePaidMember' in profile, profile
+          assert isinstance(media,dict), media
+          for name in ['health','profile','media']:
+              headers=Path(f'/tmp/fr-{name}.headers').read_text().lower()
+              assert 'access-control-allow-origin: https://franklinnavigator.com' in headers, (name,headers)
+          print({'release':release,'health':True,'publicProfile':True,'publicMedia':True,'corsOrigin':'https://franklinnavigator.com'})
+          PY
+
       - name: Assistant regression and public-language safety
         run: |
           set -euo pipefail
