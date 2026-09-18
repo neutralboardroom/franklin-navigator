@@ -12,6 +12,7 @@ on:
       - '*REPORT*.md'
       - '*RECEIPT*.json'
       - '.github/workflows/hf32-site-cleanup.yml'
+      - 'scripts/public-language-audit.py'
   pull_request:
     branches: [main]
     paths:
@@ -19,6 +20,7 @@ on:
       - 'assistant-runtime/**'
       - 'PRODUCTION_RELEASE.json'
       - '.github/workflows/hf32-site-cleanup.yml'
+      - 'scripts/public-language-audit.py'
 
 permissions:
   contents: read
