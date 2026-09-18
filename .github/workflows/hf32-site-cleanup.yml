@@ -122,6 +122,8 @@ jobs:
               assert shard_total==254
           print(d['release'], manifest['recordCount'], d['counts']['profiles'], total)
           PY
+          grep -F '<h2>Franklin Through Time</h2>' dist/index.html
+          ! grep -F 'Franklin Through Time — Then &amp; Now' dist/index.html
 
       - name: JavaScript syntax, route integrity and R1311 UX contracts
         run: |
