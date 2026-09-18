@@ -54,7 +54,7 @@ const applyFranklinColorSystem=()=>{
   if(p.startsWith('/community/')||p.startsWith('/es/comunidad/'))add('franklin-page-community');
   if(p.startsWith('/activities/')||p.startsWith('/today/')||p.startsWith('/es/actividades/')||p.startsWith('/es/hoy/'))add('franklin-page-activities');
   if(p.startsWith('/business-dashboard/')||p.startsWith('/es/negocios/'))add('franklin-page-business');
-  if(p.startsWith('/membership-')||p.startsWith('/profile-studio/')||p.startsWith('/claim-profile/')||p.startsWith('/es/iniciar-membresia/'))add('franklin-page-membership');
+  if(p.startsWith('/membership-')||p.startsWith('/profile-studio/')||p.startsWith('/profile-access/')||p.startsWith('/profile-request/')||p.startsWith('/corrections/')||p.startsWith('/claim-profile/')||p.startsWith('/es/iniciar-membresia/'))add('franklin-page-membership');
   if(p.startsWith('/community-help-center/')||p.startsWith('/review-guidelines/')||p.startsWith('/es/centro-de-ayuda/'))add('franklin-page-help');
   if(p.startsWith('/get-it-done/')||p.startsWith('/es/hacerlo/'))add('franklin-page-tasks');
 
@@ -70,7 +70,7 @@ const applyFranklinColorSystem=()=>{
     else if(p.startsWith('/today/')||p.startsWith('/es/hoy/'))selector='a.franklin-nav-today,a[href="/today/"]';
     else if(p.startsWith('/activities/')||p.startsWith('/es/actividades/'))selector='a.franklin-nav-things,a[href="/activities/"]';
     else if(p.startsWith('/community/')||p.startsWith('/es/comunidad/'))selector='a.franklin-nav-community,a[href="/community/"]';
-    else if(p.startsWith('/business-dashboard/')||p.startsWith('/membership-')||p.startsWith('/profile-studio/')||p.startsWith('/claim-profile/')||p.startsWith('/es/negocios/')||p.startsWith('/es/iniciar-membresia/'))selector='a.franklin-nav-priority-business,a[href="/business-dashboard/"]';
+    else if(p.startsWith('/business-dashboard/')||p.startsWith('/membership-')||p.startsWith('/profile-studio/')||p.startsWith('/profile-access/')||p.startsWith('/profile-request/')||p.startsWith('/corrections/')||p.startsWith('/claim-profile/')||p.startsWith('/es/negocios/')||p.startsWith('/es/iniciar-membresia/'))selector='a.franklin-nav-priority-business,a[href="/business-dashboard/"]';
     else if(p.startsWith('/my-franklin/'))selector='a[href="/my-franklin/"]';
     else if(p.startsWith('/community-help-center/')||p.startsWith('/review-guidelines/')||p.startsWith('/es/centro-de-ayuda/'))selector='a[href="/community-help-center/"]';
     const current=selector?nav.querySelector(selector):null;
