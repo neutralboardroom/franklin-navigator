@@ -1,11 +1,11 @@
 {
-  "release": "FR-NAV1.30.25-HF3.13.7",
-  "date": "2026-09-15",
-  "base": "FR-NAV1.30.24-HF3.13.6",
+  "release": "FR-NAV1.30.29-HF3.13.11",
+  "date": "2026-09-18",
+  "base": "FR-NAV1.30.28-HF3.13.10",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1325 is an Assistant-subsystem-only conversation-composer layout improvement. Once a conversation starts, the existing Franklin Assistant form moves below the visible conversation and newest answer/results so the follow-up field is directly where users expect it. Clear / new question restores the original starting layout. No unrelated Franklin Navigator subsystem is intentionally changed.",
+  "scope": "R1329 integrates the owner-directed real Franklin Navigator Profile Factory record into Local public discovery, claim/member resolution and a source-backed public profile, preserving mailing-only address semantics and no fabricated lifecycle state. It also restores the Spanish membership entry route. All unrelated R1328 product capabilities are preserved.",
   "counts": {
-    "profiles": 19103,
+    "profiles": 19104,
     "assistantRoutes": 254
   },
   "branding": {
@@ -204,7 +204,11 @@
     "pf15_26": "DEFER_WITH_CAUSE_PENDING_ACCEPTED_CONSUMER_POINTER",
     "pf15_26Reason": "FR-PF-PLATFORM-15.26 is present as a qualified Profile Factory candidate, but this Local Platform release does not self-accept or import a newer profile handoff without the required accepted coordination/consumer pointer.",
     "li38": "DEFER_WITH_CAUSE_PENDING_ACCEPTED_CONSUMER_POINTER_AND_POINT_OF_USE_CURRENTNESS",
-    "li38Reason": "Franklin Local Investigator v38 is present as qualified research evidence, but dynamic publication requires accepted Local consumer routing plus point-of-use currentness; no unaccepted dynamic records are imported in this Assistant reliability release."
+    "li38Reason": "Franklin Local Investigator v38 is present as qualified research evidence, but dynamic publication requires accepted Local consumer routing plus point-of-use currentness; no unaccepted dynamic records are imported in this Assistant reliability release.",
+    "pf15_28TargetedFranklinNavigatorProfile": "QUALIFIED_OWNER_DIRECTED_TARGETED_INTEGRATION",
+    "pf15_28CanonicalProfileId": "FR-ORG-b00c0ace7943973c",
+    "pf15_28FullSnapshotWholesalePromotion": false,
+    "li42": "DEFER_WITH_CAUSE_SCC_GATE_PENDING"
   },
   "preserved": [
     "FR-NAV1.29.0-HF3.10 membership and fulfillment architecture",
