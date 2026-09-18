@@ -66,7 +66,23 @@
    hint.replaceChildren();
    if(managed){hint.append(document.createTextNode('Want to change the picture or logo? '));const upload=el('a','Upload your own image');upload.href='/profile-studio/?profile='+encodeURIComponent(id);hint.append(upload)}
    else hint.textContent='Claim this profile free to upload your own photo or logo.';
-   const manage=document.querySelector('#manage');if(manage){const p=manage.querySelector('p');if(p)p.textContent=managed?'This profile has verified management access. Basic profile management, factual corrections and removal stay free; Community Membership is optional.':'Own or manage this business, practice or organization? Claim management access for free. Factual corrections and removal stay free; Community Membership is optional.';const primary=manage.querySelector('.actions .button.primary');if(primary){primary.href=a.href;primary.textContent=managed?'Manage this profile':'Claim or manage this profile'}}
+   const manage=document.querySelector('#manage');if(manage){
+     const p=manage.querySelector('p');if(p)p.textContent=managed?'This profile has verified management access. Basic profile management, factual corrections and removal stay free; Community Membership is optional.':'Own or manage this business, practice or organization? Claim management access for free. Factual corrections and removal stay free; Community Membership is optional.';
+     const actions=manage.querySelector('.actions'),primary=actions?.querySelector('.button.primary');
+     if(primary){primary.href=a.href;primary.textContent=managed?'Manage this profile':'Claim or manage this profile'}
+     if(actions){
+       const direct=[...actions.children].filter(x=>x.tagName==='A'),secondary=direct.find(x=>x!==primary);
+       if(secondary){secondary.href=(managed?'/profile-studio/?profile=':'/member-profile-preview/?profile=')+encodeURIComponent(id);secondary.textContent=managed?'Open Profile Studio':'Preview optional member profile'}
+       const details=actions.querySelector('details.hf35-admin-more');
+       const profileName=document.querySelector('.r22-profile-hero h1')?.textContent?.trim()||'';
+       const page=location.origin+'/profiles/'+id+'/';
+       const correction='/corrections/?listing='+encodeURIComponent(profileName)+'&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
+       const removal='/corrections/?action=PUBLIC_REMOVAL&listing='+encodeURIComponent(profileName)+'&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
+       if(!actions.querySelector('[data-r1338-correct]')){const x=el('a','Correct public facts','button');x.href=correction;x.dataset.r1338Correct='1';actions.append(x)}
+       if(!actions.querySelector('[data-r1338-remove]')){const x=el('a','Request removal','button');x.href=removal;x.dataset.r1338Remove='1';actions.append(x)}
+       if(details)details.remove();
+     }
+   }
  }
  function media(items){
    const profile=items.find(x=>x.slot==='PROFILE'),cover=items.find(x=>x.slot==='COVER'),gallery=items.filter(x=>x.slot==='GALLERY').sort((a,b)=>a.position-b.position);

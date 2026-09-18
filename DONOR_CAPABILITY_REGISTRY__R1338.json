@@ -1,0 +1,34 @@
+{
+  "schema": "franklin.local-community-platform.donor-capability-registry.v1",
+  "release": "FR-NAV1.30.38-HF3.13.20",
+  "activeEdition": "FRANKLIN_TN",
+  "activeCapabilityQuestion": "End-to-end Local profile claim, edit and management workflow",
+  "authorityTransfer": false,
+  "reviewedDonorSnapshots": [],
+  "entries": [
+    {
+      "donor": "Smarter Health",
+      "reviewState": "NOT_REVIEWED_NOT_NEEDED",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "The R1338 profile-control work is fully within current Local authority and existing accepted Local contracts."
+    },
+    {
+      "donor": "Smarter Home / Smarter Navigator",
+      "reviewState": "NOT_REVIEWED_NOT_NEEDED",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "No external donor capability was needed for the bounded profile-control pass."
+    },
+    {
+      "donor": "Smarter Auto",
+      "reviewState": "NOT_REVIEWED_NOT_NEEDED",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "No external donor capability was needed for the bounded profile-control pass."
+    },
+    {
+      "donor": "Smarter Justice",
+      "reviewState": "SMARTER_JUSTICE_DONOR_NOT_USED",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "No legal-module donor capability was inspected, imported or connected."
+    }
+  ]
+}

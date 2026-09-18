@@ -33,7 +33,23 @@
       'Unclaimed profile':'Perfil sin reclamar',
       'Official Franklin Navigator profile':'Perfil oficial de Franklin Navigator',
       'Upload your own image':'Subir su propia imagen',
-      'Claim this profile free to upload your own photo or logo.':'Reclame este perfil gratis para subir su propia foto o logotipo.'
+      'Claim this profile free to upload your own photo or logo.':'Reclame este perfil gratis para subir su propia foto o logotipo.',
+      'Your selected profile':'Su perfil seleccionado',
+      'Your selected profile stays with you through sign-in and access review. You do not need to search for it again.':'Su perfil seleccionado se conserva durante el inicio de sesión y la revisión de acceso. No necesita buscarlo de nuevo.',
+      'Continue with this profile':'Continuar con este perfil',
+      'Choose this profile':'Elegir este perfil',
+      'Profile access verified. You can manage this profile now.':'Acceso al perfil verificado. Ahora puede administrar este perfil.',
+      'Open Profile Studio':'Abrir el Estudio de Perfil',
+      'Profile access is not yet verified. Open Profile Studio to submit or check your access request.':'El acceso al perfil aún no está verificado. Abra el Estudio de Perfil para enviar o revisar su solicitud.',
+      'Request or check profile access':'Solicitar o revisar acceso al perfil',
+      'This profile has an access dispute. Contact support so Franklin can review it safely.':'Este perfil tiene una disputa de acceso. Contacte soporte para que Franklin pueda revisarla de forma segura.',
+      'Get profile support':'Obtener ayuda con el perfil',
+      'Stop managing this profile':'Dejar de administrar este perfil',
+      'Your profile-access request is waiting for review.':'Su solicitud de acceso al perfil está pendiente de revisión.',
+      'Refresh status':'Actualizar estado',
+      'Submit access request':'Enviar solicitud de acceso',
+      'Submit updated access request':'Enviar solicitud de acceso actualizada',
+      'I confirm that I own, manage, work for, or am otherwise authorized to act for this profile.':'Confirmo que soy propietario, administrador, trabajo para esta organización o estoy autorizado para actuar en nombre de este perfil.'
     };
     if(fixed[s])return fixed[s];
     let m;

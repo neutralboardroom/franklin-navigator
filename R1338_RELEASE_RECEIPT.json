@@ -1,0 +1,38 @@
+{
+  "schema": "franklin.local-community-platform.release-receipt.v1",
+  "status": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+  "recordedAt": "2026-09-18",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "authorityTransfer": false,
+  "parent": {
+    "version": "FR-NAV1.30.37-HF3.13.19",
+    "commit": "c4db63f6f992658da2603bf86ca9438ee17e1745",
+    "artifactSha256": "5dba2b72c5a06baaf920c6bf95b67fdf1b215fa0e8518c02e4ebc3f1edbccecc"
+  },
+  "successor": {
+    "version": "FR-NAV1.30.38-HF3.13.20",
+    "localQualification": "PENDING_EXACT_HEAD_WORKFLOW",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false
+  },
+  "runtime": {
+    "commit": "62cfb7a18fb2958394408c25d4f809f6b404e626",
+    "deploy": "dep-damguo942hec7392o1d0",
+    "release": "FR-NAV1.30.38-HF3.13.20",
+    "live": true
+  },
+  "profilePath": {
+    "exactProfileContinuity": true,
+    "explicitAuthorityConsent": true,
+    "stateAwareClaimRecovery": true,
+    "safeSelfRelease": true,
+    "freeCorrectionRemoval": true,
+    "bilingualCorrectionParity": true,
+    "profileRequestWebForm": true,
+    "canonicalFactsUnchangedByClaim": true,
+    "paymentDoesNotChangeFacts": true
+  },
+  "homepageChanged": false,
+  "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/promotion remains separate"
+}

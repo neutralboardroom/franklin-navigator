@@ -14,6 +14,10 @@
     AUTH_REQUIRED:'Sign in to manage your profile.',
     ACTIVE_MEMBERSHIP_REQUIRED:'Community Membership is required for this richer member feature. Free profile management is still available.',
     PROFILE_VERIFICATION_REQUIRED:'Request and complete profile-access verification before managing this profile.',
+    AUTHORITY_CONFIRMATION_REQUIRED:'Confirm that you own, manage, or are authorized to act for this profile before submitting the request.',
+    ACTIVE_MEMBERSHIP_REQUIRES_SUPPORT:'This profile has an active membership. Contact support before ending profile management so billing and access stay consistent.',
+    PUBLISHED_MEMBER_CONTENT_REQUIRES_SUPPORT:'This profile has published member content. Contact support before ending profile management so public content is handled safely.',
+    REPRESENTATION_DISPUTED:'This profile has an access dispute. Contact support for review.',
     VERSION_CONFLICT:'This profile changed in another session. Your unsaved text is still here. Reload the saved version before trying again.',
     PUBLICATION_OWNER_CONFLICT:'Another authorized account manages the published member content. Contact support.',
     FIELD_NOT_EDITABLE:'Only supported member-profile fields can be changed.',
@@ -94,21 +98,60 @@
     renderManagedWorkspace(p);
     message(state.activePaid?'Profile access verified. Free management and Community Member tools are available.':'Profile access verified. Free profile management is available; Community Membership is optional.','good');
   }
+  const reviewedWhen=value=>{try{return value?new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(value)):''}catch{return''}};
+  async function releaseAccess(p){
+    if(!confirm(tr('Stop managing this profile from this Franklin account? Public factual corrections remain available.')))return;
+    const result=await request('/api/member/representation/release',{profileId:p.profile_id,expectedRevision:p.review_revision||0});
+    message(result.reused?'Profile management was already disconnected.':'This profile is no longer connected to your account.','good');
+    state.profile=null;state.dirty=false;await refresh();
+  }
   function representation(p){
-    view.append(node('h3','Verify that you manage this profile'),node('p','Management access is free. Explain your public-facing role and provide an official public page that helps confirm your connection. Do not send identity documents, passwords, private customer records or payment details.'));
-    if(p.public_reason)view.append(node('p',p.public_reason,'r37-status warn'));
-    const f=node('form'),url=field('Official public evidence page','evidenceUrl','url',1200,'Use an official website, staff page, organization page or other public source showing your connection.'),why=field('Your role and connection','statement','textarea',1200,'Explain how you are authorized to manage this profile.');
-    url.input.required=true;why.input.required=true;why.input.minLength=30;
-    const submit=node('button','Submit free access request','button primary');submit.type='submit';f.append(url.wrap,why.wrap,submit);
-    f.addEventListener('submit',e=>{e.preventDefault();work(async()=>{const result=await request('/api/member/representation/request',{profileId:p.profile_id,expectedRevision:p.review_revision||0,evidenceUrl:url.input.value,statement:why.input.value});p.review_revision=result.revision;p.review_state='PENDING';message('Your free profile-access request is saved and waiting for review. No membership or payment was started.','good')})});
-    view.append(f,button('Refresh access status',refresh),link('Free factual correction',correctionUrl(p)),link('Get support','/member-support/'));
-    message(p.review_state==='PENDING'?'Your access request is waiting for review. No membership or payment is required.':'Verify your connection to manage this profile for free.');
+    view.replaceChildren();
+    const section=node('section',undefined,'r38-claim-workspace');
+    section.append(node('div','Free profile access','eyebrow'),node('h3','Confirm that you are authorized to manage this profile.'),node('p','Claiming and basic profile management are free. Franklin reviews access before management tools are enabled; a claim never changes public facts by itself.'));
+    if(p.public_reason)section.append(node('p',p.public_reason,'r37-status'));
+    const when=reviewedWhen(p.review_updated_at);
+    if(p.authority_state==='DISPUTED'){
+      section.append(node('p','This profile has an access dispute. Franklin will not accept another access request until the dispute is reviewed.','r37-status warn'));
+      const a=node('div',undefined,'r37-member-actions');a.append(link('Get profile support','/member-support/?profile='+encodeURIComponent(p.profile_id),'button primary'),link('View public profile',publicProfileUrl(p)),link('Submit a factual correction',correctionUrl(p)));section.append(a);view.append(section);return;
+    }
+    if(p.review_state==='PENDING'){
+      section.append(node('p','Your profile-access request is waiting for review.'+(when?' Last updated '+when+'.':''),'r37-status good'));
+      const a=node('div',undefined,'r37-member-actions');
+      a.append(button('Refresh status',refresh,true),link('View public profile',publicProfileUrl(p)),link('Submit a factual correction',correctionUrl(p)),button('Stop managing this profile',()=>releaseAccess(p)));
+      section.append(a);view.append(section);return;
+    }
+    const stateCopy={
+      CHANGES_REQUESTED:'Franklin needs more information before this access request can be approved.',
+      REJECTED:'The previous access request was not approved. You may submit new evidence if you are authorized.',
+      REVOKED:'Previous management access ended. You may request access again if you are currently authorized.'
+    };
+    if(stateCopy[p.review_state])section.append(node('p',stateCopy[p.review_state]+(when?' Last updated '+when+'.':''),'r37-status warn'));
+    const f=document.createElement('form');f.className='form-grid r38-representation-form';
+    const url=inputField('Official website or public page showing your connection','evidenceUrl','url','https://');
+    const why=textArea('How are you authorized to manage this profile?','statement',4);
+    const confirmLabel=node('label',undefined,'p0-check'),confirmBox=document.createElement('input');confirmBox.type='checkbox';confirmBox.required=true;confirmBox.name='authorityConfirmed';confirmLabel.append(confirmBox,document.createTextNode(' I confirm that I own, manage, work for, or am otherwise authorized to act for this profile.'));
+    f.append(url.wrap,why.wrap,confirmLabel);
+    const submit=node('button',p.review_state==='CHANGES_REQUESTED'?'Submit updated access request':'Submit access request','button primary');submit.type='submit';f.append(submit);
+    f.addEventListener('submit',e=>{e.preventDefault();work(async()=>{
+      if(!confirmBox.checked){message(messages.AUTHORITY_CONFIRMATION_REQUIRED);return}
+      const result=await request('/api/member/representation/request',{profileId:p.profile_id,expectedRevision:p.review_revision||0,evidenceUrl:url.input.value,statement:why.input.value,authorityConfirmed:true});
+      p.review_revision=result.revision;p.review_state='PENDING';
+      message('Your free profile-access request is saved and waiting for review. No membership or payment was started.','good');
+      await refresh();
+    })});
+    section.append(f);
+    const a=node('div',undefined,'r37-member-actions');
+    a.append(link('View public profile',publicProfileUrl(p)),link('Submit a factual correction',correctionUrl(p)));
+    if(p.review_state||p.authority_state==='REVOKED')a.append(button('Stop managing this profile',()=>releaseAccess(p)));
+    a.append(link('Need help?','/member-support/?profile='+encodeURIComponent(p.profile_id)));
+    section.append(a);view.append(section);
   }
   function renderManagedWorkspace(p){
     const basic=node('section',undefined,'r1330-studio-basic');
     basic.append(node('div','Free profile management','eyebrow'),node('h3','Manage the essentials without paying.'),node('p','Your verified access lets you manage the profile relationship, request factual corrections or removal, and submit a profile photo or logo for review. Source-backed facts are not silently overwritten.'));
     const actions=node('div',undefined,'r38-member-actions');
-    actions.append(link('View public profile',publicProfileUrl(p),'button primary'),link('Edit or correct public facts',correctionUrl(p)),link('Request removal',correctionUrl(p,true)),link('Account & profile access','/profile-access/?profile='+encodeURIComponent(p.profile_id)));
+    actions.append(link('View public profile',publicProfileUrl(p),'button primary'),link('Edit or correct public facts',correctionUrl(p)),link('Request removal',correctionUrl(p,true)),link('Account & profile access','/profile-access/?profile='+encodeURIComponent(p.profile_id)),button('Stop managing this profile',()=>releaseAccess(p)));
     basic.append(actions);view.append(basic);
     view.append(mediaManager(p,false));
     if(state.activePaid){
