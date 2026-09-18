@@ -157,13 +157,13 @@
       section.append(uploadControl(p,'PROFILE','Choose your profile photo or logo','JPG, PNG or WebP. We remove embedded metadata and prepare a web-safe copy before upload.'));
       mediaListFor(section,'PROFILE');
     }else{
-      section.append(node('h3','Cover and gallery photos'),node('p','Community Members can add a reviewed cover image and photo gallery. Images stay private until submitted and approved.'));
+      section.append(node('h3','Your public photo gallery'),node('p','Community Members can upload a reviewed cover image plus up to eight gallery photos for residents to see on the public profile. Images stay private until you submit them and Franklin approves them.'));
       section.append(uploadControl(p,'COVER','Choose a cover photo','Use a clear image that represents your business or organization. Avoid text-heavy artwork.'));
       mediaListFor(section,'COVER');
       const gallery=node('div',undefined,'r1330-gallery-uploader'),label=node('label'),span=node('span','Gallery position'),select=node('select');
       for(let i=0;i<8;i++){const o=node('option','Photo '+(i+1));o.value=String(i);select.append(o)}label.append(span,select);
-      const holder=node('div',undefined,'r1330-gallery-upload-holder');holder.append(uploadControl(p,'GALLERY','Choose a gallery photo','Up to eight reviewed gallery positions are available.',0));
-      select.addEventListener('change',()=>{holder.replaceChildren(uploadControl(p,'GALLERY','Choose gallery photo '+(Number(select.value)+1),'This will replace the selected gallery position after review.',Number(select.value)))});
+      const holder=node('div',undefined,'r1330-gallery-upload-holder');holder.append(uploadControl(p,'GALLERY','Upload a gallery photo','Choose a photo from your device. Up to eight reviewed gallery positions are available.',0));
+      select.addEventListener('change',()=>{holder.replaceChildren(uploadControl(p,'GALLERY','Upload gallery photo '+(Number(select.value)+1),'Choose a photo from your device. This will replace the selected gallery position after review.',Number(select.value)))});
       gallery.append(label,holder);section.append(gallery);mediaListFor(section,'GALLERY');
     }
     return section;
@@ -223,7 +223,13 @@
       ['associations','Associations','textarea',1200,'Only real public professional or community associations.'],
       ['education','Education and training','textarea',1200,'When relevant to the profile type.'],
       ['publications','Publications, media and speaking','textarea',1600,'Optional public-facing examples.'],
-      ['offersEvents','Offers and events','textarea',1600,'Only current, supportable public offers or events.'],
+      ['offersEvents','Updates and events','textarea',1600,'Optional current, supportable public updates or events.'],
+      ['specialOfferTitle','Franklin Navigator offer title','text',140,'Optional member-only promotional headline shown to Franklin Navigator users.'],
+      ['specialOfferDetails','Franklin Navigator offer details','textarea',1200,'Explain the offer clearly, including what a user receives and any important limitations.'],
+      ['specialOfferCode','Offer code','text',80,'Optional code a Franklin Navigator user can mention or enter.'],
+      ['specialOfferExpires','Offer expiration date','date',20,'Optional YYYY-MM-DD expiration date. Expired offers are not shown publicly.'],
+      ['specialOfferTerms','Offer terms','textarea',800,'Optional eligibility, exclusions, redemption or other terms.'],
+      ['specialOfferUrl','Offer or redemption page','url',1200,'Optional public HTTPS page where users can learn more or redeem the offer.'],
       ['website','Official website','url',1200,'Public HTTPS URL.'],
       ['contactUrl','Contact page','url',1200,'Public HTTPS URL.'],
       ['bookingUrl','Booking or appointment page','url',1200,'Public HTTPS URL.'],
@@ -242,9 +248,11 @@
     const actions=group('Contact & action links',true);['website','contactUrl','bookingUrl','quoteUrl','menuUrl','orderUrl','directionsUrl'].forEach(k=>actions.body.append(built[k].wrap));
     const practical=group('Hours, service area, language & accessibility');['hours','serviceArea','languages','accessibility','pricing'].forEach(k=>practical.body.append(built[k].wrap));
     const credibility=group('Experience & credentials');['experience','credentials','awards','associations','education','publications'].forEach(k=>credibility.body.append(built[k].wrap));
-    const online=group('Offers & official online presence');['offersEvents','socialLinks'].forEach(k=>online.body.append(built[k].wrap));
+    const offers=group('Special offers for Franklin Navigator users',true);['specialOfferTitle','specialOfferDetails','specialOfferCode','specialOfferExpires','specialOfferTerms','specialOfferUrl'].forEach(k=>offers.body.append(built[k].wrap));
+    offers.body.prepend(node('p','Community Members can publish a reviewed Franklin Navigator special offer. Offers must be truthful, current, lawful and cannot be conditioned on leaving a positive review.','fine-print'));
+    const online=group('Updates, events & official online presence');['offersEvents','socialLinks'].forEach(k=>online.body.append(built[k].wrap));
     const legacy=group('External image links — optional');['profileImageUrl','galleryUrls'].forEach(k=>legacy.body.append(built[k].wrap));
-    form.append(readinessBox(inputs),essentials.details,actions.details,practical.details,credibility.details,online.details,legacy.details);
+    form.append(readinessBox(inputs),essentials.details,actions.details,practical.details,credibility.details,offers.details,online.details,legacy.details);
     const save=node('button','Save private member draft','button primary');save.type='submit';form.append(save);
     form.addEventListener('submit',e=>{e.preventDefault();work(async()=>{const values=Object.fromEntries(Object.entries(inputs).map(([k,v])=>[k,v.value]));const saved=await request('/api/member/profile/save',{profileId:p.profile_id,expectedRevision:state.draft?.revision||0,fields:values});state.draft={...saved,fields:values};state.dirty=false;message('Your member draft is saved privately. It is not public.','good')})});
     shell.append(form);
