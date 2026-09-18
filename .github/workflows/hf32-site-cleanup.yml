@@ -208,38 +208,180 @@ jobs:
         run: |
           set -euo pipefail
           python - <<'PY'
-          from pathlib import Path
+          from pathlib import Path, PurePosixPath
           import hashlib,json,zipfile,subprocess
+
           root=Path('.')
           commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
-          release=json.loads(Path('PRODUCTION_RELEASE.json').read_text())['release']
+          release_meta=json.loads(Path('PRODUCTION_RELEASE.json').read_text())
+          release=release_meta['release']
+          runtime_commit=release_meta['r1334']['runtime']['commit']
+          assert release=='FR-NAV1.30.34-HF3.13.16'
+          assert len(runtime_commit)==40
+
+          # Fetch the exact separately deployed Local-owned membership/runtime source
+          # and package it under a namespaced directory. This preserves the two
+          # deployment lanes while making the successor artifact implementation-complete.
+          subprocess.check_call(['git','fetch','--no-tags','--depth=1','origin',runtime_commit])
+
           artifact=f'FRANKLIN_NAVIGATOR__{release}__CURRENT_SUCCESSOR_EXACT_SOURCE.zip'
+          second=f'.second-build__{artifact}'
           manifest_name='CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json'
           attestation_name='CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json'
-          exclude={artifact,manifest_name,attestation_name}
-          files=[]
+          exclude={artifact,second,manifest_name,attestation_name}
+          payload={}
+
+          def safe(rel):
+              p=PurePosixPath(rel)
+              assert not p.is_absolute() and '..' not in p.parts and rel and '\\' not in rel
+              assert not rel.startswith('.git/')
+              return rel
+
+          # Main/public source bytes from the exact workflow commit.
           for p in sorted(root.rglob('*')):
+              if p.is_symlink():
+                  raise AssertionError(f'symlink not allowed in release: {p}')
               if not p.is_file(): continue
-              rel=p.relative_to(root).as_posix()
-              if rel.startswith('.git/') or rel in exclude: continue
-              b=p.read_bytes()
-              files.append({'path':rel,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
-          manifest={'schema':'franklin.current-source-manifest.v1','release':release,'commit':commit,'tree':tree,'memberCount':len(files),'members':files,'selfExcluded':True}
-          Path(manifest_name).write_text(json.dumps(manifest,sort_keys=True,separators=(',',':'))+'\n')
-          entries=files+[{'path':manifest_name,'bytes':Path(manifest_name).stat().st_size,'sha256':hashlib.sha256(Path(manifest_name).read_bytes()).hexdigest()}]
-          with zipfile.ZipFile(artifact,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
-              for item in sorted(entries,key=lambda x:x['path']):
-                  p=Path(item['path'])
-                  info=zipfile.ZipInfo(item['path'],(2026,1,1,0,0,0))
-                  info.compress_type=zipfile.ZIP_DEFLATED
-                  info.external_attr=0o100644<<16
-                  z.writestr(info,p.read_bytes())
-          att={'release':release,'commit':commit,'tree':tree,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':hashlib.sha256(Path(artifact).read_bytes()).hexdigest(),'manifest':manifest_name,'manifestSha256':hashlib.sha256(Path(manifest_name).read_bytes()).hexdigest(),'zipMembers':len(entries),'profileCount':json.loads(Path('PRODUCTION_RELEASE.json').read_text())['counts']['profiles'],'assistantRouteCount':json.loads(Path('PRODUCTION_RELEASE.json').read_text())['counts']['assistantRoutes'],'result':'PASS_EXACT_SOURCE_ARTIFACT_SEALED'}
+              rel=safe(p.relative_to(root).as_posix())
+              if rel in exclude or rel.startswith('.git/'): continue
+              if rel.endswith('/.env') or rel=='.env':
+                  raise AssertionError(f'secret-bearing env file prohibited: {rel}')
+              payload[rel]=p.read_bytes()
+
+          # Exact runtime branch snapshot, isolated inside the release namespace.
+          ls=subprocess.check_output(
+              ['git','ls-tree','-r','--format=%(objectmode)%09%(path)',runtime_commit],
+              text=True
+          ).splitlines()
+          runtime_members=0
+          for line in ls:
+              mode,rp=line.split('\t',1)
+              if mode not in {'100644','100755'}:
+                  raise AssertionError(f'unsafe runtime member mode {mode}: {rp}')
+              rel=safe('runtime/franklin-membership/'+rp)
+              if rp=='.env' or rp.endswith('/.env'):
+                  raise AssertionError(f'runtime secret-bearing env file prohibited: {rp}')
+              payload[rel]=subprocess.check_output(['git','show',f'{runtime_commit}:{rp}'])
+              runtime_members+=1
+          assert runtime_members>0
+
+          members=[
+              {'path':rel,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
+              for rel,data in sorted(payload.items())
+          ]
+          manifest={
+              'schema':'franklin.current-source-manifest.v2',
+              'release':release,
+              'publicSourceCommit':commit,
+              'publicSourceTree':tree,
+              'runtimeSourceCommit':runtime_commit,
+              'runtimeNamespace':'runtime/franklin-membership/',
+              'runtimeMemberCount':runtime_members,
+              'memberCount':len(members),
+              'members':members,
+              'selfHashRule':'Manifest covers every packaged source member except its own manifest bytes; the manifest SHA-256 is recorded in the external attestation.',
+              'selfExcluded':True
+          }
+          manifest_bytes=(json.dumps(manifest,sort_keys=True,separators=(',',':'))+'\n').encode()
+          payload[manifest_name]=manifest_bytes
+
+          def build_zip(out):
+              with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+                  for rel,data in sorted(payload.items()):
+                      info=zipfile.ZipInfo(rel,(2026,1,1,0,0,0))
+                      info.compress_type=zipfile.ZIP_DEFLATED
+                      info.external_attr=0o100644<<16
+                      z.writestr(info,data)
+
+          build_zip(artifact)
+          build_zip(second)
+          first_bytes=Path(artifact).read_bytes()
+          second_bytes=Path(second).read_bytes()
+          assert first_bytes==second_bytes, 'deterministic double build mismatch'
+          artifact_sha=hashlib.sha256(first_bytes).hexdigest()
+          second_sha=hashlib.sha256(second_bytes).hexdigest()
+          assert artifact_sha==second_sha
+          Path(second).unlink()
+
+          with zipfile.ZipFile(artifact) as z:
+              assert z.testzip() is None
+              names=z.namelist()
+              assert len(names)==len(set(names))
+              assert set(names)==set(payload)
+              for info in z.infolist():
+                  pp=PurePosixPath(info.filename)
+                  assert not pp.is_absolute() and '..' not in pp.parts
+                  assert (info.external_attr>>16)&0o170000 == 0o100000
+
+          att={
+              'release':release,
+              'publicSourceCommit':commit,
+              'publicSourceTree':tree,
+              'runtimeSourceCommit':runtime_commit,
+              'artifact':artifact,
+              'artifactBytes':Path(artifact).stat().st_size,
+              'artifactSha256':artifact_sha,
+              'secondBuildSha256':second_sha,
+              'doubleBuildByteIdentical':True,
+              'manifest':manifest_name,
+              'manifestSha256':hashlib.sha256(manifest_bytes).hexdigest(),
+              'zipMembers':len(payload),
+              'runtimeMembers':runtime_members,
+              'profileCount':release_meta['counts']['profiles'],
+              'assistantRouteCount':release_meta['counts']['assistantRoutes'],
+              'safePaths':'PASS',
+              'zipIntegrity':'PASS',
+              'result':'PASS_EXACT_SOURCE_ARTIFACT_SEALED'
+          }
           Path(attestation_name).write_text(json.dumps(att,indent=2)+'\n')
-          with zipfile.ZipFile(artifact) as z: assert z.testzip() is None
           print(json.dumps(att,indent=2))
           PY
+
+      - name: Fresh extraction validation and tests
+        run: |
+          set -euo pipefail
+          rm -rf _r1334_fresh
+          mkdir _r1334_fresh
+          python - <<'PY'
+          from pathlib import Path,PurePosixPath
+          import hashlib,json,zipfile
+          zpath=next(Path('.').glob('FRANKLIN_NAVIGATOR__FR-NAV1.30.34-HF3.13.16__CURRENT_SUCCESSOR_EXACT_SOURCE.zip'))
+          out=Path('_r1334_fresh')
+          with zipfile.ZipFile(zpath) as z:
+              assert z.testzip() is None
+              for info in z.infolist():
+                  p=PurePosixPath(info.filename)
+                  assert not p.is_absolute() and '..' not in p.parts
+              z.extractall(out)
+          manifest=json.loads((out/'CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json').read_text())
+          expected={m['path']:m for m in manifest['members']}
+          actual={p.relative_to(out).as_posix():p for p in out.rglob('*') if p.is_file()}
+          assert set(actual)==set(expected)|{'CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json'}
+          for rel,m in expected.items():
+              b=actual[rel].read_bytes()
+              assert len(b)==m['bytes']
+              assert hashlib.sha256(b).hexdigest()==m['sha256']
+          print({'manifestMembersVerified':len(expected),'runtimeMembers':manifest['runtimeMemberCount'],'result':'PASS'})
+          PY
+          (
+            cd _r1334_fresh
+            python scripts/validate-r1334-release.py
+            node scripts/test-assistant-r1294.js
+            node scripts/test-assistant-r1295.js
+            node --check dist/assets/r1330-profile.js
+            node --check dist/assets/r1332-profile.js
+            node --check dist/assets/r1332-member-offers.js
+            node --check dist/assets/r1333-paid-sponsored.js
+            node --check dist/assets/franklin-site-monitor-r1308.js
+          )
+          (
+            cd _r1334_fresh/runtime/franklin-membership
+            npm ci --ignore-scripts --no-audit --no-fund
+            npm test
+            npm run check
+          )
+          rm -rf _r1334_fresh
 
       - name: Upload exact current successor artifact
         uses: actions/upload-artifact@v4
