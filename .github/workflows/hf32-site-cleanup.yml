@@ -23,6 +23,8 @@ on:
       - 'PRODUCTION_RELEASE.json'
       - '.github/workflows/hf32-site-cleanup.yml'
       - 'scripts/public-language-audit.py'
+      - 'scripts/release-meta-integrity.py'
+      - 'scripts/validate-current-release.py'
 
 permissions:
   contents: read
