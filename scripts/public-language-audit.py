@@ -39,12 +39,19 @@ class VisibleText(HTMLParser):
             if s:self.parts.append(s)
 
 def rendered_profile_text(text):
-    # Mirror the common resident-facing profile cleanup in app.js. Internal
-    # sourcing/currentness mechanics remain available to data/quality systems,
-    # but they are not part of the rendered resident copy.
-    text=re.sub(r'\s*—\s*source-backed service area; street address not asserted\s*',' ',text,flags=re.I)
-    text=re.sub(r'\s*—\s*service/location identity source-backed; street address not asserted in this release\s*',' ',text,flags=re.I)
-    text=re.sub(r'\s*—\s*source-backed service area\s*',' ',text,flags=re.I)
+    # Mirror the common resident-facing profile cleanup. Source qualification,
+    # release mechanics and currentness remain internal quality controls.
+    for rx in [
+        r'\s*—\s*listed in Visit Franklin community guide;\s*street address not asserted in this release',
+        r'\s*—\s*official school roster;\s*street address not asserted in this release',
+        r'\s*—\s*locality qualified by the cited current community directory;\s*street address not asserted',
+        r'\s*—\s*source-backed service area;\s*street address not asserted',
+        r'\s*—\s*service/location identity source-backed;\s*street address not asserted in this release',
+        r';?\s*street address not asserted in this release',
+        r';?\s*street address not asserted',
+        r'\s*—\s*source-backed service area',
+    ]:
+        text=re.sub(rx,' ',text,flags=re.I)
     text=re.sub(r'No direct contact route is available in the current public sources\.?','Contact information is not currently available on this profile.',text,flags=re.I)
     text=re.sub(r'Use the verified contact and source links on this page to confirm current services, hours, pricing and availability\.',
                 'Contact the business or organization directly to confirm current services, hours, pricing and availability.',text,flags=re.I)
