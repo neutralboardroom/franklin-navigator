@@ -34,6 +34,7 @@
  }
  ready(async()=>{
    document.body.classList.add('r1330-profile');
+   const releaseMeta=document.querySelector('meta[name="franklin-release"]');if(releaseMeta)releaseMeta.content='FR-NAV1.30.30-HF3.13.12';
    const current=document.querySelector('.profile-currentness'),fallbackManaged=current?!/unclaimed/i.test(current.textContent||''):false;
    current?.setAttribute('aria-hidden','true');simplifySources();stateRow(fallbackManaged);
    try{
