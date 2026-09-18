@@ -60,6 +60,24 @@ def rendered_profile_text(text):
 
 findings=[]
 checked=0
+
+# The Franklin Navigator self-profile must be clean in raw HTML, not only
+# cleaned or hidden by client-side JavaScript/CSS. This is a resident-facing
+# page and serves as a regression fixture for the profile presentation.
+self_profile=ROOT/'profiles'/'FR-ORG-b00c0ace7943973c'/'index.html'
+if self_profile.is_file():
+    raw=self_profile.read_text(errors='replace')
+    raw_checks=[
+      ('self-profile-currentness-markup',re.compile(r'profile-currentness|Source-backed profile',re.I)),
+      ('self-profile-source-section',re.compile(r'id=["\']sources["\']|Sources\s*&\s*listing details',re.I)),
+      ('self-profile-source-handoff',re.compile(r'source[- ]backed official routes|source handoff|Profile Factory',re.I)),
+      ('self-profile-unclaimed',re.compile(r'Profile is unclaimed|Unclaimed profile|Claim or manage this profile',re.I)),
+    ]
+    for kind,rx in raw_checks:
+        m=rx.search(raw)
+        if m:
+            findings.append({'page':str(self_profile.relative_to(ROOT)),'kind':kind,'text':raw[max(0,m.start()-90):m.end()+130]})
+
 for p in ROOT.rglob('*.html'):
     rel=str(p.relative_to(ROOT))
     if rel.startswith(EXCLUDED_PREFIXES): continue
