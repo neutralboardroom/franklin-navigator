@@ -1,6 +1,6 @@
 {
   "schema": "franklin.local-community-platform.release-receipt.v1",
-  "status": "CURRENT_HEAD_QUALIFICATION_PENDING",
+  "status": "QUALIFIED_SUCCESSOR",
   "recordedAt": "2026-09-18",
   "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
   "activeEdition": "FRANKLIN_TN",
@@ -50,15 +50,31 @@
     "parentCommit": "646050ecab5e72af6316760b9e94426b218f3ac4",
     "functionalChanges": false,
     "releaseIdentityAdvanced": true,
-    "renderDeploy": "PENDING_CURRENT_RUNTIME_DEPLOY_CONFIRMATION",
+    "renderDeploy": "dep-dameqi8u01pc73a0fqfg",
+    "liveSince": "2026-09-18T07:51:03Z",
     "tests": {
       "total": 29,
       "pass": 29,
       "fail": 0,
       "skip": 0
     },
-    "openCritical": 0,
-    "openHigh": 0
+    "liveProfileAcceptance": {
+      "status": "PASS",
+      "checks": [
+        "health release/startupReady",
+        "public-profile",
+        "public-media",
+        "browser-origin CORS"
+      ]
+    },
+    "monitoringAtStartup": {
+      "openCritical": 0,
+      "openHigh": 1,
+      "incidentId": "incident_fb34ef196b8843bf987420bb9f681122",
+      "code": "FETCH_FAILED",
+      "lastSeen": "2026-09-18T07:43:46Z",
+      "subsequentLiveEndpointAcceptance": "PASS"
+    }
   },
   "requiredReceipts": [
     "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1336.md",
@@ -66,5 +82,5 @@
     "NO_LOSS_LEDGER__R1336.md",
     "NEXT_VERSION_IMPROVEMENT_LIST__R1336.md"
   ],
-  "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_DEPLOYMENT; SCC acceptance/promotion remains separate"
+  "ownerActionRequired": "NONE_FOR_LOCAL_R1336_DEPLOYMENT; SCC acceptance/promotion remains separate. One historical HIGH client-network incident remains transparently recorded even though current live endpoint acceptance passes."
 }
