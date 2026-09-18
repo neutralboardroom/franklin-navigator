@@ -1,0 +1,75 @@
+name: R1329 qualify, deterministic seal and release package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/r1329-qualify-package.yml
+
+permissions:
+  contents: write
+
+jobs:
+  qualify-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Confirm exact R1329 source identity
+        run: |
+          test "$(git branch --show-current)" = "main"
+          grep -q "FR-NAV1.30.29-HF3.13.11" PRODUCTION_RELEASE.json
+          grep -q "FR-ORG-b00c0ace7943973c" dist/data/discovery/r1329-franklin-navigator-profile.json
+          grep -q "Mailing address only:" dist/profiles/FR-ORG-b00c0ace7943973c/index.html
+          grep -q "/es/iniciar-membresia/" dist/sitemap-membership.xml
+          test ! -e dist/assets/r1329-local-discovery-data.js
+          test -f RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1329.json
+          test -f PF15_28_FRANKLIN_NAVIGATOR_CONSUMER_IMPORT_RECEIPT__R1329.json
+          test -f R1329_QUALIFICATION_EVIDENCE.md
+      - name: Run source checks and deterministic double package
+        run: python3 scripts/package-r1329.py --out-dir release-out
+      - name: Fresh-extraction validation
+        run: python3 scripts/validate-r1329-package.py release-out/FRANKLIN_NAVIGATOR__R1329__FR-NAV1.30.29-HF3.13.11__QUALIFIED_SUCCESSOR.zip
+      - name: Finalize external binary attestation
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('release-out/R1329_BINARY_ATTESTATION.json')
+          d=json.loads(p.read_text())
+          d['cleanExtractionValidation']='PASS'
+          d['freshExtractionSourceContracts']='PASS_R1327_R1328_R1329'
+          d['archiveIntegrity']='PASS'
+          d['safePaths']='PASS'
+          d['requiredUserOutcome']='Franklin Navigator profile is integrated as canonical FR-ORG-b00c0ace7943973c and claim/search contract passes.'
+          p.write_text(json.dumps(d,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(d,sort_keys=True))
+          PY
+      - name: Upload immutable workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-navigator-r1329-qualified-successor
+          path: |
+            release-out/FRANKLIN_NAVIGATOR__R1329__FR-NAV1.30.29-HF3.13.11__QUALIFIED_SUCCESSOR.zip
+            release-out/R1329_BINARY_ATTESTATION.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Publish immutable GitHub release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG='franklin-r1329-fr-nav1.30.29-hf3.13.11'
+          ZIP='release-out/FRANKLIN_NAVIGATOR__R1329__FR-NAV1.30.29-HF3.13.11__QUALIFIED_SUCCESSOR.zip'
+          ATT='release-out/R1329_BINARY_ATTESTATION.json'
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ZIP" "$ATT" --clobber
+          else
+            gh release create "$TAG" "$ZIP" "$ATT" --target "$GITHUB_SHA" --title 'Franklin Navigator R1329 — FR-NAV1.30.29-HF3.13.11' --notes 'Qualified Local Community Platform successor integrating the real Franklin Navigator PF15.28 profile. SCC acceptance is not self-asserted. See packaged receipts and binary attestation for exact state.'
+          fi
