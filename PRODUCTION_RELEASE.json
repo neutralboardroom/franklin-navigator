@@ -903,11 +903,21 @@
       "scopeConvergence": "PASS_19104",
       "realHumanNonMemberLifecycle": "PENDING_GENUINE_AUTHORIZED_MANAGER",
       "realHumanProfileImagePublication": "PENDING_GENUINE_AUTHORIZED_MANAGER",
-      "realHumanPaidCoverGalleryPublication": "PENDING_GENUINE_ACTIVE_MEMBER"
+      "realHumanPaidCoverGalleryPublication": "PENDING_GENUINE_ACTIVE_MEMBER",
+      "publicStaticRenderDeploy": "PASS_LIVE",
+      "browserExecutedLiveDomAcceptance": "NOT_COMPLETED_TOOLING_UNAVAILABLE"
     },
     "publicStaticDeployment": {
-      "status": "PENDING_FINAL_RENDER_PROMOTION",
-      "receipt": "R1330_PUBLIC_DEPLOYMENT_RECEIPT.md"
+      "status": "LIVE",
+      "serviceId": "srv-da8tg6rbc2fs73crru2g",
+      "branch": "main",
+      "deployedSourceCommit": "e607031c7127e1e19f9cf69f4704ecb7d5050935",
+      "deploy": "dep-dama1suk1f9s73eptljg",
+      "startedAt": "2026-09-18T02:24:51.092582Z",
+      "finishedAt": "2026-09-18T02:26:07.376721Z",
+      "exactRenderState": "live",
+      "receipt": "R1330_PUBLIC_DEPLOYMENT_RECEIPT.md",
+      "browserExecutedLiveDomVerification": "NOT_COMPLETED_PROVIDER_CREDITS_AND_EXTERNAL_FETCH_ACCESS_UNAVAILABLE"
     }
   }
 }
