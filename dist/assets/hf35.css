@@ -32,7 +32,7 @@ body.hf35-profile .profile-avatar img{width:100%;height:100%;object-fit:cover;bo
 body.hf35-profile .hf35-contact-label{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--hf35-muted);margin:16px 0 7px}
 body.hf35-profile .profile-primary-actions{display:flex;flex-wrap:wrap;gap:9px}
 body.hf35-profile .profile-utility-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:.92rem}
-body.hf35-profile .profile-currentness{border:1px solid var(--hf35-line);border-radius:14px;background:#fff;padding:14px 16px;display:grid;gap:6px}
+body.hf35-profile .profile-currentness{display:none!important}
 body.hf35-profile .r22-profile-layout{display:block!important;max-width:980px;margin-inline:auto}
 body.hf35-profile .r22-profile-layout>article>section{border-bottom:1px solid var(--hf35-line);padding:22px 0}
 body.hf35-profile .profile-facts-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important;gap:10px!important}
