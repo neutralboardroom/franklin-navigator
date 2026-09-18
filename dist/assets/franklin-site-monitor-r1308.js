@@ -72,8 +72,17 @@ window.fetch=async function(input,init){
 window.addEventListener('error',event=>{
   const target=event.target;
   if(target&&target!==window&&target.tagName){
-    const src=target.currentSrc||target.src||target.href||'';
-    report('BROKEN_ASSET',{path:cleanPath(src),assetType:String(target.tagName).toUpperCase(),clientSignal:'RESOURCE_ERROR'});
+    const tag=String(target.tagName).toUpperCase();
+    // Only elements that actually load an external resource may create a
+    // BROKEN_ASSET incident. Inline STYLE and empty href/src events otherwise
+    // collapse to "/" and create false HIGH incidents.
+    const resourceTags=new Set(['IMG','SCRIPT','LINK','VIDEO','AUDIO','SOURCE','IFRAME']);
+    if(!resourceTags.has(tag))return;
+    const src=String(target.currentSrc||target.src||target.href||'').trim();
+    if(!src)return;
+    let u;try{u=new URL(src,location.href)}catch{return}
+    if(!/^https?:$/.test(u.protocol))return;
+    report('BROKEN_ASSET',{path:u.pathname||'/',assetType:tag,clientSignal:'RESOURCE_ERROR'});
     return;
   }
   report('CLIENT_JS_ERROR',{path:location.pathname,clientSignal:'WINDOW_ERROR'});
