@@ -33,7 +33,10 @@
     "askFranklinResidentFacingLayout": true,
     "profileInternalJargonRemoved": true,
     "redundantConnectedNeedsHomeBridgeRemoved": true,
-    "situationPlannerPreservedElsewhere": true
+    "situationPlannerPreservedElsewhere": true,
+    "selfProfileRawMarkupCleaned": true,
+    "selfProfileOfficialPresentation": true,
+    "rawSelfProfileRegressionAudit": true
   },
   "preservedIntegrity": {
     "ordinaryUnpaidOrderingUnaffected": true,
@@ -85,5 +88,5 @@
   "ownerActionRequired": "NONE_FOR_LOCAL_R1336_DEPLOYMENT; SCC acceptance/promotion remains separate. One historical HIGH client-network incident remains transparently recorded even though current live endpoint acceptance passes.",
   "finalDocumentationReconciled": true,
   "finalDocumentationPredecessor": "25660c8698a4804ecf54a2ab8d658820332227ce",
-  "finalAcceptanceRule": "This receipt commit must pass the current-successor regression and exact-artifact qualification before public static deployment."
+  "finalAcceptanceRule": "The current head, including raw self-profile cleanup and its regression gate, must pass the current-successor qualification before redeployment."
 }
