@@ -1,0 +1,77 @@
+{
+  "schema": "franklin.local-community-platform.release-receipt.v1",
+  "status": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+  "recordedAt": "2026-09-18",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "authorityTransfer": false,
+  "predecessor": {
+    "version": "FR-NAV1.30.36-HF3.13.18",
+    "commit": "9b777204ef42df08c46d173cb3f9f86404bc865f",
+    "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.36-HF3.13.18__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "bytes": 85470556,
+    "sha256": "c8a8fdcdf7427e5a67fc42fab19b0f7a97ccf9acb1b4ae264111fc42727f35a6",
+    "manifestSha256": "5cdbacbf04607ba34e97fc8c8e3d2ace40733802f9b840a258e5c976bfdc662a",
+    "staticDeploy": "dep-damfreid0e5s73f9qk80"
+  },
+  "successor": {
+    "version": "FR-NAV1.30.37-HF3.13.19",
+    "sourceHeadBeforeDocumentation": "20b97ffd0fe216f4a334bffdf4fad39bc0bbf6b8",
+    "qualification": "PENDING_FINAL_EXACT_HEAD_WORKFLOW",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false
+  },
+  "improvements": {
+    "canonicalSharedReleaseWriter": true,
+    "stalePaidProfileReleaseWriterRemoved": true,
+    "staleActiveAssistantReleaseWriterRemoved": true,
+    "activeScriptReleaseWriterRegressionGate": true,
+    "freshExtractionReleaseGate": true,
+    "accessiblePaidProfilePhotoViewer": true,
+    "bilingualDynamicProfileAccessibility": true,
+    "profileHelpfulLinksCopyAligned": true,
+    "approvedThenAndNowHeadingPreserved": true
+  },
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "sourceCommit": "476805319613cb0781c3a288200d58f3ee60ac5c",
+    "deploy": "dep-damg83id0e5s73fb7610",
+    "deployState": "LIVE",
+    "liveSince": "2026-09-18T09:28:11.883658Z",
+    "environmentRelease": "FR-NAV1.30.37-HF3.13.19",
+    "tests": {
+      "total": 29,
+      "pass": 29,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "upstream": {
+    "profileFactoryWholesalePromotion": false,
+    "localInvestigatorPromotion": false,
+    "smarterJusticeDonorUsed": false,
+    "sreNewCommercialContractUsed": false
+  },
+  "concurrency": {
+    "detected": true,
+    "unsupportedOwnerDirectiveClaimRemoved": true,
+    "conflictingHomepageMutationReconciled": true,
+    "atomicRepairCommit": "20b97ffd0fe216f4a334bffdf4fad39bc0bbf6b8",
+    "finalRaceCheckRequired": true
+  },
+  "requiredFinalGates": [
+    "current release/profile/Assistant/navigation/monitoring contract",
+    "JavaScript/profile accessibility contracts",
+    "local asset integrity",
+    "public-language audit",
+    "public release identity integrity",
+    "sitewide color coverage",
+    "live profile runtime/browser-origin acceptance",
+    "Assistant regressions",
+    "deterministic exact-source package",
+    "fresh extraction validation",
+    "final main-head race check"
+  ],
+  "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/current-pointer promotion remains separate"
+}

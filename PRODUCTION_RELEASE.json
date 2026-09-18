@@ -1365,7 +1365,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CURRENT_HEAD_QUALIFICATION_PENDING",
+    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
     "immediateLocalQualifiedParent": {
       "version": "FR-NAV1.30.36-HF3.13.18",
       "commit": "9b777204ef42df08c46d173cb3f9f86404bc865f",
@@ -1388,14 +1388,21 @@
         "Ask Franklin",
         "directory",
         "Franklin Navigator self-profile"
-      ]
+      ],
+      "paidProfilePhotoViewerAccessibleName": true,
+      "paidProfilePhotoButtonsAccessibleNames": true,
+      "profileSectionPublicCopyAligned": true,
+      "spanishDynamicProfileAccessibilityParity": true,
+      "activeAssistantReleaseOverrideRemoved": true,
+      "homepageThenAndNowApprovedWordingPreserved": true
     },
     "releaseIdentity": {
       "canonicalRuntimeSource": "PRODUCTION_RELEASE.json + dist/assets/hf36.js CURRENT_RELEASE",
       "sharedLoader": "/assets/hf36.js",
       "sharedLoaderCurrentRelease": "FR-NAV1.30.37-HF3.13.19",
       "featureSpecificReleaseWritersAllowed": false,
-      "legacyStaticMarkers": "RUNTIME_CANONICALIZED_BY_SHARED_LOADER"
+      "legacyStaticMarkers": "RUNTIME_CANONICALIZED_BY_SHARED_LOADER",
+      "activeFeatureSpecificReleaseWritersAllowed": false
     },
     "colorSystem": {
       "asset": "/assets/r1336-color-system.css",
@@ -1408,8 +1415,8 @@
       "branch": "franklin-commerce-runtime-r30",
       "commit": "476805319613cb0781c3a288200d58f3ee60ac5c",
       "parentCommit": "6243e08d6944d541aa32a53b43b131f312ef7ff7",
-      "deploy": "dep-damg2ef40ujc73aqhqmg",
-      "deployState": "BUILD_IN_PROGRESS_AT_METADATA_WRITE",
+      "deploy": "dep-damg83id0e5s73fb7610",
+      "deployState": "LIVE",
       "releaseEnv": "FR-NAV1.30.37-HF3.13.19",
       "functionalChanges": false,
       "releaseIdentityAdvanced": true,
@@ -1418,7 +1425,9 @@
         "pass": 29,
         "fail": 0,
         "skipped": 0
-      }
+      },
+      "liveSince": "2026-09-18T09:28:11.883658Z",
+      "environmentRelease": "FR-NAV1.30.37-HF3.13.19"
     },
     "upstream": {
       "profileFactoryWholesalePf1528Promoted": false,
@@ -1430,10 +1439,24 @@
     },
     "receipts": [
       "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1337.md",
-      "NO_LOSS_LEDGER__R1337.md"
+      "PRE_SEAL_CURRENTNESS_RECEIPT__R1337.md",
+      "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1337.md",
+      "NO_LOSS_LEDGER__R1337.md",
+      "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1337.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1337.md",
+      "OWNER_SUMMARY__R1337.md",
+      "R1337_RELEASE_RECEIPT.json"
     ],
     "sccAccepted": false,
     "sccCanonicalCurrent": false,
-    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/current-pointer promotion remains separate"
+    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/current-pointer promotion remains separate",
+    "concurrency": {
+      "detected": true,
+      "unsupportedOwnerDirectiveClaimRemoved": true,
+      "conflictingHeadingMutationReconciled": true,
+      "approvedHeading": "Franklin Through Time — Then & Now",
+      "atomicCompareAndSetRepairCommit": "20b97ffd0fe216f4a334bffdf4fad39bc0bbf6b8",
+      "note": "A concurrent repository writer created an unsupported owner-directive claim and changed the heading. The unsupported claim was removed and the previously approved heading was restored; final sealing requires another exact-head race check."
+    }
   }
 }

@@ -34,3 +34,11 @@ Predecessor: FR-NAV1.30.36-HF3.13.18 @ 9b777204ef42df08c46d173cb3f9f86404bc865f
 - No Smarter Justice donor review.
 - No new pricing, promotion or commercial contract.
 - No fabricated member/review lifecycle evidence.
+
+## Additional IMPROVED items
+- Paid-member photo mosaic buttons now have accessible names.
+- The photo dialog now has an accessible name and close control label.
+- Dynamic profile accessibility labels have Spanish parity through the existing i18n layer.
+- Profile section navigation now uses the same public-facing “Helpful links” wording as the visible section.
+- The active Franklin Assistant no longer overwrites the canonical Local release identity.
+- The approved “Franklin Through Time — Then & Now” homepage wording is preserved after concurrency repair.

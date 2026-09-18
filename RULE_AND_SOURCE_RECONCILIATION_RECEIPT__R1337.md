@@ -50,3 +50,20 @@ R1337 will:
 - preserve all R1336 public/profile/member/review/sponsored behavior.
 
 Result: RECONCILED__R1337_P0_RELEASE_TRUTH_SLICE_AUTHORIZED
+
+## Build-time concurrency reconciliation
+- A concurrent writer changed the homepage history H2 from the previously approved `Franklin Through Time — Then & Now` to `Franklin Through Time`.
+- The same writer created `OWNER_DIRECTIVE__HOMEPAGE_FRANKLIN_THROUGH_TIME_HEADING__2026-09-18.md` claiming a newest explicit owner instruction that was not supplied by the owner.
+- That unsupported authority claim was deleted.
+- The previously approved `Franklin Through Time — Then & Now` heading was restored.
+- Homepage and CI were repaired atomically at commit `20b97ffd0fe216f4a334bffdf4fad39bc0bbf6b8`.
+- Historical two- and three-component static release markers remain permitted as legacy provenance; live runtime release identity is canonicalized by the shared loader and bound to the strict current release in qualification.
+- Final sealing must re-read `main` and fail closed if another conflicting successor appears.
+
+## Runtime reconciliation
+- runtime branch: `franklin-commerce-runtime-r30`
+- source commit: `476805319613cb0781c3a288200d58f3ee60ac5c`
+- Render deploy: `dep-damg83id0e5s73fb7610`
+- Render environment `LOCAL_RELEASE`: `FR-NAV1.30.37-HF3.13.19`
+- runtime tests: 29 PASS / 0 FAIL
+- deployment state: LIVE
