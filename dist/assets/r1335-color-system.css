@@ -170,3 +170,60 @@ body.hf35-profile.franklin-color-system{
 @media (prefers-reduced-motion:reduce){
   body.franklin-color-system *,body.franklin-color-system *::before,body.franklin-color-system *::after{transition-duration:.01ms!important}
 }
+
+
+/* R1336 visual-clarity refinement: make the approved palette perceptible, not merely technical. */
+body.franklin-color-system .section.tint{
+  background:linear-gradient(135deg,#f9fcfc 0%,var(--fr-teal-soft) 100%)!important;
+}
+body.franklin-color-system .section.alt{
+  background:linear-gradient(135deg,#fbfbfe 0%,var(--fr-violet-soft) 100%)!important;
+}
+body.franklin-page-directory .section.tint,
+body.franklin-page-directory .section.alt{
+  background:linear-gradient(135deg,#fbfdff 0%,var(--fr-blue-soft) 100%)!important;
+}
+body.franklin-page-business .section.tint,
+body.franklin-page-membership .section.tint{
+  background:linear-gradient(135deg,#fffdf7 0%,var(--fr-gold-soft) 100%)!important;
+}
+body.franklin-page-community .section.tint,
+body.franklin-page-activities .section.tint{
+  background:linear-gradient(135deg,#fcfbff 0%,var(--fr-violet-soft) 100%)!important;
+}
+body.franklin-page-help .section.tint,
+body.franklin-page-tasks .section.tint{
+  background:linear-gradient(135deg,#fbfefc 0%,var(--fr-green-soft) 100%)!important;
+}
+
+/* Profile sections use a small number of meaningful color surfaces, not a stack of identical white cards. */
+body.hf35-profile.r1332-profile.franklin-color-system #about{
+  background:linear-gradient(135deg,#fff,var(--fr-teal-soft))!important;
+  border:1px solid #cfe5e2!important;border-radius:16px!important;
+  padding:28px!important;margin:18px 0!important;
+}
+body.hf35-profile.r1332-profile.franklin-color-system #official-links{
+  background:linear-gradient(135deg,#fff,var(--fr-blue-soft))!important;
+  border:1px solid #d5e5f2!important;border-radius:16px!important;
+  padding:28px!important;margin:18px 0!important;
+}
+body.hf35-profile.r1332-profile.franklin-color-system #manage{
+  background:linear-gradient(135deg,#fff,var(--fr-green-soft))!important;
+  border-color:#cfe3d5!important;
+}
+body.hf35-profile.r1332-profile.franklin-color-system #details{
+  border-bottom-color:#cfdfe1!important;
+}
+body.hf35-profile.r1332-profile.franklin-color-system .profile-utility-actions{
+  background:#f7faf9;border:1px solid var(--fr-line);border-radius:10px;
+  padding:9px 12px;width:max-content;max-width:100%;
+}
+body.hf35-profile.r1332-profile.franklin-color-system .r1330-section-nav{
+  background:linear-gradient(180deg,#fff,#f7fbfa);
+}
+
+/* Active nav only. No permanent special color for Ask Franklin or For Business. */
+body.franklin-color-system header nav a:not([aria-current="page"]){
+  color:var(--fr-ink)!important;
+  background:transparent!important;
+}
