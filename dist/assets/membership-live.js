@@ -16,7 +16,7 @@
   const pendingKey=state=>{const account=state.me?.account?.accountId||state.me?.account?.account_id||state.me?.account?.id;const profile=state.selected?.i;return account&&profile?'franklin.checkout.pending.v1:'+account+':'+profile:null};
   const isPending=state=>{if(state.purchasePending)return true;try{const key=pendingKey(state);return Boolean(key&&sessionStorage.getItem(key))}catch{return false}};
   const setPending=(state,value)=>{state.purchasePending=value;try{const key=pendingKey(state);if(key){if(value)sessionStorage.setItem(key,'pending');else sessionStorage.removeItem(key)}}catch{}};
-  const CHECKOUT_NOT_STARTED=new Set(['COMMERCE_DISABLED','CHECKOUT_INFRASTRUCTURE_NOT_READY','PROFILE_VERIFICATION_REQUIRED','MEMBERSHIP_ALREADY_ACTIVE','PLAN_INVALID','PLAN_RETIRED','PROFILE_INVALID','AUTH_REQUIRED']);
+  const CHECKOUT_NOT_STARTED=new Set(['COMMERCE_DISABLED','CHECKOUT_INFRASTRUCTURE_NOT_READY','PROFILE_VERIFICATION_REQUIRED','PROFILE_MEMBERSHIP_ALREADY_ACTIVE','MEMBERSHIP_ALREADY_ACTIVE','PLAN_INVALID','PLAN_RETIRED','PROFILE_INVALID','AUTH_REQUIRED']);
   async function getMe(){try{return await request('/api/accounts/me')}catch(e){if(e.status===401)return null;throw e}}
   const active=me=>['ACTIVE','ACTIVE_CANCELING','GRACE'].includes(String(me?.membership?.status||''));
   let profiles=null;
