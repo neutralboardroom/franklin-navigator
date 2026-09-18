@@ -3,7 +3,10 @@
   'use strict';
   const C = window.FranklinDiscoveryCore;
   if (!C) return;
-  let manifestPromise, indexPromise;
+  const OVERLAY_PATH='/data/discovery/r1329-franklin-navigator-profile.json';
+  const OVERLAY_SHA256='a0b3b76b90b418dd9b493d6733056820231b3606c5fa9e25e7415f4788aed5bf';
+  const OVERLAY_ID='FR-ORG-b00c0ace7943973c';
+  let manifestPromise, indexPromise, overlayPromise;
   const shards = new Map();
   async function verified(path, expectedHash, maxBytes) {
     if (!/^\/data\/discovery\/[a-zA-Z0-9._/-]+\.json$/.test(path) || path.includes('..') || !/^[a-f0-9]{64}$/.test(expectedHash)) throw Error('Invalid source binding');
@@ -31,16 +34,29 @@
     })().catch(e => { manifestPromise = undefined; throw e; });
     return manifestPromise;
   }
+  async function overlay() {
+    if (!overlayPromise) overlayPromise = (async () => {
+      const raw = await verified(OVERLAY_PATH, OVERLAY_SHA256, 16000);
+      if (raw.schemaVersion !== 'franklin.discovery-overlay.v1' || raw.community !== C.EDITION || raw.sourceRelease !== 'FR-PF-PLATFORM-15.28' || raw.profileId !== OVERLAY_ID || raw.addressType !== 'MAILING_ADDRESS_ONLY' || raw.physicalLocationVerified !== false || raw.profileFactoryRowSha256 !== '2476a5c5a2067a6ea0f4962b4affaecb8d92ae03777d1e452881c2da0125dae9' || !Array.isArray(raw.records) || raw.records.length !== 1) throw Error('Invalid targeted profile overlay');
+      const rows = C.decodeIndex({...raw, schemaVersion:'franklin.discovery-index.v1', rows:raw.records, recordCount:raw.records.length});
+      if (rows.length !== 1 || rows[0].i !== OVERLAY_ID) throw Error('Wrong targeted profile overlay');
+      return rows;
+    })().catch(e => { overlayPromise = undefined; throw e; });
+    return overlayPromise;
+  }
   async function all() {
     if (!indexPromise) indexPromise = (async () => {
       const m = await manifest(), raw = await verified(m.index.file, m.index.sha256, 12000000);
       const rows = C.decodeIndex(raw);
       if (rows.length !== m.recordCount || raw.sourceManifestSha256 !== m.sourceManifestSha256) throw Error('Directory set mismatch');
-      return rows;
+      const add = await overlay();
+      if (rows.some(r => r.i === OVERLAY_ID)) throw Error('Duplicate targeted profile');
+      return Object.freeze(rows.concat(add));
     })().catch(e => { indexPromise = undefined; throw e; });
     return indexPromise;
   }
   async function profile(id) {
+    if (id === OVERLAY_ID) return (await overlay())[0] || null;
     const shard = C.shardFor(id), m = await manifest();
     const entry = m.shards.find(x => x.id === shard);
     if (!entry) throw Error('Missing route source');
