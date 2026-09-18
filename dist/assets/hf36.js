@@ -57,6 +57,25 @@ const applyFranklinColorSystem=()=>{
   if(p.startsWith('/membership-')||p.startsWith('/profile-studio/')||p.startsWith('/claim-profile/')||p.startsWith('/es/iniciar-membresia/'))add('franklin-page-membership');
   if(p.startsWith('/community-help-center/')||p.startsWith('/review-guidelines/')||p.startsWith('/es/centro-de-ayuda/'))add('franklin-page-help');
   if(p.startsWith('/get-it-done/')||p.startsWith('/es/hacerlo/'))add('franklin-page-tasks');
+
+  // Navigation is neutral by default. Only the section that owns the current
+  // route receives aria-current and the active Franklin treatment.
+  const nav=document.querySelector('header nav');
+  if(nav){
+    nav.querySelectorAll('a[aria-current="page"]').forEach(a=>a.removeAttribute('aria-current'));
+    let selector='';
+    if(p.startsWith('/assistant/')||p.startsWith('/es/asistente/'))selector='a.franklin-nav-ask,a[href="/assistant/"],a[href="/#ask-navigator"]';
+    else if(p.startsWith('/directory/')||p.startsWith('/profiles/')||p.startsWith('/es/directorio/'))selector='a.franklin-nav-find,a[href="/directory/"]';
+    else if(p.startsWith('/get-it-done/')||p.startsWith('/es/hacerlo/'))selector='a.franklin-nav-tasks,a[href="/get-it-done/"]';
+    else if(p.startsWith('/today/')||p.startsWith('/es/hoy/'))selector='a.franklin-nav-today,a[href="/today/"]';
+    else if(p.startsWith('/activities/')||p.startsWith('/es/actividades/'))selector='a.franklin-nav-things,a[href="/activities/"]';
+    else if(p.startsWith('/community/')||p.startsWith('/es/comunidad/'))selector='a.franklin-nav-community,a[href="/community/"]';
+    else if(p.startsWith('/business-dashboard/')||p.startsWith('/membership-')||p.startsWith('/profile-studio/')||p.startsWith('/claim-profile/')||p.startsWith('/es/negocios/')||p.startsWith('/es/iniciar-membresia/'))selector='a.franklin-nav-priority-business,a[href="/business-dashboard/"]';
+    else if(p.startsWith('/my-franklin/'))selector='a[href="/my-franklin/"]';
+    else if(p.startsWith('/community-help-center/')||p.startsWith('/review-guidelines/')||p.startsWith('/es/centro-de-ayuda/'))selector='a[href="/community-help-center/"]';
+    const current=selector?nav.querySelector(selector):null;
+    if(current)current.setAttribute('aria-current','page');
+  }
 };
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applyFranklinColorSystem,{once:true});else applyFranklinColorSystem();
 
