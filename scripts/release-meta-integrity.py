@@ -15,7 +15,11 @@ errors=[]
 def need(cond,msg):
     if not cond: errors.append(msg)
 
-need(bool(re.fullmatch(r'FR-NAV\d+\.\d+\.\d+-HF\d+\.\d+\.\d+',release)),'invalid PRODUCTION_RELEASE release')
+CURRENT_RELEASE_RE=r'FR-NAV\d+\.\d+\.\d+-HF\d+\.\d+\.\d+'
+# Historical static pages legitimately used both two- and three-component HF suffixes.
+# Runtime identity is canonicalized by hf36 to the strict current three-component release.
+STATIC_RELEASE_RE=r'FR-NAV\d+\.\d+\.\d+-HF\d+\.\d+(?:\.\d+)?'
+need(bool(re.fullmatch(CURRENT_RELEASE_RE,release)),'invalid PRODUCTION_RELEASE release')
 
 hf=assets/'hf36.js'
 need(hf.is_file(),'missing shared hf36 loader')
@@ -54,7 +58,7 @@ for p in dist.rglob('*.html'):
     if x.release_values:
         for value in x.release_values:
             legacy[value]+=1
-            if not re.fullmatch(r'FR-NAV\d+\.\d+\.\d+-HF\d+\.\d+\.\d+',value):
+            if not re.fullmatch(STATIC_RELEASE_RE,value):
                 bad_meta.append((str(p.relative_to(root)),value))
     elif x.has_main:
         missing_meta.append(str(p.relative_to(root)))
