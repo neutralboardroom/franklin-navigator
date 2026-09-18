@@ -163,7 +163,8 @@ ready(()=>{
     loadCss('/assets/r1332-profile.css?v=frnav1332','franklin-profile-r1332');
     loadScript('/assets/r1330-profile.js?v=frnav1330','franklin-profile-r1330')
       .then(()=>loadScript('/assets/r1332-profile.js?v=frnav1332','franklin-profile-r1332'))
-      .catch(()=>loadScript('/assets/r1332-profile.js?v=frnav1332','franklin-profile-r1332').catch(()=>{}));
+      .then(()=>loadScript('/assets/r1332-member-offers.js?v=frnav1332','franklin-member-offers-r1332'))
+      .catch(()=>{loadScript('/assets/r1332-profile.js?v=frnav1332','franklin-profile-r1332').catch(()=>{});loadScript('/assets/r1332-member-offers.js?v=frnav1332','franklin-member-offers-r1332').catch(()=>{})});
   }
   normalizePrimaryNav();
   installCommunityConnectorR1311();
