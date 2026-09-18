@@ -4,13 +4,14 @@
   const root = document.querySelector('[data-franklin-discovery]');
   if (!root) return;
   const C = window.FranklinDiscoveryCore, data = window.FranklinDiscoveryData;
+  const SPONSOR_API = 'https://franklin-navigator-membership.onrender.com';
   if (!C || !data) return;
   const $ = selector => root.querySelector(selector);
   const fields = {q: $('[data-dir-search]'), category: $('[data-dir-category]'), type: $('[data-dir-type]'), area: $('[data-dir-area]'), sort: $('[data-dir-sort]')};
   const results = $('[data-dir-results]'), count = $('[data-dir-count]'), pageLabel = $('[data-dir-page]'), prev = $('[data-dir-prev]'), next = $('[data-dir-next]'), retry = $('[data-dir-retry]'), status = $('[data-dir-status]');
   const tray = $('[data-dir-compare]'), trayBody = $('[data-dir-compare-body]'), compareOpen = $('[data-dir-compare-open]');
   const selected = new Map();
-  let rows = [], byId = new Map(), loaded = false, loading = false, comparisonOpen = false, queryTimer;
+  let rows = [], byId = new Map(), sponsoredIds = [], loaded = false, loading = false, comparisonOpen = false, queryTimer;
   let state = C.stateFromSearch(location.search);
   const perPage = 12;
   const language = () => document.documentElement.lang.toLowerCase().startsWith('es') ? 'es' : 'en';
@@ -78,11 +79,35 @@
     actions.append(link(tx('Open profile', 'Abrir perfil'), C.canonicalProfile(row.i, language()), 'button small primary'), choose);
     article.append(title, cat, locationText, facts, actions); return article;
   }
+  function sponsoredCard(row) {
+    const article = card(row); article.classList.add('r1333-directory-sponsored-card');
+    const label = el('div', tx('Sponsored · Community Member','Patrocinado · Miembro de la comunidad'), 'r1333-directory-sponsored-label');
+    article.prepend(label);
+    return article;
+  }
+  function sponsoredSection(found) {
+    if (state.page !== 1 || !sponsoredIds.length) return null;
+    const foundIds = new Set(found.map(r => r.i));
+    const candidateRows = sponsoredIds.map(id => byId.get(id)).filter(Boolean).filter(r => foundIds.has(r.i));
+    if (!candidateRows.length) return null;
+    const ordered = C.matchRows(candidateRows, {...state, page:1}).slice(0, 2);
+    if (!ordered.length) return null;
+    const section = el('section', null, 'r1333-directory-sponsored-section');
+    const head = el('div', null, 'r1333-directory-sponsored-head');
+    head.append(el('span', tx('Sponsored','Patrocinado'), 'r1333-directory-sponsored-pill'),
+      el('strong', tx('Featured Franklin Community Members','Miembros destacados de Franklin')));
+    const grid = el('div', null, 'r1333-directory-sponsored-grid');
+    ordered.forEach(row => grid.append(sponsoredCard(row)));
+    const note = el('p', tx('Paid placement for increased visibility. It is not an endorsement and does not change the ordinary results below.','Colocación pagada para mayor visibilidad. No es un respaldo ni cambia los resultados normales de abajo.'), 'fine-print');
+    section.append(head, grid, note); return section;
+  }
   function render() {
     if (!loaded) return;
     const found = C.matchRows(rows, state), pages = Math.max(1, Math.ceil(found.length / perPage));
     state.page = Math.min(state.page, pages);
-    results.replaceChildren(...found.slice((state.page - 1) * perPage, state.page * perPage).map(card));
+    const organic = found.slice((state.page - 1) * perPage, state.page * perPage).map(card);
+    const sponsored = sponsoredSection(found);
+    results.replaceChildren(...(sponsored ? [sponsored, ...organic] : organic));
     if (!found.length) {
       const panel = el('div', null, 'empty-state');
       panel.append(el('h2', tx('No matching profiles', 'No hay perfiles coincidentes')), el('p', tx('Try fewer words or remove a filter. Matches use listed names, categories and places; they do not confirm services or availability.', 'Pruebe con menos palabras o quite un filtro. Las coincidencias usan nombres, categorías y lugares indicados; no confirman servicios ni disponibilidad.')));
@@ -161,7 +186,9 @@
     if (loading) return; loading = true; retry.hidden = true; root.setAttribute('aria-busy', 'true');
     count.textContent = tx('Loading local profiles…', 'Cargando perfiles locales…');
     try {
-      const suppressionResponse=await fetch('/data/public-profile-suppressions.json',{cache:'no-store'}); if(!suppressionResponse.ok)throw new Error('SUPPRESSION_LEDGER_UNAVAILABLE'); const suppressionData=await suppressionResponse.json(); const suppressed=new Set((suppressionData.entries||[]).filter(e=>e&&e.status==='SUPPRESSED').map(e=>e.profileId)); rows = (await data.all()).filter(r=>!suppressed.has(r.i)); byId = new Map(rows.map(r => [r.i, r])); loaded = true;
+      const suppressionResponse=await fetch('/data/public-profile-suppressions.json',{cache:'no-store'}); if(!suppressionResponse.ok)throw new Error('SUPPRESSION_LEDGER_UNAVAILABLE'); const suppressionData=await suppressionResponse.json(); const suppressed=new Set((suppressionData.entries||[]).filter(e=>e&&e.status==='SUPPRESSED').map(e=>e.profileId)); rows = (await data.all()).filter(r=>!suppressed.has(r.i)); byId = new Map(rows.map(r => [r.i, r]));
+      try{const sponsorResponse=await fetch(SPONSOR_API+'/api/member/sponsored-profiles?limit=30',{credentials:'omit',cache:'no-store'});if(sponsorResponse.ok){const sponsorData=await sponsorResponse.json();sponsoredIds=(sponsorData.profiles||[]).map(x=>x.profileId).filter(id=>byId.has(id))}}catch(_){sponsoredIds=[]}
+      loaded = true;
       if (history.state?.franklinDiscovery) {
         state = C.cleanState(history.state.state);
         for (const id of (Array.isArray(history.state.selected) ? history.state.selected : []).slice(0, 3)) if (byId.has(id)) selected.set(id, byId.get(id));
