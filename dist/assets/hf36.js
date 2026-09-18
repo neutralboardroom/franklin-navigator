@@ -8,7 +8,7 @@ loadCss('/assets/franklin-assistant-chat-r1306.css?v=frnav1306','franklin-assist
 loadCss('/assets/franklin-nav-r1310.css?v=frnav1310','franklin-nav-r1310');
 loadCss('/assets/franklin-nav-r1311.css?v=frnav1311','franklin-nav-r1311');
 loadCss('/assets/r1311-community.css?v=frnav1311','franklin-community-r1311');
-loadCss('/assets/r1334-color-system.css?v=frnav1334','franklin-color-system-r1334');
+loadCss('/assets/r1335-color-system.css?v=frnav1335','franklin-color-system-r1335');
 if(!document.querySelector('script[data-franklin-established-positioning]')){const p=document.createElement('script');p.src='/assets/franklin-established-positioning.js?v=frnav1293';p.defer=true;p.dataset.franklinEstablishedPositioning='1';document.head.append(p)}
 const loadAssistantR1318=()=>{
   if(!document.querySelector('[data-navigator-bot]')||document.querySelector('script[data-franklin-assistant-r1318]'))return;
