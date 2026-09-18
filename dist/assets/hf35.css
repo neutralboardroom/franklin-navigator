@@ -33,6 +33,7 @@ body.hf35-profile .hf35-contact-label{font-size:.8rem;font-weight:800;text-trans
 body.hf35-profile .profile-primary-actions{display:flex;flex-wrap:wrap;gap:9px}
 body.hf35-profile .profile-utility-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:.92rem}
 body.hf35-profile .profile-currentness{display:none!important}
+body.hf35-profile #sources{display:none!important}
 body.hf35-profile .r22-profile-layout{display:block!important;max-width:980px;margin-inline:auto}
 body.hf35-profile .r22-profile-layout>article>section{border-bottom:1px solid var(--hf35-line);padding:22px 0}
 body.hf35-profile .profile-facts-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important;gap:10px!important}
