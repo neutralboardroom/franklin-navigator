@@ -1,0 +1,65 @@
+{
+  "schema": "franklin.local-community-platform.release-receipt.v1",
+  "status": "CURRENT_HEAD_QUALIFICATION_PENDING",
+  "recordedAt": "2026-09-18",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "authorityTransfer": false,
+  "acceptedCanonicalBase": {
+    "version": "FR-NAV1.30.12-HF3.12.4",
+    "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+    "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+  },
+  "immediateLocalQualifiedParent": {
+    "version": "FR-NAV1.30.35-HF3.13.17",
+    "commit": "e6e90726f13e5d2d78363a5539d7f77d1f7d750f",
+    "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.35-HF3.13.17__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "artifactSha256": "20728dfeabc446224f5e00effe22f9eee046d3daa3d12144f329e4690da37c86",
+    "manifestSha256": "319f9a1ffe8365a3f9950a2e467a44cdf9554405d67b4de8c01a91301e12d2d0"
+  },
+  "successor": {
+    "version": "FR-NAV1.30.36-HF3.13.18",
+    "localQualification": "QUALIFIED_IF_CURRENT_HEAD_WORKFLOW_PASSES",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "artifactHashSource": "CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json"
+  },
+  "materialImprovement": {
+    "ownerDirection": "FINISH_PUBLIC_HOMEPAGE_ASK_FRANKLIN_AND_PROFILE_PRESENTATION",
+    "colorAsset": "/assets/r1336-color-system.css",
+    "colorCoverageGate": "CURRENT_RELEASE_METADATA_DRIVEN",
+    "publicLanguageAudit": "scripts/public-language-audit.py",
+    "askFranklinResidentFacingLayout": true,
+    "profileInternalJargonRemoved": true
+  },
+  "preservedIntegrity": {
+    "ordinaryUnpaidOrderingUnaffected": true,
+    "recommendationOrEndorsementClaim": false,
+    "paymentChangesFactualTruth": false,
+    "paymentChangesReviewScore": false,
+    "profileFactoryAuthorityTransfer": false,
+    "localInvestigatorPromotion": false,
+    "smarterJusticeDonorUsed": false
+  },
+  "runtime": {
+    "changedInR1336": false,
+    "sourceCommit": "646050ecab5e72af6316760b9e94426b218f3ac4",
+    "renderDeploy": "dep-damc21e7bikc73b2lmu0",
+    "tests": {
+      "total": 29,
+      "pass": 29,
+      "fail": 0,
+      "skip": 0
+    },
+    "openCritical": 0,
+    "openHigh": 0
+  },
+  "requiredReceipts": [
+    "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1336.md",
+    "PRE_SEAL_CURRENTNESS_RECEIPT__R1336.md",
+    "NO_LOSS_LEDGER__R1336.md",
+    "NEXT_VERSION_IMPROVEMENT_LIST__R1336.md"
+  ],
+  "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_DEPLOYMENT; SCC acceptance/promotion remains separate"
+}
