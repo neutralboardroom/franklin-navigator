@@ -8,6 +8,25 @@
  function hidePublicProvenance(){
    document.querySelectorAll('a[href="#sources"]').forEach(a=>a.remove());
    const src=document.querySelector('#sources');if(src)src.remove();
+   document.querySelector('.profile-currentness')?.remove();
+ }
+ function cleanPublicLanguage(){
+   hidePublicProvenance();
+   const about=document.querySelector('#about p');
+   if(about){
+     let t=about.textContent||'';
+     t=t.replace(/Use the verified contact and source links on this page to confirm current services, hours, pricing and availability\.?/gi,'Contact them directly for current services, hours, pricing and availability.');
+     t=t.replace(/No direct contact route is available in the current public sources\.?/gi,'No direct contact information is available on this profile yet.');
+     t=t.replace(/service\/location identity source-backed; street address not asserted in this release/gi,'Franklin, Tennessee');
+     t=t.replace(/street address not asserted in this release/gi,'street address not listed');
+     about.textContent=t.replace(/\s{2,}/g,' ').trim();
+   }
+   document.querySelectorAll('.fine-print').forEach(node=>{
+     const t=(node.textContent||'').trim();
+     if(/Related by category only—not ranked or recommended\.?/i.test(t))node.textContent='More profiles in the same category.';
+   });
+   const official=document.querySelector('#official-links h2');if(official&&/^Official\b/i.test(official.textContent||''))official.textContent='Helpful links';
+   const manage=document.querySelector('#manage .button:not(.primary)');if(manage&&/member profile options/i.test(manage.textContent||''))manage.textContent='Preview Community Member profile';
  }
  function sectionNav(){
    if(document.querySelector('.r1330-section-nav'))return;
@@ -39,7 +58,7 @@
    document.body.classList.add('r1330-profile');
    const releaseMeta=document.querySelector('meta[name="franklin-release"]');if(releaseMeta)releaseMeta.content='FR-NAV1.30.30-HF3.13.12';
    const current=document.querySelector('.profile-currentness'),fallbackManaged=current?!/unclaimed/i.test(current.textContent||''):false;
-   current?.remove();hidePublicProvenance();stateRow(fallbackManaged);
+   current?.remove();cleanPublicLanguage();stateRow(fallbackManaged);
    try{
      const [profileRes,mediaRes]=await Promise.allSettled([
        fetch(API+'/api/member/public-profile?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()),
@@ -48,6 +67,6 @@
      if(profileRes.status==='fulfilled'&&typeof profileRes.value.managedProfile==='boolean')stateRow(profileRes.value.managedProfile);
      if(mediaRes.status==='fulfilled'&&Array.isArray(mediaRes.value.media))media(mediaRes.value.media);
    }catch{}
-   setTimeout(sectionNav,60);setTimeout(sectionNav,450);
+   setTimeout(()=>{cleanPublicLanguage();sectionNav()},60);setTimeout(()=>{cleanPublicLanguage();sectionNav()},450);
  });
 })();
