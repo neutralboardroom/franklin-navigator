@@ -1,6 +1,6 @@
 # R1335 Owner Summary
 
-**Status: LOCAL QUALIFICATION IN PROGRESS / FINAL SEAL NEXT**
+**Status: QUALIFIED_SUCCESSOR — final exact-head workflow is the acceptance condition**
 
 - New release identity: FR-NAV1.30.35-HF3.13.17.
 - Preserves sealed R1334 functionality.
@@ -12,4 +12,4 @@
 - Runtime is live as R1335; 29/29 tests pass; 0 open CRITICAL / 0 open HIGH.
 - No recommendation/endorsement language was added. Paid visibility remains clearly labeled.
 - Profile Factory, Local Investigator, SRE and SCC authority boundaries remain unchanged.
-- Final deterministic exact-source seal will be regenerated after this R1335 metadata/receipt commit set.
+- The final deterministic exact-source seal is generated only from the current head after all R1335 metadata/receipts are present; that workflow result is the release qualification condition.
