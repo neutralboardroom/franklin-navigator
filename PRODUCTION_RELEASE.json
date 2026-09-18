@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.29-HF3.13.11",
+  "release": "FR-NAV1.30.30-HF3.13.12",
   "date": "2026-09-18",
-  "base": "FR-NAV1.30.28-HF3.13.10",
+  "base": "FR-NAV1.30.29-HF3.13.11",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1329 integrates the owner-directed real Franklin Navigator Profile Factory record into Local public discovery, claim/member resolution and a source-backed public profile, preserving mailing-only address semantics and no fabricated lifecycle state. It also restores the Spanish membership entry route. All unrelated R1328 product capabilities are preserved.",
+  "scope": "R1330 modernizes shared public profile presentation and repairs the profile-management architecture so verified managers can claim/manage a real Franklin profile, use free factual correction/removal, and upload a reviewed profile photo/logo without paid membership. Active Community Membership remains optional at $35/year and adds richer reviewed content plus cover/gallery media. R1330 also converges the membership runtime with the 19,104-profile public scope and preserves Profile Factory source authority, neutral ordinary Directory ranking, privacy, review and no-fabrication boundaries.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -223,7 +223,7 @@
     "English and Spanish assistant support",
     "voice input where supported",
     "My Franklin saved next-step fallback",
-    "19,103 profile discovery binding",
+    "19,104 profile discovery binding",
     "254 Assistant routes",
     "R1295 direct-answer intent rules and contextual clarifiers",
     "current public web research gating and source links",
@@ -233,7 +233,10 @@
     "My Franklin safe next-step saving without raw question persistence",
     "progressive answer-first Franklin Assistant guide",
     "live membership and Stripe runtime",
-    "reviewer/claim/member fulfillment workflows"
+    "reviewer/claim/member fulfillment workflows",
+    "free verified-manager profile access independent of paid membership",
+    "reviewed profile photo/logo for verified managers without paid membership",
+    "Profile Factory source facts remain separate from manager/member submissions"
   ],
   "monitoring": {
     "version": "FRANKLIN_ISSUE_MONITOR_1",
@@ -785,5 +788,126 @@
     "unrelatedSiteChangesIntended": false,
     "evidence": "FRANKLIN_ASSISTANT_FOLLOWUP_COMPOSER_POSITION__0.3.4.md",
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.3.4.md"
+  },
+  "r1330": {
+    "version": "FR-NAV1.30.30-HF3.13.12",
+    "predecessor": "FR-NAV1.30.29-HF3.13.11",
+    "purpose": "PROFILE_DESIGN_MODERNIZATION_PLUS_FREE_AND_PAID_MANAGEMENT_CORRECTNESS",
+    "publicProfilePresentation": {
+      "sharedRuntime": "/assets/r1330-profile.js?v=frnav1330",
+      "sharedStyles": "/assets/r1330-profile.css?v=frnav1330",
+      "heroCurrentnessBox": "REMOVED_FROM_ORDINARY_PRESENTATION",
+      "provenance": "PRESERVED_ON_DEMAND_UNDER_SOURCES_AND_LISTING_DETAILS",
+      "managementState": "DYNAMIC_MANAGED_OR_UNCLAIMED",
+      "claimAction": "CLAIM_OR_MANAGE_THIS_PROFILE",
+      "identityMedia": "REVIEWED_PROFILE_IMAGE_LOGO",
+      "memberMedia": [
+        "REVIEWED_COVER",
+        "REVIEWED_GALLERY"
+      ],
+      "ordinaryDirectoryPaidRanking": false
+    },
+    "freeProfileManagement": {
+      "route": "/profile-access/",
+      "accountRequired": true,
+      "paidMembershipRequired": false,
+      "capabilities": [
+        "CONNECT_REAL_CURRENT_PROFILE",
+        "REQUEST_REPRESENTATION_VERIFICATION",
+        "VIEW_MANAGEMENT_STATE",
+        "VIEW_PUBLIC_PROFILE",
+        "SUBMIT_FREE_FACTUAL_CORRECTION",
+        "REQUEST_PUBLIC_PROFILE_REMOVAL",
+        "UPLOAD_CHANGE_REMOVE_REVIEWED_PROFILE_IMAGE_OR_LOGO",
+        "SUBMIT_PROFILE_IMAGE_OR_LOGO_FOR_REVIEW"
+      ],
+      "sourceFactsDirectOverwrite": false,
+      "sourceAuthority": "PROFILE_FACTORY_SOURCE_BACKED_FACTS_REMAIN_SEPARATE"
+    },
+    "communityMembership": {
+      "optional": true,
+      "annualPriceUsd": 35,
+      "ordinaryDirectoryRankingBenefit": false,
+      "factualAccuracyBenefit": false,
+      "richerCapabilities": [
+        "REVIEWED_ABOUT_SERVICES_PRACTICAL_CONTENT",
+        "REVIEWED_ACTION_AND_OFFICIAL_ONLINE_LINKS",
+        "REVIEWED_COVER_IMAGE",
+        "REVIEWED_GALLERY",
+        "EXISTING_MEMBER_TOOLS_AND_PRESENTATION_BENEFITS"
+      ]
+    },
+    "reviewedMedia": {
+      "runtimeVersion": "FRANKLIN_MEMBER_MEDIA_1",
+      "slots": {
+        "PROFILE": "FREE_VERIFIED_MANAGER",
+        "COVER": "ACTIVE_RICH_PROFILE_MEMBERSHIP",
+        "GALLERY": "ACTIVE_RICH_PROFILE_MEMBERSHIP"
+      },
+      "states": [
+        "DRAFT",
+        "SUBMITTED",
+        "CHANGES_REQUESTED",
+        "PUBLISHED",
+        "REMOVED"
+      ],
+      "humanReviewRequired": true,
+      "explicitRightsConfirmation": true,
+      "clientInput": [
+        "JPEG",
+        "PNG",
+        "WEBP"
+      ],
+      "serverStorage": "POSTGRESQL_BYTEA_BOUNDED_LAUNCH_IMPLEMENTATION",
+      "serverAcceptedEncoding": "VALIDATED_WEBP",
+      "metadataPolicy": "EXIF_XMP_REJECTED_AFTER_CLIENT_REENCODE",
+      "animatedWebp": false,
+      "maxDimensions": "3000x3000",
+      "maxPixels": 9000000,
+      "formerMemberRemovalPreserved": true
+    },
+    "runtimeScope": {
+      "baseScopeCount": 19103,
+      "boundedOverlayCount": 1,
+      "publicProfileScopeCount": 19104,
+      "canonicalFranklinNavigatorProfileId": "FR-ORG-b00c0ace7943973c",
+      "phantomProfileLinking": "FAIL_CLOSED"
+    },
+    "runtime": {
+      "serviceId": "srv-dabgvefqj5pc739vr4h0",
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "84247d591754102a44a80a6b6e2e7666d1b900f9",
+      "deploy": "dep-dam9ve61egvs738mjgr0",
+      "status": "LIVE",
+      "finishedAt": "2026-09-18T02:20:03.717222Z",
+      "build": "PASS",
+      "syntaxStartupChecks": "PASS",
+      "runtimeListeningReady": true,
+      "ownerPreflightPublicProfileScopeCount": 19104
+    },
+    "incidentLedgerAtRuntimeStartup": {
+      "openCritical": 0,
+      "openHigh": 3,
+      "noOpenP0P1": false,
+      "attribution": "UNRESOLVED_SAFE_LOG_DETAIL_INSUFFICIENT",
+      "releaseClaim": "R1330_DOES_NOT_CLAIM_THESE_HISTORICAL_PERSISTENT_INCIDENTS_RESOLVED_OR_CAUSED_BY_THIS_RELEASE"
+    },
+    "benchmarkReceipt": "R1330_PROFILE_BENCHMARK_ADOPTION_RECEIPT.md",
+    "evidence": "R1330_PROFILE_DESIGN_MANAGEMENT_EVIDENCE.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1330.md",
+    "tests": {
+      "frontendChangedScriptSyntax": "PASS",
+      "backendChangedScriptSyntax": "PASS",
+      "renderBuild": "PASS",
+      "runtimeStartup": "PASS",
+      "scopeConvergence": "PASS_19104",
+      "realHumanNonMemberLifecycle": "PENDING_GENUINE_AUTHORIZED_MANAGER",
+      "realHumanProfileImagePublication": "PENDING_GENUINE_AUTHORIZED_MANAGER",
+      "realHumanPaidCoverGalleryPublication": "PENDING_GENUINE_ACTIVE_MEMBER"
+    },
+    "publicStaticDeployment": {
+      "status": "PENDING_FINAL_RENDER_PROMOTION",
+      "receipt": "R1330_PUBLIC_DEPLOYMENT_RECEIPT.md"
+    }
   }
 }
