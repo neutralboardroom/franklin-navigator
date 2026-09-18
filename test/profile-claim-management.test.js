@@ -18,7 +18,8 @@ test('profile management release is server-authorized and fails safe around acti
   assert.ok(src.includes('/api/member/representation/release'));
   assert.ok(src.includes('ACTIVE_MEMBERSHIP_REQUIRES_SUPPORT'));
   assert.ok(src.includes('PUBLISHED_MEMBER_CONTENT_REQUIRES_SUPPORT'));
-  assert.match(src,/authority_state='REVOKED'/);
+  assert.ok(src.includes("delete from franklin_profile_links where account_id=$1 and profile_id=$2"));
+  assert.ok(src.includes("set state='REVOKED'"));
   assert.match(src,/verified_at=null/);
   assert.ok(src.includes('REPRESENTATION_RELEASED'));
 });
