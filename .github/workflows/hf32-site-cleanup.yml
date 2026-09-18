@@ -54,13 +54,25 @@ jobs:
           assert d['branding']['headerAsset']=='/assets/franklin-mark.svg'
           assert d['branding']['favicon']=='/assets/favicon.svg'
           a=d['assistant']
-          assert a['routeCount']==254 and a['profileCount']==19103
+          assert d['counts']['assistantRoutes']==254
+          assert d['counts']['profiles']>=19103
+          assert a.get('availableLegacyRouteCount',a.get('routeCount'))==254
+          assert a.get('availableSiteProfileCount',a.get('profileCount'))==19103
           assert a['attachmentNetworkSubmission'] is False
           assert a['rawChatHistoryPersisted'] is False
-          assert a['responsePolicy']=='ONE_DIRECT_ANSWER_ONLY'
-          assert a['guideMode'] is True
-          assert a['routeDataRelease']=='FR-NAV1.29.2-HF3.10.2'
-          assert d['counts']=={'profiles':19103,'assistantRoutes':254}
+          # Clean-room Assistant v2 intentionally retired the old guide/response-policy
+          # manifest keys. Preserve the stronger current safety/neutrality contracts.
+          if a.get('architecture')=='CLEAN_ROOM_V2':
+              assert a['verifiedFactPrecedence'] is True
+              assert a['arbitraryPublicWebSearch'] is False
+              assert a['explicitDirectoryHandoff'] is True
+              assert a['paidRanking'] is False
+              assert a['guideQuestionnaireRouting'] is False
+              assert a['legacyRouteDataPreservedButUnused'] is True
+          else:
+              assert a['responsePolicy']=='ONE_DIRECT_ANSWER_ONLY'
+              assert a['guideMode'] is True
+              assert a['routeDataRelease']=='FR-NAV1.29.2-HF3.10.2'
           nav=d['navigation']
           assert nav['rule']=='SHOW_MAXIMUM_PRACTICAL_TOP_LEVEL_ITEMS_WHILE_KEEPING_PRIMARY_NAV_ON_ONE_LINE'
           assert nav['fixedBreakpointHiding'] is False and nav['singleLinePrimaryNav'] is True
@@ -76,16 +88,28 @@ jobs:
           idx=Path('dist')/manifest['index']['file'].lstrip('/')
           assert manifest['recordCount']==19103
           assert hashlib.sha256(idx.read_bytes()).hexdigest()==manifest['index']['sha256']
-          total=0
-          for i,item in enumerate(a['verifiedRouteShards']):
-              p=Path('dist')/item['path'].lstrip('/')
-              r=json.loads(p.read_text())
-              assert hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']
-              assert r['release']==a['routeDataRelease'] and r['shard']==f'{i:02d}'
-              assert r['recordCount']==item['count']
-              total+=r['recordCount']
+          # A single owner-directed, source-backed PF15.28 Franklin Navigator self-profile
+          # overlay may extend the public profile scope to 19,104 without rewriting the
+          # canonical 19,103 discovery index.
+          if d['counts']['profiles']==19104:
+              assert d.get('authority',{}).get('pf15_28CanonicalProfileId')=='FR-ORG-b00c0ace7943973c'
+              assert Path('dist/profiles/FR-ORG-b00c0ace7943973c/index.html').is_file()
+          else:
+              assert d['counts']['profiles']==manifest['recordCount']
+          total=a.get('availableLegacyRouteCount',a.get('routeCount',0))
           assert total==254
-          print(d['release'], manifest['recordCount'], total)
+          # Validate legacy shards only on releases that still expose their manifest.
+          if a.get('verifiedRouteShards'):
+              shard_total=0
+              for i,item in enumerate(a['verifiedRouteShards']):
+                  p=Path('dist')/item['path'].lstrip('/')
+                  r=json.loads(p.read_text())
+                  assert hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']
+                  assert r['release']==a['routeDataRelease'] and r['shard']==f'{i:02d}'
+                  assert r['recordCount']==item['count']
+                  shard_total+=r['recordCount']
+              assert shard_total==254
+          print(d['release'], manifest['recordCount'], d['counts']['profiles'], total)
           PY
 
       - name: JavaScript syntax, route integrity and R1311 UX contracts
@@ -97,6 +121,19 @@ jobs:
           node --check dist/assets/franklin-assistant-r1295-core.js
           node --check dist/assets/franklin-assistant-r1307.js
           node --check dist/assets/franklin-site-monitor-r1308.js
+          node --check dist/assets/r1330-profile.js
+          node --check dist/assets/r1332-profile.js
+          node --check dist/assets/r1332-member-offers.js
+          node --check dist/assets/r1333-paid-sponsored.js
+          node --check dist/assets/local-discovery.js
+          test -f dist/assets/r1330-profile.css
+          test -f dist/assets/r1332-profile.css
+          test -f dist/assets/r1333-profile.css
+          test -f dist/assets/r1333-sponsored.css
+          test -f dist/review-guidelines/index.html
+          grep -F "Sponsored" dist/assets/r1333-paid-sponsored.js
+          grep -F "ordinary unpaid" dist/membership-start/index.html
+          ! grep -i -E "recommended by Franklin|endorsed by Franklin|Franklin recommends|Franklin endorses" dist/assets/r1333-paid-sponsored.js dist/assets/r1333-profile.css dist/assets/r1333-sponsored.css
           test -f dist/assets/franklin-nav-r1310.css
           test -f dist/assets/franklin-nav-r1311.css
           test -f dist/assets/r1311-community.css
@@ -163,7 +200,7 @@ jobs:
                   info.compress_type=zipfile.ZIP_DEFLATED
                   info.external_attr=0o100644<<16
                   z.writestr(info,p.read_bytes())
-          att={'release':release,'commit':commit,'tree':tree,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':hashlib.sha256(Path(artifact).read_bytes()).hexdigest(),'manifest':manifest_name,'manifestSha256':hashlib.sha256(Path(manifest_name).read_bytes()).hexdigest(),'zipMembers':len(entries),'profileCount':19103,'assistantRouteCount':254,'result':'PASS_EXACT_SOURCE_ARTIFACT_SEALED'}
+          att={'release':release,'commit':commit,'tree':tree,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':hashlib.sha256(Path(artifact).read_bytes()).hexdigest(),'manifest':manifest_name,'manifestSha256':hashlib.sha256(Path(manifest_name).read_bytes()).hexdigest(),'zipMembers':len(entries),'profileCount':json.loads(Path('PRODUCTION_RELEASE.json').read_text())['counts']['profiles'],'assistantRouteCount':json.loads(Path('PRODUCTION_RELEASE.json').read_text())['counts']['assistantRoutes'],'result':'PASS_EXACT_SOURCE_ARTIFACT_SEALED'}
           Path(attestation_name).write_text(json.dumps(att,indent=2)+'\n')
           with zipfile.ZipFile(artifact) as z: assert z.testzip() is None
           print(json.dumps(att,indent=2))
