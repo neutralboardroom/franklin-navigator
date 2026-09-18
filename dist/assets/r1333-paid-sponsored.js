@@ -69,7 +69,6 @@
    hero.insertAdjacentElement('afterend',section);
  }
  async function run(){
-   const releaseMeta=q('meta[name="franklin-release"]');if(releaseMeta)releaseMeta.content='FR-NAV1.30.33-HF3.13.15';
    let profile,media=[];try{
      const [p,mr]=await Promise.all([get('/api/member/public-profile?profileId='+encodeURIComponent(id)),get('/api/member/media/public?profileId='+encodeURIComponent(id)).catch(()=>({media:[]}))]);
      profile=p;media=Array.isArray(mr.media)?mr.media:[];
