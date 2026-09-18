@@ -10,8 +10,21 @@
    const src=document.querySelector('#sources');if(src)src.remove();
    document.querySelector('.profile-currentness')?.remove();
  }
+ function cleanTextValue(value){
+   return String(value||'')
+     .replace(/\s*[—-]\s*listed in Visit Franklin community guide;\s*street address not asserted in this release/gi,'')
+     .replace(/\s*[—-]\s*official school roster;\s*street address not asserted in this release/gi,'')
+     .replace(/\s*[—-]\s*locality qualified by the cited current community directory;\s*street address not asserted/gi,'')
+     .replace(/\s*[—-]\s*source-backed service area;\s*street address not asserted/gi,'')
+     .replace(/\s*[—-]\s*service\/location identity source-backed;\s*street address not asserted in this release/gi,'')
+     .replace(/;?\s*street address not asserted in this release/gi,'')
+     .replace(/;?\s*street address not asserted/gi,'')
+     .replace(/\s{2,}/g,' ')
+     .trim();
+ }
  function cleanPublicLanguage(){
    hidePublicProvenance();
+   document.querySelectorAll('.profile-location,.r22-profile-side .fine-print').forEach(node=>{node.textContent=cleanTextValue(node.textContent)});
    const about=document.querySelector('#about p');
    if(about){
      let t=about.textContent||'';
@@ -19,7 +32,7 @@
      t=t.replace(/No direct contact route is available in the current public sources\.?/gi,'No direct contact information is available on this profile yet.');
      t=t.replace(/service\/location identity source-backed; street address not asserted in this release/gi,'Franklin, Tennessee');
      t=t.replace(/street address not asserted in this release/gi,'street address not listed');
-     about.textContent=t.replace(/\s{2,}/g,' ').trim();
+     about.textContent=cleanTextValue(t);
    }
    document.querySelectorAll('.fine-print').forEach(node=>{
      const t=(node.textContent||'').trim();
