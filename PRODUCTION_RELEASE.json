@@ -869,5 +869,77 @@
       "First genuine non-member free-management media lifecycle remains a real-human production proof",
       "First genuine active-member cover/gallery lifecycle remains a real-human production proof"
     ]
+  },
+  "r1332": {
+    "version": "FR-NAV1.30.32-HF3.13.14",
+    "date": "2026-09-18",
+    "purpose": "FINISHED_PUBLIC_PROFILE_EXPERIENCE_PLUS_COMMUNITY_REVIEWS_MEMBER_GALLERY_AND_SPECIAL_OFFERS",
+    "benchmarkReceipt": "R1332_PROFILE_BENCHMARK_AND_PRODUCT_RECEIPT.md",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1332.md",
+    "publicProfile": {
+      "finishedTwoColumnDesktopLayout": true,
+      "responsiveMobileLayout": true,
+      "largerIdentityMedia": true,
+      "actionFirstHero": true,
+      "routinePublicProvenanceRemoved": true,
+      "reviewsSection": true,
+      "ratingDistribution": true,
+      "reviewManagerResponses": true,
+      "publicGalleryLightbox": true
+    },
+    "communityReviews": {
+      "runtimeVersion": "FRANKLIN_COMMUNITY_REVIEWS_1",
+      "scope": "BUSINESS_AND_PROFESSIONAL_PROFILES_WITH_NONCOMMERCIAL_CIVIC_NONPROFIT_EXCLUSIONS",
+      "ratingScale": "1_TO_5",
+      "writtenReviews": true,
+      "firsthandConfirmationRequired": true,
+      "oneReviewPerAccountPerProfile": true,
+      "managerCannotReviewOwnProfile": true,
+      "reporting": true,
+      "moderationStates": [
+        "PUBLISHED",
+        "PENDING",
+        "REJECTED",
+        "REMOVED",
+        "DISPUTED"
+      ],
+      "seriousAllegationAndPrivateInfoHold": true,
+      "verifiedManagerResponses": true,
+      "reviewRankingAffectedByMembership": false
+    },
+    "paidCommunityMemberEnhancements": {
+      "publicGallery": true,
+      "reviewedCoverPhoto": true,
+      "reviewedGalleryPositions": 8,
+      "specialFranklinNavigatorOffer": true,
+      "offerFields": [
+        "title",
+        "details",
+        "code",
+        "expiration",
+        "terms",
+        "offerUrl"
+      ],
+      "expiredOffersPubliclySuppressed": true,
+      "offerMayNotBeConditionedOnPositiveReview": true,
+      "ordinaryDirectoryRankingAffected": false,
+      "factualAccuracyAffected": false,
+      "reviewScoreAffected": false
+    },
+    "runtime": {
+      "serviceId": "srv-dabgvefqj5pc739vr4h0",
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "57734c10d54eb1563f6257912c538d8d62d4281d",
+      "deploy": "dep-damaka5bedkc73amajig",
+      "status": "LIVE",
+      "syntaxGate": "PASS",
+      "startupReady": true
+    },
+    "proofBoundary": [
+      "No fabricated user reviews were created.",
+      "No fabricated paid-member gallery publication was created.",
+      "No fabricated special offer was created.",
+      "First genuine review, owner response, paid gallery and paid offer lifecycles remain real-user production proofs."
+    ]
   }
 }
