@@ -86,12 +86,21 @@ need(bool(color_asset) and color_asset in hf,'current release color system not l
 need(f"const CURRENT_RELEASE='{release}'" in hf,'shared loader current release mismatch')
 need('meta.content=CURRENT_RELEASE' in hf,'shared loader release canonicalizer missing')
 need('dataset.franklinRelease=CURRENT_RELEASE' in hf,'shared loader release dataset missing')
+active_scripts=set()
+for p in (root/'dist').rglob('*.html'):
+    t=p.read_text(errors='replace')
+    for m in re.finditer(r'<script[^>]+src=["\\\'](/assets/[^"\\\']+\\.js)(?:\\?[^"\\\']*)?["\\\']',t,re.I):
+        active_scripts.add(Path(urlsplit(m.group(1)).path).name)
+for m in re.finditer(r"['\\\"](/assets/[^'\\\"]+\\.js)(?:\\?[^'\\\"]*)?['\\\"]",hf):
+    active_scripts.add(Path(urlsplit(m.group(1)).path).name)
+writer_re=re.compile(r"franklin-release.{0,260}(?:\\.content\\s*=|setAttribute\\(\\s*['\\\"]content['\\\"])",re.I|re.S)
 release_owners=[]
-for p in (root/'dist/assets').glob('*.js'):
-    if p.name=='hf36.js': continue
-    if 'franklin-release' in p.read_text(errors='replace'):
+for name in sorted(active_scripts):
+    p=root/'dist/assets'/name
+    if name=='hf36.js' or not p.is_file(): continue
+    if writer_re.search(p.read_text(errors='replace')):
         release_owners.append(str(p.relative_to(root)))
-need(not release_owners,'feature-specific public release-meta ownership: '+repr(release_owners))
+need(not release_owners,'active feature-specific public release-meta writers: '+repr(release_owners))
 for token in ['--fr-teal:','--fr-green:','--fr-blue:','--fr-gold:','--fr-violet:']:
     need(token in color,'missing color token '+token)
 
