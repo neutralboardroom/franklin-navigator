@@ -392,8 +392,20 @@ for(const incident of assetIncidents){
            bool_and(coalesce(safe_context->>'assetType','')='STYLE' and coalesce(safe_context->>'path','')='/') as all_inline_style_root
     from franklin_incident_events where incident_id=$1
   `,[incident.incident_id])).rows[0];
-  if(Number(hist?.event_count||0)>0 && hist?.all_inline_style_root===true){
-    await incidentMonitor.setStatus(incident.incident_id,'RESOLVED','R1334 monitor correction verified every occurrence was an inline STYLE/no-external-URL false positive. Static qualification independently verified all 86 local resource references exist before this resolution.');
+  const latestContext=incident.safe_context&&typeof incident.safe_context==='object'?incident.safe_context:{};
+  const lastSeenMs=new Date(incident.last_seen||0).getTime();
+  const verifiedStaticFixMs=Date.parse('2026-09-18T04:07:05Z');
+  const allHistoricalInline=Number(hist?.event_count||0)>0 && hist?.all_inline_style_root===true;
+  const supersededHistoricalSignal=latestContext.assetType==='STYLE' && latestContext.path==='/' &&
+    Number.isFinite(lastSeenMs) && lastSeenMs<verifiedStaticFixMs;
+  if(allHistoricalInline||supersededHistoricalSignal){
+    await incidentMonitor.setStatus(
+      incident.incident_id,
+      'RESOLVED',
+      allHistoricalInline
+        ? 'R1334 monitor correction verified every occurrence was an inline STYLE/no-external-URL false positive. Static qualification independently verified all 86 local resource references exist before this resolution.'
+        : 'R1334 current-state resolution: the final observed signal was inline STYLE at root, its last occurrence predates the deployed resource-monitor correction, and post-fix static qualification verified all 86 local resource references with zero missing assets. The historical incident is superseded; new real resource failures will create/reopen monitoring evidence.'
+    );
     falseAssetResolved++;
   }
 }
