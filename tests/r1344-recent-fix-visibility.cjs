@@ -34,7 +34,7 @@ add('R1336 public Ask Franklin entry remains visible',assistantPage.includes('As
 add('R1336 redundant connected-needs homepage bridge stays removed',!home.includes('Need help with several things at once?')&&!esHome.includes('¿Necesita ayuda con varias cosas a la vez?'));
 add('R1336 connected-needs help remains reachable elsewhere',help.includes('/whole-situation-navigator/')&&help.includes('Make a private help plan'));
 add('R1336 self-profile remains official and free of internal qualification UI',selfProfile.includes('Official Franklin Navigator profile')&&!/Source packet|Qualification status|Candidate status|Internal source|Claim status/i.test(selfProfile));
-add('Durable non-burial rule is present',durableRule.includes('not preserved merely because its code still exists')&&durableRule.includes('visible/reachability')||durableRule.includes('visibility/reachability'));
+add('Durable non-burial rule is present',durableRule.includes('not preserved merely because its code still exists')&&durableRule.includes('regression-test visibility/reachability'));
 
 add('R1337 Franklin Through Time visible',index.includes('Franklin Through Time')&&!index.includes('Then & Now'));
 add('R1337 accessible profile media controls retained',/aria-label|setAttribute\(['"]aria-label/.test(r1332));
