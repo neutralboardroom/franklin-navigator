@@ -224,3 +224,47 @@
 
 /* HF3.7 shell DOM order: visual order and keyboard order match. */
 (()=>{const fix=()=>{document.querySelectorAll('header .wrap.top').forEach(top=>{if(top.dataset.hf37Shell==='1')return;const brand=top.querySelector(':scope > a.brand'),nav=top.querySelector(':scope > nav.nav'),lang=top.querySelector(':scope > .r37-language-switch');if(brand)top.insertBefore(brand,top.firstChild);if(nav){if(lang)top.insertBefore(nav,lang);else top.append(nav)}if(lang)top.append(lang);top.dataset.hf37Shell='1'})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix,{once:true});else fix()})();
+
+
+/* R1343 — universal profile-control visibility guard.
+   Runs from the shared app bundle so every public profile template gets the
+   same obvious free claim/manage entry point, including newly generated
+   Profile Factory templates that do not load profile-specific enhancement JS. */
+(()=>{'use strict';
+  const run=()=>{
+    const match=location.pathname.match(/^\/profiles\/([^/]+)\/?$/);if(!match)return;
+    const profileId=decodeURIComponent(match[1]);
+    const actions=document.querySelector('.profile-primary-actions');
+    if(!actions)return;
+    const name=(document.querySelector('.r22-profile-hero h1, main h1')?.textContent||'').trim();
+    const canonical=document.querySelector('link[rel="canonical"]')?.href||location.origin+location.pathname;
+    const claimHref='/profile-access/?profile='+encodeURIComponent(profileId);
+    let claim=actions.querySelector('[data-r1343-claim-primary]');
+    if(!claim){
+      claim=document.createElement('a');
+      claim.dataset.r1343ClaimPrimary='1';
+      claim.href=claimHref;
+      claim.textContent='Claim or manage this profile';
+      actions.prepend(claim);
+    }
+    claim.classList.add('button','r1343-claim-primary');
+    claim.href=claimHref;
+    claim.setAttribute('aria-label',name?'Claim or manage '+name:'Claim or manage this profile');
+
+    let correction=[...actions.querySelectorAll('a')].find(a=>/\/corrections\//.test(a.getAttribute('href')||''));
+    if(!correction){
+      correction=document.createElement('a');
+      correction.href='/corrections/?listing='+encodeURIComponent(name)+'&profile='+encodeURIComponent(profileId)+'&url='+encodeURIComponent(canonical);
+      correction.textContent='Review / correct this profile';
+      correction.dataset.r1343Correction='1';
+      correction.className='button r1343-correction-secondary';
+      actions.append(correction);
+    }else{
+      correction.classList.add('r1343-correction-secondary');
+    }
+
+    document.querySelectorAll('.r1330-claim-link').forEach(a=>a.classList.add('button','r1343-claim-primary','r1343-claim-status-link'));
+  };
+  const start=()=>{run();setTimeout(run,120);setTimeout(run,700)};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
