@@ -20,13 +20,15 @@
     "Expose matching free claim/manage callouts on English and Spanish correction/review pages.",
     "Preserve exact-profile context from corrections into Profile Access.",
     "Create a permanent owner-agreed-fix visibility/non-loss rule and machine-readable registry.",
-    "Enforce the permanent visibility test in normal qualification and clean-extracted-artifact qualification."
+    "Enforce the permanent visibility test in normal qualification and clean-extracted-artifact qualification.",
+    "Audit all ten preceding material Franklin releases for buried, stale-layer, routing, localization and CSS visibility regressions.",
+    "Extend the permanent registry back through R1335 and add non-print CSS burial detection."
   ],
   "runtime": {
     "branch": "franklin-commerce-runtime-r30",
     "commit": "3503f7b3b58042ef0389537af313a1b3545ef23f",
     "deploy": "dep-dan62krm8hqs73a6bqbg",
-    "state": "DEPLOY_TRIGGERED_PENDING_FINAL_VERIFICATION",
+    "state": "LIVE",
     "functionalChanges": false,
     "releaseIdentityOnly": true
   },
@@ -37,5 +39,8 @@
   "sccCanonicalCurrent": false,
   "qualification": {
     "result": "PENDING_EXACT_HEAD_WORKFLOW"
-  }
+  },
+  "lastTenVisibilityAudit": "LAST_TEN_RELEASE_VISIBILITY_AUDIT__R1345.json",
+  "auditSpan": "R1335_THROUGH_R1344",
+  "additionalUnresolvedBuriedRegressionsFound": 0
 }
