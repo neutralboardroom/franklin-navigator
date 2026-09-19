@@ -50,6 +50,9 @@ add('R1342 unverified users continue through Profile Access',hf39.includes("acce
 
 add('R1343 universal claim CTA retained',app.includes('universal profile-control visibility guard')&&css.includes('--claim-accent:#f6c453'));
 add('R1343 distinct claim-search action retained',claim.includes("b.textContent='Claim this profile'"));
+add('R1344 correction page exposes claim/manage prominently',corrections.includes('data-r1344-claim-cta')&&corrections.includes('Claim or manage this profile — free'));
+add('R1344 correction claim keeps exact-profile continuity',read('dist/assets/hf35-profile-control.js').includes("claimCta.href='/profile-access/?profile='"));
+add('R1344 correction claim uses distinct ownership accent',css.includes('.r1344-owner-claim-callout')&&css.includes('.r1343-claim-primary'));
 
 const failed=checks.filter(x=>!x[1]);
 console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.44-HF3.13.26',checks,failed},null,2));
