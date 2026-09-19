@@ -43,8 +43,8 @@ test('review revocation clears stale verified timestamp and protected edits rema
 test('runtime release and member fulfillment version advance together',()=>{
   const src=member();
   const server=fs.readFileSync('server.js','utf8');
-  assert.ok(src.includes("FRANKLIN_MEMBER_FULFILLMENT_HF3_5"));
-  assert.ok(server.includes("FR-NAV1.30.39-HF3.13.21"));
+  assert.ok(src.includes("FRANKLIN_MEMBER_FULFILLMENT_HF3_6"));
+  assert.ok(server.includes("FR-NAV1.30.40-HF3.13.22"));
 });
 
 
