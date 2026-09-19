@@ -2000,7 +2000,11 @@
       "DURABLE_RULE__OWNER_AGREED_FIX_VISIBILITY_AND_NON_LOSS.md",
       "OWNER_AGREED_FIX_VISIBILITY_REGISTRY.json",
       "NEXT_VERSION_IMPROVEMENT_LIST__R1345.md",
-      "R1345_RELEASE_RECEIPT.json"
-    ]
+      "R1345_RELEASE_RECEIPT.json",
+      "LAST_TEN_RELEASE_VISIBILITY_AUDIT__R1345.json"
+    ],
+    "lastTenVisibilityAudit": "LAST_TEN_RELEASE_VISIBILITY_AUDIT__R1345.json",
+    "auditSpan": "R1335_THROUGH_R1344",
+    "additionalUnresolvedBuriedRegressionsFound": 0
   }
 }
