@@ -44,7 +44,7 @@ test('runtime release and member fulfillment version advance together',()=>{
   const src=member();
   const server=fs.readFileSync('server.js','utf8');
   assert.ok(src.includes("FRANKLIN_MEMBER_FULFILLMENT_HF3_6"));
-  assert.ok(server.includes("FR-NAV1.30.41-HF3.13.23"));
+  assert.ok(server.includes("FR-NAV1.30.42-HF3.13.24"));
 });
 
 
@@ -66,4 +66,12 @@ test('support request endpoint is rate limited before database insertion',()=>{
   const server=fs.readFileSync('server.js','utf8');
   assert.ok(server.includes('support:${clientKey(req)}'));
   assert.ok(server.includes("Too many support requests. Please wait before trying again."));
+});
+
+
+test('duplicate account registration routes the user to sign-in/password recovery instead of creating another account',()=>{
+  const server=fs.readFileSync('server.js','utf8');
+  assert.ok(server.includes('ACCOUNT_ALREADY_EXISTS'));
+  assert.ok(server.includes('Sign in or reset your password.'));
+  assert.ok(server.includes('/api/accounts/password-reset/request'));
 });
