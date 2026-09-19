@@ -1687,6 +1687,13 @@
     "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/promotion remains separate",
     "qualification": {
       "result": "PENDING_EXACT_HEAD_WORKFLOW_AND_LIVE_RUNTIME_RELEASE_IDENTITY"
+    },
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "inheritedWithoutVisualChange": true,
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false
     }
   }
 }
