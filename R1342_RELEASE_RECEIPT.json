@@ -1,6 +1,6 @@
 {
   "schema": "franklin.local-community-platform.release-receipt.v1",
-  "status": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+  "status": "QUALIFIED_LOCAL_PENDING_MAIN_PROMOTION",
   "recordedAt": "2026-09-19",
   "release": "FR-NAV1.30.42-HF3.13.24",
   "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
@@ -45,7 +45,9 @@
   "ownerSpecificLiveResetCompleted": false,
   "ownerSpecificReason": "Requires the owner's own email/password interaction; not self-certified by builder.",
   "qualification": {
-    "result": "PENDING_EXACT_HEAD_WORKFLOW"
+    "result": "PASS",
+    "workflowRun": 35420574438,
+    "qualifiedHead": "fba4e4f3b6b7f8e6e30e1331f67c1e62047c670e"
   },
   "sccAccepted": false,
   "sccCanonicalCurrent": false
