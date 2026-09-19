@@ -20,6 +20,21 @@ const hf39=read('dist/assets/hf39.js');
 const app=read('dist/assets/app.js');
 const css=read('dist/assets/styles.css');
 const claim=read('dist/assets/hf310.js');
+const color=read('dist/assets/r1336-color-system.css');
+const home=read('dist/index.html');
+const esHome=read('dist/es/index.html');
+const assistantPage=read('dist/assistant/index.html');
+const help=read('dist/community-help-center/index.html');
+const selfProfile=read('dist/profiles/FR-ORG-b00c0ace7943973c/index.html');
+const durableRule=read('DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md');
+
+add('R1335 semantic color system retained',['--fr-teal:','--fr-green:','--fr-blue:','--fr-gold:','--fr-violet:'].every(x=>color.includes(x)));
+add('R1335 navigation accent remains current-section only',color.includes('header nav a[aria-current="page"]')&&!/header nav a\.franklin-nav-priority-business\s*\{[^}]*color:/s.test(color));
+add('R1336 public Ask Franklin entry remains visible',assistantPage.includes('Ask Franklin. Get a local answer.')&&assistantPage.includes('No account required'));
+add('R1336 redundant connected-needs homepage bridge stays removed',!home.includes('Need help with several things at once?')&&!esHome.includes('¿Necesita ayuda con varias cosas a la vez?'));
+add('R1336 connected-needs help remains reachable elsewhere',help.includes('/whole-situation-navigator/')&&help.includes('Make a private help plan'));
+add('R1336 self-profile remains official and free of internal qualification UI',selfProfile.includes('Official Franklin Navigator profile')&&!/Source packet|Qualification status|Candidate status|Internal source|Claim status/i.test(selfProfile));
+add('Durable non-burial rule is present',durableRule.includes('not preserved merely because its code still exists')&&durableRule.includes('visible/reachability')||durableRule.includes('visibility/reachability'));
 
 add('R1337 Franklin Through Time visible',index.includes('Franklin Through Time')&&!index.includes('Then & Now'));
 add('R1337 accessible profile media controls retained',/aria-label|setAttribute\(['"]aria-label/.test(r1332));
@@ -49,7 +64,7 @@ add('R1342 Spanish recovery/claim parity retained',i18n.includes("'Forgot passwo
 add('R1342 unverified users continue through Profile Access',hf39.includes("access='/profile-access/?profile='")&&!hf39.includes("Continue profile access',studio"));
 
 add('R1343 universal claim CTA retained',app.includes('universal profile-control visibility guard')&&css.includes('--claim-accent:#f6c453'));
-add('R1343 distinct claim-search action retained',claim.includes("b.textContent='Claim this profile'"));
+add('R1343 distinct claim-search action retained',claim.includes("b.textContent='Claim this profile'")&&css.includes('.r1342-claim-result-action')&&css.includes('background:var(--claim-accent)!important'));
 add('R1344 correction page exposes claim/manage prominently',corrections.includes('data-r1344-claim-cta')&&corrections.includes('Claim or manage this profile — free'));
 add('R1344 correction claim keeps exact-profile continuity',read('dist/assets/hf35-profile-control.js').includes("claimCta.href='/profile-access/?profile='"));
 add('R1344 correction claim uses distinct ownership accent',css.includes('.r1344-owner-claim-callout')&&css.includes('.r1343-claim-primary'));
