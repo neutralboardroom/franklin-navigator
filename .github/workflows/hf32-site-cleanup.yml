@@ -342,7 +342,7 @@ jobs:
           node scripts/test-assistant-r1295.js
           ! grep -i -E 'founding member|new service|new platform|once this feature launches|this pilot' dist/index.html dist/assistant/index.html dist/business-dashboard/index.html dist/membership-start/index.html dist/member-profile-preview/index.html
           grep -F '$35' dist/membership-start/index.html
-          grep -F 'Find or manage your Franklin profile.' dist/claim-profile/index.html
+          grep -F 'Find your Franklin profile.' dist/claim-profile/index.html
           grep -F 'Corrections and removal are free.' dist/claim-profile/index.html
           grep -F 'Community Membership' dist/business-dashboard/index.html
           grep -F 'English' dist/member-profile-preview/index.html
