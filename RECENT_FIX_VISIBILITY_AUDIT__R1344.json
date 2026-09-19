@@ -2,7 +2,7 @@
   "result": "PASS",
   "release": "FR-NAV1.30.44-HF3.13.26",
   "predecessor": "FR-NAV1.30.43-HF3.13.25",
-  "audited_release_span": "R1337 through R1343",
+  "audited_release_span": "R1335 through R1344 (ten releases)",
   "standard": "A user-facing fix does not count as complete merely because code exists; the intended user must be able to see or naturally reach it in the normal journey.",
   "regressions_found_and_fixed": [
     "Logged-in business readiness copy still said Profile Studio instead of Profile Center.",
@@ -11,6 +11,10 @@
     "The correction/review page did not surface the owner claim/manage action prominently; it now shows the distinct free claim CTA and exact-profile continuity."
   ],
   "verified": [
+    "R1335 restrained semantic color system remains sitewide and only the current navigation section is accented",
+    "R1336 public Ask Franklin entry remains resident-facing and visible",
+    "R1336 removed connected-needs homepage bridge stays removed while connected-needs help remains reachable elsewhere",
+    "R1336 Franklin Navigator self-profile remains official and free of internal qualification/source-control UI",
     "R1337 Franklin Through Time heading",
     "R1337 accessible profile media controls and Helpful links wording",
     "R1337 Spanish dynamic profile accessibility",
@@ -29,5 +33,17 @@
     "No profile-source authority change",
     "No outreach",
     "No SCC authority assertion"
-  ]
+  ],
+  "release_review": {
+    "R1335": "PASS — semantic color hierarchy and active-only navigation treatment remain visible.",
+    "R1336": "PASS — Ask Franklin/public-language/self-profile fixes remain visible; removed homepage clutter has not returned; connected-needs help remains reachable elsewhere.",
+    "R1337": "PASS — Franklin Through Time, accessible media controls, Helpful links wording and Spanish profile accessibility remain reachable.",
+    "R1338": "PASS — management states, withdrawal/stop-management, free photo/logo and correction/removal paths remain reachable.",
+    "R1339": "PASS after R1344 repair — Profile Center terminology and bilingual request feedback preserved; later unverified-user routing regression repaired.",
+    "R1340": "PASS — approved business headline, readable path cards and free-first five-step path remain visible.",
+    "R1341": "PASS — Community Membership value and payment-neutrality safeguards remain visible.",
+    "R1342": "PASS after R1343/R1344 repairs — recovery and same-profile continuity preserved; claim CTA and Spanish dynamic actions were re-surfaced where later UI had buried them.",
+    "R1343": "PASS — universal distinct claim/manage CTA and distinct claim-search CTA remain visually prominent.",
+    "R1344": "PASS pending exact-head qualification — correction/review claim prominence, terminology/routing/Spanish fixes and permanent non-burial gate are present."
+  }
 }
