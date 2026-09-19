@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.43-HF3.13.25",
+  "release": "FR-NAV1.30.44-HF3.13.26",
   "date": "2026-09-19",
-  "base": "FR-NAV1.30.42-HF3.13.24",
+  "base": "FR-NAV1.30.43-HF3.13.25",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1343 is the profile-control visibility and recent-release discoverability hardening pass. It makes the free Claim or manage this profile action a visually distinct primary CTA on every public profile through the shared app layer, keeps factual review/correction visible as a secondary action, gives claim-search results a matching distinct Claim this profile action, preserves R1340 readability and R1341 membership-value safeguards, and adds a visibility regression audit. No outreach is sent; pricing, payment, entitlement, profile truth, SRE/Revenue/SCC authority, and unrelated product behavior are unchanged.",
+  "scope": "R1344 audits recent owner-agreed Franklin fixes for actual public discoverability and repairs two regressions: logged-in unverified business users now continue through Profile Access instead of the Profile Center editor route, the remaining public 'Profile Studio' label is standardized to 'Profile Center', and Spanish dynamic translations now cover the R1342 claim/password-recovery actions. R1343 universal claim CTA visibility, R1341 membership-value clarity, R1340 readability, R1339 terminology/localization, and R1338 free-first profile safeguards remain preserved.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
