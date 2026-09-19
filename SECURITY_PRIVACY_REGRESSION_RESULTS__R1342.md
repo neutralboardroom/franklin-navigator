@@ -8,7 +8,7 @@
 - Passwords are never emailed.
 - Reset token is not placed in query-string navigation or normal page referrers.
 - Generic reset-request response prevents account enumeration.
-- Profile ID is allowlisted before it is put into reset navigation.
+- Profile ID must pass the Franklin profile-ID allowlist and exist in the current runtime profile scope before it is put into reset-email navigation.
 - Profile-link creation remains PENDING and does not itself grant authority.
 - Membership enrollment continues to require VERIFIED profile authority.
 - Existing membership duplicate-payment protections are unchanged.
