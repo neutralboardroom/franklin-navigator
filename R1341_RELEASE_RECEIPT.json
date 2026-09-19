@@ -39,5 +39,12 @@
   },
   "qualification": {
     "result": "PENDING_EXACT_HEAD_WORKFLOW"
+  },
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "ac3a9503875a009ce8e635c2114da8cce7773284",
+    "releaseIdentity": "FR-NAV1.30.41-HF3.13.23",
+    "functionalChanges": false,
+    "identityGuardUpdated": true
   }
 }
