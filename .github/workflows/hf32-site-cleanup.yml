@@ -19,6 +19,7 @@ on:
       - 'scripts/member-visibility-contract-r1341.py'
       - 'tests/r1342-claim-recovery.cjs'
       - 'tests/r1344-recent-fix-visibility.cjs'
+      - 'DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md'
   pull_request:
     branches: [main]
     paths:
@@ -33,6 +34,7 @@ on:
       - 'scripts/member-visibility-contract-r1341.py'
       - 'tests/r1342-claim-recovery.cjs'
       - 'tests/r1344-recent-fix-visibility.cjs'
+      - 'DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md'
 
 permissions:
   contents: read
