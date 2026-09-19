@@ -1,14 +1,14 @@
 {
   "acceptedAnchor": {
-    "artifactSha256": "e7bd5e71bf9da3de03bff838c4a5f577e7b36d7d63d639793ee19ac3f12ff119",
-    "release": "FR-NAV1.9.0-CANDIDATE-R34"
+    "release": "FR-NAV1.30.42-HF3.13.24",
+    "artifactSha256": "1d626e0a59432275f8c2599e75808b0dfb4381928d9ffa28c0cc97c8a5a8a9a0"
   },
   "authorityTransfer": false,
-  "builtAt": "2026-09-06",
+  "builtAt": "2026-09-19",
   "communityCentered": true,
   "deploymentAuthorization": "OWNER_AND_WO056_AUTHORIZED_AFTER_PRODUCT_QUALIFICATION",
-  "exactSourcePredecessor": "FR-NAV1.14.0-CANDIDATE-R39",
-  "freeProfileControl": "FACTUAL_CORRECTION_AND_PUBLIC_REMOVAL_NO_PAYMENT",
+  "exactSourcePredecessor": "FR-NAV1.30.42-HF3.13.24",
+  "freeProfileControl": "CLAIM_MANAGE_PLUS_FACTUAL_CORRECTION_AND_PUBLIC_REMOVAL_NO_PAYMENT",
   "liveObservationBeforeBuild": {
     "classification": "R39_DERIVED_POST_SEAL_PATCH",
     "commit": "b254b3d83f03935e4337ff2d19f6f7e773c16158",
@@ -17,14 +17,14 @@
     "providerLive": true
   },
   "p0CloseoutPatch": "FR-NAV1.20.0-HF3.1-P0C1-SINGLE-ANNUAL-PROFILE-CONTROL",
-  "predecessorArtifactSha256": "1f40073f442877e1f5be7ff06f0517a82a96a0e97098cde40d1de199fcf9d151",
+  "predecessorArtifactSha256": "1d626e0a59432275f8c2599e75808b0dfb4381928d9ffa28c0cc97c8a5a8a9a0",
   "predecessorSourceTreeSha256": "2c5a9f14f345604575dd5173e0a25d47325ab94bf8eaba23fff77756eb77e88c",
-  "profileCount": 19103,
+  "profileCount": 19104,
   "publicCheckoutOpen": false,
-  "publicConstruction": "R39_PLUS_CANONICAL_LIVE_HOTFIX_PLUS_WO056_CUSTOMER_LANGUAGE_AND_SHORTLIST_UX",
-  "release": "FR-NAV1.15.0-CANDIDATE-R40",
-  "schemaVersion": "franklin.release-identity.r40.v1",
+  "publicConstruction": "R1342_PLUS_UNIVERSAL_PROFILE_CLAIM_VISIBILITY_AND_RECENT_RELEASE_DISCOVERABILITY_HARDENING",
+  "release": "FR-NAV1.30.43-HF3.13.25",
+  "schemaVersion": "franklin.release-identity.r1343.v1",
   "singleNewSalePlan": "$35/year annual until canceled",
   "sourceQualified": true,
-  "status": "SOURCE_QUALIFIED_DEPLOYMENT_AUTHORIZED_PENDING_EXECUTION"
+  "status": "SOURCE_QUALIFIED_PENDING_GITHUB_PROMOTION_AND_DEPLOYMENT"
 }
