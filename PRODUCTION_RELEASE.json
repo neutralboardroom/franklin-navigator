@@ -1840,6 +1840,16 @@
       "randomDecorativeColoring": false,
       "darkSemanticSurfaceReadabilityGuard": true,
       "inheritedFrom": "R1340"
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "c7487d5a4cac582d24681b3546d8390d7f525368",
+      "deploy": "dep-damvcamk1f9s73es5fr0",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.41-HF3.13.23",
+      "functionalChanges": false,
+      "releaseIdentityAdvanced": true,
+      "memberFulfillmentVersion": "FRANKLIN_MEMBER_FULFILLMENT_HF3_6"
     }
   }
 }
