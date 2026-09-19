@@ -150,7 +150,20 @@
       const sourceOnly = /^FR-IRS-/.test(r.i) && contacts === 0 ? 1 : 0;
       return geo * 100 + sourceOnly * 18 + (3 - contacts) * 4 + (r.h ? 0 : 2);
     };
-    deduped.sort((a, b) => (s.sort === 'local' ? localRank(a) - localRank(b) : s.sort === 'checked' ? (validDate(b.d) ? b.d : '').localeCompare(validDate(a.d) ? a.d : '') : s.sort === 'website' ? Number(!!b.websiteHref) - Number(!!a.websiteHref) : s.sort === 'address' ? Number(b.h) - Number(a.h) : 0) || compare(a, b));
+    // R1342 exact-name priority for explicit name searches. This changes ordering only;
+    // it does not suppress otherwise relevant matches or create paid/endorsement ranking.
+    const queryRank = r => {
+      if (!s.q) return 0;
+      const needle = norm(s.q), name = r.nameKey;
+      if (!needle) return 0;
+      if (name === needle) return 0; // exact normalized name
+      if ((' ' + name + ' ').includes(' ' + needle + ' ')) return 1; // exact phrase
+      const qTokens = needle.split(' ').filter(Boolean), nTokens = name.split(' ').filter(Boolean);
+      if (qTokens.length && qTokens.every((token, i) => nTokens[i]?.startsWith(token))) return 2; // starts-with
+      if (qTokens.length && qTokens.every(token => nTokens.some(n => n === token || n.startsWith(token)))) return 3; // strong token
+      return 4; // partial / fuzzy retrieval already admitted by the existing matcher
+    };
+    deduped.sort((a, b) => (s.q ? queryRank(a) - queryRank(b) : 0) || (s.sort === 'local' ? localRank(a) - localRank(b) : s.sort === 'checked' ? (validDate(b.d) ? b.d : '').localeCompare(validDate(a.d) ? a.d : '') : s.sort === 'website' ? Number(!!b.websiteHref) - Number(!!a.websiteHref) : s.sort === 'address' ? Number(b.h) - Number(a.h) : 0) || compare(a, b));
     // HF3.9 default browse diversification: factual, payment-neutral, and deterministic.
     if (s.sort === 'local' && !s.q && !s.category && !s.type && !s.area && !s.facts.length) {
       const facilityRoot = r => { const m = norm(r.n).match(/^(.+?\b(?:park|farm))\b/); return m ? m[1] : ''; };
