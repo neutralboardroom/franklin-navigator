@@ -1823,6 +1823,15 @@
       "result": "PENDING_EXACT_HEAD_WORKFLOW"
     },
     "sccAccepted": false,
-    "sccCanonicalCurrent": false
+    "sccCanonicalCurrent": false,
+    "receipts": [
+      "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1341.json",
+      "NO_LOSS_LEDGER__R1341.json",
+      "LOCAL_PLATFORM_PRIORITY_QUEUE__R1341.json",
+      "MEMBER_VISIBILITY_EXPLAINER__R1341.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1341.md",
+      "OWNER_SUMMARY__R1341.md",
+      "R1341_RELEASE_RECEIPT.json"
+    ]
   }
 }
