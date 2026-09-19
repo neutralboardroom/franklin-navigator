@@ -1,0 +1,68 @@
+{
+  "schema": "franklin.local-community-platform.release-receipt.v1",
+  "status": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+  "recordedAt": "2026-09-19",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "predecessor": {
+    "version": "FR-NAV1.30.39-HF3.13.21",
+    "mainCommit": "1ba5dea48b2a5c21bdf196a5780298074c2c5c83",
+    "qualifiedArtifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.39-HF3.13.21__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "artifactSha256": "a2e2a615c2956a6dbef64359c8f98fbd1e7c0b7229a9395b3ae5bb689af0c8be",
+    "manifestSha256": "f72234be24c2ca7b4bb132ac39b6b63119eeb093a8dd088adaccc1e2bded9780"
+  },
+  "successor": {
+    "version": "FR-NAV1.30.40-HF3.13.22",
+    "localQualification": "PENDING",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false
+  },
+  "ownerApprovedHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
+  "corrections": {
+    "staleDynamicHeadlineOverrideRemoved": true,
+    "dynamicPathFixedBadgeGeometryNeutralized": true,
+    "pathCardReadableColorAndWrapping": true,
+    "responsivePathReflowPreserved": true,
+    "darkSurfaceEyebrowContrastRestored": true,
+    "helpCenterEnglishSpanishCovered": true,
+    "learningBoundaryCovered": true,
+    "enlargedTextReviewChecklistGuard": true
+  },
+  "sitewideAudit": {
+    "publicHtmlFilesRepresented": 19364,
+    "pageArchetypes": 46,
+    "desktopWidth": 1440,
+    "tabletWidth": 1024,
+    "mobileWidth": 390,
+    "enlargedTextRootScale": 1.25,
+    "dynamicEnhancementChain": [
+      "R1326",
+      "R1327",
+      "R1328"
+    ],
+    "confirmedPostFixContrastFailures": 0,
+    "confirmedPostFixPathCollisions": 0
+  },
+  "preserved": {
+    "homepageRedesign": false,
+    "franklinThroughTime": true,
+    "profileClaimAndVerification": true,
+    "freeFactualCorrectionsAndRemoval": true,
+    "profileCenterManagement": true,
+    "freeReviewedProfilePhotoLogo": true,
+    "optionalAnnualMembershipPriceUsd": 35,
+    "duplicateProfileMembershipProtection": true,
+    "activePaidManagementSupportGate": true
+  },
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "c7487d5a4cac582d24681b3546d8390d7f525368",
+    "liveDeploy": "dep-damuthdii2qc73bevqhg",
+    "releaseIdentity": "FR-NAV1.30.40-HF3.13.22",
+    "memberFulfillmentVersion": "FRANKLIN_MEMBER_FULFILLMENT_HF3_6",
+    "functionalChanges": false
+  },
+  "qualification": {
+    "result": "PENDING_EXACT_HEAD_WORKFLOW"
+  }
+}
