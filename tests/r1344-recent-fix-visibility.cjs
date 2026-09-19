@@ -31,7 +31,7 @@ const durableRule=read('DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURI
 add('R1335 semantic color system retained',['--fr-teal:','--fr-green:','--fr-blue:','--fr-gold:','--fr-violet:'].every(x=>color.includes(x)));
 add('R1335 navigation accent remains current-section only',color.includes('header nav a[aria-current="page"]')&&!/header nav a\.franklin-nav-priority-business\s*\{[^}]*color:/s.test(color));
 add('R1336 public Ask Franklin entry remains visible',assistantPage.includes('Ask Franklin. Get a local answer.')&&assistantPage.includes('No account required'));
-add('R1336 redundant connected-needs homepage bridge stays removed',!home.includes('Need help with several things at once?')&&!esHome.includes('¿Necesita ayuda con varias cosas a la vez?'));
+add('R1336 redundant connected-needs homepage bridge stays removed',!home.includes('hf35-home-bridge')&&!esHome.includes('hf35-home-bridge')&&!home.includes('/situation-planner/')&&!esHome.includes('/situation-planner/')&&!home.includes('Need help with several things at once?')&&!esHome.includes('¿Necesita ayuda con varias cosas a la vez?'));
 add('R1336 connected-needs help remains reachable elsewhere',help.includes('/whole-situation-navigator/')&&help.includes('Make a private help plan'));
 add('R1336 self-profile remains official and free of internal qualification UI',selfProfile.includes('Official Franklin Navigator profile')&&!/Source packet|Qualification status|Candidate status|Internal source|Claim status/i.test(selfProfile));
 add('Durable non-burial rule is present',durableRule.includes('not preserved merely because its code still exists')&&durableRule.includes('regression-test visibility/reachability'));
