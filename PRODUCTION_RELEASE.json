@@ -1900,12 +1900,13 @@
       "rateLimited": true,
       "noPasswordInEmail": true,
       "selectedProfileContinuity": true,
-      "supportFallbackForEmailAccessLoss": true
+      "supportFallbackForEmailAccessLoss": true,
+      "profileContinuityRequiresCurrentProfileScope": true
     },
     "runtime": {
       "branch": "franklin-commerce-runtime-r30",
-      "commit": "805201a78e2df179eb2bfdd594062441423674ab",
-      "deploy": "dep-dan0j6rm8hqs739jo3qg",
+      "commit": "405fe8dd47325b8063bd19c5e1a5b19a2344ebe3",
+      "deploy": "dep-dan0kjjm8hqs739jshn0",
       "deployState": "LIVE",
       "releaseEnv": "FR-NAV1.30.42-HF3.13.24",
       "functionalChanges": true,
@@ -1923,6 +1924,23 @@
       "result": "PENDING_EXACT_HEAD_WORKFLOW"
     },
     "sccAccepted": false,
-    "sccCanonicalCurrent": false
+    "sccCanonicalCurrent": false,
+    "receipts": [
+      "PREDECESSOR_AND_CURRENTNESS_RECEIPT__R1342.md",
+      "LIVE_TEST_DEFECT_FIX_REPORT__R1342.md",
+      "BEFORE_AFTER_EVIDENCE__R1342.md",
+      "PASSWORD_RECOVERY_TEST_REPORT__R1342.md",
+      "CLAIM_FLOW_DEEPLINK_CONTINUITY_TEST_REPORT__R1342.md",
+      "DUPLICATE_ACCOUNT_PREVENTION_TEST_REPORT__R1342.md",
+      "SUPPORT_PAGE_UX_REGRESSION_REPORT__R1342.md",
+      "ACCESSIBILITY_RESPONSIVE_RESULTS__R1342.md",
+      "SECURITY_PRIVACY_REGRESSION_RESULTS__R1342.md",
+      "DEPLOYMENT_RUNTIME_EVIDENCE__R1342.md",
+      "ROLLBACK_EVIDENCE__R1342.md",
+      "FRANKLIN_MEMBER_PROSPECT_OUTREACH_READINESS_RECEIPT__R1342.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1342.md",
+      "CONTINUATION_HANDOFF__R1342.md",
+      "R1342_RELEASE_RECEIPT.json"
+    ]
   }
 }
