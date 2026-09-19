@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.44-HF3.13.26",
+  "release": "FR-NAV1.30.45-HF3.13.27",
   "date": "2026-09-19",
-  "base": "FR-NAV1.30.43-HF3.13.25",
+  "base": "FR-NAV1.30.44-HF3.13.26",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1344 audits recent owner-agreed Franklin fixes for actual public discoverability and repairs two regressions: logged-in unverified business users now continue through Profile Access instead of the Profile Center editor route, the remaining public 'Profile Studio' label is standardized to 'Profile Center', and Spanish dynamic translations now cover the R1342 claim/password-recovery actions, and the correction/review surface now exposes the same distinct free claim/manage action with exact-profile continuity. R1343 universal claim CTA visibility, R1341 membership-value clarity, R1340 readability, R1339 terminology/localization, and R1338 free-first profile safeguards remain preserved.",
+  "scope": "R1345 turns the owner-agreed fix visibility rule into a permanent enforced release gate. It preserves the R1343 distinct universal claim CTA, R1344 English/Spanish correction-page claim callouts and exact-profile continuity, R1342 recovery/account protections, R1341 membership-value clarity, R1340 readability, R1339 terminology/localization, and R1338 free-first safeguards. Every current and future owner-agreed user-facing fix must be registered and tested for actual visibility/reachability in normal and clean-extracted qualification.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -1943,6 +1943,64 @@
       "NEXT_VERSION_IMPROVEMENT_LIST__R1342.md",
       "CONTINUATION_HANDOFF__R1342.md",
       "R1342_RELEASE_RECEIPT.json"
+    ]
+  },
+  "r1345": {
+    "version": "FR-NAV1.30.45-HF3.13.27",
+    "date": "2026-09-19",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.44-HF3.13.26",
+      "mainCommit": "69662c6e392c9a2d806da6c9d92564e99988b2f5"
+    },
+    "acceptedAnchor": {
+      "version": "FR-NAV1.30.42-HF3.13.24",
+      "artifactSha256": "1d626e0a59432275f8c2599e75808b0dfb4381928d9ffa28c0cc97c8a5a8a9a0"
+    },
+    "ownerDirection": "KEEP_RECENT_AND_FUTURE_OWNER_AGREED_FIXES_VISIBLE_REACHABLE_AND_REGRESSION_TESTED",
+    "durableRule": "FRANKLIN_OWNER_FIX_VISIBILITY_1",
+    "visibilityRegistry": "OWNER_AGREED_FIX_VISIBILITY_REGISTRY.json",
+    "fixes": {
+      "publicProfileClaimPrimaryPreserved": true,
+      "claimSearchPrimaryActionPreserved": true,
+      "correctionClaimCalloutEnglish": true,
+      "correctionClaimCalloutSpanish": true,
+      "exactProfileCorrectionToClaimContinuity": true,
+      "futureOwnerFixRegistrationRequired": true,
+      "normalQualificationVisibilityGate": true,
+      "cleanExtractionVisibilityGate": true
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "3503f7b3b58042ef0389537af313a1b3545ef23f",
+      "deploy": "dep-dan62krm8hqs73a6bqbg",
+      "deployState": "DEPLOY_TRIGGERED_PENDING_FINAL_VERIFICATION",
+      "releaseEnv": "FR-NAV1.30.45-HF3.13.27",
+      "functionalChanges": false,
+      "releaseIdentityAdvanced": true,
+      "accountRecoveryVersion": "FRANKLIN_ACCOUNT_RECOVERY_R1342"
+    },
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1344"
+    },
+    "qualification": {
+      "result": "PENDING_EXACT_HEAD_WORKFLOW"
+    },
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "receipts": [
+      "DURABLE_RULE__OWNER_AGREED_FIX_VISIBILITY_AND_NON_LOSS.md",
+      "OWNER_AGREED_FIX_VISIBILITY_REGISTRY.json",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1345.md",
+      "R1345_RELEASE_RECEIPT.json"
     ]
   }
 }
