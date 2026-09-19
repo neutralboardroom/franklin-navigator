@@ -45,7 +45,7 @@
     if(state.accountMode==='register'){
       const name=field('Your name','displayName','text','name'),email=field('Email address','email','email','email'),pw=field('Create password','password','password','new-password');
       pw.label.append(el('span','Use at least 12 characters.','fine-print r1342-field-help'));
-      form.append(name.label,email.label,pw.label);
+      form.append(name.label,email.label,pw.label,el('p','Tip: a work or organization email can make profile verification easier when one is available. A personal email is still allowed.','fine-print'));
       const existing=el('p','Already have an account? ','fine-print');const switcher=button('Sign in',()=>{state.accountMode='login';rerender()},'link-button');existing.append(switcher);form.append(existing);
       const submit=el('button','Create account','button primary');submit.type='submit';form.append(submit);
       form.addEventListener('submit',async e=>{e.preventDefault();submit.disabled=true;try{
