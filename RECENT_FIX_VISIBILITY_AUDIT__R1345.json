@@ -1,0 +1,30 @@
+{
+  "result": "PASS_PENDING_EXACT_HEAD_QUALIFICATION",
+  "release": "FR-NAV1.30.45-HF3.13.27",
+  "predecessor": "FR-NAV1.30.44-HF3.13.26",
+  "audited_release_span": "R1335 through R1345 (eleven releases)",
+  "standard": "A user-facing fix is preserved only when the intended user can see it, understand it, and naturally reach the correct journey.",
+  "regressions_found_and_fixed": [
+    "A public-profile PENDING access state still linked directly to Profile Center instead of the free Profile Access authority-review journey.",
+    "The signed-in Profile Access journey still sent an unverified linked profile to Profile Center to submit or check authority evidence.",
+    "The correction-success follow-up still offered Profile Center without proving management authority."
+  ],
+  "r1345_repairs": [
+    "Profile Access now accepts management-authority evidence directly.",
+    "Pending Profile Access exposes status refresh and request withdrawal.",
+    "Unverified membership entry routes back to exact-profile Profile Access.",
+    "Public-profile pending state routes to exact-profile Profile Access.",
+    "Correction success routes ordinary claim/manage follow-up through exact-profile Profile Access.",
+    "Verified managers still receive Profile Center; disputed access still routes to support.",
+    "The permanent non-burial gate extends through R1345 and an authority-routing gate prevents future bypass."
+  ],
+  "unchanged_boundaries": [
+    "No pricing change",
+    "No payment or entitlement change",
+    "No ordinary unpaid ranking change",
+    "No profile-source authority change",
+    "No outreach",
+    "No Smarter Justice donor use",
+    "No SCC acceptance assertion"
+  ]
+}
