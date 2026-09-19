@@ -27,6 +27,8 @@ const assistantPage=read('dist/assistant/index.html');
 const help=read('dist/community-help-center/index.html');
 const selfProfile=read('dist/profiles/FR-ORG-b00c0ace7943973c/index.html');
 const durableRule=read('DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md');
+const authorityRule=read('DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md');
+const profileControl=read('dist/assets/hf35-profile-control.js');
 
 add('R1335 semantic color system retained',['--fr-teal:','--fr-green:','--fr-blue:','--fr-gold:','--fr-violet:'].every(x=>color.includes(x)));
 add('R1335 navigation accent remains current-section only',color.includes('header nav a[aria-current="page"]')&&!/header nav a\.franklin-nav-priority-business\s*\{[^}]*color:/s.test(color));
@@ -66,9 +68,13 @@ add('R1342 unverified users continue through Profile Access',hf39.includes("acce
 add('R1343 universal claim CTA retained',app.includes('universal profile-control visibility guard')&&css.includes('--claim-accent:#f6c453'));
 add('R1343 distinct claim-search action retained',claim.includes("b.textContent='Claim this profile'")&&css.includes('.r1342-claim-result-action')&&css.includes('background:var(--claim-accent)!important'));
 add('R1344 correction page exposes claim/manage prominently',corrections.includes('data-r1344-claim-cta')&&corrections.includes('Claim or manage this profile — free'));
-add('R1344 correction claim keeps exact-profile continuity',read('dist/assets/hf35-profile-control.js').includes("claimCta.href='/profile-access/?profile='"));
+add('R1344 correction claim keeps exact-profile continuity',profileControl.includes("claimCta.href='/profile-access/?profile='"));
 add('R1344 correction claim uses distinct ownership accent',css.includes('.r1344-owner-claim-callout')&&css.includes('.r1343-claim-primary'));
+add('R1345 pre-verification authority stays in Profile Access',r1330.includes("actionText='Check access request';href='/profile-access/?profile='")&&live.includes("Continue free profile access"));
+add('R1345 Profile Access owns authority-request submission',live.includes('/api/member/representation/request')&&live.includes('Submit access request'));
+add('R1345 correction completion respects pre-verification route',profileControl.includes("claim.href='/profile-access/?profile='")&&!profileControl.includes("center.href='/profile-studio/?profile='"));
+add('R1345 authority-routing durable rule retained',authorityRule.includes('Profile Center')&&authorityRule.includes('post-verification management workspace'));
 
 const failed=checks.filter(x=>!x[1]);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.44-HF3.13.26',checks,failed},null,2));
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.45-HF3.13.27',checks,failed},null,2));
 if(failed.length)process.exit(1);
