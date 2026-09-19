@@ -1,7 +1,7 @@
 {
   "release": "FR-NAV1.30.39-HF3.13.21",
   "date": "2026-09-18",
-  "base": "FR-NAV1.30.38-HF3.13.20",
+  "base": "FR-NAV1.30.12-HF3.12.4",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
   "scope": "R1338 is a focused end-to-end profile ownership and management successor. It preserves the qualified R1337 public product and owner-directed homepage while making exact-profile claim continuity, authority verification, review-state recovery, free correction/removal, Profile Center management, profile-image handling, new-profile requests, support recovery and optional member transitions coherent and safer. Canonical profile facts remain under Profile Factory authority; payment does not change factual truth.",
   "counts": {
