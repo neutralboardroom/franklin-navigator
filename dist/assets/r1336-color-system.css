@@ -260,3 +260,9 @@ body.franklin-page-home .r22-mini-list a:nth-child(4){background:var(--fr-gold-s
 body.franklin-page-home .r22-mini-list a{
   border:1px solid var(--fr-line);border-radius:10px;padding:10px 12px;
 }
+
+
+/* R1340 readability guard: dark semantic surfaces must not inherit the default teal eyebrow. */
+body.franklin-color-system :is(.urgent-section,.history-section,.growth-trust,.growth-boundaries,.home-command-bar,.learning-boundary) .eyebrow{
+  color:#ffe4a6!important;
+}
