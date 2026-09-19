@@ -7,7 +7,7 @@
   "builtAt": "2026-09-19",
   "communityCentered": true,
   "deploymentAuthorization": "OWNER_AND_WO056_AUTHORIZED_AFTER_PRODUCT_QUALIFICATION",
-  "exactSourcePredecessor": "FR-NAV1.30.43-HF3.13.25",
+  "exactSourcePredecessor": "FR-NAV1.30.44-HF3.13.26",
   "freeProfileControl": "CLAIM_MANAGE_PLUS_FACTUAL_CORRECTION_AND_PUBLIC_REMOVAL_NO_PAYMENT",
   "liveObservationBeforeBuild": {
     "classification": "R39_DERIVED_POST_SEAL_PATCH",
@@ -21,10 +21,10 @@
   "predecessorSourceTreeSha256": "2c5a9f14f345604575dd5173e0a25d47325ab94bf8eaba23fff77756eb77e88c",
   "profileCount": 19104,
   "publicCheckoutOpen": false,
-  "publicConstruction": "R1343_PLUS_RECENT_FIX_VISIBILITY_TERMINOLOGY_AND_SPANISH_PARITY_HARDENING",
-  "release": "FR-NAV1.30.44-HF3.13.26",
-  "schemaVersion": "franklin.release-identity.r1344.v1",
+  "publicConstruction": "R1344_PLUS_PERMANENT_OWNER_FIX_VISIBILITY_GATE_AND_LAST_TEN_RELEASE_AUDIT",
+  "release": "FR-NAV1.30.45-HF3.13.27",
+  "schemaVersion": "franklin.release-identity.r1345.v1",
   "singleNewSalePlan": "$35/year annual until canceled",
-  "sourceQualified": true,
-  "status": "SOURCE_QUALIFIED_PENDING_GITHUB_PROMOTION_AND_DEPLOYMENT"
+  "sourceQualified": false,
+  "status": "SOURCE_CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION"
 }
