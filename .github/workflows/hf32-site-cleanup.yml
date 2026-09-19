@@ -171,7 +171,7 @@ jobs:
           grep -F "/api/member/representation/release" dist/assets/member-profile-live.js
           grep -F "Your profile-access request is waiting for review." dist/assets/member-profile-live.js
           grep -F "Correct public facts" dist/assets/r1330-profile.js
-          grep -F "Your managed profile" dist/assets/r1330-profile.js
+          grep -F "Management verified for you" dist/assets/r1330-profile.js
           grep -F "Request management access" dist/assets/r1330-profile.js
           grep -F "/api/accounts/me" dist/assets/r1330-profile.js
           grep -F "Withdraw access request" dist/assets/member-profile-live.js
