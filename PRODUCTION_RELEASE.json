@@ -1843,13 +1843,15 @@
     },
     "runtime": {
       "branch": "franklin-commerce-runtime-r30",
-      "commit": "c7487d5a4cac582d24681b3546d8390d7f525368",
+      "commit": "ac3a9503875a009ce8e635c2114da8cce7773284",
       "deploy": "dep-damvcamk1f9s73es5fr0",
       "deployState": "LIVE",
       "releaseEnv": "FR-NAV1.30.41-HF3.13.23",
       "functionalChanges": false,
       "releaseIdentityAdvanced": true,
-      "memberFulfillmentVersion": "FRANKLIN_MEMBER_FULFILLMENT_HF3_6"
+      "memberFulfillmentVersion": "FRANKLIN_MEMBER_FULFILLMENT_HF3_6",
+      "sourceIdentityDefault": "FR-NAV1.30.41-HF3.13.23",
+      "identityGuardUpdated": true
     }
   }
 }
