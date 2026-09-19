@@ -19,8 +19,11 @@ Future material releases must therefore:
 7. audit at least the recent release window and any older durable fix touched by the change;
 8. fail qualification when a required visible/reachable fix is missing, obscured, mislabeled, or routed into the wrong journey;
 9. repair the regression before release rather than merely listing it for a later version;
-10. extend the permanent regression gate whenever a new owner-approved user-facing fix is introduced.
+10. extend the permanent regression gate whenever a new owner-approved user-facing fix is introduced;
+11. add every new still-applicable owner-approved user-facing fix to `OWNER_APPROVED_FIX_VISIBILITY_REGISTRY.json` in the same material release;
+12. scan actual non-print CSS presentation rules for protected selectors so `display:none`, `visibility:hidden`, zero-opacity/collapsed states, or equivalent styling cannot silently bury a protected fix;
+13. run the visibility/non-burial gate both before packaging and again from the clean extracted exact-source artifact.
 
-The permanent qualification test is `tests/r1344-recent-fix-visibility.cjs` or its authoritative successor. The current gate covers R1335–R1344 and must continue forward rather than resetting to a narrower window.
+The permanent qualification test is `tests/r1344-recent-fix-visibility.cjs` or its authoritative successor. `OWNER_APPROVED_FIX_VISIBILITY_REGISTRY.json` is the machine-readable protected-fix registry. The current gate covers R1335–R1344 and must continue forward rather than resetting to a narrower window.
 
 This rule does not require every secondary action to be visually equal to the primary action. It requires hierarchy to match the intended user task and prevents important fixes from becoming technically present but practically hidden.
