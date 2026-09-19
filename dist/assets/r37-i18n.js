@@ -53,8 +53,8 @@
       'Continue with this profile':'Continuar con este perfil',
       'Choose this profile':'Elegir este perfil',
       'Profile access verified. You can manage this profile now.':'Acceso al perfil verificado. Ahora puede administrar este perfil.',
-      'Profile access is not yet verified. Open Profile Center to submit or check your access request.':'El acceso al perfil aún no está verificado. Abra el Centro de Perfil para enviar o revisar su solicitud.',
-      'Request or check profile access':'Solicitar o revisar acceso al perfil',
+      'Profile access is not yet verified. Complete free management verification before membership can continue.':'El acceso al perfil aún no está verificado. Complete la verificación gratuita de administración antes de continuar con la membresía.',
+      'Continue free profile access':'Continuar con el acceso gratuito al perfil',
       'This profile has an access dispute. Contact support so Franklin can review it safely.':'Este perfil tiene una disputa de acceso. Contacte soporte para que Franklin pueda revisarla de forma segura.',
       'Get profile support':'Obtener ayuda con el perfil',
       'Stop managing this profile':'Dejar de administrar este perfil',
@@ -91,7 +91,14 @@
       'See optional Community Membership':'Ver Membresía Comunitaria opcional',
       'Correct public facts':'Corregir datos públicos',
       'Correct public facts instead':'Corregir datos públicos en su lugar',
-      'Tip: a work or organization email can make profile verification easier when one is available. A personal email is still allowed.':'Consejo: un correo electrónico del trabajo o de la organización puede facilitar la verificación del perfil cuando esté disponible. También se permite un correo personal.'
+      'Tip: a work or organization email can make profile verification easier when one is available. A personal email is still allowed.':'Consejo: un correo electrónico del trabajo o de la organización puede facilitar la verificación del perfil cuando esté disponible. También se permite un correo personal.',
+      'Profile connected to your account. Next, confirm that you are authorized to manage it.':'Perfil conectado a su cuenta. A continuación, confirme que está autorizado para administrarlo.',
+      'No payment or membership is required to connect a profile and request management access.':'No se requiere pago ni membresía para conectar un perfil y solicitar acceso de administración.',
+      'Profile-access status refreshed.':'Estado de acceso al perfil actualizado.',
+      'Your profile-access request was withdrawn. No membership or payment was changed.':'Su solicitud de acceso al perfil fue retirada. No se modificó ninguna membresía ni pago.',
+      'Your free profile-access request is saved and waiting for review. No membership or payment was started.':'Su solicitud gratuita de acceso al perfil fue guardada y está pendiente de revisión. No se inició ninguna membresía ni pago.',
+      'Claiming and basic profile management are free. Franklin reviews access before Profile Center tools are enabled; a claim never changes public facts by itself.':'Reclamar y administrar un perfil básico es gratuito. Franklin revisa el acceso antes de habilitar las herramientas del Centro de Perfil; una solicitud de acceso no cambia por sí sola los datos públicos.',
+      'Your request is under review. Check it through free Profile Access. No membership or payment is required.':'Su solicitud está en revisión. Revísela mediante el acceso gratuito al perfil. No se requiere membresía ni pago.'
     };
     if(fixed[s])return fixed[s];
     let m;
