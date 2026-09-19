@@ -55,13 +55,7 @@
    const copy=document.querySelector('.r22-profile-hero-grid>div:nth-child(2)');if(!copy)return;
    let row=copy.querySelector('.r1330-profile-state');if(!row){row=el('div','', 'r1330-profile-state');const loc=copy.querySelector('.profile-location');(loc||copy.querySelector('h1'))?.insertAdjacentElement('afterend',row)}
    row.replaceChildren();
-   if(isNavigatorSelf&&!viewerLink){
-     const label=el('span','Official Franklin Navigator profile','r1330-state-label is-managed');
-     const a=el('a','Claim or manage this profile','r1330-claim-link');a.href='/profile-access/?profile='+encodeURIComponent(id);
-     row.append(label,a);
-     let hint=copy.querySelector('.r1331-media-hint');if(!hint){hint=el('p','', 'r1331-media-hint');row.insertAdjacentElement('afterend',hint)}
-     hint.textContent='This is Franklin Navigator’s first-party profile. Authorized managers can sign in or request management access free. Community Membership is not required.';
-   }
+   if(isNavigatorSelf&&!viewerLink)copy.querySelector('.r1331-media-hint')?.remove();
    const authority=String(viewerLink?.authority_state||'').toUpperCase();
    let labelText='Management not yet verified',actionText='Claim or manage this profile',href='/profile-access/?profile='+encodeURIComponent(id),hintText='Claim or manage this profile free. Factual corrections and removal also stay free.',managedForViewer=false;
    if(authority==='VERIFIED'){
