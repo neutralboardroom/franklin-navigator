@@ -1,7 +1,7 @@
 /* R1332 — finished profile UX + Franklin community ratings and written reviews */
 (()=>{'use strict';
  const match=location.pathname.match(/^\/profiles\/(FR-[A-Z0-9]+-[A-Za-z0-9][A-Za-z0-9._-]{2,100})\/$/);if(!match)return;
- const id=decodeURIComponent(match[1]),API='https://franklin-navigator-membership.onrender.com',reviewable=!/^FR-(?:GOV|CIV|NPO)-/.test(id);
+ const id=decodeURIComponent(match[1]),API='https://franklin-navigator-membership.onrender.com',SELF_ID='FR-ORG-b00c0ace7943973c',reviewable=id!==SELF_ID&&!/^FR-(?:GOV|CIV|NPO)-/.test(id);
  const q=(s,r=document)=>r.querySelector(s),qa=(s,r=document)=>[...r.querySelectorAll(s)];
  const el=(t,txt,cls)=>{const n=document.createElement(t);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n};
  const btn=(txt,cls='button')=>{const b=el('button',txt,cls);b.type='button';return b};
@@ -9,6 +9,7 @@
  const fmtDate=v=>{try{return new Intl.DateTimeFormat(undefined,{year:'numeric',month:'short',day:'numeric'}).format(new Date(v))}catch{return''}};
  const stars=n=>{const rounded=Math.round(Number(n)||0);return '★★★★★'.slice(0,rounded)+'☆☆☆☆☆'.slice(rounded)};
  const profileName=()=>q('.r22-profile-hero h1')?.textContent?.trim()||'this profile';
+ const entityLabel=()=>{const text=((q('.r22-profile-hero .eyebrow')?.textContent||'')+' '+profileName()).toLowerCase();if(id===SELF_ID)return'community platform';if(/nonprofit|charity|foundation|association|organization|church|community/.test(text))return'organization';if(/attorney|lawyer|doctor|dentist|agent|advisor|consultant|professional|therapist|accountant|architect|engineer/.test(text))return'professional';if(/government|city of|county|department|agency/.test(text))return'government entity';return'business';};
  function status(parent,msg,kind=''){let s=q('.r1332-status',parent);if(!s){s=el('p','', 'r1332-status');parent.append(s)}s.className='r1332-status '+kind;s.textContent=msg}
  function enhanceStatic(){
    document.body.classList.add('r1332-profile');
@@ -64,7 +65,7 @@
    form.append(el('h3','Write a review of '+profileName()),el('p','Share a firsthand experience to help other Franklin residents. Do not include private client, patient, case, account or payment information.','fine-print'));
    const ratingWrap=document.createElement('fieldset'),legend=el('legend','Your rating'),rating=el('div','', 'r1332-rating-input');ratingWrap.append(legend,rating);
    for(let i=5;i>=1;i--){const input=document.createElement('input');input.type='radio';input.name='rating';input.id='r1332-rating-'+i;input.value=String(i);const label=el('label','★');label.htmlFor=input.id;label.title=i+' star'+(i===1?'':'s');rating.append(input,label)}
-   const title=field('Review title (optional)'),body=field('Your written review','textarea'),experience=document.createElement('select'),expWrap=document.createElement('label'),expLabel=el('span','How did you interact with this business or professional?');
+   const title=field('Review title (optional)'),body=field('Your written review','textarea'),experience=document.createElement('select'),expWrap=document.createElement('label'),expLabel=el('span','How did you interact with this '+entityLabel()+'?');
    [['','Choose one'],['USED_SERVICE','Used a service'],['CONSULTED','Had a consultation'],['VISITED','Visited'],['PURCHASED','Purchased a product or service'],['OTHER_FIRSTHAND','Other firsthand experience']].forEach(([v,t])=>{const o=el('option',t);o.value=v;experience.append(o)});expWrap.append(expLabel,experience);
    const confirm=document.createElement('label'),check=document.createElement('input');check.type='checkbox';confirm.append(check,document.createTextNode(' I confirm this review reflects my firsthand experience and was not offered in exchange for a review.'));
    const actions=el('div','', 'actions'),submit=el('button','Publish review','button primary');submit.type='submit';const cancel=btn('Cancel','button');actions.append(submit,cancel);
@@ -120,7 +121,7 @@
      const summary=el('div','', 'r1332-review-summary'),score=el('div','', 'r1332-review-score');score.append(el('strong',data.summary.average.toFixed(1)),el('div',stars(data.summary.average),'r1332-stars'),el('div',data.summary.count+(data.summary.count===1?' review':' reviews'),'r1332-review-meta'));summary.append(score,bars(data.summary));section.append(summary);
      const list=el('div','', 'r1332-review-list');data.reviews.forEach(r=>list.append(reviewCard(r,manageStatus.canRespond===true)));section.append(list);
    }else{
-     const empty=el('div','', 'r1332-review-empty');empty.append(el('strong','No Franklin Navigator reviews yet.'),el('p','If you have firsthand experience with this business or professional, you can help your neighbors by sharing it.'));section.append(empty);
+     const empty=el('div','', 'r1332-review-empty');empty.append(el('strong','No Franklin Navigator reviews yet.'),el('p','If you have firsthand experience with this '+entityLabel()+', you can help your neighbors by sharing it.'));section.append(empty);
    }
    const policy=el('p','', 'fine-print');policy.append(document.createTextNode('Reviews must reflect genuine firsthand experiences. Incentivized reviews are not allowed. '));const a=el('a','Review guidelines');a.href='/review-guidelines/';policy.append(a);section.append(policy);
    refreshNav();
