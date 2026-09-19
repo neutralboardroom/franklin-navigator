@@ -19,6 +19,9 @@ on:
       - 'scripts/member-visibility-contract-r1341.py'
       - 'tests/r1342-claim-recovery.cjs'
       - 'tests/r1344-recent-fix-visibility.cjs'
+      - 'tests/owner-agreed-fix-visibility.cjs'
+      - 'OWNER_AGREED_FIX_VISIBILITY_REGISTRY.json'
+      - 'DURABLE_RULE__OWNER_AGREED_FIX_VISIBILITY_AND_NON_LOSS.md'
   pull_request:
     branches: [main]
     paths:
@@ -33,6 +36,9 @@ on:
       - 'scripts/member-visibility-contract-r1341.py'
       - 'tests/r1342-claim-recovery.cjs'
       - 'tests/r1344-recent-fix-visibility.cjs'
+      - 'tests/owner-agreed-fix-visibility.cjs'
+      - 'OWNER_AGREED_FIX_VISIBILITY_REGISTRY.json'
+      - 'DURABLE_RULE__OWNER_AGREED_FIX_VISIBILITY_AND_NON_LOSS.md'
 
 permissions:
   contents: read
@@ -155,6 +161,7 @@ jobs:
           node --check dist/assets/account-recovery-r1342.js
           node tests/r1342-claim-recovery.cjs
           node tests/r1344-recent-fix-visibility.cjs
+          node tests/owner-agreed-fix-visibility.cjs
           node --check dist/assets/local-discovery.js
           grep -F "Profile photo viewer" dist/assets/r1333-paid-sponsored.js
           grep -F "Open profile photo " dist/assets/r1333-paid-sponsored.js
@@ -572,6 +579,7 @@ jobs:
             node --check dist/assets/account-recovery-r1342.js
             node tests/r1342-claim-recovery.cjs
           node tests/r1344-recent-fix-visibility.cjs
+          node tests/owner-agreed-fix-visibility.cjs
             node --check dist/assets/franklin-site-monitor-r1308.js
           )
           (
