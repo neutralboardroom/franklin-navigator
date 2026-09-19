@@ -3,7 +3,7 @@
   "date": "2026-09-19",
   "base": "FR-NAV1.30.43-HF3.13.25",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1344 audits recent owner-agreed Franklin fixes for actual public discoverability and repairs two regressions: logged-in unverified business users now continue through Profile Access instead of the Profile Center editor route, the remaining public 'Profile Studio' label is standardized to 'Profile Center', and Spanish dynamic translations now cover the R1342 claim/password-recovery actions. R1343 universal claim CTA visibility, R1341 membership-value clarity, R1340 readability, R1339 terminology/localization, and R1338 free-first profile safeguards remain preserved.",
+  "scope": "R1344 audits recent owner-agreed Franklin fixes for actual public discoverability and repairs two regressions: logged-in unverified business users now continue through Profile Access instead of the Profile Center editor route, the remaining public 'Profile Studio' label is standardized to 'Profile Center', and Spanish dynamic translations now cover the R1342 claim/password-recovery actions, and the correction/review surface now exposes the same distinct free claim/manage action with exact-profile continuity. R1343 universal claim CTA visibility, R1341 membership-value clarity, R1340 readability, R1339 terminology/localization, and R1338 free-first profile safeguards remain preserved.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
