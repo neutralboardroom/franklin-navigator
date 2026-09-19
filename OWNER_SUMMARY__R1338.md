@@ -23,3 +23,5 @@ The homepage remains unchanged by R1338. Final exact-head qualification is requi
 ## Final continuity polish
 
 The last pass standardizes **Profile Center** throughout the public management journey, clarifies management status without implying factual verification, routes active paid managers to support before ending or transferring management, adds a work/organization-email verification hint, preserves the exact profile when moving into optional membership, and returns completed correction/removal requests directly to the public profile or Profile Center.
+
+The live R1338 runtime was reconciled to commit `92bd8da73158cc6158d553e3644e37abb413414b`, which keeps the profile-path safeguards and adds rate limiting to public support intake. Both runtime acceptance workflows passed, and the live Render deploy is `dep-damhcmh42hec7394cojg`.

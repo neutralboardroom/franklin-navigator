@@ -1520,7 +1520,8 @@
       "profileRouteNavigationConsistency": true,
       "publicManagementLabelsClarified": true,
       "membershipProgressAligned": true,
-      "exactProfileMembershipDeepLink": true
+      "exactProfileMembershipDeepLink": true,
+      "publicProfileSupportRateLimited": true
     },
     "authorityBoundary": {
       "canonicalProfileFactsOwner": "PROFILE_FACTORY",
@@ -1538,14 +1539,14 @@
     },
     "runtime": {
       "branch": "franklin-commerce-runtime-r30",
-      "commit": "012697505ce1b353178df223bf98724a27bab610",
-      "parentCommit": "476805319613cb0781c3a288200d58f3ee60ac5c",
-      "deploy": "dep-damhacdbedkc73boogfg",
+      "commit": "92bd8da73158cc6158d553e3644e37abb413414b",
+      "parentCommit": "012697505ce1b353178df223bf98724a27bab610",
+      "deploy": "dep-damhcmh42hec7394cojg",
       "deployState": "LIVE",
       "releaseEnv": "FR-NAV1.30.38-HF3.13.20",
       "functionalChanges": true,
       "profileControlSafetyTestsAdded": true,
-      "liveSince": "2026-09-18T10:41:21.450748Z",
+      "liveSince": "2026-09-18T10:46:08.626889Z",
       "tests": {
         "total": 34,
         "pass": 34,
@@ -1555,7 +1556,9 @@
       "claimReviewerAcceptance": "PASS",
       "issueMonitoringAcceptance": "PASS",
       "duplicateProfileMembershipProtection": true,
-      "verificationTimestampExposed": true
+      "verificationTimestampExposed": true,
+      "publicSupportRateLimited": true,
+      "memberPathReadiness": "PASS"
     },
     "upstream": {
       "profileFactoryWholesalePf1528Promoted": false,
@@ -1599,7 +1602,7 @@
       "status": "SUPERSEDED_BY_FINAL_PROFILE_UX_REFINEMENT"
     },
     "qualification": {
-      "result": "PENDING_FINAL_REFINEMENT_EXACT_HEAD",
+      "result": "PENDING_FINAL_RUNTIME_RECONCILIATION_EXACT_HEAD",
       "priorWorkflowRun": 35336092921
     }
   }

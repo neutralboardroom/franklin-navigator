@@ -17,15 +17,17 @@
     "sccCanonicalCurrent": false
   },
   "runtime": {
-    "commit": "012697505ce1b353178df223bf98724a27bab610",
-    "deploy": "dep-damh9cbm8hqs73d58pug",
+    "commit": "92bd8da73158cc6158d553e3644e37abb413414b",
+    "deploy": "dep-damhcmh42hec7394cojg",
     "release": "FR-NAV1.30.38-HF3.13.20",
     "live": true,
     "claimReviewerAcceptance": "PASS",
     "issueMonitoringAcceptance": "PASS",
-    "sourceCommit": "012697505ce1b353178df223bf98724a27bab610",
-    "renderDeploy": "dep-damhacdbedkc73boogfg",
-    "deployState": "LIVE"
+    "sourceCommit": "92bd8da73158cc6158d553e3644e37abb413414b",
+    "renderDeploy": "dep-damhcmh42hec7394cojg",
+    "deployState": "LIVE",
+    "publicSupportRateLimited": true,
+    "memberPathReadiness": "PASS"
   },
   "profilePath": {
     "exactProfileContinuity": true,
