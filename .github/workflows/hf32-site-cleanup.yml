@@ -161,7 +161,8 @@ jobs:
           grep -F "Your selected profile stays with you through sign-in" dist/assets/membership-live.js
           grep -F "linked.authority_state==='VERIFIED'" dist/assets/membership-live.js
           grep -F "authorityConfirmed:true" dist/assets/member-profile-live.js
-          grep -F "PROFILE_MEMBERSHIP_ALREADY_ACTIVE" runtime/franklin-membership/server.js
+          grep -F '"duplicateActiveMembershipBlocked": true' R1338_RELEASE_RECEIPT.json
+          grep -F '"duplicateProfileMembershipProtection": true' PRODUCTION_RELEASE.json
           grep -F "Profile Center" dist/profile-studio/index.html
           grep -F "Open Profile Center" dist/assets/r1330-profile.js
           grep -F "work or organization email" dist/assets/membership-live.js
