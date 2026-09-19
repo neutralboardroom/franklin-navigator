@@ -101,7 +101,7 @@ async function sendPasswordResetEmail(email,token,profileId){
   if(!/^re_[A-Za-z0-9_\-]{12,}$/.test(resetEmailConfig.apiKey)||!EMAIL_RE.test(resetEmailConfig.from))throw Object.assign(new Error('PASSWORD_RESET_EMAIL_NOT_CONFIGURED'),{code:'PASSWORD_RESET_EMAIL_NOT_CONFIGURED'});
   const target=new URL('/account-recovery/',PUBLIC_ORIGIN);
   const fragment=new URLSearchParams({token:String(token||'')});
-  if(PROFILE_RE.test(String(profileId||'')))fragment.set('profile',String(profileId));
+  if(PROFILE_RE.test(String(profileId||''))&&Object.hasOwn(profileNames,String(profileId)))fragment.set('profile',String(profileId));
   const resetUrl=target.toString()+'#'+fragment.toString();
   const response=await fetch('https://api.resend.com/emails',{
     method:'POST',
