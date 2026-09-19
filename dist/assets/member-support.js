@@ -9,7 +9,7 @@
  const supportSection=document.querySelector('[data-r1342-support-section]'),supportActions=document.querySelector('[data-r1342-support-actions]'),supportHeading=document.querySelector('[data-r1342-support-heading]');
  if(topic==='ACCOUNT_ACCESS'){
    supportSection?.classList.add('r1342-support-priority');
-   if(supportHeading)supportHeading.textContent='Account access help';
+   if(supportHeading){supportHeading.textContent='Account access help';supportHeading.setAttribute('tabindex','-1');}
    if(supportActions){
      const back=document.createElement('a');back.className='button primary';back.textContent='← Back to sign in';back.href='/profile-access/'+(profile?'?profile='+encodeURIComponent(profile):'');
      const reset=document.createElement('a');reset.className='button';reset.textContent='Reset password';reset.href='/account-recovery/'+(profile?'?profile='+encodeURIComponent(profile):'');
