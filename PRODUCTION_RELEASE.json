@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.42-HF3.13.24",
+  "release": "FR-NAV1.30.43-HF3.13.25",
   "date": "2026-09-19",
-  "base": "FR-NAV1.30.12-HF3.12.4",
+  "base": "FR-NAV1.30.42-HF3.13.24",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1342 is the bounded live profile / claim / account-recovery fix pass. It preserves R1341 membership-visibility value and R1340 readability protections while repairing exact-name directory ordering, prominent claim/manage entry from public profiles, profile-context continuity through claim/sign-in/recovery, duplicate-account recovery UX, secure self-service password reset, account-support routing, corrections context, claim-search usability, explicit claim-before-membership sequencing, entity-aware review copy, and the Franklin Navigator first-party review policy. No outreach is sent and no pricing, SRE, Revenue Engine, SCC, or unrelated product authority is changed.",
+  "scope": "R1343 is the profile-control visibility and recent-release discoverability hardening pass. It makes the free Claim or manage this profile action a visually distinct primary CTA on every public profile through the shared app layer, keeps factual review/correction visible as a secondary action, gives claim-search results a matching distinct Claim this profile action, preserves R1340 readability and R1341 membership-value safeguards, and adds a visibility regression audit. No outreach is sent; pricing, payment, entitlement, profile truth, SRE/Revenue/SCC authority, and unrelated product behavior are unchanged.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
