@@ -16,6 +16,7 @@ on:
       - 'scripts/release-meta-integrity.py'
       - 'scripts/validate-current-release.py'
       - 'scripts/sitewide-readability-contract-r1340.py'
+      - 'scripts/member-visibility-contract-r1341.py'
   pull_request:
     branches: [main]
     paths:
@@ -27,6 +28,7 @@ on:
       - 'scripts/release-meta-integrity.py'
       - 'scripts/validate-current-release.py'
       - 'scripts/sitewide-readability-contract-r1340.py'
+      - 'scripts/member-visibility-contract-r1341.py'
 
 permissions:
   contents: read
@@ -182,6 +184,7 @@ jobs:
           grep -F "width:auto!important" dist/assets/r1327-refinement.css
           grep -F "learning-boundary" dist/assets/r1336-color-system.css
           python scripts/sitewide-readability-contract-r1340.py
+          python scripts/member-visibility-contract-r1341.py
           grep -F "'Open Profile Center':'Abrir Centro de Perfil'" dist/assets/r37-i18n.js
           grep -F "preferredLanguage:isEs()?'SPANISH':'ENGLISH'" dist/assets/r1338-profile-request.js
           grep -F "/api/member/representation/release" dist/assets/member-profile-live.js

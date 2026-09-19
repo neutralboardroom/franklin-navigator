@@ -1,0 +1,61 @@
+{
+  "receiptType": "NO_LOSS_LEDGER",
+  "release": "FR-NAV1.30.41-HF3.13.23",
+  "predecessor": "FR-NAV1.30.40-HF3.13.22",
+  "capabilities": [
+    {
+      "capability": "Owner-approved business headline",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "R1340 dynamic path-card overlap repair",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "R1340 dark-surface contrast guards",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "Basic public profile remains free",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "Free factual corrections and removal",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "Profile claim and verified management",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "Community Membership $35/year",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "Ordinary unpaid ranking neutrality",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "No paid factual superiority or endorsement",
+      "status": "RETAINED"
+    },
+    {
+      "capability": "Member profile depth and action links",
+      "status": "IMPROVED"
+    },
+    {
+      "capability": "Explanation of how paid visibility works",
+      "status": "IMPROVED"
+    },
+    {
+      "capability": "Spanish membership value parity",
+      "status": "IMPROVED"
+    },
+    {
+      "capability": "No-guaranteed-leads safeguards",
+      "status": "IMPROVED"
+    }
+  ],
+  "silentCapabilityLoss": false,
+  "crossCommunityMutation": false
+}

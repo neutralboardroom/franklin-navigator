@@ -1,0 +1,50 @@
+{
+  "schema": "franklin.local-community-platform.release-receipt.v1",
+  "status": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+  "recordedAt": "2026-09-19",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "predecessor": {
+    "version": "FR-NAV1.30.40-HF3.13.22",
+    "mainCommit": "13093807832c6359300bc5b705dade8ee5a1f7c3",
+    "qualifiedArtifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.40-HF3.13.22__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "artifactSha256": "4a48bdacbc54b907307e8d076efb8e0781afb4433c7d71ade965a0bb88460de1",
+    "manifestSha256": "eb69a879be2e996a03f47ce6ce1ca007c54c3779ca58d2afd7957332813c0fd0"
+  },
+  "successor": {
+    "version": "FR-NAV1.30.41-HF3.13.23",
+    "localQualification": "PENDING",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false
+  },
+  "ownerDirection": "Clarify to potential paying members that membership can increase visibility and explain how.",
+  "ownerApprovedHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
+  "memberVisibility": {
+    "richerReviewedProfile": true,
+    "verifiedActionPaths": true,
+    "specialOffers": true,
+    "eligibleClearlyLabeledCommunityMemberSponsoredPlacement": true,
+    "ordinaryUnpaidRankingChanged": false,
+    "factualAccuracyChangedByPayment": false,
+    "guaranteedLeads": false,
+    "endorsementPurchased": false,
+    "spanishParity": true
+  },
+  "preserved": {
+    "r1340ReadabilityRepairs": true,
+    "freeFactualCorrectionsAndRemoval": true,
+    "profileCenterManagement": true,
+    "optionalAnnualMembershipPriceUsd": 35,
+    "paidAccuracyGate": false
+  },
+  "qualification": {
+    "result": "PENDING_EXACT_HEAD_WORKFLOW"
+  },
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "ac3a9503875a009ce8e635c2114da8cce7773284",
+    "releaseIdentity": "FR-NAV1.30.41-HF3.13.23",
+    "functionalChanges": false,
+    "identityGuardUpdated": true
+  }
+}
