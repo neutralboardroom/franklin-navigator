@@ -1,0 +1,54 @@
+{
+  "schema": "franklin.local-community-platform.release-receipt.v1",
+  "status": "QUALIFIED_LOCAL_PENDING_MAIN_PROMOTION",
+  "recordedAt": "2026-09-19",
+  "release": "FR-NAV1.30.42-HF3.13.24",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "predecessor": {
+    "release": "FR-NAV1.30.41-HF3.13.23",
+    "mainCommit": "9932dc243912ecbe6adca7df27cf575a76cfffe3"
+  },
+  "ownerCommand": "FRANKLIN_NAVIGATOR__LIVE_PROFILE_CLAIM_ACCOUNT_RECOVERY_FIX_PASS__LOCAL_BUILDER_COMMAND__2026-09-19",
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "405fe8dd47325b8063bd19c5e1a5b19a2344ebe3",
+    "deploy": "dep-dan0kjjm8hqs739jshn0",
+    "state": "LIVE",
+    "accountRecoveryVersion": "FRANKLIN_ACCOUNT_RECOVERY_R1342"
+  },
+  "fixed": {
+    "exactNameDirectoryRanking": true,
+    "publicClaimManageCta": true,
+    "exactProfileDeepLink": true,
+    "correctionContext": true,
+    "fiveStepClaimBeforeMembership": true,
+    "claimResultActionAndFocus": true,
+    "accountUx": true,
+    "duplicateAccountPrevention": true,
+    "publicPasswordRecovery": true,
+    "supportRouting": true,
+    "supportMembershipWording": true,
+    "entityAwareReviews": true,
+    "firstPartyProfileReviewsDisabled": true
+  },
+  "safeguards": {
+    "noOutreach": true,
+    "noNewMembershipCharge": true,
+    "currentNewMembershipPriceUsd": 35,
+    "noSecondChargeProtectionPreserved": true,
+    "paymentDoesNotCreateClaimAuthority": true,
+    "accountCreationDoesNotCreateEntitlement": true,
+    "freeCorrectionRemovalPreserved": true,
+    "ordinaryUnpaidRankingNotPurchased": true
+  },
+  "ownerSpecificLiveResetCompleted": false,
+  "ownerSpecificReason": "Requires the owner's own email/password interaction; not self-certified by builder.",
+  "qualification": {
+    "result": "PASS",
+    "workflowRun": 35420574438,
+    "qualifiedHead": "fba4e4f3b6b7f8e6e30e1331f67c1e62047c670e"
+  },
+  "sccAccepted": false,
+  "sccCanonicalCurrent": false
+}

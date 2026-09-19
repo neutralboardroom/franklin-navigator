@@ -17,6 +17,7 @@ on:
       - 'scripts/validate-current-release.py'
       - 'scripts/sitewide-readability-contract-r1340.py'
       - 'scripts/member-visibility-contract-r1341.py'
+      - 'tests/r1342-claim-recovery.cjs'
   pull_request:
     branches: [main]
     paths:
@@ -29,6 +30,7 @@ on:
       - 'scripts/validate-current-release.py'
       - 'scripts/sitewide-readability-contract-r1340.py'
       - 'scripts/member-visibility-contract-r1341.py'
+      - 'tests/r1342-claim-recovery.cjs'
 
 permissions:
   contents: read
@@ -148,6 +150,8 @@ jobs:
           node --check dist/assets/hf35-profile-control.js
           node --check dist/assets/r1338-profile-request.js
           node --check dist/assets/member-support.js
+          node --check dist/assets/account-recovery-r1342.js
+          node tests/r1342-claim-recovery.cjs
           node --check dist/assets/local-discovery.js
           grep -F "Profile photo viewer" dist/assets/r1333-paid-sponsored.js
           grep -F "Open profile photo " dist/assets/r1333-paid-sponsored.js
@@ -191,11 +195,13 @@ jobs:
           grep -F "Your profile-access request is waiting for review." dist/assets/member-profile-live.js
           grep -F "Correct public facts" dist/assets/r1330-profile.js
           grep -F "Management verified for you" dist/assets/r1330-profile.js
-          grep -F "Request management access" dist/assets/r1330-profile.js
+          grep -F "Claim or manage this profile" dist/assets/r1330-profile.js
           grep -F "/api/accounts/me" dist/assets/r1330-profile.js
           grep -F "Withdraw access request" dist/assets/member-profile-live.js
           grep -F "Management access verified " dist/assets/member-profile-live.js
-          grep -F "Need help signing in?" dist/assets/membership-live.js
+          grep -F "Forgot password?" dist/assets/membership-live.js
+          grep -F "/account-recovery/" dist/assets/membership-live.js
+          test -f dist/account-recovery/index.html
           grep -F "data-profile-control-context" dist/corrections/index.html
           grep -F "data-profile-control-context" dist/es/correcciones/index.html
           grep -F "hf35-profile-control.js?v=frnav1338" dist/es/correcciones/index.html
@@ -560,6 +566,8 @@ jobs:
             node --check dist/assets/member-profile-live.js
             node --check dist/assets/hf35-profile-control.js
             node --check dist/assets/r1338-profile-request.js
+            node --check dist/assets/account-recovery-r1342.js
+            node tests/r1342-claim-recovery.cjs
             node --check dist/assets/franklin-site-monitor-r1308.js
           )
           (

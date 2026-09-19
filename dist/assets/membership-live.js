@@ -12,7 +12,7 @@
   const planFor=key=>key===SALE_PLAN.lookupKey?SALE_PLAN:{label:historicalPlanLabel(key),price:''};
   async function request(path,{method='GET',body}={}){const response=await fetch(API+path,{method,credentials:'include',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined});let payload={};try{payload=await response.json()}catch{}if(!response.ok){const e=new Error(payload?.error?.message||'Franklin could not complete this request.');e.code=payload?.error?.code||`HTTP_${response.status}`;e.status=response.status;throw e}return payload}
   const CHECKOUT_PENDING_MESSAGE='We could not confirm the payment outcome. Do not pay again. Check membership status or contact support.';
-  const friendlyError=(e,payment=false)=>{if(e?.code==='PROFILE_VERIFICATION_REQUIRED')return'We still need to confirm that you represent this profile before payment can open.';if(e?.code==='MEMBERSHIP_ALREADY_ACTIVE')return'This profile already has an active Community Membership. Do not pay again.';if(e?.code==='PROFILE_MEMBERSHIP_ALREADY_ACTIVE')return'This public profile already has an active Community Membership through another verified manager. Use the existing manager account or contact support before making another payment.';if(e?.code==='COMMERCE_DISABLED')return'Checkout is not open. Check membership status for any earlier payment.';if(e?.code==='PLAN_RETIRED')return'That membership option is no longer available for new enrollment. The current membership is $35/year.';if(payment||['PAYMENT_OUTCOME_UNKNOWN','CHECKOUT_PENDING','CHECKOUT_PLAN_CONFLICT','CHECKOUT_RECOVERY_REQUIRED'].includes(e?.code))return CHECKOUT_PENDING_MESSAGE;return'We could not complete this request. Please try again or contact support.'};
+  const friendlyError=(e,payment=false)=>{if(e?.code==='ACCOUNT_ALREADY_EXISTS')return'An account already exists for this email. Sign in or reset your password.';if(e?.code==='LOGIN_INVALID')return'Email or password is incorrect. Use Forgot password? if you need to reset it.';if(e?.code==='PROFILE_VERIFICATION_REQUIRED')return'We still need to confirm that you represent this profile before payment can open.';if(e?.code==='MEMBERSHIP_ALREADY_ACTIVE')return'This profile already has an active Community Membership. Do not pay again.';if(e?.code==='PROFILE_MEMBERSHIP_ALREADY_ACTIVE')return'This public profile already has an active Community Membership through another verified manager. Use the existing manager account or contact support before making another payment.';if(e?.code==='COMMERCE_DISABLED')return'Checkout is not open. Check membership status for any earlier payment.';if(e?.code==='PLAN_RETIRED')return'That membership option is no longer available for new enrollment. The current membership is $35/year.';if(payment||['PAYMENT_OUTCOME_UNKNOWN','CHECKOUT_PENDING','CHECKOUT_PLAN_CONFLICT','CHECKOUT_RECOVERY_REQUIRED'].includes(e?.code))return CHECKOUT_PENDING_MESSAGE;return'We could not complete this request. Please try again or contact support.'};
   const pendingKey=state=>{const account=state.me?.account?.accountId||state.me?.account?.account_id||state.me?.account?.id;const profile=state.selected?.i;return account&&profile?'franklin.checkout.pending.v1:'+account+':'+profile:null};
   const isPending=state=>{if(state.purchasePending)return true;try{const key=pendingKey(state);return Boolean(key&&sessionStorage.getItem(key))}catch{return false}};
   const setPending=(state,value)=>{state.purchasePending=value;try{const key=pendingKey(state);if(key){if(value)sessionStorage.setItem(key,'pending');else sessionStorage.removeItem(key)}}catch{}};
@@ -23,7 +23,52 @@
   async function loadTargetedProfileOverlay(){const raw=await fetch('/data/discovery/r1329-franklin-navigator-profile.json',{credentials:'omit',cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error('overlay');return r.json()});if(raw?.schemaVersion!=='franklin.discovery-overlay.v1'||raw?.community!=='FRANKLIN_TN'||raw?.profileId!=='FR-ORG-b00c0ace7943973c'||raw?.sourceRelease!=='FR-PF-PLATFORM-15.28'||raw?.addressType!=='MAILING_ADDRESS_ONLY'||raw?.physicalLocationVerified!==false||!Array.isArray(raw.records)||raw.records.length!==1)throw new Error('overlay');const a=raw.records[0];return {i:a[0],n:a[1],l:a[2],c:raw.categories?.[a[3]]||'',t:raw.types?.[a[4]]||'',g:raw.areas?.[a[5]]||'',w:raw.websites?.[a[6]]||null,p:a[7]||'',e:a[8]||'',d:raw.dates?.[a[9]]||'',h:a[10]===true,x:a[11]};}
   async function loadProfiles(){if(profiles)return profiles;const manifest=await fetch('/data/franklin-profiles-manifest.json').then(r=>r.json());const chunks=await Promise.all(manifest.chunks.map(c=>fetch(c.file).then(r=>r.json())));const base=chunks.flatMap(c=>c.records);const add=await loadTargetedProfileOverlay();if(base.some(r=>r.i===add.i))throw new Error('duplicate targeted profile');profiles=base.concat(add).map(r=>({...r,s:`${r.n} ${r.c||''} ${r.g||''} ${r.l||''}`.toLowerCase()}));return profiles}
   async function profileName(id){if(!id)return'';const rows=await loadProfiles();return rows.find(r=>r.i===id)?.n||'Your Franklin profile'}
-  function accountSection(state,rerender){const s=el('section',null,'r37-member-step');s.append(el('h2',state.me?'Your account':'Create an account or sign in'));if(state.me){s.append(el('p',`Signed in as ${state.me.account?.email||'your Franklin account'}.`));s.append(button('Sign out',async()=>{try{await request('/api/accounts/logout',{method:'POST',body:{}});state.me=null;state.purchasePending=false;state.message='Signed out.';rerender()}catch(e){state.message=friendlyError(e);rerender()}},'button'));return s}const tabs=el('div',null,'r37-member-actions'),create=button('Create account',()=>{state.accountMode='register';rerender()},state.accountMode==='register'?'button primary':'button'),sign=button('Sign in',()=>{state.accountMode='login';rerender()},state.accountMode==='login'?'button primary':'button');tabs.append(create,sign);s.append(tabs);const form=document.createElement('form');form.className='r37-member-step';if(state.accountMode==='register'){const name=field('Your name','displayName','text','name'),email=field('Email','email','email','email'),pw=field('Create password (12+ characters)','password','password','new-password');form.append(name.label,email.label,pw.label,el('p','Tip: a work or organization email can make profile verification easier when one is available. A personal email is still allowed.','fine-print'));const submit=el('button','Create account','button primary');submit.type='submit';form.append(submit);form.addEventListener('submit',async e=>{e.preventDefault();submit.disabled=true;try{await request('/api/accounts/register',{method:'POST',body:{displayName:name.input.value,email:email.input.value,password:pw.input.value}});state.me=await getMe();state.message='Your Franklin account is ready.'}catch(err){state.message=friendlyError(err)}rerender()})}else{const email=field('Email','email','email','email'),pw=field('Password','password','password','current-password');form.append(email.label,pw.label);const submit=el('button','Sign in','button primary');submit.type='submit';form.append(submit);form.addEventListener('submit',async e=>{e.preventDefault();submit.disabled=true;try{await request('/api/accounts/login',{method:'POST',body:{email:email.input.value,password:pw.input.value}});state.me=await getMe();state.message='Signed in.'}catch(err){state.message=friendlyError(err)}rerender()})}s.append(form);const help=el('div',null,'r37-member-actions');help.append(link('Need help signing in?','/member-support/?topic=ACCOUNT_ACCESS'),link('Correct a profile without signing in','/corrections/'));s.append(help);return s}
+  const normalizedName=value=>String(value||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').replace(/\b(?:llc|inc|incorporated|corp|corporation|pc|pllc|ltd)\b/g,'').replace(/\s+/g,' ').trim();
+  const nameMatchRank=(name,query)=>{const n=normalizedName(name),q=normalizedName(query);if(!q)return 0;if(n===q)return 0;if((' '+n+' ').includes(' '+q+' '))return 1;if(n.startsWith(q))return 2;const tokens=q.split(' ').filter(Boolean);if(tokens.length&&tokens.every(t=>n.includes(t)))return 3;return 4;};
+  const profileParam=state=>state?.selected?.i&&/^FR-[A-Z0-9]+-[A-Za-z0-9][A-Za-z0-9._-]{2,100}$/.test(state.selected.i)?state.selected.i:'';
+  const recoveryHref=state=>'/account-recovery/'+(profileParam(state)?'?profile='+encodeURIComponent(profileParam(state)):'');
+  const accountHelpHref=state=>'/member-support/?topic=ACCOUNT_ACCESS'+(profileParam(state)?'&profile='+encodeURIComponent(profileParam(state)):'');
+  function accountSection(state,rerender){
+    const s=el('section',null,'r37-member-step r1342-account-step');
+    s.append(el('h2',state.me?'Your account':'Create an account or sign in'));
+    if(state.me){
+      s.append(el('p',`Signed in as ${state.me.account?.email||'your Franklin account'}.`));
+      s.append(button('Sign out',async()=>{try{await request('/api/accounts/logout',{method:'POST',body:{}});state.me=null;state.purchasePending=false;state.message='Signed out.';rerender()}catch(e){state.message=friendlyError(e);rerender()}},'button'));
+      return s;
+    }
+    const tabs=el('div',null,'r37-member-actions r1342-account-modes');tabs.setAttribute('role','group');tabs.setAttribute('aria-label','Account access');
+    const create=button('Create account',()=>{state.accountMode='register';rerender()},state.accountMode==='register'?'button primary':'button');
+    const sign=button('Sign in',()=>{state.accountMode='login';rerender()},state.accountMode==='login'?'button primary':'button');
+    create.setAttribute('aria-pressed',state.accountMode==='register'?'true':'false');sign.setAttribute('aria-pressed',state.accountMode==='login'?'true':'false');
+    tabs.append(create,sign);s.append(tabs);
+    const form=document.createElement('form');form.className='r37-member-step r1342-account-form';
+    if(state.accountMode==='register'){
+      const name=field('Your name','displayName','text','name'),email=field('Email address','email','email','email'),pw=field('Create password','password','password','new-password');
+      pw.label.append(el('span','Use at least 12 characters.','fine-print r1342-field-help'));
+      form.append(name.label,email.label,pw.label,el('p','Tip: a work or organization email can make profile verification easier when one is available. A personal email is still allowed.','fine-print'));
+      const existing=el('p','Already have an account? ','fine-print');const switcher=button('Sign in',()=>{state.accountMode='login';rerender()},'link-button');existing.append(switcher);form.append(existing);
+      const submit=el('button','Create account','button primary');submit.type='submit';form.append(submit);
+      form.addEventListener('submit',async e=>{e.preventDefault();submit.disabled=true;try{
+        await request('/api/accounts/register',{method:'POST',body:{displayName:name.input.value,email:email.input.value,password:pw.input.value}});
+        state.me=await getMe();state.message='Your Franklin account is ready.';
+      }catch(err){
+        if(err?.code==='ACCOUNT_ALREADY_EXISTS'){state.accountMode='login';state.recoveryEmail=email.input.value;state.message='An account already exists for this email. Sign in or reset your password.';}
+        else state.message=friendlyError(err);
+      }rerender()});
+    }else{
+      const email=field('Email address','email','email','email'),pw=field('Password','password','password','current-password');
+      if(state.recoveryEmail)email.input.value=state.recoveryEmail;
+      form.append(email.label,pw.label);
+      const submit=el('button','Sign in','button primary');submit.type='submit';form.append(submit);
+      form.addEventListener('submit',async e=>{e.preventDefault();submit.disabled=true;try{await request('/api/accounts/login',{method:'POST',body:{email:email.input.value,password:pw.input.value}});state.me=await getMe();state.message='Signed in.'}catch(err){state.recoveryEmail=email.input.value;state.message=friendlyError(err)}rerender()});
+      const help=el('div',null,'r37-member-actions r1342-signin-help');
+      help.append(link('Forgot password?',recoveryHref(state),'button'),link('Can’t access your email? Get account help',accountHelpHref(state),'button'));
+      form.append(help);
+    }
+    s.append(form);
+    const free=el('div',null,'r37-member-actions');free.append(link('Correct a profile without signing in','/corrections/'+(profileParam(state)?'?profile='+encodeURIComponent(profileParam(state)):'')));s.append(free);
+    return s;
+  }
   function profileSection(state,rerender){
     const s=el('section',null,'r37-member-step');
     s.append(el('h2',state.selected?'Your selected profile':'Find your profile'));
@@ -41,7 +86,7 @@
     const results=el('div',null,'r37-search-results');results.setAttribute('aria-live','polite');s.append(results);
     const choose=row=>{
       state.selected=row;
-      state.message='Profile selected. Continue with this profile to connect it to your Franklin account.';
+      state.message='Profile selected. Continue with this profile to connect it to your Franklin account.';setTimeout(()=>{s.scrollIntoView({behavior:'smooth',block:'start'});s.setAttribute('tabindex','-1');s.focus({preventScroll:true})},0);
       try{const next=new URL(location.href);next.searchParams.set('profile',row.i);history.replaceState(history.state,'',next)}catch{}
       rerender();
     };
@@ -50,10 +95,10 @@
       if(q.length<2){results.textContent='Type at least two characters.';return}
       results.textContent='Searching Franklin profiles…';
       try{
-        const rows=(await loadProfiles()).filter(r=>r.s.includes(q)).slice(0,12);results.replaceChildren();
+        const rows=(await loadProfiles()).filter(r=>r.s.includes(q)).sort((a,b)=>nameMatchRank(a.n,q)-nameMatchRank(b.n,q)||String(a.n).localeCompare(String(b.n))).slice(0,12);results.replaceChildren();
         if(!rows.length){results.append(el('p','No matching profile found.'));results.append(link('Request a Franklin profile','/profile-request/'));return}
         for(const row of rows){
-          const b=button('',()=>choose(row),'r37-search-result'),txt=el('span'),strong=el('strong',row.n),small=el('small',[(window.FranklinI18n?.category?.(row.c)||row.c),row.l||row.g].filter(Boolean).join(' · ')),pick=el('span','Choose this profile');
+          const b=button('',()=>choose(row),'r37-search-result r1342-claim-result'),txt=el('span'),strong=el('strong',row.n),small=el('small',[(window.FranklinI18n?.category?.(row.c)||row.c),row.l||row.g].filter(Boolean).join(' · ')),pick=el('span','Claim this profile','r1342-claim-result-action');
           txt.append(strong,small);b.append(txt,pick);results.append(b);
         }
       }catch{results.textContent='Profile search could not load. Please try again.'}

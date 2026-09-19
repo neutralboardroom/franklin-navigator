@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.41-HF3.13.23",
+  "release": "FR-NAV1.30.42-HF3.13.24",
   "date": "2026-09-19",
   "base": "FR-NAV1.30.12-HF3.12.4",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1341 is a focused Community Membership value-clarity successor to R1340. It preserves the owner-approved business headline and R1340 readability repairs while making increased member visibility concrete and understandable: richer reviewed profile content, more verified action paths, special offers, and eligibility for clearly labeled Community Member / Sponsored placement in relevant Franklin discovery areas. Ordinary unpaid ranking, factual accuracy, endorsement and guaranteed-lead claims remain prohibited.",
+  "scope": "R1342 is the bounded live profile / claim / account-recovery fix pass. It preserves R1341 membership-visibility value and R1340 readability protections while repairing exact-name directory ordering, prominent claim/manage entry from public profiles, profile-context continuity through claim/sign-in/recovery, duplicate-account recovery UX, secure self-service password reset, account-support routing, corrections context, claim-search usability, explicit claim-before-membership sequencing, entity-aware review copy, and the Franklin Navigator first-party review policy. No outreach is sent and no pricing, SRE, Revenue Engine, SCC, or unrelated product authority is changed.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -1853,5 +1853,96 @@
       "sourceIdentityDefault": "FR-NAV1.30.41-HF3.13.23",
       "identityGuardUpdated": true
     }
+  },
+  "r1342": {
+    "version": "FR-NAV1.30.42-HF3.13.24",
+    "date": "2026-09-19",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "QUALIFIED_LOCAL_PENDING_MAIN_PROMOTION",
+    "predecessor": {
+      "version": "FR-NAV1.30.41-HF3.13.23",
+      "mainCommit": "9932dc243912ecbe6adca7df27cf575a76cfffe3"
+    },
+    "ownerCommand": "FRANKLIN_NAVIGATOR__LIVE_PROFILE_CLAIM_ACCOUNT_RECOVERY_FIX_PASS__LOCAL_BUILDER_COMMAND__2026-09-19",
+    "boundedScope": true,
+    "noOutreach": true,
+    "noPricingChange": true,
+    "noSreAuthorityChange": true,
+    "noRevenueEngineAuthorityChange": true,
+    "noSccAuthorityChange": true,
+    "noDuplicateOwnerAccount": true,
+    "currentNewMembershipPriceUsd": 35,
+    "fixes": {
+      "exactNameDirectoryRanking": true,
+      "publicProfileClaimCta": true,
+      "exactProfileClaimDeepLink": true,
+      "correctionsContextPreserved": true,
+      "explicitClaimBeforeMembership": true,
+      "clearerClaimSearchCards": true,
+      "profileAccessAccountUx": true,
+      "duplicateAccountRecovery": true,
+      "selfServicePasswordReset": true,
+      "supportRouting": true,
+      "supportNewMembershipWording": true,
+      "entityAwareReviewCopy": true,
+      "firstPartyProfileReviewsDisabled": true,
+      "officialFirstPartyProfileIndicator": true
+    },
+    "passwordRecovery": {
+      "version": "FRANKLIN_ACCOUNT_RECOVERY_R1342",
+      "shortLivedMinutes": 30,
+      "singleUse": true,
+      "genericAccountExistenceResponse": true,
+      "resetTokenStoredHashed": true,
+      "priorSessionsInvalidatedOnSuccess": true,
+      "rateLimited": true,
+      "noPasswordInEmail": true,
+      "selectedProfileContinuity": true,
+      "supportFallbackForEmailAccessLoss": true,
+      "profileContinuityRequiresCurrentProfileScope": true
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "405fe8dd47325b8063bd19c5e1a5b19a2344ebe3",
+      "deploy": "dep-dan0kjjm8hqs739jshn0",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.42-HF3.13.24",
+      "functionalChanges": true,
+      "accountRecoveryVersion": "FRANKLIN_ACCOUNT_RECOVERY_R1342"
+    },
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1341"
+    },
+    "qualification": {
+      "result": "PASS",
+      "workflowRun": 35420574438,
+      "qualifiedHead": "fba4e4f3b6b7f8e6e30e1331f67c1e62047c670e"
+    },
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "receipts": [
+      "PREDECESSOR_AND_CURRENTNESS_RECEIPT__R1342.md",
+      "LIVE_TEST_DEFECT_FIX_REPORT__R1342.md",
+      "BEFORE_AFTER_EVIDENCE__R1342.md",
+      "PASSWORD_RECOVERY_TEST_REPORT__R1342.md",
+      "CLAIM_FLOW_DEEPLINK_CONTINUITY_TEST_REPORT__R1342.md",
+      "DUPLICATE_ACCOUNT_PREVENTION_TEST_REPORT__R1342.md",
+      "SUPPORT_PAGE_UX_REGRESSION_REPORT__R1342.md",
+      "ACCESSIBILITY_RESPONSIVE_RESULTS__R1342.md",
+      "SECURITY_PRIVACY_REGRESSION_RESULTS__R1342.md",
+      "DEPLOYMENT_RUNTIME_EVIDENCE__R1342.md",
+      "ROLLBACK_EVIDENCE__R1342.md",
+      "FRANKLIN_MEMBER_PROSPECT_OUTREACH_READINESS_RECEIPT__R1342.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1342.md",
+      "CONTINUATION_HANDOFF__R1342.md",
+      "R1342_RELEASE_RECEIPT.json"
+    ]
   }
 }

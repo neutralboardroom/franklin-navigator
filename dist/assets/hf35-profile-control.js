@@ -22,7 +22,8 @@
     if(!validProfile)return;
     let name=String(form.elements.listing?.value||'').trim();
     if(!name){try{const r=await fetch('/profiles/'+encodeURIComponent(profile)+'/',{credentials:'same-origin'});if(r.ok){const doc=new DOMParser().parseFromString(await r.text(),'text/html');name=doc.querySelector('.r22-profile-hero h1,h1')?.textContent?.trim()||'';set('listing',name)}}catch{}}
-    showContext(name);
+    if(!name&&profile==='FR-ORG-b00c0ace7943973c'){name='Franklin Navigator';set('listing',name)}
+    set('url',params.get('url')||profilePage);showContext(name);
   };
   const sync=()=>{
     const removal=form.elements.requestType.value==='PUBLIC_REMOVAL';

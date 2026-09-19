@@ -150,7 +150,16 @@
       const sourceOnly = /^FR-IRS-/.test(r.i) && contacts === 0 ? 1 : 0;
       return geo * 100 + sourceOnly * 18 + (3 - contacts) * 4 + (r.h ? 0 : 2);
     };
-    deduped.sort((a, b) => (s.sort === 'local' ? localRank(a) - localRank(b) : s.sort === 'checked' ? (validDate(b.d) ? b.d : '').localeCompare(validDate(a.d) ? a.d : '') : s.sort === 'website' ? Number(!!b.websiteHref) - Number(!!a.websiteHref) : s.sort === 'address' ? Number(b.h) - Number(a.h) : 0) || compare(a, b));
+    const queryRank = r => {
+      if (!s.q) return 0;
+      const q = canonicalName(s.q), name = canonicalName(r.n), tokens = q.split(' ').filter(Boolean);
+      if (name === q) return 0;
+      if (name.includes(q)) return 1;
+      if (name.startsWith(q)) return 2;
+      if (tokens.length && tokens.every(t => name.includes(t))) return 3;
+      return 4;
+    };
+    deduped.sort((a, b) => (s.q ? queryRank(a) - queryRank(b) : 0) || (s.sort === 'local' ? localRank(a) - localRank(b) : s.sort === 'checked' ? (validDate(b.d) ? b.d : '').localeCompare(validDate(a.d) ? a.d : '') : s.sort === 'website' ? Number(!!b.websiteHref) - Number(!!a.websiteHref) : s.sort === 'address' ? Number(b.h) - Number(a.h) : 0) || compare(a, b));
     // HF3.9 default browse diversification: factual, payment-neutral, and deterministic.
     if (s.sort === 'local' && !s.q && !s.category && !s.type && !s.area && !s.facts.length) {
       const facilityRoot = r => { const m = norm(r.n).match(/^(.+?\b(?:park|farm))\b/); return m ? m[1] : ''; };
