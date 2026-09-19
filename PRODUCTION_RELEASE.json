@@ -1860,7 +1860,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "state": "QUALIFIED_LOCAL_PENDING_MAIN_PROMOTION",
     "predecessor": {
       "version": "FR-NAV1.30.41-HF3.13.23",
       "mainCommit": "9932dc243912ecbe6adca7df27cf575a76cfffe3"
@@ -1921,7 +1921,9 @@
       "inheritedFrom": "R1341"
     },
     "qualification": {
-      "result": "PENDING_EXACT_HEAD_WORKFLOW"
+      "result": "PASS",
+      "workflowRun": 35420574438,
+      "qualifiedHead": "fba4e4f3b6b7f8e6e30e1331f67c1e62047c670e"
     },
     "sccAccepted": false,
     "sccCanonicalCurrent": false,
