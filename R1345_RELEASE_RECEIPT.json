@@ -1,0 +1,43 @@
+{
+  "release": "FR-NAV1.30.45-HF3.13.27",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "predecessor": {
+    "version": "FR-NAV1.30.44-HF3.13.26",
+    "commit": "d15c3db1d983cc4a2cbee36dce6fb433d7c08bbc",
+    "artifactSha256": "89bb0bc3592698b34e258d7daa1c6a32121833d13dbbeb9f9d0de9dfae9e2f71"
+  },
+  "materialImprovement": "Complete the ordinary pre-verification claim/authority journey in Profile Access and remove remaining unverified Profile Center bypasses.",
+  "changedSurfaces": [
+    "/profile-access/",
+    "public profile management state",
+    "correction/removal completion follow-up",
+    "Spanish dynamic profile-access copy",
+    "qualification workflow and permanent regression gates"
+  ],
+  "authority": {
+    "profileFacts": "PROFILE_FACTORY_UNCHANGED",
+    "dynamicLocalResearch": "LOCAL_INVESTIGATOR_UNCHANGED",
+    "commercialIntent": "SRE_OWNER_CONSOLE_UNCHANGED",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "smarterJusticeDonor": "SMARTER_JUSTICE_DONOR_NOT_USED"
+  },
+  "qualification": {
+    "result": "PENDING_EXACT_HEAD_WORKFLOW",
+    "workflowRun": null,
+    "qualifiedHead": null,
+    "artifact": null,
+    "artifactSha256": null,
+    "manifestSha256": null
+  },
+  "deployment": {
+    "runtimeCommit": "3503f7b3b58042ef0389537af313a1b3545ef23f",
+    "runtimeReleaseEnv": "FR-NAV1.30.45-HF3.13.27",
+    "runtimeDeploy": "dep-dana3ebm8hqs73ak66sg",
+    "runtimeState": "LIVE",
+    "staticDeploy": null,
+    "staticState": "NOT_STARTED"
+  }
+}
