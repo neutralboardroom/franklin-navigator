@@ -1944,5 +1944,40 @@
       "CONTINUATION_HANDOFF__R1342.md",
       "R1342_RELEASE_RECEIPT.json"
     ]
+  },
+  "r1344": {
+    "version": "FR-NAV1.30.44-HF3.13.26",
+    "date": "2026-09-19",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "predecessor": {
+      "version": "FR-NAV1.30.43-HF3.13.25"
+    },
+    "state": "QUALIFICATION_IN_PROGRESS",
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1343"
+    },
+    "fixes": {
+      "recentFixVisibilityAndNonLossAudit": true,
+      "profileCenterTerminology": true,
+      "unverifiedBusinessRoutesThroughProfileAccess": true,
+      "spanishClaimRecoveryParity": true,
+      "universalDistinctClaimCtaPreserved": true,
+      "correctionReviewClaimProminence": true,
+      "exactProfileCorrectionToClaimContinuity": true,
+      "recentFixVisibilityGateRunsInQualification": true
+    },
+    "noPricingChange": true,
+    "noPaymentOrEntitlementChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noOutreach": true,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false
   }
 }
