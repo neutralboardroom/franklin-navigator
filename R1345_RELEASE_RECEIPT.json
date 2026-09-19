@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "franklin.local-platform-release-receipt.r1345.v1",
+  "release": "FR-NAV1.30.45-HF3.13.27",
+  "date": "2026-09-19",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+  "sourceBase": {
+    "version": "FR-NAV1.30.44-HF3.13.26",
+    "mainCommit": "69662c6e392c9a2d806da6c9d92564e99988b2f5"
+  },
+  "acceptedAnchor": {
+    "version": "FR-NAV1.30.42-HF3.13.24",
+    "artifactSha256": "1d626e0a59432275f8c2599e75808b0dfb4381928d9ffa28c0cc97c8a5a8a9a0"
+  },
+  "ownerDirection": "KEEP_RECENT_AND_FUTURE_OWNER_AGREED_FIXES_VISIBLE_REACHABLE_AND_REGRESSION_TESTED",
+  "materialImprovements": [
+    "Preserve the distinct gold Claim or manage action on public profiles and claim search.",
+    "Expose matching free claim/manage callouts on English and Spanish correction/review pages.",
+    "Preserve exact-profile context from corrections into Profile Access.",
+    "Create a permanent owner-agreed-fix visibility/non-loss rule and machine-readable registry.",
+    "Enforce the permanent visibility test in normal qualification and clean-extracted-artifact qualification."
+  ],
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "3503f7b3b58042ef0389537af313a1b3545ef23f",
+    "deploy": "dep-dan62krm8hqs73a6bqbg",
+    "state": "DEPLOY_TRIGGERED_PENDING_FINAL_VERIFICATION",
+    "functionalChanges": false,
+    "releaseIdentityOnly": true
+  },
+  "outreachSent": false,
+  "profileFactoryNewerCandidateConsumed": false,
+  "localInvestigatorNewerCandidateConsumed": false,
+  "sccAccepted": false,
+  "sccCanonicalCurrent": false,
+  "qualification": {
+    "result": "PENDING_EXACT_HEAD_WORKFLOW"
+  }
+}
