@@ -1,0 +1,17 @@
+{
+  "result": "PASS",
+  "release": "FR-NAV1.30.43-HF3.13.25",
+  "profilePages": 19104,
+  "checks": [
+    "all profiles load shared app",
+    "all profiles expose primary action group",
+    "universal visible claim/manage CTA",
+    "visible free correction action",
+    "distinct claim-search action",
+    "R1340 approved headline",
+    "R1341 membership price visibility",
+    "Help Center",
+    "Get It Done",
+    "Directory"
+  ]
+}
