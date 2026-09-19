@@ -168,6 +168,13 @@ jobs:
           grep -F "work or organization email" dist/assets/membership-live.js
           grep -F "Transfer or end management — contact support" dist/assets/member-profile-live.js
           ! grep -F "Profile Studio" dist/member-support/index.html
+          ! grep -R -F --include='*.html' --include='*.js' "Profile Studio" dist
+          ! grep -R -F --include='*.html' --include='*.js' "Managed profile" dist
+          ! grep -R -F --include='*.html' --include='*.js' "Unclaimed profile" dist
+          grep -F "Find your Franklin profile. Improve it. Grow your local visibility." dist/business-dashboard/index.html
+          grep -F "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local." dist/es/negocios/index.html
+          grep -F "'Open Profile Center':'Abrir Centro de Perfil'" dist/assets/r37-i18n.js
+          grep -F "preferredLanguage:isEs()?'SPANISH':'ENGLISH'" dist/assets/r1338-profile-request.js
           grep -F "/api/member/representation/release" dist/assets/member-profile-live.js
           grep -F "Your profile-access request is waiting for review." dist/assets/member-profile-live.js
           grep -F "Correct public facts" dist/assets/r1330-profile.js
