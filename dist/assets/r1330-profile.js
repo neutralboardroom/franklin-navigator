@@ -61,7 +61,7 @@
    if(authority==='VERIFIED'){
      labelText='Management verified for you';actionText='Open Profile Center';href='/profile-studio/?profile='+encodeURIComponent(id);hintText='You have verified management access. You can manage your photo or logo and request factual corrections.';managedForViewer=true;
    }else if(authority==='PENDING'){
-     labelText='Access request pending';actionText='Check access request';href='/profile-studio/?profile='+encodeURIComponent(id);hintText='Your request is under review. No membership or payment is required.';
+     labelText='Access request pending';actionText='Check access request';href='/profile-access/?profile='+encodeURIComponent(id);hintText='Your request is under review. Check it through free Profile Access. No membership or payment is required.';
    }else if(authority==='DISPUTED'){
      labelText='Access review needed';actionText='Get profile access help';href='/member-support/?topic=PROFILE_ACCESS&profile='+encodeURIComponent(id);hintText='Franklin needs to review this access issue before management can continue.';
    }else if(managed){
