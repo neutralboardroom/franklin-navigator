@@ -1,0 +1,53 @@
+{
+  "schema": "franklin.local-community-platform.release-receipt.v1",
+  "status": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+  "recordedAt": "2026-09-19",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "predecessor": {
+    "version": "FR-NAV1.30.44-HF3.13.26",
+    "commit": "c08fa972fd279b661262ee62ee2089ce8dbea5c8"
+  },
+  "successor": {
+    "version": "FR-NAV1.30.45-HF3.13.27",
+    "localQualification": "PENDING_EXACT_HEAD_WORKFLOW",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false
+  },
+  "ownerDirection": "Future fixes are not buried; check the last ten versions for the same or similar problem.",
+  "lastTenAudit": {
+    "source": "RECENT_FIX_VISIBILITY_AUDIT__R1344.json",
+    "span": "R1335-R1344",
+    "historicalRegressionsFoundAndFixed": 4,
+    "additionalCurrentRegressionClaim": "NONE_UNTIL_EXACT_HEAD_GATE_COMPLETES"
+  },
+  "enforcement": {
+    "durableRule": "DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md",
+    "registry": "OWNER_APPROVED_FIX_VISIBILITY_REGISTRY.json",
+    "test": "tests/r1344-recent-fix-visibility.cjs",
+    "nonPrintCssBurialScan": true,
+    "protectedParentSelectorScan": true,
+    "dynamicOverrideChecks": true,
+    "normalQualification": true,
+    "cleanExtractionQualification": true
+  },
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "3503f7b3b58042ef0389537af313a1b3545ef23f",
+    "deploy": "dep-dan62krm8hqs73a6bqbg",
+    "deployState": "LIVE",
+    "release": "FR-NAV1.30.45-HF3.13.27",
+    "functionalChanges": false
+  },
+  "safeguards": {
+    "noPricingChange": true,
+    "noPaymentOrEntitlementChange": true,
+    "noOrdinaryUnpaidRankingChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noOutreach": true
+  },
+  "qualification": {
+    "result": "PENDING_EXACT_HEAD_WORKFLOW"
+  }
+}
