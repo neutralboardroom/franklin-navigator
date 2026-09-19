@@ -474,3 +474,9 @@ header .wrap.top>.r37-language-switch{order:3!important;margin-left:10px!importa
 }
 .r1342-claim-result:hover .r1342-claim-result-action,.r1342-claim-result:focus-within .r1342-claim-result-action{background:#ffcf68!important}
 @media(max-width:620px){.profile-primary-actions .r1343-claim-primary,.profile-primary-actions .r1343-correction-secondary{width:100%;justify-content:center}.r1342-claim-result-action{width:100%;margin-top:8px}}
+
+/* R1344 — ownership action stays prominent on review/correction surfaces. */
+.r1344-owner-claim-callout{margin:18px 0 24px;padding:18px 20px;border:1px solid #e0c77f;border-radius:14px;background:#fff8e8}
+.r1344-owner-claim-callout h2{margin:0 0 5px;font-size:1.28rem}
+.r1344-owner-claim-callout p{margin:0 0 12px}
+@media(max-width:620px){.r1344-owner-claim-callout{padding:16px}.r1344-owner-claim-callout .r1343-claim-primary{width:100%;text-align:center}}
