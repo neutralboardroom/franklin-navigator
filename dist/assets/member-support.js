@@ -6,6 +6,18 @@
  const params=new URLSearchParams(location.search),allowed=new Set(['PROFILE_ACCESS','ACCOUNT_ACCESS','PROFILE_MANAGEMENT','MEMBERSHIP_BILLING','ACCESSIBILITY','OTHER']);
  const topic=String(params.get('topic')||'').toUpperCase();if(allowed.has(topic))form.elements.topic.value=topic;
  const profile=String(params.get('profile')||'').trim();if(/^FR-[A-Z0-9]+-[A-Za-z0-9][A-Za-z0-9._-]{2,100}$/.test(profile))form.elements.profileId.value=profile;
+ const supportSection=document.querySelector('[data-r1342-support-section]'),supportActions=document.querySelector('[data-r1342-support-actions]'),supportHeading=document.querySelector('[data-r1342-support-heading]');
+ if(topic==='ACCOUNT_ACCESS'){
+   supportSection?.classList.add('r1342-support-priority');
+   if(supportHeading)supportHeading.textContent='Account access help';
+   if(supportActions){
+     const back=document.createElement('a');back.className='button primary';back.textContent='← Back to sign in';back.href='/profile-access/'+(profile?'?profile='+encodeURIComponent(profile):'');
+     const reset=document.createElement('a');reset.className='button';reset.textContent='Reset password';reset.href='/account-recovery/'+(profile?'?profile='+encodeURIComponent(profile):'');
+     supportActions.append(back,reset);
+   }
+   setTimeout(()=>supportHeading?.focus?.({preventScroll:true}),0);
+ }
+
  const clean=(v,n)=>String(v||'').replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,n);
  form.addEventListener('submit',async e=>{
   e.preventDefault();const fd=new FormData(form),lang=(window.FranklinI18n?.language||document.documentElement.lang)==='es'?'SPANISH':'ENGLISH';
