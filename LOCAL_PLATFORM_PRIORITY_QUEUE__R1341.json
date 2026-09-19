@@ -1,0 +1,47 @@
+{
+  "receiptType": "LOCAL_PLATFORM_PRIORITY_QUEUE",
+  "release": "FR-NAV1.30.41-HF3.13.23",
+  "activeEdition": "FRANKLIN_TN",
+  "items": [
+    {
+      "priority": "P1",
+      "item": "Make member visibility concrete on business and membership journeys",
+      "disposition": "QUALIFIED_NOW_IMPLEMENTED"
+    },
+    {
+      "priority": "P1",
+      "item": "Preserve R1340 readability and owner-approved headline through dynamic enhancement",
+      "disposition": "QUALIFIED_NOW_RETAINED_AND_TESTED"
+    },
+    {
+      "priority": "P2",
+      "item": "Measure privacy-safe engagement with member visibility surfaces",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "Requires accepted analytics measurement contract and live post-deployment evidence"
+    },
+    {
+      "priority": "P2",
+      "item": "Add more paid visibility surfaces",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "Each surface requires resident usefulness, clear labeling and relevance review; no change-for-change's-sake"
+    },
+    {
+      "priority": "P2",
+      "item": "Consume PF15.29 wholesale snapshot",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "Newer generated candidate observed but accepted Local consumer pointer not established"
+    },
+    {
+      "priority": "P2",
+      "item": "Consume LI dynamic records",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "Accepted consumer routing and point-of-use currentness not established"
+    },
+    {
+      "priority": "P3",
+      "item": "Additional cosmetic membership redesign",
+      "disposition": "REJECT_WITH_CAUSE",
+      "reason": "No material need after visibility clarification; avoid unnecessary disruption"
+    }
+  ]
+}
