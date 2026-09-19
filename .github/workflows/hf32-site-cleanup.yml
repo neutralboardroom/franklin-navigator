@@ -199,7 +199,9 @@ jobs:
           grep -F "/api/accounts/me" dist/assets/r1330-profile.js
           grep -F "Withdraw access request" dist/assets/member-profile-live.js
           grep -F "Management access verified " dist/assets/member-profile-live.js
-          grep -F "Forgot password?" dist/assets/membership-live.js\n          grep -F "/account-recovery/" dist/assets/membership-live.js\n          test -f dist/account-recovery/index.html
+          grep -F "Forgot password?" dist/assets/membership-live.js
+          grep -F "/account-recovery/" dist/assets/membership-live.js
+          test -f dist/account-recovery/index.html
           grep -F "data-profile-control-context" dist/corrections/index.html
           grep -F "data-profile-control-context" dist/es/correcciones/index.html
           grep -F "hf35-profile-control.js?v=frnav1338" dist/es/correcciones/index.html
