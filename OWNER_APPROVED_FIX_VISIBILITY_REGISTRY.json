@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "franklin.owner-approved-fix-visibility-registry.v1",
+  "durableRule": "DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md",
+  "activeEdition": "FRANKLIN_TN",
+  "auditedReleaseWindow": "R1335-R1344",
+  "rule": "Every still-applicable owner-approved user-facing fix must remain visible/reachable; new fixes must be added here in the same material release.",
+  "entries": [
+    {
+      "id": "R1336_ASK_FRANKLIN",
+      "protectedSelectors": [
+        "#ask-navigator"
+      ],
+      "surfaces": [
+        {
+          "file": "dist/index.html",
+          "allOf": [
+            "id=\"ask-navigator\"",
+            "Ask Franklin anything"
+          ]
+        },
+        {
+          "file": "dist/es/index.html",
+          "allOf": [
+            "id=\"ask-navigator\"",
+            "Haga una pregunta."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1336_SELF_PROFILE",
+      "protectedSelectors": [
+        "#official-links"
+      ],
+      "surfaces": [
+        {
+          "file": "dist/profiles/FR-ORG-b00c0ace7943973c/index.html",
+          "allOf": [
+            "Official Franklin Navigator links",
+            "Open Franklin Assistant"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1337_HELPFUL_LINKS",
+      "protectedSelectors": [
+        "#official-links"
+      ],
+      "surfaces": [
+        {
+          "file": "dist/assets/r1330-profile.js",
+          "allOf": [
+            "Helpful links"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1338_MANAGEMENT_STATE",
+      "protectedSelectors": [
+        ".r1330-profile-state"
+      ],
+      "surfaces": [
+        {
+          "file": "dist/assets/r1330-profile.js",
+          "allOf": [
+            "Management verified for you",
+            "Access request pending",
+            "Access review needed"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1340_BUSINESS_PATH",
+      "protectedSelectors": [
+        ".r1327-path"
+      ],
+      "surfaces": [
+        {
+          "file": "dist/assets/r1326-business-journey.js",
+          "allOf": [
+            "Find your Franklin profile. Improve it. Grow your local visibility."
+          ],
+          "noneOf": [
+            "Find your Franklin profile, then improve it."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1341_MEMBERSHIP_VISIBILITY",
+      "protectedSelectors": [
+        ".hf310-dashboard-membership",
+        ".r1341-visibility-explainer"
+      ],
+      "surfaces": [
+        {
+          "file": "dist/assets/r1326-business-journey.js",
+          "allOf": [
+            "How membership increases your visibility:",
+            "special offers",
+            "$35/year"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1343_PROFILE_CLAIM",
+      "protectedSelectors": [
+        ".profile-primary-actions",
+        ".r1330-profile-state",
+        ".r1343-claim-primary"
+      ],
+      "surfaces": [
+        {
+          "file": "dist/assets/app.js",
+          "allOf": [
+            "universal profile-control visibility guard",
+            "Claim or manage this profile"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1343_CLAIM_SEARCH",
+      "protectedSelectors": [
+        ".r1342-claim-result-action"
+      ],
+      "surfaces": [
+        {
+          "file": "dist/assets/hf310.js",
+          "allOf": [
+            "Claim this profile"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1344_CORRECTION_CLAIM",
+      "protectedSelectors": [
+        ".r1344-owner-claim-callout",
+        ".r1343-claim-primary"
+      ],
+      "surfaces": [
+        {
+          "file": "dist/corrections/index.html",
+          "allOf": [
+            "data-r1344-claim-cta",
+            "Claim or manage this profile — free"
+          ]
+        },
+        {
+          "file": "dist/es/correcciones/index.html",
+          "allOf": [
+            "data-r1344-claim-cta",
+            "Reclamar o administrar este perfil — gratis"
+          ]
+        },
+        {
+          "file": "dist/assets/hf35-profile-control.js",
+          "allOf": [
+            "/profile-access/?profile="
+          ]
+        }
+      ]
+    }
+  ]
+}

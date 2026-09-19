@@ -69,6 +69,48 @@ add('R1344 correction page exposes claim/manage prominently',corrections.include
 add('R1344 correction claim keeps exact-profile continuity',read('dist/assets/hf35-profile-control.js').includes("claimCta.href='/profile-access/?profile='"));
 add('R1344 correction claim uses distinct ownership accent',css.includes('.r1344-owner-claim-callout')&&css.includes('.r1343-claim-primary'));
 
+
+const registry=JSON.parse(read('OWNER_APPROVED_FIX_VISIBILITY_REGISTRY.json'));
+for(const entry of registry.entries||[]){
+  for(const surface of entry.surfaces||[]){
+    let text='';
+    try{text=read(surface.file)}catch{add(entry.id+' surface exists: '+surface.file,false);continue}
+    add(entry.id+' required public tokens: '+surface.file,(surface.allOf||[]).every(x=>text.includes(x)));
+    add(entry.id+' retired tokens absent: '+surface.file,(surface.noneOf||[]).every(x=>!text.includes(x)));
+  }
+}
+function stripPrintMedia(cssText){
+  let out='',i=0;
+  while(i<cssText.length){
+    const match=cssText.slice(i).match(/@media\s+print\b/i);
+    if(!match){out+=cssText.slice(i);break}
+    const start=i+match.index;out+=cssText.slice(i,start);
+    const open=cssText.indexOf('{',start);if(open<0)break;
+    let depth=1,j=open+1;
+    for(;j<cssText.length&&depth;j++){if(cssText[j]==='{')depth++;else if(cssText[j]==='}')depth--}
+    i=j;
+  }
+  return out;
+}
+const cssDir=path.join(root,'dist','assets');
+const dangerous=/display\s*:\s*none(?:\s*!important)?|visibility\s*:\s*hidden|content-visibility\s*:\s*hidden|opacity\s*:\s*0(?:\D|$)|max-height\s*:\s*0(?:\D|$)/i;
+const cssRules=[];
+for(const name of fs.readdirSync(cssDir).filter(n=>n.endsWith('.css'))){
+  const raw=stripPrintMedia(fs.readFileSync(path.join(cssDir,name),'utf8'));
+  const re=/([^{}]+)\{([^{}]*)\}/g;let m;
+  while((m=re.exec(raw)))cssRules.push({file:name,selector:m[1].trim(),body:m[2]});
+}
+for(const entry of registry.entries||[]){
+  for(const selector of entry.protectedSelectors||[]){
+    const buried=cssRules.filter(rule=>rule.selector.includes(selector)&&dangerous.test(rule.body));
+    add(entry.id+' protected selector not buried by non-print CSS: '+selector,buried.length===0);
+  }
+}
+const workflow=read('.github/workflows/hf32-site-cleanup.yml');
+add('permanent registry changes trigger qualification',workflow.includes('OWNER_APPROVED_FIX_VISIBILITY_REGISTRY.json'));
+add('visibility gate runs in normal and clean-extracted qualification',(workflow.match(/node tests\/r1344-recent-fix-visibility\.cjs/g)||[]).length>=2);
+
 const failed=checks.filter(x=>!x[1]);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.44-HF3.13.26',checks,failed},null,2));
+const currentRelease=JSON.parse(read('PRODUCTION_RELEASE.json')).release;
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:currentRelease,auditedReleaseWindow:registry.auditedReleaseWindow,checks,failed},null,2));
 if(failed.length)process.exit(1);
