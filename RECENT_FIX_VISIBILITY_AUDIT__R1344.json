@@ -1,0 +1,31 @@
+{
+  "result": "PASS",
+  "release": "FR-NAV1.30.44-HF3.13.26",
+  "predecessor": "FR-NAV1.30.43-HF3.13.25",
+  "audited_release_span": "R1337 through R1343",
+  "standard": "A user-facing fix does not count as complete merely because code exists; the intended user must be able to see or naturally reach it in the normal journey.",
+  "regressions_found_and_fixed": [
+    "Logged-in business readiness copy still said Profile Studio instead of Profile Center.",
+    "Linked but unverified business users were routed to the Profile Center editor route rather than Profile Access authority verification.",
+    "Spanish dynamic catalog did not include the newer R1342 Forgot password / claim / account-help recovery actions."
+  ],
+  "verified": [
+    "R1337 Franklin Through Time heading",
+    "R1337 accessible profile media controls and Helpful links wording",
+    "R1337 Spanish dynamic profile accessibility",
+    "R1338 viewer-aware management states, withdrawal/stop-management safeguards, free photo/logo, corrections/removal",
+    "R1339 Profile Center naming and bilingual profile-request feedback",
+    "R1340 approved business headline and free-first five-step path",
+    "R1341 visible membership value and payment-neutrality safeguards",
+    "R1342 account choice, password recovery, same-profile continuity, support fallback, Spanish parity",
+    "R1343 universal distinct claim/manage CTA and claim-search CTA"
+  ],
+  "unchanged_boundaries": [
+    "No pricing change",
+    "No payment/entitlement change",
+    "No ordinary unpaid ranking change",
+    "No profile-source authority change",
+    "No outreach",
+    "No SCC authority assertion"
+  ]
+}
