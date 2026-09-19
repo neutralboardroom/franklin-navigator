@@ -5,6 +5,77 @@
   "rule": "Protected fixes must remain visible/reachable in normal user journeys; future owner-agreed fixes must be registered in the same release.",
   "entries": [
     {
+      "id": "R1335_SHARED_SEMANTIC_COLOR_SYSTEM",
+      "surfaces": [
+        {
+          "file": "dist/assets/r1336-color-system.css",
+          "allOf": [
+            "--fr-teal:",
+            "--fr-green:",
+            "--fr-blue:",
+            "--fr-gold:",
+            "--fr-violet:"
+          ]
+        },
+        {
+          "file": "dist/assets/hf36.js",
+          "allOf": [
+            "r1336-color-system.css",
+            "franklin-color-system"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1336_ASK_FRANKLIN_PUBLIC_PRESENTATION",
+      "surfaces": [
+        {
+          "file": "dist/index.html",
+          "allOf": [
+            "id=\"ask-navigator\"",
+            "Ask Franklin anything",
+            "Your Franklin starting point"
+          ],
+          "noneOf": [
+            "Need help with several things at once?"
+          ]
+        },
+        {
+          "file": "dist/es/index.html",
+          "allOf": [
+            "id=\"ask-navigator\"",
+            "Haga una pregunta.",
+            "Su punto de partida en Franklin"
+          ]
+        }
+      ],
+      "protectedSelectors": [
+        "#ask-navigator"
+      ]
+    },
+    {
+      "id": "R1336_SELF_PROFILE_PUBLIC_PRESENTATION",
+      "surfaces": [
+        {
+          "file": "dist/profiles/FR-ORG-b00c0ace7943973c/index.html",
+          "allOf": [
+            "About Franklin Navigator",
+            "Official Franklin Navigator links",
+            "Open Franklin Assistant"
+          ],
+          "noneOf": [
+            "source-backed service area",
+            "street address not asserted",
+            "builder packet",
+            "qualification receipt"
+          ]
+        }
+      ],
+      "protectedSelectors": [
+        "#official-links"
+      ]
+    },
+    {
       "id": "R1337_FRANKLIN_THROUGH_TIME",
       "surfaces": [
         {
@@ -27,6 +98,9 @@
             "Helpful links"
           ]
         }
+      ],
+      "protectedSelectors": [
+        "#official-links"
       ]
     },
     {
@@ -40,6 +114,9 @@
             "Access review needed"
           ]
         }
+      ],
+      "protectedSelectors": [
+        ".r1330-profile-state"
       ]
     },
     {
@@ -104,6 +181,13 @@
           "allOf": [
             "Find your Franklin profile. Improve it. Grow your local visibility."
           ]
+        },
+        {
+          "file": "dist/assets/r1326-business-journey.js",
+          "allOf": [
+            "Find your Franklin profile. Improve it. Grow your local visibility.",
+            "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local."
+          ]
         }
       ]
     },
@@ -117,6 +201,9 @@
             "Review or manage free profile"
           ]
         }
+      ],
+      "protectedSelectors": [
+        ".r1327-path"
       ]
     },
     {
@@ -134,7 +221,19 @@
             "$35/year",
             "special offers"
           ]
+        },
+        {
+          "file": "dist/assets/r1326-business-journey.js",
+          "allOf": [
+            "How membership increases your visibility:",
+            "special offers",
+            "$35/year"
+          ]
         }
+      ],
+      "protectedSelectors": [
+        ".hf310-dashboard-membership",
+        ".r1341-visibility-explainer"
       ]
     },
     {
@@ -224,6 +323,11 @@
             ".r1343-claim-primary"
           ]
         }
+      ],
+      "protectedSelectors": [
+        ".profile-primary-actions",
+        ".r1343-claim-primary",
+        ".r1330-profile-state"
       ]
     },
     {
@@ -236,6 +340,9 @@
             "r1342-claim-result-action"
           ]
         }
+      ],
+      "protectedSelectors": [
+        ".r1342-claim-result-action"
       ]
     },
     {
@@ -270,6 +377,10 @@
             ".r1344-owner-claim-callout"
           ]
         }
+      ],
+      "protectedSelectors": [
+        ".r1344-owner-claim-callout",
+        ".r1343-claim-primary"
       ]
     },
     {
@@ -283,5 +394,6 @@
         }
       ]
     }
-  ]
+  ],
+  "auditSpan": "R1335_THROUGH_R1344_PLUS_ALL_FUTURE_REGISTERED_FIXES"
 }
