@@ -48,7 +48,10 @@
       if(!r.ok)throw new Error(data?.error?.message||'REQUEST_FAILED');
       status.textContent=(es?'Solicitud recibida. No se inició ningún pago ni membresía. Referencia: ':'Request received. No payment or membership was started. Reference: ')+(data.requestId||'—');
       returnBox.replaceChildren();
-      if(validProfile){const a=document.createElement('a');a.className='button primary';a.href='/profiles/'+encodeURIComponent(profile)+'/';a.textContent=es?'Volver al perfil':'Return to profile';returnBox.append(a);const center=document.createElement('a');center.className='button';center.href='/profile-studio/?profile='+encodeURIComponent(profile);center.textContent=es?'Abrir Centro de Perfil':'Open Profile Center';returnBox.append(center)}
+      if(validProfile){
+        if(!removal){const claim=document.createElement('a');claim.className='button r1343-claim-primary';claim.href='/profile-access/?profile='+encodeURIComponent(profile);claim.textContent=es?'Reclamar o administrar este perfil':'Claim or manage this profile';returnBox.append(claim)}
+        const a=document.createElement('a');a.className='button';a.href='/profiles/'+encodeURIComponent(profile)+'/';a.textContent=es?'Volver al perfil':'Return to profile';returnBox.append(a)
+      }
       const help=document.createElement('a');help.className='button';help.href='mailto:community@franklinnavigator.com';help.textContent=es?'Contactar soporte':'Contact support';returnBox.append(help);
     }catch{
       status.textContent=es?'No pudimos enviar la solicitud. Sus datos siguen en el formulario. Inténtelo de nuevo o escriba a community@franklinnavigator.com.':'We could not submit the request. Your entries are still in the form. Try again or email community@franklinnavigator.com.';
