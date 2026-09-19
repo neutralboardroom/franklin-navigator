@@ -5,7 +5,9 @@
   const form=document.querySelector('[data-profile-control-form]'),status=document.querySelector('[data-profile-control-status]'),context=document.querySelector('[data-profile-control-context]');
   if(!form||!status)return;
   const params=new URLSearchParams(location.search),es=document.documentElement.lang==='es';
-  const profile=String(params.get('profile')||'').trim(),validProfile=/^FR-[A-Z0-9]+-[A-Za-z0-9][A-Za-z0-9._-]{2,100}$/.test(profile);
+  const PROFILE_RE=/^FR-[A-Z0-9]+-[A-Za-z0-9][A-Za-z0-9._-]{2,100}$/;
+  const referrerProfile=(()=>{try{const u=new URL(document.referrer);if(u.origin!==location.origin)return'';const m=u.pathname.match(/^\/profiles\/(FR-[A-Z0-9]+-[A-Za-z0-9][A-Za-z0-9._-]{2,100})\/$/);return m?.[1]||''}catch{return''}})();
+  const profile=String(params.get('profile')||referrerProfile||'').trim(),validProfile=PROFILE_RE.test(profile);
   const profilePage=validProfile?location.origin+'/profiles/'+profile+'/':'';
   const set=(name,value)=>{if(form.elements[name]&&value&&!form.elements[name].value)form.elements[name].value=value};
   set('profileId',validProfile?profile:'');set('listing',params.get('listing')||'');set('url',params.get('url')||profilePage);
