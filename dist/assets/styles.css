@@ -451,3 +451,26 @@ header .wrap.top>a.brand{order:1!important;margin:0!important;flex:0 0 auto!impo
 header .wrap.top>nav.nav{order:2!important;margin-left:auto!important;flex:0 1 auto!important}
 header .wrap.top>.r37-language-switch{order:3!important;margin-left:10px!important;flex:0 0 auto!important;position:static!important}
 @media(max-width:900px){header .wrap.top{flex-wrap:wrap!important}header .wrap.top>a.brand{order:1!important}header .wrap.top>.r37-language-switch{order:2!important;margin-left:auto!important}header .wrap.top>nav.nav{order:3!important;width:100%!important;margin-left:0!important}}
+
+
+/* R1343 — claim/manage must be unmistakable, consistent and accessible. */
+:root{--claim-accent:#f6c453;--claim-accent-ink:#123f43;--claim-accent-border:#c78916}
+.profile-primary-actions{align-items:center}
+.profile-primary-actions .r1343-claim-primary,.r1343-claim-primary{
+  background:var(--claim-accent)!important;color:var(--claim-accent-ink)!important;
+  border:2px solid var(--claim-accent-border)!important;font-weight:850!important;
+  box-shadow:0 3px 0 rgba(18,63,67,.14);text-decoration:none!important
+}
+.profile-primary-actions .r1343-claim-primary{order:-20}
+.r1343-claim-primary:hover{background:#ffcf68!important;color:var(--claim-accent-ink)!important;transform:translateY(-1px)}
+.r1343-claim-primary:focus-visible{outline:3px solid #123f43!important;outline-offset:3px!important}
+.r1343-correction-secondary{order:-10}
+.r1343-claim-status-link{display:inline-flex!important;align-items:center;justify-content:center;margin:.35rem 0 0}
+.r1342-claim-result-action{
+  display:inline-flex!important;align-items:center;justify-content:center;min-height:42px;
+  padding:9px 13px!important;border-radius:9px;background:var(--claim-accent)!important;
+  color:var(--claim-accent-ink)!important;border:2px solid var(--claim-accent-border)!important;
+  font-weight:850!important;box-shadow:0 2px 0 rgba(18,63,67,.12)
+}
+.r1342-claim-result:hover .r1342-claim-result-action,.r1342-claim-result:focus-within .r1342-claim-result-action{background:#ffcf68!important}
+@media(max-width:620px){.profile-primary-actions .r1343-claim-primary,.profile-primary-actions .r1343-correction-secondary{width:100%;justify-content:center}.r1342-claim-result-action{width:100%;margin-top:8px}}
