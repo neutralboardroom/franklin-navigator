@@ -1,0 +1,287 @@
+{
+  "schemaVersion": "franklin.owner-agreed-fix-visibility-registry.v1",
+  "durableRuleId": "FRANKLIN_OWNER_FIX_VISIBILITY_1",
+  "activeEdition": "FRANKLIN_TN",
+  "rule": "Protected fixes must remain visible/reachable in normal user journeys; future owner-agreed fixes must be registered in the same release.",
+  "entries": [
+    {
+      "id": "R1337_FRANKLIN_THROUGH_TIME",
+      "surfaces": [
+        {
+          "file": "dist/index.html",
+          "allOf": [
+            "Franklin Through Time"
+          ],
+          "noneOf": [
+            "Then & Now"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1337_PROFILE_HELPFUL_LINKS",
+      "surfaces": [
+        {
+          "file": "dist/assets/r1330-profile.js",
+          "allOf": [
+            "Helpful links"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1338_MANAGEMENT_STATES",
+      "surfaces": [
+        {
+          "file": "dist/assets/r1330-profile.js",
+          "allOf": [
+            "Management verified for you",
+            "Access request pending",
+            "Access review needed"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1338_SAFE_MANAGEMENT_EXIT",
+      "surfaces": [
+        {
+          "file": "dist/assets/member-profile-live.js",
+          "allOf": [
+            "Withdraw access request",
+            "Stop managing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1338_FREE_CORRECTION_REMOVAL",
+      "surfaces": [
+        {
+          "file": "dist/corrections/index.html",
+          "allOf": [
+            "free",
+            "removal"
+          ]
+        },
+        {
+          "file": "dist/es/correcciones/index.html",
+          "allOf": [
+            "gratuit",
+            "retiro"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1339_PROFILE_CENTER_TERMINOLOGY",
+      "surfaces": [
+        {
+          "file": "dist/profile-studio/index.html",
+          "allOf": [
+            "Profile Center"
+          ]
+        },
+        {
+          "file": "dist/assets/r1330-profile.js",
+          "allOf": [
+            "Open Profile Center"
+          ]
+        },
+        {
+          "file": "dist/assets/hf39.js",
+          "noneOf": [
+            "Profile Studio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1340_OWNER_APPROVED_BUSINESS_HEADLINE",
+      "surfaces": [
+        {
+          "file": "dist/business-dashboard/index.html",
+          "allOf": [
+            "Find your Franklin profile. Improve it. Grow your local visibility."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1340_FREE_FIRST_PATH",
+      "surfaces": [
+        {
+          "file": "dist/business-dashboard/index.html",
+          "allOf": [
+            "Claim profile / verify authority",
+            "Review or manage free profile"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1341_MEMBERSHIP_VALUE",
+      "surfaces": [
+        {
+          "file": "dist/business-dashboard/index.html",
+          "allOf": [
+            "How membership increases your visibility"
+          ]
+        },
+        {
+          "file": "dist/membership-start/index.html",
+          "allOf": [
+            "$35/year",
+            "special offers"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1341_PAYMENT_TRUST_BOUNDARY",
+      "surfaces": [
+        {
+          "file": "dist/business-dashboard/index.html",
+          "allOf": [
+            "Corrections and removal are always free",
+            "ordinary unpaid-result order"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1342_NO_PAYMENT_PROFILE_ACCESS",
+      "surfaces": [
+        {
+          "file": "dist/profile-access/index.html",
+          "allOf": [
+            "No membership or payment is required"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1342_PASSWORD_RECOVERY",
+      "surfaces": [
+        {
+          "file": "dist/assets/membership-live.js",
+          "allOf": [
+            "Forgot password?"
+          ]
+        },
+        {
+          "file": "dist/assets/account-recovery-r1342.js",
+          "allOf": [
+            "Reset your password",
+            "same selected profile"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1342_SUPPORT_FALLBACK",
+      "surfaces": [
+        {
+          "file": "dist/assets/membership-live.js",
+          "allOf": [
+            "Can’t access your email? Get account help"
+          ]
+        },
+        {
+          "file": "dist/member-support/index.html",
+          "allOf": [
+            "account"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1342_SPANISH_CLAIM_RECOVERY",
+      "surfaces": [
+        {
+          "file": "dist/assets/r37-i18n.js",
+          "allOf": [
+            "¿Olvidó su contraseña?",
+            "Reclamar este perfil"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1343_UNIVERSAL_PROFILE_CLAIM_CTA",
+      "surfaces": [
+        {
+          "file": "dist/assets/app.js",
+          "allOf": [
+            "universal profile-control visibility guard",
+            "Claim or manage this profile"
+          ]
+        },
+        {
+          "file": "dist/assets/styles.css",
+          "allOf": [
+            "--claim-accent:#f6c453",
+            ".r1343-claim-primary"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1343_CLAIM_SEARCH_PRIMARY_ACTION",
+      "surfaces": [
+        {
+          "file": "dist/assets/hf310.js",
+          "allOf": [
+            "Claim this profile",
+            "r1342-claim-result-action"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1344_CORRECTION_PAGE_CLAIM_ACTION",
+      "surfaces": [
+        {
+          "file": "dist/corrections/index.html",
+          "allOf": [
+            "data-r1344-claim-cta",
+            "Claim or manage this profile — free",
+            "r1343-claim-primary"
+          ]
+        },
+        {
+          "file": "dist/es/correcciones/index.html",
+          "allOf": [
+            "data-r1344-claim-cta",
+            "Reclamar o administrar este perfil — gratis",
+            "r1343-claim-primary"
+          ]
+        },
+        {
+          "file": "dist/assets/hf35-profile-control.js",
+          "allOf": [
+            "data-r1344-claim-cta",
+            "/profile-access/?profile="
+          ]
+        },
+        {
+          "file": "dist/assets/styles.css",
+          "allOf": [
+            ".r1344-owner-claim-callout"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R1344_UNVERIFIED_USER_ROUTE",
+      "surfaces": [
+        {
+          "file": "dist/assets/hf39.js",
+          "allOf": [
+            "access='/profile-access/?profile='"
+          ]
+        }
+      ]
+    }
+  ]
+}
