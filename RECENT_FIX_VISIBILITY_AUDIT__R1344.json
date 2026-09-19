@@ -7,7 +7,8 @@
   "regressions_found_and_fixed": [
     "Logged-in business readiness copy still said Profile Studio instead of Profile Center.",
     "Linked but unverified business users were routed to the Profile Center editor route rather than Profile Access authority verification.",
-    "Spanish dynamic catalog did not include the newer R1342 Forgot password / claim / account-help recovery actions."
+    "Spanish dynamic catalog did not include the newer R1342 Forgot password / claim / account-help recovery actions.",
+    "The correction/review page did not surface the owner claim/manage action prominently; it now shows the distinct free claim CTA and exact-profile continuity."
   ],
   "verified": [
     "R1337 Franklin Through Time heading",
@@ -18,7 +19,8 @@
     "R1340 approved business headline and free-first five-step path",
     "R1341 visible membership value and payment-neutrality safeguards",
     "R1342 account choice, password recovery, same-profile continuity, support fallback, Spanish parity",
-    "R1343 universal distinct claim/manage CTA and claim-search CTA"
+    "R1343 universal distinct claim/manage CTA and claim-search CTA",
+    "Correction/review page claim/manage CTA remains prominent and distinct from correction/removal"
   ],
   "unchanged_boundaries": [
     "No pricing change",
