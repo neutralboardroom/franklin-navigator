@@ -15,6 +15,7 @@ on:
       - 'scripts/public-language-audit.py'
       - 'scripts/release-meta-integrity.py'
       - 'scripts/validate-current-release.py'
+      - 'scripts/sitewide-readability-contract-r1340.py'
   pull_request:
     branches: [main]
     paths:
@@ -25,6 +26,7 @@ on:
       - 'scripts/public-language-audit.py'
       - 'scripts/release-meta-integrity.py'
       - 'scripts/validate-current-release.py'
+      - 'scripts/sitewide-readability-contract-r1340.py'
 
 permissions:
   contents: read
@@ -173,6 +175,13 @@ jobs:
           ! grep -R -F --include='*.html' --include='*.js' "Unclaimed profile" dist
           grep -F "Find your Franklin profile. Improve it. Grow your local visibility." dist/business-dashboard/index.html
           grep -F "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local." dist/es/negocios/index.html
+          node --check dist/assets/r1326-business-journey.js
+          grep -F "Find your Franklin profile. Improve it. Grow your local visibility." dist/assets/r1326-business-journey.js
+          ! grep -F "Find your Franklin profile, then improve it." dist/assets/r1326-business-journey.js
+          grep -F "width:auto!important" dist/assets/r1326-business-journey.js
+          grep -F "width:auto!important" dist/assets/r1327-refinement.css
+          grep -F "learning-boundary" dist/assets/r1336-color-system.css
+          python scripts/sitewide-readability-contract-r1340.py
           grep -F "'Open Profile Center':'Abrir Centro de Perfil'" dist/assets/r37-i18n.js
           grep -F "preferredLanguage:isEs()?'SPANISH':'ENGLISH'" dist/assets/r1338-profile-request.js
           grep -F "/api/member/representation/release" dist/assets/member-profile-live.js
