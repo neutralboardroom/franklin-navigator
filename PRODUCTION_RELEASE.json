@@ -1977,7 +1977,7 @@
       "branch": "franklin-commerce-runtime-r30",
       "commit": "3503f7b3b58042ef0389537af313a1b3545ef23f",
       "deploy": "dep-dan62krm8hqs73a6bqbg",
-      "deployState": "DEPLOY_TRIGGERED_PENDING_FINAL_VERIFICATION",
+      "deployState": "LIVE",
       "releaseEnv": "FR-NAV1.30.45-HF3.13.27",
       "functionalChanges": false,
       "releaseIdentityAdvanced": true,
