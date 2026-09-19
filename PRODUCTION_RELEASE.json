@@ -1654,13 +1654,20 @@
     },
     "runtime": {
       "branch": "franklin-commerce-runtime-r30",
-      "commit": "df1004bfb3783686e9b0071571434209161f47dc",
+      "commit": "ed707bc95c9740583a54d5c4fa61cc44387da32f",
       "priorCommit": "92bd8da73158cc6158d553e3644e37abb413414b",
-      "deploy": "dep-damhcmh42hec7394cojg",
-      "deployState": "PENDING_R1339_RELEASE_IDENTITY_DEPLOY",
+      "deploy": "dep-damufap42hec73ci06gg",
+      "deployState": "LIVE",
       "releaseEnv": "FR-NAV1.30.39-HF3.13.21",
       "functionalChanges": false,
-      "releaseIdentityAdvanced": true
+      "releaseIdentityAdvanced": true,
+      "tests": {
+        "total": 37,
+        "pass": 37,
+        "fail": 0,
+        "skipped": 0
+      },
+      "memberFulfillmentVersion": "FRANKLIN_MEMBER_FULFILLMENT_HF3_5"
     },
     "authorityBoundary": {
       "canonicalProfileFactsOwner": "PROFILE_FACTORY",
@@ -1677,7 +1684,7 @@
     ],
     "sccAccepted": false,
     "sccCanonicalCurrent": false,
-    "ownerActionRequired": "NONE_FOR_SOURCE_BUILD; RENDER_WORKSPACE_CONFIRMATION_REQUIRED_BEFORE_LIVE_RUNTIME_DEPLOYMENT",
+    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/promotion remains separate",
     "qualification": {
       "result": "PENDING_EXACT_HEAD_WORKFLOW_AND_LIVE_RUNTIME_RELEASE_IDENTITY"
     }
