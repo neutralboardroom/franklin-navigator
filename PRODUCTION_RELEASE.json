@@ -1832,6 +1832,14 @@
       "NEXT_VERSION_IMPROVEMENT_LIST__R1341.md",
       "OWNER_SUMMARY__R1341.md",
       "R1341_RELEASE_RECEIPT.json"
-    ]
+    ],
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1340"
+    }
   }
 }
