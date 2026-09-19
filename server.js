@@ -15,11 +15,12 @@ const {createReviewSystem,VERSION:COMMUNITY_REVIEWS_VERSION}=require('./lib/revi
 const {loadProfileScope}=require('./lib/profile-scope');
 const {createReviewerConsole,VERSION:REVIEWER_CONSOLE_VERSION}=require('./lib/reviewer-console');
 const {createIncidentMonitor,VERSION:ISSUE_MONITOR_VERSION}=require('./lib/incident-monitor');
+const {createAccountRecovery,VERSION:ACCOUNT_RECOVERY_VERSION}=require('./lib/account-recovery');
 const {loadControlProfileRegistry,productionProfileRows}=require('./lib/member-profile-policy');
 const CHECKOUT_SAFETY_VERSION='FRANKLIN_CHECKOUT_SAFETY_1';
 const ISSUE_MONITOR_MIGRATION='FRANKLIN_ISSUE_MONITOR_1';
 
-const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.41-HF3.13.23';
+const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.42-HF3.13.24';
 const SCHEMA_VERSION = 'FRANKLIN_COMMERCE_SCHEMA_2';
 const PORT = Number(process.env.PORT || 10000);
 const PUBLIC_ORIGIN = String(process.env.PUBLIC_ORIGIN || 'https://franklinnavigator.com').replace(/\/$/, '');
@@ -92,6 +93,36 @@ async function readBody(req,raw=false){const chunks=[];let size=0;for await(cons
 async function query(text,values=[]){if(!pool)throw publicError('DATABASE_NOT_CONFIGURED','Membership service is not ready.',503);return pool.query(text,values);}
 async function tx(fn){if(!pool)throw publicError('DATABASE_NOT_CONFIGURED','Membership service is not ready.',503);const client=await pool.connect();try{await client.query('begin');const out=await fn(client);await client.query('commit');return out;}catch(error){await client.query('rollback').catch(()=>{});throw error;}finally{client.release();}}
 const incidentMonitor=createIncidentMonitor({query,tx,newId,sha256});
+const resetEmailConfig=Object.freeze({
+  apiKey:String(process.env.FRANKLIN_ACCOUNT_RECOVERY_RESEND_API_KEY||process.env.FRANKLIN_ALERT_RESEND_API_KEY||process.env.RESEND_API_KEY||'').trim(),
+  from:String(process.env.FRANKLIN_ACCOUNT_RECOVERY_FROM_EMAIL||process.env.FRANKLIN_ALERT_FROM_EMAIL||'').trim()
+});
+async function sendPasswordResetEmail(email,token,profileId){
+  if(!/^re_[A-Za-z0-9_\-]{12,}$/.test(resetEmailConfig.apiKey)||!EMAIL_RE.test(resetEmailConfig.from))throw Object.assign(new Error('PASSWORD_RESET_EMAIL_NOT_CONFIGURED'),{code:'PASSWORD_RESET_EMAIL_NOT_CONFIGURED'});
+  const target=new URL('/account-recovery/',PUBLIC_ORIGIN);
+  const fragment=new URLSearchParams({token:String(token||'')});
+  if(PROFILE_RE.test(String(profileId||'')))fragment.set('profile',String(profileId));
+  const resetUrl=target.toString()+'#'+fragment.toString();
+  const response=await fetch('https://api.resend.com/emails',{
+    method:'POST',
+    headers:{Authorization:'Bearer '+resetEmailConfig.apiKey,'Content-Type':'application/json'},
+    body:JSON.stringify({
+      from:resetEmailConfig.from,
+      to:[email],
+      subject:'Reset your Franklin Navigator password',
+      text:['Franklin Navigator password reset','',`Use this secure link within 30 minutes: ${resetUrl}`,'','If you did not request this reset, you can ignore this email. Franklin Navigator will never send your password by email.'].join('\n')
+    }),
+    signal:AbortSignal.timeout(8000)
+  });
+  const payload=await response.json().catch(()=>({}));
+  if(!response.ok||!payload.id)throw Object.assign(new Error('PASSWORD_RESET_EMAIL_FAILED'),{code:'PASSWORD_RESET_EMAIL_FAILED'});
+  return {id:String(payload.id).slice(0,120)};
+}
+const accountRecovery=createAccountRecovery({
+  query,tx,readBody,rateLimit,clientKey,normalizeEmail,emailRe:EMAIL_RE,sha256,randomToken,hashPassword,publicError,createSession,audit,
+  sendResetEmail:sendPasswordResetEmail,
+  recordDeliveryFailure:input=>incidentMonitor.record({workflow:'ACCOUNT_ACCESS',code:input.code||'PASSWORD_RESET_EMAIL_FAILED',source:'SERVER_ROUTE',requestId:input.reqId,accountId:input.accountId,httpStatus:503,context:{operation:'PASSWORD_RESET_EMAIL'}})
+});
 function issueWorkflow(pathname){
   const p=String(pathname||'');
   if(p.includes('/accounts/register'))return'ACCOUNT_REGISTER';
@@ -251,8 +282,8 @@ const communityReviews=createReviewSystem({query,tx,readBody,sendJson,requireSes
 async function route(req,res){const reqId=requestId();let routePath='/';try{const url=new URL(req.url,`http://${req.headers.host||'localhost'}`);routePath=url.pathname;if(await reviewerConsole.route(req,res,url,reqId,memberWorkflow,readyError,memberMedia))return;if(req.method==='OPTIONS'){const origin=String(req.headers.origin||'');if(origin&&!ALLOWED_ORIGINS.has(origin))throw publicError('ORIGIN_NOT_ALLOWED','This request origin is not allowed.',403);return sendEmpty(req,res,204);}enforceOrigin(req);
   if(readyError&&!['/health','/ready'].includes(url.pathname))throw publicError('SERVICE_NOT_READY','The membership service is not ready. No change was saved.',503);
   if(await communityReviews.route(req,res,url,reqId))return;if(await memberMedia.route(req,res,url,reqId))return;if(await memberWorkflow.route(req,res,url,reqId))return;
-  if(req.method==='GET'&&url.pathname==='/health'){let database=false;try{database=Boolean((await query('select 1 ok')).rowCount);}catch{}const cfg=configStatus();const healthy=cfg.ok&&database&&!readyError;return sendJson(req,res,healthy?200:503,{ok:healthy,release:RELEASE,checkoutSafetyVersion:CHECKOUT_SAFETY_VERSION,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,memberMediaVersion:MEMBER_MEDIA_VERSION,communityReviewsVersion:COMMUNITY_REVIEWS_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION,issueMonitorVersion:ISSUE_MONITOR_VERSION,reviewerConsoleConfigured:reviewerConsole.configured,reviewCoverageConfigured:memberWorkflow.reviewCoverageConfigured,community:COMMUNITY,commerceEnabled:COMMERCE_ENABLED,databaseConfigured:Boolean(DATABASE_URL),database,startupReady:!readyError,missing:cfg.missing,ownerAlertDeliveryConfigured:incidentMonitor.externalDeliveryConfigured(),ownerAlertDelivery:incidentMonitor.externalDeliveryStatus(),uptimeSeconds:Math.floor(process.uptime())},reqId);}
-  if(req.method==='GET'&&url.pathname==='/ready'){let database=false,migration=null;try{database=Boolean((await query('select 1 ok')).rowCount);migration=(await query(`select version,digest_sha256,applied_at from franklin_schema_migrations where version=$1`,[SCHEMA_VERSION])).rows[0]||null;}catch{}const cfg=configStatus();const infrastructureReady=cfg.ok&&database&&stripeKeyConfigured()&&stripeWebhookConfigured()&&Boolean(migration)&&!readyError;return sendJson(req,res,infrastructureReady?200:503,{ok:infrastructureReady,release:RELEASE,checkoutSafetyVersion:CHECKOUT_SAFETY_VERSION,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION,issueMonitorVersion:ISSUE_MONITOR_VERSION,reviewerConsoleConfigured:reviewerConsole.configured,reviewCoverageConfigured:memberWorkflow.reviewCoverageConfigured,community:COMMUNITY,schemaVersion:SCHEMA_VERSION,schemaDigest,migration,database,stripeCheckoutSessionConfigured:stripeKeyConfigured(),stripeWebhookConfigured:stripeWebhookConfigured(),portalSessionConfigured:stripeKeyConfigured(),commerceEnabled:COMMERCE_ENABLED,liveCheckoutEnabled:infrastructureReady&&COMMERCE_ENABLED,checkoutContract:'SERVER_CREATED_STRIPE_CHECKOUT_SESSION_V1',ownerAlertDeliveryConfigured:incidentMonitor.externalDeliveryConfigured(),ownerAlertDelivery:incidentMonitor.externalDeliveryStatus(),missing:cfg.missing,startupError:readyError?String(readyError.message||readyError):null},reqId);}
+  if(req.method==='GET'&&url.pathname==='/health'){let database=false;try{database=Boolean((await query('select 1 ok')).rowCount);}catch{}const cfg=configStatus();const healthy=cfg.ok&&database&&!readyError;return sendJson(req,res,healthy?200:503,{ok:healthy,release:RELEASE,checkoutSafetyVersion:CHECKOUT_SAFETY_VERSION,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,memberMediaVersion:MEMBER_MEDIA_VERSION,communityReviewsVersion:COMMUNITY_REVIEWS_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION,issueMonitorVersion:ISSUE_MONITOR_VERSION,accountRecoveryVersion:ACCOUNT_RECOVERY_VERSION,reviewerConsoleConfigured:reviewerConsole.configured,reviewCoverageConfigured:memberWorkflow.reviewCoverageConfigured,community:COMMUNITY,commerceEnabled:COMMERCE_ENABLED,databaseConfigured:Boolean(DATABASE_URL),database,startupReady:!readyError,missing:cfg.missing,ownerAlertDeliveryConfigured:incidentMonitor.externalDeliveryConfigured(),ownerAlertDelivery:incidentMonitor.externalDeliveryStatus(),uptimeSeconds:Math.floor(process.uptime())},reqId);}
+  if(req.method==='GET'&&url.pathname==='/ready'){let database=false,migration=null;try{database=Boolean((await query('select 1 ok')).rowCount);migration=(await query(`select version,digest_sha256,applied_at from franklin_schema_migrations where version=$1`,[SCHEMA_VERSION])).rows[0]||null;}catch{}const cfg=configStatus();const infrastructureReady=cfg.ok&&database&&stripeKeyConfigured()&&stripeWebhookConfigured()&&Boolean(migration)&&!readyError;return sendJson(req,res,infrastructureReady?200:503,{ok:infrastructureReady,release:RELEASE,checkoutSafetyVersion:CHECKOUT_SAFETY_VERSION,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION,issueMonitorVersion:ISSUE_MONITOR_VERSION,accountRecoveryVersion:ACCOUNT_RECOVERY_VERSION,reviewerConsoleConfigured:reviewerConsole.configured,reviewCoverageConfigured:memberWorkflow.reviewCoverageConfigured,community:COMMUNITY,schemaVersion:SCHEMA_VERSION,schemaDigest,migration,database,stripeCheckoutSessionConfigured:stripeKeyConfigured(),stripeWebhookConfigured:stripeWebhookConfigured(),portalSessionConfigured:stripeKeyConfigured(),commerceEnabled:COMMERCE_ENABLED,liveCheckoutEnabled:infrastructureReady&&COMMERCE_ENABLED,checkoutContract:'SERVER_CREATED_STRIPE_CHECKOUT_SESSION_V1',ownerAlertDeliveryConfigured:incidentMonitor.externalDeliveryConfigured(),ownerAlertDelivery:incidentMonitor.externalDeliveryStatus(),missing:cfg.missing,startupError:readyError?String(readyError.message||readyError):null},reqId);}
   if(req.method==='GET'&&url.pathname==='/api/catalog')return sendJson(req,res,200,publicCatalog(),reqId);
   if(req.method==='POST'&&url.pathname==='/api/telemetry/issue'){
     if(!rateLimit(`issue-telemetry:${clientKey(req)}`,30,60000))throw publicError('RATE_LIMITED','Too many issue signals. Try again later.',429);
@@ -264,7 +295,18 @@ async function route(req,res){const reqId=requestId();let routePath='/';try{cons
     });
     return sendJson(req,res,202,{ok:true,accepted:true,severity:result.severity},reqId);
   }
-  if(req.method==='POST'&&url.pathname==='/api/accounts/register'){if(!rateLimit(`register:${clientKey(req)}`,5,3600000))throw publicError('RATE_LIMITED','Too many attempts. Try again later.',429);const body=await readBody(req);const email=normalizeEmail(body.email);if(!EMAIL_RE.test(email))throw publicError('EMAIL_INVALID','Enter a valid email.');const passwordHash=await hashPassword(body.password);const accountId=newId('acct');await tx(async client=>{await client.query(`insert into franklin_accounts(account_id,community,email,email_normalized,password_hash,display_name,preferred_language) values($1,$2,$3,$3,$4,$5,$6)`,[accountId,COMMUNITY,email,passwordHash,safeText(body.displayName,120)||null,['ENGLISH','SPANISH','BILINGUAL'].includes(String(body.preferredLanguage||'').toUpperCase())?String(body.preferredLanguage).toUpperCase():'ENGLISH']);await audit(client,'ACCOUNT',accountId,'ACCOUNT_CREATED','ACCOUNT',accountId,reqId);});await createSession(req,res,accountId);return sendJson(req,res,201,{ok:true,accountId},reqId);}
+  {const recoveryResult=await accountRecovery.route(req,res,url,reqId);if(recoveryResult)return sendJson(req,res,recoveryResult.status,recoveryResult.payload,reqId);}
+  if(req.method==='POST'&&url.pathname==='/api/accounts/register'){
+    if(!rateLimit(`register:${clientKey(req)}`,5,3600000))throw publicError('RATE_LIMITED','Too many attempts. Try again later.',429);
+    const body=await readBody(req);const email=normalizeEmail(body.email);
+    if(!EMAIL_RE.test(email))throw publicError('EMAIL_INVALID','Enter a valid email.');
+    const existing=await query(`select 1 from franklin_accounts where email_normalized=$1 limit 1`,[email]);
+    if(existing.rowCount)throw publicError('ACCOUNT_ALREADY_EXISTS','An account already exists for this email. Sign in or reset your password.',409);
+    const passwordHash=await hashPassword(body.password);const accountId=newId('acct');
+    try{await tx(async client=>{await client.query(`insert into franklin_accounts(account_id,community,email,email_normalized,password_hash,display_name,preferred_language) values($1,$2,$3,$3,$4,$5,$6)`,[accountId,COMMUNITY,email,passwordHash,safeText(body.displayName,120)||null,['ENGLISH','SPANISH','BILINGUAL'].includes(String(body.preferredLanguage||'').toUpperCase())?String(body.preferredLanguage).toUpperCase():'ENGLISH']);await audit(client,'ACCOUNT',accountId,'ACCOUNT_CREATED','ACCOUNT',accountId,reqId);});}
+    catch(error){if(error?.code==='23505')throw publicError('ACCOUNT_ALREADY_EXISTS','An account already exists for this email. Sign in or reset your password.',409);throw error;}
+    await createSession(req,res,accountId);return sendJson(req,res,201,{ok:true,accountId},reqId);
+  }
   if(req.method==='POST'&&url.pathname==='/api/accounts/login'){if(!rateLimit(`login:${clientKey(req)}`,10,900000))throw publicError('RATE_LIMITED','Too many attempts. Try again later.',429);const body=await readBody(req);const result=await query(`select account_id,password_hash from franklin_accounts where email_normalized=$1 and state='ACTIVE'`,[normalizeEmail(body.email)]);const account=result.rows[0];if(!account||!await verifyPassword(body.password,account.password_hash))throw publicError('LOGIN_INVALID','Email or password is incorrect.',401);await createSession(req,res,account.account_id);return sendJson(req,res,200,{ok:true},reqId);}
   if(req.method==='POST'&&url.pathname==='/api/accounts/logout'){const token=parseCookies(req.headers.cookie)[COOKIE_NAME];if(token)await query(`delete from franklin_sessions where session_hash=$1`,[sha256(`${SESSION_SECRET}:${token}`)]);clearSessionCookie(res);return sendJson(req,res,200,{ok:true},reqId);}
   if(req.method==='GET'&&url.pathname==='/api/accounts/me'){const session=await requireSession(req);const links=await query(`select profile_id,authority_state,verified_at from franklin_profile_links where account_id=$1 order by created_at`,[session.account_id]);const membership=await membershipForAccount(session.account_id);return sendJson(req,res,200,{ok:true,account:session,profileLinks:links.rows,membership},reqId);}
