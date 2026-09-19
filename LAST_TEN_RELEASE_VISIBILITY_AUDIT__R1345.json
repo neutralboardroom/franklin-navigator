@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "franklin.last-ten-owner-fix-visibility-audit.r1345.v1",
+  "release": "FR-NAV1.30.45-HF3.13.27",
+  "date": "2026-09-19",
+  "auditedVersions": [
+    "FR-NAV1.30.35-HF3.13.17",
+    "FR-NAV1.30.36-HF3.13.18",
+    "FR-NAV1.30.37-HF3.13.19",
+    "FR-NAV1.30.38-HF3.13.20",
+    "FR-NAV1.30.39-HF3.13.21",
+    "FR-NAV1.30.40-HF3.13.22",
+    "FR-NAV1.30.41-HF3.13.23",
+    "FR-NAV1.30.42-HF3.13.24",
+    "FR-NAV1.30.43-HF3.13.25",
+    "FR-NAV1.30.44-HF3.13.26"
+  ],
+  "method": [
+    "Re-read release receipts and owner summaries for R1335-R1344.",
+    "Reconcile each still-applicable user-facing commitment against the current successor source.",
+    "Check static HTML plus dynamic JavaScript where later layers can overwrite visible copy or routing.",
+    "Scan non-print CSS for display:none, visibility:hidden, opacity:0, content-visibility:hidden or max-height:0 rules targeting protected selectors.",
+    "Require the permanent visibility gate in normal qualification and clean extracted-artifact qualification."
+  ],
+  "historicalSamePatternFindings": [
+    {
+      "release": "R1339",
+      "finding": "Retired Profile Studio wording and stale managed/unclaimed labels survived in public/dynamic layers after Profile Center had become the approved presentation.",
+      "repairedBy": "R1339/R1344 follow-up hardening",
+      "currentGuard": "R1339_PROFILE_CENTER_TERMINOLOGY"
+    },
+    {
+      "release": "R1340",
+      "finding": "A historical browser enhancement script replaced the approved static business H1 after load and inherited fixed badge geometry caused path-copy overlap.",
+      "repairedBy": "R1340",
+      "currentGuard": "R1340_OWNER_APPROVED_BUSINESS_HEADLINE + R1340_FREE_FIRST_PATH"
+    },
+    {
+      "release": "R1342",
+      "finding": "Newer claim/password-recovery/account-help actions existed in English but the Spanish dynamic catalog did not yet include them.",
+      "repairedBy": "R1344",
+      "currentGuard": "R1342_SPANISH_CLAIM_RECOVERY"
+    },
+    {
+      "release": "R1343",
+      "finding": "Claim capability existed but could be visually buried or absent on profile templates that did not load the profile-specific enhancement layer.",
+      "repairedBy": "R1343",
+      "currentGuard": "R1343_UNIVERSAL_PROFILE_CLAIM_CTA + R1343_CLAIM_SEARCH_PRIMARY_ACTION"
+    },
+    {
+      "release": "R1344",
+      "finding": "The corrections/review surface still made ownership claiming too easy to miss; the first patch also required Spanish parity and exact-profile continuation follow-up.",
+      "repairedBy": "R1344 final bound main state",
+      "currentGuard": "R1344_CORRECTION_PAGE_CLAIM_ACTION"
+    },
+    {
+      "release": "R1344",
+      "finding": "Linked but unverified business users could be routed toward the editor path instead of the authority-verification path.",
+      "repairedBy": "R1344",
+      "currentGuard": "R1344_UNVERIFIED_USER_ROUTE"
+    }
+  ],
+  "currentVersionByVersionChecks": [
+    {
+      "release": "R1335",
+      "focus": "shared semantic color system and common loader",
+      "status": "PRESERVED_IN_CANDIDATE"
+    },
+    {
+      "release": "R1336",
+      "focus": "Ask Franklin public presentation, removed redundant home bridge, self-profile public presentation",
+      "status": "PRESERVED_IN_CANDIDATE"
+    },
+    {
+      "release": "R1337",
+      "focus": "Franklin Through Time, profile accessibility, Helpful links",
+      "status": "PRESERVED_IN_CANDIDATE"
+    },
+    {
+      "release": "R1338",
+      "focus": "free-first management states, withdrawal/stop-management, free correction/removal/photo-logo path",
+      "status": "PRESERVED_IN_CANDIDATE"
+    },
+    {
+      "release": "R1339",
+      "focus": "Profile Center terminology and bilingual profile-request feedback",
+      "status": "PRESERVED_IN_CANDIDATE"
+    },
+    {
+      "release": "R1340",
+      "focus": "approved dynamic/static business headline and readable responsive path",
+      "status": "PRESERVED_IN_CANDIDATE"
+    },
+    {
+      "release": "R1341",
+      "focus": "visible membership-value explanation and payment-neutrality safeguards",
+      "status": "PRESERVED_IN_CANDIDATE"
+    },
+    {
+      "release": "R1342",
+      "focus": "no-payment access, account choice, recovery, same-profile continuity, support and Spanish parity",
+      "status": "PRESERVED_IN_CANDIDATE"
+    },
+    {
+      "release": "R1343",
+      "focus": "universal distinct claim/manage CTA and claim-search CTA",
+      "status": "PRESERVED_IN_CANDIDATE"
+    },
+    {
+      "release": "R1344",
+      "focus": "recent-fix hardening, correction-page claim prominence, exact-profile continuity, unverified-user routing",
+      "status": "PRESERVED_IN_CANDIDATE"
+    }
+  ],
+  "additionalUnresolvedBuriedRegressionsFound": [],
+  "qualification": "PENDING_EXACT_HEAD_WORKFLOW",
+  "permanentRegistry": "OWNER_AGREED_FIX_VISIBILITY_REGISTRY.json",
+  "permanentRule": "DURABLE_RULE__OWNER_AGREED_FIX_VISIBILITY_AND_NON_LOSS.md",
+  "permanentTest": "tests/owner-agreed-fix-visibility.cjs"
+}
