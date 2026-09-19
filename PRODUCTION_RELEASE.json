@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.44-HF3.13.26",
+  "release": "FR-NAV1.30.45-HF3.13.27",
   "date": "2026-09-19",
-  "base": "FR-NAV1.30.43-HF3.13.25",
+  "base": "FR-NAV1.30.44-HF3.13.26",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1344 audits recent owner-agreed Franklin fixes for actual public discoverability and repairs two regressions: logged-in unverified business users now continue through Profile Access instead of the Profile Center editor route, the remaining public 'Profile Studio' label is standardized to 'Profile Center', and Spanish dynamic translations now cover the R1342 claim/password-recovery actions, and the correction/review surface now exposes the same distinct free claim/manage action with exact-profile continuity. R1343 universal claim CTA visibility, R1341 membership-value clarity, R1340 readability, R1339 terminology/localization, and R1338 free-first profile safeguards remain preserved.",
+  "scope": "R1345 completes the ordinary pre-verification profile-access journey: unverified and pending owners/managers stay in Profile Access, can submit/resubmit authority evidence, refresh pending status, and withdraw a pending request without being routed into Profile Center early. Public-profile pending state and post-correction follow-up now preserve the same authority boundary. The permanent owner-fix visibility gate extends through R1345.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -1954,7 +1954,7 @@
     "predecessor": {
       "version": "FR-NAV1.30.43-HF3.13.25"
     },
-    "state": "QUALIFICATION_IN_PROGRESS_AFTER_VALIDATOR_REPAIR",
+    "state": "QUALIFIED_AND_DEPLOYED",
     "colorSystem": {
       "asset": "/assets/r1336-color-system.css",
       "loader": "/assets/hf36.js",
@@ -1998,6 +1998,92 @@
       "version": "FR-NAV1.30.12-HF3.12.4",
       "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
       "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    },
+    "qualification": {
+      "result": "PASS",
+      "workflowRun": 35440838177,
+      "qualifiedHead": "d15c3db1d983cc4a2cbee36dce6fb433d7c08bbc",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.44-HF3.13.26__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactSha256": "89bb0bc3592698b34e258d7daa1c6a32121833d13dbbeb9f9d0de9dfae9e2f71",
+      "manifestSha256": "0b6494f06173f313c558c902c58da03b5a52d17694e073657bc7a472be7c305d"
+    },
+    "staticDeploy": "dep-dan7ceh92vdc73a24cg0"
+  },
+  "r1345": {
+    "version": "FR-NAV1.30.45-HF3.13.27",
+    "date": "2026-09-19",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.44-HF3.13.26",
+      "mainCommit": "d15c3db1d983cc4a2cbee36dce6fb433d7c08bbc",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.44-HF3.13.26__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactSha256": "89bb0bc3592698b34e258d7daa1c6a32121833d13dbbeb9f9d0de9dfae9e2f71",
+      "manifestSha256": "0b6494f06173f313c558c902c58da03b5a52d17694e073657bc7a472be7c305d"
+    },
+    "acceptedCanonicalBase": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    },
+    "ownerCommandRevision": "2026-09-03-R2",
+    "smarterJusticeDonor": "SMARTER_JUSTICE_DONOR_NOT_USED",
+    "noPricingChange": true,
+    "noPaymentOrEntitlementChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noOrdinaryUnpaidRankingChange": true,
+    "noOutreach": true,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "fixes": {
+      "profileAccessOwnsPreVerification": true,
+      "inlineRepresentationRequest": true,
+      "pendingStatusRefresh": true,
+      "pendingRequestWithdrawal": true,
+      "publicPendingRouteUsesProfileAccess": true,
+      "correctionCompletionUsesProfileAccess": true,
+      "verifiedManagersStillUseProfileCenter": true,
+      "disputedAuthorityStillUsesSupport": true,
+      "exactProfileContinuityPreserved": true,
+      "spanishDynamicAccessParityExpanded": true,
+      "permanentAuthorityRoutingGate": true,
+      "recentFixVisibilityGateExtendedThroughR1345": true
+    },
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1344"
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "3503f7b3b58042ef0389537af313a1b3545ef23f",
+      "deploy": "dep-dana3ebm8hqs73ak66sg",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.45-HF3.13.27",
+      "functionalChanges": false,
+      "identityPolicy": "EXPLICIT_LOCAL_RELEASE_ENV_BINDING_WITH_EXACT_SOURCE_COMMIT_AND_LIVE_ACCEPTANCE",
+      "sourceDefaultMayBeAheadOnlyWhenFunctionalChangesFalse": true,
+      "liveAcceptanceRequired": true
+    },
+    "receipts": [
+      "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1345.json",
+      "NO_LOSS_LEDGER__R1345.json",
+      "LOCAL_PLATFORM_PRIORITY_QUEUE__R1345.json",
+      "PROFILE_ACCESS_AUTHORITY_ROUTING_AUDIT__R1345.md",
+      "DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md",
+      "OWNER_SUMMARY__R1345.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1345.md",
+      "CONTINUATION_HANDOFF__R1345.md",
+      "RECENT_FIX_VISIBILITY_AUDIT__R1345.json",
+      "R1345_RELEASE_RECEIPT.json"
+    ],
+    "qualification": {
+      "result": "PENDING_EXACT_HEAD_WORKFLOW"
     }
   }
 }
