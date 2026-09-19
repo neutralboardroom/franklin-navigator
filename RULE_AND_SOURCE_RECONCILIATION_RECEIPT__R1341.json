@@ -1,0 +1,50 @@
+{
+  "receiptType": "RULE_AND_SOURCE_RECONCILIATION_RECEIPT",
+  "recordedAt": "2026-09-19",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "governingCommand": {
+    "name": "UNIVERSAL SMARTER LOCAL COMMUNITY PLATFORM NEXT VERSION BUILD COMMAND",
+    "revision": "2026-09-03-R2",
+    "executionMode": "BUILD"
+  },
+  "ownerDirection": "Clarify to potential paying members that they will get increased visibility and explain how it works.",
+  "authoritativePredecessor": {
+    "release": "FR-NAV1.30.40-HF3.13.22",
+    "mainCommit": "13093807832c6359300bc5b705dade8ee5a1f7c3",
+    "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.40-HF3.13.22__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "bytes": 85526667,
+    "sha256": "4a48bdacbc54b907307e8d076efb8e0781afb4433c7d71ade965a0bb88460de1",
+    "manifestSha256": "eb69a879be2e996a03f47ce6ce1ca007c54c3779ca58d2afd7957332813c0fd0",
+    "qualificationWorkflow": 35414930431
+  },
+  "currentness": {
+    "mainHeadAtStart": "13093807832c6359300bc5b705dade8ee5a1f7c3",
+    "newerAcceptedLocalSuccessorObserved": false,
+    "profileFactory": {
+      "localCurrentIntegration": "FR-PF-PLATFORM-15.28 targeted Franklin Navigator canonical profile already integrated",
+      "newerGeneratedCandidateObserved": "FR-PF-PLATFORM-15.29",
+      "action": "DEFER_WITH_CAUSE_PENDING_ACCEPTED_CONSUMER_POINTER",
+      "wholesaleImportPerformed": false
+    },
+    "localInvestigator": {
+      "latestLocalMetadataObservation": "LI42 candidate / SCC gate pending",
+      "action": "DEFER_WITH_CAUSE_PENDING_ACCEPTED_CONSUMER_POINTER_AND_POINT_OF_USE_CURRENTNESS",
+      "dynamicImportPerformed": false
+    },
+    "smarterJustice": {
+      "usedAsDonor": false,
+      "status": "SMARTER_JUSTICE_DONOR_NOT_USED"
+    },
+    "commercial": {
+      "annualCommunityMembershipUsd": 35,
+      "priceChanged": false,
+      "newOfferInvented": false,
+      "currentProductContractPreserved": true
+    }
+  },
+  "authorityTransfer": false,
+  "communityIsolationPreserved": true,
+  "conclusion": "PASS_TO_BUILD_R1341_FOCUSED_MEMBER_VISIBILITY_VALUE_SLICE"
+}
