@@ -7,6 +7,7 @@
   const params=new URLSearchParams(location.search),es=document.documentElement.lang==='es';
   const profile=String(params.get('profile')||'').trim(),validProfile=/^FR-[A-Z0-9]+-[A-Za-z0-9][A-Za-z0-9._-]{2,100}$/.test(profile);
   const profilePage=validProfile?location.origin+'/profiles/'+profile+'/':'';
+  const claimCta=document.querySelector('[data-r1344-claim-cta]');if(claimCta&&validProfile)claimCta.href='/profile-access/?profile='+encodeURIComponent(profile);
   const set=(name,value)=>{if(form.elements[name]&&value&&!form.elements[name].value)form.elements[name].value=value};
   set('profileId',validProfile?profile:'');set('listing',params.get('listing')||'');set('url',params.get('url')||profilePage);
   if(params.get('action')==='PUBLIC_REMOVAL')form.elements.requestType.value='PUBLIC_REMOVAL';
