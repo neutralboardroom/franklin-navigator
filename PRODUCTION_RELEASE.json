@@ -1954,7 +1954,7 @@
     "predecessor": {
       "version": "FR-NAV1.30.43-HF3.13.25"
     },
-    "state": "QUALIFICATION_IN_PROGRESS",
+    "state": "QUALIFICATION_IN_PROGRESS_AFTER_RUNTIME_IDENTITY_CONVERGENCE",
     "colorSystem": {
       "asset": "/assets/r1336-color-system.css",
       "loader": "/assets/hf36.js",
@@ -1981,6 +1981,15 @@
     "noOutreach": true,
     "sccAccepted": false,
     "sccCanonicalCurrent": false,
-    "auditedReleaseSpan": "R1335-R1344"
+    "auditedReleaseSpan": "R1335-R1344",
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "3503f7b3b58042ef0389537af313a1b3545ef23f",
+      "deploy": "dep-dan67kjm8hqs73a6s7s0",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.44-HF3.13.26",
+      "functionalChanges": false,
+      "note": "R1344 runtime identity advanced by environment binding only; no R1344 account/payment/claim behavior change."
+    }
   }
 }
