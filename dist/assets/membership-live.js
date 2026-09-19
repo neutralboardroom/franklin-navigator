@@ -8,6 +8,7 @@
   const button=(text,fn,cls='button primary')=>{const n=el('button',text,cls);n.type='button';n.addEventListener('click',fn);return n};
   const link=(text,href,cls='button')=>{const n=el('a',text,cls);n.href=href;return n};
   const field=(labelText,name,type='text',autocomplete='')=>{const label=el('label');label.append(el('span',labelText));const input=document.createElement('input');input.name=name;input.type=type;if(autocomplete)input.autocomplete=autocomplete;label.append(input);return{label,input}};
+  const textAreaField=(labelText,name,rows=4)=>{const label=el('label');label.append(el('span',labelText));const input=document.createElement('textarea');input.name=name;input.rows=rows;label.append(input);return{label,input}};
   const notice=(text,kind='')=>{const n=el('div',text,`r37-status${kind?' '+kind:''}`);n.setAttribute('role','status');return n};
   const planFor=key=>key===SALE_PLAN.lookupKey?SALE_PLAN:{label:historicalPlanLabel(key),price:''};
   async function request(path,{method='GET',body}={}){const response=await fetch(API+path,{method,credentials:'include',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined});let payload={};try{payload=await response.json()}catch{}if(!response.ok){const e=new Error(payload?.error?.message||'Franklin could not complete this request.');e.code=payload?.error?.code||`HTTP_${response.status}`;e.status=response.status;throw e}return payload}
@@ -135,6 +136,7 @@
       return s;
     }
     const studio='/profile-studio/?profile='+encodeURIComponent(state.selected.i);
+    const access='/profile-access/?profile='+encodeURIComponent(state.selected.i);
     const correction='/corrections/?profile='+encodeURIComponent(state.selected.i)+'&url='+encodeURIComponent(location.origin+'/profiles/'+state.selected.i+'/');
     if(linked.authority_state==='VERIFIED'){
       s.append(notice('Profile access verified. You can manage this profile now.','good'));
@@ -142,9 +144,39 @@
     }else if(linked.authority_state==='DISPUTED'){
       s.append(notice('This profile has an access dispute. Contact support so Franklin can review it safely.','warn'));
       actions.append(link('Get profile support','/member-support/?profile='+encodeURIComponent(state.selected.i),'button primary'),link('Correct public facts',correction));
+    }else if(!state.profileMode){
+      s.append(notice('Profile access is not yet verified. Complete free management verification before membership can continue.','warn'));
+      actions.append(link('Continue free profile access',access,'button primary'),link('Correct public facts',correction));
     }else{
-      s.append(notice('Profile access is not yet verified. Open Profile Center to submit or check your access request.','warn'));
-      actions.append(link('Request or check profile access',studio,'button primary'),link('Correct public facts',correction));
+      const when=linked.review_updated_at?(()=>{try{return new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(linked.review_updated_at))}catch{return''}})():'';
+      const review=String(linked.review_state||'').toUpperCase();
+      if(review==='PENDING'){
+        s.append(notice('Your profile-access request is waiting for review.'+(when?' Last updated '+when+'.':''),'good'));
+        actions.append(button('Refresh status',async()=>{try{state.me=await getMe();state.message='Profile-access status refreshed.'}catch(e){state.message=friendlyError(e)}rerender()},'button primary'));
+        actions.append(link('Correct public facts',correction));
+        actions.append(button('Withdraw access request',async()=>{try{await request('/api/member/representation/release',{method:'POST',body:{profileId:state.selected.i,expectedRevision:linked.review_revision||0}});state.me=await getMe();state.message='Your profile-access request was withdrawn. No membership or payment was changed.'}catch(e){state.message=friendlyError(e)}rerender()},'button'));
+      }else{
+        const stateCopy={
+          CHANGES_REQUESTED:'Franklin needs more information before this access request can be approved.',
+          REJECTED:'The previous access request was not approved. You may submit new evidence if you are authorized.',
+          REVOKED:'Previous management access ended. You may request access again if you are currently authorized.'
+        };
+        if(stateCopy[review])s.append(notice(stateCopy[review],'warn'));
+        s.append(el('h3','Confirm that you are authorized to manage this profile.'),el('p','Claiming and basic profile management are free. Franklin reviews access before Profile Center tools are enabled; a claim never changes public facts by itself.'));
+        const form=document.createElement('form');form.className='form-grid r1345-profile-access-verification';
+        const evidence=field('Official website or public page showing your connection','evidenceUrl','url','url');evidence.input.placeholder='https://';
+        const statement=textAreaField('How are you authorized to manage this profile?','statement',4);statement.input.required=true;statement.input.minLength=30;statement.input.maxLength=1200;
+        const confirmLabel=el('label',null,'p0-check'),confirmBox=document.createElement('input');confirmBox.type='checkbox';confirmBox.required=true;confirmBox.name='authorityConfirmed';confirmLabel.append(confirmBox,document.createTextNode(' I confirm that I own, manage, work for, or am otherwise authorized to act for this profile.'));
+        const submit=el('button',review==='CHANGES_REQUESTED'?'Submit updated access request':'Submit access request','button primary');submit.type='submit';
+        form.append(evidence.label,statement.label,confirmLabel,submit);
+        form.addEventListener('submit',async e=>{e.preventDefault();submit.disabled=true;try{
+          await request('/api/member/representation/request',{method:'POST',body:{profileId:state.selected.i,expectedRevision:linked.review_revision||0,evidenceUrl:evidence.input.value,statement:statement.input.value,authorityConfirmed:confirmBox.checked}});
+          state.me=await getMe();state.message='Your free profile-access request is saved and waiting for review. No membership or payment was started.';
+        }catch(err){state.message=friendlyError(err)}rerender()});
+        s.append(form);
+        actions.append(link('Correct public facts',correction));
+        actions.append(link('Need help?','/member-support/?topic=PROFILE_ACCESS&profile='+encodeURIComponent(state.selected.i)));
+      }
     }
     s.append(actions);
     return s;
@@ -155,7 +187,7 @@
   async function init(root){
     const mode=root.dataset.membershipLiveMode||'account';
     const profileMode=mode==='profile';
-    const state={ready:null,me:null,selected:null,profileLabel:'',accountMode:'register',message:profileMode?'Checking free profile-management access…':'Checking membership availability…'};
+    const state={ready:null,me:null,selected:null,profileLabel:'',accountMode:'register',profileMode,message:profileMode?'Checking free profile-management access…':'Checking membership availability…'};
     const render=()=>{
       root.replaceChildren();
       if(state.message)root.append(notice(state.message));
