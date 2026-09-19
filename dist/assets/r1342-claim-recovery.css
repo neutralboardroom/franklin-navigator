@@ -1,0 +1,25 @@
+/* R1342 — bounded live claim/account-recovery UX */
+.r1342-account-modes{margin:0 0 18px;gap:10px}
+.r1342-account-modes .button[aria-pressed="true"]{font-weight:700}
+.r1342-account-form{max-width:720px}
+.r1342-account-form label{display:grid;gap:7px;margin:0 0 16px;font-weight:650}
+.r1342-account-form input,.r1342-support-form input,.r1342-support-form select,.r1342-support-form textarea,.r1342-recovery-form input{width:100%;min-height:46px}
+.r1342-field-help{display:block;font-weight:400;margin-top:2px}
+.r1342-signin-help{margin-top:12px}
+.r1342-claim-result{min-height:82px;padding:16px 18px!important;align-items:center!important}
+.r1342-claim-result-action{font-weight:700;white-space:nowrap}
+.r1342-selected-focus:focus{outline:3px solid currentColor;outline-offset:5px}
+.r1342-profile-primary-claim{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.r1342-recovery-shell{max-width:760px}
+.r1342-recovery-card{background:#fff;border:1px solid rgba(3,69,75,.16);border-radius:18px;padding:24px}
+.r1342-recovery-form{display:grid;gap:14px}
+.r1342-recovery-form label{display:grid;gap:7px;font-weight:650}
+.r1342-recovery-actions,.r1342-support-actions{display:flex;gap:10px;flex-wrap:wrap}
+.r1342-support-priority{border:2px solid rgba(3,69,75,.32);box-shadow:0 8px 22px rgba(3,69,75,.08)}
+.r1342-support-form{display:grid;gap:16px}
+.r1342-support-form label{display:grid;gap:7px;font-weight:650}
+.r1342-context-card{padding:14px 16px;border-radius:14px;background:rgba(3,69,75,.06);margin:0 0 18px}
+.r1342-business-path{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.r1342-business-path span{min-width:0}
+@media(max-width:900px){.r1342-business-path{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.r1342-business-path{grid-template-columns:1fr}.r1342-claim-result{align-items:flex-start!important}.r1342-claim-result-action{white-space:normal}}
