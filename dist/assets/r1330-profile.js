@@ -57,8 +57,23 @@
    row.replaceChildren();
    if(isNavigatorSelf){
      row.append(el('span','Official Franklin Navigator profile','r1330-state-label is-managed'));
-     copy.querySelector('.r1331-media-hint')?.remove();
-     document.querySelector('#manage')?.remove();
+     const claim=el('a','Claim or manage this profile','r1330-claim-link');claim.href='/profile-access/?profile='+encodeURIComponent(id);row.append(claim);
+     let hint=copy.querySelector('.r1331-media-hint');if(!hint){hint=el('p','', 'r1331-media-hint');row.insertAdjacentElement('afterend',hint)}
+     hint.textContent='First-party profile label only. Claim/management access still requires account sign-in and authority verification; no membership or payment is required.';
+     const website=[...document.querySelectorAll('.profile-primary-actions a')].find(a=>a.href===location.origin+'/'||a.getAttribute('href')==='https://franklinnavigator.com/');
+     if(website&&/official website/i.test(website.textContent||''))website.remove();
+     const article=document.querySelector('.r22-profile-layout>article');
+     let manage=document.querySelector('#manage');
+     if(!manage&&article){
+       manage=el('section');manage.id='manage';
+       manage.append(el('h2','Manage this profile'),el('p','Claiming this first-party profile still requires account sign-in and management-authority verification. Corrections and removal remain free; Community Membership is optional.'));
+       const actions=el('div','', 'actions'),page=location.origin+'/profiles/'+id+'/',correction='/corrections/?listing='+encodeURIComponent('Franklin Navigator')+'&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
+       const manageLink=el('a','Claim or manage this profile','button primary');manageLink.href='/profile-access/?profile='+encodeURIComponent(id);
+       const correctionLink=el('a','Suggest a correction or request removal','button');correctionLink.href=correction;
+       actions.append(manageLink,correctionLink);manage.append(actions);article.append(manage);
+     }
+     const generic=[...document.querySelectorAll('#official-links a')].find(a=>/review or correct a public profile/i.test(a.textContent||''));
+     if(generic){const page=location.origin+'/profiles/'+id+'/';generic.textContent='Suggest a correction or request removal';generic.href='/corrections/?listing='+encodeURIComponent('Franklin Navigator')+'&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page)}
      return;
    }
    const authority=String(viewerLink?.authority_state||'').toUpperCase();
