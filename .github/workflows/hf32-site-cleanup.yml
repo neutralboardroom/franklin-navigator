@@ -18,6 +18,7 @@ on:
       - 'scripts/sitewide-readability-contract-r1340.py'
       - 'scripts/member-visibility-contract-r1341.py'
       - 'tests/r1342-claim-recovery.cjs'
+      - 'tests/r1344-recent-fix-visibility.cjs'
   pull_request:
     branches: [main]
     paths:
@@ -31,6 +32,7 @@ on:
       - 'scripts/sitewide-readability-contract-r1340.py'
       - 'scripts/member-visibility-contract-r1341.py'
       - 'tests/r1342-claim-recovery.cjs'
+      - 'tests/r1344-recent-fix-visibility.cjs'
 
 permissions:
   contents: read
@@ -152,6 +154,7 @@ jobs:
           node --check dist/assets/member-support.js
           node --check dist/assets/account-recovery-r1342.js
           node tests/r1342-claim-recovery.cjs
+          node tests/r1344-recent-fix-visibility.cjs
           node --check dist/assets/local-discovery.js
           grep -F "Profile photo viewer" dist/assets/r1333-paid-sponsored.js
           grep -F "Open profile photo " dist/assets/r1333-paid-sponsored.js
@@ -568,6 +571,7 @@ jobs:
             node --check dist/assets/r1338-profile-request.js
             node --check dist/assets/account-recovery-r1342.js
             node tests/r1342-claim-recovery.cjs
+          node tests/r1344-recent-fix-visibility.cjs
             node --check dist/assets/franklin-site-monitor-r1308.js
           )
           (
