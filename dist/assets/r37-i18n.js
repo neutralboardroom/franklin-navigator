@@ -43,7 +43,7 @@
       'Request management access':'Solicitar acceso de administración',
       'Withdraw access request':'Retirar solicitud de acceso',
       'Request a factual correction':'Solicitar una corrección factual',
-      'Need help signing in?':'¿Necesita ayuda para iniciar sesión?',
+      'Need help signing in?':'¿Necesita ayuda para iniciar sesión?', 'Forgot password?':'¿Olvidó su contraseña?', 'Claim this profile':'Reclamar este perfil', 'Claim or manage this profile':'Reclamar o administrar este perfil', 'Review / correct this profile':'Revisar / corregir este perfil', 'Can’t access your email? Get account help':'¿No puede acceder a su correo? Obtenga ayuda con la cuenta', 'Send password-reset instructions':'Enviar instrucciones para restablecer la contraseña', 'Reset your password':'Restablecer su contraseña', 'Choose a new password':'Elija una nueva contraseña', 'Continue to profile access':'Continuar al acceso del perfil',
       'Correct a profile without signing in':'Corregir un perfil sin iniciar sesión',
       'Get profile access support':'Obtener ayuda con el acceso al perfil',
       'Access help':'Ayuda con el acceso',
