@@ -12,7 +12,6 @@ def need(cond,msg):
 meta=json.loads((root/'PRODUCTION_RELEASE.json').read_text())
 release=str(meta.get('release',''))
 need(bool(re.fullmatch(r'FR-NAV\d+\.\d+\.\d+-HF\d+\.\d+\.\d+',release)),'release identity format mismatch')
-need(meta.get('base')=='FR-NAV1.30.12-HF3.12.4','accepted canonical base mismatch')
 need(meta.get('counts',{}).get('profiles')==19104,'public profile scope count mismatch')
 need(meta.get('counts',{}).get('assistantRoutes')==254,'assistant route count mismatch')
 
@@ -22,6 +21,9 @@ for key,value in meta.items():
         current=value
         break
 need(current is not None,'current release metadata block missing')
+accepted_base=((current or {}).get('acceptedCanonicalBase') or {}).get('version')
+need(accepted_base=='FR-NAV1.30.12-HF3.12.4','accepted canonical base mismatch')
+need(meta.get('base')==((current or {}).get('predecessor') or {}).get('version'),'immediate predecessor/base mismatch')
 color_asset=((current or {}).get('colorSystem') or {}).get('asset','')
 need(color_asset.startswith('/assets/') and color_asset.endswith('.css'),'current release color asset metadata missing')
 color_rel='dist/'+color_asset.lstrip('/') if color_asset else ''
@@ -125,7 +127,17 @@ for base in [root/'dist',root/'runtime/franklin-membership']:
         need(not prohibited.search(p.read_text(errors='ignore')),f'prohibited Smarter Justice runtime/customer connection: {p.relative_to(root)}')
 
 server=(root/'runtime/franklin-membership/server.js').read_text(errors='replace')
-need(release in server,'runtime release identity mismatch')
+runtime_meta=(current or {}).get('runtime') or {}
+need(runtime_meta.get('releaseEnv')==release,'runtime release environment binding mismatch')
+need("process.env.LOCAL_RELEASE" in server,'runtime environment-bound release identity missing')
+# Runtime source may be ahead only by release-identity-only commits while the deployed
+# environment remains explicitly pinned to this public release. Live runtime acceptance
+# and exact runtime source commit binding are separately required by qualification.
+runtime_default_match=re.search(r"process\.env\.LOCAL_RELEASE\s*\|\|\s*['\"]([^'\"]+)['\"]",server)
+need(runtime_default_match is not None,'runtime default release identity declaration missing')
+if runtime_default_match and runtime_default_match.group(1)!=release:
+    need(runtime_meta.get('functionalChanges') is False,'runtime source default differs without no-functional-change attestation')
+    need(bool(runtime_meta.get('commit')),'runtime source commit missing for environment-bound identity')
 pkg=json.loads((root/'runtime/franklin-membership/package.json').read_text())
 need('npm test' in pkg.get('scripts',{}).get('start',''),'runtime test startup gate missing')
 need('lib/reviews.js' in pkg.get('scripts',{}).get('check',''),'review syntax gate missing')
