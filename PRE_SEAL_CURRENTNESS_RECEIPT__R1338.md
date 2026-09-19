@@ -29,3 +29,15 @@ Final bound R1338 runtime:
 No new wholesale Profile Factory or Local Investigator dataset is promoted in this profile-control pass.
 
 Result: PRE_SEAL_CURRENTNESS_PASS_PENDING_FINAL_EXACT_HEAD_QUALIFICATION
+
+## Final qualification evidence
+
+- Candidate commit: `93f2fc5e5f27378aa03d8a2f9e627d4f90cbef4b`
+- Workflow: `35409775709` — PASS
+- Exact-source artifact SHA-256: `d4b1bf7c116ec591f8b7f0261a5b5a32cf886da3344dcfa1deb0aebed1d70fdf`
+- Deterministic second build: MATCH
+- Manifest SHA-256: `f0a2ec08d47d814776b08c4d39897c1af8b55dc6ccfa586ef2c6710cf866b1f4`
+- Fresh extraction: PASS, 20,176 members verified; 64 runtime members
+- Public-language audit: 19,362 pages, 0 findings
+- Live runtime/browser-origin acceptance: PASS
+- Assistant regression: PASS

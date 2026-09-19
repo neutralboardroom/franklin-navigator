@@ -25,3 +25,7 @@ The homepage remains unchanged by R1338. Final exact-head qualification is requi
 The last pass standardizes **Profile Center** throughout the public management journey, clarifies management status without implying factual verification, routes active paid managers to support before ending or transferring management, adds a work/organization-email verification hint, preserves the exact profile when moving into optional membership, and returns completed correction/removal requests directly to the public profile or Profile Center.
 
 The live R1338 runtime was reconciled to commit `92bd8da73158cc6158d553e3644e37abb413414b`, which keeps the profile-path safeguards and adds rate limiting to public support intake. Both runtime acceptance workflows passed, and the live Render deploy is `dep-damhcmh42hec7394cojg`.
+
+## Exact-source qualification seal
+
+Workflow `35409775709` passed on commit `93f2fc5e5f27378aa03d8a2f9e627d4f90cbef4b`. The deterministic exact-source ZIP is `FRANKLIN_NAVIGATOR__FR-NAV1.30.38-HF3.13.20__CURRENT_SUCCESSOR_EXACT_SOURCE.zip` (85,509,311 bytes), SHA-256 `d4b1bf7c116ec591f8b7f0261a5b5a32cf886da3344dcfa1deb0aebed1d70fdf`. The independent second build matched byte-for-byte, manifest SHA-256 is `f0a2ec08d47d814776b08c4d39897c1af8b55dc6ccfa586ef2c6710cf866b1f4`, and fresh extraction verified 20,176 packaged members including 64 runtime members. Public-language audit checked 19,362 pages with zero findings. A final receipt-only exact-head workflow is required after this seal commit; no product mutation is permitted after that final pass.

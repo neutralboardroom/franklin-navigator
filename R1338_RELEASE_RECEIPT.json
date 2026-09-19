@@ -1,6 +1,6 @@
 {
   "schema": "franklin.local-community-platform.release-receipt.v1",
-  "status": "CURRENT_HEAD_QUALIFICATION_PENDING",
+  "status": "QUALIFIED_SUCCESSOR",
   "recordedAt": "2026-09-18",
   "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
   "activeEdition": "FRANKLIN_TN",
@@ -12,7 +12,7 @@
   },
   "successor": {
     "version": "FR-NAV1.30.38-HF3.13.20",
-    "localQualification": "PENDING_FINAL_EXACT_HEAD_WORKFLOW",
+    "localQualification": "PASS",
     "sccAccepted": false,
     "sccCanonicalCurrent": false
   },
@@ -73,5 +73,24 @@
     "exactMembershipDeepLink": true,
     "correctionReturnPath": true,
     "routeNavigationConsistency": true
+  },
+  "qualification": {
+    "workflowRun": 35409775709,
+    "qualifiedCandidateCommit": "93f2fc5e5f27378aa03d8a2f9e627d4f90cbef4b",
+    "result": "PASS",
+    "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.38-HF3.13.20__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "artifactBytes": 85509311,
+    "artifactSha256": "d4b1bf7c116ec591f8b7f0261a5b5a32cf886da3344dcfa1deb0aebed1d70fdf",
+    "secondBuildSha256": "d4b1bf7c116ec591f8b7f0261a5b5a32cf886da3344dcfa1deb0aebed1d70fdf",
+    "manifestSha256": "f0a2ec08d47d814776b08c4d39897c1af8b55dc6ccfa586ef2c6710cf866b1f4",
+    "manifestMembersVerified": 20176,
+    "runtimeMembers": 64,
+    "deterministicDoubleBuild": true,
+    "freshExtraction": "PASS",
+    "publicPagesLanguageAudited": 19362,
+    "publicLanguageFindings": 0,
+    "liveRuntimeAcceptance": "PASS",
+    "assistantRegression": "PASS",
+    "finalExactHeadWorkflowRequired": true
   }
 }
