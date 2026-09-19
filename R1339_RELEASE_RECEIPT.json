@@ -1,0 +1,43 @@
+{
+  "schema": "franklin.local-community-platform.release-receipt.v1",
+  "status": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION_AND_LIVE_RUNTIME_RELEASE_IDENTITY",
+  "recordedAt": "2026-09-19",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "predecessor": {
+    "version": "FR-NAV1.30.38-HF3.13.20",
+    "commit": "db9de4d211585911a849766c3b9196ea9ee59e37"
+  },
+  "successor": {
+    "version": "FR-NAV1.30.39-HF3.13.21",
+    "localQualification": "PENDING",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false
+  },
+  "profilePath": {
+    "approvedHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
+    "exactProfileContinuity": true,
+    "freeManagementVerification": true,
+    "freeCorrectionsAndRemoval": true,
+    "freeReviewedProfilePhotoLogo": true,
+    "pendingWithdrawal": true,
+    "disputedSupportRecovery": true,
+    "duplicateProfileMembershipProtection": true,
+    "activePaidManagementSupportGate": true,
+    "profileCenterNaming": true,
+    "staleProfileStudioVisibleLanguageRemoved": true,
+    "staleManagedUnclaimedLabelsRemoved": true,
+    "spanishDynamicParityExpanded": true,
+    "bilingualProfileCreationRequest": true
+  },
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "df1004bfb3783686e9b0071571434209161f47dc",
+    "functionalChanges": false,
+    "releaseIdentity": "FR-NAV1.30.39-HF3.13.21",
+    "liveDeploy": "PENDING"
+  },
+  "qualification": {
+    "result": "PENDING_EXACT_HEAD_WORKFLOW_AND_LIVE_RUNTIME_RELEASE_IDENTITY"
+  }
+}
