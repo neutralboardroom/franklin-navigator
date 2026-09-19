@@ -1,6 +1,6 @@
 # Franklin Navigator commerce runtime
 
-Franklin-isolated account, session, subscription, entitlement, onboarding and support runtime supporting public **FR-NAV1.10.0-CANDIDATE-R35**.
+Franklin-isolated account, session, subscription, entitlement, onboarding and support runtime supporting public **FR-NAV1.30.39-HF3.13.21**.
 
 The runtime defaults to `COMMERCE_ENABLED=false`. A database connection or provider deployment cannot enable automated checkout and entitlement fulfillment by itself. The Revenue Engine must accept the exact ready-stage receipt before Local enables the controlled server-created Checkout Session path.
 
