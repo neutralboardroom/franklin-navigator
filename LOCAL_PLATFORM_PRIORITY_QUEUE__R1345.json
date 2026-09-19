@@ -1,0 +1,28 @@
+{
+  "release": "FR-NAV1.30.45-HF3.13.27",
+  "completed": [
+    {
+      "priority": "P0/P1",
+      "item": "Eliminate remaining pre-verification routes that bypass Profile Access and complete authority-request submission/status/withdrawal in the correct journey",
+      "status": "IMPLEMENTED"
+    }
+  ],
+  "deferred": [
+    {
+      "item": "Real owner password-reset email/new-password interaction",
+      "reason": "OWNER_INTERACTION_REQUIRED"
+    },
+    {
+      "item": "Leipers Creek Law screenshot/profile-source lineage reconciliation",
+      "reason": "UPSTREAM_PROFILE_SOURCE_EVIDENCE_REQUIRED"
+    },
+    {
+      "item": "New Profile Factory/Local Investigator handoff consumption",
+      "reason": "ACCEPTED_CONSUMER_POINTER_REQUIRED"
+    },
+    {
+      "item": "SCC acceptance/current pointer",
+      "reason": "SCC_AUTHORITY_REQUIRED"
+    }
+  ]
+}
