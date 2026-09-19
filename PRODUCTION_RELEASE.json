@@ -1,5 +1,5 @@
 {
-  "release": "FR-NAV1.30.38-HF3.13.20",
+  "release": "FR-NAV1.30.39-HF3.13.21",
   "date": "2026-09-18",
   "base": "FR-NAV1.30.12-HF3.12.4",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
@@ -1619,6 +1619,81 @@
       "liveRuntimeAcceptance": "PASS",
       "assistantRegression": "PASS",
       "finalExactHeadWorkflowRequired": true
+    }
+  },
+  "r1339": {
+    "version": "FR-NAV1.30.39-HF3.13.21",
+    "date": "2026-09-19",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "immediateLocalQualifiedParent": {
+      "version": "FR-NAV1.30.38-HF3.13.20",
+      "commit": "db9de4d211585911a849766c3b9196ea9ee59e37",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.38-HF3.13.20__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactSha256": "29115986953b3768c2a55fd5bf4b75dd0c8bb812b27151424ed9397fa6540e6c",
+      "manifestSha256": "ad0a4ae456a83884d0f1915c95db76c3df337cc0edc899475f1fc16fdda72c"
+    },
+    "ownerDirection": "APPROVED_BUSINESS_VISIBILITY_HEADLINE_AND_CONTINUE_PROFILE_CLAIM_LANGUAGE_PATH_MANAGEMENT_IMPROVEMENTS",
+    "materialImprovement": {
+      "approvedBusinessHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
+      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local.",
+      "profileCenterTerminologyRepositoryWide": true,
+      "staleProfileStudioVisibleLanguageRemoved": true,
+      "staleManagedUnclaimedVisibleLabelsRemoved": true,
+      "spanishDynamicProfileManagementCoverageExpanded": true,
+      "bilingualProfileCreationRequestFeedback": true,
+      "exactProfileContinuityPreserved": true,
+      "freeClaimCorrectionRemovalPreserved": true,
+      "photoLogoReviewPreserved": true,
+      "pendingChangesRejectedDisputedRecoveryPreserved": true,
+      "duplicateActiveMembershipProtectionPreserved": true,
+      "activePaidStopManagementSupportGatePreserved": true,
+      "homepageChanged": false
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "ed707bc95c9740583a54d5c4fa61cc44387da32f",
+      "priorCommit": "92bd8da73158cc6158d553e3644e37abb413414b",
+      "deploy": "dep-damufap42hec73ci06gg",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.39-HF3.13.21",
+      "functionalChanges": false,
+      "releaseIdentityAdvanced": true,
+      "tests": {
+        "total": 37,
+        "pass": 37,
+        "fail": 0,
+        "skipped": 0
+      },
+      "memberFulfillmentVersion": "FRANKLIN_MEMBER_FULFILLMENT_HF3_5"
+    },
+    "authorityBoundary": {
+      "canonicalProfileFactsOwner": "PROFILE_FACTORY",
+      "localOwnsClaimAccountUiRuntime": true,
+      "claimDoesNotRewriteFacts": true,
+      "paymentDoesNotChangeFacts": true,
+      "freeCorrectionRemovalPreserved": true
+    },
+    "receipts": [
+      "PROFILE_PATH_CONTINUITY_AUDIT__R1339.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1339.md",
+      "OWNER_SUMMARY__R1339.md",
+      "R1339_RELEASE_RECEIPT.json"
+    ],
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "ownerActionRequired": "NONE_FOR_LOCAL_QUALIFICATION_OR_AUTHORIZED_DEPLOYMENT; SCC acceptance/promotion remains separate",
+    "qualification": {
+      "result": "PENDING_EXACT_HEAD_WORKFLOW_AND_LIVE_RUNTIME_RELEASE_IDENTITY"
+    },
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "inheritedWithoutVisualChange": true,
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false
     }
   }
 }

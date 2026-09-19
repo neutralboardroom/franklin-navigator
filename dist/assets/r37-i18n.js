@@ -29,13 +29,13 @@
       'At a glance':'De un vistazo',
       'Helpful links':'Enlaces útiles',
       'Photos':'Fotos',
-      'Managed profile':'Perfil administrado',
-      'Unclaimed profile':'Perfil sin reclamar',
+      'Management verified':'Administración verificada',
+      'Management verified for you':'Administración verificada para usted',
+      'Management not yet verified':'Administración aún no verificada',
       'Official Franklin Navigator profile':'Perfil oficial de Franklin Navigator',
       'Upload your own image':'Subir su propia imagen',
       'Claim this profile free to upload your own photo or logo.':'Reclame este perfil gratis para subir su propia foto o logotipo.',
-      'Your managed profile':'Su perfil administrado',
-      'Open Profile Studio':'Abrir Estudio de Perfil',
+      'Open Profile Center':'Abrir Centro de Perfil',
       'Access request pending':'Solicitud de acceso pendiente',
       'Check access request':'Revisar solicitud de acceso',
       'Access review needed':'Se necesita revisar el acceso',
@@ -53,8 +53,7 @@
       'Continue with this profile':'Continuar con este perfil',
       'Choose this profile':'Elegir este perfil',
       'Profile access verified. You can manage this profile now.':'Acceso al perfil verificado. Ahora puede administrar este perfil.',
-      'Open Profile Studio':'Abrir el Estudio de Perfil',
-      'Profile access is not yet verified. Open Profile Studio to submit or check your access request.':'El acceso al perfil aún no está verificado. Abra el Estudio de Perfil para enviar o revisar su solicitud.',
+      'Profile access is not yet verified. Open Profile Center to submit or check your access request.':'El acceso al perfil aún no está verificado. Abra el Centro de Perfil para enviar o revisar su solicitud.',
       'Request or check profile access':'Solicitar o revisar acceso al perfil',
       'This profile has an access dispute. Contact support so Franklin can review it safely.':'Este perfil tiene una disputa de acceso. Contacte soporte para que Franklin pueda revisarla de forma segura.',
       'Get profile support':'Obtener ayuda con el perfil',
@@ -63,12 +62,44 @@
       'Refresh status':'Actualizar estado',
       'Submit access request':'Enviar solicitud de acceso',
       'Submit updated access request':'Enviar solicitud de acceso actualizada',
-      'I confirm that I own, manage, work for, or am otherwise authorized to act for this profile.':'Confirmo que soy propietario, administrador, trabajo para esta organización o estoy autorizado para actuar en nombre de este perfil.'
+      'I confirm that I own, manage, work for, or am otherwise authorized to act for this profile.':'Confirmo que soy propietario, administrador, trabajo para esta organización o estoy autorizado para actuar en nombre de este perfil.',
+      'Free profile access':'Acceso gratuito al perfil',
+      'Confirm that you are authorized to manage this profile.':'Confirme que está autorizado para administrar este perfil.',
+      'Claiming and basic profile management are free. Franklin reviews access before management tools are enabled; a claim never changes public facts by itself.':'Reclamar y administrar un perfil básico es gratuito. Franklin revisa el acceso antes de habilitar las herramientas de administración; una solicitud de acceso no cambia por sí sola los datos públicos.',
+      'This profile has an access dispute. Franklin will not accept another access request until the dispute is reviewed.':'Este perfil tiene una disputa de acceso. Franklin no aceptará otra solicitud de acceso hasta que se revise la disputa.',
+      'View public profile':'Ver perfil público',
+      'Submit a factual correction':'Enviar una corrección factual',
+      'Franklin needs more information before this access request can be approved.':'Franklin necesita más información antes de aprobar esta solicitud de acceso.',
+      'The previous access request was not approved. You may submit new evidence if you are authorized.':'La solicitud de acceso anterior no fue aprobada. Puede enviar nueva evidencia si está autorizado.',
+      'Previous management access ended. You may request access again if you are currently authorized.':'El acceso de administración anterior terminó. Puede solicitar acceso de nuevo si actualmente está autorizado.',
+      'Official website or public page showing your connection':'Sitio web oficial o página pública que muestre su relación',
+      'How are you authorized to manage this profile?':'¿Cómo está autorizado para administrar este perfil?',
+      'Profile Center':'Centro de Perfil',
+      'Your verified access lets you manage the profile relationship, request factual corrections or removal, and submit a profile photo or logo for review. Public factual information is reviewed separately and is not changed merely because you manage the profile.':'Su acceso verificado le permite administrar la relación con el perfil, solicitar correcciones factuales o retiro y enviar una foto o logotipo del perfil para revisión. La información factual pública se revisa por separado y no cambia simplemente porque usted administre el perfil.',
+      'Request removal':'Solicitar retiro',
+      'Account & profile access':'Cuenta y acceso al perfil',
+      'Transfer or end management — contact support':'Transferir o finalizar la administración — contactar soporte',
+      'Community Member tools':'Herramientas para Miembros de la Comunidad',
+      'Build the richer member profile.':'Complete el perfil de miembro más detallado.',
+      'Optional Community Membership':'Membresía Comunitaria opcional',
+      'Want a richer profile?':'¿Quiere un perfil más completo?',
+      'Community Membership is $35/year. It adds the richer reviewed profile, cover/gallery media and additional member tools. It is not required for accuracy, claim access, profile removal or your basic profile photo/logo.':'La Membresía Comunitaria cuesta $35/año. Añade un perfil revisado más completo, imágenes de portada/galería y herramientas adicionales para miembros. No se requiere para la exactitud, el acceso de administración, el retiro del perfil ni la foto o logotipo básico del perfil.',
+      'See Community Membership — $35/year':'Ver Membresía Comunitaria — $35/año',
+      'Preview member profile':'Ver perfil de miembro',
+      'Profile management is free':'La administración del perfil es gratuita',
+      'Claiming a profile, requesting factual corrections or removal, and managing an approved profile photo/logo do not require Community Membership.':'Reclamar un perfil, solicitar correcciones factuales o retiro y administrar una foto o logotipo aprobado no requieren Membresía Comunitaria.',
+      'See optional Community Membership':'Ver Membresía Comunitaria opcional',
+      'Correct public facts':'Corregir datos públicos',
+      'Correct public facts instead':'Corregir datos públicos en su lugar',
+      'Tip: a work or organization email can make profile verification easier when one is available. A personal email is still allowed.':'Consejo: un correo electrónico del trabajo o de la organización puede facilitar la verificación del perfil cuando esté disponible. También se permite un correo personal.'
     };
     if(fixed[s])return fixed[s];
     let m;
     if((m=s.match(/^Open profile photo (\d+) of (\d+)$/)))return `Abrir foto del perfil ${m[1]} de ${m[2]}`;
     if((m=s.match(/^Signed in as (.+)\.$/)))return `Sesión iniciada como ${m[1]}.`;
+    if((m=s.match(/^Management access verified (.+)\.$/)))return `Acceso de administración verificado ${m[1]}.`;
+    if((m=s.match(/^Selected profile: (.+)\. Sign in or create a free account to continue with this exact profile\. You will not need to search again\.$/)))return `Perfil seleccionado: ${m[1]}. Inicie sesión o cree una cuenta gratuita para continuar con este perfil exacto. No tendrá que buscarlo de nuevo.`;
+    if((m=s.match(/^Your profile-access request is waiting for review\. Last updated (.+)\.$/)))return `Su solicitud de acceso al perfil está pendiente de revisión. Última actualización: ${m[1]}.`;
     if((m=s.match(/^Selected: (.+)$/)))return `Seleccionado: ${m[1]}`;
     if((m=s.match(/^Continue with (.+)$/)))return `Continuar con ${m[1].replace('/month','/mes').replace('/year','/año')}`;
     if((m=s.match(/^Explore (.+)$/)))return `Explorar ${categories[m[1]]||m[1]}`;
