@@ -1,0 +1,31 @@
+{
+  "release": "FR-NAV1.30.45-HF3.13.27",
+  "result": "PASS_FOR_LOCAL_BUILD",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "ownerCommandRevision": "2026-09-03-R2",
+  "predecessor": {
+    "version": "FR-NAV1.30.44-HF3.13.26",
+    "commit": "d15c3db1d983cc4a2cbee36dce6fb433d7c08bbc",
+    "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.44-HF3.13.26__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "artifactSha256": "89bb0bc3592698b34e258d7daa1c6a32121833d13dbbeb9f9d0de9dfae9e2f71"
+  },
+  "acceptedCanonicalBase": {
+    "version": "FR-NAV1.30.12-HF3.12.4",
+    "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+    "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+  },
+  "sccAccepted": false,
+  "sccCanonicalCurrent": false,
+  "smarterJusticeDonor": "SMARTER_JUSTICE_DONOR_NOT_USED",
+  "profileFactory": "NO_NEW_HANDOFF_CONSUMED",
+  "localInvestigator": "NO_NEW_HANDOFF_CONSUMED",
+  "commercialContract": "UNCHANGED",
+  "runtimeSource": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "3503f7b3b58042ef0389537af313a1b3545ef23f",
+    "functionalChanges": false
+  },
+  "materialCandidate": "COMPLETE_PRE_VERIFICATION_PROFILE_ACCESS_JOURNEY_AND_REMOVE_REMAINING_UNVERIFIED_PROFILE_CENTER_BYPASSES"
+}
