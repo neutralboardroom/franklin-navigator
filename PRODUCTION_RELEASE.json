@@ -1971,13 +1971,16 @@
       "universalDistinctClaimCtaPreserved": true,
       "correctionReviewClaimProminence": true,
       "exactProfileCorrectionToClaimContinuity": true,
-      "recentFixVisibilityGateRunsInQualification": true
+      "recentFixVisibilityGateRunsInQualification": true,
+      "lastTenReleaseVisibilityAudit": true,
+      "durableFutureNonBurialRule": true
     },
     "noPricingChange": true,
     "noPaymentOrEntitlementChange": true,
     "noProfileSourceAuthorityChange": true,
     "noOutreach": true,
     "sccAccepted": false,
-    "sccCanonicalCurrent": false
+    "sccCanonicalCurrent": false,
+    "auditedReleaseSpan": "R1335-R1344"
   }
 }
