@@ -1,0 +1,46 @@
+{
+  "release": "FR-NAV1.30.45-HF3.13.27",
+  "result": "PASS_PENDING_FULL_QUALIFICATION",
+  "capabilities": [
+    {
+      "capability": "R1335-R1344 owner-approved visibility/reachability fixes",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Free exact-profile claim/access journey",
+      "disposition": "IMPROVED"
+    },
+    {
+      "capability": "Profile Center for verified managers",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Free factual correction and public removal",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Optional $35/year Community Membership and ordinary-unpaid-ranking safeguards",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Password recovery and same-profile continuity",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Spanish dynamic profile/access actions",
+      "disposition": "IMPROVED"
+    },
+    {
+      "capability": "Profile Factory canonical fact authority",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Local Investigator dynamic currentness authority",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Smarter Justice strict separation",
+      "disposition": "RETAINED"
+    }
+  ]
+}
