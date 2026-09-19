@@ -4,9 +4,9 @@ Local builder does **not** send outreach.
 
 | Gate | Result |
 |---|---|
-| Exact-name Franklin Navigator directory ordering | PASS BY CONTRACT; exact-head automated qualification pending |
-| Public-profile **Claim or manage this profile** CTA | PASS BY CONTRACT; exact-head automated qualification pending |
-| Exact-profile claim deep-link | PASS BY CONTRACT; exact-head automated qualification pending |
+| Exact-name Franklin Navigator directory ordering | PASS — exact-head automated qualification passed (workflow 35420574438) |
+| Public-profile **Claim or manage this profile** CTA | PASS — exact-head automated qualification passed (workflow 35420574438) |
+| Exact-profile claim deep-link | PASS — exact-head automated qualification passed (workflow 35420574438) |
 | Duplicate-account prevention / recovery message | PASS BY RUNTIME + UI CONTRACT |
 | Self-service password reset implementation | PASS BY RUNTIME CONTRACT |
 | Invalid / expired / reused token safety | PASS BY RUNTIME UNIT CONTRACT |
