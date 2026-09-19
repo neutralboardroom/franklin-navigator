@@ -73,5 +73,6 @@ test('duplicate account registration routes the user to sign-in/password recover
   const server=fs.readFileSync('server.js','utf8');
   assert.ok(server.includes('ACCOUNT_ALREADY_EXISTS'));
   assert.ok(server.includes('Sign in or reset your password.'));
-  assert.ok(server.includes('/api/accounts/password-reset/request'));
+  const recovery=fs.readFileSync('lib/account-recovery.js','utf8');
+  assert.ok(recovery.includes('/api/accounts/password-reset/request'));
 });
