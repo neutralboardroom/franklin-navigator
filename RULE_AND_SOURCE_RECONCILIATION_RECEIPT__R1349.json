@@ -1,0 +1,50 @@
+{
+  "receiptType": "RULE_AND_SOURCE_RECONCILIATION_RECEIPT",
+  "release": "FR-NAV1.30.49-HF3.13.31",
+  "date": "2026-09-20",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "controllingOwnerCommand": {
+    "revision": "2026-09-03-R2",
+    "mode": "BUILD"
+  },
+  "predecessor": {
+    "version": "FR-NAV1.30.48-HF3.13.30",
+    "mainCommit": "8469e9b8e988359b552cd3ae3cbe221f47e27cc2",
+    "publicSourceTree": "5349a0143936d8f43cc3646557289a9e7d350136",
+    "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.48-HF3.13.30__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "artifactBytes": 85661046,
+    "artifactSha256": "45c22d852988cc3f28b444f0f854d6f90c7f7639036f81dd7bf7f60e5a9aef7d",
+    "manifestSha256": "378fabe73a622e3467b06e2452682d11f31171905466fb9a10400a76147932c3",
+    "qualificationWorkflow": 35500488445,
+    "staticDeploy": "dep-danptbjtqb8s73co9k4g"
+  },
+  "priorityFindings": [
+    {
+      "priority": "P1_PUBLIC_CURRENTNESS_AND_MULTILINGUAL_PARITY",
+      "qualifiedNow": true,
+      "item": "Spanish static homepage retained an event ending 2026-09-11 while English already carried the current 2026-09-22 WCPR registration; JavaScript hid the stale card at runtime but no-JavaScript/crawler output remained stale."
+    },
+    {
+      "priority": "P0_PUBLIC_RELEVANCE_AND_TRUST",
+      "qualifiedNow": true,
+      "item": "Live Daddy’s Dogs Related local profiles used broad Downtown Business or Organization equality to display unrelated businesses; broad umbrella equality must not create similarity."
+    }
+  ],
+  "ownerDefectCommand": "FRANKLIN_RELATED_PROFILES_RELEVANCE_FIX_AND_RESUME_PREFLIGHT",
+  "upstream": {
+    "profileFactory": "NOT_CONSUMED_NEW",
+    "localInvestigator": "NO_FACT_MUTATION",
+    "smarterJustice": "SMARTER_JUSTICE_DONOR_NOT_USED"
+  },
+  "authority": {
+    "noPricingChange": true,
+    "noPaymentOrEntitlementChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noLocalInvestigatorFactMutation": true,
+    "noOutreach": true,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false
+  }
+}
