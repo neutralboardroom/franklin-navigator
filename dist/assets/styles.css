@@ -480,3 +480,29 @@ header .wrap.top>.r37-language-switch{order:3!important;margin-left:10px!importa
 .r1344-owner-claim-callout h2{margin:0 0 5px;font-size:1.28rem}
 .r1344-owner-claim-callout p{margin:0 0 12px}
 @media(max-width:620px){.r1344-owner-claim-callout{padding:16px}.r1344-owner-claim-callout .r1343-claim-primary{width:100%;text-align:center}}
+
+
+/* R1346 — outreach-ready claim/account path. */
+.r1346-profile-progress{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px!important}
+.r1346-profile-progress [data-step]{display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #cbdcda;border-radius:10px!important;background:#f7faf9!important;color:#526568!important;font-weight:700}
+.r1346-profile-progress [data-step].is-complete{background:#e7f5ee!important;color:#205f42!important;border-color:#a8cfb8}
+.r1346-profile-progress [data-step].is-current{background:#fff3cf!important;color:#5f4700!important;border:2px solid #c78916;font-weight:850}
+.r1346-profile-progress [data-step].is-future{background:#f5f7f7!important;color:#697a7d!important}
+.r1346-profile-access-verification{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;max-width:760px;margin-top:18px}
+.r1346-profile-access-verification>label{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:7px!important;margin:0!important;min-width:0;font-weight:750}
+.r1346-profile-access-verification input[type="url"],.r1346-profile-access-verification textarea{display:block;width:100%!important;min-width:0;box-sizing:border-box;border:1px solid #9fb6b8;border-radius:10px;padding:12px 13px;font:inherit}
+.r1346-profile-access-verification input[type="url"]{min-height:48px}
+.r1346-profile-access-verification textarea{min-height:150px;resize:vertical;line-height:1.5}
+.r1346-profile-access-verification .p0-check{display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;align-items:start!important;gap:10px!important;font-weight:600}
+.r1346-profile-access-verification .p0-check input{width:auto!important;min-height:0!important;margin:.25rem 0 0!important}
+.r1346-inline-action-status{margin-top:10px}
+.r1346-profile-change{margin:16px 0 4px;border:1px solid #d1dfdd;border-radius:12px;background:#f8fbfa;padding:10px 14px}
+.r1346-profile-change>summary{cursor:pointer;font-weight:800;color:#07545a;padding:4px 0}
+.r1346-profile-change[open] .r37-member-search{margin-top:12px}
+.r1346-selected-profile-actions{margin-top:8px}
+.r1346-recovery-success{display:grid;gap:12px;padding:18px;border:1px solid #a8cfb8;border-radius:14px;background:#edf8f1}
+.r1346-recovery-success h3,.r1346-recovery-success p{margin:0}
+body.r1346-claimable.hf35-profile.r1332-profile .profile-primary-actions a.button.primary:not(.r1343-claim-primary){background:#fff!important;color:#07545a!important;border-color:#8eb5b7!important;box-shadow:none!important}
+body.r1346-claimable .r1330-profile-state .r1343-claim-primary{display:inline-flex!important;align-items:center;justify-content:center;padding:11px 16px!important;border-radius:9px}
+@media(max-width:760px){.r1346-profile-progress{grid-template-columns:1fr 1fr}.r1346-profile-access-verification{max-width:none}.r1346-profile-access-verification textarea{min-height:170px}}
+@media(max-width:480px){.r1346-profile-progress{grid-template-columns:1fr}.r1346-profile-progress [data-step]{justify-content:flex-start}.r1346-profile-access-verification .button{width:100%;justify-content:center}}
