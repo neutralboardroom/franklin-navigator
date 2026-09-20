@@ -211,7 +211,7 @@ jobs:
           grep -F "preferredLanguage:isEs()?'SPANISH':'ENGLISH'" dist/assets/r1338-profile-request.js
           grep -F "/api/member/representation/release" dist/assets/member-profile-live.js
           grep -F "Your profile-access request is waiting for review." dist/assets/member-profile-live.js
-          grep -F "Correct public facts" dist/assets/r1330-profile.js
+          grep -F "Correct factual listing details" dist/assets/r1330-profile.js
           grep -F "Management verified for you" dist/assets/r1330-profile.js
           grep -F "Claim or manage this profile" dist/assets/r1330-profile.js
           grep -F "/api/accounts/me" dist/assets/r1330-profile.js
