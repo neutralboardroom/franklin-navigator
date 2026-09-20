@@ -12,7 +12,8 @@ ok(claim.includes('Correct information')&&claim.includes('Request removal'),'sel
 ok(membership.includes('Selecting this profile does not claim it or change public facts.'),'account path must explain selection boundary');
 ok(claim.includes('Selecting this result does not claim the profile or change public facts.'),'public claim path must explain selection boundary');
 ok(css.includes('.r1351-profile-path-summary'),'profile path summary style missing');
-ok(assistant.includes("FRANKLIN-ASSISTANT2-0.3.5"),'Assistant release not advanced');
+const version=(assistant.match(/FRANKLIN-ASSISTANT2-0\\.(\\d+)\\.(\\d+)/)||[]).slice(1).map(Number);
+ok(version.length===2&&(version[0]>3||(version[0]===3&&version[1]>=5)),'Assistant must preserve R1351 0.3.5-or-newer capability line');
 ok(assistant.includes('function profileCardFollowup('),'Assistant card follow-up resolver missing');
 ok(assistant.includes("mode:'directory_card_followup'"),'Assistant card follow-up mode missing');
 ok(assistant.includes("lastDirectoryQuery='',lastProfiles=[]"),'Assistant public card memory missing');
