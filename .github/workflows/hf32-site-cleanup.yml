@@ -21,10 +21,14 @@ on:
       - 'tests/r1344-recent-fix-visibility.cjs'
       - 'tests/r1345-profile-access-authority-routing.cjs'
       - 'tests/r1346-claim-path-outreach-readiness.cjs'
+      - 'tests/r1347-two-command-permanent-baseline.cjs'
       - 'scripts/r1346-claim-path-browser-acceptance.mjs'
+      - 'scripts/r1347-two-command-browser-visibility.mjs'
       - 'DURABLE_RULE__CLAIM_ACCOUNT_ASYNC_ACTION_FEEDBACK.md'
       - 'DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md'
       - 'DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md'
+      - 'DURABLE_RULE__FRANKLIN_CLAIM_ACCOUNT_RECOVERY_OUTREACH_BASELINE.md'
+      - 'DURABLE_RULE__FRANKLIN_CLAIM_ACCOUNT_RECOVERY_OUTREACH_BASELINE.md'
   pull_request:
     branches: [main]
     paths:
@@ -41,7 +45,9 @@ on:
       - 'tests/r1344-recent-fix-visibility.cjs'
       - 'tests/r1345-profile-access-authority-routing.cjs'
       - 'tests/r1346-claim-path-outreach-readiness.cjs'
+      - 'tests/r1347-two-command-permanent-baseline.cjs'
       - 'scripts/r1346-claim-path-browser-acceptance.mjs'
+      - 'scripts/r1347-two-command-browser-visibility.mjs'
       - 'DURABLE_RULE__CLAIM_ACCOUNT_ASYNC_ACTION_FEEDBACK.md'
       - 'DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md'
       - 'DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md'
@@ -169,7 +175,9 @@ jobs:
           node tests/r1344-recent-fix-visibility.cjs
           node tests/r1345-profile-access-authority-routing.cjs
           node tests/r1346-claim-path-outreach-readiness.cjs
+          node tests/r1347-two-command-permanent-baseline.cjs
           node --check scripts/r1346-claim-path-browser-acceptance.mjs
+          node --check scripts/r1347-two-command-browser-visibility.mjs
           node --check dist/assets/local-discovery.js
           grep -F "Profile photo viewer" dist/assets/r1333-paid-sponsored.js
           grep -F "Open profile photo " dist/assets/r1333-paid-sponsored.js
@@ -422,6 +430,26 @@ jobs:
           kill "$HTTP_PID" 2>/dev/null || true
           trap - EXIT
 
+      - name: R1347 two-command browser visibility and non-burial acceptance
+        run: |
+          set -euo pipefail
+          rm -rf .r1347-two-command-evidence
+          python3 -m http.server 4174 --directory dist >/tmp/r1347-http.log 2>&1 &
+          HTTP_PID=$!
+          trap 'kill "$HTTP_PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 50); do
+            if curl --fail --silent http://127.0.0.1:4174/claim-profile/ >/dev/null; then break; fi
+            sleep 0.1
+          done
+          node scripts/r1347-two-command-browser-visibility.mjs
+          test -s .r1347-two-command-evidence/R1347_TWO_COMMAND_VISIBILITY_ACCEPTANCE.json
+          test -s .r1347-two-command-evidence/R1347_PUBLIC_PROFILE_DESKTOP.png
+          test -s .r1347-two-command-evidence/R1347_CLAIM_SELECTED_DESKTOP.png
+          test -s .r1347-two-command-evidence/R1347_SUPPORT_MOBILE.png
+          grep -F '"result": "PASS"' .r1347-two-command-evidence/R1347_TWO_COMMAND_VISIBILITY_ACCEPTANCE.json
+          kill "$HTTP_PID" 2>/dev/null || true
+          trap - EXIT
+
       - name: Build deterministic exact-source artifact and manifest
         run: |
           set -euo pipefail
@@ -464,7 +492,7 @@ jobs:
           # Main/public source bytes from the exact workflow commit.
           for p in sorted(root.rglob('*')):
               rel0=p.relative_to(root).as_posix()
-              if rel0 in exclude or rel0.startswith('.git/') or rel0.startswith('.r1346-browser-evidence/'): continue
+              if rel0 in exclude or rel0.startswith('.git/') or rel0.startswith('.r1346-browser-evidence/') or rel0.startswith('.r1347-two-command-evidence/'): continue
               if p.is_symlink():
                   raise AssertionError(f'symlink not allowed in release: {p}')
               if not p.is_file(): continue
@@ -608,7 +636,9 @@ jobs:
           node tests/r1344-recent-fix-visibility.cjs
           node tests/r1345-profile-access-authority-routing.cjs
           node tests/r1346-claim-path-outreach-readiness.cjs
+          node tests/r1347-two-command-permanent-baseline.cjs
           node --check scripts/r1346-claim-path-browser-acceptance.mjs
+          node --check scripts/r1347-two-command-browser-visibility.mjs
             node --check dist/assets/franklin-site-monitor-r1308.js
           )
           (
@@ -630,5 +660,9 @@ jobs:
             .r1346-browser-evidence/R1346_CLAIM_PATH_BROWSER_ACCEPTANCE.json
             .r1346-browser-evidence/R1346_STEP3_DESKTOP.png
             .r1346-browser-evidence/R1346_STEP3_MOBILE.png
+            .r1347-two-command-evidence/R1347_TWO_COMMAND_VISIBILITY_ACCEPTANCE.json
+            .r1347-two-command-evidence/R1347_PUBLIC_PROFILE_DESKTOP.png
+            .r1347-two-command-evidence/R1347_CLAIM_SELECTED_DESKTOP.png
+            .r1347-two-command-evidence/R1347_SUPPORT_MOBILE.png
           if-no-files-found: error
           retention-days: 30
