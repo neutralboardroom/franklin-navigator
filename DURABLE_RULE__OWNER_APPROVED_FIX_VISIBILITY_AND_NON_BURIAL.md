@@ -21,7 +21,7 @@ Future material releases must therefore:
 9. repair the regression before release rather than merely listing it for a later version;
 10. extend the permanent regression gate whenever a new owner-approved user-facing fix is introduced.
 
-The permanent qualification tests include `tests/r1344-recent-fix-visibility.cjs`, `tests/r1345-profile-access-authority-routing.cjs`, `tests/r1346-claim-path-outreach-readiness.cjs`, `tests/r1347-two-command-permanent-baseline.cjs`, and `tests/r1347-sitewide-roger-rule.cjs`, or their authoritative successors. The current gate covers R1335 forward plus the whole-site preservation baseline and must continue forward rather than resetting to a narrower window.
+The permanent qualification tests include `tests/r1344-recent-fix-visibility.cjs`, `tests/r1345-profile-access-authority-routing.cjs`, `tests/r1346-claim-path-outreach-readiness.cjs`, `tests/r1347-two-command-permanent-baseline.cjs`, and `tests/r1347-sitewide-roger-rule.cjs`, or their authoritative successors. The current gate covers R1335 forward plus the whole-site preservation baseline and must continue forward rather than resetting to a narrower window. The R1347 two-command baseline permanently binds the September 19 and September 20 claim/account/recovery commands and requires their visible/reachable behavior to remain protected by controlled-browser qualification, not just source-string checks.
 
 This rule does not require every secondary action to be visually equal to the primary action. It requires hierarchy to match the intended user task and prevents important fixes from becoming technically present but practically hidden.
 
