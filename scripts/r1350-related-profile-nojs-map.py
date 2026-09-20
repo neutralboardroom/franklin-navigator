@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import argparse, html, re, hashlib, json
+from urllib.parse import urlsplit, parse_qs
 ROOT=Path(__file__).resolve().parents[1]
 PROFILE_ROOT=ROOT/'dist/profiles'
 CSS_PATH=ROOT/'dist/assets/hf36.css'
@@ -27,13 +28,22 @@ def main():
             ids.append(pid)
             if '/assets/hf36.css' not in text: raise SystemExit(f'R1350_SHARED_CSS_MISSING {pid}')
             label=next(x for x in BROAD if normalized(x)==cat)
-            encoded=label.replace(' ','%20')
-            if not re.search(r'category='+re.escape(encoded), text, re.I): raise SystemExit(f'R1350_BREADCRUMB_BINDING_MISSING {pid} {label}')
+            nav=re.search(r'<nav[^>]*aria-label="Breadcrumb"[^>]*>(.*?)</nav>',text,re.I|re.S)
+            if not nav: raise SystemExit(f'R1350_BREADCRUMB_MISSING {pid}')
+            links=re.findall(r'<a[^>]+href="([^"]+)"[^>]*>',nav.group(1),re.I)
+            cats=[]
+            for href in links:
+                try:
+                    q=parse_qs(urlsplit(html.unescape(href)).query)
+                    cats.extend(q.get('category',[]))
+                except Exception:
+                    pass
+            if not any(normalized(v)==cat for v in cats): raise SystemExit(f'R1350_BREADCRUMB_BINDING_MISSING {pid} {label} cats={cats}')
     if not ids: raise SystemExit('R1350_BROAD_PROFILE_SET_EMPTY')
     css=CSS_PATH.read_text(encoding='utf-8')
     for cat in BROAD:
         encoded=cat.replace(' ','%20')
-        token=f'body.hf35-profile:has(.breadcrumbs a[href*="category={encoded}" i])'
+        token=f'body.hf35-profile:has(.breadcrumbs a[href="/directory/?category={encoded}" i])'
         if token not in css: raise SystemExit(f'R1350_CATEGORY_GUARD_MISSING {cat}')
     if 'data-related-relevance="qualified-override"' not in css: raise SystemExit('R1350_QUALIFIED_OVERRIDE_EXCEPTION_MISSING')
     daddy='FR-ORG-305366afb36e-daddy-s-dogs'; mlrose='FR-ORG-f6a218bfcaea-m-l-rose-craft-beer-and-burgers'
