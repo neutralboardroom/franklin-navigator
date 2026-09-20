@@ -1,0 +1,14 @@
+{
+  "receiptType": "LOCAL_RELEASE_RECEIPT",
+  "release": "FR-NAV1.30.51-HF3.13.33",
+  "predecessor": "FR-NAV1.30.50-HF3.13.32",
+  "acceptedCoordinationAnchor": "FR-NAV1.30.49-HF3.13.31",
+  "workOrderId": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+  "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+  "materialImprovement": "Profile-path pre-authority clarity plus Franklin Assistant public-card website/phone follow-ups",
+  "profileFactsChanged": false,
+  "pricingChanged": false,
+  "paymentOrEntitlementChanged": false,
+  "outreachPerformed": false,
+  "sccAcceptanceClaimed": false
+}
