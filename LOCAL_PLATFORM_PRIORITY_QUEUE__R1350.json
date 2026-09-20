@@ -1,0 +1,29 @@
+{
+  "release": "FR-NAV1.30.50-HF3.13.32",
+  "items": [
+    {
+      "priority": "P1",
+      "item": "Close no-JS/no-JavaScript rendering gap for broad-category related-profile relevance",
+      "status": "COMPLETED_IN_R1350",
+      "affectedProfiles": 1184
+    },
+    {
+      "priority": "P2",
+      "item": "Expand related-profile secondary signals from accepted PF evidence",
+      "status": "DEFER_WITH_CAUSE",
+      "cause": "No newer exact Franklin Navigator consumer-accepted PF pointer proven"
+    },
+    {
+      "priority": "P2",
+      "item": "Consume LI V39+",
+      "status": "DEFER_WITH_CAUSE",
+      "cause": "Consumer acceptance/currentness/SCC gate not proven"
+    },
+    {
+      "priority": "P2",
+      "item": "Change password-reset sender",
+      "status": "DEFER_WITH_CAUSE",
+      "cause": "Replacement transactional sender not independently verified"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "receiptType": "RULE_AND_SOURCE_RECONCILIATION_RECEIPT",
+  "release": "FR-NAV1.30.50-HF3.13.32",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "workOrderId": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+  "acceptedPredecessor": "FR-NAV1.30.49-HF3.13.31",
+  "acceptedPredecessorSha256": "0a9eb768ba0e6b4b761842912879bc8d196c565815ae04030a861c9a2bb4dd62",
+  "repositoryMainHeadAtPreEdit": "1e7aeaa64dba6522661572938e56a2a7b40aba45",
+  "sccPredecessorD1": "ACCEPTED",
+  "sccD2": "BLOCKED_GUARDED_VERSION_BOUND_CAS_UNAVAILABLE",
+  "d2BlocksLease": false,
+  "profileFactoryConsumerAdvance": "NOT_PROVEN",
+  "localInvestigatorConsumerAdvance": "NOT_PROVEN",
+  "srePilotLane": "SEPARATE_DO_NOT_MUTATE",
+  "smarterJusticeDonor": "NOT_USED",
+  "materialQualifiedNowFinding": "R1349 browser-only related-profile repair leaves broad category-only related cards visibly present when JavaScript is disabled; 1,184 affected profile pages detected.",
+  "result": "PASS_PRE_EDIT_RECONCILIATION"
+}

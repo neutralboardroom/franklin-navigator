@@ -1,0 +1,80 @@
+{
+  "receiptType": "LOCAL_RELEASE_RECEIPT",
+  "release": "FR-NAV1.30.50-HF3.13.32",
+  "predecessor": "FR-NAV1.30.49-HF3.13.31",
+  "predecessorSccD1Accepted": true,
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "workOrderId": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+  "state": "FINAL_EVIDENCE_BINDING_PENDING_EXACT_HEAD_RERUN",
+  "materialImprovement": "Static/no-JavaScript broad-category related-profile relevance hardening",
+  "mappedBroadProfiles": 1184,
+  "changedProductFiles": [
+    "dist/assets/hf36.css",
+    "dist/assets/hf36.js"
+  ],
+  "newValidationFiles": [
+    ".github/workflows/r1350-related-profile-nojs.yml",
+    "scripts/r1350-related-profile-nojs-map.py",
+    "tests/r1350-related-profile-nojs.cjs",
+    "scripts/r1350-related-profile-nojs-browser.mjs"
+  ],
+  "qualificationEvidence": {
+    "codeHeadFullQualification": {
+      "workflowRun": 35520469908,
+      "rerunJob": 106104142284,
+      "result": "SUCCESS"
+    },
+    "noJavaScriptBrowserGate": {
+      "workflowRun": 35520469895,
+      "job": 106103552111,
+      "result": "SUCCESS"
+    },
+    "finalReceiptBoundExactHead": "PENDING_AFTER_THIS_COMMIT"
+  },
+  "preSealCurrentness": {
+    "checkedAtUtc": "2026-09-20T15:52:00Z",
+    "repositoryMain": "1e7aeaa64dba6522661572938e56a2a7b40aba45",
+    "acceptedPredecessor": "FR-NAV1.30.49-HF3.13.31",
+    "activeLease": true,
+    "newerAcceptedFranklinLocalSuccessorObserved": false,
+    "newerConsumerAcceptedProfileFactoryHandoffObserved": false,
+    "newerConsumerAcceptedLocalInvestigatorHandoffObserved": false,
+    "sccD2Claimed": false
+  },
+  "runtimeIdentity": {
+    "functionalCodeCommit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+    "deployId": "dep-danvvtijnfac73a38rlg",
+    "deployState": "LIVE",
+    "localRelease": "FR-NAV1.30.50-HF3.13.32",
+    "functionalChange": false,
+    "identityOnly": true,
+    "rollbackPredecessorDeploy": "dep-dansgplahn7c73e43l40"
+  },
+  "profileFactsChanged": false,
+  "pricingChanged": false,
+  "paymentOrEntitlementChanged": false,
+  "localInvestigatorFactsChanged": false,
+  "outreachPerformed": false,
+  "smarterJusticeDonor": "NOT_USED",
+  "staticDeployment": "PENDING_MAIN_QUALIFICATION",
+  "sccAcceptance": "PENDING_AFTER_FINAL_QUALIFICATION_AND_DEPLOYMENT",
+  "browserHarnessHardening": {
+    "reason": "Two consecutive R1346 browser qualification attempts failed before assertions because Chrome did not expose the fixed-port CDP target.",
+    "productAssertionChanges": false,
+    "files": [
+      "scripts/r1346-claim-path-browser-acceptance.mjs",
+      "scripts/r1347-two-command-browser-visibility.mjs",
+      "scripts/r1350-related-profile-nojs-browser.mjs"
+    ],
+    "protections": [
+      "Chrome remote-debugging-port=0",
+      "DevToolsActivePort discovery",
+      "fresh per-run user-data directory",
+      "extended readiness polling",
+      "existing product assertions preserved"
+    ],
+    "sharedQualificationWorkflowModified": false
+  }
+}

@@ -10,13 +10,25 @@ const which=n=>spawnSync('bash',['-lc','command -v '+n],{encoding:'utf8'}).stdou
 const chromePath=['google-chrome','google-chrome-stable','chromium','chromium-browser'].map(which).find(Boolean);
 if(!chromePath)throw new Error('R1347_BROWSER_REQUIRED_CHROME_NOT_FOUND');
 const userDir='/tmp/franklin-r1347-'+process.pid;
-const chrome=spawn(chromePath,['--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--remote-debugging-address=127.0.0.1','--remote-debugging-port=9223','--user-data-dir='+userDir,'about:blank'],{stdio:['ignore','ignore','pipe']});
+fs.rmSync(userDir,{recursive:true,force:true});
+const chrome=spawn(chromePath,['--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--remote-debugging-address=127.0.0.1','--remote-debugging-port=0','--user-data-dir='+userDir,'about:blank'],{stdio:['ignore','ignore','pipe']});
 let chromeErr='';chrome.stderr.on('data',d=>chromeErr+=String(d).slice(-4000));
 process.on('exit',()=>{try{chrome.kill('SIGKILL')}catch{}});
 async function json(url){const r=await fetch(url);if(!r.ok)throw new Error('HTTP '+r.status+' '+url);return r.json()}
+const activePortFile=userDir+'/DevToolsActivePort';
+let cdpPort='';
+for(let i=0;i<200;i++){
+  if(fs.existsSync(activePortFile)){
+    const line=fs.readFileSync(activePortFile,'utf8').split(/\r?\n/)[0]?.trim();
+    if(/^\d+$/.test(line)){cdpPort=line;break}
+  }
+  if(chrome.exitCode!==null)break;
+  await sleep(100);
+}
+if(!cdpPort)throw new Error('Chrome DevToolsActivePort unavailable '+chromeErr);
 let target;
-for(let i=0;i<80;i++){try{target=(await json('http://127.0.0.1:9223/json/list')).find(x=>x.type==='page');if(target)break}catch{}await sleep(100)}
-if(!target)throw new Error('Chrome CDP target unavailable '+chromeErr);
+for(let i=0;i<100;i++){try{target=(await json('http://127.0.0.1:'+cdpPort+'/json/list')).find(x=>x.type==='page');if(target)break}catch{}await sleep(100)}
+if(!target)throw new Error('Chrome CDP target unavailable on dynamic port '+cdpPort+' '+chromeErr);
 const ws=new WebSocket(target.webSocketDebuggerUrl);await new Promise((res,rej)=>{ws.addEventListener('open',res,{once:true});ws.addEventListener('error',rej,{once:true})});
 let seq=0;const pending=new Map();ws.addEventListener('message',e=>{const m=JSON.parse(String(e.data));if(m.id&&pending.has(m.id)){const p=pending.get(m.id);pending.delete(m.id);m.error?p.reject(new Error(m.error.message)):p.resolve(m.result)}});
 const send=(method,params={})=>new Promise((resolve,reject)=>{const id=++seq;pending.set(id,{resolve,reject});ws.send(JSON.stringify({id,method,params}))});

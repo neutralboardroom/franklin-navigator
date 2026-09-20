@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.49-HF3.13.31",
+  "release": "FR-NAV1.30.50-HF3.13.32",
   "date": "2026-09-20",
-  "base": "FR-NAV1.30.48-HF3.13.30",
+  "base": "FR-NAV1.30.49-HF3.13.31",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1347 is a whole-site durability and non-burial release: it independently re-audits both September 19 and September 20 owner claim/account/recovery commands, establishes Roger's permanent sitewide no-regression/no-burial rule, snapshots the accepted non-profile route and profile/Assistant scope baseline, and makes those requirements mandatory exact-head qualification gates for future Franklin Local builds.",
+  "scope": "R1350 hardens the R1349 related-profile relevance repair for JavaScript-disabled users by suppressing category-only related cards for broad umbrella-category profiles in the shared profile stylesheet while preserving qualified overrides and specific-category related profiles.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -2529,6 +2529,146 @@
       "darkSemanticSurfaceReadabilityGuard": true,
       "inheritedFrom": "R1346"
     },
+    "acceptedCanonicalBase": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    }
+  },
+  "r1350": {
+    "version": "FR-NAV1.30.50-HF3.13.32",
+    "date": "2026-09-20",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.49-HF3.13.31",
+      "mainCommit": "1e7aeaa64dba6522661572938e56a2a7b40aba45",
+      "publicSourceTree": "50ba45e449255d53962ff6db38fd44a2f0a8d32a",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.49-HF3.13.31__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactBytes": 85674794,
+      "artifactSha256": "0a9eb768ba0e6b4b761842912879bc8d196c565815ae04030a861c9a2bb4dd62",
+      "manifestSha256": "0ca00444e53ef48a2dc3256400d35f4b72f0afacd0987f206d45e7679dbceecc",
+      "qualificationWorkflow": 35509101021,
+      "staticDeploy": "dep-dansnfh42hec73fji96g",
+      "runtimeDeploy": "dep-dansgplahn7c73e43l40",
+      "sccD1Accepted": true,
+      "sccAcceptedAtUtc": "2026-09-20T14:34:45Z"
+    },
+    "releaseLease": {
+      "workOrderId": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+      "state": "ISSUED_ACTIVE_RELEASE_LEASE",
+      "issuedAtUtc": "2026-09-20T14:34:45Z",
+      "d2RequiredBeforeBuild": false
+    },
+    "ownerCommandRevision": "2026-09-03-R2",
+    "materialImprovement": "Close the R1349 no-JavaScript/static-rendering relevance gap: broad umbrella-category profile pages no longer visibly expose category-only related-profile filler before JavaScript runs; qualified overrides remain visible and specific-category related profiles remain preserved.",
+    "fixes": {
+      "broadCategoryNoJsRelatedCardsSuppressed": true,
+      "mappedBroadProfileCount": 1184,
+      "qualifiedOverrideExceptionPreserved": true,
+      "daddysDogsQualifiedFoodOverridePreserved": true,
+      "specificCategoryRelatedProfilesPreserved": true,
+      "sharedCssSingleSourceGuard": true,
+      "deterministicMapDriftCheck": true,
+      "noJsBrowserAcceptanceRequired": true,
+      "r1349RuntimeGuardPreserved": true,
+      "r1349BilingualCurrentnessGatePreserved": true,
+      "r1348AssistantCurrentnessGatePreserved": true,
+      "sitewideRogerNoRegressionNoBurialPreserved": true,
+      "validatorSupportsSccD1AcceptedPredecessorWithoutFalseD2Claim": true
+    },
+    "noResidentFeatureRemoval": true,
+    "noPricingChange": true,
+    "noPaymentOrEntitlementChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noLocalInvestigatorFactMutation": true,
+    "noOutreach": true,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "smarterJusticeDonor": "SMARTER_JUSTICE_DONOR_NOT_USED",
+    "upstreamCurrentness": {
+      "profileFactory": "NO_NEWER_EXACT_ACCEPTED_FRANKLIN_NAVIGATOR_CONSUMER_POINTER_PROVEN",
+      "localInvestigatorCandidate": "SLI-FRANKLIN-HANDOFF-20260915-039",
+      "localInvestigatorConsumerAcceptance": "UNKNOWN",
+      "localInvestigatorSccGate": "PENDING",
+      "consumedNewUpstream": false
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+      "deploy": "dep-danvvtijnfac73a38rlg",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.50-HF3.13.32",
+      "targetReleaseEnv": "FR-NAV1.30.50-HF3.13.32",
+      "functionalChanges": false,
+      "identityOnly": true,
+      "inheritedFunctionalBehaviorFrom": "R1346",
+      "externalLiveReleaseEnvAtPreSeal": "FR-NAV1.30.50-HF3.13.32",
+      "identityDeploymentPending": false,
+      "identityDeploymentCompletedAtUtc": "2026-09-20T15:47:27Z"
+    },
+    "qualification": {
+      "result": "PENDING_EXACT_HEAD_WORKFLOW",
+      "requiredTests": [
+        "tests/r1342-claim-recovery.cjs",
+        "tests/r1344-recent-fix-visibility.cjs",
+        "tests/r1345-profile-access-authority-routing.cjs",
+        "tests/r1346-claim-path-outreach-readiness.cjs",
+        "tests/r1347-two-command-permanent-baseline.cjs",
+        "tests/r1347-sitewide-roger-rule.cjs",
+        "tests/assistant2-clean-room-boundary.cjs",
+        "tests/r1348-assistant-workflow-currentness.cjs",
+        "tests/r1349-bilingual-home-currentness.cjs",
+        "tests/r1349-related-profile-relevance.cjs",
+        "scripts/r1349-home-currentness-guard.py",
+        "tests/r1350-related-profile-nojs.cjs",
+        "scripts/r1350-related-profile-nojs-map.py --check",
+        "scripts/r1350-related-profile-nojs-browser.mjs",
+        "scripts/r1346-claim-path-browser-acceptance.mjs",
+        "scripts/r1347-two-command-browser-visibility.mjs"
+      ],
+      "runtimePrePromotionGate": {
+        "mode": "EXACT_CANDIDATE_RUNTIME_IDENTITY_ALIGNED",
+        "expectedLiveRuntimeRelease": "FR-NAV1.30.50-HF3.13.32",
+        "candidateTargetRuntimeRelease": "FR-NAV1.30.50-HF3.13.32",
+        "functionalRuntimeChanges": false,
+        "identityOnly": true,
+        "runtimeDeploy": "dep-danvvtijnfac73a38rlg",
+        "postDeployExactCandidateRuntimeVerificationRequired": true
+      },
+      "browserHarness": {
+        "devtoolsPort": "DYNAMIC_VIA_DEVTOOLS_ACTIVE_PORT",
+        "fixedPortCollisionRiskRemoved": true,
+        "assertionsUnchanged": true
+      }
+    },
+    "receipts": [
+      "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1350.json",
+      "LOCAL_PLATFORM_PRIORITY_QUEUE__R1350.json",
+      "STATIC_RELATED_PROFILE_NOJS_RELEVANCE__R1350.md",
+      "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1350.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1350.md",
+      "CONTINUATION_HANDOFF__R1350.md",
+      "PRE_SEAL_CURRENTNESS_RECEIPT__R1350.md",
+      "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1350.md",
+      "R1350_RELEASE_RECEIPT.json"
+    ],
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1349"
+    },
+    "acceptedPredecessor": {
+      "version": "FR-NAV1.30.49-HF3.13.31",
+      "sccD1Accepted": true,
+      "artifactSha256": "0a9eb768ba0e6b4b761842912879bc8d196c565815ae04030a861c9a2bb4dd62"
+    },
+    "sccD2State": "BLOCKED_GUARDED_VERSION_BOUND_CAS_UNAVAILABLE",
     "acceptedCanonicalBase": {
       "version": "FR-NAV1.30.12-HF3.12.4",
       "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
