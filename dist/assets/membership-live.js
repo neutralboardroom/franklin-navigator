@@ -81,7 +81,9 @@
       selected.append(summaryItem('Profile',state.selected.n),summaryItem('Type',[state.selected.c,state.selected.t].filter(Boolean).join(' · ')||'Franklin profile'),summaryItem('Location',[state.selected.l||state.selected.g].filter(Boolean).join(' · ')||'Franklin area'));
       const selectedActions=el('div',null,'r37-member-actions r1346-selected-profile-actions');
       selectedActions.append(link('View public profile','/profiles/'+encodeURIComponent(state.selected.i)+'/'));
-      s.append(selected,selectedActions,el('p','This exact public listing stays selected through sign-in, password recovery, and access review.','fine-print'));
+      const pathSummary=el('div',null,'r1351-profile-path-summary');
+      pathSummary.append(el('strong','This exact profile is selected.'),el('p','Franklin checks your account and access state before showing the next action. Selecting this profile does not claim it or change public facts.'),el('p','Profile access requests and factual corrections/removal are free. Community Membership is optional.','fine-print'));
+      s.append(selected,selectedActions,pathSummary,el('p','This exact public listing stays selected through sign-in, password recovery, and access review.','fine-print'));
     }else{
       s.append(el('p','Search by business, professional practice, organization, category or location, then choose the matching listing.'));
     }
@@ -103,7 +105,7 @@
         const rows=(await loadProfiles()).filter(r=>r.s.includes(q)).sort((a,b)=>nameMatchRank(a.n,q)-nameMatchRank(b.n,q)||String(a.n).localeCompare(String(b.n))).slice(0,12);results.replaceChildren();
         if(!rows.length){results.append(el('p','No matching profile found.'));results.append(link('Request a Franklin profile','/profile-request/'));return}
         for(const row of rows){
-          const b=button('',()=>choose(row),'r37-search-result r1342-claim-result'),txt=el('span'),strong=el('strong',row.n),small=el('small',[(window.FranklinI18n?.category?.(row.c)||row.c),row.l||row.g].filter(Boolean).join(' · ')),pick=el('span','Claim this profile','r1342-claim-result-action');
+          const b=button('',()=>choose(row),'r37-search-result r1342-claim-result'),txt=el('span'),strong=el('strong',row.n),small=el('small',[(window.FranklinI18n?.category?.(row.c)||row.c),row.l||row.g].filter(Boolean).join(' · ')),pick=el('span','Continue with this profile','r1342-claim-result-action');
           txt.append(strong,small);b.append(txt,pick);results.append(b);
         }
       }catch{results.textContent='Profile search could not load. Please try again.'}
