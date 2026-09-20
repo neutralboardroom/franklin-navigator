@@ -1,0 +1,75 @@
+name: R1350 related-profile no-JavaScript relevance
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/assets/hf36.css'
+      - 'dist/assets/hf36.js'
+      - 'dist/assets/r1349-related-profiles.js'
+      - 'dist/profiles/**'
+      - 'PRODUCTION_RELEASE.json'
+      - 'scripts/r1350-related-profile-nojs-map.py'
+      - 'scripts/r1350-related-profile-nojs-browser.mjs'
+      - 'tests/r1350-related-profile-nojs.cjs'
+      - '.github/workflows/r1350-related-profile-nojs.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'dist/assets/hf36.css'
+      - 'dist/assets/hf36.js'
+      - 'dist/assets/r1349-related-profiles.js'
+      - 'dist/profiles/**'
+      - 'PRODUCTION_RELEASE.json'
+      - 'scripts/r1350-related-profile-nojs-map.py'
+      - 'scripts/r1350-related-profile-nojs-browser.mjs'
+      - 'tests/r1350-related-profile-nojs.cjs'
+      - '.github/workflows/r1350-related-profile-nojs.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  nojs-related-relevance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Structural and corpus coverage guards
+        run: |
+          set -euo pipefail
+          node tests/r1349-related-profile-relevance.cjs
+          node tests/r1350-related-profile-nojs.cjs
+          python scripts/r1350-related-profile-nojs-map.py --check
+          node --check scripts/r1350-related-profile-nojs-browser.mjs
+      - name: Browser acceptance with JavaScript disabled and enabled
+        run: |
+          set -euo pipefail
+          rm -rf .r1350-related-evidence
+          python3 -m http.server 4175 --directory dist >/tmp/r1350-http.log 2>&1 &
+          HTTP_PID=$!
+          trap 'kill "$HTTP_PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 50); do
+            if curl --fail --silent http://127.0.0.1:4175/profiles/FR-ORG-305366afb36e-daddy-s-dogs/ >/dev/null; then break; fi
+            sleep 0.1
+          done
+          node scripts/r1350-related-profile-nojs-browser.mjs
+          grep -F '"result": "PASS"' .r1350-related-evidence/R1350_RELATED_PROFILE_NOJS_ACCEPTANCE.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1350-related-profile-nojs-evidence
+          path: |
+            .r1350-related-evidence/R1350_RELATED_PROFILE_NOJS_ACCEPTANCE.json
+            .r1350-related-evidence/R1350_DADDYS_NOJS.png
+            .r1350-related-evidence/R1350_DADDYS_JS_OVERRIDE.png
+          if-no-files-found: error
+          retention-days: 30
