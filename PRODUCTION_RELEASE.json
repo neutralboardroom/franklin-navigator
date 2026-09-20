@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.45-HF3.13.27",
-  "date": "2026-09-19",
-  "base": "FR-NAV1.30.44-HF3.13.26",
+  "release": "FR-NAV1.30.46-HF3.13.28",
+  "date": "2026-09-20",
+  "base": "FR-NAV1.30.45-HF3.13.27",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1345 completes the ordinary pre-verification profile-access journey: unverified and pending owners/managers stay in Profile Access, can submit/resubmit authority evidence, refresh pending status, and withdraw a pending request without being routed into Profile Center early. Public-profile pending state and post-correction follow-up now preserve the same authority boundary. The permanent owner-fix visibility gate extends through R1345.",
+  "scope": "R1346 is the owner-directed outreach claim/account readiness pass: it repairs the Step 3 management-verification layout; makes consequential claim/password actions visibly load, complete, fail and advance in the user's viewport; changes the password minimum from 12 to 8 consistently in public UI and Local runtime; strengthens claim/manage CTA hierarchy; clarifies public-profile access and progress; preserves exact-profile continuity through password recovery; keeps Community Membership optional and later; and adds controlled-browser desktop/mobile/keyboard acceptance plus a durable no-silent-click rule.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -2015,7 +2015,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "state": "QUALIFIED_AND_DEPLOYED",
     "predecessor": {
       "version": "FR-NAV1.30.44-HF3.13.26",
       "mainCommit": "d15c3db1d983cc4a2cbee36dce6fb433d7c08bbc",
@@ -2081,6 +2081,137 @@
       "CONTINUATION_HANDOFF__R1345.md",
       "RECENT_FIX_VISIBILITY_AUDIT__R1345.json",
       "R1345_RELEASE_RECEIPT.json"
+    ],
+    "qualification": {
+      "result": "PASS",
+      "workflowRun": 35450353561,
+      "qualifiedHead": "267c38a0f3dad5c61e6d94b3a63201910e42e59c",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.45-HF3.13.27__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactSha256": "83d8bd48b0f7682b2bba7960b496cb876fe72f19a5274cfae27e79e9c4f68989",
+      "manifestSha256": "10235a95565b8fe5017b880fd8c9ca9ac528858415100624494e9cb1992ff537"
+    },
+    "staticDeploy": "dep-dana81bm8hqs73akm71g"
+  },
+  "r1346": {
+    "version": "FR-NAV1.30.46-HF3.13.28",
+    "date": "2026-09-20",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.45-HF3.13.27",
+      "mainCommit": "267c38a0f3dad5c61e6d94b3a63201910e42e59c",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.45-HF3.13.27__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactSha256": "83d8bd48b0f7682b2bba7960b496cb876fe72f19a5274cfae27e79e9c4f68989",
+      "manifestSha256": "10235a95565b8fe5017b880fd8c9ca9ac528858415100624494e9cb1992ff537"
+    },
+    "acceptedCanonicalBase": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    },
+    "ownerCommand": "FRANKLIN_NAVIGATOR_NEXT_VERSION_CLAIM_PATH_FIX_PROMPT_2026-09-20",
+    "ownerWalkthroughProfileId": "FR-ORG-b00c0ace7943973c",
+    "noPricingChange": true,
+    "noPaymentOrEntitlementChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noOrdinaryUnpaidRankingChange": true,
+    "noOutreachPerformed": true,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "smarterJusticeDonor": "SMARTER_JUSTICE_DONOR_NOT_USED",
+    "fixes": {
+      "step3VerticalVerificationForm": true,
+      "fullWidthAuthorityUrl": true,
+      "comfortableAuthorityTextarea": true,
+      "standaloneAuthorityCheckboxRow": true,
+      "responsiveDesktopTabletMobile": true,
+      "connectProfileVisibleLoading": true,
+      "connectProfileDuplicateSuppression": true,
+      "connectProfileLocalFeedback": true,
+      "connectProfileAutoAdvanceAndFocus": true,
+      "resetRequestVisibleLoadingAndGenericAcknowledgement": true,
+      "resetCompletionReplacesOldForm": true,
+      "resetCompletionSignedInSuccess": true,
+      "resetCompletionExactProfileReturn": true,
+      "passwordMinimumEightFrontend": true,
+      "passwordMinimumEightBackend": true,
+      "noForcedComplexityRule": true,
+      "claimCtaPrimaryHierarchy": true,
+      "officialWebsiteSecondaryOnClaimableProfiles": true,
+      "publicProfileHeroClarified": true,
+      "semanticFourStepProgress": true,
+      "exactSelectedProfileCard": true,
+      "wrongProfileChooserCollapsed": true,
+      "dynamicVerifyManagementHeading": true,
+      "membershipPromotionDelayedUntilSubmittedOrVerified": true,
+      "correctionsRemainFreeAndReachable": true,
+      "noSilentClicksDurableRule": true,
+      "spanishDynamicParityExpanded": true,
+      "runtimeReviewStateExposedToFrontend": true
+    },
+    "passwordRecovery": {
+      "version": "FRANKLIN_ACCOUNT_RECOVERY_R1346",
+      "minimumCharacters": 8,
+      "maximumCharacters": 256,
+      "forcedComplexity": false,
+      "singleUseToken": true,
+      "shortLivedMinutes": 30,
+      "genericAccountExistenceResponse": true,
+      "selectedProfileContinuity": true,
+      "priorSessionsInvalidatedOnSuccess": true,
+      "signedInSessionCreatedOnSuccess": true
+    },
+    "senderIdentityReview": {
+      "observedWorkingSender": "alerts@franklinnavigator.com",
+      "deliveryObservedByOwner": true,
+      "dedicatedRecoverySenderEnvSupportedByRuntime": true,
+      "changedInR1346": false,
+      "disposition": "DEFER_WITH_CAUSE_VERIFIED_TRANSACTIONAL_SENDER_EVIDENCE_REQUIRED",
+      "reason": "Do not change a working authenticated sender until a replacement Franklin account/security sender is independently verified for domain authentication and deliverability."
+    },
+    "browserAcceptance": {
+      "fixture": "CONTROLLED_NON_PRODUCTION_BROWSER_FIXTURE",
+      "productionAccountMutation": false,
+      "desktopScreenshot": ".r1346-browser-evidence/R1346_STEP3_DESKTOP.png",
+      "mobileScreenshot": ".r1346-browser-evidence/R1346_STEP3_MOBILE.png",
+      "report": ".r1346-browser-evidence/R1346_CLAIM_PATH_BROWSER_ACCEPTANCE.json",
+      "requiredInQualification": true
+    },
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1345"
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+      "deploy": "dep-danlctp42hec73esjefg",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.46-HF3.13.28",
+      "functionalChanges": true,
+      "accountRecoveryVersion": "FRANKLIN_ACCOUNT_RECOVERY_R1346",
+      "passwordMinimumCharacters": 8,
+      "reviewStateInAccountSession": true,
+      "liveAcceptanceRequired": true
+    },
+    "receipts": [
+      "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1346.json",
+      "NO_LOSS_LEDGER__R1346.json",
+      "LOCAL_PLATFORM_PRIORITY_QUEUE__R1346.json",
+      "CLAIM_PATH_OUTREACH_READINESS_REPORT__R1346.md",
+      "PASSWORD_RECOVERY_AND_ASYNC_FEEDBACK_TEST_REPORT__R1346.md",
+      "ACCESSIBILITY_RESPONSIVE_RESULTS__R1346.md",
+      "BEFORE_AFTER_EVIDENCE__R1346.md",
+      "DURABLE_RULE__CLAIM_ACCOUNT_ASYNC_ACTION_FEEDBACK.md",
+      "OWNER_SUMMARY__R1346.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1346.md",
+      "CONTINUATION_HANDOFF__R1346.md",
+      "R1346_RELEASE_RECEIPT.json"
     ],
     "qualification": {
       "result": "PENDING_EXACT_HEAD_WORKFLOW"
