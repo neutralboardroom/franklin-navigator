@@ -27,6 +27,7 @@ This receipt supersedes the stale R1342 outreach receipt for the current claim/a
 | No payment-created authority | PASS |
 | No second charge from account recovery | PASS |
 | Support fallback for inaccessible email / disputes | PASS |
+| Public support pre-verification review-status routing | PASS — Profile Access; Profile Center explicitly verified-only |
 | Support new-membership wording | PASS |
 | Entity-aware review policy / first-party review exclusion | PASS |
 | Sitewide no-regression / no-burial durable rule | PASS — permanent gate established |
