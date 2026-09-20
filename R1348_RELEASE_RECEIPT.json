@@ -1,0 +1,46 @@
+{
+  "release": "FR-NAV1.30.48-HF3.13.30",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "predecessor": {
+    "version": "FR-NAV1.30.47-HF3.13.29",
+    "commit": "063e9ce008726f9908d7f856ed37f9c974b97ad8",
+    "artifactSha256": "bf854aeeb570df4e3a1de331260ac9372e8be432338b808b2d2f9b1cc780be90",
+    "manifestSha256": "38aa3e6ac38bc330bd8007c0341c9cdadb4dc398d902089a19ff92e8afb258e7"
+  },
+  "materialImprovement": "Eliminate known false-red historical Franklin Assistant workflow failures while retaining historical behavioral contracts and validating the current canonical clean-room Assistant integration through release-independent gates.",
+  "changedClasses": [
+    "GitHub Actions qualification",
+    "Assistant clean-room regression test",
+    "authoritative current-successor regression suite",
+    "release evidence only"
+  ],
+  "residentFeatureChange": false,
+  "authority": {
+    "profiles": "UNCHANGED",
+    "localResearch": "UNCHANGED",
+    "commercial": "UNCHANGED",
+    "sccAccepted": false,
+    "smarterJusticeDonor": "NOT_USED"
+  },
+  "runtime": {
+    "commit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+    "deploy": "dep-danpnt5ii2qc73c41cc0",
+    "state": "LIVE",
+    "releaseEnv": "FR-NAV1.30.48-HF3.13.30",
+    "functionalChanges": false,
+    "identityOnly": true
+  },
+  "qualification": {
+    "result": "PENDING_EXACT_HEAD_WORKFLOW",
+    "workflowRun": null,
+    "qualifiedHead": null,
+    "artifact": null,
+    "artifactSha256": null,
+    "manifestSha256": null
+  },
+  "deployment": {
+    "staticDeploy": null,
+    "staticState": "NOT_STARTED"
+  }
+}
