@@ -21,6 +21,13 @@ Future material releases must therefore:
 9. repair the regression before release rather than merely listing it for a later version;
 10. extend the permanent regression gate whenever a new owner-approved user-facing fix is introduced.
 
-The permanent qualification tests are `tests/r1344-recent-fix-visibility.cjs`, `tests/r1345-profile-access-authority-routing.cjs`, and the current outreach claim-path companion `tests/r1346-claim-path-outreach-readiness.cjs`, or their authoritative successors. The current gate covers R1335–R1346 and must continue forward rather than resetting to a narrower window.
+The permanent qualification tests include `tests/r1344-recent-fix-visibility.cjs`, `tests/r1345-profile-access-authority-routing.cjs`, `tests/r1346-claim-path-outreach-readiness.cjs`, `tests/r1347-two-command-permanent-baseline.cjs`, and `tests/r1347-sitewide-roger-rule.cjs`, or their authoritative successors. The current gate covers R1335 forward plus the whole-site preservation baseline and must continue forward rather than resetting to a narrower window.
 
 This rule does not require every secondary action to be visually equal to the primary action. It requires hierarchy to match the intended user task and prevents important fixes from becoming technically present but practically hidden.
+
+
+## Whole-site Roger Rule successor
+
+The broader durable owner rule `DURABLE_ROGER_RULE__SITEWIDE_NO_REGRESSION_AND_NON_BURIAL.md` is now authoritative for **all accepted Franklin Navigator functionality**, not only recent owner-approved fixes.
+
+This earlier rule remains active as a focused visibility/non-burial requirement. Future builders must satisfy both rules. A feature outside the recent-release window is still protected by the whole-site Roger Rule and may not be removed, hidden, demoted, broken, or made materially harder to reach unless Roger explicitly directs that specific change.
