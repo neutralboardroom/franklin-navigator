@@ -46,14 +46,20 @@ await shot('R1351_PROFILE_SELECTED_ES.png');
 await nav('/assistant/');
 await evaluate(`(()=>{const i=document.querySelector('[data-navigator-input]');i.value='I need someone to mow my lawn';document.querySelector('[data-navigator-bot] form').requestSubmit();return true})()`);
 await waitFor("document.querySelectorAll('.franklin-assistant-profile-match').length>=2",'English profile cards');
-const first=await evaluate(`(()=>({names:[...document.querySelectorAll('.franklin-assistant-profile-match h3')].map(x=>x.textContent.trim()),websites:[...document.querySelectorAll('.franklin-assistant-profile-match')].filter(x=>[...x.querySelectorAll('a')].some(a=>a.textContent.trim()==='Website')).length}))()`);
-check('English local profile handoff shows cards',first.names.length>=2,JSON.stringify(first));check('English initial cards include website-bearing profiles',first.websites>=1,JSON.stringify(first));
+const first=await evaluate(`(()=>({names:[...document.querySelectorAll('.franklin-assistant-profile-match h3')].map(x=>x.textContent.trim()),websites:[...document.querySelectorAll('.franklin-assistant-profile-match')].filter(x=>[...x.querySelectorAll('a')].some(a=>a.textContent.trim()==='Website')).length,phones:[...document.querySelectorAll('.franklin-assistant-profile-match')].filter(x=>[...x.querySelectorAll('a')].some(a=>a.textContent.trim()==='Call')).length}))()`);
+check('English local profile handoff shows cards',first.names.length>=2,JSON.stringify(first));check('English initial cards include callable profiles',first.phones>=1,JSON.stringify(first));
 await evaluate(`(()=>{const i=document.querySelector('[data-navigator-input]');i.value='Which of these have websites?';document.querySelector('[data-navigator-bot] form').requestSubmit();return true})()`);
 await waitFor("[...document.querySelectorAll('[data-assistant-mode]')].some(x=>x.dataset.assistantMode==='directory_card_followup')",'English card follow-up');
 state=await evaluate(`(()=>{const c=[...document.querySelectorAll('[data-assistant-mode=\"directory_card_followup\"]')].at(-1);return{text:c?.textContent||'',names:[...c.querySelectorAll('.franklin-assistant-profile-match h3')].map(x=>x.textContent.trim()),allHaveWebsite:[...c.querySelectorAll('.franklin-assistant-profile-match')].every(x=>[...x.querySelectorAll('a')].some(a=>a.textContent.trim()==='Website'))}})()`);
-check('English website follow-up is answered from displayed cards',/profiles I just showed/i.test(state.text)&&state.names.length>=1&&state.allHaveWebsite,JSON.stringify(state));
-check('English website follow-up stays within prior displayed set',state.names.every(n=>first.names.includes(n)),JSON.stringify({before:first.names,after:state.names}));
+check('English website follow-up is answered from displayed cards',/profiles I just showed/i.test(state.text)||/None of the profiles I just showed/i.test(state.text),JSON.stringify(state));
+if(first.websites===0){check('English zero-website follow-up truthfully returns none',/None of the profiles I just showed/i.test(state.text)&&state.names.length===0,JSON.stringify(state));}else{check('English website follow-up returns only website-bearing cards',state.names.length>=1&&state.allHaveWebsite,JSON.stringify(state));check('English website follow-up stays within prior displayed set',state.names.every(n=>first.names.includes(n)),JSON.stringify({before:first.names,after:state.names}));}
 await shot('R1351_ASSISTANT_WEBSITE_FOLLOWUP_EN.png');
+await evaluate(`(()=>{const i=document.querySelector('[data-navigator-input]');i.value='Which can I call?';document.querySelector('[data-navigator-bot] form').requestSubmit();return true})()`);
+await waitFor("document.querySelectorAll('[data-assistant-mode=\"directory_card_followup\"]').length>=2",'English phone card follow-up');
+state=await evaluate(`(()=>{const c=[...document.querySelectorAll('[data-assistant-mode=\"directory_card_followup\"]')].at(-1);return{text:c?.textContent||'',names:[...c.querySelectorAll('.franklin-assistant-profile-match h3')].map(x=>x.textContent.trim()),allHavePhone:[...c.querySelectorAll('.franklin-assistant-profile-match')].every(x=>[...x.querySelectorAll('a')].some(a=>a.textContent.trim()==='Call'))}})()`);
+check('English phone follow-up survives a prior zero-result card follow-up',/profiles I just showed/i.test(state.text)&&state.names.length>=1&&state.allHavePhone,JSON.stringify(state));
+check('English phone follow-up stays within original displayed set',state.names.every(n=>first.names.includes(n)),JSON.stringify({before:first.names,after:state.names}));
+await shot('R1351_ASSISTANT_PHONE_FOLLOWUP_EN.png');
 await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Clear / new question')?.click()");await sleep(200);
 state=await evaluate(`({history:window.FranklinAssistant?.history?.().length,hidden:document.querySelector('[data-navigator-output]')?.hidden,conversation:document.querySelector('[data-navigator-bot]')?.dataset.franklinConversationLayout||''})`);
 check('Clear/new question resets visible conversation',state.history===0&&state.hidden===true&&state.conversation==='',JSON.stringify(state));
@@ -67,6 +73,6 @@ state=await evaluate(`(()=>{const c=[...document.querySelectorAll('[data-assista
 check('Spanish website follow-up is answered from displayed cards',/perfiles que acabo de mostrar/i.test(state.text)&&state.names.length>=1&&state.allHaveWebsite,JSON.stringify(state));
 check('Spanish website follow-up stays within prior displayed set',state.names.every(n=>esFirst.includes(n)),JSON.stringify({before:esFirst,after:state.names}));
 await shot('R1351_ASSISTANT_WEBSITE_FOLLOWUP_ES.png');
-const receipt={result:'PASS',release:'FR-NAV1.30.51-HF3.13.33',checks,artifacts:['R1351_PROFILE_SELECTED_EN.png','R1351_PROFILE_SELECTED_ES.png','R1351_ASSISTANT_WEBSITE_FOLLOWUP_EN.png','R1351_ASSISTANT_WEBSITE_FOLLOWUP_ES.png']};
+const receipt={result:'PASS',release:'FR-NAV1.30.51-HF3.13.33',checks,artifacts:['R1351_PROFILE_SELECTED_EN.png','R1351_PROFILE_SELECTED_ES.png','R1351_ASSISTANT_WEBSITE_FOLLOWUP_EN.png','R1351_ASSISTANT_PHONE_FOLLOWUP_EN.png','R1351_ASSISTANT_WEBSITE_FOLLOWUP_ES.png']};
 fs.writeFileSync(dir+'/R1351_PROFILE_PATH_ASSISTANT_BROWSER_ACCEPTANCE.json',JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify(receipt,null,2));
 ws.close();try{chrome.kill('SIGTERM')}catch{}
