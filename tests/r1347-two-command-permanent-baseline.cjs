@@ -24,7 +24,7 @@ const authorityRule=read('DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md');
 const r1342=child.spawnSync(process.execPath,[path.join(root,'tests/r1342-claim-recovery.cjs')],{encoding:'utf8'});
 add('Sep19 inherited R1342 contract still passes',r1342.status===0);
 add('Sep19 exact-match ranking hierarchy remains implemented',/exact|phrase|starts|token|partial/i.test(core));
-add('Sep19 claim search keeps clear primary result action',claim.includes("b.textContent='Claim this profile'")&&claim.includes('r1342-claim-result-action'));
+add('R1351 claim search keeps neutral primary result action',claim.includes("b.textContent='Continue with this profile'")&&claim.includes('r1342-claim-result-action'));
 add('Sep19 selected claim panel keeps four required actions',['Claim or manage this profile','Correct information','Request removal','Preview optional member profile'].every(x=>claim.includes(x)));
 add('Sep19 selected result moves/focuses to action panel',claim.includes("section.scrollIntoView")&&claim.includes("section.focus"));
 add('Sep19 profile claim deep-link preserves exact profile',profile.includes("/profile-access/?profile="));
