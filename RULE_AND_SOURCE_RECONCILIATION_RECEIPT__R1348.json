@@ -1,0 +1,64 @@
+{
+  "receiptType": "RULE_AND_SOURCE_RECONCILIATION_RECEIPT",
+  "release": "FR-NAV1.30.48-HF3.13.30",
+  "date": "2026-09-20",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "controllingOwnerCommand": {
+    "revision": "2026-09-03-R2",
+    "mode": "BUILD"
+  },
+  "predecessor": {
+    "release": "FR-NAV1.30.47-HF3.13.29",
+    "commit": "063e9ce008726f9908d7f856ed37f9c974b97ad8",
+    "tree": "d5c8ef0cedabc5840fa990f24c8fc9fd01ce6d2b",
+    "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.47-HF3.13.29__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "bytes": 85650799,
+    "artifactSha256": "bf854aeeb570df4e3a1de331260ac9372e8be432338b808b2d2f9b1cc780be90",
+    "manifestSha256": "38aa3e6ac38bc330bd8007c0341c9cdadb4dc398d902089a19ff92e8afb258e7",
+    "qualificationWorkflow": 35497140591,
+    "staticDeploy": "dep-danopkn40ujc73clkqg0",
+    "externalState": "QUALIFIED_AND_DEPLOYED"
+  },
+  "durableRules": [
+    "DURABLE_ROGER_RULE__SITEWIDE_NO_REGRESSION_AND_NON_BURIAL.md",
+    "DURABLE_RULE__FRANKLIN_CLAIM_ACCOUNT_RECOVERY_OUTREACH_BASELINE.md",
+    "DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md",
+    "DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md"
+  ],
+  "priorityFinding": {
+    "priority": "P1_OPERATIONAL_RELIABILITY",
+    "item": "Historical standalone Assistant workflows generate false-red CI because they assert obsolete loader/version wiring after the canonical clean-room Assistant migration.",
+    "evidenceRuns": [
+      35495626529,
+      35495626513,
+      35495626498,
+      35495626531
+    ],
+    "qualifiedNow": true
+  },
+  "upstream": {
+    "profileFactory": {
+      "newestObserved": "FR-PF-PLATFORM-15.28 referenced by newer Franklin ecosystem handoffs",
+      "franklinNavigatorConsumerAcceptance": "NO_NEWER_EXACT_ACCEPTED_CONSUMER_POINTER_PROVEN_IN_THIS_RECONCILIATION",
+      "action": "NOT_CONSUMED"
+    },
+    "localInvestigator": {
+      "newestQualifiedObserved": "SLI-FRANKLIN-HANDOFF-20260915-039",
+      "consumerAcceptance": "UNKNOWN",
+      "sccGateState": "PENDING",
+      "action": "NOT_CONSUMED"
+    },
+    "smarterJustice": "SMARTER_JUSTICE_DONOR_NOT_USED"
+  },
+  "authority": {
+    "noPricingChange": true,
+    "noPaymentOrEntitlementChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noLocalInvestigatorFactMutation": true,
+    "noOutreach": true,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false
+  }
+}
