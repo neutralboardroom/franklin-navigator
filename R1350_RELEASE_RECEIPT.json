@@ -1,0 +1,29 @@
+{
+  "receiptType": "LOCAL_RELEASE_RECEIPT",
+  "release": "FR-NAV1.30.50-HF3.13.32",
+  "predecessor": "FR-NAV1.30.49-HF3.13.31",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "workOrderId": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+  "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+  "materialImprovement": "Static/no-JavaScript broad-category related-profile relevance hardening",
+  "mappedBroadProfiles": 1184,
+  "changedProductFiles": [
+    "dist/assets/hf36.css",
+    "dist/assets/hf36.js"
+  ],
+  "newValidationFiles": [
+    "scripts/r1350-related-profile-nojs-map.py",
+    "tests/r1350-related-profile-nojs.cjs",
+    "scripts/r1350-related-profile-nojs-browser.mjs"
+  ],
+  "profileFactsChanged": false,
+  "pricingChanged": false,
+  "paymentOrEntitlementChanged": false,
+  "localInvestigatorFactsChanged": false,
+  "outreachPerformed": false,
+  "smarterJusticeDonor": "NOT_USED",
+  "qualification": "PENDING_GITHUB_EXACT_HEAD",
+  "deployment": "NOT_YET_R1350",
+  "sccAcceptance": "PENDING_AFTER_QUALIFICATION"
+}
