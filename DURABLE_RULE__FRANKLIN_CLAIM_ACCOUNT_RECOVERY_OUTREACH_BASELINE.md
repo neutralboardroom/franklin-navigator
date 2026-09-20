@@ -74,6 +74,7 @@ Future builds must preserve and regression-test all applicable items below.
 
 ### Support
 - `ACCOUNT_ACCESS` routing prioritizes account access, shows `← Back to sign in`, and provides reset-password routing while preserving exact profile where safe.
+- Public support must direct pre-verification access-review status to Profile Access, not Profile Center; any Profile Center link must say it is for already-verified managers.
 - Support form remains one logical field per row, responsive, labeled, keyboard-accessible, with visible submission confirmation and sensitive-data warning.
 - Unsigned visitors see `Community Membership for new memberships — $35/year` (or authoritative successor pricing wording), not a statement implying that price is their current subscription.
 - Actual membership state is described as current only after authenticated account-specific resolution.
