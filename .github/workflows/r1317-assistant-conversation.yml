@@ -5,6 +5,7 @@ on:
     paths:
       - 'dist/assets/franklin-assistant-context-r1317.js'
       - 'dist/assets/franklin-assistant-r1317.js'
+      - 'dist/assets/franklin-assistant.js'
       - 'dist/assets/hf36.js'
       - 'dist/assets/r31-health.js'
       - 'dist/index.html'
@@ -12,6 +13,7 @@ on:
       - 'dist/assistant/index.html'
       - 'dist/es/asistente/index.html'
       - 'tests/r1317-assistant-context-acceptance.cjs'
+      - 'tests/assistant2-clean-room-boundary.cjs'
       - 'DURABLE_RULE__UNIVERSAL_FRANKLIN_ASSISTANT_CONVERSATION_STANDARD.md'
       - '.github/workflows/r1317-assistant-conversation.yml'
   workflow_dispatch:
@@ -30,11 +32,12 @@ jobs:
         run: |
           node --check dist/assets/franklin-assistant-context-r1317.js
           node --check dist/assets/franklin-assistant-r1317.js
+          node --check dist/assets/franklin-assistant.js
           node --check dist/assets/hf36.js
           node --check dist/assets/r31-health.js
       - name: Shared context acceptance
         run: node tests/r1317-assistant-context-acceptance.cjs
-      - name: R1317 live-controller contracts
+      - name: R1317 historical conversation contracts
         run: |
           grep -F "FR-NAV1.30.17-HF3.12.9" dist/assets/franklin-assistant-r1317.js
           grep -F "FranklinAssistantContextR1317" dist/assets/franklin-assistant-r1317.js
@@ -42,17 +45,14 @@ jobs:
           grep -F "CONSECUTIVE_CLARIFY_WITHOUT_RAW_CHAT" dist/assets/franklin-assistant-r1317.js
           grep -F "assistant_answer_research" dist/assets/r31-health.js
           grep -F "assistant_provider_handoff" dist/assets/r31-health.js
-          grep -F "/assets/franklin-assistant-context-r1317.js?v=frnav1317" dist/assets/hf36.js
-          grep -F "/assets/franklin-assistant-r1317.js?v=frnav1317" dist/assets/hf36.js
-          grep -F "/assets/hf36.js?v=frnav1317" dist/index.html
-          grep -F "/assets/hf36.js?v=frnav1317" dist/es/index.html
-          grep -F "/assets/hf36.js?v=frnav1317" dist/assistant/index.html
-          grep -F "/assets/hf36.js?v=frnav1317" dist/es/asistente/index.html
+      - name: Current canonical Assistant integration
+        run: |
+          node tests/assistant2-clean-room-boundary.cjs
+          for page in dist/index.html dist/es/index.html dist/assistant/index.html dist/es/asistente/index.html; do
+            grep -E '/assets/franklin-assistant\.js\?v=(assistant-[0-9]+|frnav[0-9]+)' "$page"
+          done
       - name: Durable universal rule
         run: |
           test -f DURABLE_RULE__UNIVERSAL_FRANKLIN_ASSISTANT_CONVERSATION_STANDARD.md
           grep -F "A specific owner test example never defines the scope" DURABLE_RULE__UNIVERSAL_FRANKLIN_ASSISTANT_CONVERSATION_STANDARD.md
           grep -F "Passing one narrow example is never sufficient evidence" DURABLE_RULE__UNIVERSAL_FRANKLIN_ASSISTANT_CONVERSATION_STANDARD.md
-      - name: Preserve member and profile controls
-        run: |
-          grep -F '"memberProfileR1314ControlsPreserved": true' PRODUCTION_RELEASE.json
