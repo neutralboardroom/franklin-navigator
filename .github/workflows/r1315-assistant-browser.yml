@@ -4,10 +4,12 @@ on:
     branches: [main]
     paths:
       - 'dist/assets/franklin-assistant-r1315.js'
+      - 'dist/assets/franklin-assistant.js'
       - 'dist/assets/hf36.js'
       - 'dist/index.html'
       - 'dist/assistant/index.html'
       - 'dist/es/asistente/index.html'
+      - 'tests/assistant2-clean-room-boundary.cjs'
       - '.github/workflows/r1315-assistant-browser.yml'
   workflow_dispatch:
 permissions:
@@ -24,11 +26,16 @@ jobs:
       - name: Syntax
         run: |
           node --check dist/assets/franklin-assistant-r1315.js
+          node --check dist/assets/franklin-assistant.js
           node --check dist/assets/hf36.js
-      - name: R1315 contracts
+      - name: R1315 historical behavior contract
         run: |
           grep -F "FR-NAV1.30.15-HF3.12.7" dist/assets/franklin-assistant-r1315.js
           grep -F "If the roof is leaking now" dist/assets/franklin-assistant-r1315.js
-          grep -F "/assets/franklin-assistant-r1315.js?v=frnav1315" dist/assets/hf36.js
-          grep -F "/assets/hf36.js?v=frnav1315" dist/assistant/index.html
-          grep -F "/assets/hf36.js?v=frnav1315" dist/es/asistente/index.html
+      - name: Current canonical Assistant integration
+        run: |
+          node tests/assistant2-clean-room-boundary.cjs
+          for page in dist/index.html dist/assistant/index.html dist/es/asistente/index.html; do
+            grep -E '/assets/franklin-assistant\.js\?v=(assistant-[0-9]+|frnav[0-9]+)' "$page"
+          done
+          grep -F "Ask Franklin. Get a local answer." dist/assistant/index.html
