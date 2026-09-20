@@ -6,7 +6,7 @@ const path = require('node:path');
 const {Pool} = require('pg');
 const {URL} = require('node:url');
 const {COMMUNITY, PRICE_AUTHORITY, FOUNDING, getPlan, getPlanByStripePriceId, publicCatalog} = require('./lib/catalog');
-const {sha256, randomToken, hashPassword, verifyPassword, verifySignedRequest, verifyStripeSignature, signAssertion, safeEqual} = require('./lib/security');
+const {sha256, randomToken, hashPassword, verifyPassword, verifySignedRequest, verifyStripeSignature, signAssertion, safeEqual, PASSWORD_MIN_LENGTH} = require('./lib/security');
 const {initialState, applyEvent, accessAllowed, mapStripeEvent} = require('./lib/lifecycle');
 const {startSafePurchase} = require('./lib/purchase-reservations');
 const {createMemberWorkflow,VERSION:MEMBER_FULFILLMENT_VERSION}=require('./lib/member-fulfillment');
@@ -20,7 +20,7 @@ const {loadControlProfileRegistry,productionProfileRows}=require('./lib/member-p
 const CHECKOUT_SAFETY_VERSION='FRANKLIN_CHECKOUT_SAFETY_1';
 const ISSUE_MONITOR_MIGRATION='FRANKLIN_ISSUE_MONITOR_1';
 
-const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.45-HF3.13.27';
+const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.46-HF3.13.28';
 const SCHEMA_VERSION = 'FRANKLIN_COMMERCE_SCHEMA_2';
 const PORT = Number(process.env.PORT || 10000);
 const PUBLIC_ORIGIN = String(process.env.PUBLIC_ORIGIN || 'https://franklinnavigator.com').replace(/\/$/, '');
@@ -300,9 +300,10 @@ async function route(req,res){const reqId=requestId();let routePath='/';try{cons
     if(!rateLimit(`register:${clientKey(req)}`,5,3600000))throw publicError('RATE_LIMITED','Too many attempts. Try again later.',429);
     const body=await readBody(req);const email=normalizeEmail(body.email);
     if(!EMAIL_RE.test(email))throw publicError('EMAIL_INVALID','Enter a valid email.');
+    const password=String(body.password||'');if(password.length<PASSWORD_MIN_LENGTH||password.length>256)throw publicError('PASSWORD_INVALID',`Use a password with at least ${PASSWORD_MIN_LENGTH} characters.`,400);
     const existing=await query(`select 1 from franklin_accounts where email_normalized=$1 limit 1`,[email]);
     if(existing.rowCount)throw publicError('ACCOUNT_ALREADY_EXISTS','An account already exists for this email. Sign in or reset your password.',409);
-    const passwordHash=await hashPassword(body.password);const accountId=newId('acct');
+    const passwordHash=await hashPassword(password);const accountId=newId('acct');
     try{await tx(async client=>{await client.query(`insert into franklin_accounts(account_id,community,email,email_normalized,password_hash,display_name,preferred_language) values($1,$2,$3,$3,$4,$5,$6)`,[accountId,COMMUNITY,email,passwordHash,safeText(body.displayName,120)||null,['ENGLISH','SPANISH','BILINGUAL'].includes(String(body.preferredLanguage||'').toUpperCase())?String(body.preferredLanguage).toUpperCase():'ENGLISH']);await audit(client,'ACCOUNT',accountId,'ACCOUNT_CREATED','ACCOUNT',accountId,reqId);});}
     catch(error){if(error?.code==='23505')throw publicError('ACCOUNT_ALREADY_EXISTS','An account already exists for this email. Sign in or reset your password.',409);throw error;}
     await createSession(req,res,accountId);return sendJson(req,res,201,{ok:true,accountId},reqId);
