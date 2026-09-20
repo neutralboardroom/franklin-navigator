@@ -18,7 +18,7 @@ for(const path of pages){
 }
 
 const controller=fs.readFileSync('dist/assets/franklin-assistant.js','utf8');
-const version=(controller.match(/FRANKLIN-ASSISTANT2-[0-9]+\\.[0-9]+\\.[0-9]+/)||[])[0];
+const version=(controller.match(/FRANKLIN-ASSISTANT2-[0-9]+\.[0-9]+\.[0-9]+/)||[])[0];
 assert.ok(version,'canonical Assistant internal version marker missing');
 assert.match(controller,/\/api\/v2\/answer/);
 assert.match(controller,/franklinAssistantR1296='1'/);
