@@ -18,5 +18,6 @@ Future releases must therefore:
 8. preserve English/Spanish parity for the pre-verification journey;
 9. regression-test both visible wording and actual route targets so a later UI change cannot send an unverified user to a verified-management workspace;
 10. fail qualification if an unverified or pending ordinary claim route bypasses Profile Access.
+11. public support/help copy and CTAs must not tell an unverified or pending user to use Profile Center to submit or check an access request; any public Profile Center link must be clearly framed for already-verified managers.
 
 The current qualification test is `tests/r1345-profile-access-authority-routing.cjs` together with the permanent recent-fix visibility gate.
