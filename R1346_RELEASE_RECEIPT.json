@@ -1,0 +1,45 @@
+{
+  "release": "FR-NAV1.30.46-HF3.13.28",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "predecessor": {
+    "version": "FR-NAV1.30.45-HF3.13.27",
+    "commit": "267c38a0f3dad5c61e6d94b3a63201910e42e59c",
+    "artifactSha256": "83d8bd48b0f7682b2bba7960b496cb876fe72f19a5274cfae27e79e9c4f68989"
+  },
+  "materialImprovement": "Outreach-ready claim/account path: repaired verification layout, visible async transitions, exact-profile reset success, 8-character password policy, claim CTA hierarchy and semantic progress.",
+  "runtime": {
+    "commit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+    "deploy": "dep-danlctp42hec73esjefg",
+    "state": "LIVE",
+    "releaseEnv": "FR-NAV1.30.46-HF3.13.28"
+  },
+  "passwordPolicy": {
+    "minimumCharacters": 8,
+    "maximumCharacters": 256,
+    "forcedComplexity": false,
+    "frontendBackendAligned": true
+  },
+  "authority": {
+    "profileFacts": "PROFILE_FACTORY_UNCHANGED",
+    "localResearch": "LOCAL_INVESTIGATOR_UNCHANGED",
+    "commercialIntent": "SRE_UNCHANGED",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "smarterJusticeDonor": "NOT_USED"
+  },
+  "qualification": {
+    "result": "PENDING_EXACT_HEAD_WORKFLOW",
+    "workflowRun": null,
+    "qualifiedHead": null,
+    "artifact": null,
+    "artifactSha256": null,
+    "manifestSha256": null,
+    "browserAcceptance": "REQUIRED"
+  },
+  "deployment": {
+    "staticDeploy": null,
+    "staticState": "NOT_STARTED"
+  }
+}
