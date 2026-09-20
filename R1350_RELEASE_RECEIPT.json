@@ -59,5 +59,22 @@
   "outreachPerformed": false,
   "smarterJusticeDonor": "NOT_USED",
   "staticDeployment": "PENDING_MAIN_QUALIFICATION",
-  "sccAcceptance": "PENDING_AFTER_FINAL_QUALIFICATION_AND_DEPLOYMENT"
+  "sccAcceptance": "PENDING_AFTER_FINAL_QUALIFICATION_AND_DEPLOYMENT",
+  "browserHarnessHardening": {
+    "reason": "Two consecutive R1346 browser qualification attempts failed before assertions because Chrome did not expose the fixed-port CDP target.",
+    "productAssertionChanges": false,
+    "files": [
+      "scripts/r1346-claim-path-browser-acceptance.mjs",
+      "scripts/r1347-two-command-browser-visibility.mjs",
+      "scripts/r1350-related-profile-nojs-browser.mjs"
+    ],
+    "protections": [
+      "Chrome remote-debugging-port=0",
+      "DevToolsActivePort discovery",
+      "fresh per-run user-data directory",
+      "extended readiness polling",
+      "existing product assertions preserved"
+    ],
+    "sharedQualificationWorkflowModified": false
+  }
 }
