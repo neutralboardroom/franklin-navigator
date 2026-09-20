@@ -2,7 +2,8 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const crypto=require('node:crypto');
-const {createAccountRecovery,GENERIC_MESSAGE}=require('../lib/account-recovery');
+const {createAccountRecovery,GENERIC_MESSAGE,PASSWORD_MIN_LENGTH}=require('../lib/account-recovery');
+const {hashPassword}=require('../lib/security');
 
 function harness(options={}){
   const tokens=new Map(),mail=[],sessions=[{account_id:'acct_owner'}];
@@ -60,4 +61,22 @@ test('excessive reset requests are rate limited without account disclosure',asyn
   const h=harness({rateLimit:key=>key.startsWith('password-reset-ip:')?++calls<=1:true});
   h.setBody({email:'owner@example.com'});await h.recovery.requestReset({}, {}, 'r7');
   await assert.rejects(()=>h.recovery.requestReset({}, {}, 'r8'),e=>e.code==='RATE_LIMITED');
+});
+
+
+test('R1346 password policy accepts 8 characters and rejects 7 consistently',async()=>{
+  assert.equal(PASSWORD_MIN_LENGTH,8);
+  await assert.rejects(()=>hashPassword('1234567'),e=>e.code==='PASSWORD_INVALID');
+  const encoded=await hashPassword('12345678');
+  assert.match(encoded,/^scrypt\$/);
+  const h=harness();h.setBody({email:'owner@example.com'});await h.recovery.requestReset({}, {}, 'r9');
+  h.setBody({token:'A'.repeat(48),password:'1234567'});
+  await assert.rejects(()=>h.recovery.completeReset({}, {}, 'r10'),e=>e.code==='PASSWORD_INVALID');
+  h.setBody({token:'A'.repeat(48),password:'12345678'});
+  const out=await h.recovery.completeReset({}, {}, 'r11');
+  assert.equal(out.status,200);
+});
+
+test('R1346 generic reset response preserves account-enumeration privacy',()=>{
+  assert.equal(GENERIC_MESSAGE,'If an account exists for this email, password-reset instructions have been sent.');
 });
