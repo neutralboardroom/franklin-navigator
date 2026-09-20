@@ -45,5 +45,12 @@
   "deployment": {
     "staticDeploy": null,
     "staticState": "NOT_STARTED"
+  },
+  "auditFindings": {
+    "supportAuthorityRouting": {
+      "found": "Public support still said access-review status was checked in Profile Center.",
+      "repaired": "Public support now points pre-verification review status to Profile Access and labels Profile Center for already-verified managers.",
+      "permanentGate": true
+    }
   }
 }
