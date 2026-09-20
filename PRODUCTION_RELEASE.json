@@ -85,7 +85,7 @@
     "evidence": "FRANKLIN_ASSISTANT_FOLLOWUP_COMPOSER_POSITION__0.3.4.md",
     "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__ASSISTANT2_0.3.4.md",
     "publicName": "Franklin Assistant",
-    "internalVersion": "FRANKLIN-ASSISTANT2-0.3.4",
+    "internalVersion": "FRANKLIN-ASSISTANT2-0.3.5",
     "publicGenerationLabelVisible": false,
     "answerPresentation": "INLINE_SAME_PAGE_CONVERSATION_THREAD_WITH_COMPOSER_AFTER_THREAD",
     "controls": {
@@ -2757,12 +2757,15 @@
     "runtime": {
       "branch": "franklin-commerce-runtime-r30",
       "commit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
-      "currentDeploy": "dep-danvvtijnfac73a38rlg",
-      "currentLiveReleaseEnv": "FR-NAV1.30.50-HF3.13.32",
+      "currentDeploy": "dep-dao1gkuk1f9s73ab1b2g",
+      "currentLiveReleaseEnv": "FR-NAV1.30.51-HF3.13.33",
       "targetReleaseEnv": "FR-NAV1.30.51-HF3.13.33",
       "functionalChanges": false,
       "identityOnlyRequiredBeforeFullQualification": true,
-      "identityDeploymentPending": true
+      "identityDeploymentPending": false,
+      "identityDeploymentCompletedAtUtc": "2026-09-20T17:31:35Z",
+      "identityOnly": true,
+      "inheritedFunctionalBehaviorFrom": "R1346"
     },
     "qualification": {
       "result": "PENDING_EXACT_HEAD_WORKFLOW",
@@ -2782,7 +2785,17 @@
         "scripts/r1351-profile-path-assistant-browser.mjs",
         "scripts/r1346-claim-path-browser-acceptance.mjs",
         "scripts/r1347-two-command-browser-visibility.mjs"
-      ]
+      ],
+      "runtimePrePromotionGate": {
+        "mode": "EXACT_CANDIDATE_RUNTIME_IDENTITY_ALIGNED",
+        "expectedLiveRuntimeRelease": "FR-NAV1.30.51-HF3.13.33",
+        "candidateTargetRuntimeRelease": "FR-NAV1.30.51-HF3.13.33",
+        "functionalRuntimeChanges": false,
+        "identityOnly": true,
+        "runtimeCommit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+        "runtimeDeploy": "dep-dao1gkuk1f9s73ab1b2g",
+        "postDeployExactCandidateRuntimeVerificationRequired": true
+      }
     },
     "receipts": [
       "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1351.json",
@@ -2807,6 +2820,18 @@
       "version": "FR-NAV1.30.12-HF3.12.4",
       "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
       "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    },
+    "preSealCurrentness": {
+      "repositoryMain": "a3ffc8dea0fc397975ef4497e5a396e5cd064091",
+      "mainRelease": "FR-NAV1.30.50-HF3.13.32",
+      "acceptedCoordinationAnchor": "FR-NAV1.30.49-HF3.13.31",
+      "workOrderId": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+      "leaseInvalidationObserved": false,
+      "successorCollisionObserved": false,
+      "newerAcceptedProfileFactoryConsumerPointerConsumed": false,
+      "newerAcceptedLocalInvestigatorConsumerPointerConsumed": false,
+      "outreachOrSreMutation": false,
+      "checkedAtUtc": "2026-09-20T17:31:35Z"
     }
   }
 }
