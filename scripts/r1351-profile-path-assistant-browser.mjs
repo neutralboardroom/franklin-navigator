@@ -43,7 +43,9 @@ await evaluate("document.querySelector('[data-r37-lang=\"es\"]')?.click()");awai
 state=await evaluate(`document.querySelector('[data-hf310-selected-profile]')?.textContent||''`);
 check('new selected-profile summary has Spanish parity',/Seleccionar este resultado no reclama el perfil ni cambia los datos públicos/i.test(state),state);
 await shot('R1351_PROFILE_SELECTED_ES.png');
-await nav('/assistant/');
+// The profile-path Spanish check intentionally persists the language. Restore English explicitly before the English Assistant lifecycle.
+await evaluate("localStorage.setItem('franklin-language','en')");
+await nav('/assistant/?lang=en');
 await evaluate(`(()=>{const i=document.querySelector('[data-navigator-input]');i.value='I need someone to mow my lawn';document.querySelector('[data-navigator-bot] form').requestSubmit();return true})()`);
 await waitFor("document.querySelectorAll('.franklin-assistant-profile-match').length>=2",'English profile cards');
 const first=await evaluate(`(()=>({names:[...document.querySelectorAll('.franklin-assistant-profile-match h3')].map(x=>x.textContent.trim()),websites:[...document.querySelectorAll('.franklin-assistant-profile-match')].filter(x=>[...x.querySelectorAll('a')].some(a=>a.textContent.trim()==='Website')).length,phones:[...document.querySelectorAll('.franklin-assistant-profile-match')].filter(x=>[...x.querySelectorAll('a')].some(a=>a.textContent.trim()==='Call')).length}))()`);
