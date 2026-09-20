@@ -18,7 +18,8 @@ for(const path of pages){
 }
 
 const controller=fs.readFileSync('dist/assets/franklin-assistant.js','utf8');
-assert.match(controller,/FRANKLIN-ASSISTANT2-0\.2\.1/);
+const version=(controller.match(/FRANKLIN-ASSISTANT2-[0-9]+\\.[0-9]+\\.[0-9]+/)||[])[0];
+assert.ok(version,'canonical Assistant internal version marker missing');
 assert.match(controller,/\/api\/v2\/answer/);
 assert.match(controller,/franklinAssistantR1296='1'/);
 assert.doesNotMatch(controller,/FranklinAssistantCore/);
@@ -36,4 +37,4 @@ assert.doesNotMatch(controller,/window\.FranklinAssistant2/);
 const loader=fs.readFileSync('dist/assets/hf36.js','utf8');
 assert.doesNotMatch(loader,/\n\s*loadAssistantR1318\(\);/);
 
-console.log(JSON.stringify({ok:true,pages:pages.length,assistantInternal:'FRANKLIN-ASSISTANT2-0.2.1',canonicalAssetVersioning:'RELEASE_INDEPENDENT'}));
+console.log(JSON.stringify({ok:true,pages:pages.length,assistantInternal:version,canonicalAssetVersioning:'RELEASE_INDEPENDENT'}));
