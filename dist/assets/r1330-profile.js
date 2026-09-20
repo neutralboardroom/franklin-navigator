@@ -68,14 +68,16 @@
      labelText=isNavigatorSelf?'Official Franklin Navigator profile':'Management verified';actionText='Claim or manage this profile';href='/profile-access/?profile='+encodeURIComponent(id);hintText=isNavigatorSelf?'Authorized Franklin Navigator managers can sign in or request profile access free. Existing access is preserved.':'This profile already has verified management access. If you are also authorized, you can request access; existing access is not removed automatically.';
    }
    const label=el('span',labelText,'r1330-state-label'+((managed||managedForViewer)?' is-managed':''));
-   const a=el('a',actionText,'r1330-claim-link');a.href=href;row.append(label,a);
+   const isClaimAction=actionText==='Claim or manage this profile';
+   document.body.classList.toggle('r1346-claimable',isClaimAction);
+   const a=el('a',actionText,'r1330-claim-link'+(isClaimAction?' button r1343-claim-primary':''));a.href=href;row.append(label,a);
    let hint=copy.querySelector('.r1331-media-hint');if(!hint){hint=el('p','', 'r1331-media-hint');row.insertAdjacentElement('afterend',hint)}
    hint.textContent=hintText;
    const manage=document.querySelector('#manage');if(manage){
      const p=manage.querySelector('p');
      if(p)p.textContent=managedForViewer?'You have verified management access. Public factual information still uses the free correction process; Community Membership is optional.':isNavigatorSelf?'This is Franklin Navigator’s official first-party profile. Authorized managers can claim or manage it free; existing access is preserved. Factual corrections and removal stay free; Community Membership is optional.':managed?'This profile already has verified management access. Authorized additional managers may request access without displacing existing access. Factual corrections and removal stay free.':'Own or manage this business, practice or organization? Claim or manage this profile free. Factual corrections and removal stay free; Community Membership is optional.';
      const actions=manage.querySelector('.actions'),primary=actions?.querySelector('.button.primary');
-     if(primary){primary.href=href;primary.textContent=actionText}
+     if(primary){primary.href=href;primary.textContent=actionText;primary.classList.toggle('r1343-claim-primary',isClaimAction)}
      if(actions){
        const direct=[...actions.children].filter(x=>x.tagName==='A'),secondary=direct.find(x=>x!==primary);
        if(secondary){secondary.href=(managedForViewer?'/profile-studio/?profile=':'/member-profile-preview/?profile=')+encodeURIComponent(id);secondary.textContent=managedForViewer?'Open Profile Center':'Preview optional member profile'}
@@ -84,7 +86,7 @@
        const page=location.origin+'/profiles/'+id+'/';
        const correction='/corrections/?listing='+encodeURIComponent(profileName)+'&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
        const removal='/corrections/?action=PUBLIC_REMOVAL&listing='+encodeURIComponent(profileName)+'&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
-       if(!actions.querySelector('[data-r1338-correct]')){const x=el('a','Correct public facts','button');x.href=correction;x.dataset.r1338Correct='1';actions.append(x)}
+       if(!actions.querySelector('[data-r1338-correct]')){const x=el('a','Correct factual listing details','button');x.href=correction;x.dataset.r1338Correct='1';actions.append(x)}
        if(!actions.querySelector('[data-r1338-remove]')){const x=el('a','Request removal','button');x.href=removal;x.dataset.r1338Remove='1';actions.append(x)}
        if(details)details.remove();
      }
