@@ -2765,7 +2765,10 @@
       "identityDeploymentPending": false,
       "identityDeploymentCompletedAtUtc": "2026-09-20T17:31:35Z",
       "identityOnly": true,
-      "inheritedFunctionalBehaviorFrom": "R1346"
+      "inheritedFunctionalBehaviorFrom": "R1346",
+      "releaseEnv": "FR-NAV1.30.51-HF3.13.33",
+      "deploy": "dep-dao1gkuk1f9s73ab1b2g",
+      "deployState": "LIVE"
     },
     "qualification": {
       "result": "PENDING_EXACT_HEAD_WORKFLOW",
@@ -2832,6 +2835,21 @@
       "newerAcceptedLocalInvestigatorConsumerPointerConsumed": false,
       "outreachOrSreMutation": false,
       "checkedAtUtc": "2026-09-20T17:31:35Z"
+    },
+    "predecessor": {
+      "version": "FR-NAV1.30.50-HF3.13.32",
+      "mainCommit": "a3ffc8dea0fc397975ef4497e5a396e5cd064091",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.50-HF3.13.32__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactBytes": 85690904,
+      "artifactSha256": "cac019e534d894551e38e464cb026da5b8f9c8b10bad4828003aced6138934b8",
+      "manifestSha256": "91f70568f9ab634f26d7bfc46c4b0a8ec591ff04c50d1726f7e2a67820e346ee",
+      "qualificationWorkflow": 35521536691,
+      "noJsBrowserWorkflow": 35521536694,
+      "staticDeploy": "dep-dao0cr5g1s2s738vse3g",
+      "runtimeDeploy": "dep-danvvtijnfac73a38rlg",
+      "qualified": true,
+      "deployedLive": true,
+      "sccD1Accepted": false
     }
   }
 }
