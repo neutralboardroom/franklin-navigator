@@ -1,0 +1,81 @@
+name: R1351 profile path and Franklin Assistant
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/assets/membership-live.js'
+      - 'dist/assets/hf310.js'
+      - 'dist/assets/r1342-claim-recovery.css'
+      - 'dist/assets/r37-i18n.js'
+      - 'dist/assets/franklin-assistant.js'
+      - 'dist/index.html'
+      - 'dist/es/index.html'
+      - 'dist/assistant/index.html'
+      - 'dist/es/asistente/index.html'
+      - 'tests/r1351-profile-path-assistant.cjs'
+      - 'scripts/r1351-profile-path-assistant-browser.mjs'
+      - '.github/workflows/r1351-profile-path-assistant.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'dist/assets/membership-live.js'
+      - 'dist/assets/hf310.js'
+      - 'dist/assets/r1342-claim-recovery.css'
+      - 'dist/assets/r37-i18n.js'
+      - 'dist/assets/franklin-assistant.js'
+      - 'dist/index.html'
+      - 'dist/es/index.html'
+      - 'dist/assistant/index.html'
+      - 'dist/es/asistente/index.html'
+      - 'tests/r1351-profile-path-assistant.cjs'
+      - 'scripts/r1351-profile-path-assistant-browser.mjs'
+      - '.github/workflows/r1351-profile-path-assistant.yml'
+permissions:
+  contents: read
+jobs:
+  profile-path-assistant:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Structural regression
+        run: |
+          set -euo pipefail
+          node --check dist/assets/franklin-assistant.js
+          node --check dist/assets/membership-live.js
+          node --check dist/assets/hf310.js
+          node --check dist/assets/r37-i18n.js
+          node tests/r1351-profile-path-assistant.cjs
+          node tests/r1342-claim-recovery.cjs
+          node tests/r1344-recent-fix-visibility.cjs
+          node tests/r1345-profile-access-authority-routing.cjs
+          node tests/r1346-claim-path-outreach-readiness.cjs
+          node tests/r1347-two-command-permanent-baseline.cjs
+          node tests/r1347-sitewide-roger-rule.cjs
+          node tests/assistant2-clean-room-boundary.cjs
+          node tests/r1348-assistant-workflow-currentness.cjs
+      - name: Controlled browser acceptance
+        run: |
+          set -euo pipefail
+          rm -rf .r1351-browser-evidence
+          python3 -m http.server 4176 --directory dist >/tmp/r1351-http.log 2>&1 &
+          HTTP_PID=$!
+          trap 'kill "$HTTP_PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:4176/claim-profile/ >/dev/null; then break; fi
+            sleep 0.1
+          done
+          node scripts/r1351-profile-path-assistant-browser.mjs
+          grep -F '"result": "PASS"' .r1351-browser-evidence/R1351_PROFILE_PATH_ASSISTANT_BROWSER_ACCEPTANCE.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1351-profile-path-assistant-evidence
+          path: .r1351-browser-evidence/
+          if-no-files-found: error
+          retention-days: 30
