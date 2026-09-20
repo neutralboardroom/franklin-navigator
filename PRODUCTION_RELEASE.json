@@ -1,7 +1,7 @@
 {
-  "release": "FR-NAV1.30.47-HF3.13.29",
+  "release": "FR-NAV1.30.48-HF3.13.30",
   "date": "2026-09-20",
-  "base": "FR-NAV1.30.46-HF3.13.28",
+  "base": "FR-NAV1.30.47-HF3.13.29",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
   "scope": "R1347 is a whole-site durability and non-burial release: it independently re-audits both September 19 and September 20 owner claim/account/recovery commands, establishes Roger's permanent sitewide no-regression/no-burial rule, snapshots the accepted non-profile route and profile/Assistant scope baseline, and makes those requirements mandatory exact-head qualification gates for future Franklin Local builds.",
   "counts": {
@@ -2238,7 +2238,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "state": "QUALIFIED_AND_DEPLOYED",
     "predecessor": {
       "version": "FR-NAV1.30.46-HF3.13.28",
       "mainCommit": "a0f09aa9e7d5386d2a8031237003f98accaca360",
@@ -2284,17 +2284,15 @@
       "inheritedFunctionalBehaviorFrom": "R1346"
     },
     "qualification": {
-      "result": "PENDING_EXACT_HEAD_WORKFLOW",
-      "requiredTests": [
-        "tests/r1342-claim-recovery.cjs",
-        "tests/r1344-recent-fix-visibility.cjs",
-        "tests/r1345-profile-access-authority-routing.cjs",
-        "tests/r1346-claim-path-outreach-readiness.cjs",
-        "tests/r1347-two-command-permanent-baseline.cjs",
-        "tests/r1347-sitewide-roger-rule.cjs",
-        "scripts/r1346-claim-path-browser-acceptance.mjs",
-        "scripts/r1347-two-command-browser-visibility.mjs"
-      ]
+      "result": "PASS",
+      "workflowRun": 35497140591,
+      "qualifiedHead": "063e9ce008726f9908d7f856ed37f9c974b97ad8",
+      "publicSourceTree": "d5c8ef0cedabc5840fa990f24c8fc9fd01ce6d2b",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.47-HF3.13.29__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactSha256": "bf854aeeb570df4e3a1de331260ac9372e8be432338b808b2d2f9b1cc780be90",
+      "manifestSha256": "38aa3e6ac38bc330bd8007c0341c9cdadb4dc398d902089a19ff92e8afb258e7",
+      "doubleBuildByteIdentical": true,
+      "browserAcceptance": "PASS"
     },
     "receipts": [
       "TWO_COMMAND_COMPLETION_AND_NON_BURIAL_AUDIT__R1347.md",
@@ -2332,6 +2330,104 @@
           "scripts/r1347-two-command-browser-visibility.mjs"
         ]
       }
+    },
+    "staticDeploy": "dep-danopkn40ujc73clkqg0",
+    "staticDeployState": "LIVE"
+  },
+  "r1348": {
+    "version": "FR-NAV1.30.48-HF3.13.30",
+    "date": "2026-09-20",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.47-HF3.13.29",
+      "mainCommit": "063e9ce008726f9908d7f856ed37f9c974b97ad8",
+      "publicSourceTree": "d5c8ef0cedabc5840fa990f24c8fc9fd01ce6d2b",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.47-HF3.13.29__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactBytes": 85650799,
+      "artifactSha256": "bf854aeeb570df4e3a1de331260ac9372e8be432338b808b2d2f9b1cc780be90",
+      "manifestSha256": "38aa3e6ac38bc330bd8007c0341c9cdadb4dc398d902089a19ff92e8afb258e7",
+      "qualificationWorkflow": 35497140591,
+      "staticDeploy": "dep-danopkn40ujc73clkqg0"
+    },
+    "ownerCommandRevision": "2026-09-03-R2",
+    "materialImprovement": "Repair false-red historical Franklin Assistant workflows so they preserve historical behavior contracts while validating the current canonical clean-room integration, with permanent workflow-drift regression coverage.",
+    "fixes": {
+      "r1315StandaloneWorkflowCurrentnessSafe": true,
+      "r1316StandaloneWorkflowCurrentnessSafe": true,
+      "r1317StandaloneWorkflowCurrentnessSafe": true,
+      "cleanRoomBoundaryReleaseIndependent": true,
+      "obsoleteAssistantLoaderPinsRemovedFromStandaloneGates": true,
+      "assistantWorkflowDriftPermanentGate": true,
+      "authoritativeQualificationIncludesR1348Gate": true,
+      "freshExtractionIncludesR1348Gate": true
+    },
+    "noResidentFeatureRemoval": true,
+    "noPricingChange": true,
+    "noPaymentOrEntitlementChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noLocalInvestigatorFactMutation": true,
+    "noOutreach": true,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "smarterJusticeDonor": "SMARTER_JUSTICE_DONOR_NOT_USED",
+    "upstreamCurrentness": {
+      "profileFactory": "NO_NEWER_EXACT_ACCEPTED_FRANKLIN_NAVIGATOR_CONSUMER_POINTER_PROVEN",
+      "localInvestigatorCandidate": "SLI-FRANKLIN-HANDOFF-20260915-039",
+      "localInvestigatorConsumerAcceptance": "UNKNOWN",
+      "localInvestigatorSccGate": "PENDING",
+      "consumedNewUpstream": false
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+      "deploy": "dep-danpnt5ii2qc73c41cc0",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.48-HF3.13.30",
+      "functionalChanges": false,
+      "identityOnly": true,
+      "inheritedFunctionalBehaviorFrom": "R1346"
+    },
+    "qualification": {
+      "result": "PENDING_EXACT_HEAD_WORKFLOW",
+      "requiredTests": [
+        "tests/r1342-claim-recovery.cjs",
+        "tests/r1344-recent-fix-visibility.cjs",
+        "tests/r1345-profile-access-authority-routing.cjs",
+        "tests/r1346-claim-path-outreach-readiness.cjs",
+        "tests/r1347-two-command-permanent-baseline.cjs",
+        "tests/r1347-sitewide-roger-rule.cjs",
+        "tests/assistant2-clean-room-boundary.cjs",
+        "tests/r1348-assistant-workflow-currentness.cjs",
+        "scripts/r1346-claim-path-browser-acceptance.mjs",
+        "scripts/r1347-two-command-browser-visibility.mjs"
+      ]
+    },
+    "receipts": [
+      "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1348.json",
+      "LOCAL_PLATFORM_PRIORITY_QUEUE__R1348.json",
+      "ASSISTANT_CI_CURRENTNESS_REPAIR__R1348.md",
+      "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1348.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1348.md",
+      "CONTINUATION_HANDOFF__R1348.md",
+      "PRE_SEAL_CURRENTNESS_RECEIPT__R1348.md",
+      "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1348.md",
+      "R1348_RELEASE_RECEIPT.json"
+    ],
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1346"
+    },
+    "acceptedCanonicalBase": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
     }
   }
 }
