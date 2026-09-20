@@ -1,0 +1,37 @@
+name: R1350 live public verification
+on:
+  push:
+    branches:
+      - r1350-live-public-verification-20260920
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Verify live R1350 no-JavaScript guard and qualified override
+        run: |
+          set -euo pipefail
+          node --check scripts/r1350-live-public-verification.mjs
+          node scripts/r1350-live-public-verification.mjs
+          grep -F '"result": "PASS"' .r1350-live-evidence/R1350_LIVE_PUBLIC_VERIFICATION.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1350-live-public-verification
+          path: |
+            .r1350-live-evidence/R1350_LIVE_PUBLIC_VERIFICATION.json
+            .r1350-live-evidence/R1350_LIVE_DADDYS_NOJS.png
+            .r1350-live-evidence/R1350_LIVE_SPECIFIC_CONTROL_NOJS.png
+            .r1350-live-evidence/R1350_LIVE_DADDYS_JS_OVERRIDE.png
+          if-no-files-found: error
+          retention-days: 30
