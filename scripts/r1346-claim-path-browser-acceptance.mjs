@@ -11,18 +11,30 @@ const chromePath=['google-chrome','google-chrome-stable','chromium','chromium-br
 if(!chromePath)throw new Error('R1346_BROWSER_REQUIRED_CHROME_NOT_FOUND');
 
 const userDir='/tmp/franklin-r1346-chrome-'+process.pid;
+fs.rmSync(userDir,{recursive:true,force:true});
 const chrome=spawn(chromePath,[
   '--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage',
-  '--remote-debugging-address=127.0.0.1','--remote-debugging-port=9222',
+  '--remote-debugging-address=127.0.0.1','--remote-debugging-port=0',
   '--user-data-dir='+userDir,'about:blank'
 ],{stdio:['ignore','ignore','pipe']});
 let chromeErr='';chrome.stderr.on('data',d=>chromeErr+=String(d).slice(-4000));
 process.on('exit',()=>{try{chrome.kill('SIGKILL')}catch{}});
 
 async function json(url,opts){const r=await fetch(url,opts);if(!r.ok)throw new Error('HTTP '+r.status+' '+url);return r.json()}
+const activePortFile=userDir+'/DevToolsActivePort';
+let cdpPort='';
+for(let i=0;i<200;i++){
+  if(fs.existsSync(activePortFile)){
+    const line=fs.readFileSync(activePortFile,'utf8').split(/\r?\n/)[0]?.trim();
+    if(/^\d+$/.test(line)){cdpPort=line;break}
+  }
+  if(chrome.exitCode!==null)break;
+  await sleep(100);
+}
+if(!cdpPort)throw new Error('Chrome DevToolsActivePort unavailable: '+chromeErr);
 let target;
-for(let i=0;i<80;i++){try{const list=await json('http://127.0.0.1:9222/json/list');target=list.find(x=>x.type==='page');if(target)break}catch{}await sleep(100)}
-if(!target)throw new Error('Chrome CDP target unavailable: '+chromeErr);
+for(let i=0;i<100;i++){try{const list=await json('http://127.0.0.1:'+cdpPort+'/json/list');target=list.find(x=>x.type==='page');if(target)break}catch{}await sleep(100)}
+if(!target)throw new Error('Chrome CDP target unavailable on dynamic port '+cdpPort+': '+chromeErr);
 
 const ws=new WebSocket(target.webSocketDebuggerUrl);
 await new Promise((resolve,reject)=>{ws.addEventListener('open',resolve,{once:true});ws.addEventListener('error',reject,{once:true})});
