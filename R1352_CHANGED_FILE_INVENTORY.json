@@ -1,0 +1,41 @@
+{
+  "release": "FR-NAV1.30.52-HF3.13.34",
+  "changedExistingCount": 12,
+  "addedCount": 12,
+  "removedCount": 0,
+  "changedExisting": [
+    "PRODUCTION_RELEASE.json",
+    "dist/assets/franklin-assistant.js",
+    "dist/assets/hf310.js",
+    "dist/assets/hf36.js",
+    "dist/assets/membership-live.js",
+    "dist/assets/r1330-profile.js",
+    "dist/assets/r37-i18n.js",
+    "dist/assistant/index.html",
+    "dist/es/asistente/index.html",
+    "dist/es/index.html",
+    "dist/index.html",
+    "tests/r1351-profile-path-assistant.cjs"
+  ],
+  "added": [
+    ".github/workflows/r1352-profile-aware-assistant.yml",
+    "CONTINUATION_HANDOFF__R1352.md",
+    "NEXT_VERSION_IMPROVEMENT_LIST__R1352.md",
+    "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1352.md",
+    "PRE_SEAL_CURRENTNESS_RECEIPT__R1352.md",
+    "PROFILE_AWARE_ASSISTANT_IMPROVEMENT__R1352.md",
+    "R1352_CHANGED_FILE_INVENTORY.json",
+    "R1352_RELEASE_RECEIPT.json",
+    "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1352.md",
+    "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1352.json",
+    "scripts/r1352-profile-aware-assistant-browser.mjs",
+    "tests/r1352-profile-aware-assistant.cjs"
+  ],
+  "removed": [],
+  "profileCorpusChanged": false,
+  "runtimeSourceChanged": false,
+  "paymentOrEntitlementCodeChanged": false,
+  "profileFactoryOrLocalInvestigatorDataChanged": false,
+  "outreachCodeChanged": false,
+  "sharedCurrentSuccessorWorkflowChanged": false
+}
