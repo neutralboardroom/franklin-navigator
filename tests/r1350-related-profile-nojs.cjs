@@ -6,11 +6,12 @@ const daddy=fs.readFileSync('dist/profiles/FR-ORG-305366afb36e-daddy-s-dogs/inde
 const mlrose=fs.readFileSync('dist/profiles/FR-ORG-f6a218bfcaea-m-l-rose-craft-beer-and-burgers/index.html','utf8');
 const broad=['Downtown Business or Organization','Local Business','Business or Organization','Local Organization or Place','Current Regional Chamber Member','Professional Services','Health and Medical','Shopping','Corporate Office','Unknown or Unclassified Nonprofit','Education','Human Services'];
 assert(css.includes('R1350 BROAD RELATED-PROFILE NO-JS MAP START'),'R1350 CSS guard missing');
-for(const cat of broad){assert(css.includes(`body.hf35-profile:has(.breadcrumbs a[href*="category=${cat.replaceAll(' ','%20')}" i])`),`missing guard ${cat}`)}
+for(const cat of broad){assert(css.includes(`body.hf35-profile:has(.breadcrumbs a[href="/directory/?category=${cat.replaceAll(' ','%20')}" i])`),`missing guard ${cat}`)}
 assert(css.includes('.hf35-competitor-card:not([data-related-relevance="qualified-override"]){display:none!important}'),'qualified override exception missing');
 assert(js.includes("card.dataset.relatedRelevance='qualified-override'"),'R1349 qualified override marker missing');
 assert(daddy.includes('503 Bloomhouse')&&daddy.includes('615 Blinds'),'Daddy static fixture no longer proves guarded fallback');
 assert(daddy.includes('category=Downtown%20Business%20or%20Organization'),'Daddy broad category binding missing');
 assert(mlrose.includes('hf35-competitor-card'),'specific category control lacks related card');
-assert(!mlrose.includes('category=Downtown%20Business%20or%20Organization'),'specific control unexpectedly broad');
+assert(mlrose.includes('category=Local%20Business%2C%20Attraction%2C%20or%20Visitor%20Resource%20Listed%20by%20Official%20Destination%20Authority'),'specific control fixture category changed');
+assert(!css.includes('a[href*="category=Local%20Business" i]'),'prefix-matching broad category selector must never return');
 console.log(JSON.stringify({result:'PASS',mappedBroadProfiles:1184,daddysStaticFallbackSuppressed:true,qualifiedOverrideCanReveal:true,specificCategoryControlPreserved:true}));
