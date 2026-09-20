@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.50-HF3.13.32",
+  "release": "FR-NAV1.30.51-HF3.13.33",
   "date": "2026-09-20",
-  "base": "FR-NAV1.30.49-HF3.13.31",
+  "base": "FR-NAV1.30.50-HF3.13.32",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1350 hardens the R1349 related-profile relevance repair for JavaScript-disabled users by suppressing category-only related cards for broad umbrella-category profiles in the shared profile stylesheet while preserving qualified overrides and specific-category related profiles.",
+  "scope": "R1351 improves the Franklin profile selection/access journey and Franklin Assistant conversation follow-through without changing profile facts, authority, pricing, payment, membership, Local Investigator truth, or outreach.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -27,7 +27,7 @@
     "version": "FRANKLIN-ASSISTANT2-0.1.0",
     "architecture": "CLEAN_ROOM_V2",
     "visualShell": "PRESERVED_EXISTING_FRANKLIN_HOME_AND_ASSISTANT_PRESENTATION",
-    "canonicalController": "/assets/franklin-assistant.js?v=assistant-034",
+    "canonicalController": "/assets/franklin-assistant.js?v=assistant-035",
     "runtimeEndpoint": "https://franklin-navigator-assistant.onrender.com/api/v2/answer",
     "runtimeRelease": "FRANKLIN-ASSISTANT2-0.3.0",
     "runtimeCommit": "ca038b9db8d2b09d8eacc1aa2f5d0c61bea22859",
@@ -59,7 +59,7 @@
     "legacyRouteDataPreservedButUnused": true,
     "availableSiteProfileCount": 19103,
     "availableLegacyRouteCount": 254,
-    "sessionContinuity": "CURRENT_PAGE_VISIBLE_THREAD_WITH_RECENT_TURN_CONTEXT",
+    "sessionContinuity": "CURRENT_PAGE_VISIBLE_THREAD_WITH_RECENT_TURN_AND_LAST_PUBLIC_PROFILE_CARD_CONTEXT",
     "rawChatHistoryPersisted": false,
     "attachmentProcessing": "ON_DEVICE_TEXT_EXTRACTION",
     "fileAnalysis": false,
@@ -191,7 +191,9 @@
     "clearNewQuestionRestoresStartingLayout": true,
     "fullComposerSticky": false,
     "stickyReason": "FULL_ATTACH_VOICE_PRIVACY_COMPOSER_WOULD_OBSCURE_LONG_RESULTS",
-    "composerLayoutRegression": "tests/franklin-assistant-composer-layout.cjs"
+    "composerLayoutRegression": "tests/franklin-assistant-composer-layout.cjs",
+    "publicControllerVersion": "FRANKLIN-ASSISTANT2-0.3.5",
+    "providerCardFollowups": "PUBLIC_CARD_WEBSITE_AND_PHONE_FACTS_ONLY"
   },
   "authority": {
     "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
@@ -2667,6 +2669,138 @@
       "version": "FR-NAV1.30.49-HF3.13.31",
       "sccD1Accepted": true,
       "artifactSha256": "0a9eb768ba0e6b4b761842912879bc8d196c565815ae04030a861c9a2bb4dd62"
+    },
+    "sccD2State": "BLOCKED_GUARDED_VERSION_BOUND_CAS_UNAVAILABLE",
+    "acceptedCanonicalBase": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    }
+  },
+  "r1351": {
+    "version": "FR-NAV1.30.51-HF3.13.33",
+    "date": "2026-09-20",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "immediatePredecessor": {
+      "version": "FR-NAV1.30.50-HF3.13.32",
+      "mainCommit": "a3ffc8dea0fc397975ef4497e5a396e5cd064091",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.50-HF3.13.32__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactBytes": 85690904,
+      "artifactSha256": "cac019e534d894551e38e464cb026da5b8f9c8b10bad4828003aced6138934b8",
+      "manifestSha256": "91f70568f9ab634f26d7bfc46c4b0a8ec591ff04c50d1726f7e2a67820e346ee",
+      "qualificationWorkflow": 35521536691,
+      "noJsBrowserWorkflow": 35521536694,
+      "staticDeploy": "dep-dao0cr5g1s2s738vse3g",
+      "runtimeDeploy": "dep-danvvtijnfac73a38rlg",
+      "qualified": true,
+      "deployedLive": true,
+      "sccD1Accepted": false
+    },
+    "acceptedCoordinationAnchor": {
+      "version": "FR-NAV1.30.49-HF3.13.31",
+      "artifactSha256": "0a9eb768ba0e6b4b761842912879bc8d196c565815ae04030a861c9a2bb4dd62",
+      "manifestSha256": "0ca00444e53ef48a2dc3256400d35f4b72f0afacd0987f206d45e7679dbceecc",
+      "sccD1Accepted": true,
+      "sccAcceptedAtUtc": "2026-09-20T14:34:45Z"
+    },
+    "releaseLease": {
+      "workOrderId": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+      "state": "ISSUED_ACTIVE_RELEASE_LEASE",
+      "acceptedAnchor": "FR-NAV1.30.49-HF3.13.31",
+      "continuedQualifiedDescendantLineage": true,
+      "d2RequiredBeforeBuild": false
+    },
+    "materialImprovements": [
+      "Neutral pre-authority profile selection wording until access state is known.",
+      "Selected-profile boundary summary explains that selection does not claim/change facts and that access/correction/removal remain free.",
+      "Franklin Assistant remembers only the last displayed public profile-card facts for website/phone follow-ups.",
+      "Clear/new question erases Assistant public-card context.",
+      "English/Spanish parity for new profile-path text.",
+      "Permanent structural and controlled-browser R1351 regression gates."
+    ],
+    "profilePath": {
+      "searchSelectionLabel": "Continue with this profile",
+      "selectedPrimaryAction": "Claim or manage this profile",
+      "selectionDoesNotCreateClaim": true,
+      "selectionDoesNotChangePublicFacts": true,
+      "freeAccessBoundaryVisible": true,
+      "freeCorrectionRemovalBoundaryVisible": true,
+      "exactProfileContinuityPreserved": true,
+      "wrongProfileRecoveryPreserved": true,
+      "membershipOptionalBoundaryPreserved": true
+    },
+    "assistantImprovement": {
+      "controllerVersion": "FRANKLIN-ASSISTANT2-0.3.5",
+      "publicCardContextOnly": true,
+      "websiteFollowup": true,
+      "phoneFollowup": true,
+      "paidRankingUsed": false,
+      "availabilityClaimed": false,
+      "privateAccountStateUsed": false,
+      "clearErasesCardContext": true,
+      "cleanRoomBoundaryPreserved": true,
+      "legacyAssistantLoadersRestored": false
+    },
+    "noResidentFeatureRemoval": true,
+    "noPricingChange": true,
+    "noPaymentOrEntitlementChange": true,
+    "noProfileFactChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noLocalInvestigatorFactMutation": true,
+    "noOutreach": true,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "smarterJusticeDonor": "SMARTER_JUSTICE_DONOR_NOT_USED",
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+      "currentDeploy": "dep-danvvtijnfac73a38rlg",
+      "currentLiveReleaseEnv": "FR-NAV1.30.50-HF3.13.32",
+      "targetReleaseEnv": "FR-NAV1.30.51-HF3.13.33",
+      "functionalChanges": false,
+      "identityOnlyRequiredBeforeFullQualification": true,
+      "identityDeploymentPending": true
+    },
+    "qualification": {
+      "result": "PENDING_EXACT_HEAD_WORKFLOW",
+      "requiredTests": [
+        "tests/r1342-claim-recovery.cjs",
+        "tests/r1344-recent-fix-visibility.cjs",
+        "tests/r1345-profile-access-authority-routing.cjs",
+        "tests/r1346-claim-path-outreach-readiness.cjs",
+        "tests/r1347-two-command-permanent-baseline.cjs",
+        "tests/r1347-sitewide-roger-rule.cjs",
+        "tests/assistant2-clean-room-boundary.cjs",
+        "tests/r1348-assistant-workflow-currentness.cjs",
+        "tests/r1349-bilingual-home-currentness.cjs",
+        "tests/r1349-related-profile-relevance.cjs",
+        "tests/r1350-related-profile-nojs.cjs",
+        "tests/r1351-profile-path-assistant.cjs",
+        "scripts/r1351-profile-path-assistant-browser.mjs",
+        "scripts/r1346-claim-path-browser-acceptance.mjs",
+        "scripts/r1347-two-command-browser-visibility.mjs"
+      ]
+    },
+    "receipts": [
+      "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1351.json",
+      "PROFILE_PATH_AND_ASSISTANT_IMPROVEMENT__R1351.md",
+      "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1351.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1351.md",
+      "CONTINUATION_HANDOFF__R1351.md",
+      "PRE_SEAL_CURRENTNESS_RECEIPT__R1351.md",
+      "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1351.md",
+      "R1351_RELEASE_RECEIPT.json"
+    ],
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1350"
     },
     "sccD2State": "BLOCKED_GUARDED_VERSION_BOUND_CAS_UNAVAILABLE",
     "acceptedCanonicalBase": {
