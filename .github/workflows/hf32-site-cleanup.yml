@@ -28,6 +28,9 @@ on:
       - 'DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md'
       - 'DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md'
       - 'DURABLE_RULE__FRANKLIN_CLAIM_ACCOUNT_RECOVERY_OUTREACH_BASELINE.md'
+      - 'DURABLE_ROGER_RULE__SITEWIDE_NO_REGRESSION_AND_NON_BURIAL.md'
+      - 'SITEWIDE_PRESERVATION_BASELINE__R1347.json'
+      - 'tests/r1347-sitewide-roger-rule.cjs'
       - 'DURABLE_RULE__FRANKLIN_CLAIM_ACCOUNT_RECOVERY_OUTREACH_BASELINE.md'
   pull_request:
     branches: [main]
@@ -176,6 +179,7 @@ jobs:
           node tests/r1345-profile-access-authority-routing.cjs
           node tests/r1346-claim-path-outreach-readiness.cjs
           node tests/r1347-two-command-permanent-baseline.cjs
+          node tests/r1347-sitewide-roger-rule.cjs
           node --check scripts/r1346-claim-path-browser-acceptance.mjs
           node --check scripts/r1347-two-command-browser-visibility.mjs
           node --check dist/assets/local-discovery.js
@@ -637,6 +641,7 @@ jobs:
           node tests/r1345-profile-access-authority-routing.cjs
           node tests/r1346-claim-path-outreach-readiness.cjs
           node tests/r1347-two-command-permanent-baseline.cjs
+          node tests/r1347-sitewide-roger-rule.cjs
           node --check scripts/r1346-claim-path-browser-acceptance.mjs
           node --check scripts/r1347-two-command-browser-visibility.mjs
             node --check dist/assets/franklin-site-monitor-r1308.js
