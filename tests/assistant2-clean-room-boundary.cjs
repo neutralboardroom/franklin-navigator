@@ -8,10 +8,11 @@ const pages=[
   'dist/assistant/index.html',
   'dist/es/asistente/index.html'
 ];
+const canonical=/\/assets\/franklin-assistant\.js\?v=(?:assistant-[0-9]+|frnav[0-9]+)/;
 
 for(const path of pages){
   const html=fs.readFileSync(path,'utf8');
-  assert.match(html,/\/assets\/franklin-assistant\.js\?v=assistant-021/);
+  assert.match(html,canonical, path+' must load the current canonical Franklin Assistant controller');
   assert.doesNotMatch(html,/\/assets\/navigator-bot\.js/);
   assert.doesNotMatch(html,/\/assets\/franklin-assistant-v2\.js/);
 }
@@ -35,4 +36,4 @@ assert.doesNotMatch(controller,/window\.FranklinAssistant2/);
 const loader=fs.readFileSync('dist/assets/hf36.js','utf8');
 assert.doesNotMatch(loader,/\n\s*loadAssistantR1318\(\);/);
 
-console.log(JSON.stringify({ok:true,pages:pages.length,assistantInternal:'FRANKLIN-ASSISTANT2-0.2.1'}));
+console.log(JSON.stringify({ok:true,pages:pages.length,assistantInternal:'FRANKLIN-ASSISTANT2-0.2.1',canonicalAssetVersioning:'RELEASE_INDEPENDENT'}));
