@@ -2627,7 +2627,14 @@
         "scripts/r1350-related-profile-nojs-browser.mjs",
         "scripts/r1346-claim-path-browser-acceptance.mjs",
         "scripts/r1347-two-command-browser-visibility.mjs"
-      ]
+      ],
+      "runtimePrePromotionGate": {
+        "mode": "PRE_PROMOTION_IDENTITY_ONLY_PREDECESSOR_LIVE",
+        "expectedLiveRuntimeRelease": "FR-NAV1.30.49-HF3.13.31",
+        "candidateTargetRuntimeRelease": "FR-NAV1.30.50-HF3.13.32",
+        "functionalRuntimeChanges": false,
+        "postDeployExactCandidateRuntimeVerificationRequired": true
+      }
     },
     "receipts": [
       "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1350.json",
