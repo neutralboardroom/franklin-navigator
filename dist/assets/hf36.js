@@ -189,7 +189,7 @@ const installCommunityConnectorR1311=()=>{
     if(actions){actions.innerHTML=es?'<a class="button primary" href="/claim-profile/">Buscar o reclamar mi perfil</a><a class="button" href="/es/iniciar-membresia/">Membresía Comunitaria</a><a class="button" href="/member-profile-preview/">Vista previa del perfil</a>':'<a class="button primary" href="/claim-profile/">Find or claim my profile</a><a class="button" href="/membership-start/">Community Membership</a><a class="button" href="/member-profile-preview/">Preview member profile</a>'}
     if(!copy.querySelector('.r1311-accuracy-note')){const n=document.createElement('p');n.className='fine-print r1311-accuracy-note';n.textContent=es?'No se requiere pago para corregir información factual ni para mantener la precisión básica del perfil público.':'Payment is not required to correct factual information or maintain basic public profile accuracy.';copy.append(n)}
   }
-  const CURRENT_RELEASE='FR-NAV1.30.48-HF3.13.30';
+  const CURRENT_RELEASE='FR-NAV1.30.49-HF3.13.31';
   const meta=document.querySelector('meta[name="franklin-release"]');if(meta)meta.content=CURRENT_RELEASE;
   document.documentElement.dataset.franklinRelease=CURRENT_RELEASE;
 };
@@ -198,6 +198,7 @@ ready(()=>{
   const body=document.body;
   if(!body)return;
   if(location.pathname.startsWith('/profiles/')){
+    loadScript('/assets/r1349-related-profiles.js?v=frnav1349','franklin-related-profiles-r1349').catch(()=>{});
     loadCss('/assets/r1330-profile.css?v=frnav1330','franklin-profile-r1330');
     loadCss('/assets/r1332-profile.css?v=frnav1332','franklin-profile-r1332');
     loadCss('/assets/r1333-profile.css?v=frnav1333','franklin-profile-r1333');
