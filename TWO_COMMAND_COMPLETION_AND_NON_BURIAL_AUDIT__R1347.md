@@ -75,6 +75,8 @@ The route baseline protects **260 non-profile public HTML routes**, plus a minim
 
 ## Remaining evidence-dependent item
 
-There is no unresolved product-code blocker from either command. The reset sender naming question is intentionally not changed because the requirement was to review it without casually disrupting SPF/DKIM/DMARC/deliverability. A future sender change requires verified Franklin transactional-sender evidence.
+The combined audit found one stale public-help contradiction before final qualification: `/member-support/` still said an unverified user could check access-review status in Profile Center. R1347 corrects that text to Profile Access, explicitly says Profile Center is for verified managers, labels the public Profile Center link `Already verified? Profile Center`, and permanently regression-gates the wording/route in both source and controlled-browser tests.
+
+There is no unresolved product-code blocker from either command after that repair. The reset sender naming question is intentionally not changed because the requirement was to review it without casually disrupting SPF/DKIM/DMARC/deliverability. A future sender change requires verified Franklin transactional-sender evidence.
 
 SCC acceptance/current-pointer remains independently governed and is not self-asserted by Local.
