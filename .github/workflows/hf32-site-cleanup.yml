@@ -20,6 +20,9 @@ on:
       - 'tests/r1342-claim-recovery.cjs'
       - 'tests/r1344-recent-fix-visibility.cjs'
       - 'tests/r1345-profile-access-authority-routing.cjs'
+      - 'tests/r1346-claim-path-outreach-readiness.cjs'
+      - 'scripts/r1346-claim-path-browser-acceptance.mjs'
+      - 'DURABLE_RULE__CLAIM_ACCOUNT_ASYNC_ACTION_FEEDBACK.md'
       - 'DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md'
       - 'DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md'
   pull_request:
@@ -37,6 +40,9 @@ on:
       - 'tests/r1342-claim-recovery.cjs'
       - 'tests/r1344-recent-fix-visibility.cjs'
       - 'tests/r1345-profile-access-authority-routing.cjs'
+      - 'tests/r1346-claim-path-outreach-readiness.cjs'
+      - 'scripts/r1346-claim-path-browser-acceptance.mjs'
+      - 'DURABLE_RULE__CLAIM_ACCOUNT_ASYNC_ACTION_FEEDBACK.md'
       - 'DURABLE_RULE__OWNER_APPROVED_FIX_VISIBILITY_AND_NON_BURIAL.md'
       - 'DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md'
 
@@ -162,6 +168,8 @@ jobs:
           node tests/r1342-claim-recovery.cjs
           node tests/r1344-recent-fix-visibility.cjs
           node tests/r1345-profile-access-authority-routing.cjs
+          node tests/r1346-claim-path-outreach-readiness.cjs
+          node --check scripts/r1346-claim-path-browser-acceptance.mjs
           node --check dist/assets/local-discovery.js
           grep -F "Profile photo viewer" dist/assets/r1333-paid-sponsored.js
           grep -F "Open profile photo " dist/assets/r1333-paid-sponsored.js
@@ -176,7 +184,7 @@ jobs:
           grep -F "Sponsored" dist/assets/r1333-paid-sponsored.js
           grep -F "ordinary unpaid" dist/membership-start/index.html
           grep -F "Continue with this profile" dist/assets/membership-live.js
-          grep -F "Your selected profile stays with you through sign-in" dist/assets/membership-live.js
+          grep -F "This exact public listing stays selected through sign-in, password recovery, and access review." dist/assets/membership-live.js
           grep -F "linked.authority_state==='VERIFIED'" dist/assets/membership-live.js
           grep -F "authorityConfirmed:true" dist/assets/member-profile-live.js
           grep -F '"duplicateActiveMembershipBlocked": true' R1338_RELEASE_RECEIPT.json
@@ -395,6 +403,25 @@ jobs:
           assert json.loads(Path('HF310_QUALIFICATION_REPORT.json').read_text()).get('issueCount')==0
           PY
 
+      - name: R1346 controlled-browser claim-path acceptance
+        run: |
+          set -euo pipefail
+          rm -rf .r1346-browser-evidence
+          python3 -m http.server 4173 --directory dist >/tmp/r1346-http.log 2>&1 &
+          HTTP_PID=$!
+          trap 'kill "$HTTP_PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 50); do
+            if curl --fail --silent http://127.0.0.1:4173/profile-access/ >/dev/null; then break; fi
+            sleep 0.1
+          done
+          node scripts/r1346-claim-path-browser-acceptance.mjs
+          test -s .r1346-browser-evidence/R1346_CLAIM_PATH_BROWSER_ACCEPTANCE.json
+          test -s .r1346-browser-evidence/R1346_STEP3_DESKTOP.png
+          test -s .r1346-browser-evidence/R1346_STEP3_MOBILE.png
+          grep -F '"result": "PASS"' .r1346-browser-evidence/R1346_CLAIM_PATH_BROWSER_ACCEPTANCE.json
+          kill "$HTTP_PID" 2>/dev/null || true
+          trap - EXIT
+
       - name: Build deterministic exact-source artifact and manifest
         run: |
           set -euo pipefail
@@ -437,7 +464,7 @@ jobs:
           # Main/public source bytes from the exact workflow commit.
           for p in sorted(root.rglob('*')):
               rel0=p.relative_to(root).as_posix()
-              if rel0 in exclude or rel0.startswith('.git/'): continue
+              if rel0 in exclude or rel0.startswith('.git/') or rel0.startswith('.r1346-browser-evidence/'): continue
               if p.is_symlink():
                   raise AssertionError(f'symlink not allowed in release: {p}')
               if not p.is_file(): continue
@@ -580,6 +607,8 @@ jobs:
             node tests/r1342-claim-recovery.cjs
           node tests/r1344-recent-fix-visibility.cjs
           node tests/r1345-profile-access-authority-routing.cjs
+          node tests/r1346-claim-path-outreach-readiness.cjs
+          node --check scripts/r1346-claim-path-browser-acceptance.mjs
             node --check dist/assets/franklin-site-monitor-r1308.js
           )
           (
@@ -598,5 +627,8 @@ jobs:
             FRANKLIN_NAVIGATOR__*__CURRENT_SUCCESSOR_EXACT_SOURCE.zip
             CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json
             CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json
+            .r1346-browser-evidence/R1346_CLAIM_PATH_BROWSER_ACCEPTANCE.json
+            .r1346-browser-evidence/R1346_STEP3_DESKTOP.png
+            .r1346-browser-evidence/R1346_STEP3_MOBILE.png
           if-no-files-found: error
           retention-days: 30
