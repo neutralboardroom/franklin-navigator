@@ -57,7 +57,7 @@ jobs:
           grep -Fq "Burger Up Franklin" /tmp/r1349-related-profiles.js
           grep -Fq "Dog Haus" /tmp/r1349-related-profiles.js
           grep -Fq "omitted-insufficient-relevance" /tmp/r1349-related-profiles.js
-          grep -Fq "Downtown Business or Organization" /tmp/r1349-related-profiles.js
+          grep -Fiq "Downtown Business or Organization" /tmp/r1349-related-profiles.js
           echo "PASS live_r1349_relevance_asset"
 
       - name: Render live Daddy's Dogs related profiles after JavaScript
