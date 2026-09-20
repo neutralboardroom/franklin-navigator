@@ -473,7 +473,7 @@ header .wrap.top>.r37-language-switch{order:3!important;margin-left:10px!importa
   font-weight:850!important;box-shadow:0 2px 0 rgba(18,63,67,.12)
 }
 .r1342-claim-result:hover .r1342-claim-result-action,.r1342-claim-result:focus-within .r1342-claim-result-action{background:#ffcf68!important}
-@media(max-width:620px){.profile-primary-actions .r1343-claim-primary,.profile-primary-actions .r1343-correction-secondary{width:100%;justify-content:center}.r1342-claim-result-action{width:100%;margin-top:8px}}
+@media(max-width:620px){.profile-primary-actions .r1343-claim-primary,.profile-primary-actions .r1343-correction-secondary,body.r1346-claimable .r1330-profile-state .r1343-claim-primary{width:100%;justify-content:center}.r1342-claim-result-action{width:100%;margin-top:8px}}
 
 /* R1344 — ownership action stays prominent on review/correction surfaces. */
 .r1344-owner-claim-callout{margin:18px 0 24px;padding:18px 20px;border:1px solid #e0c77f;border-radius:14px;background:#fff8e8}
@@ -503,6 +503,8 @@ header .wrap.top>.r37-language-switch{order:3!important;margin-left:10px!importa
 .r1346-recovery-success{display:grid;gap:12px;padding:18px;border:1px solid #a8cfb8;border-radius:14px;background:#edf8f1}
 .r1346-recovery-success h3,.r1346-recovery-success p{margin:0}
 body.r1346-claimable.hf35-profile.r1332-profile .profile-primary-actions a.button.primary:not(.r1343-claim-primary){background:#fff!important;color:#07545a!important;border-color:#8eb5b7!important;box-shadow:none!important}
+body.r1346-claimable.hf35-profile.r1332-profile .r22-profile-hero .r1330-profile-state{display:flex!important}
+body.r1346-claimable.hf35-profile.r1332-profile .r22-profile-hero .r1331-media-hint{display:block!important}
 body.r1346-claimable .r1330-profile-state .r1343-claim-primary{display:inline-flex!important;align-items:center;justify-content:center;padding:11px 16px!important;border-radius:9px}
 @media(max-width:760px){.r1346-profile-progress{grid-template-columns:1fr 1fr}.r1346-profile-access-verification{max-width:none}.r1346-profile-access-verification textarea{min-height:170px}}
 @media(max-width:480px){.r1346-profile-progress{grid-template-columns:1fr}.r1346-profile-progress [data-step]{justify-content:flex-start}.r1346-profile-access-verification .button{width:100%;justify-content:center}}
