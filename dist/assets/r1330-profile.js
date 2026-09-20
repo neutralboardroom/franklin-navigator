@@ -5,6 +5,7 @@
  const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn,{once:true}):fn();
  const el=(t,txt,cls)=>{const n=document.createElement(t);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n};
  const abs=u=>{try{return new URL(u,API).href}catch{return''}};
+ const assistantProfileHref=(stage,name)=>{const q=new URLSearchParams({profile:id,profileName:String(name||'').slice(0,160),stage});return (document.documentElement.lang||'').toLowerCase().startsWith('es')?'/es/asistente/?'+q.toString():'/assistant/?'+q.toString()};
  function hidePublicProvenance(){
    document.querySelectorAll('a[href="#sources"]').forEach(a=>a.remove());
    const src=document.querySelector('#sources');if(src)src.remove();
@@ -67,10 +68,11 @@
    }else if(managed){
      labelText=isNavigatorSelf?'Official Franklin Navigator profile':'Management verified';actionText='Claim or manage this profile';href='/profile-access/?profile='+encodeURIComponent(id);hintText=isNavigatorSelf?'Authorized Franklin Navigator managers can sign in or request profile access free. Existing access is preserved.':'This profile already has verified management access. If you are also authorized, you can request access; existing access is not removed automatically.';
    }
+   const profileName=document.querySelector('.r22-profile-hero h1')?.textContent?.trim()||'';
    const label=el('span',labelText,'r1330-state-label'+((managed||managedForViewer)?' is-managed':''));
    const isClaimAction=actionText==='Claim or manage this profile';
    document.body.classList.toggle('r1346-claimable',isClaimAction);
-   const a=el('a',actionText,'r1330-claim-link'+(isClaimAction?' button r1343-claim-primary':''));a.href=href;row.append(label,a);
+   const a=el('a',actionText,'r1330-claim-link'+(isClaimAction?' button r1343-claim-primary':''));a.href=href;const ask=el('a',(document.documentElement.lang||'').toLowerCase().startsWith('es')?'Preguntar a Franklin sobre este perfil':'Ask Franklin about this profile','r1352-profile-assistant-link button');ask.href=assistantProfileHref('public_profile',profileName);row.append(label,a,ask);
    let hint=copy.querySelector('.r1331-media-hint');if(!hint){hint=el('p','', 'r1331-media-hint');row.insertAdjacentElement('afterend',hint)}
    hint.textContent=hintText;
    const manage=document.querySelector('#manage');if(manage){
@@ -82,7 +84,6 @@
        const direct=[...actions.children].filter(x=>x.tagName==='A'),secondary=direct.find(x=>x!==primary);
        if(secondary){secondary.href=(managedForViewer?'/profile-studio/?profile=':'/member-profile-preview/?profile=')+encodeURIComponent(id);secondary.textContent=managedForViewer?'Open Profile Center':'Preview optional member profile'}
        const details=actions.querySelector('details.hf35-admin-more');
-       const profileName=document.querySelector('.r22-profile-hero h1')?.textContent?.trim()||'';
        const page=location.origin+'/profiles/'+id+'/';
        const correction='/corrections/?listing='+encodeURIComponent(profileName)+'&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
        const removal='/corrections/?action=PUBLIC_REMOVAL&listing='+encodeURIComponent(profileName)+'&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
