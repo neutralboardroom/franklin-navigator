@@ -1,0 +1,73 @@
+{
+  "release": "FR-NAV1.30.46-HF3.13.28",
+  "completed": [
+    {
+      "priority": "P0",
+      "item": "Repair Step 3 management-verification form layout",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "priority": "P0",
+      "item": "Make Continue-with-profile transition visibly load, complete and focus Step 3",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "priority": "P0",
+      "item": "Make reset request visibly acknowledge success without account enumeration",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "priority": "P0",
+      "item": "Replace reset completion form with signed-in success and exact-profile continuation",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "priority": "P1",
+      "item": "Change frontend/backend password minimum to 8 without forced complexity rules",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "priority": "P1",
+      "item": "Strengthen claim CTA hierarchy and demote Official website only on claimable profiles",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "priority": "P1",
+      "item": "Clarify Profile Access hero/progress/selected-profile/current task",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "priority": "P1",
+      "item": "Reduce wrong-profile search distraction while preserving change-profile ability",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "priority": "P1",
+      "item": "Delay optional membership promotion until access request submitted or authority verified",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "priority": "P1",
+      "item": "Establish durable no-silent-click rule",
+      "status": "IMPLEMENTED"
+    }
+  ],
+  "deferred": [
+    {
+      "item": "Change password-reset sender identity away from alerts@franklinnavigator.com",
+      "reason": "VERIFIED_TRANSACTIONAL_SENDER_AND_DOMAIN_AUTHENTICATION_EVIDENCE_REQUIRED; working delivery must not be casually disturbed"
+    },
+    {
+      "item": "Leipers Creek Law profile-source lineage mismatch",
+      "reason": "UPSTREAM_PROFILE_SOURCE_EVIDENCE_REQUIRED"
+    },
+    {
+      "item": "New PF/LI handoff consumption",
+      "reason": "ACCEPTED_CONSUMER_POINTER_REQUIRED"
+    },
+    {
+      "item": "SCC acceptance/current pointer",
+      "reason": "SCC_AUTHORITY_REQUIRED"
+    }
+  ]
+}
