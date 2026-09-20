@@ -1,0 +1,33 @@
+{
+  "receiptType": "LOCAL_RELEASE_RECEIPT",
+  "release": "FR-NAV1.30.51-HF3.13.33",
+  "predecessor": "FR-NAV1.30.50-HF3.13.32",
+  "acceptedCoordinationAnchor": "FR-NAV1.30.49-HF3.13.31",
+  "workOrderId": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+  "state": "CANDIDATE_REFROZEN_AFTER_VALIDATOR_METADATA_ALIGNMENT_PENDING_FINAL_EXACT_HEAD_QUALIFICATION",
+  "materialImprovement": "Profile-path pre-authority clarity plus Franklin Assistant public-card website/phone follow-ups",
+  "profileFactsChanged": false,
+  "pricingChanged": false,
+  "paymentOrEntitlementChanged": false,
+  "outreachPerformed": false,
+  "sccAcceptanceClaimed": false,
+  "preSealCurrentness": "PASS",
+  "runtimeIdentity": {
+    "release": "FR-NAV1.30.51-HF3.13.33",
+    "sourceCommit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+    "deployId": "dep-dao1gkuk1f9s73ab1b2g",
+    "deployState": "LIVE",
+    "functionalChanges": false,
+    "identityOnly": true
+  },
+  "noFurtherCandidateMutationAfterThisReceipt": true,
+  "validatorMetadataAlignment": {
+    "productBehaviorChanged": false,
+    "validatorChanged": false,
+    "addedPredecessorAlias": true,
+    "addedRuntimeReleaseEnvBinding": true,
+    "predecessor": "FR-NAV1.30.50-HF3.13.32",
+    "runtimeReleaseEnv": "FR-NAV1.30.51-HF3.13.33",
+    "runtimeDeploy": "dep-dao1gkuk1f9s73ab1b2g"
+  }
+}

@@ -23,3 +23,8 @@
 .r1342-business-path span{min-width:0}
 @media(max-width:900px){.r1342-business-path{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.r1342-business-path{grid-template-columns:1fr}.r1342-claim-result{align-items:flex-start!important}.r1342-claim-result-action{white-space:normal}}
+
+/* R1351 profile-path clarity */
+.r1351-profile-path-summary{margin-top:12px;padding:12px 14px;border:1px solid #c8d9d9;border-radius:12px;background:#f7fbfb}
+.r1351-profile-path-summary>strong{display:block;margin-bottom:4px}
+.r1351-profile-path-summary p{margin:4px 0}
