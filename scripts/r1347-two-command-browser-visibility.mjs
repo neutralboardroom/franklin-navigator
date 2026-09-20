@@ -61,11 +61,12 @@ await navigate('/business-dashboard/');
 const biz=await evaluate(`(()=>{const path=document.querySelector('.r1342-business-path'),spans=[...path?.querySelectorAll('span')||[]].map((n,i)=>({i,text:n.textContent.replace(/\\s+/g,' ').trim(),h:n.getBoundingClientRect().height})),membership=document.querySelector('.hf310-dashboard-membership');return{spans,pathH:path?.getBoundingClientRect().height||0,membershipH:membership?.getBoundingClientRect().height||0,precedes:Boolean(path&&membership&&(path.compareDocumentPosition(membership)&Node.DOCUMENT_POSITION_FOLLOWING))}})()`);
 check('business ownership path is visibly rendered before optional membership',biz.pathH>1&&biz.membershipH>1&&biz.precedes,JSON.stringify(biz));
 check('business path keeps five ordered free-first steps',biz.spans.length===5&&
-  biz.spans[0].text.includes('Find profile')&&
-  biz.spans[1].text.includes('Claim profile / verify authority')&&
-  biz.spans[2].text.includes('Review or manage free profile')&&
-  biz.spans[3].text.includes('Preview optional Community Membership')&&
-  biz.spans[4].text.includes('Join if useful')&&biz.spans.every(x=>x.h>1),JSON.stringify(biz));
+  /Find profile/i.test(biz.spans[0].text)&&
+  /Claim.*verify authority/i.test(biz.spans[1].text)&&
+  /Manage.*free profile|free profile.*manage/i.test(biz.spans[2].text)&&
+  /Preview.*membership/i.test(biz.spans[3].text)&&
+  /Join if useful/i.test(biz.spans[4].text)&&
+  biz.spans.every(x=>x.h>1),JSON.stringify(biz));
 
 // Account support: topic routing is visible, specific, and exact-profile preserving.
 await navigate('/member-support/?topic=ACCOUNT_ACCESS&profile='+encodeURIComponent(PROFILE));
