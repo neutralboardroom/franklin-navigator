@@ -2598,15 +2598,16 @@
     "runtime": {
       "branch": "franklin-commerce-runtime-r30",
       "commit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
-      "deploy": "dep-dansgplahn7c73e43l40",
-      "deployState": "LIVE_PREDECESSOR_IDENTITY",
+      "deploy": "dep-danvvtijnfac73a38rlg",
+      "deployState": "LIVE",
       "releaseEnv": "FR-NAV1.30.50-HF3.13.32",
       "targetReleaseEnv": "FR-NAV1.30.50-HF3.13.32",
       "functionalChanges": false,
       "identityOnly": true,
       "inheritedFunctionalBehaviorFrom": "R1346",
-      "externalLiveReleaseEnvAtPreSeal": "FR-NAV1.30.49-HF3.13.31",
-      "identityDeploymentPending": true
+      "externalLiveReleaseEnvAtPreSeal": "FR-NAV1.30.50-HF3.13.32",
+      "identityDeploymentPending": false,
+      "identityDeploymentCompletedAtUtc": "2026-09-20T15:47:27Z"
     },
     "qualification": {
       "result": "PENDING_EXACT_HEAD_WORKFLOW",
@@ -2629,10 +2630,12 @@
         "scripts/r1347-two-command-browser-visibility.mjs"
       ],
       "runtimePrePromotionGate": {
-        "mode": "PRE_PROMOTION_IDENTITY_ONLY_PREDECESSOR_LIVE",
-        "expectedLiveRuntimeRelease": "FR-NAV1.30.49-HF3.13.31",
+        "mode": "EXACT_CANDIDATE_RUNTIME_IDENTITY_ALIGNED",
+        "expectedLiveRuntimeRelease": "FR-NAV1.30.50-HF3.13.32",
         "candidateTargetRuntimeRelease": "FR-NAV1.30.50-HF3.13.32",
         "functionalRuntimeChanges": false,
+        "identityOnly": true,
+        "runtimeDeploy": "dep-danvvtijnfac73a38rlg",
         "postDeployExactCandidateRuntimeVerificationRequired": true
       },
       "browserHarness": {
