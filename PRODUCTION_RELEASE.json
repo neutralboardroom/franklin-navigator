@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.46-HF3.13.28",
+  "release": "FR-NAV1.30.47-HF3.13.29",
   "date": "2026-09-20",
-  "base": "FR-NAV1.30.45-HF3.13.27",
+  "base": "FR-NAV1.30.46-HF3.13.28",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1346 is the owner-directed outreach claim/account readiness pass: it repairs the Step 3 management-verification layout; makes consequential claim/password actions visibly load, complete, fail and advance in the user's viewport; changes the password minimum from 12 to 8 consistently in public UI and Local runtime; strengthens claim/manage CTA hierarchy; clarifies public-profile access and progress; preserves exact-profile continuity through password recovery; keeps Community Membership optional and later; and adds controlled-browser desktop/mobile/keyboard acceptance plus a durable no-silent-click rule.",
+  "scope": "R1347 is a whole-site durability and non-burial release: it independently re-audits both September 19 and September 20 owner claim/account/recovery commands, establishes Roger's permanent sitewide no-regression/no-burial rule, snapshots the accepted non-profile route and profile/Assistant scope baseline, and makes those requirements mandatory exact-head qualification gates for future Franklin Local builds.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -2098,7 +2098,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "state": "QUALIFIED_AND_DEPLOYED",
     "predecessor": {
       "version": "FR-NAV1.30.45-HF3.13.27",
       "mainCommit": "267c38a0f3dad5c61e6d94b3a63201910e42e59c",
@@ -2219,7 +2219,92 @@
       "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1346.md"
     ],
     "qualification": {
-      "result": "PENDING_EXACT_HEAD_WORKFLOW"
-    }
+      "result": "PASS",
+      "workflowRun": 35489611288,
+      "qualifiedHead": "a0f09aa9e7d5386d2a8031237003f98accaca360",
+      "publicSourceTree": "2571b330fef2908a934026ad634b694587d292c1",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.46-HF3.13.28__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactSha256": "b4803aeb8adaa6c5d46ac6ba273972043fc52c769c4747d6325aa5f14f2aab11",
+      "manifestSha256": "d72a1b90d31f2f690e0880e0b1800b500b243155bd7b94253b30878828eda555",
+      "doubleBuildByteIdentical": true,
+      "browserAcceptance": "PASS"
+    },
+    "staticDeploy": "dep-danm9a942hec73ev9u60",
+    "staticDeployState": "LIVE"
+  },
+  "r1347": {
+    "version": "FR-NAV1.30.47-HF3.13.29",
+    "date": "2026-09-20",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.46-HF3.13.28",
+      "mainCommit": "a0f09aa9e7d5386d2a8031237003f98accaca360",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.46-HF3.13.28__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactSha256": "b4803aeb8adaa6c5d46ac6ba273972043fc52c769c4747d6325aa5f14f2aab11",
+      "manifestSha256": "d72a1b90d31f2f690e0880e0b1800b500b243155bd7b94253b30878828eda555"
+    },
+    "ownerCommands": [
+      "FRANKLIN_NAVIGATOR__LIVE_PROFILE_CLAIM_ACCOUNT_RECOVERY_FIX_PASS__LOCAL_BUILDER_COMMAND__2026-09-19",
+      "FRANKLIN_NAVIGATOR_NEXT_VERSION_CLAIM_PATH_FIX_PROMPT_2026-09-20",
+      "ROGER_SITEWIDE_NO_REGRESSION_AND_NON_BURIAL_RULE__2026-09-20"
+    ],
+    "materialImprovement": "Permanent two-command completion/non-burial audit plus whole-site Roger no-regression baseline and qualification gate.",
+    "durability": {
+      "sitewideRogerRule": "DURABLE_ROGER_RULE__SITEWIDE_NO_REGRESSION_AND_NON_BURIAL.md",
+      "twoCommandRule": "DURABLE_RULE__FRANKLIN_CLAIM_ACCOUNT_RECOVERY_OUTREACH_BASELINE.md",
+      "preservationBaseline": "SITEWIDE_PRESERVATION_BASELINE__R1347.json",
+      "protectedNonProfileHtmlRoutes": 260,
+      "minimumProfiles": 19104,
+      "minimumAssistantRoutes": 254,
+      "explicitOwnerDirectionRequiredForRemovalOrBurial": true,
+      "codeExistsAloneIsNotPreservation": true,
+      "permanentGateExtendsNeverResets": true
+    },
+    "noFeatureRemoval": true,
+    "noOutreach": true,
+    "noPricingChange": true,
+    "noPaymentOrEntitlementChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noOrdinaryUnpaidRankingChange": true,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "smarterJusticeDonor": "SMARTER_JUSTICE_DONOR_NOT_USED",
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+      "deploy": "dep-dano6n740ujc73cjs3h0",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.47-HF3.13.29",
+      "functionalChanges": false,
+      "identityOnly": true,
+      "inheritedFunctionalBehaviorFrom": "R1346"
+    },
+    "qualification": {
+      "result": "PENDING_EXACT_HEAD_WORKFLOW",
+      "requiredTests": [
+        "tests/r1342-claim-recovery.cjs",
+        "tests/r1344-recent-fix-visibility.cjs",
+        "tests/r1345-profile-access-authority-routing.cjs",
+        "tests/r1346-claim-path-outreach-readiness.cjs",
+        "tests/r1347-two-command-permanent-baseline.cjs",
+        "tests/r1347-sitewide-roger-rule.cjs",
+        "scripts/r1346-claim-path-browser-acceptance.mjs",
+        "scripts/r1347-two-command-browser-visibility.mjs"
+      ]
+    },
+    "receipts": [
+      "TWO_COMMAND_COMPLETION_AND_NON_BURIAL_AUDIT__R1347.md",
+      "FRANKLIN_MEMBER_PROSPECT_OUTREACH_READINESS_RECEIPT__R1347.md",
+      "NO_LOSS_AND_NON_BURIAL_RECEIPT__R1347.md",
+      "DURABLE_ROGER_RULE__SITEWIDE_NO_REGRESSION_AND_NON_BURIAL.md",
+      "DURABLE_RULE__FRANKLIN_CLAIM_ACCOUNT_RECOVERY_OUTREACH_BASELINE.md",
+      "SITEWIDE_PRESERVATION_BASELINE__R1347.json",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1347.md",
+      "CONTINUATION_HANDOFF__R1347.md",
+      "R1347_RELEASE_RECEIPT.json"
+    ]
   }
 }
