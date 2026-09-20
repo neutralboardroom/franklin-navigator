@@ -96,11 +96,12 @@ Every future material Franklin Local release must run:
 - `tests/r1345-profile-access-authority-routing.cjs`
 - `tests/r1346-claim-path-outreach-readiness.cjs`
 - `tests/r1347-two-command-permanent-baseline.cjs`
+- `tests/r1347-sitewide-roger-rule.cjs`
 - the current controlled-browser claim-path acceptance test(s), including the R1347 two-command visibility acceptance or an authoritative successor.
 
 Qualification must fail if any protected behavior becomes missing, hidden, visually demoted contrary to its task hierarchy, unreachable, mislabeled, routed to the wrong journey, or security/authority-gated incorrectly.
 
-The permanent gate must be extended, not reset, when future owner-approved user-facing fixes are added.
+The permanent gate must be extended, not reset, when future owner-approved user-facing fixes are added. The broader `DURABLE_ROGER_RULE__SITEWIDE_NO_REGRESSION_AND_NON_BURIAL.md` protects accepted functionality outside this claim/account/recovery scope as well.
 
 ## Evidence-dependent exception
 
