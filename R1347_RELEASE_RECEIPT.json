@@ -32,7 +32,7 @@
     "releaseEnv": "FR-NAV1.30.47-HF3.13.29",
     "functionalChanges": false,
     "deploy": "dep-dano6n740ujc73cjs3h0",
-    "state": "PENDING_RUNTIME_DEPLOY_COMPLETION"
+    "state": "LIVE"
   },
   "qualification": {
     "result": "PENDING_EXACT_HEAD_WORKFLOW",
