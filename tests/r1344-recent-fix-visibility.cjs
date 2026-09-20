@@ -67,7 +67,7 @@ add('R1342 Spanish recovery/claim parity retained',i18n.includes("'Forgot passwo
 add('R1342 unverified users continue through Profile Access',hf39.includes("access='/profile-access/?profile='")&&!hf39.includes("Continue profile access',studio"));
 
 add('R1343 universal claim CTA retained',app.includes('universal profile-control visibility guard')&&css.includes('--claim-accent:#f6c453'));
-add('R1343 distinct claim-search action retained',claim.includes("b.textContent='Claim this profile'")&&css.includes('.r1342-claim-result-action')&&css.includes('background:var(--claim-accent)!important'));
+add('R1351 neutral profile-selection action retained',claim.includes("b.textContent='Continue with this profile'")&&css.includes('.r1342-claim-result-action')&&css.includes('background:var(--claim-accent)!important'));
 add('R1344 correction page exposes claim/manage prominently',corrections.includes('data-r1344-claim-cta')&&corrections.includes('Claim or manage this profile — free'));
 add('R1344 correction claim keeps exact-profile continuity',profileControl.includes("claimCta.href='/profile-access/?profile='"));
 add('R1344 correction claim uses distinct ownership accent',css.includes('.r1344-owner-claim-callout')&&css.includes('.r1343-claim-primary'));
