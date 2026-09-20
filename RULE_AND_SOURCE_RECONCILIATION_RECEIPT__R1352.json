@@ -1,0 +1,19 @@
+{
+  "receiptType": "RULE_AND_SOURCE_RECONCILIATION_RECEIPT",
+  "release": "FR-NAV1.30.52-HF3.13.34",
+  "status": "PASS_PRE_EDIT",
+  "currentMain": "53dfb8acabe2bbdbc2dfa6f58f8c421ebdb36112",
+  "immediatePredecessor": "FR-NAV1.30.51-HF3.13.33",
+  "acceptedCoordinationAnchor": "FR-NAV1.30.49-HF3.13.31",
+  "releaseLease": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+  "leaseInvalidationObserved": false,
+  "successorCollisionObserved": false,
+  "ownerRules": [
+    "WHOLE_SITE_NO_REGRESSION_NO_BURIAL",
+    "FROZEN_CANDIDATE_FAIL_CLOSED",
+    "PROFILE_PATH_AND_ASSISTANT_CONTINUOUS_IMPROVEMENT"
+  ],
+  "profileFactoryNewConsumerAcceptedPointerConsumed": false,
+  "localInvestigatorNewConsumerAcceptedPointerConsumed": false,
+  "sreMutated": false
+}
