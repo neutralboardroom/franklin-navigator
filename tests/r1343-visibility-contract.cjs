@@ -10,7 +10,7 @@ ok(app.includes('R1343 — universal profile-control visibility guard'),'univers
 ok(app.includes("'/profile-access/?profile='+encodeURIComponent(profileId)"),'claim deep link missing');
 ok(app.includes('Review / correct this profile'),'secondary correction link missing');
 ok(css.includes('--claim-accent:#f6c453')&&css.includes('.r1343-claim-primary'),'distinct claim style missing');
-ok(claim.includes("b.textContent='Claim this profile'")&&claim.includes('card.append(b)'),'claim result action missing');
+ok(claim.includes("b.textContent='Continue with this profile'")&&claim.includes('card.append(b)'),'profile selection action missing');
 ok(biz.includes('Find your Franklin profile. Improve it. Grow your local visibility.'),'approved business headline missing');
 ok(biz.includes('$35/year')&&membership.includes('$35/year'),'membership price visibility missing');
 ok(fs.existsSync(path.join(dist,'community-help-center','index.html')),'help center missing');
