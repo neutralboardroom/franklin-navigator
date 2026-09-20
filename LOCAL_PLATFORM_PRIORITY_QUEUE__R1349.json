@@ -1,0 +1,33 @@
+{
+  "release": "FR-NAV1.30.49-HF3.13.31",
+  "completed": [
+    {
+      "priority": "P0",
+      "item": "Site-wide Related local profiles relevance guard; broad umbrella equality insufficient; Daddy’s Dogs restaurant/food override",
+      "disposition": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "priority": "P1",
+      "item": "Bilingual static home-event currentness parity",
+      "disposition": "IMPLEMENTED_AND_TESTED"
+    }
+  ],
+  "deferred": [
+    {
+      "item": "Newer Profile Factory handoff",
+      "reason": "consumer acceptance/current-pointer evidence not proven"
+    },
+    {
+      "item": "Local Investigator V39+ adoption",
+      "reason": "consumer acceptance/currentness and SCC gates pending"
+    },
+    {
+      "item": "Password-reset sender replacement",
+      "reason": "verified replacement sender not yet proven"
+    },
+    {
+      "item": "SCC current-pointer advancement",
+      "reason": "SCC authority only"
+    }
+  ]
+}

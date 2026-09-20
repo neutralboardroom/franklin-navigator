@@ -1,0 +1,39 @@
+{
+  "release": "FR-NAV1.30.49-HF3.13.31",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "predecessor": {
+    "version": "FR-NAV1.30.48-HF3.13.30",
+    "commit": "8469e9b8e988359b552cd3ae3cbe221f47e27cc2",
+    "artifactSha256": "45c22d852988cc3f28b444f0f854d6f90c7f7639036f81dd7bf7f60e5a9aef7d",
+    "manifestSha256": "378fabe73a622e3467b06e2452682d11f31171905466fb9a10400a76147932c3"
+  },
+  "materialImprovement": "Repair bilingual static homepage currentness and site-wide Related local profiles relevance; broad umbrella categories/locality alone cannot create similarity, Daddy’s Dogs uses an owner-qualified food/restaurant override, and insufficient relevance yields fewer results rather than unrelated filler.",
+  "changedClasses": [
+    "Spanish homepage static current-event projection",
+    "Related local profiles site-wide runtime relevance guard",
+    "bilingual currentness regression test",
+    "related-profile relevance regression test",
+    "qualification workflow",
+    "release evidence"
+  ],
+  "residentFeatureChange": true,
+  "authority": {
+    "profiles": "UNCHANGED",
+    "localResearch": "UNCHANGED",
+    "commercial": "UNCHANGED",
+    "sccAccepted": false,
+    "smarterJusticeDonor": "NOT_USED"
+  },
+  "runtime": {
+    "functionalChanges": false,
+    "r1349DeploymentClaimed": false
+  },
+  "qualification": {
+    "result": "PENDING_LOCAL_AND_EXACT_HEAD_QUALIFICATION",
+    "requiredPermanentGates": [
+      "tests/r1349-bilingual-home-currentness.cjs",
+      "tests/r1349-related-profile-relevance.cjs"
+    ]
+  }
+}
