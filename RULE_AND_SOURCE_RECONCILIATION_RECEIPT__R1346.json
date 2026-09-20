@@ -1,0 +1,30 @@
+{
+  "release": "FR-NAV1.30.46-HF3.13.28",
+  "result": "PASS_FOR_LOCAL_CANDIDATE",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "ownerCommand": "FRANKLIN_NAVIGATOR_NEXT_VERSION_CLAIM_PATH_FIX_PROMPT_2026-09-20",
+  "ownerWalkthroughProfileId": "FR-ORG-b00c0ace7943973c",
+  "predecessor": {
+    "version": "FR-NAV1.30.45-HF3.13.27",
+    "commit": "267c38a0f3dad5c61e6d94b3a63201910e42e59c",
+    "artifactSha256": "83d8bd48b0f7682b2bba7960b496cb876fe72f19a5274cfae27e79e9c4f68989"
+  },
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+    "deploy": "dep-danlctp42hec73esjefg",
+    "state": "LIVE",
+    "releaseEnv": "FR-NAV1.30.46-HF3.13.28"
+  },
+  "boundaries": {
+    "profileFacts": "PROFILE_FACTORY_UNCHANGED",
+    "localResearch": "LOCAL_INVESTIGATOR_UNCHANGED",
+    "commercialIntent": "SRE_UNCHANGED",
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "smarterJustice": "NOT_USED"
+  },
+  "noOutreachPerformed": true
+}
