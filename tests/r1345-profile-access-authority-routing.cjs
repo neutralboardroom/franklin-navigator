@@ -6,6 +6,7 @@ const profile=read('dist/assets/r1330-profile.js');
 const controls=read('dist/assets/hf35-profile-control.js');
 const i18n=read('dist/assets/r37-i18n.js');
 const access=read('dist/profile-access/index.html');
+const support=read('dist/member-support/index.html');
 const durable=read('DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md');
 const checks=[]; const add=(name,ok)=>checks.push([name,Boolean(ok)]);
 add('Profile Access declares verify-management before Profile Center',access.includes('data-step="3" data-label="Verify management"')&&access.includes('data-step="4" data-label="Profile Center"'));
@@ -23,6 +24,7 @@ const forbiddenPending=/authority==='PENDING'[\s\S]{0,260}href='\/profile-studio
 add('Public pending authority cannot route directly to Profile Center',!forbiddenPending.test(profile));
 const obsolete="Profile access is not yet verified. Open Profile Center to submit or check your access request.";
 add('Obsolete unverified-to-Profile-Center instruction removed',!live.includes(obsolete)&&!i18n.includes(obsolete));
+add('Public support does not send unverified review-status users to Profile Center',support.includes('check the review status in Profile Access')&&support.includes('Profile Center is for verified managers')&&!support.includes('check the review status in Profile Center'));
 const failed=checks.filter(x=>!x[1]);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.46-HF3.13.28',checks,failed},null,2));
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.47-HF3.13.29',checks,failed},null,2));
 if(failed.length)process.exit(1);
