@@ -1,0 +1,36 @@
+{
+  "release": "FR-NAV1.30.51-HF3.13.33",
+  "changedExisting": [
+    "PRODUCTION_RELEASE.json",
+    "dist/assets/franklin-assistant.js",
+    "dist/assets/hf310.js",
+    "dist/assets/hf36.js",
+    "dist/assets/membership-live.js",
+    "dist/assets/r1342-claim-recovery.css",
+    "dist/assets/r37-i18n.js",
+    "dist/assistant/index.html",
+    "dist/es/asistente/index.html",
+    "dist/es/index.html",
+    "dist/index.html",
+    "tests/r1342-claim-recovery.cjs",
+    "tests/r1343-visibility-contract.cjs",
+    "tests/r1344-recent-fix-visibility.cjs",
+    "tests/r1347-two-command-permanent-baseline.cjs"
+  ],
+  "added": [
+    ".github/workflows/r1351-profile-path-assistant.yml",
+    "CONTINUATION_HANDOFF__R1351.md",
+    "NEXT_VERSION_IMPROVEMENT_LIST__R1351.md",
+    "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1351.md",
+    "PRE_SEAL_CURRENTNESS_RECEIPT__R1351.md",
+    "PROFILE_PATH_AND_ASSISTANT_IMPROVEMENT__R1351.md",
+    "R1351_RELEASE_RECEIPT.json",
+    "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1351.md",
+    "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1351.json",
+    "scripts/r1351-profile-path-assistant-browser.mjs",
+    "tests/r1351-profile-path-assistant.cjs"
+  ],
+  "removed": [],
+  "changedExistingCount": 15,
+  "addedCount": 11
+}
