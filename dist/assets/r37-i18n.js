@@ -52,6 +52,8 @@
       'Your selected profile stays with you through sign-in and access review. You do not need to search for it again.':'Su perfil seleccionado se conserva durante el inicio de sesión y la revisión de acceso. No necesita buscarlo de nuevo.',
       'Continue with this profile':'Continuar con este perfil',
       'This exact profile is selected.':'Este perfil exacto está seleccionado.',
+      'Ask Franklin about this profile':'Preguntar a Franklin sobre este perfil',
+      'Need help with this step? Ask Franklin':'¿Necesita ayuda con este paso? Pregunte a Franklin',
       'Franklin checks your account and access state before showing the next action. Selecting this profile does not claim it or change public facts.':'Franklin revisa el estado de su cuenta y acceso antes de mostrar la siguiente acción. Seleccionar este perfil no lo reclama ni cambia los datos públicos.',
       'Profile access requests and factual corrections/removal are free. Community Membership is optional.':'Las solicitudes de acceso al perfil y las correcciones factuales o el retiro son gratuitos. La Membresía Comunitaria es opcional.',
       'Choose the next action below. Selecting this result does not claim the profile or change public facts.':'Elija la siguiente acción abajo. Seleccionar este resultado no reclama el perfil ni cambia los datos públicos.',
