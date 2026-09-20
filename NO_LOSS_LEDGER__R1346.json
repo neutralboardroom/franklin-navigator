@@ -1,0 +1,54 @@
+{
+  "release": "FR-NAV1.30.46-HF3.13.28",
+  "result": "PASS_PENDING_EXACT_HEAD_BROWSER_QUALIFICATION",
+  "capabilities": [
+    {
+      "capability": "R1335-R1345 owner-approved visibility/non-burial protections",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Exact-profile deep-link continuity",
+      "disposition": "IMPROVED_AND_RETAINED"
+    },
+    {
+      "capability": "Free claim/basic management",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Free factual correction and public removal",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Password recovery single-use token, rate limiting, session invalidation, privacy-safe account enumeration",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Password minimum",
+      "disposition": "AUTHORIZED_REPLACEMENT_12_TO_8"
+    },
+    {
+      "capability": "Profile Center verified-authority gate",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Community Membership optional and hard-gated behind authority",
+      "disposition": "IMPROVED_PRESENTATION_RETAINED_POLICY"
+    },
+    {
+      "capability": "Ordinary unpaid ranking and factual accuracy independent of payment",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "English/Spanish dynamic claim/access actions",
+      "disposition": "IMPROVED"
+    },
+    {
+      "capability": "Profile Factory / Local Investigator / SRE / SCC authority boundaries",
+      "disposition": "RETAINED"
+    },
+    {
+      "capability": "Smarter Justice separation",
+      "disposition": "RETAINED"
+    }
+  ]
+}
