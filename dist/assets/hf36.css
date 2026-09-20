@@ -129,3 +129,23 @@ body.hf35-profile .r1332-special-offer,body.hf35-profile .r1333-sponsored-strip{
 
 /* Footer is deliberately not another blank white block. */
 .footer{background:linear-gradient(180deg,#f8fbfb,#f1f7f6)!important;border-top:1px solid var(--fr-line)!important}
+
+
+/* R1350 BROAD RELATED-PROFILE NO-JS MAP START
+   Static broad-category guard derived from accepted R1349 category labels. Broad umbrella category alone is not a similarity signal.
+   Current affected profile count: 1184. R1349 JS may reveal only a card marked data-related-relevance="qualified-override". */
+:is(
+body.hf35-profile:has(.breadcrumbs a[href*="category=Downtown%20Business%20or%20Organization" i]),
+body.hf35-profile:has(.breadcrumbs a[href*="category=Local%20Business" i]),
+body.hf35-profile:has(.breadcrumbs a[href*="category=Business%20or%20Organization" i]),
+body.hf35-profile:has(.breadcrumbs a[href*="category=Local%20Organization%20or%20Place" i]),
+body.hf35-profile:has(.breadcrumbs a[href*="category=Current%20Regional%20Chamber%20Member" i]),
+body.hf35-profile:has(.breadcrumbs a[href*="category=Professional%20Services" i]),
+body.hf35-profile:has(.breadcrumbs a[href*="category=Health%20and%20Medical" i]),
+body.hf35-profile:has(.breadcrumbs a[href*="category=Shopping" i]),
+body.hf35-profile:has(.breadcrumbs a[href*="category=Corporate%20Office" i]),
+body.hf35-profile:has(.breadcrumbs a[href*="category=Unknown%20or%20Unclassified%20Nonprofit" i]),
+body.hf35-profile:has(.breadcrumbs a[href*="category=Education" i]),
+body.hf35-profile:has(.breadcrumbs a[href*="category=Human%20Services" i])
+) .hf35-competitor-card:not([data-related-relevance="qualified-override"]){display:none!important}
+/* R1350 BROAD RELATED-PROFILE NO-JS MAP END */
