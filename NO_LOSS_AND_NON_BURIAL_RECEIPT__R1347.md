@@ -17,6 +17,7 @@ Added:
 - a permanent whole-site qualification test;
 - a permanent two-command regression test;
 - controlled-browser non-burial coverage across public profile, exact-profile claim panel, correction context and Account Access support.
+- explicit support-page protection so pre-verification review status remains in Profile Access and Profile Center is visibly framed for verified managers only.
 
 No existing route or capability is intentionally removed in R1347.
 
