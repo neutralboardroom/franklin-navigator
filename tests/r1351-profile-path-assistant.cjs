@@ -17,6 +17,7 @@ ok(assistant.includes('function profileCardFollowup('),'Assistant card follow-up
 ok(assistant.includes("mode:'directory_card_followup'"),'Assistant card follow-up mode missing');
 ok(assistant.includes("lastDirectoryQuery='',lastProfiles=[]"),'Assistant public card memory missing');
 ok(assistant.includes("lastProfiles=[];attachment=null"),'Clear/new question must erase public card memory');
+ok(assistant.includes("mode!=='directory_card_followup'&&mode!=='error'"),'card follow-ups must preserve original public-card context');
 ok(assistant.includes('profileCardFollowup(question,lastProfiles,language)||'),'card follow-up must run before remote fallback');
 ok(/website\|websites/.test(assistant)&&/call\|phone/.test(assistant),'website/phone follow-up patterns missing');
 console.log(JSON.stringify({result:'PASS',profileSelectionNeutral:true,selectionBoundaryVisible:true,assistantPublicCardFollowups:true,clearErasesCardContext:true}));
