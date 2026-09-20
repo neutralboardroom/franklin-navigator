@@ -31,6 +31,12 @@ on:
       - 'DURABLE_ROGER_RULE__SITEWIDE_NO_REGRESSION_AND_NON_BURIAL.md'
       - 'SITEWIDE_PRESERVATION_BASELINE__R1347.json'
       - 'tests/r1347-sitewide-roger-rule.cjs'
+      - 'tests/r1348-assistant-workflow-currentness.cjs'
+      - 'tests/assistant2-clean-room-boundary.cjs'
+      - '.github/workflows/r1315-assistant-browser.yml'
+      - '.github/workflows/r1316-assistant-browser.yml'
+      - '.github/workflows/r1317-assistant-conversation.yml'
+      - '.github/workflows/assistant2-clean-room.yml'
   pull_request:
     branches: [main]
     paths:
@@ -57,6 +63,12 @@ on:
       - 'DURABLE_ROGER_RULE__SITEWIDE_NO_REGRESSION_AND_NON_BURIAL.md'
       - 'SITEWIDE_PRESERVATION_BASELINE__R1347.json'
       - 'tests/r1347-sitewide-roger-rule.cjs'
+      - 'tests/r1348-assistant-workflow-currentness.cjs'
+      - 'tests/assistant2-clean-room-boundary.cjs'
+      - '.github/workflows/r1315-assistant-browser.yml'
+      - '.github/workflows/r1316-assistant-browser.yml'
+      - '.github/workflows/r1317-assistant-conversation.yml'
+      - '.github/workflows/assistant2-clean-room.yml'
 
 permissions:
   contents: read
@@ -183,6 +195,8 @@ jobs:
           node tests/r1346-claim-path-outreach-readiness.cjs
           node tests/r1347-two-command-permanent-baseline.cjs
           node tests/r1347-sitewide-roger-rule.cjs
+          node tests/assistant2-clean-room-boundary.cjs
+          node tests/r1348-assistant-workflow-currentness.cjs
           node --check scripts/r1346-claim-path-browser-acceptance.mjs
           node --check scripts/r1347-two-command-browser-visibility.mjs
           node --check dist/assets/local-discovery.js
@@ -645,6 +659,8 @@ jobs:
           node tests/r1346-claim-path-outreach-readiness.cjs
           node tests/r1347-two-command-permanent-baseline.cjs
           node tests/r1347-sitewide-roger-rule.cjs
+          node tests/assistant2-clean-room-boundary.cjs
+          node tests/r1348-assistant-workflow-currentness.cjs
           node --check scripts/r1346-claim-path-browser-acceptance.mjs
           node --check scripts/r1347-two-command-browser-visibility.mjs
             node --check dist/assets/franklin-site-monitor-r1308.js
