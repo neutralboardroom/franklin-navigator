@@ -81,6 +81,7 @@
       selected.append(summaryItem('Profile',state.selected.n),summaryItem('Type',[state.selected.c,state.selected.t].filter(Boolean).join(' · ')||'Franklin profile'),summaryItem('Location',[state.selected.l||state.selected.g].filter(Boolean).join(' · ')||'Franklin area'));
       const selectedActions=el('div',null,'r37-member-actions r1346-selected-profile-actions');
       selectedActions.append(link('View public profile','/profiles/'+encodeURIComponent(state.selected.i)+'/'));
+      selectedActions.append(link((document.documentElement.lang||'').toLowerCase().startsWith('es')?'¿Necesita ayuda con este paso? Pregunte a Franklin':'Need help with this step? Ask Franklin',((document.documentElement.lang||'').toLowerCase().startsWith('es')?'/es/asistente/?':'/assistant/?')+new URLSearchParams({profile:state.selected.i,profileName:state.selected.n,stage:'profile_access'}).toString()));
       const pathSummary=el('div',null,'r1351-profile-path-summary');
       pathSummary.append(el('strong','This exact profile is selected.'),el('p','Franklin checks your account and access state before showing the next action. Selecting this profile does not claim it or change public facts.'),el('p','Profile access requests and factual corrections/removal are free. Community Membership is optional.','fine-print'));
       s.append(selected,selectedActions,pathSummary,el('p','This exact public listing stays selected through sign-in, password recovery, and access review.','fine-print'));
