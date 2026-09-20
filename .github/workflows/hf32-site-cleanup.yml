@@ -402,19 +402,33 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          release=json.loads(Path('PRODUCTION_RELEASE.json').read_text())['release']
+          d=json.loads(Path('PRODUCTION_RELEASE.json').read_text())
+          release=d['release']
+          meta=next((v for v in d.values() if isinstance(v,dict) and v.get('version')==release), {})
+          runtime=meta.get('runtime',{}) if isinstance(meta,dict) else {}
+          predecessor=meta.get('predecessor',{}) if isinstance(meta,dict) else {}
+          expected_runtime_release=release
+          runtime_gate_mode='EXACT_CANDIDATE_RUNTIME'
+          if runtime.get('identityDeploymentPending') is True:
+              assert runtime.get('functionalChanges') is False, runtime
+              assert runtime.get('identityOnly') is True, runtime
+              assert runtime.get('targetReleaseEnv')==release, runtime
+              expected_runtime_release=predecessor.get('version') or d.get('base')
+              assert expected_runtime_release==d.get('base'), (expected_runtime_release,d.get('base'))
+              assert runtime.get('externalLiveReleaseEnvAtPreSeal')==expected_runtime_release, runtime
+              runtime_gate_mode='PRE_PROMOTION_IDENTITY_ONLY_PREDECESSOR_LIVE'
           health=json.loads(Path('/tmp/fr-health.json').read_text())
           profile=json.loads(Path('/tmp/fr-profile.json').read_text())
           media=json.loads(Path('/tmp/fr-media.json').read_text())
           assert health.get('ok') is True, health
-          assert health.get('release')==release, (health.get('release'),release)
+          assert health.get('release')==expected_runtime_release, (health.get('release'),expected_runtime_release,runtime_gate_mode)
           assert health.get('startupReady') is True, health
           assert isinstance(profile,dict) and 'managedProfile' in profile and 'activePaidMember' in profile, profile
           assert isinstance(media,dict), media
           for name in ['health','profile','media']:
               headers=Path(f'/tmp/fr-{name}.headers').read_text().lower()
               assert 'access-control-allow-origin: https://franklinnavigator.com' in headers, (name,headers)
-          print({'release':release,'health':True,'publicProfile':True,'publicMedia':True,'corsOrigin':'https://franklinnavigator.com'})
+          print({'release':release,'expectedRuntimeRelease':expected_runtime_release,'runtimeGateMode':runtime_gate_mode,'health':True,'publicProfile':True,'publicMedia':True,'corsOrigin':'https://franklinnavigator.com'})
           PY
 
       - name: Assistant regression and public-language safety
