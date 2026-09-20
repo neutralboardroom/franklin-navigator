@@ -98,7 +98,22 @@
       'Your profile-access request was withdrawn. No membership or payment was changed.':'Su solicitud de acceso al perfil fue retirada. No se modificó ninguna membresía ni pago.',
       'Your free profile-access request is saved and waiting for review. No membership or payment was started.':'Su solicitud gratuita de acceso al perfil fue guardada y está pendiente de revisión. No se inició ninguna membresía ni pago.',
       'Claiming and basic profile management are free. Franklin reviews access before Profile Center tools are enabled; a claim never changes public facts by itself.':'Reclamar y administrar un perfil básico es gratuito. Franklin revisa el acceso antes de habilitar las herramientas del Centro de Perfil; una solicitud de acceso no cambia por sí sola los datos públicos.',
-      'Your request is under review. Check it through free Profile Access. No membership or payment is required.':'Su solicitud está en revisión. Revísela mediante el acceso gratuito al perfil. No se requiere membresía ni pago.'
+      'Your request is under review. Check it through free Profile Access. No membership or payment is required.':'Su solicitud está en revisión. Revísela mediante el acceso gratuito al perfil. No se requiere membresía ni pago.',
+      'Get free access to manage your public profile on Franklin Navigator.':'Obtenga acceso gratuito para administrar su perfil público en Franklin Navigator.',
+      'This exact public listing stays selected through sign-in, password recovery, and access review.':'Esta ficha pública exacta permanece seleccionada durante el inicio de sesión, la recuperación de contraseña y la revisión de acceso.',
+      'Wrong profile? Choose another':'¿Perfil equivocado? Elija otro',
+      'Connecting profile…':'Conectando perfil…',
+      'Ready to connect this exact profile.':'Listo para conectar este perfil exacto.',
+      'Retry connection':'Reintentar conexión',
+      'Get help':'Obtener ayuda',
+      'Submitting access request…':'Enviando solicitud de acceso…',
+      'Correct factual listing details':'Corregir datos factuales de la ficha',
+      'Use at least 8 characters. Long passwords and passphrases are welcome.':'Use al menos 8 caracteres. Se permiten contraseñas largas y frases de contraseña.',
+      'Check your email':'Revise su correo electrónico',
+      'If an account exists for this email, password-reset instructions have been sent.':'Si existe una cuenta para este correo, se han enviado instrucciones para restablecer la contraseña.',
+      'Password changed successfully.':'Contraseña cambiada correctamente.',
+      'You’re signed in.':'Ha iniciado sesión.',
+      'Profile management is free':'La administración del perfil es gratuita'
     };
     if(fixed[s])return fixed[s];
     let m;
@@ -107,6 +122,12 @@
     if((m=s.match(/^Management access verified (.+)\.$/)))return `Acceso de administración verificado ${m[1]}.`;
     if((m=s.match(/^Selected profile: (.+)\. Sign in or create a free account to continue with this exact profile\. You will not need to search again\.$/)))return `Perfil seleccionado: ${m[1]}. Inicie sesión o cree una cuenta gratuita para continuar con este perfil exacto. No tendrá que buscarlo de nuevo.`;
     if((m=s.match(/^Your profile-access request is waiting for review\. Last updated (.+)\.$/)))return `Su solicitud de acceso al perfil está pendiente de revisión. Última actualización: ${m[1]}.`;
+    if((m=s.match(/^Verify that you manage (.+)$/)))return `Verifique que administra ${m[1]}`;
+    if((m=s.match(/^Continue managing (.+)\.$/)))return `Continúe administrando ${m[1]}.`;
+    if((m=s.match(/^(✓ )?(1|2|3|4) (Exact profile|Account|Verify management|Profile Center)( — Current)?$/))){
+      const labels={'Exact profile':'Perfil exacto','Account':'Cuenta','Verify management':'Verificar administración','Profile Center':'Centro de Perfil'};
+      return `${m[1]||''}${m[2]} ${labels[m[3]]}${m[4]?' — Actual':''}`;
+    }
     if((m=s.match(/^Selected: (.+)$/)))return `Seleccionado: ${m[1]}`;
     if((m=s.match(/^Continue with (.+)$/)))return `Continuar con ${m[1].replace('/month','/mes').replace('/year','/año')}`;
     if((m=s.match(/^Explore (.+)$/)))return `Explorar ${categories[m[1]]||m[1]}`;
