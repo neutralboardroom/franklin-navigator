@@ -1,0 +1,103 @@
+name: R1349 live postdeploy verification
+
+on:
+  push:
+    branches:
+      - r1349-live-verification-20260920
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Verify exact 10 live profile URLs and controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          entries=(
+            "Little Hats Italian Market|https://franklinnavigator.com/profiles/FR-ORG-17d04eafd603-little-hats-italian-market-cool-springs/"
+            "Chris Howell Insurance|https://franklinnavigator.com/profiles/FR-ORG-3e820e6c84e2-chris-howell-insurance/"
+            "Daddy's Dogs|https://franklinnavigator.com/profiles/FR-ORG-305366afb36e-daddy-s-dogs/"
+            "Buscher Law|https://franklinnavigator.com/profiles/FR-ORG-61c3753cb5af085e/"
+            "M.L. Rose Craft Beer & Burgers|https://franklinnavigator.com/profiles/FR-ORG-f6a218bfcaea-m-l-rose-craft-beer-and-burgers/"
+            "615 Blinds|https://franklinnavigator.com/profiles/FR-ORG-f7f66777334f-615-blinds/"
+            "Barton Insurance Group|https://franklinnavigator.com/profiles/FR-ORG-259647dc9d6a-barton-insurance-group/"
+            "Benton White Insurance|https://franklinnavigator.com/profiles/FR-ORG-0b0ca869c9ebe059/"
+            "Carriage Hill Insurance|https://franklinnavigator.com/profiles/FR-ORG-6bce3aef91e8cc79/"
+            "Brave Maggie Designs|https://franklinnavigator.com/profiles/FR-ORG-58abf804cb86-brave-maggie-designs/"
+          )
+          n=0
+          for entry in "${entries[@]}"; do
+            name="${entry%%|*}"
+            url="${entry#*|}"
+            out="/tmp/profile-${n}.html"
+            code="$(curl -L -sS --retry 5 --retry-delay 2 --connect-timeout 20 --max-time 60 -A 'Franklin-R1349-Live-Preflight/1.0' -o "${out}" -w '%{http_code}' "${url}")"
+            test "${code}" = "200"
+            grep -Fq "${name}" "${out}"
+            grep -Fq "Claim or manage this profile" "${out}"
+            grep -Fq "Corrections and removal requests are free." "${out}"
+            grep -Fq "Suggest a correction" "${out}"
+            grep -Fq "Request removal from public view" "${out}"
+            n=$((n+1))
+          done
+          test "${n}" = "10"
+          echo "PASS exact_10_live_profile_open_and_controls=${n}"
+
+      - name: Verify live R1349 relevance asset
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -L -fsS --retry 5 --retry-delay 2 --connect-timeout 20 --max-time 60             -A 'Franklin-R1349-Live-Preflight/1.0'             'https://franklinnavigator.com/assets/r1349-related-profiles.js?v=frnav1349'             -o /tmp/r1349-related-profiles.js
+          grep -Fq "FR-ORG-305366afb36e-daddy-s-dogs" /tmp/r1349-related-profiles.js
+          grep -Fq "Back Yard Burgers" /tmp/r1349-related-profiles.js
+          grep -Fq "Burger Up Franklin" /tmp/r1349-related-profiles.js
+          grep -Fq "Dog Haus" /tmp/r1349-related-profiles.js
+          grep -Fq "omitted-insufficient-relevance" /tmp/r1349-related-profiles.js
+          grep -Fq "Downtown Business or Organization" /tmp/r1349-related-profiles.js
+          echo "PASS live_r1349_relevance_asset"
+
+      - name: Render live Daddy's Dogs related profiles after JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          test -n "${CHROME}"
+          "${CHROME}" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage             --virtual-time-budget=10000 --dump-dom             'https://franklinnavigator.com/profiles/FR-ORG-305366afb36e-daddy-s-dogs/'             > /tmp/daddy-rendered.html
+          grep -Fq 'data-related-relevance="qualified-override"' /tmp/daddy-rendered.html
+          grep -Fq "Back Yard Burgers" /tmp/daddy-rendered.html
+          grep -Fq "Burger Up Franklin" /tmp/daddy-rendered.html
+          grep -Fq "Dog Haus" /tmp/daddy-rendered.html
+          if grep -Fq "615 Blinds" /tmp/daddy-rendered.html; then
+            echo "FAIL unrelated 615 Blinds remains in rendered Daddy's Dogs page"
+            exit 1
+          fi
+          if grep -Fq "503 Bloomhouse" /tmp/daddy-rendered.html; then
+            echo "FAIL unrelated 503 Bloomhouse remains in rendered Daddy's Dogs page"
+            exit 1
+          fi
+          echo "PASS daddys_dogs_live_rendered_relevance"
+
+      - name: Render systemic live profile spot checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          test -n "${CHROME}"
+          check() {
+            local url="$1"
+            local expected1="$2"
+            local expected2="$3"
+            local out="$4"
+            "${CHROME}" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage               --virtual-time-budget=8000 --dump-dom "${url}" > "${out}"
+            grep -Fq 'data-related-relevance="specific-category"' "${out}"
+            grep -Fq "${expected1}" "${out}"
+            grep -Fq "${expected2}" "${out}"
+          }
+          check 'https://franklinnavigator.com/profiles/FR-ORG-33a5bb4c2e8198a0/' 'AAA' 'Aetna Lif Insurance Company' /tmp/insurance.html
+          check 'https://franklinnavigator.com/profiles/FR-ORG-4761061977c3b77b/' 'Acclaimed Roofing' 'AmeriPro Roofing' /tmp/roofing.html
+          check 'https://franklinnavigator.com/profiles/FR-ORG-2b2ac4f07c0d8612/' 'Boot Barn' 'Bourbon And Rye' /tmp/retail.html
+          echo "PASS systemic_live_related_profile_spot_checks"
