@@ -32,6 +32,9 @@ on:
       - 'SITEWIDE_PRESERVATION_BASELINE__R1347.json'
       - 'tests/r1347-sitewide-roger-rule.cjs'
       - 'tests/r1348-assistant-workflow-currentness.cjs'
+      - 'tests/r1349-bilingual-home-currentness.cjs'
+      - 'tests/r1349-related-profile-relevance.cjs'
+      - 'scripts/r1349-home-currentness-guard.py'
       - 'tests/assistant2-clean-room-boundary.cjs'
       - '.github/workflows/r1315-assistant-browser.yml'
       - '.github/workflows/r1316-assistant-browser.yml'
@@ -64,6 +67,9 @@ on:
       - 'SITEWIDE_PRESERVATION_BASELINE__R1347.json'
       - 'tests/r1347-sitewide-roger-rule.cjs'
       - 'tests/r1348-assistant-workflow-currentness.cjs'
+      - 'tests/r1349-bilingual-home-currentness.cjs'
+      - 'tests/r1349-related-profile-relevance.cjs'
+      - 'scripts/r1349-home-currentness-guard.py'
       - 'tests/assistant2-clean-room-boundary.cjs'
       - '.github/workflows/r1315-assistant-browser.yml'
       - '.github/workflows/r1316-assistant-browser.yml'
@@ -173,6 +179,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check dist/assets/hf36.js
+          node --check dist/assets/r1349-related-profiles.js
           node --check dist/assets/franklin-assistant-r1293-core.js
           node --check dist/assets/franklin-assistant-r1294-core.js
           node --check dist/assets/franklin-assistant-r1295-core.js
@@ -197,6 +204,9 @@ jobs:
           node tests/r1347-sitewide-roger-rule.cjs
           node tests/assistant2-clean-room-boundary.cjs
           node tests/r1348-assistant-workflow-currentness.cjs
+          node tests/r1349-bilingual-home-currentness.cjs
+          node tests/r1349-related-profile-relevance.cjs
+          python scripts/r1349-home-currentness-guard.py
           node --check scripts/r1346-claim-path-browser-acceptance.mjs
           node --check scripts/r1347-two-command-browser-visibility.mjs
           node --check dist/assets/local-discovery.js
@@ -644,6 +654,7 @@ jobs:
             python scripts/validate-current-release.py
             node scripts/test-assistant-r1294.js
             node scripts/test-assistant-r1295.js
+            node --check dist/assets/r1349-related-profiles.js
             node --check dist/assets/r1330-profile.js
             node --check dist/assets/r1332-profile.js
             node --check dist/assets/r1332-member-offers.js
@@ -661,6 +672,9 @@ jobs:
           node tests/r1347-sitewide-roger-rule.cjs
           node tests/assistant2-clean-room-boundary.cjs
           node tests/r1348-assistant-workflow-currentness.cjs
+          node tests/r1349-bilingual-home-currentness.cjs
+          node tests/r1349-related-profile-relevance.cjs
+          python scripts/r1349-home-currentness-guard.py
           node --check scripts/r1346-claim-path-browser-acceptance.mjs
           node --check scripts/r1347-two-command-browser-visibility.mjs
             node --check dist/assets/franklin-site-monitor-r1308.js
