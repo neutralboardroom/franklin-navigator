@@ -1,0 +1,42 @@
+{
+  "release": "FR-NAV1.30.48-HF3.13.30",
+  "completed": [
+    {
+      "priority": "P1",
+      "item": "Repair stale standalone Assistant CI workflows without restoring obsolete controller wiring",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "priority": "P1",
+      "item": "Make clean-room Assistant boundary release-independent so cache/version tokens can advance safely",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "priority": "P1",
+      "item": "Add permanent workflow-currentness regression test to authoritative qualification and fresh-extraction validation",
+      "status": "IMPLEMENTED"
+    }
+  ],
+  "deferred": [
+    {
+      "item": "Password-reset sender identity change",
+      "reason": "VERIFIED_TRANSACTIONAL_SENDER_AND_DOMAIN_AUTHENTICATION_EVIDENCE_REQUIRED"
+    },
+    {
+      "item": "Leipers Creek Law profile-source lineage reconciliation",
+      "reason": "UPSTREAM_PROFILE_SOURCE_EVIDENCE_REQUIRED"
+    },
+    {
+      "item": "New Profile Factory handoff consumption",
+      "reason": "NO_NEWER_EXACT_ACCEPTED_FRANKLIN_NAVIGATOR_CONSUMER_POINTER_PROVEN"
+    },
+    {
+      "item": "Local Investigator V39 consumption",
+      "reason": "CONSUMER_ACCEPTANCE_UNKNOWN_AND_SCC_GATE_PENDING"
+    },
+    {
+      "item": "SCC accepted/current pointer advancement",
+      "reason": "SCC_AUTHORITY_REQUIRED"
+    }
+  ]
+}
