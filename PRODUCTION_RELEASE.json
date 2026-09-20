@@ -2305,6 +2305,14 @@
       "NEXT_VERSION_IMPROVEMENT_LIST__R1347.md",
       "CONTINUATION_HANDOFF__R1347.md",
       "R1347_RELEASE_RECEIPT.json"
-    ]
+    ],
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1346"
+    }
   }
 }
