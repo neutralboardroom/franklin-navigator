@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import {spawn,spawnSync} from 'node:child_process';
 
 const BASE='http://127.0.0.1:4176';
-const dir='.r1351-browser-evidence';
+const dir='r1351-browser-evidence';
 fs.rmSync(dir,{recursive:true,force:true});fs.mkdirSync(dir,{recursive:true});
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const which=n=>spawnSync('bash',['-lc','command -v '+n],{encoding:'utf8'}).stdout.trim();
