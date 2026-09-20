@@ -1,0 +1,13 @@
+{
+  "release": "FR-NAV1.30.46-HF3.13.28",
+  "gate": "CONTROLLED_BROWSER_EXACT_HEAD_REQUIRED",
+  "state": "PENDING_EXACT_HEAD_WORKFLOW",
+  "profileId": "FR-ORG-b00c0ace7943973c",
+  "productionMutation": false,
+  "requiredEvidence": {
+    "report": ".r1346-browser-evidence/R1346_CLAIM_PATH_BROWSER_ACCEPTANCE.json",
+    "desktop": ".r1346-browser-evidence/R1346_STEP3_DESKTOP.png",
+    "mobile": ".r1346-browser-evidence/R1346_STEP3_MOBILE.png"
+  },
+  "acceptancePrinciple": "Do not declare outreach claim-path ready from unit tests alone."
+}
