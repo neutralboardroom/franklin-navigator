@@ -207,7 +207,7 @@ function profileCardFollowup(question,profiles,language){
 
 function ordinaryLawnService(question,language){
   const q=text(question).toLowerCase();
-  const lawn=/\b(mow(?:ing)?|lawn mow(?:ing)?|lawn care|yard work|landscap(?:e|ing)|cut (?:my |the )?grass)\b/.test(q);
+  const lawn=/\b(mow(?:ing)?|lawn mow(?:ing)?|lawn care|yard work|landscap(?:e|ing)|cut (?:my |the )?grass|c[eé]sped|jard[ií]n|cuidado del c[eé]sped|cortar (?:el |mi )?c[eé]sped)\b/.test(q);
   const assistance=/\b(free|volunteer|disability|disabled|senior|elderly|financial assistance|cannot afford|can't afford|low income|ayuda gratis|voluntario|discapacidad|adulto mayor|no puedo pagar)\b/.test(q);
   const wantsHelp=/\b(need help|need someone|looking for|find|someone to|help me|necesito ayuda|necesito alguien|busco|buscar)\b/.test(q);
   if(!(lawn&&wantsHelp&&!assistance))return null;
