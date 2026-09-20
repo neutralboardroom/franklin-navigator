@@ -26,7 +26,7 @@ assert.match(profile,/Official Franklin Navigator profile/);
 assert.match(profile,/\/profile-access\/\?profile=/);
 
 const claim=read('dist/assets/hf310.js');
-assert.match(claim,/Claim this profile/);
+assert.match(claim,/Continue with this profile/);
 assert.match(claim,/r1342-selected-focus/);
 assert.match(claim,/listing=.*PUBLIC_REMOVAL|PUBLIC_REMOVAL.*listing=/s);
 
