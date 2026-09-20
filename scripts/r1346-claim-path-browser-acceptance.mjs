@@ -93,7 +93,7 @@ check('reset acknowledgement is generic',await evaluate("document.body.textConte
 check('reset acknowledgement replaces old request form',await evaluate("document.querySelector('.r1342-recovery-form')===null"));
 
 // Reset completion: 8-char password, old form replaced, exact profile preserved.
-await navigate(BASE+'/account-recovery/?profile='+encodeURIComponent(PROFILE)+'#token='+('A'.repeat(48))+'&profile='+encodeURIComponent(PROFILE));
+await navigate(BASE+'/account-recovery/?profile='+encodeURIComponent(PROFILE)+'&r1346=reset#token='+('A'.repeat(48))+'&profile='+encodeURIComponent(PROFILE));
 await waitFor("document.querySelectorAll('.r1342-recovery-form input[type=password]').length===2","new password form");
 check('frontend password minimum is 8',await evaluate("[...document.querySelectorAll('.r1342-recovery-form input[type=password]')].every(i=>i.minLength===8)"));
 await evaluate("(()=>{const a=[...document.querySelectorAll('.r1342-recovery-form input[type=password]')];for(const i of a){i.value='12345678';i.dispatchEvent(new Event('input',{bubbles:true}))}document.querySelector('.r1342-recovery-form').requestSubmit()})()");
