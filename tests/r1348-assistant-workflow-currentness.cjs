@@ -18,7 +18,7 @@ for(const p of workflows.slice(0,3)){
 const clean=read('tests/assistant2-clean-room-boundary.cjs');
 assert.doesNotMatch(clean,/assistant-021/);
 assert.doesNotMatch(clean,/FRANKLIN-ASSISTANT2-0\\.2\\.1/);
-assert.match(clean,/FRANKLIN-ASSISTANT2-\[0-9\]\+/);
+assert.match(clean,/canonical Assistant internal version marker missing/);
 assert.match(clean,/assistant-\[0-9\]\+\|frnav\[0-9\]\+/);
 const pages=['dist/index.html','dist/es/index.html','dist/assistant/index.html','dist/es/asistente/index.html'];
 for(const p of pages)assert.match(read(p),/\/assets\/franklin-assistant\.js\?v=(?:assistant-[0-9]+|frnav[0-9]+)/);
