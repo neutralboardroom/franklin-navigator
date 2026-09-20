@@ -1,0 +1,49 @@
+{
+  "release": "FR-NAV1.30.47-HF3.13.29",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "predecessor": {
+    "version": "FR-NAV1.30.46-HF3.13.28",
+    "commit": "a0f09aa9e7d5386d2a8031237003f98accaca360",
+    "artifactSha256": "b4803aeb8adaa6c5d46ac6ba273972043fc52c769c4747d6325aa5f14f2aab11"
+  },
+  "materialImprovement": "Permanent completion/non-burial audit for the Sep19 and Sep20 claim/account/recovery commands plus Roger's sitewide no-regression/no-burial rule and protected route/scope baseline.",
+  "ownerRules": {
+    "twoCommandBaseline": "DURABLE_RULE__FRANKLIN_CLAIM_ACCOUNT_RECOVERY_OUTREACH_BASELINE.md",
+    "sitewideRogerRule": "DURABLE_ROGER_RULE__SITEWIDE_NO_REGRESSION_AND_NON_BURIAL.md",
+    "routeScopeBaseline": "SITEWIDE_PRESERVATION_BASELINE__R1347.json"
+  },
+  "protectedBaseline": {
+    "nonProfileHtmlRoutes": 260,
+    "minimumProfiles": 19104,
+    "minimumAssistantRoutes": 254
+  },
+  "noFeatureRemoval": true,
+  "noOutreach": true,
+  "noPricingChange": true,
+  "noPaymentOrEntitlementChange": true,
+  "noProfileSourceAuthorityChange": true,
+  "noOrdinaryUnpaidRankingChange": true,
+  "sccAccepted": false,
+  "sccCanonicalCurrent": false,
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "7d4cc9fb0f37abc89236c770b9e64405e0d13e38",
+    "releaseEnv": "FR-NAV1.30.47-HF3.13.29",
+    "functionalChanges": false,
+    "deploy": "dep-dano6n740ujc73cjs3h0",
+    "state": "PENDING_RUNTIME_DEPLOY_COMPLETION"
+  },
+  "qualification": {
+    "result": "PENDING_EXACT_HEAD_WORKFLOW",
+    "workflowRun": null,
+    "qualifiedHead": null,
+    "artifact": null,
+    "artifactSha256": null,
+    "manifestSha256": null
+  },
+  "deployment": {
+    "staticDeploy": null,
+    "staticState": "NOT_STARTED"
+  }
+}
