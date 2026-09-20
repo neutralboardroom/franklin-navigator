@@ -8,7 +8,7 @@ const i18n=read('dist/assets/r37-i18n.js');
 const access=read('dist/profile-access/index.html');
 const durable=read('DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md');
 const checks=[]; const add=(name,ok)=>checks.push([name,Boolean(ok)]);
-add('Profile Access declares verify-management before Profile Center',access.includes('3 · Verify management')&&access.includes('4 · Profile Center'));
+add('Profile Access declares verify-management before Profile Center',access.includes('data-step="3" data-label="Verify management"')&&access.includes('data-step="4" data-label="Profile Center"'));
 add('Profile Access can submit representation request directly',live.includes("/api/member/representation/request")&&live.includes('authorityConfirmed:confirmBox.checked'));
 add('Profile Access supports pending refresh',live.includes("review==='PENDING'")&&live.includes('Refresh status'));
 add('Profile Access supports pending withdrawal',live.includes("/api/member/representation/release")&&live.includes('Withdraw access request'));
@@ -24,5 +24,5 @@ add('Public pending authority cannot route directly to Profile Center',!forbidde
 const obsolete="Profile access is not yet verified. Open Profile Center to submit or check your access request.";
 add('Obsolete unverified-to-Profile-Center instruction removed',!live.includes(obsolete)&&!i18n.includes(obsolete));
 const failed=checks.filter(x=>!x[1]);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.45-HF3.13.27',checks,failed},null,2));
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.46-HF3.13.28',checks,failed},null,2));
 if(failed.length)process.exit(1);
