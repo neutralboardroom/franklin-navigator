@@ -1,0 +1,55 @@
+name: R1353 alert lifecycle and notification hygiene
+on:
+  pull_request:
+    branches: [franklin-commerce-runtime-r30]
+    paths:
+      - 'server.js'
+      - 'render.yaml'
+      - 'lib/incident-monitor.js'
+      - 'schema/008_incident_lifecycle.sql'
+      - 'acceptance/issue-monitoring.integration.cjs'
+      - 'test/r1353-alert-lifecycle.test.js'
+      - '.github/workflows/r1353-alert-hygiene.yml'
+permissions:
+  contents: read
+concurrency:
+  group: r1353-alert-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  alert-lifecycle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: franklin_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d franklin_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      TEST_DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/franklin_test
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Syntax and lifecycle unit gates
+        run: |
+          set -euo pipefail
+          node --check server.js
+          node --check lib/incident-monitor.js
+          node --test test/r1353-alert-lifecycle.test.js
+      - name: Existing issue-monitoring integration plus R1353 cross-client dedupe
+        run: node acceptance/issue-monitoring.integration.cjs
