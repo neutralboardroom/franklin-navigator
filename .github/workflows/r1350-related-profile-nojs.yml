@@ -8,7 +8,6 @@ on:
       - 'dist/assets/hf36.js'
       - 'dist/assets/r1349-related-profiles.js'
       - 'dist/profiles/**'
-      - 'PRODUCTION_RELEASE.json'
       - 'scripts/r1350-related-profile-nojs-map.py'
       - 'scripts/r1350-related-profile-nojs-browser.mjs'
       - 'tests/r1350-related-profile-nojs.cjs'
@@ -21,7 +20,6 @@ on:
       - 'dist/assets/hf36.js'
       - 'dist/assets/r1349-related-profiles.js'
       - 'dist/profiles/**'
-      - 'PRODUCTION_RELEASE.json'
       - 'scripts/r1350-related-profile-nojs-map.py'
       - 'scripts/r1350-related-profile-nojs-browser.mjs'
       - 'tests/r1350-related-profile-nojs.cjs'
@@ -30,6 +28,10 @@ on:
 
 permissions:
   contents: read
+
+concurrency:
+  group: r1350-related-profile-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   nojs-related-relevance:
