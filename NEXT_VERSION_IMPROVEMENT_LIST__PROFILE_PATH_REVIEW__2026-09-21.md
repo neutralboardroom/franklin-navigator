@@ -35,3 +35,18 @@ No additional visual or functional change is required from this page at this tim
 
 ---
 This is a living list. Add new findings from each page review before the owner authorizes the next version.
+
+
+## Page review note — Reviewer Password Reset Handoff
+Reviewed 2026-09-21 from live screenshot.
+
+Current behavior is correct:
+- No manually entered email confirmation code.
+- The page clearly explains that password reset uses a secure single-use emailed link.
+- A direct path back to reviewer sign-in is present.
+- Resetting a password does not imply account creation, membership, claim approval, or payment.
+
+Add for next version:
+15. Make **Send me a secure password-reset link** a visually prominent primary button rather than a plain text link.
+16. Simplify the explanatory copy to plain user language, e.g. **“Enter your Franklin account email and we’ll send you a secure one-time password-reset link.”** Avoid implementation-sounding wording such as “Franklin’s normal secure password-reset link.”
+17. Preserve the current no-code recovery design and the direct **Back to reviewer sign in** escape route.
