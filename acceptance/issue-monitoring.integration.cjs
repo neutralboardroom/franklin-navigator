@@ -128,10 +128,26 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
   assert.equal(digest.status,200,JSON.stringify(digest.body));
   assert(digest.body.items.some(x=>x.code==='ORIGIN_NOT_ALLOWED'&&x.occurrences===6));
 
+  await pool.query(`
+    insert into franklin_incidents(
+      incident_id,community,fingerprint_sha256,category,severity,workflow,safe_error_code,source,
+      correlation_id,profile_id,account_ref_hash,membership_ref_hash,safe_context,status,
+      alert_delivery_state,first_seen,last_seen,occurrence_count,last_alert_at,updated_at
+    ) values(
+      'incident_legacyr1353','FRANKLIN_TN',$1,'PUBLIC_SITE','HIGH','PUBLIC_SITE','ORIGIN_NOT_ALLOWED','SERVER_ROUTE',
+      null,null,null,null,$2::jsonb,'OPEN','DELIVERED',
+      now()-interval '20 minutes',now()-interval '10 minutes',8,now()-interval '9 minutes',now()-interval '10 minutes'
+    )
+  `,['f'.repeat(64),JSON.stringify({path:'/api/telemetry/issue',method:'OPTIONS',httpStatus:403})]);
   const readiness=await call('GET','/admin/readiness',undefined,{authorization:'Bearer '+admin});
   assert.equal(readiness.status,200,JSON.stringify(readiness.body));
   assert.equal(readiness.body.monitoring.ledger,true);
   assert.equal(readiness.body.monitoring.ownerVisibility,true);
+  const legacy=await pool.query("select status,resolution_note from franklin_incidents where incident_id='incident_legacyr1353'");
+  assert.equal(legacy.rows[0].status,'RESOLVED');
+  assert.match(legacy.rows[0].resolution_note,/legacy alert-storm reconciliation/i);
+  const legacyResolutionAlerts=await pool.query("select count(*)::int n from franklin_incident_events where incident_id='incident_legacyr1353' and safe_context->>'eventType'='OWNER_ALERT_RESOLVED'");
+  assert.equal(legacyResolutionAlerts.rows[0].n,0);
 
   const resolve=await call('POST','/admin/incidents/'+client.incident_id+'/resolve',{resolutionNote:'Synthetic isolated acceptance issue resolved.'},{authorization:'Bearer '+admin});
   assert.equal(resolve.status,200);
