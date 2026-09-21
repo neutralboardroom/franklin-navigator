@@ -171,7 +171,6 @@ check('Step 3 changes to Verification pending',await evaluate("document.querySel
 check('pending status appears before signed-in account section',await evaluate("(()=>{const p=document.querySelector('[data-r1346-pending-status]'),a=[...document.querySelectorAll('.r37-member-step')].find(x=>x.textContent.includes('Signed in as'));return !!p&&!!a&&p.getBoundingClientRect().top<a.getBoundingClientRect().top})()"));
 check('pending state removes verification form',await evaluate("document.querySelector('.r1346-profile-access-verification')===null"));
 check('pending state names exact profile',await evaluate("document.querySelector('[data-r1346-pending-status]')?.textContent.includes('Franklin Navigator')"));
-window.__unused=0;
 await navigate(BASE+'/profile-access/?profile='+encodeURIComponent(PROFILE));
 await waitFor("document.querySelector('[data-r1346-pending-status]')!==null","pending survives reload");
 check('pending request survives full reload',await evaluate("document.querySelector('[data-r1346-pending-status]')!==null && document.querySelector('.r1346-profile-access-verification')===null"));
