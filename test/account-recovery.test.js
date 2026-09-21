@@ -30,7 +30,7 @@ function harness(options={}){
     sha256:x=>crypto.createHash('sha256').update(String(x)).digest('hex'),randomToken:()=> 'A'.repeat(48),
     hashPassword:async p=>'hash:'+p,publicError:(code,message,status=400)=>Object.assign(new Error(message),{code,status}),
     createSession:async()=>sessions.push({account_id:'acct_owner'}),audit:async(client,...args)=>client.query('insert into franklin_audit_log',args),
-    sendResetEmail:async(email,token,profile)=>mail.push({email,token,profile})
+    sendResetEmail:async(email,token,profile,returnMode)=>mail.push({email,token,profile,returnMode})
   };
   return {recovery:createAccountRecovery(deps),setBody:v=>body=v,tokens,mail,sessions};
 }
@@ -42,7 +42,7 @@ test('unknown email receives the same generic reset response without email discl
 
 test('valid reset is single use and signs the account in again',async()=>{
   const h=harness();h.setBody({email:'owner@example.com',profileId:'FR-ORG-example'});await h.recovery.requestReset({}, {}, 'r1');
-  assert.equal(h.mail.length,1);h.setBody({token:'A'.repeat(48),password:'new secure password 123'});
+  assert.equal(h.mail.length,1);assert.equal(h.mail[0].profile,'FR-ORG-example');h.setBody({token:'A'.repeat(48),password:'new secure password 123'});
   const out=await h.recovery.completeReset({}, {}, 'r2');assert.equal(out.status,200);assert.equal(h.sessions.length,1);
   await assert.rejects(()=>h.recovery.completeReset({}, {}, 'r3'),e=>e.code==='RESET_TOKEN_INVALID');
 });
@@ -80,4 +80,9 @@ test('R1346 password policy accepts 8 characters and rejects 7 consistently',asy
 
 test('R1346 generic reset response preserves account-enumeration privacy',()=>{
   assert.equal(GENERIC_MESSAGE,'If an account exists for this email, password-reset instructions have been sent.');
+});
+
+test('R1355 reviewer recovery context is carried into the reset email without changing account authority',async()=>{
+  const h=harness();h.setBody({email:'owner@example.com',returnMode:'reviewer'});await h.recovery.requestReset({}, {}, 'r12');
+  assert.equal(h.mail.length,1);assert.equal(h.mail[0].returnMode,'reviewer');
 });
