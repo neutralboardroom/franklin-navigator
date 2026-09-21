@@ -77,12 +77,12 @@ add('R1345 correction completion respects pre-verification route',profileControl
 add('R1345 authority-routing durable rule retained',authorityRule.includes('Profile Center')&&authorityRule.includes('post-verification management workspace'));
 add('R1346 claim CTA remains visually primary while official website is secondary',r1330.includes("r1343-claim-primary")&&css.includes('body.r1346-claimable.hf35-profile.r1332-profile .profile-primary-actions a.button.primary:not(.r1343-claim-primary)'));
 add('R1346 Step 3 verification form remains readable and vertical',live.includes("form.className='r1346-profile-access-verification'")&&css.includes('.r1346-profile-access-verification textarea{min-height:150px'));
-add('R1346 connect and recovery actions cannot be silent',live.includes('Connecting profile…')&&recovery.includes('Sending password-reset instructions…')&&recovery.includes('Changing password…'));
-add('R1346 exact-profile recovery success replaces old form',recovery.includes("form.remove()")&&recovery.includes("go.href='/profile-access/'+profileQuery"));
+add('R1346 connect and recovery actions cannot be silent',live.includes('Connecting profile…')&&recovery.includes("submit.textContent='Sending…'")&&recovery.includes("submit.textContent='Changing password…'"));
+add('R1346 exact-profile recovery success replaces old form',recovery.includes('body.replaceChildren()')&&recovery.includes("profile?'/profile-access/'+profileQuery")&&recovery.includes("go.href=destination"));
 add('R1346 progress semantics remain visible',access.includes('data-r1346-profile-progress')&&live.includes("setAttribute('aria-current','step')"));
 add('R1346 no-silent-click durable rule retained',asyncRule.includes('NO SILENT CLICKS')&&asyncRule.includes('scroll/focus'));
 
 
 const failed=checks.filter(x=>!x[1]);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.46-HF3.13.28',checks,failed},null,2));
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.55-HF3.13.37',checks,failed},null,2));
 if(failed.length)process.exit(1);
