@@ -6,7 +6,7 @@ Target release: `FR-NAV1.30.52-HF3.13.34`
 - Predecessor: R1351 / `FR-NAV1.30.51-HF3.13.33`
 - Predecessor main: `53dfb8acabe2bbdbc2dfa6f58f8c421ebdb36112`
 - R1352 public candidate: `r1352-owner-profile-access-review-20260921`
-- Qualified runtime candidate: `r1352-reviewer-runtime-20260921` at `3602304e030a8f29a0b7a3cdd9e99d20b106b079`
+- Qualified runtime candidate: `r1352-reviewer-runtime-20260921` at `ed1b198461769c63e91f15049cd750c9c7f3d298`
 - Runtime CI: 48/48 inherited + 3/3 R1352 reviewer tests PASS.
 - SCC acceptance is **not** claimed.
 
