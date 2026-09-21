@@ -1,7 +1,7 @@
 name: Franklin issue monitoring and alert hygiene acceptance
 on:
   push:
-    branches: [franklin-commerce-runtime-r30, r1353-alert-storm-runtime-20260921]
+    branches: [franklin-commerce-runtime-r30, r1353-alert-storm-runtime-20260921, r1353-alert-storm-runtime-hotfix-20260921]
     paths:
       - 'server.js'
       - 'lib/incident-monitor.js'
