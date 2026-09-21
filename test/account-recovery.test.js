@@ -43,7 +43,8 @@ test('unknown email receives the same generic reset response without email discl
 test('valid reset is single use and signs the account in again',async()=>{
   const h=harness();h.setBody({email:'owner@example.com',profileId:'FR-ORG-example'});await h.recovery.requestReset({}, {}, 'r1');
   assert.equal(h.mail.length,1);assert.equal(h.mail[0].profile,'FR-ORG-example');h.setBody({token:'A'.repeat(48),password:'new secure password 123'});
-  const out=await h.recovery.completeReset({}, {}, 'r2');assert.equal(out.status,200);assert.equal(h.sessions.length,1);assert.equal(h.reviewSessions.length,0);\n  assert.deepEqual(h.ops.filter(x=>x.includes('session')),['delete_ordinary_sessions','delete_reviewer_sessions','create_fresh_ordinary_session']);
+  const out=await h.recovery.completeReset({}, {}, 'r2');assert.equal(out.status,200);assert.equal(h.sessions.length,1);assert.equal(h.reviewSessions.length,0);
+  assert.deepEqual(h.ops.filter(x=>x.includes('session')),['delete_ordinary_sessions','delete_reviewer_sessions','create_fresh_ordinary_session']);
   await assert.rejects(()=>h.recovery.completeReset({}, {}, 'r3'),e=>e.code==='RESET_TOKEN_INVALID');
 });
 
