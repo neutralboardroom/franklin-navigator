@@ -163,3 +163,19 @@ Reviewed 2026-09-21 from live screenshots.
 
 New next-version improvement:
 54. When a user reaches the reviewer workspace from an already authenticated Franklin account that is authorized for reviewer access, preserve that account identity into reviewer sign-in. Prefer a step-up flow that displays the signed-in account and asks only for the password, rather than making the reviewer retype the email address. Do not silently create reviewer access; the password re-authentication and short-lived reviewer session should remain explicit.
+
+
+## Page review note — Reviewer Password Policy Mismatch
+Reviewed 2026-09-21 from live reviewer sign-in screenshot.
+
+Confirmed bug:
+55. Franklin account creation/reset uses the canonical **8-character minimum**, but reviewer sign-in independently enforced **12 characters** in both the browser form and reviewer backend. This allowed a valid Franklin password to be changed successfully and then rejected by reviewer sign-in.
+
+Durable next-version requirement:
+56. All Franklin authentication surfaces must consume one canonical password-policy source. Reviewer sign-in, normal sign-in, registration, password reset, account recovery, and any privileged step-up authentication must not maintain conflicting hard-coded minimums.
+57. Add regression coverage proving that any password accepted by the canonical Franklin account policy is accepted by reviewer authentication when the credentials and reviewer authorization are otherwise valid.
+58. Do not force users to change a valid Franklin password solely because a secondary surface has a stricter stale client/backend validator.
+
+Hotfix applied during review:
+- Reviewer browser minimum changed from 12 to the canonical 8.
+- Reviewer backend now uses the shared `PASSWORD_MIN_LENGTH` constant from Franklin security rather than a hard-coded 12.
