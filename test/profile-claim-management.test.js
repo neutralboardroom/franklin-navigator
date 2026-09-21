@@ -44,7 +44,7 @@ test('runtime release and member fulfillment version advance together',()=>{
   const src=member();
   const server=fs.readFileSync('server.js','utf8');
   assert.ok(src.includes("FRANKLIN_MEMBER_FULFILLMENT_HF3_7"));
-  assert.ok(server.includes("FR-NAV1.30.54-HF3.13.36"));
+  assert.ok(server.includes("FR-NAV1.30.55-HF3.13.37"));
 });
 
 
