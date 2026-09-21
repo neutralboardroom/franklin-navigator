@@ -7,7 +7,7 @@
   const node=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n};
   const link=(text,href,cls='button')=>{const a=node('a',text,cls);a.href=href;return a};
   const button=(text,fn,primary=false)=>{const b=node('button',text,primary?'button primary':'button');b.type='button';b.addEventListener('click',()=>work(fn));return b};
-  const state={profile:null,profiles:[],draft:null,publication:null,activePaid:false,media:[],busy:false,dirty:false,inputs:{}};
+  const state={profile:null,profiles:[],draft:null,publication:null,activePaid:false,recognition:null,media:[],busy:false,dirty:false,inputs:{}};
   const status=node('p','Loading your profile…','r37-status r38-status-strip');status.setAttribute('role','status');status.setAttribute('aria-live','polite');root.append(status);
   const controls=node('div',undefined,'r37-member-step tool'),view=node('div',undefined,'r37-member-step tool');root.append(controls,view);
   const messages={
@@ -34,7 +34,13 @@
     MEDIA_METADATA_NOT_ALLOWED:'The image still contains unsupported metadata. Try exporting it again or choose another image.',
     MEDIA_DIMENSIONS_INVALID:'Choose an image no larger than 3000 × 3000 pixels.',
     MEDIA_REVIEW_PENDING:'That image position already has a submission waiting for review.',
-    RATE_LIMITED:'Too many requests. Please try again later.'
+    RATE_LIMITED:'Too many requests. Please try again later.',
+    MAILING_ADDRESS_REQUIRED:'Enter the mailing recipient, street, city, state and postal code.',
+    MAILING_COUNTRY_UNSUPPORTED:'The current decal pilot supports U.S. mailing addresses only.',
+    DECAL_PROGRAM_NOT_OFFERED:'The physical window-decal pilot is not currently open. Your digital recognition remains active.',
+    MAILING_ADDRESS_CONFIRMATION_REQUIRED:'Confirm a private mailing address before requesting a decal.',
+    DECAL_OUT_OF_STOCK:'The current decal batch is temporarily out of stock. Your digital recognition remains active.',
+    REPLACEMENT_NOT_AVAILABLE:'A replacement can be requested only after the current-year decal is fulfilled.'
   };
   function message(s,kind=''){status.className='r37-status r38-status-strip'+(kind?' '+kind:'');status.textContent=s}
   async function request(path,body){
@@ -87,12 +93,13 @@
   }
   async function load(){
     const p=state.profile;
-    const [profileResult,publicResult,mediaResult]=await Promise.all([
+    const [profileResult,publicResult,mediaResult,recognitionResult]=await Promise.all([
       request('/api/member/profile?profileId='+encodeURIComponent(p.profile_id)),
       request('/api/member/public-profile?profileId='+encodeURIComponent(p.profile_id)).catch(()=>({activePaidMember:false,publication:null})),
-      request('/api/member/media/list?profileId='+encodeURIComponent(p.profile_id)).catch(()=>({media:[]}))
+      request('/api/member/media/list?profileId='+encodeURIComponent(p.profile_id)).catch(()=>({media:[]})),
+      request('/api/member/recognition').catch(()=>({recognition:null}))
     ]);
-    state.draft=profileResult.draft;state.publication=profileResult.publication||publicResult.publication||null;state.activePaid=publicResult.activePaidMember===true;state.media=Array.isArray(mediaResult.media)?mediaResult.media:[];
+    state.draft=profileResult.draft;state.publication=profileResult.publication||publicResult.publication||null;state.activePaid=publicResult.activePaidMember===true;state.recognition=recognitionResult.recognition||null;state.media=Array.isArray(mediaResult.media)?mediaResult.media:[];
     view.replaceChildren();view.append(node('h2',p.name));
     if(p.authority_state!=='VERIFIED'){representation(p);return}
     renderManagedWorkspace(p);
@@ -160,6 +167,32 @@
     a.append(link('Need help?','/member-support/?profile='+encodeURIComponent(p.profile_id)));
     section.append(a);view.append(section);
   }
+  function recognitionPanel(p){
+    const r=state.recognition;if(!state.activePaid||!r?.activePaidMember||!r.recognition)return null;
+    if(!document.querySelector('link[data-r1354-recognition]')){const l=document.createElement('link');l.rel='stylesheet';l.href='/assets/r1354-recognition.css?v=frnav1354';l.dataset.r1354Recognition='1';document.head.append(l)}
+    const section=node('section',undefined,'r1354-recognition-card');section.append(node('div',String(r.recognition.year)+' Community Member','r1354-recognition-year'),node('h3','Your annual Community Member recognition'),node('p','Your digital current-year recognition and public verification page are active. This does not affect free profile-management rights.'));
+    const history=(r.history||[]).map(x=>x.year).filter(Boolean);if(history.length)section.append(node('p','Participation years: '+history.join(', '),'r1354-recognition-history'));
+    const actions=node('div',undefined,'r1354-recognition-actions');actions.append(link('View public verification page',r.recognition.verificationUrl,'button primary'));section.append(actions);
+    const f=r.fulfillment,program=r.program||{};
+    if(!program.active){section.append(node('div','Physical window-decal pilot is not currently open. Your digital recognition remains active.','r1354-fulfillment-state'));return section}
+    if(!f){section.append(node('div','Window decal status is being prepared. Digital recognition remains active.','r1354-fulfillment-state'));return section}
+    const stateName=String(f.status||'');
+    if(stateName==='ELIGIBLE_ADDRESS_NEEDED'){
+      section.append(node('div','Window decal — confirm a private mailing address. Franklin will not copy the public profile address automatically.','r1354-fulfillment-state'));
+      const form=node('form',undefined,'r1354-recognition-form');
+      const defs=[['Recipient','recipient','text','wide'],['Street address','line1','text','wide'],['Address line 2 (optional)','line2','text','wide'],['City','city','text',''],['State','region','text',''],['ZIP / postal code','postalCode','text','']];
+      const inputs={};for(const [label,name,type,cls] of defs){const w=node('label',undefined,cls),sp=node('span',label),i=node('input');i.type=type;i.name=name;i.autocomplete=name==='recipient'?'name':name==='line1'?'address-line1':name==='line2'?'address-line2':name==='city'?'address-level2':name==='region'?'address-level1':'postal-code';i.required=!name.includes('line2');w.append(sp,i);form.append(w);inputs[name]=i}
+      form.append(node('p','This mailing address is private fulfillment information and is not published on the profile.','fine-print'));
+      const submit=node('button','Confirm mailing address','button primary');submit.type='submit';form.append(submit);form.addEventListener('submit',e=>{e.preventDefault();work(async()=>{await request('/api/member/recognition/mailing-address',{address:{recipient:inputs.recipient.value,line1:inputs.line1.value,line2:inputs.line2.value,city:inputs.city.value,region:inputs.region.value,postalCode:inputs.postalCode.value,country:'US'}});message('Mailing address confirmed privately. You can now request the current-year decal.','good');await load()})});section.append(form);
+    }else if(stateName==='ELIGIBLE_READY'){
+      section.append(node('div','Mailing address confirmed privately. You may request one current-year window decal while the physical recognition program is available.','r1354-fulfillment-state'));section.append(button('Request current-year window decal',async()=>{await request('/api/member/recognition/decal-request',{});message('Your current-year decal request is saved.','good');await load()},true));
+    }else if(stateName==='FULFILLMENT_REQUESTED')section.append(node('div','Current-year window decal requested. No second decal request is needed.','r1354-fulfillment-state'));
+    else if(stateName==='FULFILLED'){section.append(node('div',String(f.recognition_year||r.recognition.year)+' window decal fulfilled.','r1354-fulfillment-state'));section.append(button('Request replacement review',async()=>{await request('/api/member/recognition/replacement-request',{});message('Replacement request saved for review.','good');await load()}))}
+    else if(stateName==='REPLACEMENT_REVIEW')section.append(node('div','Replacement request is under review. Additional free replacements are not automatic.','r1354-fulfillment-state'));
+    else if(stateName==='OUT_OF_STOCK')section.append(node('div','Current decal batch is temporarily out of stock. Your digital recognition remains active.','r1354-fulfillment-state'));
+    else section.append(node('div','Physical recognition is not currently available. Your digital recognition remains active.','r1354-fulfillment-state'));
+    return section;
+  }
   function renderManagedWorkspace(p){
     const basic=node('section',undefined,'r1330-studio-basic');
     basic.append(node('div','Profile Center','eyebrow'),node('h3','Management verified'),node('p','Your verified access lets you manage the profile relationship, request factual corrections or removal, and submit a profile photo or logo for review. Public factual information is reviewed separately and is not changed merely because you manage the profile.'));
@@ -168,6 +201,7 @@
     if(p.verified_at){const when=reviewedWhen(p.verified_at);if(when)basic.append(node('p','Management access verified '+when+'.','fine-print'))}
     basic.append(actions);view.append(basic);
     view.append(mediaManager(p,false));
+    const recognition=recognitionPanel(p);if(recognition)view.append(recognition);
     if(state.activePaid){
       const paid=node('section',undefined,'r1330-studio-member');
       paid.append(node('div','Community Member tools','eyebrow'),node('h3','Build the richer member profile.'),node('p','Your active membership adds reviewed About/services content, richer practical details, cover and gallery media, action links and other member profile modules.'));

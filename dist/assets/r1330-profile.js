@@ -5,6 +5,25 @@
  const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn,{once:true}):fn();
  const el=(t,txt,cls)=>{const n=document.createElement(t);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n};
  const abs=u=>{try{return new URL(u,API).href}catch{return''}};
+ const recognitionStyle=()=>{if(document.querySelector('link[data-r1354-recognition]'))return;const l=document.createElement('link');l.rel='stylesheet';l.href='/assets/r1354-recognition.css?v=frnav1354';l.dataset.r1354Recognition='1';document.head.append(l)};
+ function renderRecognition(data){
+   const r=data?.recognition;if(!r||!Array.isArray(r.participationYears)||!r.participationYears.length)return;
+   recognitionStyle();
+   document.querySelector('.r1354-recognition-card')?.remove();
+   const article=document.querySelector('.r22-profile-layout>article');if(!article)return;
+   const current=Boolean(r.currentMembershipActive&&r.currentYearRecognitionActive),year=current?r.currentQualifyingYear:r.participationYears[0];
+   const card=el('section','','r1354-recognition-card'+(current?'':' is-historical'));card.setAttribute('aria-label','Community Membership recognition');
+   card.append(el('div',(current?String(year)+' Community Member':'Past Community Member — '+String(year)),'r1354-recognition-year'));
+   card.append(el('h2',current?'Current Community Membership':'Community Membership participation'));
+   card.append(el('p',current?'This business is a current Franklin Navigator Community Member for '+year+'.':'Current Community Membership: inactive. Prior participation remains part of this profile history.'));
+   const meta=el('ul','','r1354-recognition-meta');
+   const years=el('li','Participation years: '+r.participationYears.join(', '),'r1354-recognition-history');meta.append(years);
+   if(r.lastVerifiedAt){try{meta.append(el('li','Status checked '+new Intl.DateTimeFormat(undefined,{dateStyle:'medium'}).format(new Date(r.lastVerifiedAt))))}catch{}}
+   card.append(meta);
+   const actions=el('div','','r1354-recognition-actions');const verify=el('a','Verify Community Membership','button');verify.href=r.verificationUrl||('/membership-verification/?profile='+encodeURIComponent(id));actions.append(verify);card.append(actions);
+   card.append(el('p','Community Membership recognition is not a government license, professional certification, quality guarantee, ranking or endorsement.','r1354-recognition-disclaimer'));
+   const anchor=document.querySelector('#about')||article.firstElementChild;anchor?article.insertBefore(card,anchor):article.prepend(card);
+ }
  function hidePublicProvenance(){
    document.querySelectorAll('a[href="#sources"]').forEach(a=>a.remove());
    const src=document.querySelector('#sources');if(src)src.remove();
@@ -103,15 +122,17 @@
    const current=document.querySelector('.profile-currentness'),fallbackManaged=isNavigatorSelf?true:(current?!/unclaimed/i.test(current.textContent||''):false);
    current?.remove();cleanPublicLanguage();stateRow(fallbackManaged);
    try{
-     const [profileRes,mediaRes,accountRes]=await Promise.allSettled([
+     const [profileRes,mediaRes,accountRes,recognitionRes]=await Promise.allSettled([
        fetch(API+'/api/member/public-profile?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()),
        fetch(API+'/api/member/media/public?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()),
-       fetch(API+'/api/accounts/me',{credentials:'include',cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
+       fetch(API+'/api/accounts/me',{credentials:'include',cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+       fetch(API+'/api/member/public-recognition?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject())
      ]);
      const managed=profileRes.status==='fulfilled'&&typeof profileRes.value.managedProfile==='boolean'?profileRes.value.managedProfile:fallbackManaged;
      const viewerLink=accountRes.status==='fulfilled'?viewerProfileLink(accountRes.value):null;
      stateRow(managed,viewerLink);
      if(mediaRes.status==='fulfilled'&&Array.isArray(mediaRes.value.media))media(mediaRes.value.media);
+     if(recognitionRes.status==='fulfilled')renderRecognition(recognitionRes.value);
    }catch{}
    setTimeout(()=>{cleanPublicLanguage();sectionNav()},60);setTimeout(()=>{cleanPublicLanguage();sectionNav()},450);
  });

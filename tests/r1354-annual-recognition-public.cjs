@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+'use strict';
+const fs=require('node:fs'),assert=require('node:assert/strict');
+const profile=fs.readFileSync('dist/assets/r1330-profile.js','utf8');
+const center=fs.readFileSync('dist/assets/member-profile-live.js','utf8');
+const verify=fs.readFileSync('dist/assets/membership-verification-r1354.js','utf8');
+const verifyHtml=fs.readFileSync('dist/membership-verification/index.html','utf8');
+const member=fs.readFileSync('dist/membership-start/index.html','utf8');
+const i18n=fs.readFileSync('dist/assets/r37-i18n.js','utf8');
+const loader=fs.readFileSync('dist/assets/hf36.js','utf8');
+assert.ok(profile.includes('/api/member/public-recognition?profileId='));
+assert.ok(profile.includes('Verify Community Membership'));
+assert.ok(profile.includes('not a government license, professional certification, quality guarantee, ranking or endorsement'));
+assert.ok(!verify.includes('mailing_address')&&!verify.includes('mailingAddress'));
+assert.ok(verify.includes('/api/member/public-recognition?profileId='));
+assert.ok(verifyHtml.includes('data-r1354-verification-root'));
+assert.ok(center.includes("request('/api/member/recognition')"));
+assert.ok(center.includes('/api/member/recognition/mailing-address'));
+assert.ok(center.includes('/api/member/recognition/decal-request'));
+assert.ok(center.includes('Franklin will not copy the public profile address automatically.'));
+assert.ok(center.includes('This mailing address is private fulfillment information and is not published on the profile.'));
+assert.ok(member.includes('$35/year'));
+assert.ok(member.includes('Annual current-year Community Member recognition'));
+assert.ok(member.includes('Always free:'));
+assert.ok(i18n.includes('Su reconocimiento anual como Miembro de la Comunidad'));
+assert.ok(i18n.includes('Años de participación'));
+assert.ok(loader.includes('FR-NAV1.30.54-HF3.13.36'));
+console.log(JSON.stringify({result:'PASS',publicRecognition:true,verificationStableUrl:true,privateMailingAddress:true,freeManagementPreserved:true,spanishParity:true}));
