@@ -103,3 +103,20 @@ Additional next-version improvements:
 28. Keep only one **Back to sign in** / **Can’t access your email? Get account help** action row on the success state.
 29. For reviewer-origin password recovery, return users to reviewer sign-in after reset completion rather than a generic sign-in destination whenever the recovery context can be preserved safely.
 30. Preserve generic privacy-safe wording and never reveal whether the submitted email is registered.
+
+
+## Page review note — New Password Form
+Reviewed 2026-09-21 from complete live-page screenshots.
+
+Critical security finding:
+37. The password-reset token is still visibly present in the browser address bar after the reset page loads. After the client captures and validates the fragment token, immediately remove it from the visible URL with a history replacement so the address bar becomes the clean `/account-recovery/` route. The token must remain only in in-memory client state long enough to submit the reset and must never be copied into normal links, analytics, logs, screenshots, or referrers.
+
+Additional next-version improvements:
+38. Preserve the simple two-field **New password / Confirm new password** form and the clear primary **Set new password** action.
+39. Replace the vague **“Choose the recovery step below.”** status text on the token-backed reset state with a direct instruction such as **“Choose a new password.”**
+40. Make the recovery headline context-aware. Do not imply a selected profile when the reset was initiated from a generic or reviewer-only flow; preserve profile-continuity language only when a profile context actually exists.
+41. Preserve the current plain-language password rule: minimum 8 characters, with long passwords/passphrases welcome.
+42. Add a show/hide password control for both password fields, implemented accessibly, so users can reduce typing mistakes.
+43. Keep only one appropriate return action. When recovery originated from reviewer access, **Back to sign in** should return to reviewer sign-in; otherwise use the normal Franklin sign-in route.
+44. Keep **Can’t access your email? Get account help** as a separate fallback rather than mixing it into the primary password-reset action.
+45. After a successful reset, automatically invalidate the used token and all prior account/reviewer sessions, sign the user into the normal account only if that is the approved recovery design, and return them to the preserved origin context without forcing them to re-find a selected profile.
