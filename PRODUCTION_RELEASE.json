@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.53-HF3.13.35",
+  "release": "FR-NAV1.30.54-HF3.13.36",
   "date": "2026-09-21",
-  "base": "FR-NAV1.30.52-HF3.13.34",
+  "base": "FR-NAV1.30.53-HF3.13.35",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1353 reduces Franklin owner alert storms by grouping equivalent failures into durable incidents, adding material-change-aware cooldown/recovery/reopen notification logic, improving owner incident visibility, and cancelling superseded CI runs, without weakening monitoring, origin security, profile authority, pricing, payments, entitlement, or outreach boundaries.",
+  "scope": "R1354 adds authoritative annual paid Community Member recognition, historical participation years, a stable public verification experience, private confirmed mailing-address handling, and idempotent one-per-year window-decal fulfillment eligibility while preserving free/basic profile management and all R1353 monitoring safeguards.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -337,8 +337,8 @@
       "mutationScope": "EXACT_IDS_ONLY_AFTER_ID_CATEGORY_NULL_PROFILE_AND_MESSAGE_HASH_MATCH"
     },
     "runtimeService": "srv-dabgvefqj5pc739vr4h0",
-    "runtimeDeploy": "dep-daocknh42hec739b0ukg",
-    "runtimeCommit": "4cada0e5c8fdeda9b1b0284f718e5a0310e6376a",
+    "runtimeDeploy": "dep-daoe8neeod7s73b2pc90",
+    "runtimeCommit": "66b9fe1a6a1f78dd51a88fc29ca2de8f3912820d",
     "r1334Corrections": {
       "expectedAuth401NotHighIncident": true,
       "inlineStyleWithoutExternalUrlNotBrokenAsset": true,
@@ -369,7 +369,7 @@
       "repeatedTelemetryPreflightSeverity": "NORMAL",
       "historicalPerClientDuplicates": "QUIETLY_RECONCILED_WITHOUT_RECOVERY_EMAIL_STORM"
     },
-    "runtimeRelease": "FR-NAV1.30.53-HF3.13.35",
+    "runtimeRelease": "FR-NAV1.30.54-HF3.13.36",
     "liveAlertStormProof": {
       "firstR1353Startup": {
         "deploy": "dep-daocf8jtqb8s73epnv80",
@@ -1222,7 +1222,7 @@
       "19,103 canonical discovery profiles plus authorized Franklin Navigator self-profile overlay",
       "free factual correction/removal/claim management",
       "finished business/professional profiles",
-      "1–5 ratings and written firsthand reviews",
+      "1\u20135 ratings and written firsthand reviews",
       "review reporting/moderation and verified manager responses",
       "free reviewed profile photo/logo upload",
       "paid Community Member cover/gallery",
@@ -1519,7 +1519,7 @@
     "donorRegistry": "DONOR_CAPABILITY_REGISTRY__R1337.json",
     "homepageHistoryHeading": {
       "value": "Franklin Through Time",
-      "previousValue": "Franklin Through Time — Then & Now",
+      "previousValue": "Franklin Through Time \u2014 Then & Now",
       "ownerInstructionDate": "2026-09-18",
       "changeScope": "HEADING_TEXT_ONLY",
       "preserveRestOfHomepage": true
@@ -1695,7 +1695,7 @@
     "ownerDirection": "APPROVED_BUSINESS_VISIBILITY_HEADLINE_AND_CONTINUE_PROFILE_CLAIM_LANGUAGE_PATH_MANAGEMENT_IMPROVEMENTS",
     "materialImprovement": {
       "approvedBusinessHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
-      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local.",
+      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mej\u00f3relo. Aumente su visibilidad local.",
       "profileCenterTerminologyRepositoryWide": true,
       "staleProfileStudioVisibleLanguageRemoved": true,
       "staleManagedUnclaimedVisibleLabelsRemoved": true,
@@ -1772,7 +1772,7 @@
     "ownerDirection": "FIX_OWNER_REPORTED_BUSINESS_DASHBOARD_OVERLAP_AND_ENSURE_READABILITY_SITEWIDE",
     "materialImprovement": {
       "approvedBusinessHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
-      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local.",
+      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mej\u00f3relo. Aumente su visibilidad local.",
       "staleDynamicHeadlineOverrideRemoved": true,
       "dynamicPathFixedBadgeGeometryNeutralized": true,
       "pathCardReadableColorAndWrapping": true,
@@ -2506,7 +2506,7 @@
       "staticDeploy": "dep-danptbjtqb8s73co9k4g"
     },
     "ownerCommandRevision": "2026-09-03-R2",
-    "materialImprovement": "Repair two current public-quality defects without unrelated redesign: restore English/Spanish static homepage currentness parity, and prevent broad umbrella profile categories from generating unrelated Related local profiles; use a qualified restaurant/food override for Daddy’s Dogs and allow fewer results when relevance is insufficient.",
+    "materialImprovement": "Repair two current public-quality defects without unrelated redesign: restore English/Spanish static homepage currentness parity, and prevent broad umbrella profile categories from generating unrelated Related local profiles; use a qualified restaurant/food override for Daddy\u2019s Dogs and allow fewer results when relevance is insufficient.",
     "fixes": {
       "bilingualStaticHomepageCurrentnessParity": true,
       "expiredSpanishSplashParkRemoved": true,
@@ -3178,5 +3178,156 @@
       "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
     },
     "sccD2State": "BLOCKED_GUARDED_VERSION_BOUND_CAS_UNAVAILABLE"
+  },
+  "r1354": {
+    "version": "FR-NAV1.30.54-HF3.13.36",
+    "date": "2026-09-21",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_PUBLIC_EXACT_HEAD_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.53-HF3.13.35",
+      "mainCommit": "c1380ba4e90ad582b4c911faacaced56f7ec670d",
+      "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.53-HF3.13.35__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactSha256": "52ff08ba0f98f9336855bbfdc65efb6f85513143c465e554ce8c429e6f1c7501",
+      "qualified": true,
+      "deployedLive": true,
+      "sccD1Accepted": false
+    },
+    "acceptedCoordinationAnchor": {
+      "version": "FR-NAV1.30.49-HF3.13.31",
+      "artifactSha256": "0a9eb768ba0e6b4b761842912879bc8d196c565815ae04030a861c9a2bb4dd62",
+      "manifestSha256": "0ca00444e53ef48a2dc3256400d35f4b72f0afacd0987f206d45e7679dbceecc",
+      "sccD1Accepted": true,
+      "sccAcceptedAtUtc": "2026-09-20T14:34:45Z"
+    },
+    "acceptedCanonicalBase": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    },
+    "sccD2State": "BLOCKED_GUARDED_VERSION_BOUND_CAS_UNAVAILABLE",
+    "releaseLease": {
+      "workOrderId": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+      "state": "ISSUED_ACTIVE_RELEASE_LEASE",
+      "acceptedAnchor": "FR-NAV1.30.49-HF3.13.31",
+      "continuedQualifiedDescendantLineage": true,
+      "d2RequiredBeforeBuild": false
+    },
+    "price": {
+      "communityMembershipAnnualUsd": 35,
+      "changed": false,
+      "basicProfileManagementFree": true,
+      "correctionsRemovalFree": true
+    },
+    "materialImprovements": [
+      "Current-year digital Community Member recognition driven by authoritative paid membership/entitlement state.",
+      "Historical participation years persist after lapse while only the current qualifying year is shown as active.",
+      "Stable Franklin-controlled verification destination for QR use without private data or expiring secrets.",
+      "Profile Center recognition/fulfillment area keeps the physical decal secondary to core profile management.",
+      "Private mailing address requires explicit confirmation and is never copied automatically from a public business address.",
+      "One recognition/fulfillment record per profile and year with a maximum one standard fulfilled decal unit unless later owner-authorized replacement policy applies.",
+      "Digital recognition remains active when physical inventory/program availability is closed or out of stock.",
+      "Public badge and verification copy explicitly avoid license, certification, guarantee, ranking, or endorsement implications.",
+      "English/Spanish material recognition copy is included in the shared i18n system."
+    ],
+    "recognition": {
+      "runtimeVersion": "FRANKLIN_MEMBER_RECOGNITION_HF3_8",
+      "currentYear": 2026,
+      "currentYearProminent": true,
+      "historicalYearsPreserved": true,
+      "digitalIndependentOfPhysicalInventory": true,
+      "publicVerificationPath": "/membership-verification/",
+      "stableQrDestination": true,
+      "privateDataInQr": false,
+      "governmentLicenseImplied": false,
+      "certificationImplied": false,
+      "endorsementImplied": false,
+      "fulfillmentStates": [
+        "NOT_ELIGIBLE",
+        "ELIGIBLE_ADDRESS_NEEDED",
+        "ELIGIBLE_READY",
+        "FULFILLMENT_REQUESTED",
+        "FULFILLED",
+        "REPLACEMENT_REVIEW",
+        "NOT_OFFERED",
+        "OUT_OF_STOCK"
+      ],
+      "physicalProgramDefault": "CLOSED_UNTIL_OWNER_REVENUE_ENABLES",
+      "pilotPlanningQuantity": 25,
+      "includedStandardQuantityPerProfileYear": 1,
+      "plaqueIncluded": false,
+      "mailingAddress": {
+        "explicitConfirmationRequired": true,
+        "copiedFromPublicProfileAutomatically": false,
+        "publiclyExposed": false
+      }
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "66b9fe1a6a1f78dd51a88fc29ca2de8f3912820d",
+      "deploy": "dep-daoe8neeod7s73b2pc90",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.54-HF3.13.36",
+      "functionalChanges": true,
+      "recognitionVersion": "FRANKLIN_MEMBER_RECOGNITION_HF3_8",
+      "qualificationRun": 35574397376,
+      "reviewerRegressionRun": 35574397396,
+      "evidenceArtifactDigest": "sha256:655a85b354187fbd07d7632d3b519763e3bdf27b39232c4e86968e044fe97198"
+    },
+    "supplierCostHandoff": {
+      "ownerRevenueAuthority": true,
+      "localBuilderOrderedNothing": true,
+      "preferredSupplierResearch": "BannerBuzz",
+      "ownerCreditApproxUsd": 100,
+      "pilotApproxQty": 25,
+      "compareSizesInches": [
+        3,
+        4
+      ],
+      "compareFormats": [
+        "inside-application/front-adhesive window decal",
+        "static window cling"
+      ],
+      "currentObservedStartingPricesUsd": {
+        "clearOrOpaqueWindowProducts": 6.0,
+        "dieCutClearCling": 7.2,
+        "bulk2PlusReferencedWindowProducts": 5.28
+      },
+      "exact25Unit3or4InchQuoteVerified": false,
+      "shippingPostageHandlingIncludedInQuotedUnitEconomics": false,
+      "plaqueIncludedAt35": false
+    },
+    "noResidentFeatureRemoval": true,
+    "noProfileFactChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noLocalInvestigatorFactMutation": true,
+    "noOutreach": true,
+    "replyIoMutation": false,
+    "sreOwnerConsoleMutation": false,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "smarterJusticeDonor": "NOT_USED",
+    "qualification": {
+      "runtimeResult": "PASS_LIVE",
+      "runtimeQualificationRun": 35574397376,
+      "reviewerRegressionRun": 35574397396,
+      "publicResult": "PENDING_EXACT_HEAD_WORKFLOW",
+      "deterministicDoubleBuild": "REQUIRED",
+      "freshExtraction": "REQUIRED",
+      "wholeSiteNoRegressionNoBurial": "REQUIRED"
+    },
+    "receipts": [
+      "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1354.json",
+      "ANNUAL_MEMBER_RECOGNITION__R1354.md",
+      "SUPPLIER_COST_HANDOFF__R1354.md",
+      "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1354.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1354.md",
+      "CONTINUATION_HANDOFF__R1354.md",
+      "PRE_SEAL_CURRENTNESS_RECEIPT__R1354.md",
+      "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1354.md",
+      "R1354_RELEASE_RECEIPT.json"
+    ]
   }
 }
