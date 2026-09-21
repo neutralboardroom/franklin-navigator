@@ -21,7 +21,7 @@ const elite=exact.findIndex(r=>/elite navigator co/i.test(r.n));
 if(elite>=0)assert.ok(elite>0,'Elite Navigator Co. must not outrank exact Franklin Navigator');
 
 const profile=read('dist/assets/r1330-profile.js');
-assert.match(profile,/Claim or manage this profile/);
+assert.match(profile,/Manage this profile — free/);
 assert.match(profile,/Official Franklin Navigator profile/);
 assert.match(profile,/\/profile-access\/\?profile=/);
 
@@ -41,6 +41,8 @@ const recovery=read('dist/assets/account-recovery-r1342.js');
 assert.match(recovery,/password-reset\/request/);
 assert.match(recovery,/password-reset\/complete/);
 assert.match(recovery,/Continue to profile access/);
+assert.match(recovery,/Return to reviewer sign in/);
+assert.match(recovery,/r1355-password-toggle/);
 assert.match(recovery,/history\.replaceState/);
 assert.ok(fs.existsSync(path.join(root,'dist/account-recovery/index.html')));
 
@@ -65,7 +67,7 @@ assert.match(reviews,/entityLabel/);
 
 console.log(JSON.stringify({
   result:'PASS',
-  release:'FR-NAV1.30.42-HF3.13.24',
+  release:'FR-NAV1.30.55-HF3.13.37',
   exactFranklinNavigatorRank:firstName(exact[0]),
   exactProfileId:exact[0].i,
   checked:'directory ranking, claim CTA, deep-link continuity, recovery UI, support wording, five-step business path, correction context, first-party review policy'
