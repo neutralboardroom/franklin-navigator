@@ -1,8 +1,8 @@
 # Franklin Navigator — Next Version Improvement List
 
-Status: **WORKING NEXT-VERSION LIST — DO NOT EXECUTE YET**
+Status: **EXECUTED INTO R1355 / FR-NAV1.30.55-HF3.13.37 — RETAIN AS REVIEW HISTORY**
 Started: 2026-09-21
-Owner instruction: keep adding to this list while the profile-path pages are reviewed together. Do not start the next version until the owner explicitly says the review is complete and authorizes the build.
+Owner authorization received 2026-09-21 to build the next version from the complete accumulated review list. This file is now the preserved source review record for R1355.
 
 ## Profile path / reviewer access
 
@@ -179,3 +179,30 @@ Durable next-version requirement:
 Hotfix applied during review:
 - Reviewer browser minimum changed from 12 to the canonical 8.
 - Reviewer backend now uses the shared `PASSWORD_MIN_LENGTH` constant from Franklin security rather than a hard-coded 12.
+
+
+## R1355 execution summary
+
+Executed into `FR-NAV1.30.55-HF3.13.37`.
+
+Implemented in the successor release:
+- simplified reviewer sign-in remains email + password only;
+- removed first-sign-in confirmation-code dependency;
+- secure emailed single-use password-reset link retained;
+- canonical 8-character Franklin password policy shared with reviewer authentication;
+- reviewer-origin password recovery returns to reviewer sign-in;
+- exact-profile context survives recovery where available;
+- generic/reviewer/profile recovery copy is context-aware;
+- reset token is removed from the visible browser URL immediately after capture;
+- accessible show/hide controls were added to both new-password fields;
+- duplicate sending/success messages and duplicated secondary action rows were removed;
+- authorized-account reviewer handoff preserves account identity for password-only step-up;
+- branded password-reset email includes a clear primary reset button and text fallback;
+- ordinary account recovery does not silently grant reviewer privilege.
+
+Still requiring real owner/human walkthrough proof rather than synthetic completion:
+- one real reviewer sign-in with the owner-authorized account after this release;
+- approval of the already-pending exact Franklin Navigator management request;
+- entry into Profile Center as an approved manager;
+- optional Community Membership purchase only if/when the owner chooses to test it;
+- real member-tool/recognition verification after a legitimate paid membership.
