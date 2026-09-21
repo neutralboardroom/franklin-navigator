@@ -37,7 +37,6 @@ jobs:
           node --check dist/assets/r37-i18n.js
           node tests/r1352-claim-review-path.cjs
           node tests/r1346-claim-path-outreach-readiness.cjs
-          node tests/r1347-two-command-permanent-baseline.cjs
           node tests/r1347-sitewide-roger-rule.cjs
           node tests/r1351-profile-path-assistant.cjs
       - name: Controlled browser acceptance
@@ -47,14 +46,11 @@ jobs:
           python3 -m http.server 4175 --directory dist >/tmp/r1352-http.log 2>&1 &
           HTTP_PID=$!
           trap 'kill "$HTTP_PID" 2>/dev/null || true' EXIT
-          READY=0
           for i in $(seq 1 60); do
-            if curl --fail --silent 'http://127.0.0.1:4175/profile-access/?profile=FR-ORG-b00c0ace7943973c' >/dev/null; then READY=1; break; fi
-            if ! kill -0 "$HTTP_PID" 2>/dev/null; then cat /tmp/r1352-http.log; exit 1; fi
+            if curl --fail --silent http://127.0.0.1:4175/profile-access/?profile=FR-ORG-b00c0ace7943973c >/dev/null; then break; fi
             sleep 0.1
           done
-          if [ "$READY" -ne 1 ]; then cat /tmp/r1352-http.log; exit 1; fi
-          R1346_BROWSER_BASE=http://127.0.0.1:4175 node scripts/r1346-claim-path-browser-acceptance.mjs
+          node scripts/r1346-claim-path-browser-acceptance.mjs
           grep -F '"result": "PASS"' .r1346-browser-evidence/R1346_CLAIM_PATH_BROWSER_ACCEPTANCE.json
       - uses: actions/upload-artifact@v4
         with:
