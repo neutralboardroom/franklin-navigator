@@ -147,7 +147,11 @@ await evaluate("document.querySelector('.r1346-profile-access-verification input
 await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
 await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
 await sleep(80);
-check('keyboard Tab advances from URL input to authorization textarea',await evaluate("document.activeElement===document.querySelector('.r1346-profile-access-verification textarea')"));
+check('keyboard Tab reaches profile website reuse action after URL input',await evaluate("document.activeElement?.textContent.trim()==='Use website already on this profile'"));
+await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
+await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
+await sleep(80);
+check('keyboard Tab then advances to authorization textarea',await evaluate("document.activeElement===document.querySelector('.r1346-profile-access-verification textarea')"));
 
 // Mobile geometry + screenshot.
 await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
