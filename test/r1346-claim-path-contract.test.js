@@ -9,7 +9,7 @@ test('R1346 runtime claim/recovery contract remains aligned',()=>{
   const server=fs.readFileSync(path.join(root,'server.js'),'utf8');
   const security=fs.readFileSync(path.join(root,'lib/security.js'),'utf8');
   const recovery=fs.readFileSync(path.join(root,'lib/account-recovery.js'),'utf8');
-  assert.match(server,/FR-NAV1\\\.30\\\.52-HF3\\\.13\\\.34/);
+  assert.match(server,/FR-NAV1\.30\.52-HF3\.13\.34/);
   assert.match(server,/PASSWORD_MIN_LENGTH/);
   assert.match(server,/review_state/);
   assert.match(server,/review_revision/);
