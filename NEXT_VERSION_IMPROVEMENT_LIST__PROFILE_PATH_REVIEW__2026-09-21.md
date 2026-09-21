@@ -156,3 +156,10 @@ Add for next version:
 51. Keep the post-reset auto-sign-in behavior for the ordinary account, but ensure all prior ordinary sessions and all reviewer sessions were invalidated before issuing the fresh post-reset session.
 52. Do not automatically create a reviewer session after password reset. Reviewer access must still require explicit reviewer sign-in.
 53. If the user is already signed in and has exactly one connected profile relevant to the preserved recovery context, surface that profile immediately as the current selection and advance the path instead of presenting a generic **Find your profile** step.
+
+
+## Page review note — Reviewer Sign-In After Normal Account Authentication
+Reviewed 2026-09-21 from live screenshots.
+
+New next-version improvement:
+54. When a user reaches the reviewer workspace from an already authenticated Franklin account that is authorized for reviewer access, preserve that account identity into reviewer sign-in. Prefer a step-up flow that displays the signed-in account and asks only for the password, rather than making the reviewer retype the email address. Do not silently create reviewer access; the password re-authentication and short-lived reviewer session should remain explicit.
