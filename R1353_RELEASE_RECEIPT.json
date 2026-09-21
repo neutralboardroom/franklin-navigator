@@ -1,0 +1,54 @@
+{
+  "release": "FR-NAV1.30.53-HF3.13.35",
+  "predecessor": "FR-NAV1.30.52-HF3.13.34",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "edition": "FRANKLIN_TN",
+  "state": "CANDIDATE_PRESEAL_PENDING_PUBLIC_EXACT_HEAD_QUALIFICATION",
+  "materialScope": "ALERT_STORM_DEDUP_COOLDOWN_RECOVERY_AND_CI_NOTIFICATION_HYGIENE",
+  "publicBranch": "r1353-alert-storm-hygiene-20260921",
+  "publicBaseCommit": "9237c772cd22c6ce22bd1f554cbcc2b845373e9d",
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "4cada0e5c8fdeda9b1b0284f718e5a0310e6376a",
+    "deploy": "dep-daocknh42hec739b0ukg",
+    "deployState": "LIVE",
+    "release": "FR-NAV1.30.53-HF3.13.35",
+    "issueMonitorVersion": "FRANKLIN_ISSUE_MONITOR_3",
+    "finalRestartProof": {
+      "evaluated": 34,
+      "attempted": 0,
+      "networkAttempted": 0,
+      "delivered": 0,
+      "failed": 0,
+      "suppressed": 34
+    },
+    "resendCrossCheck": "NO_SENT_EMAIL_AFTER_2026-09-21T06:05:42.339Z_THROUGH_FINAL_0611_RESTART"
+  },
+  "rootCause": {
+    "code": "ORIGIN_NOT_ALLOWED",
+    "path": "/api/telemetry/issue",
+    "method": "OPTIONS",
+    "httpStatus": 403,
+    "finding": "Equivalent blocked telemetry preflights were previously split by client-scoped fingerprint identity; legacy notification state also permitted restart-only recovery/update backfill.",
+    "securityFix": "KEEP_403_AND_ORIGIN_ENFORCEMENT_FIX_GROUPING_AND_NOTIFICATION_LIFECYCLE"
+  },
+  "safeguards": {
+    "monitoringDisabled": false,
+    "broadOriginAllowlistAdded": false,
+    "incidentHistoryDeleted": false,
+    "occurrencesDiscarded": false,
+    "newCriticalHighSuppressedGlobally": false,
+    "rawSecretsInAlerts": false,
+    "replyIoChanged": false,
+    "ownerConsoleCommercialAuthorityChanged": false
+  },
+  "runtimeQualification": {
+    "exactHeadPushRun": 35567133241,
+    "exactHeadPullRequestRun": 35567245506,
+    "conclusion": "SUCCESS"
+  },
+  "publicQualification": "PENDING_EXACT_HEAD_WORKFLOW",
+  "deterministicExactSourceArtifact": "PENDING_PUBLIC_EXACT_HEAD_WORKFLOW",
+  "sccAccepted": false,
+  "sccCanonicalCurrent": false
+}
