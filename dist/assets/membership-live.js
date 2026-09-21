@@ -39,7 +39,7 @@
     s.append(el('h2',state.me?'Your account':'Create an account or sign in'));
     if(state.me){
       s.append(el('p',`Signed in as ${state.me.account?.email||'your Franklin account'}.`));
-      if(state.me.reviewerAccessAvailable===true){const reviewer=el('div',null,'r37-member-actions r1352-private-reviewer-link');reviewer.append(link('Open reviewer workspace',API+'/review/','button'));s.append(reviewer,el('p','Private reviewer access is available for this authorized account.','fine-print'));}
+      if(state.me.reviewerAccessAvailable===true){const reviewer=el('div',null,'r37-member-actions r1352-private-reviewer-link');const reviewerContext=new URLSearchParams();if(state.me.account?.email)reviewerContext.set('email',state.me.account.email);if(profileParam(state))reviewerContext.set('profile',profileParam(state));reviewer.append(link('Open reviewer workspace',API+'/review/'+(reviewerContext.size?'#'+reviewerContext.toString():''),'button'));s.append(reviewer,el('p','Private reviewer access is available for this authorized account.','fine-print'));}
       s.append(button('Sign out',async()=>{try{await request('/api/accounts/logout',{method:'POST',body:{}});state.me=null;state.purchasePending=false;state.message='Signed out.';rerender()}catch(e){state.message=friendlyError(e);rerender()}},'button'));
       return s;
     }
