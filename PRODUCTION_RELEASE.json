@@ -2943,12 +2943,12 @@
     "smarterJusticeDonor": "NOT_USED",
     "runtime": {
       "branch": "r1352-reviewer-runtime-20260921",
-      "commit": "3602304e030a8f29a0b7a3cdd9e99d20b106b079",
+      "commit": "ed1b198461769c63e91f15049cd750c9c7f3d298",
       "releaseEnv": "FR-NAV1.30.52-HF3.13.34",
       "targetReleaseEnv": "FR-NAV1.30.52-HF3.13.34",
       "functionalChanges": true,
       "identityOnly": false,
-      "exactHeadWorkflowRun": 35559209190,
+      "exactHeadWorkflowRun": 35559487423,
       "tests": {
         "inherited": {
           "total": 48,
@@ -2962,12 +2962,13 @@
           "fail": 0,
           "skipped": 0
         }
-      }
+      },
+      "memberFulfillmentVersion": "FRANKLIN_MEMBER_FULFILLMENT_HF3_7"
     },
     "qualification": {
       "result": "PENDING_FINAL_EXACT_HEAD_WORKFLOWS",
       "r1352ClaimReviewLatestKnownPass": 35559220069,
-      "runtimeExactHeadWorkflowRun": 35559209190,
+      "runtimeExactHeadWorkflowRun": 35559487423,
       "runtimeResult": "SUCCESS",
       "requiredTests": [
         "tests/r1352-claim-review-path.cjs",
