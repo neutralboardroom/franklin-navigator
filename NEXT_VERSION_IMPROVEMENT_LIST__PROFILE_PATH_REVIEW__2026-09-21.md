@@ -69,3 +69,11 @@ Add for next version:
 19. Make recovery-context copy conditional. The headline **“Recover your account without losing your selected profile.”** is excellent when the user arrived from a profile-management flow, but reviewer-only or generic account recovery should not imply that a profile is selected when none is present. Use context-aware language.
 20. Preserve the strong primary reset button and the account-help fallback.
 21. Preserve privacy-safe account-enumeration behavior: do not reveal whether an entered email has a Franklin account.
+
+
+## Page review note — Password Reset Sending State
+Reviewed 2026-09-21 from live screenshot.
+
+Add for next version:
+22. Avoid duplicating the transient **“Sending password-reset instructions…”** message in both the primary button and a separate status panel. Keep one clear progress indicator while the request is processing.
+23. Ensure the sending state always resolves quickly to a privacy-safe success or recoverable error state and never leaves the user appearing stuck.
