@@ -6,7 +6,7 @@ const {createAccountRecovery,GENERIC_MESSAGE,PASSWORD_MIN_LENGTH}=require('../li
 const {hashPassword}=require('../lib/security');
 
 function harness(options={}){
-  const tokens=new Map(),mail=[],sessions=[{account_id:'acct_owner'}];
+  const tokens=new Map(),mail=[],sessions=[{account_id:'acct_owner'}],reviewSessions=[{account_id:'acct_owner'}],ops=[];
   const accounts=new Map([['owner@example.com',{account_id:'acct_owner',email:'owner@example.com'}]]);
   let body={};
   const deps={
@@ -29,10 +29,10 @@ function harness(options={}){
     normalizeEmail:x=>String(x||'').trim().toLowerCase(),emailRe:/^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     sha256:x=>crypto.createHash('sha256').update(String(x)).digest('hex'),randomToken:()=> 'A'.repeat(48),
     hashPassword:async p=>'hash:'+p,publicError:(code,message,status=400)=>Object.assign(new Error(message),{code,status}),
-    createSession:async()=>sessions.push({account_id:'acct_owner'}),audit:async(client,...args)=>client.query('insert into franklin_audit_log',args),
+    createSession:async()=>{ops.push('create_fresh_ordinary_session');sessions.push({account_id:'acct_owner'});},audit:async(client,...args)=>client.query('insert into franklin_audit_log',args),
     sendResetEmail:async(email,token,profile,returnMode)=>mail.push({email,token,profile,returnMode})
   };
-  return {recovery:createAccountRecovery(deps),setBody:v=>body=v,tokens,mail,sessions};
+  return {recovery:createAccountRecovery(deps),setBody:v=>body=v,tokens,mail,sessions,reviewSessions,ops};
 }
 
 test('unknown email receives the same generic reset response without email disclosure',async()=>{
@@ -43,7 +43,7 @@ test('unknown email receives the same generic reset response without email discl
 test('valid reset is single use and signs the account in again',async()=>{
   const h=harness();h.setBody({email:'owner@example.com',profileId:'FR-ORG-example'});await h.recovery.requestReset({}, {}, 'r1');
   assert.equal(h.mail.length,1);assert.equal(h.mail[0].profile,'FR-ORG-example');h.setBody({token:'A'.repeat(48),password:'new secure password 123'});
-  const out=await h.recovery.completeReset({}, {}, 'r2');assert.equal(out.status,200);assert.equal(h.sessions.length,1);
+  const out=await h.recovery.completeReset({}, {}, 'r2');assert.equal(out.status,200);assert.equal(h.sessions.length,1);assert.equal(h.reviewSessions.length,0);\n  assert.deepEqual(h.ops.filter(x=>x.includes('session')),['delete_ordinary_sessions','delete_reviewer_sessions','create_fresh_ordinary_session']);
   await assert.rejects(()=>h.recovery.completeReset({}, {}, 'r3'),e=>e.code==='RESET_TOKEN_INVALID');
 });
 
@@ -85,4 +85,13 @@ test('R1346 generic reset response preserves account-enumeration privacy',()=>{
 test('R1355 reviewer recovery context is carried into the reset email without changing account authority',async()=>{
   const h=harness();h.setBody({email:'owner@example.com',returnMode:'reviewer'});await h.recovery.requestReset({}, {}, 'r12');
   assert.equal(h.mail.length,1);assert.equal(h.mail[0].returnMode,'reviewer');
+});
+
+test('R1356 password reset fails closed if privileged reviewer-session invalidation fails',async()=>{
+  const h=harness({failReviewSessionDelete:true});
+  h.setBody({email:'owner@example.com'});await h.recovery.requestReset({}, {}, 'r13');
+  h.setBody({token:'A'.repeat(48),password:'12345678'});
+  await assert.rejects(()=>h.recovery.completeReset({}, {}, 'r14'),/review session delete failed/);
+  assert.equal(h.reviewSessions.length,1);
+  assert.equal(h.ops.includes('create_fresh_ordinary_session'),false);
 });
