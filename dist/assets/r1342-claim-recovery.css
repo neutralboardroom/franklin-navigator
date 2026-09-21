@@ -52,3 +52,11 @@
 @media(max-width:760px){.r1352-claim-progress{grid-template-columns:1fr 1fr}.r1352-action-group{align-items:stretch}.r1352-action-group .button{width:100%;text-align:center}}
 @media(max-width:460px){.r1352-claim-progress{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.r1352-selected-focus{scroll-behavior:auto}}
+
+/* R1355 account recovery */
+.r1355-password-wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:stretch}
+.r1355-password-wrap input{min-width:0}
+.r1355-password-toggle{min-width:74px;border:1px solid rgba(3,69,75,.35);border-radius:10px;background:#fff;color:inherit;font-weight:700;padding:0 12px}
+.r1355-password-toggle:focus-visible{outline:3px solid currentColor;outline-offset:2px}
+.r1346-recovery-success{display:grid;gap:12px}
+.r1346-recovery-success .r1342-recovery-actions{margin-top:4px}
