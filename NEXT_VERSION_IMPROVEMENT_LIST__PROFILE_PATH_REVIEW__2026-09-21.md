@@ -50,3 +50,22 @@ Add for next version:
 15. Make **Send me a secure password-reset link** a visually prominent primary button rather than a plain text link.
 16. Simplify the explanatory copy to plain user language, e.g. **“Enter your Franklin account email and we’ll send you a secure one-time password-reset link.”** Avoid implementation-sounding wording such as “Franklin’s normal secure password-reset link.”
 17. Preserve the current no-code recovery design and the direct **Back to reviewer sign in** escape route.
+
+
+## Page review note — Main Account Recovery
+Reviewed 2026-09-21 from live screenshots.
+
+What is working and should be preserved:
+- Clear single email field.
+- Strong primary **Send password-reset instructions** action.
+- Generic privacy-safe response language whether an account exists or not.
+- Direct **Back to sign in** path.
+- Separate **Can’t access your email? Get account help** escape route.
+- Password reset remains independent from membership, payment, and profile-management authority.
+- The recovery path is designed to preserve selected-profile continuity when recovery was started from a profile workflow.
+
+Add for next version:
+18. Remove or replace the vague status text **“Choose the recovery step below.”** when the page already knows the user is on the password-reset step. Prefer a direct instruction such as **“Enter your Franklin account email.”**
+19. Make recovery-context copy conditional. The headline **“Recover your account without losing your selected profile.”** is excellent when the user arrived from a profile-management flow, but reviewer-only or generic account recovery should not imply that a profile is selected when none is present. Use context-aware language.
+20. Preserve the strong primary reset button and the account-help fallback.
+21. Preserve privacy-safe account-enumeration behavior: do not reveal whether an entered email has a Franklin account.
