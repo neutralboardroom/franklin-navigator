@@ -1,0 +1,57 @@
+{
+  "receiptType": "RULE_AND_SOURCE_RECONCILIATION_RECEIPT",
+  "release": "FR-NAV1.30.52-HF3.13.34",
+  "date": "2026-09-21",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "governingCommands": [
+    "UNIVERSAL_SMARTER_LOCAL_COMMUNITY_PLATFORM_NEXT_VERSION_BUILD_COMMAND_2026-09-03-R2",
+    "FRANKLIN_NAVIGATOR__LOCAL_BUILDER__COMPLETE_MEMBER_CLAIM_MANAGE_REVIEW_NEXT_VERSION_PROMPT__2026-09-21"
+  ],
+  "predecessor": {
+    "release": "FR-NAV1.30.51-HF3.13.33",
+    "mainCommit": "53dfb8acabe2bbdbc2dfa6f58f8c421ebdb36112",
+    "artifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.51-HF3.13.33__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "artifactBytes": 85706549,
+    "artifactSha256": "c93dbe94a04badd99fbb4caddf7e1130019a1fdb9fec368cbba3126f1185c391",
+    "manifestSha256": "aaa7d9e02973e47c2d6fc09337e2bcd8d3def90b7adc170315a4ad088c71ba54",
+    "qualifiedDeployedLive": true,
+    "sccAccepted": false
+  },
+  "coordination": {
+    "sccAcceptedAnchor": "FR-NAV1.30.49-HF3.13.31",
+    "releaseLease": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+    "sccD2CanonicalPointerRequiredBeforeBuild": false,
+    "authorityTransfer": false
+  },
+  "runtimeCandidate": {
+    "branch": "r1352-reviewer-runtime-20260921",
+    "commit": "ed1b198461769c63e91f15049cd750c9c7f3d298",
+    "releaseEnv": "FR-NAV1.30.52-HF3.13.34",
+    "exactHeadWorkflowRun": 35559487423,
+    "existingRuntimeTests": {
+      "total": 48,
+      "pass": 48,
+      "fail": 0,
+      "skipped": 0
+    },
+    "r1352ReviewerTests": {
+      "total": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "publicCandidate": {
+    "branch": "r1352-owner-profile-access-review-20260921",
+    "r1352WorkflowRunObservedGreen": 35559220069,
+    "exactFinalHeadQualification": "REQUIRED_AFTER_RELEASE_METADATA_BINDING"
+  },
+  "smarterJusticeDonor": "NOT_USED",
+  "profileFactoryAuthorityPreserved": true,
+  "localInvestigatorAuthorityPreserved": true,
+  "pricingChanged": false,
+  "paymentOrEntitlementChanged": false,
+  "result": "PASS_FOR_IMPLEMENTATION; FINAL_PRE_SEAL_CURRENTNESS_STILL_REQUIRED"
+}

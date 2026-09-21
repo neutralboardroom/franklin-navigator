@@ -28,3 +28,27 @@
 .r1351-profile-path-summary{margin-top:12px;padding:12px 14px;border:1px solid #c8d9d9;border-radius:12px;background:#f7fbfb}
 .r1351-profile-path-summary>strong{display:block;margin-bottom:4px}
 .r1351-profile-path-summary p{margin:4px 0}
+
+/* R1352 — complete claim/manage/review journey */
+.r1352-claim-progress{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0 12px}
+.r1352-claim-progress span{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid rgba(3,69,75,.16);border-radius:12px;background:#fff}
+.r1352-claim-progress strong{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:rgba(3,69,75,.08)}
+.r1352-returning-manager{margin:8px 0 18px}
+.hf310-claim-search label{display:grid;gap:4px}
+.r1352-search-result-state{font-weight:700;margin:10px 0}
+.r1352-action-group{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.r1352-action-group>strong{flex-basis:100%;font-size:.92rem}
+.r1352-action-primary{padding-bottom:12px;border-bottom:1px solid rgba(3,69,75,.12)}
+.r1352-action-membership{margin-top:18px}
+.r1352-profile-access-hero.is-pending{padding-bottom:20px}
+.r1352-pending-card{padding:20px;border:2px solid rgba(3,110,91,.35);border-radius:16px;background:#f1fbf7;margin:0 0 18px}
+.r1352-pending-card h2,.r1352-pending-card h3{margin:.15rem 0 .4rem}
+.r1352-pending-card .fine-print{margin:.35rem 0}
+.r1352-proof-help{padding:12px 14px;border-left:3px solid rgba(3,69,75,.35);background:rgba(3,69,75,.04);margin:4px 0 14px}
+.r1352-proof-help p{margin:.3rem 0}
+.r1352-evidence-actions{display:flex;gap:10px;flex-wrap:wrap;margin:-6px 0 14px}
+.r1352-profile-access-verification-status{margin-top:10px}
+.r1352-pending-actions .button.primary{background:transparent!important;color:inherit!important;border:1px solid currentColor!important}
+@media(max-width:760px){.r1352-claim-progress{grid-template-columns:1fr 1fr}.r1352-action-group{align-items:stretch}.r1352-action-group .button{width:100%;text-align:center}}
+@media(max-width:460px){.r1352-claim-progress{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.r1352-selected-focus{scroll-behavior:auto}}

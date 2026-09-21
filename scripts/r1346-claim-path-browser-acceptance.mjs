@@ -147,7 +147,11 @@ await evaluate("document.querySelector('.r1346-profile-access-verification input
 await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
 await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
 await sleep(80);
-check('keyboard Tab advances from URL input to authorization textarea',await evaluate("document.activeElement===document.querySelector('.r1346-profile-access-verification textarea')"));
+check('keyboard Tab reaches profile website reuse action after URL input',await evaluate("document.activeElement?.textContent.trim()==='Use website already on this profile'"));
+await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
+await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
+await sleep(80);
+check('keyboard Tab then advances to authorization textarea',await evaluate("document.activeElement===document.querySelector('.r1346-profile-access-verification textarea')"));
 
 // Mobile geometry + screenshot.
 await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
@@ -161,9 +165,19 @@ await screenshot('R1346_STEP3_MOBILE.png');results.screenshots.push('R1346_STEP3
 await send('Emulation.setDeviceMetricsOverride',{width:1365,height:900,deviceScaleFactor:1,mobile:false});
 await evaluate(`(()=>{const f=document.querySelector('.r1346-profile-access-verification');const u=f.querySelector('input[type=url]');const t=f.querySelector('textarea');const c=f.querySelector('input[type=checkbox]');u.value='https://franklinnavigator.com/';t.value='Controlled acceptance fixture: authorized local product owner test with no production profile mutation.';c.checked=true;for(const x of[u,t,c])x.dispatchEvent(new Event('input',{bubbles:true}));f.requestSubmit()})()`);
 await sleep(40);
-check('verification submit shows local loading feedback',await evaluate("document.body.textContent.includes('Submitting access request…')"));
+check('verification submit shows local loading feedback',await evaluate("document.body.textContent.includes('Submitting your request. Please keep this page open.')"));
 await waitFor("document.querySelector('[data-r1346-pending-status]')!==null","pending review state");
-check('pending review is clearly visible',await evaluate("document.body.textContent.includes('waiting for review')"));
+check('pending review is clearly visible',await evaluate("document.body.textContent.includes('Waiting for review')&&document.body.textContent.includes('Access request submitted')"));
+check('pending hero is state-aware',await evaluate("document.querySelector('[data-r1352-profile-hero-title]')?.textContent==='Your management request is being reviewed.'"));
+check('Step 3 changes to Verification pending',await evaluate("document.querySelector('[data-r1346-profile-progress] [data-step=\"3\"]')?.textContent.trim()==='3 Verification pending'"));
+check('pending status appears before signed-in account section',await evaluate("(()=>{const p=document.querySelector('[data-r1346-pending-status]'),a=[...document.querySelectorAll('.r37-member-step')].find(x=>x.textContent.includes('Signed in as'));return !!p&&!!a&&p.getBoundingClientRect().top<a.getBoundingClientRect().top})()"));
+check('pending state removes verification form',await evaluate("document.querySelector('.r1346-profile-access-verification')===null"));
+check('pending state names exact profile',await evaluate("document.querySelector('[data-r1346-pending-status]')?.textContent.includes('Franklin Navigator')"));
+await navigate(BASE+'/profile-access/?profile='+encodeURIComponent(PROFILE));
+await waitFor("document.querySelector('[data-r1346-pending-status]')!==null","pending survives reload");
+check('pending request survives full reload',await evaluate("document.querySelector('[data-r1346-pending-status]')!==null && document.querySelector('.r1346-profile-access-verification')===null"));
+check('exact profile survives pending reload',await evaluate("location.search.includes('"+PROFILE+"')&&document.body.textContent.includes('Franklin Navigator')"));
+check('signed-in account survives pending reload',await evaluate("document.body.textContent.includes('controlled-fixture@franklin.invalid')"));
 check('no membership/payment API was started',await evaluate("!window.__r1346ApiCalls.some(x=>x.path==='/api/membership/start')"));
 check('Profile Center is unavailable before VERIFIED authority',await evaluate("![...document.querySelectorAll('a')].some(a=>a.getAttribute('href')?.startsWith('/profile-studio/'))"));
 check('free correction path remains available',await evaluate("[...document.querySelectorAll('a')].some(a=>a.textContent.includes('Correct public facts')&&a.getAttribute('href')?.startsWith('/corrections/'))"));

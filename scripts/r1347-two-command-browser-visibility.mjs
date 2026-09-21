@@ -56,7 +56,7 @@ await navigate('/claim-profile/?profile='+encodeURIComponent(PROFILE));
 await waitFor("document.querySelector('[data-hf310-claim-selected]')?.hidden===false","selected profile panel");
 const claim=await evaluate(`(()=>{const sec=document.querySelector('[data-hf310-claim-selected]'),actions=[...sec.querySelectorAll('a')].map(a=>({text:a.textContent.trim(),href:a.getAttribute('href'),rect:a.getBoundingClientRect().toJSON()}));return{hidden:sec.hidden,text:sec.textContent,actions,scrollW:document.documentElement.scrollWidth,viewport:innerWidth}})()`);
 check('exact-profile claim page bypasses search as normal path',!claim.hidden&&claim.text.includes('Franklin Navigator'));
-for(const label of ['Claim or manage this profile','Correct information','Request removal','Preview optional member profile'])check('selected panel visibly retains '+label,claim.actions.some(a=>a.text===label&&a.rect.width>1&&a.rect.height>1));
+for(const label of ['Claim or manage this profile','Correct information','Request removal','See Community Membership benefits'])check('selected panel visibly retains '+label,claim.actions.some(a=>a.text===label&&a.rect.width>1&&a.rect.height>1));
 check('selected panel claim action preserves exact profile',claim.actions.some(a=>a.text==='Claim or manage this profile'&&a.href.includes(PROFILE)));
 await screenshot('R1347_CLAIM_SELECTED_DESKTOP.png');result.screenshots.push('R1347_CLAIM_SELECTED_DESKTOP.png');
 

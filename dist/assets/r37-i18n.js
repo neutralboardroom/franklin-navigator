@@ -36,6 +36,9 @@
       'Upload your own image':'Subir su propia imagen',
       'Claim this profile free to upload your own photo or logo.':'Reclame este perfil gratis para subir su propia foto o logotipo.',
       'Open Profile Center':'Abrir Centro de Perfil',
+      'Open reviewer workspace':'Abrir espacio privado de revisión',
+      'Private reviewer access is available for this authorized account.':'El acceso privado de revisión está disponible para esta cuenta autorizada.',
+
       'Access request pending':'Solicitud de acceso pendiente',
       'Check access request':'Revisar solicitud de acceso',
       'Access review needed':'Se necesita revisar el acceso',
@@ -117,6 +120,39 @@
       'Check your email':'Revise su correo electrónico',
       'If an account exists for this email, password-reset instructions have been sent.':'Si existe una cuenta para este correo, se han enviado instrucciones para restablecer la contraseña.',
       'Password changed successfully.':'Contraseña cambiada correctamente.',
+      'Free profile management':'Administración gratuita del perfil',
+      'Claiming and basic profile management are free. Start with the exact business, professional practice or organization name, then sign in or create an account and verify that you manage it. Community Membership is optional.':'Reclamar y administrar un perfil básico es gratuito. Comience con el nombre exacto de la empresa, práctica profesional u organización; luego inicie sesión o cree una cuenta y verifique que la administra. La Membresía Comunitaria es opcional.',
+      'Find profile':'Buscar perfil',
+      'Sign in':'Iniciar sesión',
+      'Verify management':'Verificar administración',
+      'Verification pending':'Verificación pendiente',
+      'Manage profile':'Administrar perfil',
+      'Already have verified access? Open Profile Center.':'¿Ya tiene acceso verificado? Abra el Centro de Perfil.',
+      'Business, professional practice or organization name':'Nombre de empresa, práctica profesional u organización',
+      'Start with the exact name. Category or location can help if needed.':'Comience con el nombre exacto. La categoría o ubicación puede ayudar si es necesario.',
+      'Find my profile':'Buscar mi perfil',
+      'Exact name':'Nombre exacto',
+      'Can’t find it?':'¿No lo encuentra?',
+      'Request a free public profile':'Solicitar un perfil público gratuito',
+      'After it is available, you can verify management access for free.':'Cuando esté disponible, puede verificar el acceso de administración gratuitamente.',
+      'Profile claim and basic management are free. Factual corrections/removal are free. Community Membership is optional.':'Reclamar y administrar un perfil básico es gratuito. Las correcciones factuales y el retiro son gratuitos. La Membresía Comunitaria es opcional.',
+      'Next: sign in or create an account, then verify management. Basic profile management is free.':'Siguiente: inicie sesión o cree una cuenta y luego verifique la administración. La administración básica del perfil es gratuita.',
+      'Free alternatives':'Alternativas gratuitas',
+      'Optional':'Opcional',
+      'See Community Membership benefits':'Ver beneficios de la Membresía Comunitaria',
+      '1 matching profile found':'Se encontró 1 perfil coincidente',
+      'Your management request is being reviewed.':'Su solicitud de administración está siendo revisada.',
+      'Waiting for review':'En espera de revisión',
+      'Access request submitted':'Solicitud de acceso enviada',
+      'Franklin reviews the submitted evidence. After approval, Profile Center becomes available. No payment is required.':'Franklin revisa la evidencia enviada. Después de la aprobación, el Centro de Perfil estará disponible. No se requiere pago.',
+      'What counts as proof?':'¿Qué sirve como prueba?',
+      'Use a reliable public source showing your connection or authority, such as an official website or team page, an organization page naming your role, an official public contact channel, or another reliable public source. No website? Another official public page can be used; verification support can help with other cases.':'Use una fuente pública confiable que muestre su relación o autoridad, como un sitio web oficial o página del equipo, una página de la organización que indique su función, un canal público oficial de contacto u otra fuente pública confiable. ¿No tiene sitio web? Puede usar otra página pública oficial; el soporte de verificación puede ayudar con otros casos.',
+      'Use website already on this profile':'Usar el sitio web que ya aparece en este perfil',
+      'Submitting…':'Enviando…',
+      'Submitting your request. Please keep this page open.':'Enviando su solicitud. Mantenga esta página abierta.',
+      'We could not confirm whether your request was received. Do not submit again yet. Refresh the page or status first; if it remains unclear, contact verification support.':'No pudimos confirmar si recibimos su solicitud. No la envíe de nuevo todavía. Primero actualice la página o el estado; si sigue sin estar claro, contacte con soporte de verificación.',
+      'Help with verification':'Ayuda con la verificación',
+      'Withdraw this profile-access request? You can request access again later if you remain authorized.':'¿Retirar esta solicitud de acceso al perfil? Puede volver a solicitar acceso más adelante si sigue autorizado.',
       'You’re signed in.':'Ha iniciado sesión.',
       'Profile management is free':'La administración del perfil es gratuita'
     };
@@ -129,10 +165,15 @@
     if((m=s.match(/^Your profile-access request is waiting for review\. Last updated (.+)\.$/)))return `Su solicitud de acceso al perfil está pendiente de revisión. Última actualización: ${m[1]}.`;
     if((m=s.match(/^Verify that you manage (.+)$/)))return `Verifique que administra ${m[1]}`;
     if((m=s.match(/^Continue managing (.+)\.$/)))return `Continúe administrando ${m[1]}.`;
-    if((m=s.match(/^(✓ )?(1|2|3|4) (Exact profile|Account|Verify management|Profile Center)( — Current)?$/))){
-      const labels={'Exact profile':'Perfil exacto','Account':'Cuenta','Verify management':'Verificar administración','Profile Center':'Centro de Perfil'};
+    if((m=s.match(/^(✓ )?(1|2|3|4) (Exact profile|Account|Verify management|Verification pending|Profile Center)( — Current)?$/))){
+      const labels={'Exact profile':'Perfil exacto','Account':'Cuenta','Verify management':'Verificar administración','Verification pending':'Verificación pendiente','Profile Center':'Centro de Perfil'};
       return `${m[1]||''}${m[2]} ${labels[m[3]]}${m[4]?' — Actual':''}`;
     }
+    if((m=s.match(/^Your request to manage (.+) has been received\. Franklin will review it; Profile Center becomes available after approval\. No payment is required\.$/)))return `Su solicitud para administrar ${m[1]} ha sido recibida. Franklin la revisará; el Centro de Perfil estará disponible después de la aprobación. No se requiere pago.`;
+    if((m=s.match(/^You’re signed in\. Next, verify that you manage (.+)\.$/)))return `Ha iniciado sesión. A continuación, verifique que administra ${m[1]}.`;
+    if((m=s.match(/^Management access verified for (.+)\.$/)))return `Acceso de administración verificado para ${m[1]}.`;
+    if((m=s.match(/^Your request to manage (.+) has been received\.$/)))return `Su solicitud para administrar ${m[1]} ha sido recibida.`;
+    if((m=s.match(/^(\d+) matching profiles found$/)))return `Se encontraron ${m[1]} perfiles coincidentes`;
     if((m=s.match(/^Selected: (.+)$/)))return `Seleccionado: ${m[1]}`;
     if((m=s.match(/^Continue with (.+)$/)))return `Continuar con ${m[1].replace('/month','/mes').replace('/year','/año')}`;
     if((m=s.match(/^Explore (.+)$/)))return `Explorar ${categories[m[1]]||m[1]}`;

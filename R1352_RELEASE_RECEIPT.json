@@ -1,0 +1,49 @@
+{
+  "receiptType": "LOCAL_RELEASE_CANDIDATE_RECEIPT",
+  "release": "FR-NAV1.30.52-HF3.13.34",
+  "status": "CANDIDATE_PENDING_FINAL_EXACT_HEAD_QUALIFICATION",
+  "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "predecessor": {
+    "release": "FR-NAV1.30.51-HF3.13.33",
+    "mainCommit": "53dfb8acabe2bbdbc2dfa6f58f8c421ebdb36112",
+    "artifactSha256": "c93dbe94a04badd99fbb4caddf7e1130019a1fdb9fec368cbba3126f1185c391",
+    "manifestSha256": "aaa7d9e02973e47c2d6fc09337e2bcd8d3def90b7adc170315a4ad088c71ba54"
+  },
+  "runtime": {
+    "branch": "r1352-reviewer-runtime-20260921",
+    "commit": "ed1b198461769c63e91f15049cd750c9c7f3d298",
+    "releaseEnv": "FR-NAV1.30.52-HF3.13.34",
+    "functionalChanges": true,
+    "workflowRun": 35559487423,
+    "tests": {
+      "inherited": {
+        "total": 48,
+        "pass": 48,
+        "fail": 0,
+        "skipped": 0
+      },
+      "r1352Reviewer": {
+        "total": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "publicCandidateBranch": "r1352-owner-profile-access-review-20260921",
+  "completed": [
+    "claim/search clarity and free-management boundary",
+    "state-aware verification and pending journey",
+    "pending reload/exact-profile/account continuity",
+    "private reviewer queue/detail/discoverability improvements",
+    "approve/request-more-information/reject path preservation",
+    "runtime release binding to R1352"
+  ],
+  "sccAccepted": false,
+  "sccCanonicalCurrent": false,
+  "deterministicArtifact": "PENDING_FINAL_CURRENT_SUCCESSOR_WORKFLOW",
+  "deployment": "NOT_YET_PERFORMED",
+  "ownerActionRequiredBeforeSourceQualification": "NONE"
+}
