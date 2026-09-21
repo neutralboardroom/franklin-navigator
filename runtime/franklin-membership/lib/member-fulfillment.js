@@ -5,8 +5,8 @@ const path=require('node:path');
 const crypto=require('node:crypto');
 const net=require('node:net');
 const {loadProfileScope}=require('./profile-scope');
-// R1339: preserve R1338 claim consent/recovery/release behavior while advancing the bound runtime release identity.
-const VERSION='FRANKLIN_MEMBER_FULFILLMENT_HF3_6';
+// R1352: preserve existing claim authority while completing the private reviewer handoff and queue context.
+const VERSION='FRANKLIN_MEMBER_FULFILLMENT_HF3_7';
 const COMMUNITY='FRANKLIN_TN';
 const digest=x=>crypto.createHash('sha256').update(x).digest('hex');
 const fail=(code,status=400)=>{throw Object.assign(new Error(code),{code,status});};
