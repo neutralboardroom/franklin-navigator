@@ -23,5 +23,5 @@ Release target: `FR-NAV1.30.52-HF3.13.34`
 
 ## Qualification evidence already observed
 - R1352 static claim/review workflow: PASS on combined candidate head before final release metadata binding.
-- Runtime workflow run `35559209190`: 48/48 inherited runtime tests PASS; 3/3 R1352 reviewer tests PASS.
+- Runtime workflow run `35559487423`: 48/48 inherited runtime tests PASS; 3/3 R1352 reviewer tests PASS.
 - No pricing, payment, entitlement, profile-fact, Profile Factory, Local Investigator, Smarter Justice, or outreach authority change.
