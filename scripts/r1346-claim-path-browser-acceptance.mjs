@@ -168,7 +168,7 @@ await sleep(40);
 check('verification submit shows local loading feedback',await evaluate("document.body.textContent.includes('Submitting your request. Please keep this page open.')"));
 await waitFor("document.querySelector('[data-r1346-pending-status]')!==null","pending review state");
 check('pending review is clearly visible',await evaluate("document.body.textContent.includes('Waiting for review')&&document.body.textContent.includes('Access request submitted')"));
-check('pending hero is state-aware',await evaluate("document.querySelector('[data-r1352-profile-hero-title]')?.textContent==='Your management request is being reviewed.'"));
+check('pending hero is state-aware',await evaluate("document.querySelector('[data-r1352-profile-hero-title]')?.textContent==='Access request submitted.'"));
 check('Step 3 changes to Verification pending',await evaluate("document.querySelector('[data-r1346-profile-progress] [data-step=\"3\"]')?.textContent.trim()==='3 Verification pending'"));
 check('pending status appears before signed-in account section',await evaluate("(()=>{const p=document.querySelector('[data-r1346-pending-status]'),a=[...document.querySelectorAll('.r37-member-step')].find(x=>x.textContent.includes('Signed in as'));return !!p&&!!a&&p.getBoundingClientRect().top<a.getBoundingClientRect().top})()"));
 check('pending state removes verification form',await evaluate("document.querySelector('.r1346-profile-access-verification')===null"));
