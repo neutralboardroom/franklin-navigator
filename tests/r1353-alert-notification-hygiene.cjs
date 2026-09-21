@@ -11,6 +11,7 @@ for(const field of ['fingerprint_sha256','affected_path','http_method','failure_
 }
 assert.ok(page.includes('data-summary-policy'),'owner console missing notification policy summary');
 assert.ok(owner.includes('alertCooldownMinutes'),'owner console missing cooldown policy');
+assert.ok(owner.includes('humanCode'),'owner console missing human-readable incident titles');
 assert.ok(workflow.includes('concurrency:'),'broad qualifier missing concurrency');
 assert.ok(workflow.includes('cancel-in-progress: true'),'broad qualifier must cancel superseded runs');
 assert.ok(workflow.includes('pull_request:'),'final PR qualification remains enabled');
