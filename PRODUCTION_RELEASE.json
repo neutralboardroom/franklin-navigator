@@ -3400,6 +3400,14 @@
     "noLocalInvestigatorFactMutation": true,
     "noOutreach": true,
     "sccAccepted": false,
-    "sccCanonicalCurrent": false
+    "sccCanonicalCurrent": false,
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1354"
+    }
   }
 }
