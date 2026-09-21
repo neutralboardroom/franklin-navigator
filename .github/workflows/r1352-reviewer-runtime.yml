@@ -1,7 +1,7 @@
 name: R1352 reviewer runtime
 on:
   push:
-    branches: [r1352-member-review-runtime-20260921]
+    branches: [r1352-reviewer-runtime-20260921]
   pull_request:
     branches: [franklin-commerce-runtime-r30]
     paths:
