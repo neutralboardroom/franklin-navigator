@@ -19,7 +19,7 @@ test('blocked origin stays enforced but is reclassified as normal security evide
   const server=fs.readFileSync('server.js','utf8');
   assert.match(server,/ORIGIN_NOT_ALLOWED/);
   assert.match(server,/!ALLOWED_ORIGINS\.has\(origin\)/);
-  assert.doesNotMatch(server,/Access-Control-Allow-Origin',['\*']);
+  assert.ok(!server.includes("Access-Control-Allow-Origin','*"));
 });
 
 test('fingerprint dimensions preserve route method cause component and release evidence',()=>{
