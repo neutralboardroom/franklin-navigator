@@ -92,3 +92,14 @@ What is working and should be preserved:
 Add for next version:
 24. Remove the duplicated **Back to sign in** and **Can’t access your email? Get account help** actions. They currently appear both above and below the confirmation card. Keep one action row, preferably below the confirmation message.
 25. Keep the success state focused on the single next action: check email and use the secure reset link.
+
+
+## Page review note — Full Password Reset Success Page
+Reviewed 2026-09-21 from complete live-page screenshots.
+
+Additional next-version improvements:
+26. Remove the duplicate success message at the top of the page when the green **Check your email** card already communicates the same state. Keep one primary confirmation area.
+27. After reset instructions are sent, collapse or replace the original reset form rather than leaving recovery-step framing above the success state. The page should become a clean completion state focused on **Check your email**.
+28. Keep only one **Back to sign in** / **Can’t access your email? Get account help** action row on the success state.
+29. For reviewer-origin password recovery, return users to reviewer sign-in after reset completion rather than a generic sign-in destination whenever the recovery context can be preserved safely.
+30. Preserve generic privacy-safe wording and never reveal whether the submitted email is registered.
