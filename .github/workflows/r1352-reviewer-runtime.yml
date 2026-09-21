@@ -1,0 +1,42 @@
+name: R1352 private reviewer and claim authority runtime
+on:
+  pull_request:
+    branches: [franklin-commerce-runtime-r30]
+    paths:
+      - 'server.js'
+      - 'lib/member-fulfillment.js'
+      - 'lib/reviewer-console.js'
+      - 'review/**'
+      - 'test/r1352-reviewer-queue.test.js'
+      - '.github/workflows/r1352-reviewer-runtime.yml'
+  push:
+    branches: [r1352-membership-review-runtime-20260921]
+permissions:
+  contents: read
+jobs:
+  runtime-review-path:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install locked runtime dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Runtime syntax and regression suite
+        run: |
+          set -euo pipefail
+          npm run check
+          npm test
+      - name: R1352 private-review boundary checks
+        run: |
+          set -euo pipefail
+          node --test test/r1352-reviewer-queue.test.js
+          grep -F "reviewerAccessForAccount" lib/reviewer-console.js
+          grep -F "pendingCount" lib/reviewer-console.js
+          grep -F "requesterEmail" lib/reviewer-console.js
+          grep -F "window.confirm(confirmText)" review/app.js
