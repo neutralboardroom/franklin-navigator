@@ -1,18 +1,37 @@
-name: FR-NAV1.30.8 issue monitoring acceptance
+name: Franklin issue monitoring and alert hygiene acceptance
 on:
   push:
-    branches: [franklin-commerce-runtime-r30]
+    branches: [franklin-commerce-runtime-r30, r1353-alert-storm-runtime-20260921]
     paths:
       - 'server.js'
       - 'lib/incident-monitor.js'
       - 'schema/005_issue_monitoring.sql'
       - 'acceptance/issue-monitoring.integration.cjs'
+      - 'test/r1353-alert-hygiene.test.js'
       - 'acceptance/owner-review-setup.integration.cjs'
       - 'acceptance/owner-first-value-reconcile.integration.cjs'
+      - '.github/workflows/r1308-issue-monitoring.yml'
+  pull_request:
+    branches: [franklin-commerce-runtime-r30]
+    paths:
+      - 'server.js'
+      - 'lib/incident-monitor.js'
+      - 'render.yaml'
+      - '.env.example'
+      - 'package.json'
+      - 'test/profile-claim-management.test.js'
+      - 'test/r1346-claim-path-contract.test.js'
+      - 'test/r1353-alert-hygiene.test.js'
+      - 'acceptance/issue-monitoring.integration.cjs'
       - '.github/workflows/r1308-issue-monitoring.yml'
   workflow_dispatch:
 permissions:
   contents: read
+
+concurrency:
+  group: franklin-issue-monitoring-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-test:
     runs-on: ubuntu-latest
@@ -46,11 +65,13 @@ jobs:
           node --check server.js
           node --check lib/incident-monitor.js
           test -f schema/005_issue_monitoring.sql
-          grep -F "const VERSION='FRANKLIN_ISSUE_MONITOR_2'" lib/incident-monitor.js
+          grep -F "const VERSION='FRANKLIN_ISSUE_MONITOR_3'" lib/incident-monitor.js
           grep -F "EXTERNAL_CONFIG_REQUIRED" schema/005_issue_monitoring.sql
           grep -F "SRE_OWNER_CONSOLE_ISSUE_HANDOFF_V1" server.js
       - name: Existing runtime unit tests
         run: npm test
+      - name: R1353 alert lifecycle decision tests
+        run: node --test test/r1353-alert-hygiene.test.js
       - name: R1308 issue monitoring HTTP acceptance
         run: |
           mkdir -p evidence/r1308
@@ -77,7 +98,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: FR-NAV1.30.8-HF3.12.0-acceptance-evidence
+          name: FR-NAV1.30.53-HF3.13.35-alert-hygiene-evidence
           path: evidence/r1308
           if-no-files-found: warn
           retention-days: 30
