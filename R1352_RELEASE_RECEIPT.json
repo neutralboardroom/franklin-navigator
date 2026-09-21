@@ -13,10 +13,10 @@
   },
   "runtime": {
     "branch": "r1352-reviewer-runtime-20260921",
-    "commit": "3602304e030a8f29a0b7a3cdd9e99d20b106b079",
+    "commit": "ed1b198461769c63e91f15049cd750c9c7f3d298",
     "releaseEnv": "FR-NAV1.30.52-HF3.13.34",
     "functionalChanges": true,
-    "workflowRun": 35559209190,
+    "workflowRun": 35559487423,
     "tests": {
       "inherited": {
         "total": 48,
