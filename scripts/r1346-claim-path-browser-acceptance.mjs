@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import {spawn,spawnSync} from 'node:child_process';
 
 const PROFILE='FR-ORG-b00c0ace7943973c';
-const BASE=process.env.R1346_BROWSER_BASE||'http://127.0.0.1:4173';
+const BASE='http://127.0.0.1:4173';
 const evidenceDir='.r1346-browser-evidence';
 fs.mkdirSync(evidenceDir,{recursive:true});
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -42,7 +42,7 @@ let seq=0;const pending=new Map();
 ws.addEventListener('message',e=>{const m=JSON.parse(String(e.data));if(m.id&&pending.has(m.id)){const {resolve,reject}=pending.get(m.id);pending.delete(m.id);if(m.error)reject(new Error(m.error.message));else resolve(m.result)}});
 const send=(method,params={})=>new Promise((resolve,reject)=>{const id=++seq;pending.set(id,{resolve,reject});ws.send(JSON.stringify({id,method,params}))});
 const evaluate=async expression=>{const r=await send('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true,userGesture:true});if(r.exceptionDetails)throw new Error('Evaluate failed: '+JSON.stringify(r.exceptionDetails));return r.result?.value};
-async function waitFor(expression,label,timeout=10000){const started=Date.now();while(Date.now()-started<timeout){try{if(await evaluate(expression))return}catch{}await sleep(100)}let debug={};try{debug=await evaluate("({url:location.href,body:(document.body?.innerText||'').slice(0,4000),errors:window.__r1346Errors||[]})")}catch{}throw new Error('Timeout waiting for '+label+' '+JSON.stringify(debug))}
+async function waitFor(expression,label,timeout=10000){const started=Date.now();while(Date.now()-started<timeout){try{if(await evaluate(expression))return}catch{}await sleep(100)}throw new Error('Timeout waiting for '+label)}
 async function navigate(url){await send('Page.navigate',{url});await waitFor("document.readyState==='complete'","document ready",10000);await sleep(120)}
 async function screenshot(name){const r=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,fromSurface:true});fs.writeFileSync(evidenceDir+'/'+name,Buffer.from(r.data,'base64'))}
 const check=(name,ok,detail='')=>{results.checks.push({name,pass:Boolean(ok),detail});if(!ok)throw new Error(name+(detail?': '+detail:''))};
@@ -55,9 +55,7 @@ const mock=`(()=>{
   const nativeFetch=window.fetch.bind(window);
   const response=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'Content-Type':'application/json'}});
   const delay=ms=>new Promise(r=>setTimeout(r,ms));
-  window.__r1346ApiCalls=[];window.__r1346Errors=[];
-  addEventListener('error',e=>window.__r1346Errors.push(String(e.message||e.error||'window error')));
-  addEventListener('unhandledrejection',e=>window.__r1346Errors.push(String(e.reason?.message||e.reason||'unhandled rejection')));
+  window.__r1346ApiCalls=[];
   window.fetch=async(input,init={})=>{
     const u=new URL(typeof input==='string'?input:input.url,location.href);
     if(u.origin!==API)return nativeFetch(input,init);
@@ -171,6 +169,7 @@ check('Step 3 changes to Verification pending',await evaluate("document.querySel
 check('pending status appears before signed-in account section',await evaluate("(()=>{const p=document.querySelector('[data-r1346-pending-status]'),a=[...document.querySelectorAll('.r37-member-step')].find(x=>x.textContent.includes('Signed in as'));return !!p&&!!a&&p.getBoundingClientRect().top<a.getBoundingClientRect().top})()"));
 check('pending state removes verification form',await evaluate("document.querySelector('.r1346-profile-access-verification')===null"));
 check('pending state names exact profile',await evaluate("document.querySelector('[data-r1346-pending-status]')?.textContent.includes('Franklin Navigator')"));
+window.__unused=0;
 await navigate(BASE+'/profile-access/?profile='+encodeURIComponent(PROFILE));
 await waitFor("document.querySelector('[data-r1346-pending-status]')!==null","pending survives reload");
 check('pending request survives full reload',await evaluate("document.querySelector('[data-r1346-pending-status]')!==null && document.querySelector('.r1346-profile-access-verification')===null"));
