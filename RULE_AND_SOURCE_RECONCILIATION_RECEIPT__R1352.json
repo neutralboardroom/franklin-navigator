@@ -26,10 +26,13 @@
     "authorityTransfer": false
   },
   "runtimeCandidate": {
-    "branch": "r1352-reviewer-runtime-20260921",
-    "commit": "ed1b198461769c63e91f15049cd750c9c7f3d298",
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "f31a23a9440450a7172bad18657785c99ccf3dc8",
+    "merged": true,
+    "deployId": "dep-daoapd992vdc73attcug",
+    "deployState": "LIVE",
     "releaseEnv": "FR-NAV1.30.52-HF3.13.34",
-    "exactHeadWorkflowRun": 35559487423,
+    "exactHeadWorkflowRun": 35558663454,
     "existingRuntimeTests": {
       "total": 48,
       "pass": 48,
@@ -45,13 +48,14 @@
   },
   "publicCandidate": {
     "branch": "r1352-owner-profile-access-review-20260921",
-    "r1352WorkflowRunObservedGreen": 35559220069,
-    "exactFinalHeadQualification": "REQUIRED_AFTER_RELEASE_METADATA_BINDING"
+    "r1352WorkflowRunObservedGreen": 35561670327,
+    "exactFinalHeadQualification": "REQUIRED_AFTER_THIS_RECEIPT_REFRESH",
+    "currentSuccessorWorkflowRunObservedGreen": 35561670350
   },
   "smarterJusticeDonor": "NOT_USED",
   "profileFactoryAuthorityPreserved": true,
   "localInvestigatorAuthorityPreserved": true,
   "pricingChanged": false,
   "paymentOrEntitlementChanged": false,
-  "result": "PASS_FOR_IMPLEMENTATION; FINAL_PRE_SEAL_CURRENTNESS_STILL_REQUIRED"
+  "result": "PASS_FOR_FINAL_RECEIPT_REFRESHED_EXACT_HEAD_QUALIFICATION"
 }
