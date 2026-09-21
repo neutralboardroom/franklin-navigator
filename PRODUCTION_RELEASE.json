@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.54-HF3.13.36",
+  "release": "FR-NAV1.30.55-HF3.13.37",
   "date": "2026-09-21",
-  "base": "FR-NAV1.30.53-HF3.13.35",
+  "base": "FR-NAV1.30.54-HF3.13.36",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1354 adds authoritative annual paid Community Member recognition, historical participation years, a stable public verification experience, private confirmed mailing-address handling, and idempotent one-per-year window-decal fulfillment eligibility while preserving free/basic profile management and all R1353 monitoring safeguards.",
+  "scope": "R1355 completes the reviewed Franklin profile-access, account-recovery, reviewer-authentication, and reviewer-password-reset simplification: no first-sign-in confirmation-code field, one canonical Franklin password policy, context-aware secure emailed reset links, exact-profile/reviewer return continuity, accessible password visibility controls, simplified completion states, and authorized-account reviewer step-up while preserving free profile management and all prior no-regression safeguards.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -3337,5 +3337,69 @@
       "darkSemanticSurfaceReadabilityGuard": true,
       "inheritedFrom": "R1353"
     }
+  },
+  "r1355": {
+    "version": "FR-NAV1.30.55-HF3.13.37",
+    "date": "2026-09-21",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_PUBLIC_EXACT_HEAD_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.54-HF3.13.36",
+      "mainCommit": "980abff09a5460d50694f6dd177489e282ab671a",
+      "qualified": true,
+      "deployedLive": true
+    },
+    "materialScope": "PROFILE_PATH_ACCOUNT_RECOVERY_AND_REVIEWER_AUTH_SIMPLIFICATION",
+    "profilePathReviewSource": "NEXT_VERSION_IMPROVEMENT_LIST__PROFILE_PATH_REVIEW__2026-09-21.md",
+    "materialImprovements": [
+      "Reviewer sign-in remains email and password only; the first-sign-in confirmation-code field stays removed.",
+      "Reviewer authentication now consumes the same canonical Franklin password minimum as registration and account recovery.",
+      "Password recovery remains a secure emailed single-use link flow and no longer asks users to copy confirmation codes.",
+      "Reviewer-origin recovery returns to reviewer sign-in after reset instead of sending the user through an unrelated profile-access destination.",
+      "Profile-origin recovery preserves exact-profile context; generic recovery uses generic account language.",
+      "The token fragment is removed from the visible recovery URL immediately after capture, while the reset token remains only in memory for the reset submission.",
+      "New-password fields include accessible show/hide controls.",
+      "Recovery sending, confirmation, and completion states avoid duplicated action rows and duplicated progress/success messaging.",
+      "Authorized users entering reviewer access from an already signed-in Franklin account carry their account identity into a password-only step-up experience.",
+      "Password-reset email now includes a branded HTML primary reset button while preserving text fallback and single-use expiry semantics."
+    ],
+    "securityBoundaries": [
+      "Profile invitation inbox control does not itself grant profile-management authority.",
+      "Successful password reset restores an ordinary Franklin account session only; reviewer privilege still requires explicit reviewer sign-in.",
+      "Prior ordinary and reviewer sessions are invalidated before the fresh post-reset ordinary session is issued.",
+      "Password-reset responses remain account-enumeration safe.",
+      "Reviewer sessions remain short-lived and reviewer decisions remain audit-recorded."
+    ],
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "04269646ac5b841077a1e10a66f50ad9d914a473",
+      "deploy": "dep-daokmt6k1f9s73cfev1g",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.55-HF3.13.37",
+      "runtimeTests": {
+        "passed": 79,
+        "failed": 0
+      }
+    },
+    "public": {
+      "branch": "main",
+      "qualification": "PENDING_EXACT_HEAD_WORKFLOW",
+      "deployment": "PENDING_AFTER_QUALIFICATION"
+    },
+    "commercial": {
+      "communityMembershipAnnualUsd": 35,
+      "changed": false,
+      "basicProfileManagementFree": true,
+      "factualCorrectionsRemovalFree": true
+    },
+    "noResidentFeatureRemoval": true,
+    "noProfileFactChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noLocalInvestigatorFactMutation": true,
+    "noOutreach": true,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false
   }
 }
