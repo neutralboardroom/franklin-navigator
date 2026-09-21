@@ -22,7 +22,7 @@ const {loadControlProfileRegistry,productionProfileRows}=require('./lib/member-p
 const CHECKOUT_SAFETY_VERSION='FRANKLIN_CHECKOUT_SAFETY_1';
 const ISSUE_MONITOR_MIGRATION='FRANKLIN_ISSUE_MONITOR_1';
 
-const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.54-HF3.13.36';
+const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.55-HF3.13.37';
 const SCHEMA_VERSION = 'FRANKLIN_COMMERCE_SCHEMA_2';
 const PORT = Number(process.env.PORT || 10000);
 const PUBLIC_ORIGIN = String(process.env.PUBLIC_ORIGIN || 'https://franklinnavigator.com').replace(/\/$/, '');
@@ -99,9 +99,10 @@ const resetEmailConfig=Object.freeze({
   apiKey:String(process.env.FRANKLIN_ACCOUNT_RECOVERY_RESEND_API_KEY||process.env.FRANKLIN_ALERT_RESEND_API_KEY||process.env.RESEND_API_KEY||'').trim(),
   from:String(process.env.FRANKLIN_ACCOUNT_RECOVERY_FROM_EMAIL||process.env.FRANKLIN_ALERT_FROM_EMAIL||'').trim()
 });
-async function sendPasswordResetEmail(email,token,profileId){
+async function sendPasswordResetEmail(email,token,profileId,returnMode){
   if(!/^re_[A-Za-z0-9_\-]{12,}$/.test(resetEmailConfig.apiKey)||!EMAIL_RE.test(resetEmailConfig.from))throw Object.assign(new Error('PASSWORD_RESET_EMAIL_NOT_CONFIGURED'),{code:'PASSWORD_RESET_EMAIL_NOT_CONFIGURED'});
   const target=new URL('/account-recovery/',PUBLIC_ORIGIN);
+  if(returnMode==='reviewer')target.searchParams.set('return','reviewer');
   const fragment=new URLSearchParams({token:String(token||'')});
   if(PROFILE_RE.test(String(profileId||''))&&Object.hasOwn(profileNames,String(profileId)))fragment.set('profile',String(profileId));
   const resetUrl=target.toString()+'#'+fragment.toString();
@@ -109,10 +110,11 @@ async function sendPasswordResetEmail(email,token,profileId){
     method:'POST',
     headers:{Authorization:'Bearer '+resetEmailConfig.apiKey,'Content-Type':'application/json'},
     body:JSON.stringify({
-      from:resetEmailConfig.from,
+      from:`Franklin Navigator <${resetEmailConfig.from}>`,
       to:[email],
       subject:'Reset your Franklin Navigator password',
-      text:['Franklin Navigator password reset','',`Use this secure link within 30 minutes: ${resetUrl}`,'','If you did not request this reset, you can ignore this email. Franklin Navigator will never send your password by email.'].join('\n')
+      text:['Franklin Navigator password reset','',`Open your secure one-time reset link within 30 minutes: ${resetUrl}`,'','If you did not request this reset, you can safely ignore this email. Franklin Navigator will never send your password by email.'].join('\n'),
+      html:`<!doctype html><html><body style="font-family:Arial,sans-serif;color:#162638;line-height:1.5"><div style="max-width:620px;margin:auto;padding:24px"><h1 style="font-size:24px">Reset your Franklin Navigator password</h1><p>Use the secure button below within 30 minutes. The link is single-use.</p><p><a href="${resetUrl.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" style="display:inline-block;background:#0b6f73;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Reset your password</a></p><p>If you didn’t request this reset, you can safely ignore this email.</p><p style="font-size:14px;color:#465766">Franklin Navigator will never send your password by email.</p></div></body></html>`
     }),
     signal:AbortSignal.timeout(8000)
   });
