@@ -42,7 +42,7 @@ let seq=0;const pending=new Map();
 ws.addEventListener('message',e=>{const m=JSON.parse(String(e.data));if(m.id&&pending.has(m.id)){const {resolve,reject}=pending.get(m.id);pending.delete(m.id);if(m.error)reject(new Error(m.error.message));else resolve(m.result)}});
 const send=(method,params={})=>new Promise((resolve,reject)=>{const id=++seq;pending.set(id,{resolve,reject});ws.send(JSON.stringify({id,method,params}))});
 const evaluate=async expression=>{const r=await send('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true,userGesture:true});if(r.exceptionDetails)throw new Error('Evaluate failed: '+JSON.stringify(r.exceptionDetails));return r.result?.value};
-async function waitFor(expression,label,timeout=10000){const started=Date.now();while(Date.now()-started<timeout){try{if(await evaluate(expression))return}catch{}await sleep(100)}throw new Error('Timeout waiting for '+label)}
+async function waitFor(expression,label,timeout=10000){const started=Date.now();while(Date.now()-started<timeout){try{if(await evaluate(expression))return}catch{}await sleep(100)}let debug={};try{debug=await evaluate("({url:location.href,body:(document.body?.innerText||'').slice(0,4000),errors:window.__r1346Errors||[]})")}catch{}throw new Error('Timeout waiting for '+label+' '+JSON.stringify(debug))}
 async function navigate(url){await send('Page.navigate',{url});await waitFor("document.readyState==='complete'","document ready",10000);await sleep(120)}
 async function screenshot(name){const r=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,fromSurface:true});fs.writeFileSync(evidenceDir+'/'+name,Buffer.from(r.data,'base64'))}
 const check=(name,ok,detail='')=>{results.checks.push({name,pass:Boolean(ok),detail});if(!ok)throw new Error(name+(detail?': '+detail:''))};
@@ -55,7 +55,9 @@ const mock=`(()=>{
   const nativeFetch=window.fetch.bind(window);
   const response=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'Content-Type':'application/json'}});
   const delay=ms=>new Promise(r=>setTimeout(r,ms));
-  window.__r1346ApiCalls=[];
+  window.__r1346ApiCalls=[];window.__r1346Errors=[];
+  addEventListener('error',e=>window.__r1346Errors.push(String(e.message||e.error||'window error')));
+  addEventListener('unhandledrejection',e=>window.__r1346Errors.push(String(e.reason?.message||e.reason||'unhandled rejection')));
   window.fetch=async(input,init={})=>{
     const u=new URL(typeof input==='string'?input:input.url,location.href);
     if(u.origin!==API)return nativeFetch(input,init);
