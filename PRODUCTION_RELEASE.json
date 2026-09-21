@@ -2858,7 +2858,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CANDIDATE_PENDING_EXACT_HEAD_QUALIFICATION",
+    "state": "QUALIFIED_PRESEAL_PENDING_RECEIPT_REFRESHED_EXACT_HEAD",
     "predecessor": {
       "version": "FR-NAV1.30.51-HF3.13.33",
       "mainCommit": "53dfb8acabe2bbdbc2dfa6f58f8c421ebdb36112",
@@ -2942,13 +2942,13 @@
     "sccCanonicalCurrent": false,
     "smarterJusticeDonor": "NOT_USED",
     "runtime": {
-      "branch": "r1352-reviewer-runtime-20260921",
-      "commit": "ed1b198461769c63e91f15049cd750c9c7f3d298",
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "f31a23a9440450a7172bad18657785c99ccf3dc8",
       "releaseEnv": "FR-NAV1.30.52-HF3.13.34",
       "targetReleaseEnv": "FR-NAV1.30.52-HF3.13.34",
       "functionalChanges": true,
       "identityOnly": false,
-      "exactHeadWorkflowRun": 35559487423,
+      "exactHeadWorkflowRun": 35558663454,
       "tests": {
         "inherited": {
           "total": 48,
@@ -2963,13 +2963,16 @@
           "skipped": 0
         }
       },
-      "memberFulfillmentVersion": "FRANKLIN_MEMBER_FULFILLMENT_HF3_7"
+      "memberFulfillmentVersion": "FRANKLIN_MEMBER_FULFILLMENT_HF3_7",
+      "deploy": "dep-daoapd992vdc73attcug",
+      "deployState": "LIVE",
+      "merged": true
     },
     "qualification": {
-      "result": "PENDING_FINAL_EXACT_HEAD_WORKFLOWS",
-      "r1352ClaimReviewLatestKnownPass": 35559220069,
-      "runtimeExactHeadWorkflowRun": 35559487423,
-      "runtimeResult": "SUCCESS",
+      "result": "PASS_BEFORE_FINAL_RECEIPT_REFRESH_REQUALIFICATION_REQUIRED",
+      "r1352ClaimReviewLatestKnownPass": 35561670327,
+      "runtimeExactHeadWorkflowRun": 35558663454,
+      "runtimeResult": "SUCCESS_LIVE",
       "requiredTests": [
         "tests/r1352-claim-review-path.cjs",
         "tests/r1346-claim-path-outreach-readiness.cjs",
@@ -2981,7 +2984,8 @@
       ],
       "deterministicDoubleBuild": "REQUIRED",
       "freshExtraction": "REQUIRED",
-      "wholeSiteNoRegressionNoBurial": "REQUIRED"
+      "wholeSiteNoRegressionNoBurial": "REQUIRED",
+      "currentSuccessorLatestKnownPass": 35561670350
     },
     "receipts": [
       "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1352.json",
