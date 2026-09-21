@@ -1,0 +1,32 @@
+name: R1352 reviewer runtime
+on:
+  push:
+    branches: [r1352-member-review-runtime-20260921]
+  pull_request:
+    branches: [franklin-commerce-runtime-r30]
+    paths:
+      - 'lib/member-fulfillment.js'
+      - 'lib/reviewer-console.js'
+      - 'review/**'
+      - 'server.js'
+      - 'test/r1352-reviewer-queue.test.js'
+      - '.github/workflows/r1352-reviewer-runtime.yml'
+permissions:
+  contents: read
+jobs:
+  reviewer-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: node test/r1352-reviewer-queue.test.js
