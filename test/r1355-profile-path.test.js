@@ -29,7 +29,7 @@ test('R1355 reviewer sign-in has no first-sign-in email code dependency',()=>{
 
 test('R1355 reviewer recovery hands off to secure public link recovery',()=>{
   assert.match(resetHtml,/account-recovery\/\?return=reviewer/);
-  assert.doesNotMatch(resetHtml,/confirmation code/i);
+  assert.doesNotMatch(resetHtml,/email-code|one-time-code|name="emailCode"/i);
   assert.match(resetJs,/franklinReviewerOriginProfile/);
   assert.match(resetJs,/return','reviewer/);
 });
