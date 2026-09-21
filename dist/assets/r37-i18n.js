@@ -177,11 +177,11 @@
       'Profile management is free':'La administración del perfil es gratuita'
     };
     if(fixed[s])return fixed[s];
+    let m;
     if((m=s.match(/^(\d{4}) Community Member$/)))return `${m[1]} Miembro de la Comunidad`;
     if((m=s.match(/^Past Community Member — (\d{4})$/)))return `Miembro anterior de la Comunidad — ${m[1]}`;
     if((m=s.match(/^Participation years: (.+)$/)))return `Años de participación: ${m[1]}`;
     if((m=s.match(/^Current Community Membership: (active|not active)$/)))return `Membresía Comunitaria actual: ${m[1]==='active'?'activa':'no activa'}`;
-    let m;
     if((m=s.match(/^Open profile photo (\d+) of (\d+)$/)))return `Abrir foto del perfil ${m[1]} de ${m[2]}`;
     if((m=s.match(/^Signed in as (.+)\.$/)))return `Sesión iniciada como ${m[1]}.`;
     if((m=s.match(/^Management access verified (.+)\.$/)))return `Acceso de administración verificado ${m[1]}.`;
