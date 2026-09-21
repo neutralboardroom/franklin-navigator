@@ -21,6 +21,7 @@ function harness(options={}){
       if(sql.startsWith('update franklin_accounts set password_hash')){return {rows:[],rowCount:1};}
       if(sql.startsWith('update franklin_recovery_tokens set consumed_at=now()')){const row=tokens.get(vals[0]);if(row)row.consumed_at=new Date();return {rows:[],rowCount:row?1:0};}
       if(sql.startsWith('delete from franklin_sessions')){sessions.length=0;return {rows:[],rowCount:1};}
+      if(sql.startsWith('delete from franklin_review_sessions'))return {rows:[],rowCount:1};
       if(sql.startsWith('insert into franklin_audit_log'))return {rows:[],rowCount:1};
       throw new Error('unexpected tx query '+sql);
     }}),
