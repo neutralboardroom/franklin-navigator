@@ -16,6 +16,9 @@ on:
     branches: [r1352-reviewer-runtime-20260921]
 permissions:
   contents: read
+concurrency:
+  group: franklin-reviewer-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   runtime-review-path:
     runs-on: ubuntu-24.04
