@@ -36,17 +36,17 @@ const evaluate=async expression=>{const r=await send('Runtime.evaluate',{express
 async function waitFor(expr,label,timeout=12000){const t=Date.now();while(Date.now()-t<timeout){try{if(await evaluate(expr))return}catch{}await sleep(120)}throw new Error('Timeout waiting for '+label)}
 async function navigate(path){await send('Page.navigate',{url:BASE+path});await waitFor("document.readyState==='complete'","document ready");await sleep(250)}
 async function screenshot(name){const r=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,fromSurface:true});fs.writeFileSync(dir+'/'+name,Buffer.from(r.data,'base64'))}
-const result={release:'FR-NAV1.30.47-HF3.13.29',profileId:PROFILE,checks:[],screenshots:[],result:'IN_PROGRESS'};
+const result={release:'FR-NAV1.30.55-HF3.13.37',profileId:PROFILE,checks:[],screenshots:[],result:'IN_PROGRESS'};
 const check=(name,ok,detail='')=>{result.checks.push({name,pass:Boolean(ok),detail});if(!ok)throw new Error(name+(detail?': '+detail:''))};
 await send('Page.enable');await send('Runtime.enable');await send('Emulation.setDeviceMetricsOverride',{width:1365,height:900,deviceScaleFactor:1,mobile:false});
 
 // Public profile: claim is visible/prominent; correction route not buried; official indicator truthful.
 await navigate('/profiles/'+PROFILE+'/');
-await waitFor("[...document.querySelectorAll('a')].some(a=>a.textContent.trim()==='Claim or manage this profile')","public claim CTA");
-const pub=await evaluate(`(()=>{const links=[...document.querySelectorAll('a')],claim=links.find(a=>a.textContent.trim()==='Claim or manage this profile'),correct=links.find(a=>/Review|Correct|correct/i.test(a.textContent)),official=[...document.querySelectorAll('*')].find(n=>n.textContent?.trim()==='Official Franklin Navigator profile');const vis=n=>{if(!n)return false;const r=n.getBoundingClientRect(),s=getComputedStyle(n);return r.width>1&&r.height>1&&s.display!=='none'&&s.visibility!=='hidden'};return{claim:vis(claim),claimHref:claim?.getAttribute('href'),claimClass:claim?.className,correct:vis(correct),official:vis(official),claimRect:claim?claim.getBoundingClientRect().toJSON():null}})()`);
-check('public Claim/manage is visibly rendered',pub.claim,JSON.stringify(pub));
-check('public Claim/manage deep-links exact profile',String(pub.claimHref).includes(PROFILE),String(pub.claimHref));
-check('public Claim/manage keeps primary ownership class',String(pub.claimClass).includes('r1343-claim-primary'),String(pub.claimClass));
+await waitFor("[...document.querySelectorAll('a')].some(a=>a.textContent.trim()==='Manage this profile — free')","public management CTA");
+const pub=await evaluate(`(()=>{const links=[...document.querySelectorAll('a')],claim=links.find(a=>a.textContent.trim()==='Manage this profile — free'),correct=links.find(a=>/Review|Correct|correct/i.test(a.textContent)),official=[...document.querySelectorAll('*')].find(n=>n.textContent?.trim()==='Official Franklin Navigator profile');const vis=n=>{if(!n)return false;const r=n.getBoundingClientRect(),s=getComputedStyle(n);return r.width>1&&r.height>1&&s.display!=='none'&&s.visibility!=='hidden'};return{claim:vis(claim),claimHref:claim?.getAttribute('href'),claimClass:claim?.className,correct:vis(correct),official:vis(official),claimRect:claim?claim.getBoundingClientRect().toJSON():null}})()`);
+check('public free-management CTA is visibly rendered',pub.claim,JSON.stringify(pub));
+check('public free-management CTA deep-links exact profile',String(pub.claimHref).includes(PROFILE),String(pub.claimHref));
+check('public free-management CTA keeps primary ownership class',String(pub.claimClass).includes('r1343-claim-primary'),String(pub.claimClass));
 check('public correction/review route remains visible',pub.correct,JSON.stringify(pub));
 check('first-party Official Franklin Navigator indicator remains visible',pub.official,JSON.stringify(pub));
 await screenshot('R1347_PUBLIC_PROFILE_DESKTOP.png');result.screenshots.push('R1347_PUBLIC_PROFILE_DESKTOP.png');
