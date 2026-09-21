@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import {spawn,spawnSync} from 'node:child_process';
 
 const PROFILE='FR-ORG-b00c0ace7943973c';
-const BASE='http://127.0.0.1:4173';
+const BASE=process.env.R1346_BROWSER_BASE||'http://127.0.0.1:4173';
 const evidenceDir='.r1346-browser-evidence';
 fs.mkdirSync(evidenceDir,{recursive:true});
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
