@@ -1,7 +1,7 @@
 {
-  "receiptType": "LOCAL_RELEASE_CANDIDATE_RECEIPT",
+  "receiptType": "LOCAL_RELEASE_PRESEAL_RECEIPT",
   "release": "FR-NAV1.30.52-HF3.13.34",
-  "status": "CANDIDATE_PENDING_FINAL_EXACT_HEAD_QUALIFICATION",
+  "status": "QUALIFIED_EXACT_HEAD_PENDING_MERGE_STATIC_DEPLOY_AND_EXTERNAL_ATTESTATION",
   "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
   "activeEdition": "FRANKLIN_TN",
   "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
@@ -12,11 +12,11 @@
     "manifestSha256": "aaa7d9e02973e47c2d6fc09337e2bcd8d3def90b7adc170315a4ad088c71ba54"
   },
   "runtime": {
-    "branch": "r1352-reviewer-runtime-20260921",
-    "commit": "ed1b198461769c63e91f15049cd750c9c7f3d298",
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "f31a23a9440450a7172bad18657785c99ccf3dc8",
     "releaseEnv": "FR-NAV1.30.52-HF3.13.34",
     "functionalChanges": true,
-    "workflowRun": 35559487423,
+    "workflowRun": 35558663454,
     "tests": {
       "inherited": {
         "total": 48,
@@ -30,7 +30,10 @@
         "fail": 0,
         "skipped": 0
       }
-    }
+    },
+    "merged": true,
+    "deployId": "dep-daoapd992vdc73attcug",
+    "deployState": "LIVE"
   },
   "publicCandidateBranch": "r1352-owner-profile-access-review-20260921",
   "completed": [
@@ -43,7 +46,13 @@
   ],
   "sccAccepted": false,
   "sccCanonicalCurrent": false,
-  "deterministicArtifact": "PENDING_FINAL_CURRENT_SUCCESSOR_WORKFLOW",
-  "deployment": "NOT_YET_PERFORMED",
-  "ownerActionRequiredBeforeSourceQualification": "NONE"
+  "deterministicArtifact": "REBUILD_REQUIRED_ON_THIS_RECEIPT_REFRESHED_EXACT_HEAD",
+  "deployment": "RUNTIME_LIVE_STATIC_PENDING",
+  "ownerActionRequiredBeforeSourceQualification": "NONE",
+  "publicCandidateHead": "cb558b04b42fd92a48adf4c79df2f2cd4d79375e",
+  "publicQualification": {
+    "currentSuccessorWorkflowRun": 35561670350,
+    "claimReviewWorkflowRun": 35561670327,
+    "result": "PASS"
+  }
 }
