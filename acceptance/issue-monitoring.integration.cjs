@@ -52,7 +52,7 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
     ADMIN_TOKEN:admin,STRIPE_SECRET_KEY:'sk_live_'+'1'.repeat(32),
     STRIPE_WEBHOOK_SECRET:'whsec_'+'2'.repeat(32),
     STRIPE_ACCOUNT_ID:'acct_SYNTHETICMONITOR',
-    COMMERCE_ENABLED:'false',LOCAL_RELEASE:'FR-NAV1.30.8-HF3.12.0',
+    COMMERCE_ENABLED:'false',LOCAL_RELEASE:'FR-NAV1.30.53-HF3.13.35',
     MEMBER_REVIEWERS:'synthetic-reviewer',REVIEWER_ACCOUNT_BINDINGS:'[]',
     FRANKLIN_ISOLATED_TEST:'true'
   };
@@ -62,11 +62,26 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
   pool=new Pool({connectionString:u.href,ssl:false});
 
   const health=await call('GET','/health');
-  assert.equal(health.body.release,'FR-NAV1.30.8-HF3.12.0');
-  assert.equal(health.body.issueMonitorVersion,'FRANKLIN_ISSUE_MONITOR_2');
+  assert.equal(health.body.release,'FR-NAV1.30.53-HF3.13.35');
+  assert.equal(health.body.issueMonitorVersion,'FRANKLIN_ISSUE_MONITOR_3');
 
   const unauth=await call('GET','/admin/incidents');
   assert.equal(unauth.status,401);
+
+  for(let i=0;i<6;i++){
+    const blocked=await call('OPTIONS','/api/telemetry/issue',undefined,{
+      origin:'https://blocked-'+i+'.example',
+      'x-forwarded-for':'198.51.100.'+(20+i)
+    });
+    assert.equal(blocked.status,403,JSON.stringify(blocked.body));
+  }
+  const originRows=await call('GET','/admin/incidents?status=OPEN&severity=&limit=100',undefined,{authorization:'Bearer '+admin});
+  const originIncidents=originRows.body.incidents.filter(x=>x.safe_error_code==='ORIGIN_NOT_ALLOWED'&&x.affected_path==='/api/telemetry/issue'&&x.http_method==='OPTIONS');
+  assert.equal(originIncidents.length,1,JSON.stringify(originIncidents));
+  assert.equal(Number(originIncidents[0].occurrence_count),6);
+  assert.equal(originIncidents[0].severity,'NORMAL');
+  assert.match(originIncidents[0].fingerprint_sha256,/^[a-f0-9]{64}$/);
+  assert.equal(originIncidents[0].safe_context.originClass,'BLOCKED_PREFLIGHT');
 
   for(let i=0;i<5;i++){
     const r=await call('POST','/api/telemetry/issue',{
@@ -103,6 +118,15 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
   assert.equal(summary.status,200);
   assert.equal(summary.body.ownerVisibility,true);
   assert.equal(summary.body.externalDelivery,'CONFIGURATION_AUTHORITY_REQUIRED');
+  assert.equal(summary.body.version,'FRANKLIN_ISSUE_MONITOR_3');
+  assert.equal(summary.body.alertCooldownMinutes.CRITICAL,15);
+  assert.equal(summary.body.alertCooldownMinutes.HIGH,60);
+  assert.equal(summary.body.alertDigestMinutes,720);
+  assert.equal(summary.body.recoveryNotifications,true);
+
+  const digest=await call('GET','/admin/incidents/digest?hours=12&limit=50',undefined,{authorization:'Bearer '+admin});
+  assert.equal(digest.status,200,JSON.stringify(digest.body));
+  assert(digest.body.items.some(x=>x.code==='ORIGIN_NOT_ALLOWED'&&x.occurrences===6));
 
   const readiness=await call('GET','/admin/readiness',undefined,{authorization:'Bearer '+admin});
   assert.equal(readiness.status,200,JSON.stringify(readiness.body));
@@ -112,6 +136,16 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
   const resolve=await call('POST','/admin/incidents/'+client.incident_id+'/resolve',{resolutionNote:'Synthetic isolated acceptance issue resolved.'},{authorization:'Bearer '+admin});
   assert.equal(resolve.status,200);
   assert.equal(resolve.body.incident.status,'RESOLVED');
+
+  const resolvedOrigin=await call('POST','/admin/incidents/'+originIncidents[0].incident_id+'/resolve',{resolutionNote:'Synthetic blocked-preflight acceptance incident resolved.'},{authorization:'Bearer '+admin});
+  assert.equal(resolvedOrigin.status,200);
+  const recurrence=await call('OPTIONS','/api/telemetry/issue',undefined,{origin:'https://blocked-recurrence.example','x-forwarded-for':'198.51.100.99'});
+  assert.equal(recurrence.status,403);
+  const reopenedRows=await call('GET','/admin/incidents?status=OPEN&severity=&limit=100',undefined,{authorization:'Bearer '+admin});
+  const reopened=reopenedRows.body.incidents.find(x=>x.incident_id===originIncidents[0].incident_id);
+  assert(reopened);
+  assert.equal(Number(reopened.occurrence_count),7);
+  assert(reopened.reopened_at);
 
   await pool.query("insert into franklin_dead_letters(dead_letter_id,reason_code,state,safe_context) values('dead_SYNTHETICR1308','SYNTHETIC_FAILURE','OPEN','{}'::jsonb)");
   const readiness2=await call('GET','/admin/readiness',undefined,{authorization:'Bearer '+admin});
@@ -125,8 +159,9 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
   assert.equal((await pool.query("select count(*)::int n from franklin_incidents where safe_error_code='SYNTHETIC_MONITOR_CHECK' and status='RESOLVED'")).rows[0].n,1);
 
   console.log(JSON.stringify({
-    result:'PASS',release:'FR-NAV1.30.8-HF3.12.0',actualPostgres:true,actualHttp:true,
+    result:'PASS',release:'FR-NAV1.30.53-HF3.13.35',actualPostgres:true,actualHttp:true,
     secretsExcluded:true,deduplication:true,recurrenceCount:true,ownerAuthFailClosed:true,
+    publicPreflightGrouped:true,publicPreflightSeverity:'NORMAL',digestVisible:true,reopenState:true,
     userIssueIsolation:true,resolutionState:true,externalNotificationState:'CONFIGURATION_AUTHORITY_REQUIRED',
     deadLetterIncident:true,realCharges:0,productionMutations:0
   }));
