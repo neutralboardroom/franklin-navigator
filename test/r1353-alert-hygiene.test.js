@@ -120,3 +120,38 @@ test('legacy open incident retains prior alert state instead of being announced 
   const row={status:'OPEN',severity:'HIGH',occurrence_count:8,first_seen:'2026-09-21T05:00:00Z'};
   assert.equal(notificationDecision(row,legacy,{now:Date.parse('2026-09-21T06:00:00Z'),highCooldownMinutes:60}),null);
 });
+
+test('stale open incident does not update on restart merely because duration threshold elapsed',()=>{
+  const row={
+    status:'OPEN',severity:'HIGH',occurrence_count:6,
+    first_seen:'2026-09-15T11:47:36Z',
+    last_seen:'2026-09-19T02:27:05Z'
+  };
+  const last={
+    kind:'INITIAL',severity:'HIGH',count:6,
+    at:'2026-09-20T17:00:00Z'
+  };
+  assert.equal(notificationDecision(row,last,{
+    now:Date.parse('2026-09-21T06:05:42Z'),
+    highCooldownMinutes:60,
+    durationEscalationMinutes:120
+  }),null);
+});
+
+test('duration escalation can update when the incident actually recurs after the last notification',()=>{
+  const row={
+    status:'OPEN',severity:'HIGH',occurrence_count:7,
+    first_seen:'2026-09-15T11:47:36Z',
+    last_seen:'2026-09-21T06:01:00Z'
+  };
+  const last={
+    kind:'INITIAL',severity:'HIGH',count:6,
+    at:'2026-09-21T04:00:00Z'
+  };
+  assert.equal(notificationDecision(row,last,{
+    now:Date.parse('2026-09-21T06:05:42Z'),
+    highCooldownMinutes:60,
+    updateMinOccurrences:5,
+    durationEscalationMinutes:120
+  }),'UPDATE');
+});
