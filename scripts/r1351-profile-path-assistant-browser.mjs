@@ -35,8 +35,8 @@ await evaluate(`(()=>{const card=[...document.querySelectorAll('.hf310-claim-res
 await waitFor("document.querySelector('[data-hf310-claim-selected]')&&!document.querySelector('[data-hf310-claim-selected]').hidden",'selected profile panel');
 state=await evaluate(`(()=>{const p=document.querySelector('[data-hf310-selected-profile]'),a=[...document.querySelectorAll('[data-hf310-profile-actions] a')].map(x=>({text:x.textContent.trim(),href:x.getAttribute('href')}));return{text:p?.textContent||'',actions:a,url:location.pathname+location.search}})()`);
 check('selected profile explains selection does not claim or alter facts',/does not claim the profile or change public facts/i.test(state.text),state.text);
-check('selected profile shows free access/correction boundary',/verification and factual corrections\/removal are free/i.test(state.text),state.text);
-for(const label of ['Claim or manage this profile','Correct information','Request removal','Preview optional member profile'])check('selected panel preserves '+label,state.actions.some(x=>x.text===label),JSON.stringify(state.actions));
+check('selected profile shows free access/correction boundary',/profile claim and basic management are free/i.test(state.text)&&/factual corrections\/removal are free/i.test(state.text),state.text);
+for(const label of ['Claim or manage this profile','Correct information','Request removal','See Community Membership benefits'])check('selected panel preserves '+label,state.actions.some(x=>x.text===label),JSON.stringify(state.actions));
 check('claim/manage preserves exact selected profile',state.actions.some(x=>x.text==='Claim or manage this profile'&&/profile=FR-ORG-b00c0ace7943973c/.test(x.href||'')),JSON.stringify(state.actions));
 await shot('R1351_PROFILE_SELECTED_EN.png');
 await evaluate("document.querySelector('[data-r37-lang=\"es\"]')?.click()");await sleep(400);
