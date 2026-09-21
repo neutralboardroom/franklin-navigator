@@ -1,0 +1,36 @@
+{
+  "release": "FR-NAV1.30.53-HF3.13.35",
+  "checkedAtUtc": "2026-09-21T06:11:13Z",
+  "activeEdition": "FRANKLIN_TN",
+  "writableLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "predecessor": {
+    "version": "FR-NAV1.30.52-HF3.13.34",
+    "mainCommit": "9237c772cd22c6ce22bd1f554cbcc2b845373e9d",
+    "staticDeploy": "dep-daobbnegekts73bjuam0"
+  },
+  "acceptedCoordinationAnchor": {
+    "version": "FR-NAV1.30.49-HF3.13.31",
+    "sccD1Accepted": true
+  },
+  "releaseLease": {
+    "id": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+    "state": "ISSUED_ACTIVE_RELEASE_LEASE"
+  },
+  "commandAuthority": "FRANKLIN_NAVIGATOR_LOCAL_BUILDER_ALERT_STORM_DEDUP_COOLDOWN_AND_CI_NOTIFICATION_HYGIENE_2026-09-21",
+  "sourceReview": {
+    "liveRuntimeLogsReviewed": true,
+    "resendDeliveryHistoryReviewed": true,
+    "githubWorkflowOverlapReviewed": true,
+    "originPolicyReviewed": true,
+    "concreteStormObserved": "ORIGIN_NOT_ALLOWED /api/telemetry/issue OPTIONS 403"
+  },
+  "externalAuthorities": {
+    "profileFactory": "NOT_MUTATED",
+    "localInvestigator": "NOT_MUTATED",
+    "scc": "NOT_MUTATED",
+    "sreOwnerConsole": "NOT_MUTATED",
+    "replyIo": "NOT_MUTATED",
+    "smarterJustice": "NOT_USED"
+  },
+  "result": "PASS_FOR_PUBLIC_EXACT_HEAD_QUALIFICATION"
+}
