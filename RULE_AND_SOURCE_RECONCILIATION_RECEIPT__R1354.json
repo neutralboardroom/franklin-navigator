@@ -1,0 +1,28 @@
+{
+  "release": "FR-NAV1.30.54-HF3.13.36",
+  "checkedAt": "2026-09-21",
+  "writableLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+  "commandAuthority": "FRANKLIN_NAVIGATOR_LOCAL_BUILDER_ANNUAL_DATED_MEMBER_DECAL_AND_QR_RECOGNITION_2026-09-21",
+  "predecessor": {
+    "release": "FR-NAV1.30.53-HF3.13.35",
+    "mainCommit": "c1380ba4e90ad582b4c911faacaced56f7ec670d",
+    "artifactSha256": "52ff08ba0f98f9336855bbfdc65efb6f85513143c465e554ce8c429e6f1c7501"
+  },
+  "runtime": {
+    "commit": "66b9fe1a6a1f78dd51a88fc29ca2de8f3912820d",
+    "deploy": "dep-daoe8neeod7s73b2pc90",
+    "state": "LIVE",
+    "qualificationRun": 35574397376,
+    "reviewerRegressionRun": 35574397396
+  },
+  "externalAuthorities": {
+    "profileFactory": "NOT_MUTATED",
+    "localInvestigator": "NOT_MUTATED",
+    "scc": "NOT_MUTATED",
+    "sreOwnerConsole": "HANDOFF_ONLY_NOT_MUTATED",
+    "replyIo": "NOT_MUTATED",
+    "smarterJustice": "NOT_USED",
+    "franklinHelps": "NOT_MUTATED"
+  },
+  "result": "PASS_FOR_PUBLIC_EXACT_HEAD_QUALIFICATION"
+}

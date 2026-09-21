@@ -1,0 +1,33 @@
+{
+  "release": "FR-NAV1.30.54-HF3.13.36",
+  "predecessor": "FR-NAV1.30.53-HF3.13.35",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "edition": "FRANKLIN_TN",
+  "state": "CANDIDATE_PRESEAL_PENDING_PUBLIC_EXACT_HEAD_QUALIFICATION",
+  "materialScope": "ANNUAL_DATED_MEMBER_RECOGNITION_AND_SAFE_DECAL_FULFILLMENT",
+  "runtime": {
+    "commit": "66b9fe1a6a1f78dd51a88fc29ca2de8f3912820d",
+    "deploy": "dep-daoe8neeod7s73b2pc90",
+    "state": "LIVE",
+    "release": "FR-NAV1.30.54-HF3.13.36",
+    "recognitionVersion": "FRANKLIN_MEMBER_RECOGNITION_HF3_8",
+    "qualificationRun": 35574397376,
+    "reviewerRegressionRun": 35574397396
+  },
+  "commercial": {
+    "annualMembershipPriceUsd": 35,
+    "changed": false,
+    "claimCorrectionRemovalBasicManagementRemainFree": true,
+    "physicalPlaqueIncluded": false,
+    "decalOrderPlaced": false
+  },
+  "physicalProgram": {
+    "defaultState": "CLOSED_UNTIL_OWNER_REVENUE_ENABLES",
+    "pilotPlanningQuantity": 25,
+    "standardAnnualQuantityPerProfile": 1,
+    "digitalRecognitionIndependent": true
+  },
+  "publicQualification": "PENDING_EXACT_HEAD_WORKFLOW",
+  "sccAccepted": false,
+  "sccCanonicalCurrent": false
+}

@@ -1,0 +1,19 @@
+/* R1354 — annual Community Member recognition */
+.r1354-recognition-card{margin:1.25rem 0;padding:1.1rem;border:1px solid var(--line,#d9e1e6);border-radius:14px;background:#fff;box-shadow:0 8px 22px rgba(28,48,58,.06)}
+.r1354-recognition-card .r1354-recognition-year{display:inline-flex;align-items:center;gap:.4rem;font-weight:800;font-size:1.05rem;padding:.35rem .65rem;border-radius:999px;background:#e9f7f4;color:#164b43}
+.r1354-recognition-card.is-historical .r1354-recognition-year{background:#f2f4f5;color:#4a555b}
+.r1354-recognition-card h2,.r1354-recognition-card h3{margin:.7rem 0 .35rem}
+.r1354-recognition-card p{margin:.4rem 0}
+.r1354-recognition-meta{display:flex;flex-wrap:wrap;gap:.45rem 1rem;margin:.65rem 0;padding:0;list-style:none}
+.r1354-recognition-meta li{font-size:.94rem}
+.r1354-recognition-actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.8rem}
+.r1354-recognition-history{font-weight:650}
+.r1354-recognition-disclaimer{font-size:.88rem;color:#536169;max-width:70ch}
+.r1354-verify-shell{max-width:760px;margin:0 auto}
+.r1354-verify-status{font-size:1.05rem;font-weight:750}
+.r1354-verify-status.is-active{color:#145c4d}.r1354-verify-status.is-inactive{color:#5e4a28}
+.r1354-recognition-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin-top:.9rem}
+.r1354-recognition-form label{display:grid;gap:.3rem}.r1354-recognition-form .wide{grid-column:1/-1}
+.r1354-recognition-form input{width:100%}
+.r1354-fulfillment-state{margin-top:.65rem;padding:.7rem;border-radius:10px;background:#f7faf9}
+@media(max-width:640px){.r1354-recognition-form{grid-template-columns:1fr}.r1354-recognition-form .wide{grid-column:auto}.r1354-recognition-card{padding:.9rem}.r1354-recognition-actions .button{width:100%;text-align:center}}

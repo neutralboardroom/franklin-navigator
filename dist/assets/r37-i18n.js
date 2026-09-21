@@ -88,6 +88,26 @@
       'Account & profile access':'Cuenta y acceso al perfil',
       'Transfer or end management — contact support':'Transferir o finalizar la administración — contactar soporte',
       'Community Member tools':'Herramientas para Miembros de la Comunidad',
+      'Your annual Community Member recognition':'Su reconocimiento anual como Miembro de la Comunidad',
+      'Your digital current-year recognition and public verification page are active. This does not affect free profile-management rights.':'Su reconocimiento digital del año actual y la página pública de verificación están activos. Esto no afecta sus derechos gratuitos de administración del perfil.',
+      'View public verification page':'Ver página pública de verificación',
+      'Physical window-decal pilot is not currently open. Your digital recognition remains active.':'El programa piloto de calcomanías para ventana no está abierto actualmente. Su reconocimiento digital permanece activo.',
+      'Window decal — confirm a private mailing address. Franklin will not copy the public profile address automatically.':'Calcomanía para ventana — confirme una dirección postal privada. Franklin no copiará automáticamente la dirección pública del perfil.',
+      'This mailing address is private fulfillment information and is not published on the profile.':'Esta dirección postal es información privada para el envío y no se publica en el perfil.',
+      'Confirm mailing address':'Confirmar dirección postal',
+      'Request current-year window decal':'Solicitar calcomanía del año actual',
+      'Current-year window decal requested. No second decal request is needed.':'La calcomanía del año actual fue solicitada. No es necesario hacer una segunda solicitud.',
+      'Current decal batch is temporarily out of stock. Your digital recognition remains active.':'El lote actual de calcomanías está temporalmente agotado. Su reconocimiento digital permanece activo.',
+      'Community Membership verification':'Verificación de Membresía Comunitaria',
+      'Verify annual participation.':'Verifique la participación anual.',
+      'This page shows live Franklin Navigator Community Membership status for the selected profile. A printed decal is not the source of truth.':'Esta página muestra el estado actual de la Membresía Comunitaria de Franklin Navigator para el perfil seleccionado. Una calcomanía impresa no es la fuente oficial del estado.',
+      'Current Community Membership':'Membresía Comunitaria actual',
+      'Community Membership participation':'Participación en la Membresía Comunitaria',
+      'Verify Community Membership':'Verificar Membresía Comunitaria',
+      'View Franklin Navigator profile':'Ver perfil de Franklin Navigator',
+      'Choose a valid Franklin Navigator profile to verify.':'Elija un perfil válido de Franklin Navigator para verificar.',
+      'This membership verification is unavailable right now. The profile page remains the safe fallback.':'La verificación de membresía no está disponible en este momento. La página del perfil sigue siendo la alternativa segura.',
+      'Annual current-year Community Member recognition and, while the physical program is available, eligibility to request one dated storefront window decal':'Reconocimiento anual del año actual como Miembro de la Comunidad y, mientras el programa físico esté disponible, elegibilidad para solicitar una calcomanía fechada para el escaparate',
       'Build the richer member profile.':'Complete el perfil de miembro más detallado.',
       'Optional Community Membership':'Membresía Comunitaria opcional',
       'Want a richer profile?':'¿Quiere un perfil más completo?',
@@ -158,6 +178,10 @@
     };
     if(fixed[s])return fixed[s];
     let m;
+    if((m=s.match(/^(\d{4}) Community Member$/)))return `${m[1]} Miembro de la Comunidad`;
+    if((m=s.match(/^Past Community Member — (\d{4})$/)))return `Miembro anterior de la Comunidad — ${m[1]}`;
+    if((m=s.match(/^Participation years: (.+)$/)))return `Años de participación: ${m[1]}`;
+    if((m=s.match(/^Current Community Membership: (active|not active)$/)))return `Membresía Comunitaria actual: ${m[1]==='active'?'activa':'no activa'}`;
     if((m=s.match(/^Open profile photo (\d+) of (\d+)$/)))return `Abrir foto del perfil ${m[1]} de ${m[2]}`;
     if((m=s.match(/^Signed in as (.+)\.$/)))return `Sesión iniciada como ${m[1]}.`;
     if((m=s.match(/^Management access verified (.+)\.$/)))return `Acceso de administración verificado ${m[1]}.`;
