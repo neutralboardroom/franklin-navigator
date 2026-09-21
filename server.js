@@ -87,6 +87,7 @@ function sendJson(req,res,status,payload,reqId) {
   if(reqId)res.setHeader('X-Request-Id',reqId); res.end(body);
 }
 function sendEmpty(req,res,status=204){securityHeaders(req,res);res.statusCode=status;res.end();}
+// R1353 alert hygiene changes notification behavior only; cross-origin mutation security remains fail-closed.
 function enforceOrigin(req){if(!['POST','PUT','PATCH','DELETE'].includes(req.method))return;const origin=req.headers.origin;if(origin&&!ALLOWED_ORIGINS.has(origin))throw publicError('ORIGIN_NOT_ALLOWED','This request origin is not allowed.',403);}
 function rateLimit(key,limit,windowMs){const now=Date.now();let row=rateWindows.get(key);if(!row||row.resetAt<=now){row={count:0,resetAt:now+windowMs};rateWindows.set(key,row);}row.count++;return row.count<=limit;}
 setInterval(()=>{const now=Date.now();for(const [key,row] of rateWindows)if(row.resetAt<=now)rateWindows.delete(key);},60000).unref();
