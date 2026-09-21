@@ -77,3 +77,18 @@ Reviewed 2026-09-21 from live screenshot.
 Add for next version:
 22. Avoid duplicating the transient **“Sending password-reset instructions…”** message in both the primary button and a separate status panel. Keep one clear progress indicator while the request is processing.
 23. Ensure the sending state always resolves quickly to a privacy-safe success or recoverable error state and never leaves the user appearing stuck.
+
+
+## Page review note — Password Reset Confirmation
+Reviewed 2026-09-21 from live screenshot.
+
+What is working and should be preserved:
+- Privacy-safe confirmation: **“If an account exists for this email…”** does not disclose account existence.
+- Clear **Check your email** next step.
+- Explicitly says the emailed link is secure, single-use, and expires.
+- No confirmation code is required.
+- Account-help fallback remains available.
+
+Add for next version:
+24. Remove the duplicated **Back to sign in** and **Can’t access your email? Get account help** actions. They currently appear both above and below the confirmation card. Keep one action row, preferably below the confirmation message.
+25. Keep the success state focused on the single next action: check email and use the secure reset link.
