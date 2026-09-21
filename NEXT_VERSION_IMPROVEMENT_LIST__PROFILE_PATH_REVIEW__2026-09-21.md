@@ -140,3 +140,19 @@ Add for next version:
    - profile-access-origin recovery → continue to profile access with exact profile preserved;
    - generic recovery → normal Franklin sign in/account destination.
 49. Preserve the security boundary that a successful password reset restores the ordinary account session only; privileged reviewer access must still require an explicit reviewer sign-in.
+
+
+## Page review note — Post-Reset Return to Profile Access
+Reviewed 2026-09-21 from complete live-page screenshots.
+
+What is working and should be preserved:
+- After successful password reset, the user is signed into the ordinary Franklin account automatically.
+- Reviewer privilege is not automatically granted; the page only exposes the separate **Open reviewer workspace** action for the authorized account.
+- The account still knows the already-connected Franklin Navigator profile.
+- Profile management remains explicitly free.
+
+Add for next version:
+50. Preserve the exact selected profile through password recovery more strongly. In this live return, the user landed on generic `/profile-access/` and the page showed **Find your profile**, even though the account still knew the connected Franklin Navigator profile. If recovery began from an exact profile, return directly with that exact profile selected rather than requiring another selection/click.
+51. Keep the post-reset auto-sign-in behavior for the ordinary account, but ensure all prior ordinary sessions and all reviewer sessions were invalidated before issuing the fresh post-reset session.
+52. Do not automatically create a reviewer session after password reset. Reviewer access must still require explicit reviewer sign-in.
+53. If the user is already signed in and has exactly one connected profile relevant to the preserved recovery context, surface that profile immediately as the current selection and advance the path instead of presenting a generic **Find your profile** step.
