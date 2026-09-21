@@ -77,6 +77,14 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
     assert.equal(Object.hasOwn(r.body,'incidentId'),false);
   }
 
+  for(const ip of ['203.0.113.21','203.0.113.22','203.0.113.23']){
+    const blocked=await call('POST','/api/telemetry/issue',{workflow:'PUBLIC_SITE',code:'CLIENT_FRICTION',path:'/ignored-by-origin-gate'},{
+      origin:'https://blocked-origin.example','x-forwarded-for':ip
+    });
+    assert.equal(blocked.status,403,JSON.stringify(blocked.body));
+    assert.equal(blocked.body?.error?.code,'ORIGIN_NOT_ALLOWED');
+  }
+
   const owner=await call('GET','/admin/incidents?status=OPEN&severity=&limit=100',undefined,{authorization:'Bearer '+admin});
   assert.equal(owner.status,200,JSON.stringify(owner.body));
   const client=owner.body.incidents.find(x=>x.safe_error_code==='CLIENT_JS_ERROR');
@@ -85,6 +93,14 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
   assert.equal(client.community,'FRANKLIN_TN');
   assert(!JSON.stringify(client).includes(sentinel));
   assert.equal(client.severity,'HIGH');
+  const blockedOrigins=owner.body.incidents.filter(x=>x.safe_error_code==='ORIGIN_NOT_ALLOWED');
+  assert.equal(blockedOrigins.length,1,JSON.stringify(blockedOrigins));
+  assert.equal(Number(blockedOrigins[0].occurrence_count),3);
+  assert.equal(blockedOrigins[0].severity,'NORMAL');
+  assert.equal(blockedOrigins[0].affected_path,'/api/telemetry/issue');
+  assert.equal(blockedOrigins[0].http_method,'POST');
+  assert.equal(blockedOrigins[0].failure_cause,'CROSS_ORIGIN_BLOCKED');
+
 
   const a=await call('POST','/api/accounts/login',{email:'nobody@example.invalid',password:'wrong-synthetic-password'},{'x-forwarded-for':'203.0.113.11'});
   const b=await call('POST','/api/accounts/login',{email:'nobody@example.invalid',password:'wrong-synthetic-password'},{'x-forwarded-for':'203.0.113.12'});
