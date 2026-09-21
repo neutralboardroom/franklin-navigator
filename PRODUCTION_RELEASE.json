@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.52-HF3.13.34",
+  "release": "FR-NAV1.30.53-HF3.13.35",
   "date": "2026-09-21",
-  "base": "FR-NAV1.30.51-HF3.13.33",
+  "base": "FR-NAV1.30.52-HF3.13.34",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1352 completes the Franklin profile claim/manage path from search and verification through prominent pending state and private reviewer decision workflow, with functional reviewer-runtime improvements and no change to canonical profile facts, pricing, payment, entitlement, Local Investigator truth, or outreach authority.",
+  "scope": "R1353 reduces Franklin owner alert storms by grouping equivalent failures into durable incidents, adding material-change-aware cooldown/recovery/reopen notification logic, improving owner incident visibility, and cancelling superseded CI runs, without weakening monitoring, origin security, profile authority, pricing, payments, entitlement, or outreach boundaries.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -241,7 +241,7 @@
     "Profile Factory source facts remain separate from manager/member submissions"
   ],
   "monitoring": {
-    "version": "FRANKLIN_ISSUE_MONITOR_2",
+    "version": "FRANKLIN_ISSUE_MONITOR_3",
     "community": "FRANKLIN_TN",
     "siteWideClientMonitor": "/assets/franklin-site-monitor-r1308.js",
     "telemetryEndpoint": "https://franklin-navigator-membership.onrender.com/api/telemetry/issue",
@@ -262,7 +262,7 @@
       "RESOLVED",
       "SUPPRESSED"
     ],
-    "deduplication": "fingerprint_sha256 + occurrence_count + first_seen + last_seen",
+    "deduplication": "stable fingerprint_sha256 over community + environment + category/workflow + error code + affected route + HTTP method + normalized cause + component + selected release identity + scoped identity only where appropriate; every occurrence remains in franklin_incident_events",
     "derivedScans": [
       "dead letters",
       "checkout outcome unknown/review required",
@@ -282,19 +282,21 @@
       "redaction",
       "deduplication",
       "resolution state",
-      "ledger persistence"
+      "ledger persistence",
+      "public telemetry preflight grouping"
     ],
     "ownerAlertingAuthority": "AUTHORIZED_PRIVACY_SAFE_EXTERNAL_EMAIL_FOR_OPEN_CRITICAL_HIGH_PLUS_OWNER_LEDGER",
     "publicSiteLoaderBugFixed": true,
     "publicSiteMonitorLoadsVia": "loadScript('/assets/franklin-site-monitor-r1308.js')",
-    "acceptanceWorkflowRun": 34914420138,
+    "acceptanceWorkflowRun": 35567245506,
     "acceptanceConclusion": "success",
     "acceptanceScope": [
       "syntax/source contracts",
-      "existing runtime unit tests",
-      "R1308 issue-monitoring HTTP/Postgres acceptance",
+      "all inherited runtime unit tests",
+      "R1353 alert lifecycle decision tests",
+      "real Postgres/HTTP issue-monitoring acceptance",
       "registration/claim/profile-review acceptance",
-      "first-value acceptance"
+      "first-value reconciliation acceptance"
     ],
     "preservedInRelease": "FR-NAV1.30.15-HF3.12.7",
     "durableRequirement": "CONTINUE_SITE_WIDE_USER_ISSUE_FRICTION_FAILURE_MONITORING_AND_OWNER_VISIBLE_INCIDENT_AWARENESS_EVERY_MATERIAL_RELEASE",
@@ -312,17 +314,18 @@
     ],
     "ownerAlertRealertMinutes": {
       "CRITICAL": 15,
-      "HIGH": 60
+      "HIGH": 60,
+      "NORMAL_DIGEST": 360
     },
     "latestOwnerAuthenticatedIncidentSnapshot": {
-      "at": "2026-09-18T04:42:09.152Z",
+      "at": "2026-09-21T06:11:05.765Z",
       "ownerAuthenticated": true,
       "authMechanism": "HMAC_ADMIN_TOKEN_CONTROL_PLANE_PROOF",
       "openCritical": 0,
-      "openHigh": 0,
-      "noOpenP0P1": true,
+      "openHigh": 5,
+      "noOpenP0P1": false,
       "externalDelivery": "RESEND_EMAIL_CONFIGURED",
-      "ownerAuthProofSha256": "93371129cc34b5c1dcff244d04af9e6581666a9ad1b8f81a7994a70b834443c3"
+      "note": "Five older HIGH incidents remain owner-visible for currentness/root-cause review; R1353 does not auto-close them merely due age."
     },
     "syntheticSupportReconciliation": {
       "expected": 10,
@@ -334,8 +337,8 @@
       "mutationScope": "EXACT_IDS_ONLY_AFTER_ID_CATEGORY_NULL_PROFILE_AND_MESSAGE_HASH_MATCH"
     },
     "runtimeService": "srv-dabgvefqj5pc739vr4h0",
-    "runtimeDeploy": "dep-dambijtbedkc73apgdo0",
-    "runtimeCommit": "d2a2cfb212e72325d84d01461ef672a1ec95ad79",
+    "runtimeDeploy": "dep-daocknh42hec739b0ukg",
+    "runtimeCommit": "4cada0e5c8fdeda9b1b0284f718e5a0310e6376a",
     "r1334Corrections": {
       "expectedAuth401NotHighIncident": true,
       "inlineStyleWithoutExternalUrlNotBrokenAsset": true,
@@ -348,6 +351,58 @@
       "reconciledHistoricalBrokenAssetIncidents": 1,
       "postCorrectionOpenCritical": 0,
       "postCorrectionOpenHigh": 0
+    },
+    "ownerAlertDigestMinutes": 720,
+    "materialChangeNotificationPolicy": {
+      "firstUsefulCriticalHigh": "IMMEDIATE",
+      "identicalRepeatDuringCooldown": "SUPPRESSED_WITH_OCCURRENCE_HISTORY_PRESERVED",
+      "updateAfterCooldown": "REQUIRES_ACTIVITY_AFTER_LAST_NOTIFICATION_AND_MATERIAL_OCCURRENCE_GROWTH_OR_SUSTAINED_ACTIVE_DURATION",
+      "severityEscalation": "BYPASSES_ORDINARY_COOLDOWN",
+      "recovery": "ONE_RESOLVED_NOTIFICATION_FOR_NEW_LIFECYCLE_RECOVERY",
+      "recurrenceAfterRecovery": "REOPENED_NOTIFICATION",
+      "normal": "OWNER_LEDGER_PLUS_DIGEST_NOT_STANDALONE_EMAIL"
+    },
+    "originSecurity": {
+      "broadAllowlistExpansion": false,
+      "originRejectionPreserved": true,
+      "telemetryOptions403Recorded": true,
+      "repeatedTelemetryPreflightSeverity": "NORMAL",
+      "historicalPerClientDuplicates": "QUIETLY_RECONCILED_WITHOUT_RECOVERY_EMAIL_STORM"
+    },
+    "runtimeRelease": "FR-NAV1.30.53-HF3.13.35",
+    "liveAlertStormProof": {
+      "firstR1353Startup": {
+        "deploy": "dep-daocf8jtqb8s73epnv80",
+        "evaluatedLegacyAndOpenRows": 34,
+        "delivered": 23,
+        "failed": 6,
+        "suppressed": 5,
+        "result": "NOT_ACCEPTED_ALERT_BACKFILL_DISCOVERED"
+      },
+      "firstHotfixStartup": {
+        "deploy": "dep-daoci6g473hc739qagq0",
+        "evaluated": 34,
+        "networkAttempted": 1,
+        "delivered": 1,
+        "failed": 0,
+        "suppressed": 33,
+        "remainingNoise": "STALE_SEVERE_PAGE_LATENCY_UPDATE_WITH_NO_NEW_ACTIVITY"
+      },
+      "finalHotfixStartup": {
+        "deploy": "dep-daocknh42hec739b0ukg",
+        "evaluated": 34,
+        "attempted": 0,
+        "networkAttempted": 0,
+        "delivered": 0,
+        "failed": 0,
+        "suppressed": 34,
+        "result": "PASS_NO_RESTART_ONLY_ALERTS"
+      },
+      "resendCrossCheck": {
+        "newestEmailBeforeFinalRestartAtUtc": "2026-09-21T06:05:42.339Z",
+        "finalRestartAtUtc": "2026-09-21T06:11:05.665Z",
+        "emailsObservedAfterFinalRestart": 0
+      }
     }
   },
   "navigation": {
@@ -3008,5 +3063,120 @@
       "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
     },
     "preSealCurrentness": "PRE_SEAL_CURRENTNESS_RECEIPT__R1352.md"
+  },
+  "r1353": {
+    "version": "FR-NAV1.30.53-HF3.13.35",
+    "date": "2026-09-21",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_PENDING_PUBLIC_EXACT_HEAD_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.52-HF3.13.34",
+      "mainCommit": "9237c772cd22c6ce22bd1f554cbcc2b845373e9d",
+      "qualified": true,
+      "deployedLive": true,
+      "sccD1Accepted": false
+    },
+    "acceptedCoordinationAnchor": {
+      "version": "FR-NAV1.30.49-HF3.13.31",
+      "artifactSha256": "0a9eb768ba0e6b4b761842912879bc8d196c565815ae04030a861c9a2bb4dd62",
+      "manifestSha256": "0ca00444e53ef48a2dc3256400d35f4b72f0afacd0987f206d45e7679dbceecc",
+      "sccD1Accepted": true,
+      "sccAcceptedAtUtc": "2026-09-20T14:34:45Z"
+    },
+    "releaseLease": {
+      "workOrderId": "WO-SCC-20260920-LOCAL-FRANKLIN-NEXT-MATERIAL-LEASE-001",
+      "state": "ISSUED_ACTIVE_RELEASE_LEASE",
+      "acceptedAnchor": "FR-NAV1.30.49-HF3.13.31",
+      "continuedQualifiedDescendantLineage": true,
+      "d2RequiredBeforeBuild": false
+    },
+    "materialImprovements": [
+      "Equivalent Franklin incident failures aggregate into one durable fingerprint while every occurrence remains preserved in the event ledger.",
+      "Owner email alerting now uses severity-aware cooldown plus material-change, escalation, recovery, and reopen semantics instead of restart/time-only repetition.",
+      "Historical telemetry preflight duplicates are reconciled without weakening origin rejection or deleting incident history.",
+      "Owner incident console surfaces fingerprint, route, method, normalized cause, component, release, lifecycle timestamps, and human-readable incident titles.",
+      "Superseded GitHub Actions runs are cancelled by concurrency while final push/PR PASS/FAIL evidence remains visible.",
+      "Old R1350 related-profile browser CI no longer reruns solely for unrelated release metadata changes."
+    ],
+    "liveRootCause": {
+      "observedCode": "ORIGIN_NOT_ALLOWED",
+      "route": "/api/telemetry/issue",
+      "method": "OPTIONS",
+      "httpStatus": 403,
+      "defect": "Equivalent blocked telemetry preflights were split by client-specific identity and legacy notification state could backfill recovery/update emails during restart.",
+      "securityDecision": "PRESERVE_403_AND_ORIGIN_POLICY_FIX_GROUPING_AND_NOTIFICATION_STATE"
+    },
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "4cada0e5c8fdeda9b1b0284f718e5a0310e6376a",
+      "deploy": "dep-daocknh42hec739b0ukg",
+      "deployState": "LIVE",
+      "releaseEnv": "FR-NAV1.30.53-HF3.13.35",
+      "issueMonitorVersion": "FRANKLIN_ISSUE_MONITOR_3",
+      "functionalChanges": true,
+      "exactHeadPushWorkflowRun": 35567133241,
+      "exactHeadPullRequestWorkflowRun": 35567245506,
+      "finalRestartProof": {
+        "evaluated": 34,
+        "networkAttempted": 0,
+        "delivered": 0,
+        "failed": 0,
+        "suppressed": 34
+      }
+    },
+    "openHighCarryForward": [
+      "BROKEN_ASSET /assets/franklin-nav-r1310.css",
+      "PROFILE_CLAIM SEVERE_LATENCY /api/member/representation/request",
+      "PUBLIC_SITE SEVERE_PAGE_LATENCY /business-dashboard/",
+      "PUBLIC_SITE FAILED_NAVIGATION_ACTION / For Business",
+      "PUBLIC_SITE FETCH_FAILED /api/member/public-profile"
+    ],
+    "noResidentFeatureRemoval": true,
+    "noPricingChange": true,
+    "noPaymentOrEntitlementChange": true,
+    "noProfileFactChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noLocalInvestigatorFactMutation": true,
+    "noOutreach": true,
+    "replyIoMutation": false,
+    "sreOwnerConsoleMutation": false,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "smarterJusticeDonor": "NOT_USED",
+    "qualification": {
+      "runtimeResult": "PASS_LIVE",
+      "runtimeExactHeadPushWorkflow": 35567133241,
+      "runtimeExactHeadPullRequestWorkflow": 35567245506,
+      "publicResult": "PENDING_EXACT_HEAD_WORKFLOW",
+      "deterministicDoubleBuild": "REQUIRED",
+      "freshExtraction": "REQUIRED",
+      "wholeSiteNoRegressionNoBurial": "REQUIRED"
+    },
+    "receipts": [
+      "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1353.json",
+      "ALERT_STORM_NOTIFICATION_HYGIENE__R1353.md",
+      "NO_LOSS_AND_COMMUNITY_ISOLATION_RECEIPT__R1353.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1353.md",
+      "CONTINUATION_HANDOFF__R1353.md",
+      "PRE_SEAL_CURRENTNESS_RECEIPT__R1353.md",
+      "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1353.md",
+      "R1353_RELEASE_RECEIPT.json"
+    ],
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1352"
+    },
+    "acceptedCanonicalBase": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    },
+    "sccD2State": "BLOCKED_GUARDED_VERSION_BOUND_CAS_UNAVAILABLE"
   }
 }
