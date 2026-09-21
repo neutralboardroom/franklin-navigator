@@ -76,7 +76,7 @@
    row.replaceChildren();
    if(isNavigatorSelf&&!viewerLink)copy.querySelector('.r1331-media-hint')?.remove();
    const authority=String(viewerLink?.authority_state||'').toUpperCase();
-   let labelText='Management not yet verified',actionText='Claim or manage this profile',href='/profile-access/?profile='+encodeURIComponent(id),hintText='Claim or manage this profile free. Factual corrections and removal also stay free.',managedForViewer=false;
+   let labelText='Management not yet verified',actionText='Manage this profile — free',href='/profile-access/?profile='+encodeURIComponent(id),hintText='Manage this profile free. Factual corrections and removal also stay free.',managedForViewer=false;
    if(authority==='VERIFIED'){
      labelText='Management verified for you';actionText='Open Profile Center';href='/profile-studio/?profile='+encodeURIComponent(id);hintText='You have verified management access. You can manage your photo or logo and request factual corrections.';managedForViewer=true;
    }else if(authority==='PENDING'){
@@ -84,17 +84,17 @@
    }else if(authority==='DISPUTED'){
      labelText='Access review needed';actionText='Get profile access help';href='/member-support/?topic=PROFILE_ACCESS&profile='+encodeURIComponent(id);hintText='Franklin needs to review this access issue before management can continue.';
    }else if(managed){
-     labelText=isNavigatorSelf?'Official Franklin Navigator profile':'Management verified';actionText='Claim or manage this profile';href='/profile-access/?profile='+encodeURIComponent(id);hintText=isNavigatorSelf?'Authorized Franklin Navigator managers can sign in or request profile access free. Existing access is preserved.':'This profile already has verified management access. If you are also authorized, you can request access; existing access is not removed automatically.';
+     labelText=isNavigatorSelf?'Official Franklin Navigator profile':'Management verified';actionText='Manage this profile — free';href='/profile-access/?profile='+encodeURIComponent(id);hintText=isNavigatorSelf?'Authorized Franklin Navigator managers can sign in or request profile access free. Existing access is preserved.':'This profile already has verified management access. If you are also authorized, you can request access; existing access is not removed automatically.';
    }
    const label=el('span',labelText,'r1330-state-label'+((managed||managedForViewer)?' is-managed':''));
-   const isClaimAction=actionText==='Claim or manage this profile';
+   const isClaimAction=actionText==='Manage this profile — free';
    document.body.classList.toggle('r1346-claimable',isClaimAction);
    const a=el('a',actionText,'r1330-claim-link'+(isClaimAction?' button r1343-claim-primary':''));a.href=href;row.append(label,a);
    let hint=copy.querySelector('.r1331-media-hint');if(!hint){hint=el('p','', 'r1331-media-hint');row.insertAdjacentElement('afterend',hint)}
    hint.textContent=hintText;
    const manage=document.querySelector('#manage');if(manage){
      const p=manage.querySelector('p');
-     if(p)p.textContent=managedForViewer?'You have verified management access. Public factual information still uses the free correction process; Community Membership is optional.':isNavigatorSelf?'This is Franklin Navigator’s official first-party profile. Authorized managers can claim or manage it free; existing access is preserved. Factual corrections and removal stay free; Community Membership is optional.':managed?'This profile already has verified management access. Authorized additional managers may request access without displacing existing access. Factual corrections and removal stay free.':'Own or manage this business, practice or organization? Claim or manage this profile free. Factual corrections and removal stay free; Community Membership is optional.';
+     if(p)p.textContent=managedForViewer?'You have verified management access. Public factual information still uses the free correction process; Community Membership is optional.':isNavigatorSelf?'This is Franklin Navigator’s official first-party profile. Authorized managers can claim or manage it free; existing access is preserved. Factual corrections and removal stay free; Community Membership is optional.':managed?'This profile already has verified management access. Authorized additional managers may request access without displacing existing access. Factual corrections and removal stay free.':'Own or manage this business, practice or organization? Manage this profile free. Factual corrections and removal stay free; Community Membership is optional.';
      const actions=manage.querySelector('.actions'),primary=actions?.querySelector('.button.primary');
      if(primary){primary.href=href;primary.textContent=actionText;primary.classList.toggle('r1343-claim-primary',isClaimAction)}
      if(actions){
