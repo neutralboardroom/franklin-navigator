@@ -120,3 +120,23 @@ Additional next-version improvements:
 43. Keep only one appropriate return action. When recovery originated from reviewer access, **Back to sign in** should return to reviewer sign-in; otherwise use the normal Franklin sign-in route.
 44. Keep **Can’t access your email? Get account help** as a separate fallback rather than mixing it into the primary password-reset action.
 45. After a successful reset, automatically invalidate the used token and all prior account/reviewer sessions, sign the user into the normal account only if that is the approved recovery design, and return them to the preserved origin context without forcing them to re-find a selected profile.
+
+
+## Page review note — Password Reset Completed
+Reviewed 2026-09-21 from live completion screenshot.
+
+What is working and should be preserved:
+- Clear success state: **Password changed successfully.**
+- User is signed back into the normal Franklin account after successful reset.
+- The reset does not create reviewer privileges or a reviewer session automatically.
+- The selected Franklin profile context was preserved through password recovery.
+- Primary continuation is clearly visible.
+
+Add for next version:
+46. When password recovery originated from the **reviewer workspace**, the primary completion action must return the user to **Reviewer sign in** rather than **Continue to profile access**. Preserve the profile context in the background, but prioritize the task the user was actually completing.
+47. Remove the duplicated **Back to sign in** and **Can’t access your email? Get account help** rows around the green success card. Keep a single secondary-action row.
+48. Make the completion destination context-aware:
+   - reviewer-origin recovery → reviewer sign in;
+   - profile-access-origin recovery → continue to profile access with exact profile preserved;
+   - generic recovery → normal Franklin sign in/account destination.
+49. Preserve the security boundary that a successful password reset restores the ordinary account session only; privileged reviewer access must still require an explicit reviewer sign-in.
