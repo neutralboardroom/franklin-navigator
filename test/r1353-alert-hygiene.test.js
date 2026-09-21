@@ -3,7 +3,7 @@ const test=require('node:test');
 const assert=require('node:assert/strict');
 const crypto=require('node:crypto');
 const {
-  VERSION,fingerprintParts,severityFor,notificationDecision
+  VERSION,fingerprintParts,severityFor,notificationDecision,legacyNotificationFallback
 }=require('../lib/incident-monitor');
 
 const digest=parts=>crypto.createHash('sha256').update(parts.join('|')).digest('hex');
@@ -95,4 +95,28 @@ test('legacy alert state fallback remains in source so deployment does not re-em
   assert.ok(src.includes("legacy:true"));
   assert.ok(src.includes("legacy_origin_preflight_storm_reconciliation"));
   assert.ok(src.includes("{notify:false}"));
+});
+
+test('already-resolved legacy incident with historical alert is not backfilled as a new recovery email',()=>{
+  const legacy=legacyNotificationFallback({
+    status:'RESOLVED',
+    severity:'HIGH',
+    occurrence_count:8,
+    last_alert_at:'2026-09-20T12:00:00Z'
+  });
+  assert.equal(legacy.kind,'RESOLVED');
+  const row={status:'RESOLVED',severity:'HIGH',occurrence_count:8,first_seen:'2026-09-20T11:00:00Z'};
+  assert.equal(notificationDecision(row,legacy,{now:Date.parse('2026-09-21T06:00:00Z')}),null);
+});
+
+test('legacy open incident retains prior alert state instead of being announced as new',()=>{
+  const legacy=legacyNotificationFallback({
+    status:'OPEN',
+    severity:'HIGH',
+    occurrence_count:8,
+    last_alert_at:'2026-09-21T05:50:00Z'
+  });
+  assert.equal(legacy.kind,'INITIAL');
+  const row={status:'OPEN',severity:'HIGH',occurrence_count:8,first_seen:'2026-09-21T05:00:00Z'};
+  assert.equal(notificationDecision(row,legacy,{now:Date.parse('2026-09-21T06:00:00Z'),highCooldownMinutes:60}),null);
 });
