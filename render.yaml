@@ -11,7 +11,7 @@ services:
     autoDeploy: false
     envVars:
       - key: LOCAL_RELEASE
-        value: FR-NAV1.30.53-HF3.13.35
+        value: FR-NAV1.30.54-HF3.13.36
       - key: PUBLIC_ORIGIN
         value: https://franklinnavigator.com
       - key: DATABASE_URL

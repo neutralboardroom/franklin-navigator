@@ -52,7 +52,7 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
     ADMIN_TOKEN:admin,STRIPE_SECRET_KEY:'sk_live_'+'1'.repeat(32),
     STRIPE_WEBHOOK_SECRET:'whsec_'+'2'.repeat(32),
     STRIPE_ACCOUNT_ID:'acct_SYNTHETICMONITOR',
-    COMMERCE_ENABLED:'false',LOCAL_RELEASE:'FR-NAV1.30.53-HF3.13.35',
+    COMMERCE_ENABLED:'false',LOCAL_RELEASE:'FR-NAV1.30.54-HF3.13.36',
     MEMBER_REVIEWERS:'synthetic-reviewer',REVIEWER_ACCOUNT_BINDINGS:'[]',
     FRANKLIN_ISOLATED_TEST:'true'
   };
@@ -62,7 +62,7 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
   pool=new Pool({connectionString:u.href,ssl:false});
 
   const health=await call('GET','/health');
-  assert.equal(health.body.release,'FR-NAV1.30.53-HF3.13.35');
+  assert.equal(health.body.release,'FR-NAV1.30.54-HF3.13.36');
   assert.equal(health.body.issueMonitorVersion,'FRANKLIN_ISSUE_MONITOR_3');
 
   const unauth=await call('GET','/admin/incidents');
@@ -175,7 +175,7 @@ async function stop(){if(child){try{process.kill(-child.pid,'SIGTERM')}catch{}aw
   assert.equal((await pool.query("select count(*)::int n from franklin_incidents where safe_error_code='SYNTHETIC_MONITOR_CHECK' and status='RESOLVED'")).rows[0].n,1);
 
   console.log(JSON.stringify({
-    result:'PASS',release:'FR-NAV1.30.53-HF3.13.35',actualPostgres:true,actualHttp:true,
+    result:'PASS',release:'FR-NAV1.30.54-HF3.13.36',actualPostgres:true,actualHttp:true,
     secretsExcluded:true,deduplication:true,recurrenceCount:true,ownerAuthFailClosed:true,
     publicPreflightGrouped:true,publicPreflightSeverity:'NORMAL',digestVisible:true,reopenState:true,
     userIssueIsolation:true,resolutionState:true,externalNotificationState:'CONFIGURATION_AUTHORITY_REQUIRED',
