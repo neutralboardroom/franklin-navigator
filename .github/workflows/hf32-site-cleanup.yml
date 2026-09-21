@@ -31,6 +31,7 @@ on:
       - 'DURABLE_ROGER_RULE__SITEWIDE_NO_REGRESSION_AND_NON_BURIAL.md'
       - 'SITEWIDE_PRESERVATION_BASELINE__R1347.json'
       - 'tests/r1347-sitewide-roger-rule.cjs'
+      - 'tests/r1353-alert-notification-hygiene.cjs'
       - 'tests/r1348-assistant-workflow-currentness.cjs'
       - 'tests/r1349-bilingual-home-currentness.cjs'
       - 'tests/r1349-related-profile-relevance.cjs'
@@ -66,6 +67,7 @@ on:
       - 'DURABLE_ROGER_RULE__SITEWIDE_NO_REGRESSION_AND_NON_BURIAL.md'
       - 'SITEWIDE_PRESERVATION_BASELINE__R1347.json'
       - 'tests/r1347-sitewide-roger-rule.cjs'
+      - 'tests/r1353-alert-notification-hygiene.cjs'
       - 'tests/r1348-assistant-workflow-currentness.cjs'
       - 'tests/r1349-bilingual-home-currentness.cjs'
       - 'tests/r1349-related-profile-relevance.cjs'
@@ -78,6 +80,10 @@ on:
 
 permissions:
   contents: read
+
+concurrency:
+  group: franklin-current-successor-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   qualify-current:
@@ -133,7 +139,7 @@ jobs:
           assert nav['rule']=='SHOW_MAXIMUM_PRACTICAL_TOP_LEVEL_ITEMS_WHILE_KEEPING_PRIMARY_NAV_ON_ONE_LINE'
           assert nav['fixedBreakpointHiding'] is False and nav['singleLinePrimaryNav'] is True
           mon=d['monitoring']
-          assert mon['version']=='FRANKLIN_ISSUE_MONITOR_2'
+          assert mon['version'] in ('FRANKLIN_ISSUE_MONITOR_2','FRANKLIN_ISSUE_MONITOR_3')
           assert mon['durableRequirement'].startswith('CONTINUE_SITE_WIDE')
           assert mon['rawSecretsForbidden'] is True
           fix=mon['r1334Corrections']
@@ -202,6 +208,7 @@ jobs:
           node tests/r1346-claim-path-outreach-readiness.cjs
           node tests/r1347-two-command-permanent-baseline.cjs
           node tests/r1347-sitewide-roger-rule.cjs
+          node tests/r1353-alert-notification-hygiene.cjs
           node tests/assistant2-clean-room-boundary.cjs
           node tests/r1348-assistant-workflow-currentness.cjs
           node tests/r1349-bilingual-home-currentness.cjs
