@@ -1222,7 +1222,7 @@
       "19,103 canonical discovery profiles plus authorized Franklin Navigator self-profile overlay",
       "free factual correction/removal/claim management",
       "finished business/professional profiles",
-      "1\u20135 ratings and written firsthand reviews",
+      "1–5 ratings and written firsthand reviews",
       "review reporting/moderation and verified manager responses",
       "free reviewed profile photo/logo upload",
       "paid Community Member cover/gallery",
@@ -1519,7 +1519,7 @@
     "donorRegistry": "DONOR_CAPABILITY_REGISTRY__R1337.json",
     "homepageHistoryHeading": {
       "value": "Franklin Through Time",
-      "previousValue": "Franklin Through Time \u2014 Then & Now",
+      "previousValue": "Franklin Through Time — Then & Now",
       "ownerInstructionDate": "2026-09-18",
       "changeScope": "HEADING_TEXT_ONLY",
       "preserveRestOfHomepage": true
@@ -1695,7 +1695,7 @@
     "ownerDirection": "APPROVED_BUSINESS_VISIBILITY_HEADLINE_AND_CONTINUE_PROFILE_CLAIM_LANGUAGE_PATH_MANAGEMENT_IMPROVEMENTS",
     "materialImprovement": {
       "approvedBusinessHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
-      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mej\u00f3relo. Aumente su visibilidad local.",
+      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local.",
       "profileCenterTerminologyRepositoryWide": true,
       "staleProfileStudioVisibleLanguageRemoved": true,
       "staleManagedUnclaimedVisibleLabelsRemoved": true,
@@ -1772,7 +1772,7 @@
     "ownerDirection": "FIX_OWNER_REPORTED_BUSINESS_DASHBOARD_OVERLAP_AND_ENSURE_READABILITY_SITEWIDE",
     "materialImprovement": {
       "approvedBusinessHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
-      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mej\u00f3relo. Aumente su visibilidad local.",
+      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local.",
       "staleDynamicHeadlineOverrideRemoved": true,
       "dynamicPathFixedBadgeGeometryNeutralized": true,
       "pathCardReadableColorAndWrapping": true,
@@ -2506,7 +2506,7 @@
       "staticDeploy": "dep-danptbjtqb8s73co9k4g"
     },
     "ownerCommandRevision": "2026-09-03-R2",
-    "materialImprovement": "Repair two current public-quality defects without unrelated redesign: restore English/Spanish static homepage currentness parity, and prevent broad umbrella profile categories from generating unrelated Related local profiles; use a qualified restaurant/food override for Daddy\u2019s Dogs and allow fewer results when relevance is insufficient.",
+    "materialImprovement": "Repair two current public-quality defects without unrelated redesign: restore English/Spanish static homepage currentness parity, and prevent broad umbrella profile categories from generating unrelated Related local profiles; use a qualified restaurant/food override for Daddy’s Dogs and allow fewer results when relevance is insufficient.",
     "fixes": {
       "bilingualStaticHomepageCurrentnessParity": true,
       "expiredSpanishSplashParkRemoved": true,
@@ -3291,7 +3291,7 @@
         "static window cling"
       ],
       "currentObservedStartingPricesUsd": {
-        "clearOrOpaqueWindowProducts": 6.0,
+        "clearOrOpaqueWindowProducts": 6,
         "dieCutClearCling": 7.2,
         "bulk2PlusReferencedWindowProducts": 5.28
       },
@@ -3328,6 +3328,14 @@
       "PRE_SEAL_CURRENTNESS_RECEIPT__R1354.md",
       "ROLE_PRODUCT_SCOPE_AND_AUTHORITY_NO_DRIFT_RECEIPT__R1354.md",
       "R1354_RELEASE_RECEIPT.json"
-    ]
+    ],
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1353"
+    }
   }
 }
