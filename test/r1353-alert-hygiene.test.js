@@ -87,3 +87,12 @@ test('NORMAL noisy incidents are retained for digest instead of standalone lifec
   const row={status:'OPEN',severity:'NORMAL',occurrence_count:50,first_seen:'2026-09-21T00:00:00Z'};
   assert.equal(notificationDecision(row,null,{now:Date.parse('2026-09-21T03:00:00Z')}),null);
 });
+
+test('legacy alert state fallback remains in source so deployment does not re-email old incidents as new',()=>{
+  const fs=require('node:fs');
+  const src=fs.readFileSync('lib/incident-monitor.js','utf8');
+  assert.ok(src.includes('fallbackRow?.last_alert_at'));
+  assert.ok(src.includes("legacy:true"));
+  assert.ok(src.includes("legacy_origin_preflight_storm_reconciliation"));
+  assert.ok(src.includes("{notify:false}"));
+});
