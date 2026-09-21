@@ -50,12 +50,12 @@ add('Sep20 claim connect has visible local loading, duplicate suppression, retry
 add('Sep20 Step 3 remains dedicated vertical form with full-width fields and separate checkbox row',live.includes("form.className='r1346-profile-access-verification'")&&css.includes('.r1346-profile-access-verification input[type="url"]')&&css.includes('min-height:150px')&&css.includes('grid-template-columns:auto minmax(0,1fr)!important'));
 add('Sep20 Step 3 heading names selected profile',live.includes("'Verify that you manage '+state.selected.n"));
 add('R1352 authority submit has visible loading and pending focus',live.includes('Submitting your request. Please keep this page open.')&&(live.includes("pendingCard.dataset.r1346PendingStatus=''")||live.includes("pendingNotice.dataset.r1346PendingStatus=''"))&&live.includes("focusIntoView('[data-r1346-pending-status]')"));
-add('Sep20 reset request has visible loading, duplicate suppression, generic success and check-email next step',recovery.includes('Sending password-reset instructions…')&&recovery.includes('submit.disabled=true')&&recovery.includes('If an account exists for this email, password-reset instructions have been sent.')&&recovery.includes('Check your email'));
-add('Sep20 reset completion clears/removes old form and visibly confirms signed-in exact-profile continuation',recovery.includes("p1.value='';p2.value=''")&&recovery.includes('form.remove()')&&recovery.includes('Password changed successfully.')&&recovery.includes('You’re signed in.')&&recovery.includes("go.href='/profile-access/'+profileQuery"));
-add('Sep20 reset token is removed from visible URL after success',recovery.includes("history.replaceState(null,'',location.pathname+profileQuery)"));
-add('Sep20 8-character password minimum remains public/frontend',live.includes('pw.input.minLength=8')&&recovery.includes('p1.minLength=8')&&!live.includes('Use at least 12 characters')&&!recovery.includes('at least 12 characters'));
+add('Sep20 reset request has visible loading, duplicate suppression, generic success and check-email next step',recovery.includes("submit.textContent='Sending…'")&&recovery.includes('submit.disabled=true')&&recovery.includes('If an account exists for this email, password-reset instructions have been sent.')&&recovery.includes('Check your email'));
+add('Sep20 reset completion clears/replaces old form and visibly confirms signed-in exact-profile continuation',recovery.includes("a.input.value='';b.input.value=''")&&recovery.includes('body.replaceChildren()')&&recovery.includes('Password changed successfully.')&&recovery.includes('fresh session')&&recovery.includes("profile?'/profile-access/'+profileQuery")&&recovery.includes('go.href=destination'));
+add('Sep20 reset token is removed from visible URL immediately after capture',recovery.includes('cleanQs')&&recovery.includes("history.replaceState(null,'',location.pathname+(cleanQs.size?'?'+cleanQs.toString():''))"));
+add('Sep20 8-character password minimum remains public/frontend',live.includes('pw.input.minLength=8')&&recovery.includes('input.minLength=8')&&!live.includes('Use at least 12 characters')&&!recovery.includes('at least 12 characters'));
 add('Sep20 claim CTA remains stronger than Official website on claimable profiles',profile.includes('r1343-claim-primary')&&css.includes('body.r1346-claimable.hf35-profile.r1332-profile .profile-primary-actions a.button.primary:not(.r1343-claim-primary)'));
-add('Sep20 optional membership remains later than active verification task',live.includes("if(verified||String(selectedLink?.review_state||'').toUpperCase()==='PENDING')box.append(link('See optional Community Membership'"));
+add('Sep20 optional membership remains later than active verification task',live.includes("if(verified)box.append(link('See optional Community Membership'"));
 add('Sep20 Profile Center remains verified-authority-only',authorityRule.includes('authority_state === VERIFIED')&&authorityRule.includes('Profile Access'));
 add('Sep20 corrections remain separate and free',live.includes('Correct public facts')&&control.includes('/profile-access/?profile='));
 add('Sep20 no-silent-click durable rule remains permanent',asyncRule.includes('NO SILENT CLICKS')&&asyncRule.includes('duplicate')&&asyncRule.includes('scroll/focus'));
@@ -68,5 +68,5 @@ add('Two-command durable baseline requires visible/reachable browser qualificati
 add('Password sender exception remains evidence-gated, not silently changed',durable.includes('replacement Franklin account/security transactional sender')&&durable.includes('independently verified'));
 
 const failed=checks.filter(x=>!x[1]);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.47-HF3.13.29',checks,failed},null,2));
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.55-HF3.13.37',checks,failed},null,2));
 if(failed.length)process.exit(1);
