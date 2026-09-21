@@ -20,6 +20,7 @@ on:
       - '.env.example'
       - 'package.json'
       - 'test/profile-claim-management.test.js'
+      - 'test/r1346-claim-path-contract.test.js'
       - 'test/r1353-alert-hygiene.test.js'
       - 'acceptance/issue-monitoring.integration.cjs'
       - '.github/workflows/r1308-issue-monitoring.yml'
