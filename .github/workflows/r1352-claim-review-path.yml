@@ -1,0 +1,60 @@
+name: R1352 complete claim review path
+on:
+  push:
+    branches: [r1352-owner-profile-access-review-20260921]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'dist/assets/membership-live.js'
+      - 'dist/assets/hf310.js'
+      - 'dist/assets/r1342-claim-recovery.css'
+      - 'dist/assets/r37-i18n.js'
+      - 'dist/claim-profile/index.html'
+      - 'dist/profile-access/index.html'
+      - 'tests/r1352-claim-review-path.cjs'
+      - 'tests/r1346-claim-path-outreach-readiness.cjs'
+      - 'scripts/r1346-claim-path-browser-acceptance.mjs'
+      - '.github/workflows/r1352-claim-review-path.yml'
+permissions:
+  contents: read
+jobs:
+  claim-review-path:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Structural and inherited regression
+        run: |
+          set -euo pipefail
+          node --check dist/assets/membership-live.js
+          node --check dist/assets/hf310.js
+          node --check dist/assets/r37-i18n.js
+          node tests/r1352-claim-review-path.cjs
+          node tests/r1346-claim-path-outreach-readiness.cjs
+          node tests/r1347-sitewide-roger-rule.cjs
+          node tests/r1351-profile-path-assistant.cjs
+      - name: Controlled browser acceptance
+        run: |
+          set -euo pipefail
+          rm -rf .r1346-browser-evidence
+          python3 -m http.server 4175 --directory dist >/tmp/r1352-http.log 2>&1 &
+          HTTP_PID=$!
+          trap 'kill "$HTTP_PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:4175/profile-access/?profile=FR-ORG-b00c0ace7943973c >/dev/null; then break; fi
+            sleep 0.1
+          done
+          node scripts/r1346-claim-path-browser-acceptance.mjs
+          grep -F '"result": "PASS"' .r1346-browser-evidence/R1346_CLAIM_PATH_BROWSER_ACCEPTANCE.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1352-claim-review-browser-evidence
+          path: .r1346-browser-evidence/
+          if-no-files-found: error
+          retention-days: 30
