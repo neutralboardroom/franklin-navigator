@@ -52,9 +52,12 @@ jobs:
           done
           node scripts/r1346-claim-path-browser-acceptance.mjs
           grep -F '"result": "PASS"' .r1346-browser-evidence/R1346_CLAIM_PATH_BROWSER_ACCEPTANCE.json
+          rm -rf browser-evidence-r1352
+          mkdir -p browser-evidence-r1352
+          cp -a .r1346-browser-evidence/. browser-evidence-r1352/
       - uses: actions/upload-artifact@v4
         with:
           name: r1352-claim-review-browser-evidence
-          path: .r1346-browser-evidence/
+          path: browser-evidence-r1352/
           if-no-files-found: error
           retention-days: 30
