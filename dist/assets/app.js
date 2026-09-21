@@ -244,22 +244,23 @@
       claim=document.createElement('a');
       claim.dataset.r1343ClaimPrimary='1';
       claim.href=claimHref;
-      claim.textContent='Claim or manage this profile';
+      claim.textContent='Manage this profile — free';
       actions.prepend(claim);
     }
     claim.classList.add('button','r1343-claim-primary');
     claim.href=claimHref;
-    claim.setAttribute('aria-label',name?'Claim or manage '+name:'Claim or manage this profile');
+    claim.setAttribute('aria-label',name?'Manage '+name+' profile — free':'Manage this profile — free');
 
     let correction=[...actions.querySelectorAll('a')].find(a=>/\/corrections\//.test(a.getAttribute('href')||''));
     if(!correction){
       correction=document.createElement('a');
       correction.href='/corrections/?listing='+encodeURIComponent(name)+'&profile='+encodeURIComponent(profileId)+'&url='+encodeURIComponent(canonical);
-      correction.textContent='Review / correct this profile';
+      correction.textContent='Correct profile information';
       correction.dataset.r1343Correction='1';
       correction.className='button r1343-correction-secondary';
       actions.append(correction);
     }else{
+      correction.textContent='Correct profile information';
       correction.classList.add('r1343-correction-secondary');
     }
 
