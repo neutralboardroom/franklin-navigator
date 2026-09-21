@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: franklin-navigator-membership
+    runtime: node
+    region: virginia
+    plan: starter
+    branch: franklin-commerce-runtime-r30
+    buildCommand: npm ci --ignore-scripts --no-audit --no-fund
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      - key: LOCAL_RELEASE
+        value: FR-NAV1.30.52-HF3.13.34
+      - key: PUBLIC_ORIGIN
+        value: https://franklinnavigator.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: franklin-navigator-membership-db
+          property: connectionString
+      - key: SESSION_SECRET
+        sync: false
+      - key: LOCAL_ASSERTION_SECRET
+        sync: false
+      - key: SRE_SHARED_SECRET
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_ACCOUNT_ID
+        value: acct_1TZU2TRxNra9nizo
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: SESSION_DAYS
+        value: '14'
+      - key: COMMERCE_ENABLED
+        value: 'false'
