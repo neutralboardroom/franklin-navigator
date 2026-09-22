@@ -1,0 +1,39 @@
+name: R1357 reviewer and claim hardening
+on:
+  pull_request:
+    branches: [franklin-commerce-runtime-r30]
+    paths:
+      - 'server.js'
+      - 'lib/reviewer-console.js'
+      - 'review/**'
+      - 'test/r1357-profile-review-audit.test.js'
+      - 'test/r1346-claim-path-contract.test.js'
+      - 'render.yaml'
+      - '.env.example'
+      - '.github/workflows/r1357-reviewer-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: r1357-reviewer-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Syntax
+        run: npm run check
+      - name: Unit and source contract tests
+        run: npm test
+      - name: R1357 focused regression
+        run: node --test test/r1357-profile-review-audit.test.js test/r1346-claim-path-contract.test.js
