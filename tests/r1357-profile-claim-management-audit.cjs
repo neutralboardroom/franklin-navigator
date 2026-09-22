@@ -24,7 +24,7 @@ ok('reviewer handoff no longer places account email in URL fragment',
 ok('profile switcher uses plain language',
   live.includes("summary.textContent='Wrong profile? Choose another'"));
 ok('correction/removal page exposes required fields and direct removal action',
-  corrections.includes('Reason for the removal request <span class="fine-print">(required)</span>')&&
+  corrections.includes('Explain the removal request <span class="fine-print">(required)</span>')&&corrections.includes('name="removalCategory"')&&
   corrections.includes('data-switch-removal')&&corrections.includes('data-switch-correction'));
 ok('correction/removal page offers evidence for both request types',
   corrections.includes('Official source or evidence link (optional)')&&!corrections.includes('data-correction-only>Official source'));
@@ -39,4 +39,4 @@ ok('Spanish parity covers audited high-value labels',
   i18n.includes("'Correct public facts':'Corregir datos públicos'")&&
   i18n.includes("'Open secure reviewer workspace':'Abrir espacio seguro de revisión'"));
 
-console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.57-HF3.13.39',checks:checks.length,items:checks},null,2));
+console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.58-HF3.13.40',checks:checks.length,items:checks},null,2));
