@@ -3752,10 +3752,27 @@
       ]
     },
     "runtime": {
-      "branch": "r1359-runtime-profile-management-20260922",
-      "baseBranch": "franklin-commerce-runtime-r30",
-      "qualification": "IN_PROGRESS",
-      "deployment": "NOT_YET_DEPLOYED"
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "7651daa1e17c4f7b762c02d76b1d3420835b6483",
+      "qualifiedCandidateCommit": "caf59063421c3c61faeacf3db0b345938a0978c2",
+      "qualification": "PASS",
+      "workflows": {
+        "claimDepth": 35732243690,
+        "reviewerHardening": 35732243777,
+        "reviewerAuthority": 35732243709,
+        "issueMonitoring": 35732243698
+      },
+      "renderService": "franklin-navigator-membership",
+      "renderServiceId": "srv-dabgvefqj5pc739vr4h0",
+      "renderDeployId": "dep-dap7vv740ujc73bsn8v0",
+      "deployment": "LIVE",
+      "releaseEnv": "FR-NAV1.30.59-HF3.13.41",
+      "liveVerified": true,
+      "startupTests": {
+        "pass": 97,
+        "fail": 0,
+        "ready": true
+      }
     },
     "public": {
       "branch": "r1359-outreach-ready-profile-management-20260922",
