@@ -9,12 +9,13 @@ const which=n=>spawnSync('bash',['-lc','command -v '+n],{encoding:'utf8'}).stdou
 const chromePath=['google-chrome','google-chrome-stable','chromium','chromium-browser'].map(which).find(Boolean);
 if(!chromePath)throw new Error('R1350_BROWSER_REQUIRED_CHROME_NOT_FOUND');
 const userDir='/tmp/franklin-r1350-'+process.pid;
+fs.rmSync(userDir,{recursive:true,force:true});
 const chrome=spawn(chromePath,['--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--remote-debugging-address=127.0.0.1','--remote-debugging-port=0','--remote-allow-origins=*','--no-first-run','--no-default-browser-check','--user-data-dir='+userDir,'about:blank'],{stdio:['ignore','ignore','pipe']});
 let chromeErr='';chrome.stderr.on('data',d=>chromeErr+=String(d).slice(-4000));process.on('exit',()=>{try{chrome.kill('SIGKILL')}catch{}});
 async function json(url){const r=await fetch(url);if(!r.ok)throw new Error('HTTP '+r.status+' '+url);return r.json()}
 const activePortFile=userDir+'/DevToolsActivePort';
 let cdpPort;
-for(let i=0;i<200;i++){
+for(let i=0;i<600;i++){
   if(chrome.exitCode!==null)throw new Error('Chrome exited before CDP became ready exit='+chrome.exitCode+' '+chromeErr);
   try{
     if(fs.existsSync(activePortFile)){
@@ -35,7 +36,7 @@ const evaluate=async expression=>{const r=await send('Runtime.evaluate',{express
 async function wait(expr,label,timeout=12000){const t=Date.now();while(Date.now()-t<timeout){try{if(await evaluate(expr))return}catch{}await sleep(100)}throw new Error('Timeout '+label)}
 async function nav(path){await send('Page.navigate',{url:BASE+path});await wait("document.readyState==='complete'",'document ready');await sleep(180)}
 async function screenshot(name){const r=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,fromSurface:true});fs.writeFileSync(dir+'/'+name,Buffer.from(r.data,'base64'))}
-const out={release:'FR-NAV1.30.50-HF3.13.32',checks:[],result:'IN_PROGRESS'};
+const out={release:'FR-NAV1.30.57-HF3.13.39',checks:[],result:'IN_PROGRESS'};
 const check=(name,ok,detail='')=>{out.checks.push({name,pass:Boolean(ok),detail});if(!ok)throw new Error(name+' '+detail)};
 await send('Page.enable');await send('Runtime.enable');await send('Emulation.setDeviceMetricsOverride',{width:1365,height:900,deviceScaleFactor:1,mobile:false});
 await send('Emulation.setScriptExecutionDisabled',{value:true});
