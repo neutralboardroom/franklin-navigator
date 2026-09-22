@@ -7,12 +7,16 @@ on:
     paths:
       - 'dist/assets/membership-live.js'
       - 'dist/assets/hf310.js'
+      - 'dist/assets/r1330-profile.js'
+      - 'dist/assets/hf35-profile-control.js'
+      - 'dist/corrections/index.html'
       - 'dist/assets/r1342-claim-recovery.css'
       - 'dist/assets/r37-i18n.js'
       - 'dist/claim-profile/index.html'
       - 'dist/profile-access/index.html'
       - 'tests/r1352-claim-review-path.cjs'
       - 'tests/r1346-claim-path-outreach-readiness.cjs'
+      - 'tests/r1357-profile-claim-management-audit.cjs'
       - 'scripts/r1346-claim-path-browser-acceptance.mjs'
       - '.github/workflows/r1352-claim-review-path.yml'
 permissions:
@@ -34,9 +38,12 @@ jobs:
           set -euo pipefail
           node --check dist/assets/membership-live.js
           node --check dist/assets/hf310.js
+          node --check dist/assets/r1330-profile.js
+          node --check dist/assets/hf35-profile-control.js
           node --check dist/assets/r37-i18n.js
           node tests/r1352-claim-review-path.cjs
           node tests/r1346-claim-path-outreach-readiness.cjs
+          node tests/r1357-profile-claim-management-audit.cjs
           node tests/r1347-sitewide-roger-rule.cjs
           node tests/r1351-profile-path-assistant.cjs
       - name: Controlled browser acceptance
