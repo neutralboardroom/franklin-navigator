@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const root=path.resolve(__dirname,'..');
 const prod=JSON.parse(fs.readFileSync(path.join(root,'PRODUCTION_RELEASE.json'),'utf8'));
 assert.equal(prod.release,'FR-NAV1.30.59-HF3.13.41');
-assert.equal(prod.base,'FR-NAV1.30.57-HF3.13.39');
+assert.equal(prod.base,'FR-NAV1.30.58-HF3.13.40');
 const r=prod.r1356;
 assert(r&&r.runtime);
 assert(prod.r1357&&prod.r1357.materialScope==='OWNER_LIVE_PROFILE_CLAIM_MANAGEMENT_SCREENSHOT_AUDIT');
