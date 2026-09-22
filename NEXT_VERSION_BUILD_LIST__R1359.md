@@ -88,3 +88,41 @@ This is the running owner-observed list for the **next material Local Community 
 **Priority:** P1 clarity/security UX.
 
 **Status:** OPEN — owner-observed live defect.
+
+
+## Finding #196 — Verified profile managers should not require manual reviewer approval for every ordinary owner-controlled update
+
+**Owner evidence:** live correction/profile-management walkthrough, 2026-09-22.
+
+**Observed behavior:** the current model sends factual corrections for review before public update; profile photo/logo submissions also require approval; richer member content is saved privately and then submitted for review before publication. This means even a verified manager cannot simply maintain ordinary owner-controlled profile information in real time.
+
+**Problem:** requiring a human reviewer for every ordinary change does not scale and weakens the value of verified profile management. It also makes "Manage your Franklin profile" feel like a request form rather than a true management workspace.
+
+**Desired outcome:** after management authority is verified, ordinary owner-controlled profile information should be self-service with audit/version safeguards, while higher-risk, disputed, canonical/source-backed, regulated, safety-sensitive, or identity-critical fields remain review-gated.
+
+**Implementation direction:**
+- create a clear field-authority model separating:
+  - `VERIFIED_MANAGER_DIRECT` fields that a verified manager may publish immediately;
+  - `AUTOMATED_CHECK_THEN_PUBLISH` fields/media that may publish after machine validation/safety checks unless flagged;
+  - `HUMAN_REVIEW_REQUIRED` fields that remain review-gated;
+  - `PROFILE_FACTORY_CANONICAL` facts that cannot be silently overwritten by member edits;
+- likely direct-manager fields should include ordinary owner-controlled business/profile content such as public description, current hours, service area, public phone, public website, contact/booking/quote/menu/order links, languages/accessibility notes, and similar first-party operational details where appropriate;
+- preserve provenance by labeling manager-provided information distinctly from source-backed canonical facts;
+- maintain immutable version history, actor/account identity, timestamp, prior value, rollback/revert, and abuse/dispute handling;
+- use automated URL/media/content validation and flag suspicious or policy-sensitive changes for review rather than reviewing every clean update manually;
+- keep identity-critical fields, legal/regulatory credentials, protected official/government profiles, disputes, removal/suppression, ownership changes, and other high-risk changes under explicit review;
+- allow owner/admin policy configuration for which field classes are direct versus reviewed;
+- do not make paid membership a condition of factual accuracy or ordinary verified-manager maintenance.
+
+**Acceptance criteria:**
+1. A verified ordinary profile manager can make at least the approved low-risk owner-controlled changes without waiting for a human reviewer.
+2. The public profile clearly distinguishes manager-provided content from independently sourced/canonical facts where that distinction matters.
+3. Every direct change has immutable audit/version history and can be reverted.
+4. High-risk/canonical/disputed changes remain fail-closed and review-gated.
+5. Automated validation catches malformed URLs, unsafe media/content, and obvious policy violations before publication.
+6. Human reviewers receive only exceptions/high-risk changes rather than every routine update.
+7. Free basic profile management remains free.
+
+**Priority:** P0 scalability / profile-management value.
+
+**Status:** OPEN — owner-observed workflow/design issue.
