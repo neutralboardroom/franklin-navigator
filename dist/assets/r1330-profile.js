@@ -76,9 +76,9 @@
    row.replaceChildren();
    if(isNavigatorSelf&&!viewerLink)copy.querySelector('.r1331-media-hint')?.remove();
    const authority=String(viewerLink?.authority_state||'').toUpperCase();
-   let labelText='Unclaimed profile',actionText='Claim this profile — free',href='/profile-access/?profile='+encodeURIComponent(id),hintText='Claiming and basic profile management are free. Factual corrections and removal requests also stay free.',managedForViewer=false;
+   let labelText='Management not yet verified',actionText='Manage this profile — free',href='/profile-access/?profile='+encodeURIComponent(id),hintText='Claiming and basic profile management are free. Factual corrections and removal requests also stay free.',managedForViewer=false;
    if(isNavigatorSelf&&!viewerLink){
-     labelText='Official Franklin Navigator profile';actionText='Correct profile information';href='/corrections/?profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(location.origin+'/profiles/'+id+'/');hintText='This official platform profile uses protected administrator access. Free factual corrections and removal requests remain available.';
+     labelText='Official Franklin Navigator profile';actionText='Correct factual listing details';href='/corrections/?profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(location.origin+'/profiles/'+id+'/');hintText='This official platform profile uses protected administrator access. Free factual corrections and removal requests remain available.';
    }else if(authority==='VERIFIED'){
      labelText='Management verified for you';actionText='Open Profile Center';href='/profile-studio/?profile='+encodeURIComponent(id);hintText='You have verified management access. You can manage your photo or logo and request factual corrections.';managedForViewer=true;
    }else if(authority==='PENDING'){
@@ -86,10 +86,10 @@
    }else if(authority==='DISPUTED'){
      labelText='Access review needed';actionText='Get profile access help';href='/member-support/?topic=PROFILE_ACCESS&profile='+encodeURIComponent(id);hintText='Franklin needs to review this access issue before management can continue.';
    }else if(managed){
-     labelText='Managed profile';actionText='Request management access';href='/profile-access/?profile='+encodeURIComponent(id);hintText='This profile already has verified management access. If you are also authorized, you can request access; existing access is not removed automatically.';
+     labelText='Management verified';actionText='Manage this profile — free';href='/profile-access/?profile='+encodeURIComponent(id);hintText='This profile already has verified management access. If you are also authorized, you can request access; existing access is not removed automatically.';
    }
    const label=el('span',labelText,'r1330-state-label'+((managed||managedForViewer)?' is-managed':''));
-   const isClaimAction=actionText==='Claim this profile — free'||actionText==='Request management access';
+   const isClaimAction=actionText==='Manage this profile — free';
    document.body.classList.toggle('r1346-claimable',isClaimAction);
    const a=el('a',actionText,'r1330-claim-link'+(isClaimAction?' button r1343-claim-primary':''));a.href=href;row.append(label,a);
    let hint=copy.querySelector('.r1331-media-hint');if(!hint){hint=el('p','', 'r1331-media-hint');row.insertAdjacentElement('afterend',hint)}
@@ -107,8 +107,8 @@
        const page=location.origin+'/profiles/'+id+'/';
        const correction='/corrections/?listing='+encodeURIComponent(profileName)+'&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
        const removal='/corrections/?action=PUBLIC_REMOVAL&listing='+encodeURIComponent(profileName)+'&profile='+encodeURIComponent(id)+'&url='+encodeURIComponent(page);
-       if(!actions.querySelector('[data-r1338-correct]')){const x=el('a','Correct profile information','button');x.href=correction;x.dataset.r1338Correct='1';actions.append(x)}
-       if(!actions.querySelector('[data-r1338-remove]')){const x=el('a','Request profile removal','button');x.href=removal;x.dataset.r1338Remove='1';actions.append(x)}
+       if(!actions.querySelector('[data-r1338-correct]')){const x=el('a','Correct factual listing details','button');x.href=correction;x.dataset.r1338Correct='1';actions.append(x)}
+       if(!actions.querySelector('[data-r1338-remove]')){const x=el('a','Request removal','button');x.href=removal;x.dataset.r1338Remove='1';actions.append(x)}
        if(details)details.remove();
      }
    }
