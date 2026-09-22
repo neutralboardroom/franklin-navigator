@@ -1,0 +1,27 @@
+name: R1359 profile outreach readiness
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+jobs:
+  qualify-r1359-profile-path:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: R1359 profile-path regression tests
+        run: node --test test/r1359-public-profile-path.test.js
+      - name: R1359 modified JavaScript syntax
+        run: |
+          node --check dist/assets/franklin-assistant.js
+          node --check dist/assets/hf35-profile-control.js
+          node --check dist/assets/membership-live.js
+          node --check dist/assets/member-profile-live.js
+          node --check dist/assets/hf35-member-public.js
+      - name: Preserve free factual correction and removal routes
+        run: |
+          grep -q "Factual corrections and public-removal requests are free" dist/corrections/index.html
+          grep -q "Profile management is free" dist/corrections/index.html
