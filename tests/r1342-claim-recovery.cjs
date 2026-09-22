@@ -21,8 +21,8 @@ const elite=exact.findIndex(r=>/elite navigator co/i.test(r.n));
 if(elite>=0)assert.ok(elite>0,'Elite Navigator Co. must not outrank exact Franklin Navigator');
 
 const profile=read('dist/assets/r1330-profile.js');
-assert.match(profile,/Claim this profile — free/);
-assert.match(profile,/Correct profile information/);
+assert.match(profile,/Manage this profile — free/);
+assert.match(profile,/Correct factual listing details/);
 assert.match(profile,/Official Franklin Navigator profile/);
 assert.match(profile,/\/profile-access\/\?profile=/);
 
