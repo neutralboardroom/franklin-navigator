@@ -125,7 +125,7 @@ const continueHref=await evaluate("document.querySelector('.r1346-recovery-succe
 await navigate(BASE+continueHref);
 await waitFor("[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Continue with this profile')","connect action");
 check('same exact profile survives password recovery',await evaluate("location.search.includes('"+PROFILE+"') && document.body.textContent.includes('Franklin Navigator')"));
-check('profile switcher is secondary/collapsed',await evaluate("document.querySelector('details.r1346-profile-change:not([open])>summary')?.textContent.includes('Choose a different profile')"));
+check('profile switcher is secondary/collapsed',await evaluate("document.querySelector('details.r1346-profile-change:not([open])>summary')?.textContent.includes('Wrong profile?')"));
 
 // Continue with profile: local loading + auto advance/focus.
 await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Continue with this profile').click()");
@@ -182,7 +182,7 @@ check('exact profile survives pending reload',await evaluate("location.search.in
 check('signed-in account survives pending reload',await evaluate("document.body.textContent.includes('controlled-fixture@franklin.invalid')"));
 check('no membership/payment API was started',await evaluate("!window.__r1346ApiCalls.some(x=>x.path==='/api/membership/start')"));
 check('Profile Center is unavailable before VERIFIED authority',await evaluate("![...document.querySelectorAll('a')].some(a=>a.getAttribute('href')?.startsWith('/profile-studio/'))"));
-check('free correction path remains available',await evaluate("[...document.querySelectorAll('a')].some(a=>a.textContent.includes('Correct profile information')&&a.getAttribute('href')?.startsWith('/corrections/'))"));
+check('free correction path remains available',await evaluate("[...document.querySelectorAll('a')].some(a=>a.textContent.includes('Correct public facts')&&a.getAttribute('href')?.startsWith('/corrections/'))"));
 
 results.result='PASS';
 fs.writeFileSync(evidenceDir+'/R1346_CLAIM_PATH_BROWSER_ACCEPTANCE.json',JSON.stringify(results,null,2)+'\n');
