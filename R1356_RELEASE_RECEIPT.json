@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "franklin.local-community-platform.release-receipt.v1",
+  "release": "FR-NAV1.30.56-HF3.13.38",
+  "date": "2026-09-22",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "requiredEndState": "BLOCKED",
+  "predecessor": {
+    "release": "FR-NAV1.30.55-HF3.13.37",
+    "mainCommit": "6233731cba6c7488d58e461b2ca55b311d86533c",
+    "exactHeadQualificationRun": 35624868734,
+    "exactHeadQualification": "SUCCESS",
+    "publicDeployment": "LIVE"
+  },
+  "runtimeCandidate": {
+    "branch": "franklin-commerce-runtime-r30",
+    "mergedCommit": "ed02b303120447f1d7a45849272cb0c681fa1f3f",
+    "pullRequest": 53,
+    "finalQualifiedHead": "a22601cb60571ed2defd439e80654a0b32b26bae",
+    "reviewerPathWorkflow": {
+      "run": 35680636318,
+      "result": "SUCCESS"
+    },
+    "fullRuntimeWorkflow": {
+      "run": 35680636420,
+      "result": "SUCCESS"
+    },
+    "liveDeploymentPerformed": false,
+    "liveDeploymentReason": "SEPARATE_DEPLOYMENT_AUTHORITY_REQUIRED"
+  },
+  "materialImprovements": [
+    "Password reset fails closed when privileged reviewer sessions cannot be invalidated.",
+    "Owner email-proof recovery uses the same fail-closed privileged-session invalidation rule.",
+    "Verified email is required at reviewer sign-in and rechecked on every privileged reviewer request.",
+    "Removing email verification revokes an already-issued reviewer session.",
+    "The existing one-time reviewer email-confirmation helper is wired into reviewer sign-in.",
+    "Reviewer console v2 acceptance contracts are aligned with the actual current runtime while preserving migration-integrity failure testing.",
+    "Regression coverage proves session-invalidation ordering and failure semantics for both recovery routes."
+  ],
+  "authorityPreserved": {
+    "profileFactoryFactsUnchanged": true,
+    "localInvestigatorFactsUnchanged": true,
+    "pricingUnchanged": true,
+    "communityMembershipAnnualUsd": 35,
+    "freeBasicProfileManagementPreserved": true,
+    "freeCorrectionsAndRemovalPreserved": true,
+    "outreachPerformed": false,
+    "paymentsPerformed": false,
+    "deploymentPerformed": false
+  },
+  "upstreamHandoffs": {
+    "profileFactory15_35": "DEFERRED_PENDING_ACCEPTANCE",
+    "localInvestigatorFranklin45": "DEFERRED_PENDING_SCC_ACCEPTANCE_AND_POINT_OF_USE_CURRENTNESS"
+  },
+  "blocker": {
+    "code": "SEPARATE_LIVE_DEPLOYMENT_AUTHORITY_REQUIRED",
+    "detail": "The permanent Local Community Platform build command permits deployment only when separately authorized. The Franklin runtime and static Render services both have auto-deploy disabled. Official main exact-head qualification requires the live runtime /health release to equal the candidate release, so the gate cannot honestly pass before an authorized R1356 runtime deployment.",
+    "gateWeakeningForbidden": true,
+    "liveRuntimeLeftUnchanged": true
+  },
+  "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1356.md",
+  "noRegressionIntent": true
+}
