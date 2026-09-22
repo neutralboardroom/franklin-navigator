@@ -1,0 +1,67 @@
+{
+  "release": "FR-NAV1.30.58-HF3.13.40",
+  "date": "2026-09-22",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "edition": "FRANKLIN_TN",
+  "predecessor": "FR-NAV1.30.57-HF3.13.39",
+  "status": "LIVE_VERIFIED",
+  "auditReconciliation": {
+    "priorAuditFindingsReviewed": 192,
+    "note": "R1357 recorded the 192 owner-review findings as implemented, preserved-good behavior, regression requirements, or explicit carry-forward. R1358 rechecked and completed the executable carry-forward profile-management depth items.",
+    "completed": [
+      "Immutable versioned claim-submission evidence history with exact evidence URLs/statements.",
+      "Reviewer submitted/updated timestamps, request age, access state, existing-manager context and submission history.",
+      "Decision notifications occur after authoritative review commit and delivery state is logged separately.",
+      "Reviewer session-expiry warning and fail-closed expiry.",
+      "Structured correction fields and removal categories while retaining free-text/Other.",
+      "Approved public suppressions survive routine fresh profile re-imports; reinstatement requires explicit reviewed action.",
+      "Separate short-lived privileged reviewer session, verified-email authority, CSRF/origin protections and one-time confirmation path remain enforced.",
+      "Focused mobile/accessibility, bilingual, no-loss and profile-path regressions pass."
+    ],
+    "externalCarryForward": [
+      "Move privileged reviewer workspace to a Franklin-controlled custom hostname when authorized DNS/custom-domain mutation is available."
+    ],
+    "humanVerificationCarryForward": [
+      "Resume the owner live walkthrough after deployment; any newly observed defects become new numbered Next Version Build List findings beginning at #193."
+    ]
+  },
+  "public": {
+    "commit": "93586dfb4ebc2d93d5fe1af388007c872a0a9f67",
+    "qualificationRun": 35726132697,
+    "qualification": "PASS",
+    "deployId": "dep-dap75gugekts7381kr00",
+    "deployState": "LIVE",
+    "exactSourceArtifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.58-HF3.13.40__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "artifactBytes": 85824973,
+    "artifactSha256": "bee78a465471a5a3ad5096fb79b0cc3315685f71f94e2f094c692c23f577f747",
+    "manifestSha256": "97ddbaaee53fcc95c1bab3b6273180f667b06bf3adb6dbe481f125c80583cd5b"
+  },
+  "runtime": {
+    "commit": "f272ab909135886c426feccde022013e0e74fc5f",
+    "qualification": "PASS",
+    "deployId": "dep-dap23degekts73fgrkjg",
+    "deployState": "LIVE"
+  },
+  "focusedTests": {
+    "r1357_r1358_runtime": {
+      "pass": 12,
+      "fail": 0,
+      "skip": 0
+    },
+    "freeCorrectionRemoval": "PASS",
+    "englishSpanishStructure": "PASS",
+    "mobileAccessibilityEssentials": "PASS",
+    "syntheticApprovedSuppressionSurvivesReimport": "PASS",
+    "exactMainQualification": "PASS"
+  },
+  "preserved": {
+    "basicProfileManagementFree": true,
+    "factualCorrectionsRemovalFree": true,
+    "communityMembershipAnnualUsd": 35,
+    "claimDoesNotOverwriteCanonicalFacts": true,
+    "profileSourceAuthority": "PROFILE_FACTORY",
+    "noPaidFactualSuperiority": true,
+    "noResidentFeatureRemoval": true
+  },
+  "result": "QUALIFIED_SUCCESSOR_LIVE"
+}

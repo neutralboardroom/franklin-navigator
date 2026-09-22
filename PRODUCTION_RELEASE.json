@@ -3589,7 +3589,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CANDIDATE_BUILDING",
+    "state": "LIVE_VERIFIED",
     "predecessor": {
       "version": "FR-NAV1.30.57-HF3.13.39",
       "publicCommit": "fefa764c2bdd8e2bbbda64e57578289c400731d8",
@@ -3666,8 +3666,36 @@
       "renderService": "franklin-navigator-membership",
       "renderServiceId": "srv-dabgvefqj5pc739vr4h0",
       "renderDeployId": "dep-dap23degekts73fgrkjg",
-      "deployment": "DEPLOYING",
-      "releaseEnv": "FR-NAV1.30.58-HF3.13.40"
-    }
+      "deployment": "LIVE",
+      "releaseEnv": "FR-NAV1.30.58-HF3.13.40",
+      "liveVerified": true
+    },
+    "public": {
+      "codeBearingCommit": "93586dfb4ebc2d93d5fe1af388007c872a0a9f67",
+      "qualificationRun": 35726132697,
+      "qualificationResult": "PASS",
+      "exactSourceArtifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.58-HF3.13.40__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactBytes": 85824973,
+      "artifactSha256": "bee78a465471a5a3ad5096fb79b0cc3315685f71f94e2f094c692c23f577f747",
+      "manifestSha256": "97ddbaaee53fcc95c1bab3b6273180f667b06bf3adb6dbe481f125c80583cd5b",
+      "deterministicDoubleBuild": true,
+      "renderService": "franklin-navigator",
+      "renderServiceId": "srv-da8tg6rbc2fs73crru2g",
+      "renderDeployId": "dep-dap75gugekts7381kr00",
+      "deployment": "LIVE"
+    },
+    "auditReconciliation": {
+      "priorAuditFindingsReviewed": 192,
+      "r1357ExecutableCarryForwardRechecked": true,
+      "executableCarryForwardImplementedOrAlreadyProven": true,
+      "remainingExternalInfrastructureOnly": [
+        "FRANKLIN_CONTROLLED_REVIEWER_HOSTNAME"
+      ],
+      "ownerLiveWalkthroughResumesAfterDeployment": true
+    },
+    "receipts": [
+      "R1358_RELEASE_RECEIPT.json",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1358.md"
+    ]
   }
 }
