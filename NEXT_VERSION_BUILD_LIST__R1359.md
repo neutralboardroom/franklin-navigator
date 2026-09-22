@@ -126,3 +126,34 @@ This is the running owner-observed list for the **next material Local Community 
 **Priority:** P0 scalability / profile-management value.
 
 **Status:** OPEN — owner-observed workflow/design issue.
+
+
+## Finding #197 — Correction submission uses a browser-native confirmation dialog that interrupts the workflow
+
+**Owner evidence:** live Franklin Navigator screenshot, 2026-09-22, after clicking `Submit free correction request`.
+
+**Observed behavior:** submitting a correction triggers the browser-native modal `Submit this correction for this exact profile?` with generic OK/Cancel controls. The current source uses `window.confirm(...)`.
+
+**Problem:** this interrupts the flow, looks unlike the rest of Franklin Navigator, provides no useful summary of what will be submitted, and can be confusing because the form already has a clearly labeled submit button. It also gives us little control over accessibility, wording, focus handling, mobile presentation, or error recovery.
+
+**Desired outcome:** use a clear in-page confirmation/review step for consequential submissions, or submit directly when the action is already unambiguous and reversible. Do not rely on browser-native `window.confirm` for this workflow.
+
+**Implementation direction:**
+- remove the native `window.confirm` call from correction/removal submission;
+- for corrections, prefer either direct submission with a strong success/undo/status path, or an in-page review panel that summarizes the exact profile, correction category, current value, requested value, and evidence link before final submission;
+- for public-removal requests, retain an explicit higher-friction in-page confirmation because removal is more consequential;
+- preserve exact-profile binding and prevent accidental cross-profile submission;
+- keep keyboard/focus behavior accessible and prevent scroll jumps;
+- provide clear disabled/loading state after final submit to avoid duplicate submissions.
+
+**Acceptance criteria:**
+1. No browser-native OK/Cancel dialog appears for correction submission.
+2. The user can clearly see what profile and change are being submitted.
+3. Removal requests retain appropriate explicit confirmation without a browser-native modal.
+4. Keyboard, screen-reader, mobile, and focus behavior remain predictable.
+5. Duplicate submission is prevented while a request is processing.
+6. The success screen clearly states that the request was received and what happens next.
+
+**Priority:** P1 UX / submission clarity.
+
+**Status:** OPEN — owner-observed live defect.
