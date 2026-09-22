@@ -1,0 +1,54 @@
+{
+  "release": "FR-NAV1.30.59-HF3.13.41",
+  "date": "2026-09-22",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "edition": "FRANKLIN_TN",
+  "status": "LIVE_VERIFIED",
+  "predecessor": "FR-NAV1.30.58-HF3.13.40",
+  "ownerFindingsClosed": [
+    193,
+    194,
+    195,
+    196,
+    197
+  ],
+  "public": {
+    "commit": "979abfc059dceade443a4022fbb302cb4edcd970",
+    "qualificationRun": 35747710398,
+    "qualification": "PASS",
+    "renderDeployId": "dep-dapa07942hec739dtc4g",
+    "deployment": "LIVE",
+    "exactSourceArtifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.59-HF3.13.41__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "artifactBytes": 85847999,
+    "artifactSha256": "2cb0485fa9b07514cb9c283fc42f5f01ed8d93cacfb5ab480b12de9a191b22c1",
+    "manifestSha256": "35d19c558608d3fd001185790337db6b053806e3a433f3ce69417a7369dd2368",
+    "deterministicDoubleBuild": true,
+    "freshExtractionValidation": "PASS"
+  },
+  "runtime": {
+    "commit": "7651daa1e17c4f7b762c02d76b1d3420835b6483",
+    "qualifiedCandidateCommit": "caf59063421c3c61faeacf3db0b345938a0978c2",
+    "renderDeployId": "dep-dap7vv740ujc73bsn8v0",
+    "deployment": "LIVE",
+    "releaseEnv": "FR-NAV1.30.59-HF3.13.41",
+    "startupTests": {
+      "pass": 97,
+      "fail": 0,
+      "ready": true
+    }
+  },
+  "preserved": {
+    "wholeSiteNoRegression": true,
+    "profileFactoryCanonicalAuthority": true,
+    "managerUpdatesSeparateFromCanonicalFacts": true,
+    "factualCorrectionsRemovalFree": true,
+    "basicProfileManagementFree": true,
+    "communityMembershipAnnualUsd": 35,
+    "ordinarySelfReviewForbidden": true
+  },
+  "outreach": {
+    "status": "LIMITED_REAL_OUTREACH_READY",
+    "instruction": "Begin a small monitored real email outreach batch to qualified potential paying members. Do not imply endorsement, guaranteed results, paid factual superiority or automatic profile control. Monitor claim, manager-edit, membership and support behavior before scaling."
+  },
+  "result": "QUALIFIED_SUCCESSOR_LIVE"
+}
