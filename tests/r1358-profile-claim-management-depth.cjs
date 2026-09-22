@@ -8,7 +8,7 @@ const live=read('dist/assets/membership-live.js');
 const i18n=read('dist/assets/r37-i18n.js');
 const loader=read('dist/assets/hf36.js');
 
-assert.ok(loader.includes("CURRENT_RELEASE='FR-NAV1.30.58-HF3.13.40'"));
+assert.ok(loader.includes("CURRENT_RELEASE='FR-NAV1.30.59-HF3.13.41'"));
 assert.ok(corrections.includes('name="correctionField"'));
 assert.ok(corrections.includes('Choose what needs correction'));
 assert.ok(corrections.includes('name="removalCategory"'));
@@ -22,4 +22,4 @@ assert.ok(live.includes('Last updated '));
 assert.ok(live.includes('This official Franklin Navigator profile uses protected administrator access.'));
 assert.ok(i18n.includes("'What needs correction?':'¿Qué necesita corrección?'"));
 assert.ok(i18n.includes("'Removal reason':'Motivo del retiro'"));
-console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.58-HF3.13.40',scope:'R1358_PROFILE_CLAIM_CORRECTION_DEPTH'},null,2));
+console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.59-HF3.13.41',scope:'R1358_PROFILE_CLAIM_CORRECTION_DEPTH'},null,2));
