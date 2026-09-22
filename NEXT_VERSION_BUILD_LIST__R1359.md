@@ -157,3 +157,14 @@ This is the running owner-observed list for the **next material Local Community 
 **Priority:** P1 UX / submission clarity.
 
 **Status:** OPEN — owner-observed live defect.
+
+
+## R1359 build disposition — 2026-09-22
+
+All five live-review findings #193–#197 are implemented in the R1359 candidate and are awaiting/under qualification and deployment. They are not considered CLOSED until exact-source qualification and live smoke verification pass.
+
+- #193: Assistant now repositions at the submitted question / start of answer with sticky-header offset and prevent-scroll focus.
+- #194: protected Franklin administrator binding reconciles stale ordinary pending state without ordinary self-review.
+- #195: reviewer workspace is explicitly separated from the claimant's own request.
+- #196: verified managers receive direct low-risk profile maintenance with provenance, version history and rollback; high-risk/canonical facts remain review/source controlled.
+- #197: native browser correction/removal confirmation replaced by an in-product review step with duplicate-submit protection.
