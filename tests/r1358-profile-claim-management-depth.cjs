@@ -1,0 +1,25 @@
+'use strict';
+const fs=require('fs');
+const assert=require('node:assert/strict');
+const read=p=>fs.readFileSync(p,'utf8');
+const corrections=read('dist/corrections/index.html');
+const control=read('dist/assets/hf35-profile-control.js');
+const live=read('dist/assets/membership-live.js');
+const i18n=read('dist/assets/r37-i18n.js');
+const loader=read('dist/assets/hf36.js');
+
+assert.ok(loader.includes("CURRENT_RELEASE='FR-NAV1.30.58-HF3.13.40'"));
+assert.ok(corrections.includes('name="correctionField"'));
+assert.ok(corrections.includes('Choose what needs correction'));
+assert.ok(corrections.includes('name="removalCategory"'));
+assert.ok(corrections.includes('Privacy or safety concern'));
+assert.ok(corrections.includes('Report incorrect profile information instead'));
+assert.ok(control.includes("Correction field: ${clean(fd.get('correctionField'),120)}"));
+assert.ok(control.includes("Removal category: ${clean(fd.get('removalCategory'),120)}"));
+assert.ok(live.includes('linked.review_created_at'));
+assert.ok(live.includes('Submitted '+""+''));
+assert.ok(live.includes('Last updated '));
+assert.ok(live.includes('This official Franklin Navigator profile uses protected administrator access.'));
+assert.ok(i18n.includes("'What needs correction?':'¿Qué necesita corrección?'"));
+assert.ok(i18n.includes("'Removal reason':'Motivo del retiro'"));
+console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.58-HF3.13.40',scope:'R1358_PROFILE_CLAIM_CORRECTION_DEPTH'},null,2));
