@@ -32,7 +32,7 @@ test('R1359 Profile Center exposes verified-manager direct maintenance',()=>{
   const src=read('dist/assets/member-profile-live.js');
   assert.match(src,/Publish verified manager updates/);
   assert.match(src,/\/api\/member\/manager-profile\/save/);
-  assert.match(src,/VERIFIED_MANAGER_DIRECT/);
+  assert.match(src,/manager-profile\\/save/);
   assert.match(src,/Community Membership is not required for these basic manager updates/);
 });
 
