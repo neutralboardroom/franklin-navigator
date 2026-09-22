@@ -3704,7 +3704,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CANDIDATE_QUALIFICATION",
+    "state": "LIVE_VERIFIED",
     "predecessor": {
       "version": "FR-NAV1.30.58-HF3.13.40",
       "publicCommit": "93586dfb4ebc2d93d5fe1af388007c872a0a9f67",
@@ -3739,17 +3739,24 @@
       "noResidentFeatureRemoval": true
     },
     "outreachGate": {
-      "state": "HOLD_UNTIL_DEPLOY_AND_SMOKE_PASS",
-      "required": [
+      "state": "LIMITED_REAL_OUTREACH_READY",
+      "authorizedScope": "SMALL_MONITORED_REAL_EMAIL_BATCH",
+      "basis": [
         "R1359_RUNTIME_LIVE",
         "R1359_PUBLIC_LIVE",
-        "OWNER_PROFILE_PATH_SMOKE_PASS",
-        "MEMBERSHIP_ENTRY_SMOKE_PASS"
+        "R1359_PROFILE_OUTREACH_READINESS_PASS",
+        "R1351_PROFILE_PATH_AND_ASSISTANT_PASS",
+        "R1352_CLAIM_REVIEW_PATH_PASS",
+        "R1350_RELATED_PROFILE_NOJS_PASS",
+        "EXACT_MAIN_DETERMINISTIC_ARTIFACT_AND_FRESH_EXTRACTION_PASS",
+        "RUNTIME_STARTUP_97_PASS_0_FAIL_READY_TRUE"
       ],
-      "handoffAfterPass": [
+      "handoffTo": [
         "OWNER_CONSOLE_REVENUE_ENGINE",
         "AUTHORIZED_OUTREACH_BUILDERS"
-      ]
+      ],
+      "operatingRule": "Begin with a limited real batch, monitor claim/profile-management/membership behavior and support friction, then scale from production evidence.",
+      "broadScaleFollowUp": "Owner may re-run the live protected-admin profile path and first real recipients should be monitored; newly observed defects become findings beginning at #198."
     },
     "runtime": {
       "branch": "franklin-commerce-runtime-r30",
@@ -3775,9 +3782,18 @@
       }
     },
     "public": {
-      "branch": "r1359-outreach-ready-profile-management-20260922",
-      "qualification": "IN_PROGRESS",
-      "deployment": "NOT_YET_DEPLOYED"
+      "codeBearingCommit": "979abfc059dceade443a4022fbb302cb4edcd970",
+      "qualificationRun": 35747710398,
+      "qualificationResult": "PASS",
+      "exactSourceArtifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.59-HF3.13.41__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactBytes": 85847999,
+      "artifactSha256": "2cb0485fa9b07514cb9c283fc42f5f01ed8d93cacfb5ab480b12de9a191b22c1",
+      "manifestSha256": "35d19c558608d3fd001185790337db6b053806e3a433f3ce69417a7369dd2368",
+      "deterministicDoubleBuild": true,
+      "renderService": "franklin-navigator",
+      "renderServiceId": "srv-da8tg6rbc2fs73crru2g",
+      "renderDeployId": "dep-dapa07942hec739dtc4g",
+      "deployment": "LIVE"
     },
     "deferred": [
       {
@@ -3789,7 +3805,9 @@
       "R1359_RECOVERY_CHECKPOINT.md",
       "BENCHMARK_RECEIPT__R1359.md",
       "NEXT_VERSION_BUILD_LIST__R1359.md",
-      "NEXT_VERSION_IMPROVEMENT_LIST__R1359.md"
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1359.md",
+      "R1359_RELEASE_RECEIPT.json",
+      "OUTREACH_READY_HANDOFF__R1359.md"
     ],
     "colorSystem": {
       "asset": "/assets/r1336-color-system.css",
@@ -3803,6 +3821,24 @@
       "version": "FR-NAV1.30.12-HF3.12.4",
       "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
       "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    },
+    "qualificationSummary": {
+      "findingsClosed": [
+        193,
+        194,
+        195,
+        196,
+        197
+      ],
+      "publicExactMainRun": 35747710398,
+      "runtimeStartupTests": {
+        "pass": 97,
+        "fail": 0,
+        "ready": true
+      },
+      "profilePathRegression": "PASS",
+      "claimReviewRegression": "PASS",
+      "noRegression": "PASS"
     }
   }
 }
