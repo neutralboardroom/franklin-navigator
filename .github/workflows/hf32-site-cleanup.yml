@@ -32,6 +32,7 @@ on:
       - 'SITEWIDE_PRESERVATION_BASELINE__R1347.json'
       - 'tests/r1347-sitewide-roger-rule.cjs'
       - 'tests/r1353-alert-notification-hygiene.cjs'
+      - 'tests/r1356-reviewer-security.cjs'
       - 'tests/r1348-assistant-workflow-currentness.cjs'
       - 'tests/r1349-bilingual-home-currentness.cjs'
       - 'tests/r1349-related-profile-relevance.cjs'
@@ -68,6 +69,7 @@ on:
       - 'SITEWIDE_PRESERVATION_BASELINE__R1347.json'
       - 'tests/r1347-sitewide-roger-rule.cjs'
       - 'tests/r1353-alert-notification-hygiene.cjs'
+      - 'tests/r1356-reviewer-security.cjs'
       - 'tests/r1348-assistant-workflow-currentness.cjs'
       - 'tests/r1349-bilingual-home-currentness.cjs'
       - 'tests/r1349-related-profile-relevance.cjs'
@@ -203,12 +205,14 @@ jobs:
           node --check dist/assets/member-support.js
           node --check dist/assets/account-recovery-r1342.js
           node tests/r1342-claim-recovery.cjs
+          node tests/r1356-reviewer-security.cjs
           node tests/r1344-recent-fix-visibility.cjs
           node tests/r1345-profile-access-authority-routing.cjs
           node tests/r1346-claim-path-outreach-readiness.cjs
           node tests/r1347-two-command-permanent-baseline.cjs
           node tests/r1347-sitewide-roger-rule.cjs
           node tests/r1353-alert-notification-hygiene.cjs
+          node tests/r1356-reviewer-security.cjs
           node tests/assistant2-clean-room-boundary.cjs
           node tests/r1348-assistant-workflow-currentness.cjs
           node tests/r1349-bilingual-home-currentness.cjs
