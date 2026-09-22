@@ -1,5 +1,5 @@
 {
-  "release": "FR-NAV1.30.58-HF3.13.40",
+  "release": "FR-NAV1.30.59-HF3.13.41",
   "date": "2026-09-22",
   "base": "FR-NAV1.30.57-HF3.13.39",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
@@ -3696,6 +3696,83 @@
     "receipts": [
       "R1358_RELEASE_RECEIPT.json",
       "NEXT_VERSION_IMPROVEMENT_LIST__R1358.md"
+    ]
+  },
+  "r1359": {
+    "version": "FR-NAV1.30.59-HF3.13.41",
+    "date": "2026-09-22",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.58-HF3.13.40",
+      "publicCommit": "93586dfb4ebc2d93d5fe1af388007c872a0a9f67",
+      "runtimeCommit": "f272ab909135886c426feccde022013e0e74fc5f"
+    },
+    "materialScope": "PROFILE_MANAGEMENT_AND_OUTREACH_READINESS",
+    "ownerFindings": [
+      193,
+      194,
+      195,
+      196,
+      197
+    ],
+    "sourceReconciliation": "R1359_RECOVERY_CHECKPOINT.md",
+    "externalBenchmark": "BENCHMARK_RECEIPT__R1359.md",
+    "plannedQualifiedImprovements": [
+      "Assistant post-submit viewport remains at the submitted question and beginning of the answer.",
+      "Protected Franklin administrator access is reconciled independently of ordinary self-review.",
+      "Reviewer workspace is visually and semantically separated from a claimant's own request.",
+      "Verified managers may directly publish a narrow low-risk set of owner-controlled fields after validation with provenance, immutable history and rollback.",
+      "Correction and removal submission use an in-product review step instead of browser-native confirmation."
+    ],
+    "preserved": {
+      "communityMembershipAnnualUsd": 35,
+      "basicProfileManagementFree": true,
+      "factualCorrectionsRemovalFree": true,
+      "profileSourceAuthority": "PROFILE_FACTORY",
+      "managerUpdatesDoNotOverwriteCanonicalFacts": true,
+      "ordinarySelfReviewFailClosed": true,
+      "protectedOfficialProfileNotPubliclyClaimable": true,
+      "noPaidFactualSuperiority": true,
+      "noResidentFeatureRemoval": true
+    },
+    "outreachGate": {
+      "state": "HOLD_UNTIL_DEPLOY_AND_SMOKE_PASS",
+      "required": [
+        "R1359_RUNTIME_LIVE",
+        "R1359_PUBLIC_LIVE",
+        "OWNER_PROFILE_PATH_SMOKE_PASS",
+        "MEMBERSHIP_ENTRY_SMOKE_PASS"
+      ],
+      "handoffAfterPass": [
+        "OWNER_CONSOLE_REVENUE_ENGINE",
+        "AUTHORIZED_OUTREACH_BUILDERS"
+      ]
+    },
+    "runtime": {
+      "branch": "r1359-runtime-profile-management-20260922",
+      "baseBranch": "franklin-commerce-runtime-r30",
+      "qualification": "IN_PROGRESS",
+      "deployment": "NOT_YET_DEPLOYED"
+    },
+    "public": {
+      "branch": "r1359-outreach-ready-profile-management-20260922",
+      "qualification": "IN_PROGRESS",
+      "deployment": "NOT_YET_DEPLOYED"
+    },
+    "deferred": [
+      {
+        "item": "FRANKLIN_CONTROLLED_REVIEWER_HOSTNAME",
+        "disposition": "BLOCKED_EXTERNAL_INFRASTRUCTURE"
+      }
+    ],
+    "receipts": [
+      "R1359_RECOVERY_CHECKPOINT.md",
+      "BENCHMARK_RECEIPT__R1359.md",
+      "NEXT_VERSION_BUILD_LIST__R1359.md",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1359.md"
     ]
   }
 }
