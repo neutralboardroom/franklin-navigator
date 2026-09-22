@@ -14,7 +14,7 @@ test('R1358 additive claim history schema preserves every submission and notific
 
 test('R1358 representation requests append immutable evidence snapshots before updating current request',()=>{
   const src=read('lib/member-fulfillment.js');
-  assert.match(src,/FRANKLIN_MEMBER_FULFILLMENT_HF3_8/);
+  assert.match(src,/FRANKLIN_MEMBER_FULFILLMENT_HF3_9/);
   const snapshot=src.indexOf('insert into franklin_representation_submissions');
   const current=src.indexOf('insert into franklin_representation_reviews',snapshot);
   assert.ok(snapshot>0&&current>snapshot);
@@ -41,7 +41,7 @@ test('R1358 reviewer console exposes immutable submission history and richer que
 
 test('R1358 server initializes exact migration and sends decision email without making delivery authoritative',()=>{
   const src=read('server.js');
-  assert.match(src,/FR-NAV1\.30\.58-HF3\.13\.40/);
+  assert.match(src,/FR-NAV1\.30\.59-HF3\.13\.41/);
   assert.match(src,/FRANKLIN_CLAIM_WORKFLOW_R1358_1/);
   assert.match(src,/initializeClaimWorkflow/);
   assert.match(src,/sendClaimDecisionNotification/);
