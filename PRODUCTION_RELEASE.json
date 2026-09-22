@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.57-HF3.13.39",
+  "release": "FR-NAV1.30.58-HF3.13.40",
   "date": "2026-09-22",
-  "base": "FR-NAV1.30.56-HF3.13.38",
+  "base": "FR-NAV1.30.57-HF3.13.39",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1357 implements the owner-directed live profile claim and management audit: protected official-platform profile access, clearer claim and pending states, fail-closed self-review in the paired runtime, explicit evidence destinations, reviewer progress and identity feedback, consistent correction wording, exact-profile correction/removal binding, structured removal requests, confirmation and return paths, Spanish parity, and expanded regression/browser qualification while preserving free profile management and optional Community Membership.",
+  "scope": "R1358 deepens the free profile claim, correction and review workflow after the owner live audit: immutable claim-submission evidence history, richer reviewer metadata, post-commit decision notification tracking, reviewer expiry guidance, structured correction/removal reasons, and expanded regression coverage while preserving canonical profile authority, optional Community Membership and whole-site no-regression.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -3582,5 +3582,76 @@
       "R1357_RELEASE_RECEIPT.json",
       "NEXT_VERSION_IMPROVEMENT_LIST__R1357.md"
     ]
+  },
+  "r1358": {
+    "version": "FR-NAV1.30.58-HF3.13.40",
+    "date": "2026-09-22",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_BUILDING",
+    "predecessor": {
+      "version": "FR-NAV1.30.57-HF3.13.39",
+      "publicCommit": "fefa764c2bdd8e2bbbda64e57578289c400731d8",
+      "runtimeCommit": "ae0194fc709563fc3b7ed13020e13d354996caf8",
+      "exactSourceArtifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.57-HF3.13.39__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "bytes": 85813710,
+      "sha256": "b2b0c2c382e09dde62bcc8c45d13d19c8c00bdd5a336820e6036134423cdad40",
+      "manifestSha256": "0865e6151e9bc71ae53cfbf0da1cfd3ee07dbd4e2603cc9bc46f6e92b8d24acc"
+    },
+    "materialScope": "CLAIM_CORRECTION_REVIEW_DEPTH_AND_RECOVERY",
+    "sourceReconciliation": "RULE_AND_SOURCE_RECONCILIATION_RECEIPT__R1358.md",
+    "smarterJusticeDonor": "NOT_USED",
+    "externalBenchmark": {
+      "observedDate": "2026-09-22",
+      "scope": "PROFILE_CLAIM_EDIT_REMOVAL_AND_ROLE_PATTERNS",
+      "adoptedPatterns": [
+        "FREE_AUTHORITY_VERIFICATION",
+        "MANAGEMENT_ACCESS_SEPARATE_FROM_FACTUAL_CORRECTIONS",
+        "ROLE_SENSITIVE_MANAGEMENT",
+        "NONOWNER_FACT_REPORTING_REMAINS_AVAILABLE"
+      ],
+      "copiedCodeOrData": false
+    },
+    "plannedQualifiedImprovements": [
+      "Immutable versioned claim submissions preserve exact evidence URLs and statements.",
+      "Reviewer queue and detail views distinguish submitted time, last-updated time, request age, access state, existing verified managers, and submission count.",
+      "Reviewer can inspect prior submitted evidence versions without overwriting history.",
+      "Authoritative decisions commit before claimant email delivery is attempted; delivery state is logged separately.",
+      "Reviewer session expiry receives an accessible warning before fail-closed expiry.",
+      "Public correction/removal intake uses structured categories while retaining free-text detail and Other."
+    ],
+    "preserved": {
+      "communityMembershipAnnualUsd": 35,
+      "basicProfileManagementFree": true,
+      "factualCorrectionsRemovalFree": true,
+      "claimDoesNotOverwriteCanonicalFacts": true,
+      "profileSourceAuthority": "PROFILE_FACTORY",
+      "localInvestigatorAuthority": "LOCAL_INVESTIGATOR",
+      "noPaidFactualSuperiority": true,
+      "officialFranklinProfileProtected": true,
+      "ordinarySelfReviewFailClosed": true,
+      "noResidentFeatureRemoval": true
+    },
+    "deferred": [
+      {
+        "item": "FRANKLIN_CONTROLLED_REVIEWER_HOSTNAME",
+        "reason": "Connected Render tooling exposes deployment and environment controls but not custom-domain/DNS mutation; current same-origin privileged boundary must not be weakened.",
+        "resumeCondition": "Authorized custom-domain/DNS mutation becomes available."
+      }
+    ],
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1356"
+    },
+    "acceptedCanonicalBase": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    }
   }
 }
