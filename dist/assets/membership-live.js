@@ -84,9 +84,10 @@
     const review=String(linked?.review_state||'').toUpperCase();
     const taskHeading=el('h2',review==='PENDING'?'Request status':state.selected?'Your selected profile':'Find your profile');s.append(taskHeading);
     if(review==='PENDING'&&state.selected){
-      const when=linked.review_updated_at?(()=>{try{return new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(linked.review_updated_at))}catch{return''}})():'';
+      const formatWhen=value=>{try{return value?new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(value)):''}catch{return''}};
+      const submittedWhen=formatWhen(linked.review_created_at),updatedWhen=formatWhen(linked.review_updated_at);
       const pendingCard=el('div',null,'r1352-pending-card');pendingCard.dataset.r1346PendingStatus='';pendingCard.setAttribute('role','status');pendingCard.setAttribute('aria-live','polite');
-      pendingCard.append(el('h2','Waiting for review'),el('p',`Your request to manage ${state.selected.n} has been received.`),el('p','The Franklin Navigator team reviews the submitted evidence. We’ll show an approval, a request for more information, or a decline here when a decision is recorded. No payment is required.'),el('p',when?'Last updated '+when+'.':'','fine-print'));s.append(pendingCard);
+      pendingCard.append(el('h2','Waiting for review'),el('p',`Your request to manage ${state.selected.n} has been received.`),el('p','The Franklin Navigator team reviews the submitted evidence. We’ll show an approval, a request for more information, or a decline here when a decision is recorded. No payment is required.'),el('p',[submittedWhen?'Submitted '+submittedWhen+'.':'',updatedWhen?'Last updated '+updatedWhen+'.':''].filter(Boolean).join(' '),'fine-print'));s.append(pendingCard);
     }
     if(state.selected){
       const selected=el('div',null,'r37-account-summary');
