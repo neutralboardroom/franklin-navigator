@@ -17,6 +17,7 @@ on:
       - 'tests/r1352-claim-review-path.cjs'
       - 'tests/r1346-claim-path-outreach-readiness.cjs'
       - 'tests/r1357-profile-claim-management-audit.cjs'
+      - 'tests/r1358-profile-claim-management-depth.cjs'
       - 'scripts/r1346-claim-path-browser-acceptance.mjs'
       - '.github/workflows/r1352-claim-review-path.yml'
 permissions:
@@ -44,6 +45,7 @@ jobs:
           node tests/r1352-claim-review-path.cjs
           node tests/r1346-claim-path-outreach-readiness.cjs
           node tests/r1357-profile-claim-management-audit.cjs
+          node tests/r1358-profile-claim-management-depth.cjs
           node tests/r1347-sitewide-roger-rule.cjs
           node tests/r1351-profile-path-assistant.cjs
       - name: Controlled browser acceptance
