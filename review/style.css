@@ -5,3 +5,7 @@
 .queue-count{display:inline-block;margin:.25rem 0 .75rem;padding:.55rem .75rem;border:1px solid #9bb8a8;border-radius:.4rem;background:#f1f8f3;font-weight:700}.request-meta{color:#465766;font-size:.94rem;margin:.25rem 0 .65rem}.review-detail-link{margin:.45rem 0}
 
 .button-link{display:inline-block;min-height:44px;padding:.6rem 1rem;border:1px solid #285a70;background:#285a70;color:#fff;border-radius:.3rem;text-decoration:none;font-weight:650}.button-link:hover{text-decoration:underline}
+
+.review-warning{border-left:4px solid #a94404;background:#fff5ea;padding:.8rem 1rem;font-weight:650;max-width:76ch}
+.reviewer-identity{font-weight:700;margin:.25rem 0}
+#login-button[disabled]{min-width:10rem}
