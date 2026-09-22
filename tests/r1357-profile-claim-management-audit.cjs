@@ -12,9 +12,9 @@ const checks=[];const ok=(name,v)=>{assert.ok(v,name);checks.push(name)};
 ok('official Franklin Navigator profile uses protected administrator presentation',
   profile.includes("isNavigatorSelf&&!viewerLink")&&profile.includes("actionText='Correct profile information'")&&profile.includes('protected administrator access'));
 ok('ordinary unclaimed profiles use clear free claim CTA',
-  profile.includes("labelText='Unclaimed profile'")&&profile.includes("actionText='Claim this profile — free'"));
+  profile.includes("labelText='Management not yet verified'")&&profile.includes("actionText='Manage this profile — free'"));
 ok('public profile uses consistent correction and removal wording',
-  profile.includes('Correct profile information')&&profile.includes('Request profile removal'));
+  profile.includes('Correct factual listing details')&&profile.includes('Request removal'));
 ok('direct profile-access path protects official platform profile',
   live.includes("state.selected.i===SELF_ID")&&live.includes('Ordinary public claims are not accepted'));
 ok('pending state is status-aware and names Franklin Navigator team',
@@ -22,7 +22,7 @@ ok('pending state is status-aware and names Franklin Navigator team',
 ok('reviewer handoff no longer places account email in URL fragment',
   !live.includes("reviewerContext.set('email'")&&live.includes('Open secure reviewer workspace'));
 ok('profile switcher uses plain language',
-  live.includes("summary.textContent='Choose a different profile'"));
+  live.includes("summary.textContent='Wrong profile? Choose another'"));
 ok('correction/removal page exposes required fields and direct removal action',
   corrections.includes('Reason for the removal request <span class="fine-print">(required)</span>')&&
   corrections.includes('data-switch-removal')&&corrections.includes('data-switch-correction'));
@@ -35,8 +35,8 @@ ok('removal requires reason and confirmation before submission',
 ok('signed-in correction form can reuse account contact details without requiring sign-in',
   control.includes("fetch(API+'/api/accounts/me'")&&control.includes("set('requesterEmail'"));
 ok('Spanish parity covers audited high-value labels',
-  i18n.includes("'Choose a different profile':'Elegir un perfil diferente'")&&
-  i18n.includes("'Correct profile information':'Corregir información del perfil'")&&
+  i18n.includes("'Wrong profile? Choose another':'¿Perfil equivocado? Elija otro'")&&
+  i18n.includes("'Correct public facts':'Corregir datos públicos'")&&
   i18n.includes("'Open secure reviewer workspace':'Abrir espacio seguro de revisión'"));
 
 console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.57-HF3.13.39',checks:checks.length,items:checks},null,2));
