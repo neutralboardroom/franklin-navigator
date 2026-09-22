@@ -34,3 +34,57 @@ This is the running owner-observed list for the **next material Local Community 
 **Priority:** P1 UX / Assistant readability.
 
 **Status:** OPEN — owner-observed live defect.
+
+
+## Finding #194 — Authorized Franklin administrator is trapped in stale pending access instead of reaching profile editing
+
+**Owner evidence:** live Franklin Navigator screenshots, 2026-09-22, exact official Franklin Navigator profile `FR-ORG-b00c0ace7943973c`.
+
+**Observed behavior:** the signed-in authorized Franklin account is shown `Access request pending` / `Waiting for review` for the official Franklin Navigator profile and cannot reach Profile Center or any full edit/manage screen. The same product now says this official profile uses protected administrator access and ordinary public claims are not accepted, so an old ordinary pending request can leave the real administrator trapped in a state that no longer represents the intended authority model.
+
+**Desired outcome:** an authorized protected Franklin administrator must have a clear, auditable path to manage the official Franklin Navigator profile without relying on an ordinary public claim or ordinary self-review. A stale legacy pending claim must not block protected administrator access.
+
+**Implementation direction:**
+- create or complete a distinct protected-administrator management path for the official Franklin Navigator profile;
+- recognize an already-authorized protected administrator separately from ordinary profile claim status;
+- do not let a legacy ordinary `PENDING` representation request override protected administrator entitlement;
+- provide an explicit `Open Profile Center` / `Manage Franklin Navigator profile` action when protected administrator authority is valid;
+- preserve fail-closed security, audit logging, verified-email/session controls, and the prohibition on ordinary reviewer self-approval;
+- migrate, retire, or clearly quarantine obsolete pending ordinary claims for the protected official profile so they cannot keep controlling the UI;
+- verify that ordinary visitors still cannot claim the official platform profile.
+
+**Acceptance criteria:**
+1. Authorized protected Franklin administrator can reach the profile-management/editing workspace.
+2. No ordinary public claim approval is required for that protected administrator path.
+3. A stale pending ordinary claim cannot hide or block the protected admin management action.
+4. Ordinary visitors remain unable to claim the official Franklin Navigator profile.
+5. Audit/security boundaries remain fail-closed and review history is preserved.
+6. The user can return from Profile Center to the exact public profile.
+
+**Priority:** P0 profile-management blocker.
+
+**Status:** OPEN — owner-observed live defect.
+
+## Finding #195 — Reviewer workspace CTA is confusing beside the user's own pending request
+
+**Owner evidence:** same live screenshots, 2026-09-22.
+
+**Observed behavior:** the page shows `Open secure reviewer workspace` directly below the owner's own pending profile-access request. The runtime correctly forbids ordinary self-review, but the UI does not explain that this reviewer workspace cannot be used to approve the user's own request. This makes the obvious next action look like a path to unblock the request when it is actually a dead end for self-approval.
+
+**Desired outcome:** make reviewer-role access and claimant-role status unmistakably separate.
+
+**Implementation direction:**
+- when the current account is both a reviewer and the claimant on the visible request, show a concise warning that reviewers cannot decide their own access request;
+- do not present the reviewer CTA as the natural continuation of the pending claim;
+- if protected administrator access exists, route to that distinct management path instead;
+- preserve reviewer workspace availability for unrelated requests.
+
+**Acceptance criteria:**
+1. The UI explicitly states that the user cannot review/approve their own request.
+2. Reviewer access remains available for unrelated queue work.
+3. The page offers the correct next action for managing the official profile instead of implying self-review.
+4. No security weakening or role conflation is introduced.
+
+**Priority:** P1 clarity/security UX.
+
+**Status:** OPEN — owner-observed live defect.
