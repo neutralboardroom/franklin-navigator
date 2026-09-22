@@ -1,0 +1,28 @@
+{
+  "release": "FR-NAV1.30.56-HF3.13.38",
+  "date": "2026-09-22",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "edition": "FRANKLIN_TN",
+  "predecessor": {
+    "release": "FR-NAV1.30.55-HF3.13.37",
+    "mainCommit": "6233731cba6c7488d58e461b2ca55b311d86533c"
+  },
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "ed02b303120447f1d7a45849272cb0c681fa1f3f",
+    "pullRequest": 53,
+    "buildTestWorkflow": 35680771058,
+    "memberPathReadinessWorkflow": 35680771065,
+    "result": "PASS"
+  },
+  "materialScope": "REVIEWER_AUTHORITY_AND_RECOVERY_SESSION_SECURITY_HARDENING",
+  "pricingChanged": false,
+  "profileFactsChanged": false,
+  "profileAuthorityChanged": false,
+  "localInvestigatorFactsChanged": false,
+  "outreachPerformed": false,
+  "smarterJusticeDonorUsed": false,
+  "publicQualification": "PENDING_EXACT_HEAD_WORKFLOW",
+  "exactSourceArtifact": "PENDING_PUBLIC_QUALIFICATION",
+  "result": "CANDIDATE_PENDING_PUBLIC_EXACT_HEAD_QUALIFICATION"
+}
