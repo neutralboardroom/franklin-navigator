@@ -53,6 +53,7 @@ await send('Page.enable');await send('Runtime.enable');await send('Emulation.set
 const mock=`(()=>{
   const API='https://franklin-navigator-membership.onrender.com';
   const PROFILE='${PROFILE}';
+  window.PROFILE_NAME='${PROFILE_NAME.replaceAll("'","\\'")}';
   const nativeFetch=window.fetch.bind(window);
   const response=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'Content-Type':'application/json'}});
   const delay=ms=>new Promise(r=>setTimeout(r,ms));
