@@ -3773,6 +3773,14 @@
       "BENCHMARK_RECEIPT__R1359.md",
       "NEXT_VERSION_BUILD_LIST__R1359.md",
       "NEXT_VERSION_IMPROVEMENT_LIST__R1359.md"
-    ]
+    ],
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1358"
+    }
   }
 }
