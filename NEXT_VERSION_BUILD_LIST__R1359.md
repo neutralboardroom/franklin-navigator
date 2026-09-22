@@ -33,7 +33,7 @@ This is the running owner-observed list for the **next material Local Community 
 
 **Priority:** P1 UX / Assistant readability.
 
-**Status:** OPEN — owner-observed live defect.
+**Status:** CLOSED_LIVE_VERIFIED — owner-observed live defect.
 
 
 ## Finding #194 — Authorized Franklin administrator is trapped in stale pending access instead of reaching profile editing
@@ -63,7 +63,7 @@ This is the running owner-observed list for the **next material Local Community 
 
 **Priority:** P0 profile-management blocker.
 
-**Status:** OPEN — owner-observed live defect.
+**Status:** CLOSED_LIVE_VERIFIED — owner-observed live defect.
 
 ## Finding #195 — Reviewer workspace CTA is confusing beside the user's own pending request
 
@@ -87,7 +87,7 @@ This is the running owner-observed list for the **next material Local Community 
 
 **Priority:** P1 clarity/security UX.
 
-**Status:** OPEN — owner-observed live defect.
+**Status:** CLOSED_LIVE_VERIFIED — owner-observed live defect.
 
 
 ## Finding #196 — Verified profile managers should not require manual reviewer approval for every ordinary owner-controlled update
@@ -125,7 +125,7 @@ This is the running owner-observed list for the **next material Local Community 
 
 **Priority:** P0 scalability / profile-management value.
 
-**Status:** OPEN — owner-observed workflow/design issue.
+**Status:** CLOSED_LIVE_VERIFIED — owner-observed workflow/design issue.
 
 
 ## Finding #197 — Correction submission uses a browser-native confirmation dialog that interrupts the workflow
@@ -156,7 +156,7 @@ This is the running owner-observed list for the **next material Local Community 
 
 **Priority:** P1 UX / submission clarity.
 
-**Status:** OPEN — owner-observed live defect.
+**Status:** CLOSED_LIVE_VERIFIED — owner-observed live defect.
 
 
 ## R1359 build disposition — 2026-09-22
@@ -168,3 +168,12 @@ All five live-review findings #193–#197 are implemented in the R1359 candidate
 - #195: reviewer workspace is explicitly separated from the claimant's own request.
 - #196: verified managers receive direct low-risk profile maintenance with provenance, version history and rollback; high-risk/canonical facts remain review/source controlled.
 - #197: native browser correction/removal confirmation replaced by an in-product review step with duplicate-submit protection.
+
+
+## R1359 live closeout — 2026-09-22
+
+Findings #193–#197 are **CLOSED_LIVE_VERIFIED** for `FR-NAV1.30.59-HF3.13.41`.
+
+Public and runtime successors are live; inherited no-regression/profile/claim/Assistant gates, deterministic exact-source packaging, and fresh-extraction validation passed. Limited monitored real outreach is authorized through `OUTREACH_READY_HANDOFF__R1359.md`.
+
+The next newly observed Local Community Platform issue becomes **Finding #198**.
