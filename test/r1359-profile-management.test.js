@@ -43,3 +43,5 @@ test('R1359 protected administrator reconciliation is distinct from self-review'
   assert.match(reviewer,/REVIEW_SELF_DECISION_FORBIDDEN/);
   assert.match(reviewer,/protectedAdminAccessForAccount/);
 });
+
+// R1359 qualification trigger preserves all inherited reviewer/claim suites.
