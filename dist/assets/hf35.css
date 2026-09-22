@@ -55,3 +55,24 @@ body.hf35 .hf35-preview-builder{margin-top:0}
 body.hf35 .learning-boundary .card,body.hf35 .learning-boundary .card h1,body.hf35 .learning-boundary .card h2,body.hf35 .learning-boundary .card h3,body.hf35 .learning-boundary .card p,body.hf35 .learning-boundary .card li{color:var(--hf35-ink)!important}
 @media(max-width:900px){body.hf35-profile .r22-profile-hero-grid{grid-template-columns:72px 1fr!important}body.hf35-profile .profile-currentness{grid-column:1/-1}body.hf35 .hf35-directory-advanced .hf35-disclosure-body{grid-template-columns:1fr 1fr}}
 @media(max-width:680px){body.hf35 .hf35-profile-comparison{grid-template-columns:1fr}body.hf35 .hf35-directory-advanced .hf35-disclosure-body{grid-template-columns:1fr}body.hf35-corrections .p0-control-form{grid-template-columns:1fr}body.hf35-profile .r22-profile-hero-grid{grid-template-columns:1fr!important}body.hf35-profile .profile-avatar.large{width:68px!important;height:68px!important;min-width:68px!important}body.hf35-profile .hf35-profile-section-nav{padding-inline:12px}}
+
+
+/* R1359 — profile-management outreach readiness */
+.r1359-request-review{margin-top:1.25rem;padding:1.25rem;border:1px solid var(--border,#c8d6d5);border-radius:16px;background:#fff}
+.r1359-request-review[hidden]{display:none}
+.r1359-review-summary{display:grid;gap:.65rem;margin:1rem 0}
+.r1359-review-summary>div,.r1359-manager-field{display:grid;gap:.2rem;padding:.7rem .8rem;border-radius:10px;background:#f3f8f7}
+.r1359-review-summary strong,.r1359-manager-field strong{font-size:.92rem}
+.r1359-review-summary span,.r1359-manager-field p{margin:0;overflow-wrap:anywhere}
+.r1359-direct-manager{margin-top:1rem}
+.r1359-manager-form{margin-top:1rem}
+.r1359-history-row{display:flex;flex-wrap:wrap;align-items:center;gap:.65rem;padding:.65rem 0;border-bottom:1px solid var(--border,#d7e1df)}
+.r1359-history-row:last-child{border-bottom:0}
+.r1359-history-row .button{margin-left:auto}
+.r1359-manager-public{margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border,#d7e1df)}
+.r1359-manager-public .eyebrow{margin-bottom:.35rem}
+.r1359-manager-public .actions{margin-top:.85rem}
+@media(max-width:700px){
+  .r1359-history-row{align-items:flex-start}
+  .r1359-history-row .button{width:100%;margin-left:0}
+}
