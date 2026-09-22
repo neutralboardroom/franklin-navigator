@@ -44,7 +44,7 @@ add('Sep19 first-party profile indicator remains truthful',read('dist/profiles/F
 // September 20 command baseline.
 add('Sep20 Profile Access hero explicitly means public Franklin Navigator profile',access.includes('Get free access to manage your public profile on Franklin Navigator.'));
 add('Sep20 four-step progress remains semantic and dynamic',access.includes('data-r1346-profile-progress')&&live.includes("setAttribute('aria-current','step')")&&live.includes("classList.toggle('is-complete'"));
-add('Sep20 wrong-profile search remains secondary/collapsible',live.includes('Choose a different profile')&&live.includes("document.createElement('details')"));
+add('Sep20 wrong-profile search remains secondary/collapsible',live.includes('Wrong profile? Choose another')&&live.includes("document.createElement('details')"));
 add('Sep20 selected profile remains obvious with type and location',live.includes("summaryItem('Profile'")&&live.includes("summaryItem('Type'")&&live.includes("summaryItem('Location'"));
 add('Sep20 claim connect has visible local loading, duplicate suppression, retry/help and automatic focus',live.includes('Connecting profile…')&&live.includes('if(connect.disabled)return')&&live.includes('Retry connection')&&live.includes("link('Get help'")&&live.includes("focusIntoView('[data-r1346-verification-heading]')"));
 add('Sep20 Step 3 remains dedicated vertical form with full-width fields and separate checkbox row',live.includes("form.className='r1346-profile-access-verification'")&&css.includes('.r1346-profile-access-verification input[type="url"]')&&css.includes('min-height:150px')&&css.includes('grid-template-columns:auto minmax(0,1fr)!important'));
@@ -57,9 +57,9 @@ add('Sep20 8-character password minimum remains public/frontend',live.includes('
 add('Sep20 claim CTA remains stronger than Official website on claimable profiles',profile.includes('r1343-claim-primary')&&css.includes('body.r1346-claimable.hf35-profile.r1332-profile .profile-primary-actions a.button.primary:not(.r1343-claim-primary)'));
 add('Sep20 optional membership remains later than active verification task',live.includes("if(verified)box.append(link('See optional Community Membership'"));
 add('Sep20 Profile Center remains verified-authority-only',authorityRule.includes('authority_state === VERIFIED')&&authorityRule.includes('Profile Access'));
-add('Sep20 corrections remain separate and free',live.includes('Correct profile information')&&control.includes('/profile-access/?profile='));
+add('Sep20 corrections remain separate and free',live.includes('Correct public facts')&&control.includes('/profile-access/?profile='));
 add('Sep20 no-silent-click durable rule remains permanent',asyncRule.includes('NO SILENT CLICKS')&&asyncRule.includes('duplicate')&&asyncRule.includes('scroll/focus'));
-add('Sep20 Spanish dynamic parity covers claim/recovery additions',i18n.includes('Elegir un perfil diferente')&&i18n.includes('Revise su correo electrónico')&&i18n.includes('Verifique que administra'));
+add('Sep20 Spanish dynamic parity covers claim/recovery additions',i18n.includes('¿Perfil equivocado? Elija otro')&&i18n.includes('Revise su correo electrónico')&&i18n.includes('Verifique que administra'));
 
 // Two-command permanence itself.
 add('Two-command durable baseline explicitly binds both owner commands',durable.includes('2026-09-19')&&durable.includes('2026-09-20'));
