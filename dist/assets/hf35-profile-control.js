@@ -39,18 +39,21 @@
   sync();prefill();
   fetch(API+'/api/accounts/me',{credentials:'include',cache:'no-store'}).then(r=>r.ok?r.json():null).then(me=>{if(!me?.account)return;set('requesterName',me.account.display_name||'');set('requesterEmail',me.account.email||'')}).catch(()=>{});
   const clean=(v,n)=>String(v||'').trim().slice(0,n);
-  form.addEventListener('submit',async e=>{
-    e.preventDefault();returnBox.replaceChildren();
-    const fd=new FormData(form),type=fd.get('requestType'),removal=type==='PUBLIC_REMOVAL';
-    if(removal&&!fd.get('authorityConfirmed')){status.textContent=es?'Confirme su autorización para solicitar el retiro.':'Confirm your authority to request public removal.';status.focus();return}
-    if(removal&&clean(fd.get('removalReason'),1800).length<10){status.textContent=es?'Explique brevemente por qué solicita el retiro.':'Briefly explain why you are requesting removal.';status.focus();return}
-    const confirmation=removal?(es?'¿Enviar esta solicitud de retiro para este perfil exacto?':'Submit this removal request for this exact profile?'):(es?'¿Enviar esta corrección para este perfil exacto?':'Submit this correction for this exact profile?');if(!window.confirm(confirmation))return;
-    const message=removal
-      ? `Profile public-removal request. Listing: ${clean(fd.get('listing'),180)}. Profile: ${clean(fd.get('profileId'),120)}. URL: ${clean(fd.get('url'),1200)}. Requester: ${clean(fd.get('requesterName'),120)} <${clean(fd.get('requesterEmail'),200)}>. Authority: ${clean(fd.get('authorityBasis'),300)}. Removal category: ${clean(fd.get('removalCategory'),120)}. Reason: ${clean(fd.get('removalReason'),1800)}. Public evidence: ${clean(fd.get('evidenceUrl'),1200)||'Not provided'}.`
-      : `Profile factual-correction request. Listing: ${clean(fd.get('listing'),180)}. Profile: ${clean(fd.get('profileId'),120)}. URL: ${clean(fd.get('url'),1200)}. Requester: ${clean(fd.get('requesterName'),120)} <${clean(fd.get('requesterEmail'),200)}>. Correction field: ${clean(fd.get('correctionField'),120)}. Current information: ${clean(fd.get('currentInfo'),1400)}. Requested correction: ${clean(fd.get('correctInfo'),1400)}. Public evidence: ${clean(fd.get('evidenceUrl'),1200)||'Not provided'}.`;
-    status.textContent=es?'Enviando su solicitud…':'Submitting your request…';status.focus();
+  const reviewBox=document.createElement('section');reviewBox.className='card r1359-request-review';reviewBox.hidden=true;reviewBox.tabIndex=-1;form.after(reviewBox);
+  let submitting=false;
+  const hideReview=()=>{reviewBox.hidden=true;reviewBox.replaceChildren()};
+  const reviewLine=(label,value)=>{
+    const row=document.createElement('div'),strong=document.createElement('strong'),span=document.createElement('span');
+    strong.textContent=label;span.textContent=value||'—';row.append(strong,span);return row;
+  };
+  const buildMessage=(fd,removal)=>removal
+    ? `Profile public-removal request. Listing: ${clean(fd.get('listing'),180)}. Profile: ${clean(fd.get('profileId'),120)}. URL: ${clean(fd.get('url'),1200)}. Requester: ${clean(fd.get('requesterName'),120)} <${clean(fd.get('requesterEmail'),200)}>. Authority: ${clean(fd.get('authorityBasis'),300)}. Removal category: ${clean(fd.get('removalCategory'),120)}. Reason: ${clean(fd.get('removalReason'),1800)}. Public evidence: ${clean(fd.get('evidenceUrl'),1200)||'Not provided'}.`
+    : `Profile factual-correction request. Listing: ${clean(fd.get('listing'),180)}. Profile: ${clean(fd.get('profileId'),120)}. URL: ${clean(fd.get('url'),1200)}. Requester: ${clean(fd.get('requesterName'),120)} <${clean(fd.get('requesterEmail'),200)}>. Correction field: ${clean(fd.get('correctionField'),120)}. Current information: ${clean(fd.get('currentInfo'),1400)}. Requested correction: ${clean(fd.get('correctInfo'),1400)}. Public evidence: ${clean(fd.get('evidenceUrl'),1200)||'Not provided'}.`;
+  const submitRequest=async(fd,removal)=>{
+    if(submitting)return;submitting=true;hideReview();if(submitButton)submitButton.disabled=true;
+    status.textContent=es?'Enviando su solicitud…':'Submitting your request…';try{status.focus({preventScroll:true})}catch{status.focus()}
     try{
-      const r=await fetch(API+'/api/support/request',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({profileId:validProfile?profile:'',category:removal?'PROFILE_PUBLIC_REMOVAL':'PROFILE_FACTUAL_CORRECTION',message,preferredLanguage:es?'SPANISH':'ENGLISH'})});
+      const r=await fetch(API+'/api/support/request',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({profileId:validProfile?profile:'',category:removal?'PROFILE_PUBLIC_REMOVAL':'PROFILE_FACTUAL_CORRECTION',message:buildMessage(fd,removal),preferredLanguage:es?'SPANISH':'ENGLISH'})});
       let data={};try{data=await r.json()}catch{}
       if(!r.ok)throw new Error(data?.error?.message||'REQUEST_FAILED');
       status.textContent=(es?'Solicitud recibida. No se inició ningún pago ni membresía. Guarde esta referencia: ':'Request received. No payment or membership was started. Keep this reference: ')+(data.requestId||'—');
@@ -62,6 +65,37 @@
       const help=document.createElement('a');help.className='button';help.href='mailto:community@franklinnavigator.com';help.textContent=es?'Contactar soporte':'Contact support';returnBox.append(help);
     }catch{
       status.textContent=es?'No pudimos enviar la solicitud. Sus datos siguen en el formulario. Inténtelo de nuevo o escriba a community@franklinnavigator.com.':'We could not submit the request. Your entries are still in the form. Try again or email community@franklinnavigator.com.';
+      if(submitButton)submitButton.disabled=false;
+    }finally{submitting=false}
+  };
+  const showReview=(fd,removal)=>{
+    hideReview();
+    const eyebrow=document.createElement('div');eyebrow.className='eyebrow';eyebrow.textContent=removal?(es?'Antes de enviar':'Before you submit'):(es?'Revise su corrección':'Review your correction');
+    const h=document.createElement('h2');h.textContent=removal?(es?'Confirme la solicitud de retiro':'Confirm this removal request'):(es?'Confirm this correction':'Confirm this correction');
+    const intro=document.createElement('p');intro.textContent=removal?(es?'Revise el perfil y el motivo. El retiro no ocurre hasta que Franklin Navigator revise la solicitud.':'Review the exact profile and reason. Public removal does not occur until Franklin Navigator reviews the request.'):(es?'Revise el perfil y el cambio solicitado antes de enviarlo.':'Review the exact profile and requested change before submitting it.');
+    const summary=document.createElement('div');summary.className='r1359-review-summary';
+    summary.append(reviewLine(es?'Perfil':'Profile',clean(fd.get('listing'),180)||clean(fd.get('profileId'),120)));
+    if(removal){
+      summary.append(reviewLine(es?'Motivo':'Reason category',clean(fd.get('removalCategory'),120)),reviewLine(es?'Explicación':'Explanation',clean(fd.get('removalReason'),1800)));
+    }else{
+      summary.append(reviewLine(es?'Campo':'Field',clean(fd.get('correctionField'),120)),reviewLine(es?'Información actual':'Current information',clean(fd.get('currentInfo'),1400)),reviewLine(es?'Cambio solicitado':'Requested change',clean(fd.get('correctInfo'),1400)));
     }
+    const evidence=clean(fd.get('evidenceUrl'),1200);if(evidence)summary.append(reviewLine(es?'Evidencia':'Evidence',evidence));
+    const actions=document.createElement('div');actions.className='r37-member-actions';
+    const confirm=document.createElement('button');confirm.type='button';confirm.className='button primary';confirm.textContent=removal?(es?'Enviar solicitud de retiro':'Submit removal request'):(es?'Enviar corrección':'Submit correction');
+    const back=document.createElement('button');back.type='button';back.className='button';back.textContent=es?'Volver y editar':'Go back and edit';
+    confirm.addEventListener('click',()=>submitRequest(new FormData(form),removal));
+    back.addEventListener('click',()=>{hideReview();const target=removal?form.elements.removalReason:form.elements.currentInfo;target?.focus();});
+    actions.append(confirm,back);reviewBox.append(eyebrow,h,intro,summary,actions);reviewBox.hidden=false;
+    reviewBox.scrollIntoView({behavior:'smooth',block:'nearest'});try{reviewBox.focus({preventScroll:true})}catch{reviewBox.focus()}
+  };
+  form.elements.requestType.addEventListener('change',hideReview);
+  form.addEventListener('input',()=>{if(!reviewBox.hidden)hideReview()});
+  form.addEventListener('submit',e=>{
+    e.preventDefault();if(submitting)return;returnBox.replaceChildren();
+    const fd=new FormData(form),type=fd.get('requestType'),removal=type==='PUBLIC_REMOVAL';
+    if(removal&&!fd.get('authorityConfirmed')){status.textContent=es?'Confirme su autorización para solicitar el retiro.':'Confirm your authority to request public removal.';status.focus();return}
+    if(removal&&clean(fd.get('removalReason'),1800).length<10){status.textContent=es?'Explique brevemente por qué solicita el retiro.':'Briefly explain why you are requesting removal.';status.focus();return}
+    showReview(fd,removal);
   });
 })();

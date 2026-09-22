@@ -31,7 +31,7 @@ ok('correction/removal page offers evidence for both request types',
 ok('bound correction request canonicalizes profile URL and provides return path',
   control.includes("form.elements.url.value=profilePage")&&control.includes('Back to this profile'));
 ok('removal requires reason and confirmation before submission',
-  control.includes("clean(fd.get('removalReason'),1800).length<10")&&control.includes('Submit this removal request for this exact profile?'));
+  control.includes("clean(fd.get('removalReason'),1800).length<10")&&control.includes('Confirm this removal request')&&control.includes('showReview(fd,removal)'));
 ok('signed-in correction form can reuse account contact details without requiring sign-in',
   control.includes("fetch(API+'/api/accounts/me'")&&control.includes("set('requesterEmail'"));
 ok('Spanish parity covers audited high-value labels',
@@ -39,4 +39,4 @@ ok('Spanish parity covers audited high-value labels',
   i18n.includes("'Correct public facts':'Corregir datos públicos'")&&
   i18n.includes("'Open secure reviewer workspace':'Abrir espacio seguro de revisión'"));
 
-console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.58-HF3.13.40',checks:checks.length,items:checks},null,2));
+console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.59-HF3.13.41',checks:checks.length,items:checks},null,2));
