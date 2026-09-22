@@ -32,5 +32,5 @@ add('R1346 correction route remains reachable with differentiated manage wording
 add('R1346 Spanish parity covers new dynamic claim/recovery actions',i18n.includes("'Wrong profile? Choose another':'¿Perfil equivocado? Elija otro'")&&i18n.includes("'Check your email':'Revise su correo electrónico'")&&i18n.includes('Verify that you manage'));
 add('R1346 durable no-silent-click rule exists',rule.includes('NO SILENT CLICKS')&&rule.includes('duplicate')&&rule.includes('focus'));
 const failed=checks.filter(x=>!x[1]);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.55-HF3.13.37',checks,failed},null,2));
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.57-HF3.13.39',checks,failed},null,2));
 if(failed.length)process.exit(1);

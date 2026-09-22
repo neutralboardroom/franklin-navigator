@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import {spawn,spawnSync} from 'node:child_process';
 
-const PROFILE='FR-ORG-b00c0ace7943973c';
+const PROFILE='FR-ORG-6123d7bd6b0a-503-bloomhouse';
+const PROFILE_NAME='503 Bloomhouse';
 const BASE='http://127.0.0.1:4173';
 const evidenceDir='.r1346-browser-evidence';
 fs.mkdirSync(evidenceDir,{recursive:true});
@@ -46,12 +47,13 @@ async function waitFor(expression,label,timeout=10000){const started=Date.now();
 async function navigate(url){await send('Page.navigate',{url});await waitFor("document.readyState==='complete'","document ready",10000);await sleep(120)}
 async function screenshot(name){const r=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,fromSurface:true});fs.writeFileSync(evidenceDir+'/'+name,Buffer.from(r.data,'base64'))}
 const check=(name,ok,detail='')=>{results.checks.push({name,pass:Boolean(ok),detail});if(!ok)throw new Error(name+(detail?': '+detail:''))};
-const results={release:'FR-NAV1.30.46-HF3.13.28',fixture:'CONTROLLED_BROWSER_FIXTURE_NO_PRODUCTION_ACCOUNT_MUTATION',checks:[],screenshots:[],result:'IN_PROGRESS'};
+const results={release:'FR-NAV1.30.57-HF3.13.39',fixture:'CONTROLLED_BROWSER_FIXTURE_NO_PRODUCTION_ACCOUNT_MUTATION',checks:[],screenshots:[],result:'IN_PROGRESS'};
 
 await send('Page.enable');await send('Runtime.enable');await send('Emulation.setDeviceMetricsOverride',{width:1365,height:900,deviceScaleFactor:1,mobile:false});
 const mock=`(()=>{
   const API='https://franklin-navigator-membership.onrender.com';
   const PROFILE='${PROFILE}';
+  window.PROFILE_NAME='${PROFILE_NAME.replaceAll("'","\\'")}';
   const nativeFetch=window.fetch.bind(window);
   const response=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'Content-Type':'application/json'}});
   const delay=ms=>new Promise(r=>setTimeout(r,ms));
@@ -83,7 +85,7 @@ await send('Page.addScriptToEvaluateOnNewDocument',{source:mock});
 // Exact profile -> account-recovery path.
 await navigate(BASE+'/profile-access/?profile='+encodeURIComponent(PROFILE));
 await waitFor("document.querySelector('[data-membership-live-root]') && document.body.textContent.includes('Franklin Navigator')","exact selected profile");
-check('exact profile remains selected on Profile Access',await evaluate("location.search.includes('"+PROFILE+"') && document.body.textContent.includes('Franklin Navigator')"));
+check('exact profile remains selected on Profile Access',await evaluate("location.search.includes('"+PROFILE+"') && document.body.textContent.includes(PROFILE_NAME)"));
 check('claim hero clarifies public profile',await evaluate("document.querySelector('h1')?.textContent.includes('public profile on Franklin Navigator')"));
 check('progress exposes current step semantics',await evaluate("document.querySelector('[data-r1346-profile-progress] [aria-current=step]')!==null"));
 
@@ -96,10 +98,9 @@ check('forgot-password link preserves exact profile',String(recoveryHref).includ
 // Reset request: visible loading + generic acknowledgement.
 await navigate(BASE+recoveryHref);
 await waitFor("document.querySelector('.r1342-recovery-form input[type=email]')","reset email form");
-await evaluate("(()=>{const i=document.querySelector('.r1342-recovery-form input[type=email]');i.value='controlled-fixture@franklin.invalid';i.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('.r1342-recovery-form').requestSubmit()})()");
-await sleep(40);
-check('reset request immediately disables duplicate submit',await evaluate("document.querySelector('.r1342-recovery-form button[type=submit]')?.disabled===true"));
-check('reset request shows local loading feedback',await evaluate("document.body.textContent.includes('Sending password-reset instructions…')"));
+const resetRequestImmediate=await evaluate("(()=>{const i=document.querySelector('.r1342-recovery-form input[type=email]');i.value='controlled-fixture@franklin.invalid';i.dispatchEvent(new Event('input',{bubbles:true}));const f=document.querySelector('.r1342-recovery-form');f.requestSubmit();const b=f.querySelector('button[type=submit]');return{disabled:b?.disabled===true,loading:document.body.textContent.includes('Sending password-reset instructions…')}})()");
+check('reset request immediately disables duplicate submit',resetRequestImmediate?.disabled===true,JSON.stringify(resetRequestImmediate));
+check('reset request shows local loading feedback',resetRequestImmediate?.loading===true,JSON.stringify(resetRequestImmediate));
 await waitFor("document.body.textContent.includes('Check your email')","reset request acknowledgement");
 check('reset acknowledgement is generic',await evaluate("document.body.textContent.includes('If an account exists for this email, password-reset instructions have been sent.')"));
 check('reset acknowledgement replaces old request form',await evaluate("document.querySelector('.r1342-recovery-form')===null"));
@@ -108,10 +109,9 @@ check('reset acknowledgement replaces old request form',await evaluate("document
 await navigate(BASE+'/account-recovery/?profile='+encodeURIComponent(PROFILE)+'&r1346=reset#token='+('A'.repeat(48))+'&profile='+encodeURIComponent(PROFILE));
 await waitFor("document.querySelectorAll('.r1342-recovery-form input[type=password]').length===2","new password form");
 check('frontend password minimum is 8',await evaluate("[...document.querySelectorAll('.r1342-recovery-form input[type=password]')].every(i=>i.minLength===8)"));
-await evaluate("(()=>{const a=[...document.querySelectorAll('.r1342-recovery-form input[type=password]')];for(const i of a){i.value='12345678';i.dispatchEvent(new Event('input',{bubbles:true}))}document.querySelector('.r1342-recovery-form').requestSubmit()})()");
-await sleep(40);
-check('reset completion immediately disables duplicate submit',await evaluate("document.querySelector('.r1342-recovery-form button[type=submit]')?.disabled===true"));
-check('reset completion shows local loading feedback',await evaluate("document.body.textContent.includes('Changing password…')"));
+const resetCompleteImmediate=await evaluate("(()=>{const a=[...document.querySelectorAll('.r1342-recovery-form input[type=password]')];for(const i of a){i.value='12345678';i.dispatchEvent(new Event('input',{bubbles:true}))}const f=document.querySelector('.r1342-recovery-form');f.requestSubmit();const b=f.querySelector('button[type=submit]');return{disabled:b?.disabled===true,loading:document.body.textContent.includes('Changing password…')}})()");
+check('reset completion immediately disables duplicate submit',resetCompleteImmediate?.disabled===true,JSON.stringify(resetCompleteImmediate));
+check('reset completion shows local loading feedback',resetCompleteImmediate?.loading===true,JSON.stringify(resetCompleteImmediate));
 await waitFor("document.body.textContent.includes('Password changed successfully.')","reset complete success");
 check('old reset form removed after success',await evaluate("document.querySelector('.r1342-recovery-form')===null"));
 check('reset success confirms signed-in state',await evaluate("document.body.textContent.includes('You’re signed in.')"));
@@ -130,7 +130,7 @@ await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent.t
 await sleep(40);
 check('connect action shows loading beside action',await evaluate("document.body.textContent.includes('Connecting profile…')"));
 await waitFor("document.querySelector('[data-r1346-verification-heading]')!==null","verification step");
-check('verification heading names selected profile',await evaluate("document.querySelector('[data-r1346-verification-heading]')?.textContent==='Verify that you manage Franklin Navigator'"));
+check('verification heading names selected profile',await evaluate("document.querySelector('[data-r1346-verification-heading]')?.textContent==='Verify that you manage '+PROFILE_NAME"));
 check('Step 3 receives accessible focus after connection',await evaluate("document.activeElement===document.querySelector('[data-r1346-verification-heading]')"));
 
 // Desktop form geometry/accessibility.
@@ -147,7 +147,7 @@ await evaluate("document.querySelector('.r1346-profile-access-verification input
 await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
 await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
 await sleep(80);
-check('keyboard Tab reaches profile website reuse action after URL input',await evaluate("document.activeElement?.textContent.trim()==='Use website already on this profile'"));
+check('keyboard Tab reaches profile website reuse action after URL input',await evaluate("document.activeElement?.textContent.trim()==='Use official website as evidence'"));
 await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
 await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Tab',code:'Tab',windowsVirtualKeyCode:9,nativeVirtualKeyCode:9});
 await sleep(80);
@@ -167,12 +167,12 @@ await evaluate(`(()=>{const f=document.querySelector('.r1346-profile-access-veri
 await sleep(40);
 check('verification submit shows local loading feedback',await evaluate("document.body.textContent.includes('Submitting your request. Please keep this page open.')"));
 await waitFor("document.querySelector('[data-r1346-pending-status]')!==null","pending review state");
-check('pending review is clearly visible',await evaluate("document.body.textContent.includes('Waiting for review')&&document.body.textContent.includes('Access request submitted')"));
-check('pending hero is state-aware',await evaluate("document.querySelector('[data-r1352-profile-hero-title]')?.textContent==='Access request submitted.'"));
+check('pending review is clearly visible',await evaluate("document.body.textContent.includes('Waiting for review')&&document.body.textContent.includes(PROFILE_NAME)"));
+check('pending hero is state-aware',await evaluate("document.querySelector('[data-r1352-profile-hero-title]')?.textContent==='Access request pending.'"));
 check('Step 3 changes to Verification pending',await evaluate("document.querySelector('[data-r1346-profile-progress] [data-step=\"3\"]')?.textContent.trim()==='3 Verification pending'"));
 check('pending status appears before signed-in account section',await evaluate("(()=>{const p=document.querySelector('[data-r1346-pending-status]'),a=[...document.querySelectorAll('.r37-member-step')].find(x=>x.textContent.includes('Signed in as'));return !!p&&!!a&&p.getBoundingClientRect().top<a.getBoundingClientRect().top})()"));
 check('pending state removes verification form',await evaluate("document.querySelector('.r1346-profile-access-verification')===null"));
-check('pending state names exact profile',await evaluate("document.querySelector('[data-r1346-pending-status]')?.textContent.includes('Franklin Navigator')"));
+check('pending state names exact profile',await evaluate("document.querySelector('[data-r1346-pending-status]')?.textContent.includes(PROFILE_NAME)"));
 await navigate(BASE+'/profile-access/?profile='+encodeURIComponent(PROFILE));
 await waitFor("document.querySelector('[data-r1346-pending-status]')!==null","pending survives reload");
 check('pending request survives full reload',await evaluate("document.querySelector('[data-r1346-pending-status]')!==null && document.querySelector('.r1346-profile-access-verification')===null"));

@@ -28,7 +28,7 @@ add('R1351 claim search keeps neutral primary result action',claim.includes("b.t
 add('R1352 selected claim panel keeps primary, free alternatives and optional membership actions',['Claim or manage this profile','Correct information','Request removal','See Community Membership benefits'].every(x=>claim.includes(x)));
 add('Sep19 selected result moves/focuses to action panel',claim.includes("section.scrollIntoView")&&claim.includes("section.focus"));
 add('Sep19 profile claim deep-link preserves exact profile',profile.includes("/profile-access/?profile="));
-add('Sep19 corrections preserve immutable profile identity and prefill URL/name',control.includes("set('profileId',validProfile?profile:'')")&&control.includes("set('url',params.get('url')||profilePage)")&&control.includes("set('listing',name)"));
+add('Sep19 corrections preserve immutable profile identity and prefill URL/name',control.includes("set('profileId',validProfile?profile:'')")&&control.includes("form.elements.url.value=profilePage")&&control.includes("set('listing',name)"));
 add('Sep19 corrections/removal remain free and visibly reachable',/free/i.test(corrections)&&/removal|remove/i.test(corrections));
 add('Sep19 business path explicitly places claim/authority before optional membership',business.includes('Claim profile / verify authority')&&business.includes('Review or manage free profile')&&business.includes('Preview optional Community Membership'));
 add('Sep19 account mode selector remains accessible',live.includes("create.setAttribute('aria-pressed'")&&live.includes("sign.setAttribute('aria-pressed'"));
@@ -68,5 +68,5 @@ add('Two-command durable baseline requires visible/reachable browser qualificati
 add('Password sender exception remains evidence-gated, not silently changed',durable.includes('replacement Franklin account/security transactional sender')&&durable.includes('independently verified'));
 
 const failed=checks.filter(x=>!x[1]);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.55-HF3.13.37',checks,failed},null,2));
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.57-HF3.13.39',checks,failed},null,2));
 if(failed.length)process.exit(1);

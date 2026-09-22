@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import {spawn,spawnSync} from 'node:child_process';
 
 const PROFILE='FR-ORG-b00c0ace7943973c';
+const ORDINARY_PROFILE='FR-ORG-6123d7bd6b0a-503-bloomhouse';
 const BASE='http://127.0.0.1:4174';
 const dir='.r1347-two-command-evidence';
 fs.mkdirSync(dir,{recursive:true});
@@ -40,15 +41,22 @@ const result={release:'FR-NAV1.30.55-HF3.13.37',profileId:PROFILE,checks:[],scre
 const check=(name,ok,detail='')=>{result.checks.push({name,pass:Boolean(ok),detail});if(!ok)throw new Error(name+(detail?': '+detail:''))};
 await send('Page.enable');await send('Runtime.enable');await send('Emulation.setDeviceMetricsOverride',{width:1365,height:900,deviceScaleFactor:1,mobile:false});
 
-// Public profile: claim is visible/prominent; correction route not buried; official indicator truthful.
+// Public profiles: the official platform profile is protected, while an ordinary profile keeps the free-management CTA and correction route.
 await navigate('/profiles/'+PROFILE+'/');
-await waitFor("[...document.querySelectorAll('a')].some(a=>a.textContent.trim()==='Manage this profile — free')","public management CTA");
-const pub=await evaluate(`(()=>{const links=[...document.querySelectorAll('a')],claim=links.find(a=>a.textContent.trim()==='Manage this profile — free'),correct=links.find(a=>/Review|Correct|correct/i.test(a.textContent)),official=[...document.querySelectorAll('*')].find(n=>n.textContent?.trim()==='Official Franklin Navigator profile');const vis=n=>{if(!n)return false;const r=n.getBoundingClientRect(),s=getComputedStyle(n);return r.width>1&&r.height>1&&s.display!=='none'&&s.visibility!=='hidden'};return{claim:vis(claim),claimHref:claim?.getAttribute('href'),claimClass:claim?.className,correct:vis(correct),official:vis(official),claimRect:claim?claim.getBoundingClientRect().toJSON():null}})()`);
+await waitFor("document.querySelector('.r1330-state-label')?.textContent.trim()==='Official Franklin Navigator profile'","official Franklin Navigator indicator");
+const officialPub=await evaluate(`(()=>{const state=document.querySelector('.r1330-state-label'),action=document.querySelector('a.r1330-claim-link');const vis=n=>{if(!n)return false;const r=n.getBoundingClientRect(),st=getComputedStyle(n);return r.width>1&&r.height>1&&st.display!=='none'&&st.visibility!=='hidden'};return{claim:vis(action)&&action.textContent.trim()==='Manage this profile — free',correct:vis(action)&&action.textContent.trim()==='Correct factual listing details',official:vis(state)&&state.textContent.trim()==='Official Franklin Navigator profile',stateActionText:action?.textContent.trim(),correctHref:action?.getAttribute('href')}})()`);
+check('first-party Official Franklin Navigator indicator remains visible',officialPub.official,JSON.stringify(officialPub));
+check('official Franklin Navigator profile does not expose ordinary free-management CTA',!officialPub.claim,JSON.stringify(officialPub));
+check('official Franklin Navigator correction route remains visible',officialPub.correct&&String(officialPub.correctHref).includes(PROFILE),JSON.stringify(officialPub));
+
+await navigate('/profiles/'+ORDINARY_PROFILE+'/');
+await waitFor("document.querySelector('a.r1330-claim-link')?.textContent.trim()==='Manage this profile — free'","ordinary public management CTA");
+await waitFor("document.querySelector('#manage [data-r1338-correct]')?.textContent.trim()==='Correct factual listing details'","ordinary public correction route");
+const pub=await evaluate(`(()=>{const claim=document.querySelector('a.r1330-claim-link'),correct=document.querySelector('#manage [data-r1338-correct]');const vis=n=>{if(!n)return false;const r=n.getBoundingClientRect(),st=getComputedStyle(n);return r.width>1&&r.height>1&&st.display!=='none'&&st.visibility!=='hidden'};return{claim:vis(claim),claimHref:claim?.getAttribute('href'),claimClass:claim?.className,correct:vis(correct),correctHref:correct?.getAttribute('href'),claimRect:claim?claim.getBoundingClientRect().toJSON():null}})()`);
 check('public free-management CTA is visibly rendered',pub.claim,JSON.stringify(pub));
-check('public free-management CTA deep-links exact profile',String(pub.claimHref).includes(PROFILE),String(pub.claimHref));
+check('public free-management CTA deep-links exact profile',String(pub.claimHref).includes(ORDINARY_PROFILE),String(pub.claimHref));
 check('public free-management CTA keeps primary ownership class',String(pub.claimClass).includes('r1343-claim-primary'),String(pub.claimClass));
-check('public correction/review route remains visible',pub.correct,JSON.stringify(pub));
-check('first-party Official Franklin Navigator indicator remains visible',pub.official,JSON.stringify(pub));
+check('public correction/review route remains visible',pub.correct&&String(pub.correctHref).includes(ORDINARY_PROFILE),JSON.stringify(pub));
 await screenshot('R1347_PUBLIC_PROFILE_DESKTOP.png');result.screenshots.push('R1347_PUBLIC_PROFILE_DESKTOP.png');
 
 // Claim page: exact profile preselection and four actions visibly reachable.
