@@ -98,10 +98,9 @@ check('forgot-password link preserves exact profile',String(recoveryHref).includ
 // Reset request: visible loading + generic acknowledgement.
 await navigate(BASE+recoveryHref);
 await waitFor("document.querySelector('.r1342-recovery-form input[type=email]')","reset email form");
-await evaluate("(()=>{const i=document.querySelector('.r1342-recovery-form input[type=email]');i.value='controlled-fixture@franklin.invalid';i.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('.r1342-recovery-form').requestSubmit()})()");
-await sleep(40);
-check('reset request immediately disables duplicate submit',await evaluate("document.querySelector('.r1342-recovery-form button[type=submit]')?.disabled===true"));
-check('reset request shows local loading feedback',await evaluate("document.body.textContent.includes('Sending password-reset instructions…')"));
+const resetRequestImmediate=await evaluate("(()=>{const i=document.querySelector('.r1342-recovery-form input[type=email]');i.value='controlled-fixture@franklin.invalid';i.dispatchEvent(new Event('input',{bubbles:true}));const f=document.querySelector('.r1342-recovery-form');f.requestSubmit();const b=f.querySelector('button[type=submit]');return{disabled:b?.disabled===true,loading:document.body.textContent.includes('Sending password-reset instructions…')}})()");
+check('reset request immediately disables duplicate submit',resetRequestImmediate?.disabled===true,JSON.stringify(resetRequestImmediate));
+check('reset request shows local loading feedback',resetRequestImmediate?.loading===true,JSON.stringify(resetRequestImmediate));
 await waitFor("document.body.textContent.includes('Check your email')","reset request acknowledgement");
 check('reset acknowledgement is generic',await evaluate("document.body.textContent.includes('If an account exists for this email, password-reset instructions have been sent.')"));
 check('reset acknowledgement replaces old request form',await evaluate("document.querySelector('.r1342-recovery-form')===null"));
@@ -110,10 +109,9 @@ check('reset acknowledgement replaces old request form',await evaluate("document
 await navigate(BASE+'/account-recovery/?profile='+encodeURIComponent(PROFILE)+'&r1346=reset#token='+('A'.repeat(48))+'&profile='+encodeURIComponent(PROFILE));
 await waitFor("document.querySelectorAll('.r1342-recovery-form input[type=password]').length===2","new password form");
 check('frontend password minimum is 8',await evaluate("[...document.querySelectorAll('.r1342-recovery-form input[type=password]')].every(i=>i.minLength===8)"));
-await evaluate("(()=>{const a=[...document.querySelectorAll('.r1342-recovery-form input[type=password]')];for(const i of a){i.value='12345678';i.dispatchEvent(new Event('input',{bubbles:true}))}document.querySelector('.r1342-recovery-form').requestSubmit()})()");
-await sleep(40);
-check('reset completion immediately disables duplicate submit',await evaluate("document.querySelector('.r1342-recovery-form button[type=submit]')?.disabled===true"));
-check('reset completion shows local loading feedback',await evaluate("document.body.textContent.includes('Changing password…')"));
+const resetCompleteImmediate=await evaluate("(()=>{const a=[...document.querySelectorAll('.r1342-recovery-form input[type=password]')];for(const i of a){i.value='12345678';i.dispatchEvent(new Event('input',{bubbles:true}))}const f=document.querySelector('.r1342-recovery-form');f.requestSubmit();const b=f.querySelector('button[type=submit]');return{disabled:b?.disabled===true,loading:document.body.textContent.includes('Changing password…')}})()");
+check('reset completion immediately disables duplicate submit',resetCompleteImmediate?.disabled===true,JSON.stringify(resetCompleteImmediate));
+check('reset completion shows local loading feedback',resetCompleteImmediate?.loading===true,JSON.stringify(resetCompleteImmediate));
 await waitFor("document.body.textContent.includes('Password changed successfully.')","reset complete success");
 check('old reset form removed after success',await evaluate("document.querySelector('.r1342-recovery-form')===null"));
 check('reset success confirms signed-in state',await evaluate("document.body.textContent.includes('You’re signed in.')"));
