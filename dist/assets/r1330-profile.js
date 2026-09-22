@@ -88,6 +88,7 @@
    }else if(managed){
      labelText='Management verified';actionText='Manage this profile — free';href='/profile-access/?profile='+encodeURIComponent(id);hintText='This profile already has verified management access. If you are also authorized, you can request access; existing access is not removed automatically.';
    }
+   if(isNavigatorSelf&&!viewerLink){row.classList.add('r1357-official-profile-state');row.style.setProperty('display','flex','important');row.style.setProperty('flex-wrap','wrap');row.style.setProperty('align-items','center');row.style.setProperty('gap','8px')}else{row.classList.remove('r1357-official-profile-state');row.style.removeProperty('display');row.style.removeProperty('flex-wrap');row.style.removeProperty('align-items');row.style.removeProperty('gap')}
    const label=el('span',labelText,'r1330-state-label'+((managed||managedForViewer)?' is-managed':''));
    const isClaimAction=actionText==='Manage this profile — free';
    document.body.classList.toggle('r1346-claimable',isClaimAction);
