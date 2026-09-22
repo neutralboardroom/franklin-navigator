@@ -9,7 +9,7 @@ const server=()=>fs.readFileSync('server.js','utf8');
 
 test('R1357 forbids ordinary reviewer self-decisions without first-party exception',()=>{
   const src=reviewer();
-  assert.ok(src.includes("FRANKLIN_REVIEWER_CONSOLE_3"));
+  assert.ok(src.includes("FRANKLIN_REVIEWER_CONSOLE_4"));
   assert.match(src,/if\(who&&b\.accountId===who\.account_id\)fail\('REVIEW_SELF_DECISION_FORBIDDEN',403\)/);
   assert.doesNotMatch(src,/firstPartyOwnerException/);
   assert.match(src,/selfReviewConflict:Boolean/);
@@ -45,5 +45,5 @@ test('R1357 protects the official Franklin Navigator profile from new ordinary c
 });
 
 test('R1357 release identity is current',()=>{
-  assert.ok(server().includes('FR-NAV1.30.57-HF3.13.39'));
+  assert.ok(server().includes('FR-NAV1.30.58-HF3.13.40'));
 });
