@@ -3534,8 +3534,11 @@
     },
     "runtime": {
       "branch": "r1357-reviewer-claim-hardening-runtime-20260922",
-      "qualification": "IN_PROGRESS",
-      "deployment": "PENDING_AFTER_QUALIFICATION"
+      "qualification": "PASS",
+      "deployment": "RENDER_DEPLOYING",
+      "commit": "ae0194fc709563fc3b7ed13020e13d354996caf8",
+      "renderService": "franklin-navigator-membership",
+      "renderDeployId": "dep-dap0i2lg1s2s738vas4g"
     }
   }
 }
