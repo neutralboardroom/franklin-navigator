@@ -10,7 +10,7 @@ const i18n=read('dist/assets/r37-i18n.js');
 const checks=[];const ok=(name,v)=>{assert.ok(v,name);checks.push(name)};
 
 ok('official Franklin Navigator profile uses protected administrator presentation',
-  profile.includes("isNavigatorSelf&&!viewerLink")&&profile.includes("actionText='Correct profile information'")&&profile.includes('protected administrator access'));
+  profile.includes("isNavigatorSelf&&!viewerLink")&&profile.includes("actionText='Correct factual listing details'")&&profile.includes('protected administrator access'));
 ok('ordinary unclaimed profiles use clear free claim CTA',
   profile.includes("labelText='Management not yet verified'")&&profile.includes("actionText='Manage this profile — free'"));
 ok('public profile uses consistent correction and removal wording',
