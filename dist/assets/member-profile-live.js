@@ -7,7 +7,7 @@
   const node=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n};
   const link=(text,href,cls='button')=>{const a=node('a',text,cls);a.href=href;return a};
   const button=(text,fn,primary=false)=>{const b=node('button',text,primary?'button primary':'button');b.type='button';b.addEventListener('click',()=>work(fn));return b};
-  const state={profile:null,profiles:[],draft:null,publication:null,activePaid:false,recognition:null,media:[],busy:false,dirty:false,inputs:{}};
+  const state={profile:null,profiles:[],draft:null,publication:null,managerPublication:null,managerHistory:[],activePaid:false,recognition:null,media:[],busy:false,dirty:false,managerDirty:false,inputs:{}};
   const status=node('p','Loading your profile…','r37-status r38-status-strip');status.setAttribute('role','status');status.setAttribute('aria-live','polite');root.append(status);
   const controls=node('div',undefined,'r37-member-step tool'),view=node('div',undefined,'r37-member-step tool');root.append(controls,view);
   const messages={
@@ -87,7 +87,7 @@
     for(const p of state.profiles){const o=node('option',p.name);o.value=p.profile_id;select.append(o)}controls.append(l,select);
     const asked=new URLSearchParams(location.search).get('profile');
     state.profile=state.profiles.find(p=>p.profile_id===state.profile?.profile_id)||state.profiles.find(p=>p.profile_id===asked)||state.profiles[0];select.value=state.profile.profile_id;
-    select.addEventListener('change',()=>{if(state.dirty&&!confirm(tr('Discard unsaved member-profile edits and change profiles?'))){select.value=state.profile.profile_id;return}state.profile=state.profiles.find(p=>p.profile_id===select.value);state.dirty=false;work(load)});
+    select.addEventListener('change',()=>{if((state.dirty||state.managerDirty)&&!confirm(tr('Discard unsaved profile edits and change profiles?'))){select.value=state.profile.profile_id;return}state.profile=state.profiles.find(p=>p.profile_id===select.value);state.dirty=false;state.managerDirty=false;work(load)});
     if(!result.reviewCoverageConfigured)controls.append(node('p','Profile review coverage is temporarily unavailable. You can still view saved status and use free factual-correction routes.','fine-print'));
     await load();
   }
@@ -99,7 +99,7 @@
       request('/api/member/media/list?profileId='+encodeURIComponent(p.profile_id)).catch(()=>({media:[]})),
       request('/api/member/recognition').catch(()=>({recognition:null}))
     ]);
-    state.draft=profileResult.draft;state.publication=profileResult.publication||publicResult.publication||null;state.activePaid=publicResult.activePaidMember===true;state.recognition=recognitionResult.recognition||null;state.media=Array.isArray(mediaResult.media)?mediaResult.media:[];
+    state.draft=profileResult.draft;state.publication=profileResult.publication||publicResult.publication||null;state.managerPublication=profileResult.managerPublication||publicResult.managerPublication||null;state.managerHistory=Array.isArray(profileResult.managerHistory)?profileResult.managerHistory:[];state.activePaid=publicResult.activePaidMember===true;state.recognition=recognitionResult.recognition||null;state.media=Array.isArray(mediaResult.media)?mediaResult.media:[];
     view.replaceChildren();view.append(node('h2',p.name));
     if(p.authority_state!=='VERIFIED'){representation(p);return}
     renderManagedWorkspace(p);
@@ -193,18 +193,46 @@
     else section.append(node('div','Physical recognition is not currently available. Your digital recognition remains active.','r1354-fulfillment-state'));
     return section;
   }
+  function directManagerEditor(p){
+    const shell=node('section',undefined,'r1359-direct-manager');
+    shell.append(node('div','Verified manager updates','eyebrow'),node('h3','Keep the everyday public details current.'),node('p','These low-risk details are published from your verified manager account after automatic validation. They are shown as manager-provided information and do not replace independently sourced or regulated facts.'));
+    const current=state.managerPublication?.fields||{};
+    const specs=[
+      ['About this business or organization','summary','textarea',1200,'A short public description.'],
+      ['Public phone','publicPhone','text',60,'Use a public business or organization number.'],
+      ['Official website','website','url',1200,'Public HTTPS URL.'],
+      ['Contact page','contactUrl','url',1200,'Public HTTPS URL.'],
+      ['Booking or appointment page','bookingUrl','url',1200,'Public HTTPS URL.'],
+      ['Hours','hours','textarea',600,'Current public-facing hours or an instruction to confirm them.'],
+      ['Service area','serviceArea','textarea',600,'Where you provide services.'],
+      ['Languages','languages','text',300,'Public-facing language support.'],
+      ['Accessibility notes','accessibility','textarea',800,'Current public accessibility information.']
+    ];
+    const form=document.createElement('form');form.className='form-grid r1359-manager-form';const inputs={};
+    for(const [label,name,type,max,help] of specs){const x=field(label,name,type,max,help);x.input.value=current[name]||'';x.input.addEventListener('input',()=>{state.managerDirty=true});inputs[name]=x.input;form.append(x.wrap)}
+    const note=node('p','Identity, ownership, credentials, legal/regulatory facts, removals and disputed information still use review or source-backed correction routes. Community Membership is not required for these basic manager updates.','fine-print');form.append(note);
+    const actions=node('div',undefined,'r38-member-actions'),save=node('button','Publish verified manager updates','button primary');save.type='submit';actions.append(save,link('Request a source-backed factual correction',correctionUrl(p)));
+    form.append(actions);
+    form.addEventListener('submit',e=>{e.preventDefault();work(async()=>{const values=Object.fromEntries(Object.entries(inputs).map(([k,v])=>[k,v.value]));const out=await request('/api/member/manager-profile/save',{profileId:p.profile_id,expectedRevision:state.managerPublication?.revision||0,fields:values});state.managerPublication={...out,fields:values};state.managerDirty=false;message('Your verified manager updates are published. Public-source facts remain separately maintained.','good');await load()})});
+    shell.append(form);
+    if(state.managerHistory.length){
+      const hist=node('details',undefined,'r38-field-group'),sum=node('summary','Recent verified-manager versions'),body=node('div',undefined,'r38-field-group-body');hist.append(sum,body);
+      for(const row of state.managerHistory.slice(0,5)){const line=node('div',undefined,'r1359-history-row');line.append(node('strong','Version '+row.revision),node('span',reviewedWhen(row.created_at)||''));if(row.revision!==(state.managerPublication?.revision||0)){const b=button('Restore this version',async()=>{if(state.managerDirty){message('Save or discard your current edits before restoring an earlier version.','warn');return}await request('/api/member/manager-profile/revert',{profileId:p.profile_id,expectedRevision:state.managerPublication?.revision||0,targetRevision:Number(row.revision)});message('Earlier verified-manager version restored.','good');await load()},true);line.append(b)}body.append(line)}shell.append(hist)
+    }
+    return shell;
+  }
   function renderManagedWorkspace(p){
     const basic=node('section',undefined,'r1330-studio-basic');
-    basic.append(node('div','Profile Center','eyebrow'),node('h3','Management verified'),node('p','Your verified access lets you manage the profile relationship, request factual corrections or removal, and submit a profile photo or logo for review. Public factual information is reviewed separately and is not changed merely because you manage the profile.'));
+    basic.append(node('div','Profile Center','eyebrow'),node('h3','Management verified'),node('p','You can now maintain everyday owner-controlled profile information directly. Independently sourced, identity-critical, regulated, disputed and removal-related information remains separately reviewed.'));
     const actions=node('div',undefined,'r38-member-actions');
     actions.append(link('View public profile',publicProfileUrl(p),'button primary'),link('Request a factual correction',correctionUrl(p)),link('Request removal',correctionUrl(p,true)),link('Account & profile access','/profile-access/?profile='+encodeURIComponent(p.profile_id)));if(state.activePaid)actions.append(link('Transfer or end management — contact support','/member-support/?topic=PROFILE_MANAGEMENT&profile='+encodeURIComponent(p.profile_id)));else actions.append(button('Stop managing this profile',()=>releaseAccess(p)));actions.append(link('Access help','/member-support/?topic=PROFILE_MANAGEMENT&profile='+encodeURIComponent(p.profile_id)));
     if(p.verified_at){const when=reviewedWhen(p.verified_at);if(when)basic.append(node('p','Management access verified '+when+'.','fine-print'))}
-    basic.append(actions);view.append(basic);
+    basic.append(actions);view.append(basic,directManagerEditor(p));
     view.append(mediaManager(p,false));
     const recognition=recognitionPanel(p);if(recognition)view.append(recognition);
     if(state.activePaid){
       const paid=node('section',undefined,'r1330-studio-member');
-      paid.append(node('div','Community Member tools','eyebrow'),node('h3','Build the richer member profile.'),node('p','Your active membership adds reviewed About/services content, richer practical details, cover and gallery media, action links and other member profile modules.'));
+      paid.append(node('div','Community Member tools','eyebrow'),node('h3','Build the richer member profile.'),node('p','Your active membership adds richer promotional and member-profile modules, cover/gallery media, offers and other paid-member tools. Higher-risk promotional modules can still require review.'));
       view.append(paid,mediaManager(p,true));editor(p);
     }else{
       const upsell=node('section',undefined,'r1330-studio-upgrade');
@@ -353,6 +381,6 @@
     if(state.publication){const pub=state.publication;const published=node('div',undefined,'r1330-published-member');published.append(node('h4','Published member content'),node('p',pub.fields?.summary||'Published member content is active.'),link('View public profile',publicProfileUrl(p)));shell.append(published)}
     view.append(shell);
   }
-  window.addEventListener('beforeunload',e=>{if(state.dirty){e.preventDefault();e.returnValue=''}});
+  window.addEventListener('beforeunload',e=>{if(state.dirty||state.managerDirty){e.preventDefault();e.returnValue=''}});
   work(async()=>{try{await request('/api/accounts/me');await refresh()}catch(e){if(e.code==='AUTH_REQUIRED'){message('Sign in or create a free Franklin account to claim and manage a profile.');controls.append(link('Sign in or create account','/profile-access/'+(new URLSearchParams(location.search).get('profile')?'?profile='+encodeURIComponent(new URLSearchParams(location.search).get('profile')):''),'button primary'))}else throw e}});
 })();
