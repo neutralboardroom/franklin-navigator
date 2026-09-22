@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.55-HF3.13.37",
-  "date": "2026-09-21",
-  "base": "FR-NAV1.30.54-HF3.13.36",
+  "release": "FR-NAV1.30.56-HF3.13.38",
+  "date": "2026-09-22",
+  "base": "FR-NAV1.30.55-HF3.13.37",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1355 completes the reviewed Franklin profile-access, account-recovery, reviewer-authentication, and reviewer-password-reset simplification: no first-sign-in confirmation-code field, one canonical Franklin password policy, context-aware secure emailed reset links, exact-profile/reviewer return continuity, accessible password visibility controls, simplified completion states, and authorized-account reviewer step-up while preserving free profile management and all prior no-regression safeguards.",
+  "scope": "R1356 hardens Franklin profile-management recovery and privileged reviewer authority: password resets fail closed if reviewer sessions cannot be revoked; reviewer access requires verified email at sign-in and on every privileged request; the existing one-time email-confirmation flow is wired into reviewer sign-in; stale reviewer-v2 acceptance contracts are corrected; pricing, profile facts, source authority, resident functionality, and outreach remain unchanged.",
   "counts": {
     "profiles": 19104,
     "assistantRoutes": 254
@@ -3408,6 +3408,85 @@
       "randomDecorativeColoring": false,
       "darkSemanticSurfaceReadabilityGuard": true,
       "inheritedFrom": "R1354"
+    },
+    "acceptedCanonicalBase": {
+      "version": "FR-NAV1.30.12-HF3.12.4",
+      "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
+      "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
+    }
+  },
+  "r1356": {
+    "version": "FR-NAV1.30.56-HF3.13.38",
+    "date": "2026-09-22",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "QUALIFIED_RUNTIME_SOURCE_PENDING_SEPARATELY_AUTHORIZED_LIVE_DEPLOYMENT_AND_MAIN_EXACT_HEAD_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.55-HF3.13.37",
+      "mainCommit": "6233731cba6c7488d58e461b2ca55b311d86533c",
+      "qualified": true,
+      "deployedLive": true
+    },
+    "materialScope": "REVIEWER_RECOVERY_SESSION_INVALIDATION_AND_VERIFIED_EMAIL_AUTHORITY_HARDENING",
+    "nextVersionImprovementList": "NEXT_VERSION_IMPROVEMENT_LIST__R1356.md",
+    "materialImprovements": [
+      "Ordinary account password reset now fails closed if privileged reviewer sessions cannot be invalidated; a fresh ordinary session is not created after an incomplete privileged-session revocation.",
+      "Owner email-proof password recovery now uses the same fail-closed reviewer-session invalidation rule.",
+      "Reviewer sign-in requires a verified email in addition to the existing password, explicit reviewer binding, active-account, origin, rate-limit, and CSRF boundaries.",
+      "Reviewer authorization rechecks verified-email state on every privileged request, so removal of email verification revokes an already-issued reviewer session.",
+      "The existing one-time reviewer email-confirmation helper is now wired into reviewer sign-in and preserves its nonce, expiry, password, exact-email, one-use, and audit requirements.",
+      "Reviewer account state, password changes, binding revocation, absolute session expiry, and email-verification revocation all remain fail-closed.",
+      "Stale reviewer-console-v1 integration assertions were advanced to the existing reviewer-console-v2 runtime contract without weakening migration-integrity checks.",
+      "Executable regressions cover reviewer-session invalidation ordering and failure for both ordinary password reset and owner email-proof recovery."
+    ],
+    "securityBoundaries": [
+      "Payment never proves identity, profile management authority, or reviewer authority.",
+      "Password reset restores ordinary account access only and never directly grants reviewer privilege.",
+      "Reviewer privilege requires explicit binding, active account state, verified email, valid password, same-origin review transport, short-lived server-side session, and CSRF validation.",
+      "Revoking email verification, changing password, suspending the account, removing the reviewer binding, or expiring the session invalidates reviewer access.",
+      "Session invalidation is transactional and fail-closed; success is not reported when privileged reviewer-session deletion fails."
+    ],
+    "runtime": {
+      "branch": "franklin-commerce-runtime-r30",
+      "commit": "ed02b303120447f1d7a45849272cb0c681fa1f3f",
+      "deploy": null,
+      "deployState": "NOT_DEPLOYED_SEPARATE_AUTHORITY_REQUIRED",
+      "releaseEnv": "FR-NAV1.30.56-HF3.13.38",
+      "qualification": {
+        "pullRequest": 53,
+        "finalQualifiedHead": "a22601cb60571ed2defd439e80654a0b32b26bae",
+        "reviewerPathWorkflowRun": 35680636318,
+        "reviewerPathResult": "SUCCESS",
+        "fullRuntimeWorkflowRun": 35680636420,
+        "fullRuntimeResult": "SUCCESS"
+      }
+    },
+    "public": {
+      "branch": "r1356-security-recovery-package-20260922",
+      "qualification": "PENDING_OFFICIAL_MAIN_EXACT_HEAD_LIVE_RUNTIME_GATE",
+      "deployment": "NOT_AUTHORIZED_NOT_PERFORMED"
+    },
+    "commercial": {
+      "communityMembershipAnnualUsd": 35,
+      "changed": false,
+      "basicProfileManagementFree": true,
+      "factualCorrectionsRemovalFree": true
+    },
+    "noResidentFeatureRemoval": true,
+    "noProfileFactChange": true,
+    "noProfileSourceAuthorityChange": true,
+    "noLocalInvestigatorFactMutation": true,
+    "noOutreach": true,
+    "sccAccepted": false,
+    "sccCanonicalCurrent": false,
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1355"
     },
     "acceptedCanonicalBase": {
       "version": "FR-NAV1.30.12-HF3.12.4",
