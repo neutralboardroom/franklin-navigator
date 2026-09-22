@@ -3496,7 +3496,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "CANDIDATE_PENDING_QUALIFICATION",
+    "state": "QUALIFIED_MAIN_PENDING_PUBLIC_DEPLOY",
     "predecessor": {
       "version": "FR-NAV1.30.56-HF3.13.38",
       "mainCommit": "f581c69e47538715b44672422e6d7aa54f931013",
@@ -3528,9 +3528,17 @@
     "noOutreach": true,
     "smarterJusticeDonor": "NOT_USED",
     "public": {
-      "branch": "r1357-profile-claim-management-audit-20260922",
-      "qualification": "IN_PROGRESS",
-      "deployment": "PENDING_AFTER_QUALIFICATION"
+      "branch": "main",
+      "codeBearingCommit": "f0b8cefebd4df447294842a7660ebe9a7c94b404",
+      "qualification": "PASS",
+      "qualificationRun": 35691396221,
+      "exactSourceArtifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.57-HF3.13.39__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+      "artifactSha256": "39f18b45d0b30a2a3650b32a387b6d7cf8ea3c19f811d2214e1de8fa22439750",
+      "manifestSha256": "e6d3c503b0eee78f955b81d5a5c813f3801c2493f401a78497086f60016ef79d",
+      "deterministicDoubleBuild": true,
+      "freshExtraction": "PASS",
+      "wholeSiteNoRegressionNoBurial": "PASS",
+      "deployment": "PENDING_FINAL_RENDER_DEPLOY"
     },
     "runtime": {
       "branch": "r1357-reviewer-claim-hardening-runtime-20260922",
@@ -3554,6 +3562,25 @@
       "version": "FR-NAV1.30.12-HF3.12.4",
       "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
       "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
-    }
+    },
+    "auditDisposition": {
+      "findingsReviewed": 192,
+      "applicableCodeAndUxFixesImplemented": true,
+      "protectedFirstPartyProfile": true,
+      "selfReviewFailClosed": true,
+      "evidenceDestinationVisibility": true,
+      "correctionRemovalHardening": true,
+      "loadingFeedback": true,
+      "terminologyCleanup": true,
+      "regressionCoverage": true,
+      "externalInfrastructureCarryForward": [
+        "Move privileged reviewer workspace from raw onrender.com hostname to a Franklin-controlled custom hostname when DNS/custom-domain mutation is available.",
+        "Continue the owner live-path review after deployment and convert any newly observed behavior into the next release."
+      ]
+    },
+    "receipts": [
+      "R1357_RELEASE_RECEIPT.json",
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1357.md"
+    ]
   }
 }

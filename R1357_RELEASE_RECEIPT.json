@@ -1,0 +1,56 @@
+{
+  "release": "FR-NAV1.30.57-HF3.13.39",
+  "date": "2026-09-22",
+  "builderRole": "LOCAL_COMMUNITY_PLATFORM",
+  "edition": "FRANKLIN_TN",
+  "predecessor": "FR-NAV1.30.56-HF3.13.38",
+  "scope": "OWNER_LIVE_PROFILE_CLAIM_MANAGEMENT_SCREENSHOT_AUDIT",
+  "auditFindingsReviewed": 192,
+  "public": {
+    "codeBearingCommit": "f0b8cefebd4df447294842a7660ebe9a7c94b404",
+    "qualificationRun": 35691396221,
+    "qualificationResult": "PASS",
+    "exactSourceArtifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.57-HF3.13.39__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
+    "artifactSha256": "39f18b45d0b30a2a3650b32a387b6d7cf8ea3c19f811d2214e1de8fa22439750",
+    "manifestSha256": "e6d3c503b0eee78f955b81d5a5c813f3801c2493f401a78497086f60016ef79d",
+    "profileCount": 19104,
+    "assistantRouteCount": 254
+  },
+  "runtime": {
+    "branch": "franklin-commerce-runtime-r30",
+    "commit": "ae0194fc709563fc3b7ed13020e13d354996caf8",
+    "qualification": "PASS",
+    "renderService": "franklin-navigator-membership",
+    "renderDeploy": "dep-dap0mi740ujc73b52n30",
+    "deployState": "LIVE",
+    "releaseEnv": "FR-NAV1.30.57-HF3.13.39"
+  },
+  "materialResults": [
+    "Ordinary reviewer self-decisions fail closed; claimant/reviewer conflicts are surfaced.",
+    "The official Franklin Navigator first-party profile is protected from ordinary public claim creation while free factual-correction access remains available.",
+    "Reviewer sign-in shows visible progress and the active reviewer identity.",
+    "Submitted evidence destinations are visible before opening and generic-homepage evidence is warned about.",
+    "Reviewer navigation uses clearer review-request wording.",
+    "Pending profile access copy is state-aware and no longer implies a duplicate submission.",
+    "Reviewer handoff no longer places the signed-in account email in the URL fragment.",
+    "Correction/removal requests bind to the canonical selected profile rather than trusting a mutable incoming URL.",
+    "Removal requests use structured relationship choices, require a reason and authority confirmation, support evidence, and require explicit final confirmation.",
+    "Correction/removal paths expose a direct return to the exact profile, signed-in contact prefilling, direct removal action, and a correction alternative for non-authorized reporters.",
+    "English/Spanish material labels and regression/browser coverage were updated."
+  ],
+  "preserved": {
+    "communityMembershipAnnualUsd": 35,
+    "basicProfileManagementFree": true,
+    "factualCorrectionsRemovalFree": true,
+    "profileFactsChanged": false,
+    "profileSourceAuthorityChanged": false,
+    "localInvestigatorFactsChanged": false,
+    "outreachPerformed": false,
+    "noResidentFeatureRemoval": true
+  },
+  "infrastructureCarryForward": [
+    "A Franklin-controlled custom hostname for the privileged reviewer workspace remains an infrastructure/DNS task because the connected Render tooling does not expose custom-domain mutation.",
+    "Resume the owner live-path review after the final public deployment and capture newly observed issues in the next release."
+  ],
+  "result": "QUALIFIED_PENDING_FINAL_PUBLIC_DEPLOY"
+}
