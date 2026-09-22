@@ -1,6 +1,6 @@
 'use strict';
 (()=>{
-  const API='https://franklin-navigator-membership.onrender.com';
+  const API='https://franklin-navigator-membership.onrender.com',SELF_ID='FR-ORG-b00c0ace7943973c';
   const SALE_PLAN=Object.freeze({label:'Franklin Navigator Community Membership',price:'$35/year',lookupKey:'franklin_community_member_annual_v6'});
   const historicalPlanLabel=key=>{const k=String(key||'').toLowerCase();if(k.includes('monthly'))return'Existing monthly Community Membership';if(k.includes('charter')||k.includes('36_month'))return'Existing fixed-term Community Membership';if(k.includes('annual'))return'Existing annual Community Membership';return'Community Membership'};
   const params=new URLSearchParams(location.search),$=(s,r=document)=>r.querySelector(s);
@@ -12,7 +12,7 @@
   const notice=(text,kind='')=>{const n=el('div',text,`r37-status${kind?' '+kind:''}`);n.setAttribute('role','status');return n};
   const focusIntoView=(selector)=>setTimeout(()=>{const n=document.querySelector(selector);if(!n)return;n.setAttribute('tabindex','-1');n.scrollIntoView({behavior:'smooth',block:'center'});n.focus({preventScroll:true})},0);
   const updateProfileProgress=state=>{const nav=document.querySelector('[data-r1346-profile-progress]');if(!nav)return;const linked=state.selected&&(state.me?.profileLinks||[]).find(x=>x.profile_id===state.selected.i);const review=String(linked?.review_state||'').toUpperCase(),pending=review==='PENDING'&&linked?.authority_state!=='VERIFIED';const current=!state.selected?1:!state.me?2:(linked?.authority_state==='VERIFIED'?4:3);for(const item of nav.querySelectorAll('[data-step]')){const step=Number(item.dataset.step),base=item.dataset.label||item.textContent.replace(/^✓?\s*\d+\s+/,'').replace(/\s+— Current$/,'');let label=base;if(step===3&&pending)label='Verification pending';item.classList.toggle('is-complete',step<current);item.classList.toggle('is-current',step===current);item.classList.toggle('is-future',step>current);if(step===current)item.setAttribute('aria-current','step');else item.removeAttribute('aria-current');item.textContent=(step<current?'✓ ':'')+step+' '+label+(step===current&&!pending?' — Current':'')}};
-  const updateProfileHero=state=>{const hero=document.querySelector('[data-r1352-profile-hero]'),title=document.querySelector('[data-r1352-profile-hero-title]'),lead=document.querySelector('[data-r1352-profile-hero-lead]');if(!hero||!title||!lead)return;const linked=state.selected&&(state.me?.profileLinks||[]).find(x=>x.profile_id===state.selected.i),review=String(linked?.review_state||'').toUpperCase();hero.classList.toggle('is-pending',review==='PENDING');if(review==='PENDING'){title.textContent='Access request submitted.';lead.textContent=`Franklin is reviewing your request to manage ${state.selected?.n||'this profile'}. Profile Center becomes available after approval. No payment is required.`}else if(state.me&&state.selected&&linked?.authority_state!=='VERIFIED'){title.textContent=`You’re signed in. Next, verify that you manage ${state.selected.n}.`;lead.textContent='Submit reliable public evidence of your authority. Claiming and basic profile management are free; Community Membership is optional.'}else if(linked?.authority_state==='VERIFIED'){title.textContent=`Management access verified for ${state.selected?.n||'your profile'}.`;lead.textContent='Open Profile Center to manage approved member-controlled information. Source-backed public facts remain separately reviewed.'}else{title.textContent='Get free access to manage your public profile on Franklin Navigator.';lead.textContent='Start with the exact public profile, then create or sign in to your Franklin account and confirm that you are authorized to manage it. If you arrived from a profile page, that profile stays selected through sign-in. No membership or payment is required.'}};
+  const updateProfileHero=state=>{const hero=document.querySelector('[data-r1352-profile-hero]'),title=document.querySelector('[data-r1352-profile-hero-title]'),lead=document.querySelector('[data-r1352-profile-hero-lead]');if(!hero||!title||!lead)return;const linked=state.selected&&(state.me?.profileLinks||[]).find(x=>x.profile_id===state.selected.i),review=String(linked?.review_state||'').toUpperCase();hero.classList.toggle('is-pending',review==='PENDING');if(review==='PENDING'){title.textContent='Access request pending.';lead.textContent=`Franklin Navigator is reviewing your request to manage ${state.selected?.n||'this profile'}. We’ll show the next action here when review is complete. No payment is required.`}else if(state.me&&state.selected&&linked?.authority_state!=='VERIFIED'){title.textContent=`You’re signed in. Next, verify that you manage ${state.selected.n}.`;lead.textContent='Submit reliable public evidence of your authority. Claiming and basic profile management are free; Community Membership is optional.'}else if(linked?.authority_state==='VERIFIED'){title.textContent=`Management access verified for ${state.selected?.n||'your profile'}.`;lead.textContent='Open Profile Center to manage approved member-controlled information. Source-backed public facts remain separately reviewed.'}else{title.textContent='Get free access to manage your public profile on Franklin Navigator.';lead.textContent='Start with the exact public profile, then create or sign in to your Franklin account and confirm that you are authorized to manage it. If you arrived from a profile page, that profile stays selected through sign-in. No membership or payment is required.'}};
   const planFor=key=>key===SALE_PLAN.lookupKey?SALE_PLAN:{label:historicalPlanLabel(key),price:''};
   async function request(path,{method='GET',body}={}){const response=await fetch(API+path,{method,credentials:'include',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined});let payload={};try{payload=await response.json()}catch{}if(!response.ok){const e=new Error(payload?.error?.message||'Franklin could not complete this request.');e.code=payload?.error?.code||`HTTP_${response.status}`;e.status=response.status;throw e}return payload}
   const CHECKOUT_PENDING_MESSAGE='We could not confirm the payment outcome. Do not pay again. Check membership status or contact support.';
@@ -39,7 +39,7 @@
     s.append(el('h2',state.me?'Your account':'Create an account or sign in'));
     if(state.me){
       s.append(el('p',`Signed in as ${state.me.account?.email||'your Franklin account'}.`));
-      if(state.me.reviewerAccessAvailable===true){const reviewer=el('div',null,'r37-member-actions r1352-private-reviewer-link');const reviewerContext=new URLSearchParams();if(state.me.account?.email)reviewerContext.set('email',state.me.account.email);if(profileParam(state))reviewerContext.set('profile',profileParam(state));reviewer.append(link('Open reviewer workspace',API+'/review/'+(reviewerContext.size?'#'+reviewerContext.toString():''),'button'));s.append(reviewer,el('p','Private reviewer access is available for this authorized account.','fine-print'));}
+      if(state.me.reviewerAccessAvailable===true){const reviewer=el('div',null,'r37-member-actions r1352-private-reviewer-link');const reviewerContext=new URLSearchParams();if(state.me.account?.email)if(profileParam(state))reviewerContext.set('profile',profileParam(state));reviewer.append(link('Open secure reviewer workspace',API+'/review/'+(reviewerContext.size?'#'+reviewerContext.toString():''),'button'));s.append(reviewer,el('p','Private reviewer access is available for this authorized account.','fine-print'));}
       s.append(button('Sign out',async()=>{try{await request('/api/accounts/logout',{method:'POST',body:{}});state.me=null;state.purchasePending=false;state.message='Signed out.';rerender()}catch(e){state.message=friendlyError(e);rerender()}},'button'));
       return s;
     }
@@ -86,7 +86,7 @@
     if(review==='PENDING'&&state.selected){
       const when=linked.review_updated_at?(()=>{try{return new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(linked.review_updated_at))}catch{return''}})():'';
       const pendingCard=el('div',null,'r1352-pending-card');pendingCard.dataset.r1346PendingStatus='';pendingCard.setAttribute('role','status');pendingCard.setAttribute('aria-live','polite');
-      pendingCard.append(el('h2','Waiting for review'),el('p',`Your request to manage ${state.selected.n} has been received.`),el('p','Franklin reviews the submitted evidence. After approval, Profile Center becomes available. No payment is required.'),el('p',when?'Last updated '+when+'.':'','fine-print'));s.append(pendingCard);
+      pendingCard.append(el('h2','Waiting for review'),el('p',`Your request to manage ${state.selected.n} has been received.`),el('p','The Franklin Navigator team reviews the submitted evidence. We’ll show an approval, a request for more information, or a decline here when a decision is recorded. No payment is required.'),el('p',when?'Last updated '+when+'.':'','fine-print'));s.append(pendingCard);
     }
     if(state.selected){
       const selected=el('div',null,'r37-account-summary');
@@ -94,7 +94,7 @@
       const selectedActions=el('div',null,'r37-member-actions r1346-selected-profile-actions');
       selectedActions.append(link('View public profile','/profiles/'+encodeURIComponent(state.selected.i)+'/'));
       const pathSummary=el('div',null,'r1351-profile-path-summary');
-      pathSummary.append(el('strong','This exact profile is selected.'),el('p','Franklin checks your account and access state before showing the next action. Selecting this profile does not claim it or change public facts.'),el('p','Profile access requests and factual corrections/removal are free. Community Membership is optional.','fine-print'));
+      pathSummary.append(el('strong','This exact profile is selected.'),el('p','Franklin Navigator checks your account and access state before showing the next action. Selecting this profile does not claim it or change public facts.'),el('p','Profile access requests and factual corrections/removal are free. Community Membership is optional.','fine-print'));
       s.append(selected,selectedActions,pathSummary,el('p','This exact public listing stays selected through sign-in, password recovery, and access review.','fine-print'));
     }else{
       s.append(el('p','Search by business, professional practice, organization, category or location, then choose the matching listing.'));
@@ -102,7 +102,7 @@
     const search=el('div',null,'r37-member-search'),fieldSearch=field(state.selected?'Choose a different profile':'Business, professional or organization','profileSearch','search','organization'),go=button('Search',()=>runSearch());
     fieldSearch.input.placeholder='Start typing a name or category';search.append(fieldSearch.label,go);
     const results=el('div',null,'r37-search-results');results.setAttribute('aria-live','polite');
-    if(state.selected){const chooser=document.createElement('details');chooser.className='r1346-profile-change';const summary=document.createElement('summary');summary.textContent='Wrong profile? Choose another';chooser.append(summary,search,results);s.append(chooser)}else{s.append(search,results)}
+    if(state.selected){const chooser=document.createElement('details');chooser.className='r1346-profile-change';const summary=document.createElement('summary');summary.textContent='Choose a different profile';chooser.append(summary,search,results);s.append(chooser)}else{s.append(search,results)}
     const choose=row=>{
       state.selected=row;
       state.message='Profile selected. Continue with this profile to connect it to your Franklin account.';setTimeout(()=>{s.scrollIntoView({behavior:'smooth',block:'start'});s.setAttribute('tabindex','-1');s.focus({preventScroll:true})},0);
@@ -140,6 +140,12 @@
     if(linked&&linked.authority_state!=='VERIFIED'&&review!=='PENDING')taskHeading.textContent='Verify that you manage '+state.selected.n;
     const actions=el('div',null,'r37-member-actions');
     if(!linked){
+      if(state.selected.i===SELF_ID){
+        s.append(notice('This official Franklin Navigator profile uses protected administrator access. Ordinary public claims are not accepted. You can still report incorrect profile information for free.','good'));
+        actions.append(link('Correct profile information',`/corrections/?profile=${encodeURIComponent(state.selected.i)}&url=${encodeURIComponent(location.origin+'/profiles/'+state.selected.i+'/')}`,'button primary'));
+        actions.append(link('Get help','/member-support/?topic=PROFILE_ACCESS&profile='+encodeURIComponent(state.selected.i)));
+        s.append(actions);return s;
+      }
       const connectStatus=notice('Ready to connect this exact profile.','');connectStatus.classList.add('r1346-inline-action-status');connectStatus.setAttribute('aria-live','polite');
       const connect=button('Continue with this profile',async()=>{
         if(connect.disabled)return;connect.disabled=true;connect.textContent='Connecting profile…';connectStatus.textContent='Connecting profile…';connectStatus.className='r37-status r1346-inline-action-status';
@@ -152,7 +158,7 @@
         }catch(e){connect.disabled=false;connect.textContent='Retry connection';connectStatus.textContent=friendlyError(e)+' You can retry or get help.';connectStatus.className='r37-status warn r1346-inline-action-status'}
       },'button primary');
       actions.append(connect);
-      actions.append(link('Correct public facts instead',`/corrections/?profile=${encodeURIComponent(state.selected.i)}&url=${encodeURIComponent(location.origin+'/profiles/'+state.selected.i+'/')}`));
+      actions.append(link('Correct profile information instead',`/corrections/?profile=${encodeURIComponent(state.selected.i)}&url=${encodeURIComponent(location.origin+'/profiles/'+state.selected.i+'/')}`));
       actions.append(link('Get help','/member-support/?topic=PROFILE_ACCESS&profile='+encodeURIComponent(state.selected.i)));
       s.append(actions,connectStatus,notice('No payment or membership is required to connect a profile and request management access.','good'));
       return s;
@@ -162,31 +168,31 @@
     const correction='/corrections/?profile='+encodeURIComponent(state.selected.i)+'&url='+encodeURIComponent(location.origin+'/profiles/'+state.selected.i+'/');
     if(linked.authority_state==='VERIFIED'){
       s.append(notice('Profile access verified. You can manage this profile now.','good'));
-      actions.append(link('Open Profile Center',studio,'button primary'),link('Correct public facts',correction));
+      actions.append(link('Open Profile Center',studio,'button primary'),link('Correct profile information',correction));
     }else if(linked.authority_state==='DISPUTED'){
-      s.append(notice('This profile has an access dispute. Contact support so Franklin can review it safely.','warn'));
-      actions.append(link('Get profile support','/member-support/?profile='+encodeURIComponent(state.selected.i),'button primary'),link('Correct public facts',correction));
+      s.append(notice('This profile has an access dispute. Contact support so Franklin Navigator can review it safely.','warn'));
+      actions.append(link('Get profile support','/member-support/?profile='+encodeURIComponent(state.selected.i),'button primary'),link('Correct profile information',correction));
     }else if(!state.profileMode){
       s.append(notice('Profile access is not yet verified. Complete free management verification before membership can continue.','warn'));
-      actions.append(link('Continue free profile access',access,'button primary'),link('Correct public facts',correction));
+      actions.append(link('Continue free profile access',access,'button primary'),link('Correct profile information',correction));
     }else{
       if(review==='PENDING'){
         actions.classList.add('r1352-pending-actions');
         actions.append(button('Refresh status',async()=>{try{state.me=await getMe();state.message='Profile-access status refreshed.'}catch(e){state.message=friendlyError(e)}rerender()},'button'));
-        actions.append(link('Correct public facts',correction));
+        actions.append(link('Correct profile information',correction));
         actions.append(button('Withdraw access request',async()=>{const confirmWithdraw=window.FranklinI18n?.translate?.('Withdraw this profile-access request? You can request access again later if you remain authorized.')||'Withdraw this profile-access request? You can request access again later if you remain authorized.';if(!window.confirm(confirmWithdraw))return;try{await request('/api/member/representation/release',{method:'POST',body:{profileId:state.selected.i,expectedRevision:linked.review_revision||0}});state.me=await getMe();state.message='Your profile-access request was withdrawn. No membership or payment was changed.'}catch(e){state.message=friendlyError(e)}rerender()},'button'));
       }else{
         const stateCopy={
-          CHANGES_REQUESTED:'Franklin needs more information before this access request can be approved.',
+          CHANGES_REQUESTED:'Franklin Navigator needs more information before this access request can be approved.',
           REJECTED:'The previous access request was not approved. You may submit new evidence if you are authorized.',
           REVOKED:'Previous management access ended. You may request access again if you are currently authorized.'
         };
         if(stateCopy[review])s.append(notice(stateCopy[review],'warn'));
-        const verifyHeading=el('h3','Verify that you manage '+state.selected.n);verifyHeading.dataset.r1346VerificationHeading='';s.append(verifyHeading,el('p','Claiming and basic profile management are free. Franklin reviews access before Profile Center tools are enabled; a claim never changes public facts by itself.'));
-        const proofHelp=el('div',null,'r1352-proof-help');proofHelp.append(el('strong','What counts as proof?'),el('p','Use a reliable public source showing your connection or authority, such as an official website or team page, an organization page naming your role, an official public contact channel, or another reliable public source. No website? Another official public page can be used; verification support can help with other cases.'));s.append(proofHelp);
+        const verifyHeading=el('h3','Verify that you manage '+state.selected.n);verifyHeading.dataset.r1346VerificationHeading='';s.append(verifyHeading,el('p','Claiming and basic profile management are free. Franklin Navigator reviews access before Profile Center tools are enabled; a claim never changes public facts by itself.'));
+        const proofHelp=el('div',null,'r1352-proof-help');proofHelp.append(el('strong','What counts as proof?'),el('p','Use a reliable public source showing your connection or authority, such as an official website team page, an organization page naming your role, an official public contact channel, or another reliable public source. A generic homepage may identify the organization but may not prove your role. No website? Verification support can help with other cases.'));s.append(proofHelp);
         const form=document.createElement('form');form.className='r1346-profile-access-verification';
         const evidence=field('Official website or public page showing your connection','evidenceUrl','url','url');evidence.input.placeholder='https://';
-        if(state.selected.w){const evidenceActions=el('div',null,'r1352-evidence-actions');evidenceActions.append(button('Use website already on this profile',()=>{evidence.input.value=state.selected.w;evidence.input.focus()},'button'));form.append(evidence.label,evidenceActions)}else form.append(evidence.label);
+        if(state.selected.w){const evidenceActions=el('div',null,'r1352-evidence-actions');evidenceActions.append(button('Use official website as evidence',()=>{evidence.input.value=state.selected.w;evidence.input.focus()},'button'));form.append(evidence.label,evidenceActions)}else form.append(evidence.label);
         const statement=textAreaField('How are you authorized to manage this profile?','statement',6);statement.input.required=true;statement.input.minLength=30;statement.input.maxLength=1200;
         const confirmLabel=el('label',null,'p0-check'),confirmBox=document.createElement('input');confirmBox.type='checkbox';confirmBox.required=true;confirmBox.name='authorityConfirmed';confirmLabel.append(confirmBox,document.createTextNode(' I confirm that I own, manage, work for, or am otherwise authorized to act for this profile.'));
         const submit=el('button',review==='CHANGES_REQUESTED'?'Submit updated access request':'Submit access request','button primary');submit.type='submit';
@@ -197,7 +203,7 @@
           state.me=await getMe();state.message='';rerender();focusIntoView('[data-r1346-pending-status]');
         }catch(err){if(err?.code==='SUBMISSION_STATUS_UNCERTAIN'){submitStatus.textContent=submissionUncertainText;submitStatus.className='r37-status warn r1346-inline-action-status r1352-profile-access-verification-status';return}submit.disabled=false;submit.textContent=review==='CHANGES_REQUESTED'?'Submit updated access request':'Submit access request';submitStatus.textContent=friendlyError(err)+' Review the form and try again.';submitStatus.className='r37-status warn r1346-inline-action-status r1352-profile-access-verification-status'}});
         s.append(form);
-        actions.append(link('Correct public facts',correction));
+        actions.append(link('Correct profile information',correction));
         actions.append(link('Help with verification','/member-support/?topic=PROFILE_ACCESS&profile='+encodeURIComponent(state.selected.i)));
       }
     }
