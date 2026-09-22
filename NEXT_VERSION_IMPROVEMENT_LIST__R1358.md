@@ -29,3 +29,8 @@ Recommended next live paths:
 - correction and public-removal paths from an exact profile.
 
 Do not build another version merely for this checklist; build only when new qualified findings exist or the owner explicitly directs the next build.
+
+
+## Running next-version findings
+
+A dedicated running list is maintained in `NEXT_VERSION_BUILD_LIST__R1359.md`. New owner-observed live findings continue at #193.
