@@ -3535,10 +3535,20 @@
     "runtime": {
       "branch": "r1357-reviewer-claim-hardening-runtime-20260922",
       "qualification": "PASS",
-      "deployment": "RENDER_DEPLOYING",
+      "deployment": "LIVE",
       "commit": "ae0194fc709563fc3b7ed13020e13d354996caf8",
       "renderService": "franklin-navigator-membership",
-      "renderDeployId": "dep-dap0i2lg1s2s738vas4g"
-    }
+      "renderDeployId": "dep-dap0i2lg1s2s738vas4g",
+      "releaseEnv": "FR-NAV1.30.57-HF3.13.39"
+    },
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1356"
+    },
+    "noResidentFeatureRemoval": true
   }
 }
