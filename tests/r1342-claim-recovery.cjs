@@ -21,7 +21,8 @@ const elite=exact.findIndex(r=>/elite navigator co/i.test(r.n));
 if(elite>=0)assert.ok(elite>0,'Elite Navigator Co. must not outrank exact Franklin Navigator');
 
 const profile=read('dist/assets/r1330-profile.js');
-assert.match(profile,/Manage this profile — free/);
+assert.match(profile,/Claim this profile — free/);
+assert.match(profile,/Correct profile information/);
 assert.match(profile,/Official Franklin Navigator profile/);
 assert.match(profile,/\/profile-access\/\?profile=/);
 
@@ -58,7 +59,7 @@ assert.match(business,/Preview optional Community Membership/);
 
 const correction=read('dist/assets/hf35-profile-control.js');
 assert.match(correction,/FR-ORG-b00c0ace7943973c/);
-assert.match(correction,/set\('url',params\.get\('url'\)\|\|profilePage\)/);
+assert.match(correction,/form\.elements\.url\.value=profilePage/);
 
 const reviews=read('dist/assets/r1332-profile.js');
 assert.match(reviews,/SELF_ID='FR-ORG-b00c0ace7943973c'/);
@@ -67,7 +68,7 @@ assert.match(reviews,/entityLabel/);
 
 console.log(JSON.stringify({
   result:'PASS',
-  release:'FR-NAV1.30.55-HF3.13.37',
+  release:'FR-NAV1.30.57-HF3.13.39',
   exactFranklinNavigatorRank:firstName(exact[0]),
   exactProfileId:exact[0].i,
   checked:'directory ranking, claim CTA, deep-link continuity, recovery UI, support wording, five-step business path, correction context, first-party review policy'
