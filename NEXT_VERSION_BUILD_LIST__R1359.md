@@ -363,3 +363,35 @@ The 1,739 count is a lower-bound pattern audit, not a claim that every one of th
 **Priority:** P1 security UX / role separation / claim clarity.
 
 **Status:** OPEN — owner-observed and source-confirmed during first-time-user smoke test.
+
+
+## Finding #203 — “Continue with this profile” creates an unverified account-profile link before proof, but the UI does not explain the distinction
+
+**Owner evidence:** signed-in live claim-path screenshots, 2026-09-23, selected profile `The Factory at Franklin`.
+
+**Observed behavior:** Step 3 is labeled `Verify management — Current`, but the visible primary action is `Continue with this profile` with status copy `Ready to connect this exact profile.` The page does correctly say that selecting the profile does not claim it or change public facts. However, the next action performs a separate account-profile connection before the actual proof form is shown.
+
+**Confirmed source behavior:** `membership-live.js` posts `/api/profile-links` when `Continue with this profile` is clicked, refreshes account state, then focuses the later verification heading. The actual authority request is a separate subsequent form posting to `/api/member/representation/request` with evidence URL, authority statement and required authority confirmation. Profile Center is not enabled merely by the first connection action.
+
+**Problem:** the security boundary is technically present, but the terminology can make a first-time user think `Continue with this profile` is itself the claim/verification action. It also creates persistent unverified relationship state before the user has seen or agreed to the proof requirements.
+
+**Desired outcome:** make the intermediate state explicit and minimize unnecessary persistent linkage before authority verification.
+
+**Implementation direction:**
+- rename the primary action to something explicit such as `Start management verification`;
+- state directly beside it: `This does not give you control of the profile. Management starts only after Franklin verifies your authority.`;
+- if technically practical, defer persistent account-profile linkage until the user begins/submits the verification form, or treat the pre-verification selection as ephemeral rather than an ownership-like relationship;
+- if an unverified link must be persisted, label it clearly as `verification started / no management access` and provide a simple way to cancel/remove it;
+- ensure unverified links cannot affect profile management, membership, ranking, public facts, analytics ownership or reviewer self-approval;
+- retain the exact-profile selection through verification.
+
+**Acceptance criteria:**
+1. The primary Step 3 action explicitly says it starts verification rather than implying management is granted.
+2. The page states that no profile control is granted until authority is verified.
+3. Any persisted pre-verification link is clearly marked unverified and has no management/payment/public-fact authority.
+4. The subsequent proof form remains required before a request can enter review.
+5. Profile Center stays inaccessible until authority state is VERIFIED.
+
+**Priority:** P1 security UX / claim-boundary clarity.
+
+**Status:** OPEN — owner-observed and source-confirmed during first-time-user smoke test.
