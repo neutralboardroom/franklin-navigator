@@ -1,9 +1,39 @@
 {
-  "release":"FR-NAV1.30.60-HF3.13.42",
-  "state":"LOCAL_QUALIFICATION_IN_PROGRESS_NOT_DEPLOYED",
-  "profileFactory":{"version":"FR-PF-PLATFORM-15.37","artifactSha256":"3feac2b4f8c912e2dced0ef9bcea76902b91776651a0829d9914693d78fff4b7","aliasCount":99,"reviewHeld":2},
-  "publicProjection":{"canonicalPublicProfiles":19002,"protectedLocalOverlayProfiles":1,"unsafePublicDisplayHitsAfter":0,"retiredOrHeldCrossReferences":0},
-  "focusedTests":{"r1352ClaimReview":"PASS","r1358ClaimDepth":"PASS","r1346ClaimPath":"PASS","r1342ClaimRecovery":"PASS","runtimeAliasFirewallUnit":"PASS"},
-  "findings":{"198":"IMPLEMENTED_PENDING_DEPLOY","199":"IMPLEMENTED_PENDING_DEPLOY","200":"IMPLEMENTED_PENDING_DEPLOY","201":"IMPLEMENTED_PENDING_DEPLOY","202":"IMPLEMENTED_PENDING_DEPLOY","203":"IMPLEMENTED_PENDING_DEPLOY"},
-  "outreach":"HOLD_NOT_SEND_UNTIL_DEPLOY_AND_LIVE_SMOKE"
+  "release": "FR-NAV1.30.60-HF3.13.42",
+  "state": "PF15.38_REBASE_QUALIFIED_PENDING_DEPLOY",
+  "profileFactory": {
+    "version": "FR-PF-PLATFORM-15.38",
+    "artifactSha256": "e90cc02dfe026ea64d287eef59c12a067bfa9e55a3879e282fd7a50a30afd89b",
+    "readySnapshotSha256": "593eb1dff6b196db2e06fa783b003ae92169ad0790ca567565a9cf03e631e179",
+    "localHandoffSha256": "a4ba3151b6fae8431dda8cd1e4cd1407f2ca1360090a47de0dae505d6d4e085a",
+    "aliasHandoffSha256": "9b98ff21bac5d1d402d83c16d9645b37e3f9996e7f88aef4d2707e6b92aac2dd",
+    "publicDisplayHandoffSha256": "97219dc7bee97d87e3868b2ffd1d2b1f664816584880c14119a520411b1dffdc",
+    "readyCount": 28818,
+    "aliasCount": 100,
+    "reviewHeld": 0,
+    "suppressedGeneric": 1,
+    "semantics": "FULL_REPLACE_NOT_APPEND"
+  },
+  "publicProjection": {
+    "canonicalPublicProfiles": 19002,
+    "protectedLocalOverlayProfiles": 1,
+    "unsafePublicDisplayHitsAfter": 0,
+    "retiredOrHeldCrossReferences": 0
+  },
+  "focusedTests": {
+    "r1352ClaimReview": "PASS",
+    "r1358ClaimDepth": "PASS",
+    "r1346ClaimPath": "PASS",
+    "r1342ClaimRecovery": "PASS",
+    "runtimeAliasFirewallUnit": "PASS"
+  },
+  "findings": {
+    "198": "IMPLEMENTED_PF1538_REBASE_PENDING_DEPLOY",
+    "199": "IMPLEMENTED_PF1538_REBASE_PENDING_DEPLOY",
+    "200": "IMPLEMENTED_PF1538_REBASE_PENDING_DEPLOY",
+    "201": "IMPLEMENTED_PF1538_REBASE_PENDING_DEPLOY",
+    "202": "IMPLEMENTED_PF1538_REBASE_PENDING_DEPLOY",
+    "203": "IMPLEMENTED_PF1538_REBASE_PENDING_DEPLOY"
+  },
+  "outreach": "HOLD_NOT_SEND_UNTIL_PF1538_DEPLOY_AND_LIVE_SMOKE"
 }
