@@ -203,6 +203,17 @@ Both appear as independent profile cards.
 - add a duplicate-detection gate to Profile Factory ingestion and Local Community Platform publication/search;
 - fail closed on ambiguous non-identical entities and send uncertain cases to review rather than auto-merge.
 
+
+
+**Corpus audit added 2026-09-23:** automated scan of the qualified R1359 discovery corpus (19,103 records) found:
+- 679 normalized same-name groups overall. Many are legitimate chains/multi-location entities, so this number is **not** a duplicate count.
+- 26 high-confidence duplicate groups (52 records) with the same normalized entity name and the same normalized public address.
+- 78 same-name groups where one record carries technical/no-address provenance text and another carries an ordinary public location/address; these require entity-resolution review. The Factory at Franklin is in this class.
+- 103 unique groups are captured by those two higher-confidence candidate rules combined (one group overlaps both rules).
+
+Examples of high-confidence same-name/same-address duplicate candidates include Joel Moenkhoff - State Farm Insurance Agent, Battle Mountain Farm, The Heritage at Brentwood, Woops, North Arrow Coffee Company, SilverBrook Property Restoration, Williamson County Parks & Recreation, Franklin Polo Academy, Mill Creek Brewing Co., and The Clothes Tree Nashville.
+
+This confirms the Factory case is not isolated. The fix must be corpus-wide and must distinguish legitimate multi-location chains from actual duplicate identities.
 **Acceptance criteria:**
 1. Search for `The Factory at Franklin` shows one canonical business profile, not two competing profiles.
 2. The canonical public profile retains the best supported address/category/source evidence from both records.
@@ -213,3 +224,47 @@ Both appear as independent profile cards.
 **Priority:** P0 outreach / profile identity / claim-path clarity.
 
 **Status:** OPEN — owner-observed during first-time-user outreach smoke test.
+
+
+## Finding #199 — Internal/provenance/technical source text is leaking into public profile location and About content
+
+**Owner evidence:** signed-out live directory/profile review, 2026-09-23. The duplicate `The Factory At Franklin` profile publicly displays `Source coordinate 35.924172, -86.870895; no street address supplied` as its location and repeats that sentence inside the generated About copy.
+
+**Confirmed source behavior:** the qualified R1359 exact-source profile page for `FR-ORG-adba2e46b06e6112` renders that raw provenance string directly in the profile hero and About paragraph.
+
+**Corpus audit:** automated scan of all 19,103 R1359 discovery records found **at least 1,739 records** whose public location field contains internal/provenance-style wording matching one or more patterns such as:
+- `Source coordinate …; no street address supplied`;
+- `street address not asserted in this release`;
+- `exact coordinates retained`;
+- internal Profile Factory release references such as `PF68`, `PF69`, `PF70`, `PF71`;
+- `assigned community`;
+- `Current named member/resource …`;
+- `Public IRS filing address geocoded in Williamson County …`;
+- other source-processing language intended for provenance, not end users.
+
+The 1,739 count is a lower-bound pattern audit, not a claim that every one of those records has identical wording.
+
+**Problem:** internal ingestion/provenance language is being used as customer-facing location/about text. It makes profiles look unfinished or machine-generated, can expose implementation vocabulary, and is especially damaging during first-time claim/member outreach.
+
+**Desired outcome:** provenance remains available in Sources & listing details / internal evidence, while public location and About copy use clean resident/business-facing language only.
+
+**Implementation direction:**
+- split internal provenance/evidence fields from public display fields at publication time;
+- never render raw source-processing notes as the profile location or as generated About prose;
+- when no verified street address is available, show a neutral public fallback such as `Franklin, Tennessee`, `Williamson County, Tennessee`, or omit the street-address line entirely as appropriate;
+- coordinates may support maps/entity resolution internally but should not be shown as prose unless a user explicitly asks for coordinates;
+- strip Profile Factory/internal release identifiers and phrases such as `PF68`, `assigned community`, `street address not asserted in this release`, and similar workflow language from public pages;
+- preserve the original provenance unchanged in the evidence/source layer;
+- add a publication-time public-language lint gate covering profile cards, profile hero location, generated About copy, structured metadata and search snippets;
+- audit and repair all currently affected records, not only The Factory.
+
+**Acceptance criteria:**
+1. The Factory duplicate/canonicalized profile no longer exposes raw coordinate/provenance prose publicly.
+2. No public profile/card/About text contains Profile Factory release IDs or internal ingestion phrases.
+3. Records without a verified street address use a clean public fallback or omit the address rather than displaying source-processing notes.
+4. Provenance remains available to the system/reviewer and, where appropriate, in a user-readable Sources section.
+5. A corpus-wide automated gate blocks recurrence.
+
+**Priority:** P0 outreach / public trust / profile quality.
+
+**Status:** OPEN — owner-observed and corpus-confirmed during first-time-user outreach smoke test.
