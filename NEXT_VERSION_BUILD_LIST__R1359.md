@@ -177,3 +177,39 @@ Findings #193–#197 are **CLOSED_LIVE_VERIFIED** for `FR-NAV1.30.59-HF3.13.41`.
 Public and runtime successors are live; inherited no-regression/profile/claim/Assistant gates, deterministic exact-source packaging, and fresh-extraction validation passed. Limited monitored real outreach is authorized through `OUTREACH_READY_HANDOFF__R1359.md`.
 
 The next newly observed Local Community Platform issue becomes **Finding #198**.
+
+
+## Finding #198 — Duplicate public profiles for The Factory at Franklin create claim ambiguity
+
+**Owner evidence:** live signed-out Franklin Navigator directory screenshot, 2026-09-23, search query `the factory at`.
+
+**Observed behavior:** the search results show two apparent profiles for the same real-world entity:
+- `The Factory at Franklin` — Shopping / Entertainment / Venue — `230 Franklin Rd, Franklin, TN 37064` — marked Exact address.
+- `The Factory At Franklin` — Music Venue — source coordinates `35.924172, -86.870895`, with no street address supplied.
+
+Both appear as independent profile cards.
+
+**Problem:** this creates uncertainty for a first-time business owner about which profile is authoritative and which one to claim/manage. It can split public facts, management state, paid membership, analytics, corrections, links, and future enrichment across duplicate identities.
+
+**Desired outcome:** one canonical public profile per real-world entity, with duplicate/alternate source records reconciled behind it.
+
+**Implementation direction:**
+- deterministically reconcile probable same-entity records using normalized name, exact/near-identical location, source coordinates/address, official website/contact evidence and other identity evidence;
+- preserve all source provenance and aliases internally;
+- select one canonical profile ID/public URL;
+- redirect or suppress duplicate public routes/cards rather than deleting evidence;
+- merge complementary category/source facts conservatively without inventing facts;
+- ensure claim/management, corrections, membership, analytics and public links bind only to the canonical profile;
+- add a duplicate-detection gate to Profile Factory ingestion and Local Community Platform publication/search;
+- fail closed on ambiguous non-identical entities and send uncertain cases to review rather than auto-merge.
+
+**Acceptance criteria:**
+1. Search for `The Factory at Franklin` shows one canonical business profile, not two competing profiles.
+2. The canonical public profile retains the best supported address/category/source evidence from both records.
+3. Any duplicate public URL redirects or clearly resolves to the canonical profile.
+4. Claiming/managing the entity cannot create separate authority or membership state on a duplicate.
+5. The same dedupe rule is applied across the broader Franklin profile corpus, not only this one example.
+
+**Priority:** P0 outreach / profile identity / claim-path clarity.
+
+**Status:** OPEN — owner-observed during first-time-user outreach smoke test.
