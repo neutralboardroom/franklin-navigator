@@ -6,7 +6,7 @@ function loadProfileAliases(filePath=DEFAULT_PATH){
   const parsed=JSON.parse(fs.readFileSync(filePath,'utf8'));
   if(parsed?.schema!=='franklin.profile-aliases.r1360.v1'||parsed?.community!=='FRANKLIN_TN'||!parsed?.aliases||typeof parsed.aliases!=='object')throw Error('PROFILE_ALIAS_MAP_INVALID');
   const map=new Map(Object.entries(parsed.aliases));
-  if(map.size!==99)throw Error('PROFILE_ALIAS_MAP_COUNT_INVALID');
+  if(map.size!==100)throw Error('PROFILE_ALIAS_MAP_COUNT_INVALID');
   for(const [a,c] of map){if(a===c||map.has(c))throw Error('PROFILE_ALIAS_MAP_CHAIN_INVALID');}
   return map;
 }
