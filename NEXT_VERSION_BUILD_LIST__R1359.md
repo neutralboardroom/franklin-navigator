@@ -332,3 +332,34 @@ The 1,739 count is a lower-bound pattern audit, not a claim that every one of th
 **Priority:** P1 outreach conversion / account access clarity.
 
 **Status:** OPEN — owner-observed and source-confirmed during first-time-user smoke test.
+
+
+## Finding #202 — Reviewer workspace intrudes into an unrelated ordinary profile-claim path for privileged accounts
+
+**Owner evidence:** signed-in live claim-path screenshot, 2026-09-23, selected profile `The Factory at Franklin`.
+
+**Observed behavior:** after successful sign-in, the owner/reviewer account remains on the ordinary profile-access flow with The Factory at Franklin selected, but the Account section prominently shows `Open secure reviewer workspace` and `Private reviewer access is available for this authorized account` before the selected-profile verification workflow.
+
+**Confirmed source behavior:** `membership-live.js` shows the generic reviewer-workspace CTA whenever `state.me.reviewerAccessAvailable===true`. The R1359 role-separation copy only becomes profile-specific when the selected profile is already present in `profileLinks`. For a newly selected unrelated profile with no existing link/request, the generic reviewer CTA remains visible.
+
+**Problem:** reviewer/admin capability is leaking into the ordinary claim journey and can imply that reviewer access is a legitimate way to progress a claim for an unrelated business. It also prevents privileged accounts from experiencing a clean ordinary-user claim path.
+
+**Desired outcome:** reviewer tools remain clearly separate from profile claiming and do not appear as part of the ordinary profile-access task.
+
+**Implementation direction:**
+- suppress the reviewer-workspace CTA inside the ordinary claim/verification task when the selected profile is unrelated to an existing reviewer assignment;
+- provide reviewer access from a dedicated reviewer/admin navigation surface instead of embedding it in the claimant account card;
+- if reviewer access must remain reachable, place it in a clearly separated `Reviewer tools — unrelated to this claim` area after the ordinary task, never before the verification action;
+- maintain the self-review prohibition and do not let reviewer privileges bypass profile authority verification;
+- add regression coverage for a reviewer/admin account selecting a third-party ordinary profile.
+
+**Acceptance criteria:**
+1. A reviewer/admin selecting an unrelated public profile sees the same ordinary claim/verification task as a normal account.
+2. Reviewer tools are not presented as a next step in the selected profile's claim flow.
+3. Reviewer privileges cannot bypass authority verification or approve the account's own request.
+4. Dedicated reviewer access remains available outside the ordinary claim task.
+5. A regression test covers reviewer account + unrelated selected profile.
+
+**Priority:** P1 security UX / role separation / claim clarity.
+
+**Status:** OPEN — owner-observed and source-confirmed during first-time-user smoke test.
