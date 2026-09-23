@@ -53,16 +53,26 @@ jobs:
           PY
           CHROME="$(command -v google-chrome-stable || command -v google-chrome || command -v chromium || true)"
           test -n "$CHROME"
-          "$CHROME" --headless=new --no-sandbox --disable-gpu --virtual-time-budget=3500 --window-size=1366,900 --dump-dom "$PUBLIC/profile-access/?profile=$CANON" > desktop.html
-          "$CHROME" --headless=new --no-sandbox --disable-gpu --virtual-time-budget=3500 --window-size=390,844 --user-agent="Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148" --dump-dom "$PUBLIC/profile-access/?profile=$CANON" > mobile.html
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --virtual-time-budget=5000 --window-size=1366,900 --dump-dom "$PUBLIC/claim-profile/?profile=$CANON" > desktop.html
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --virtual-time-budget=5000 --window-size=390,844 --user-agent="Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148" --dump-dom "$PUBLIC/claim-profile/?profile=$CANON" > mobile.html
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/assets/hf310.js?v=frnav1290" -o hf310.js
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/assets/membership-live.js?v=frnav1360" -o membership-live.js
           python - <<'PY'
           from pathlib import Path
+          hf=Path('hf310.js').read_text(errors='ignore')
+          ml=Path('membership-live.js').read_text(errors='ignore')
+          assert 'Start management verification' in hf
+          assert 'Continue with this profile' not in hf+ml
+          assert 'scrollIntoView' in hf+ml and 'focus' in hf+ml
           for name in ('desktop.html','mobile.html'):
               s=Path(name).read_text(errors='ignore')
-              assert 'Start management verification' in s, name
+              assert 'This exact profile is selected.' in s, name
+              assert 'Claim or manage this profile' in s, name
+              assert 'start management verification' in s.lower(), name
               assert 'Continue with this profile' not in s, name
-              assert 'Selecting a profile does not grant management control' in s, name
-              assert 'No membership or payment is required' in s, name
+              assert 'Selecting a profile does not grant control' in s, name
+              assert 'Request removal' in s, name
+              assert 'Community Membership benefits' in s, name
               assert 'Help Center' in s, name
           print('DESKTOP_FIRST_TIME_CLAIM_SMOKE=PASS')
           print('MOBILE_FIRST_TIME_CLAIM_SMOKE=PASS')
