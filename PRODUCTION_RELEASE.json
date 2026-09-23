@@ -1,11 +1,11 @@
 {
-  "release": "FR-NAV1.30.59-HF3.13.41",
-  "date": "2026-09-22",
-  "base": "FR-NAV1.30.58-HF3.13.40",
+  "release": "FR-NAV1.30.60-HF3.13.42",
+  "date": "2026-09-23",
+  "base": "FR-NAV1.30.59-HF3.13.41",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1358 deepens the free profile claim, correction and review workflow after the owner live audit: immutable claim-submission evidence history, richer reviewer metadata, post-commit decision notification tracking, reviewer expiry guidance, structured correction/removal reasons, and expanded regression coverage while preserving canonical profile authority, optional Community Membership and whole-site no-regression.",
+  "scope": "R1360 closes profile-quality Findings #198-#203: canonical alias collapse, public provenance-text safety, explicit first-time management verification, viewport-visible account feedback, claimant/reviewer separation, and a fail-closed runtime alias firewall while preserving free profile management and optional $35/year Community Membership.",
   "counts": {
-    "profiles": 19104,
+    "profiles": 19003,
     "assistantRoutes": 254
   },
   "branding": {
@@ -1222,7 +1222,7 @@
       "19,103 canonical discovery profiles plus authorized Franklin Navigator self-profile overlay",
       "free factual correction/removal/claim management",
       "finished business/professional profiles",
-      "1–5 ratings and written firsthand reviews",
+      "1\u20135 ratings and written firsthand reviews",
       "review reporting/moderation and verified manager responses",
       "free reviewed profile photo/logo upload",
       "paid Community Member cover/gallery",
@@ -1519,7 +1519,7 @@
     "donorRegistry": "DONOR_CAPABILITY_REGISTRY__R1337.json",
     "homepageHistoryHeading": {
       "value": "Franklin Through Time",
-      "previousValue": "Franklin Through Time — Then & Now",
+      "previousValue": "Franklin Through Time \u2014 Then & Now",
       "ownerInstructionDate": "2026-09-18",
       "changeScope": "HEADING_TEXT_ONLY",
       "preserveRestOfHomepage": true
@@ -1695,7 +1695,7 @@
     "ownerDirection": "APPROVED_BUSINESS_VISIBILITY_HEADLINE_AND_CONTINUE_PROFILE_CLAIM_LANGUAGE_PATH_MANAGEMENT_IMPROVEMENTS",
     "materialImprovement": {
       "approvedBusinessHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
-      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local.",
+      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mej\u00f3relo. Aumente su visibilidad local.",
       "profileCenterTerminologyRepositoryWide": true,
       "staleProfileStudioVisibleLanguageRemoved": true,
       "staleManagedUnclaimedVisibleLabelsRemoved": true,
@@ -1772,7 +1772,7 @@
     "ownerDirection": "FIX_OWNER_REPORTED_BUSINESS_DASHBOARD_OVERLAP_AND_ENSURE_READABILITY_SITEWIDE",
     "materialImprovement": {
       "approvedBusinessHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
-      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local.",
+      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mej\u00f3relo. Aumente su visibilidad local.",
       "staleDynamicHeadlineOverrideRemoved": true,
       "dynamicPathFixedBadgeGeometryNeutralized": true,
       "pathCardReadableColorAndWrapping": true,
@@ -2506,7 +2506,7 @@
       "staticDeploy": "dep-danptbjtqb8s73co9k4g"
     },
     "ownerCommandRevision": "2026-09-03-R2",
-    "materialImprovement": "Repair two current public-quality defects without unrelated redesign: restore English/Spanish static homepage currentness parity, and prevent broad umbrella profile categories from generating unrelated Related local profiles; use a qualified restaurant/food override for Daddy’s Dogs and allow fewer results when relevance is insufficient.",
+    "materialImprovement": "Repair two current public-quality defects without unrelated redesign: restore English/Spanish static homepage currentness parity, and prevent broad umbrella profile categories from generating unrelated Related local profiles; use a qualified restaurant/food override for Daddy\u2019s Dogs and allow fewer results when relevance is insufficient.",
     "fixes": {
       "bilingualStaticHomepageCurrentnessParity": true,
       "expiredSpanishSplashParkRemoved": true,
@@ -3704,7 +3704,7 @@
     "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
     "activeEdition": "FRANKLIN_TN",
     "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
-    "state": "LIVE_VERIFIED",
+    "state": "CANDIDATE_QUALIFICATION",
     "predecessor": {
       "version": "FR-NAV1.30.58-HF3.13.40",
       "publicCommit": "93586dfb4ebc2d93d5fe1af388007c872a0a9f67",
@@ -3739,24 +3739,17 @@
       "noResidentFeatureRemoval": true
     },
     "outreachGate": {
-      "state": "LIMITED_REAL_OUTREACH_READY",
-      "authorizedScope": "SMALL_MONITORED_REAL_EMAIL_BATCH",
-      "basis": [
+      "state": "HOLD_UNTIL_DEPLOY_AND_SMOKE_PASS",
+      "required": [
         "R1359_RUNTIME_LIVE",
         "R1359_PUBLIC_LIVE",
-        "R1359_PROFILE_OUTREACH_READINESS_PASS",
-        "R1351_PROFILE_PATH_AND_ASSISTANT_PASS",
-        "R1352_CLAIM_REVIEW_PATH_PASS",
-        "R1350_RELATED_PROFILE_NOJS_PASS",
-        "EXACT_MAIN_DETERMINISTIC_ARTIFACT_AND_FRESH_EXTRACTION_PASS",
-        "RUNTIME_STARTUP_97_PASS_0_FAIL_READY_TRUE"
+        "OWNER_PROFILE_PATH_SMOKE_PASS",
+        "MEMBERSHIP_ENTRY_SMOKE_PASS"
       ],
-      "handoffTo": [
+      "handoffAfterPass": [
         "OWNER_CONSOLE_REVENUE_ENGINE",
         "AUTHORIZED_OUTREACH_BUILDERS"
-      ],
-      "operatingRule": "Begin with a limited real batch, monitor claim/profile-management/membership behavior and support friction, then scale from production evidence.",
-      "broadScaleFollowUp": "Owner may re-run the live protected-admin profile path and first real recipients should be monitored; newly observed defects become findings beginning at #198."
+      ]
     },
     "runtime": {
       "branch": "franklin-commerce-runtime-r30",
@@ -3782,18 +3775,9 @@
       }
     },
     "public": {
-      "codeBearingCommit": "979abfc059dceade443a4022fbb302cb4edcd970",
-      "qualificationRun": 35747710398,
-      "qualificationResult": "PASS",
-      "exactSourceArtifact": "FRANKLIN_NAVIGATOR__FR-NAV1.30.59-HF3.13.41__CURRENT_SUCCESSOR_EXACT_SOURCE.zip",
-      "artifactBytes": 85847999,
-      "artifactSha256": "2cb0485fa9b07514cb9c283fc42f5f01ed8d93cacfb5ab480b12de9a191b22c1",
-      "manifestSha256": "35d19c558608d3fd001185790337db6b053806e3a433f3ce69417a7369dd2368",
-      "deterministicDoubleBuild": true,
-      "renderService": "franklin-navigator",
-      "renderServiceId": "srv-da8tg6rbc2fs73crru2g",
-      "renderDeployId": "dep-dapa07942hec739dtc4g",
-      "deployment": "LIVE"
+      "branch": "r1359-outreach-ready-profile-management-20260922",
+      "qualification": "IN_PROGRESS",
+      "deployment": "NOT_YET_DEPLOYED"
     },
     "deferred": [
       {
@@ -3805,9 +3789,7 @@
       "R1359_RECOVERY_CHECKPOINT.md",
       "BENCHMARK_RECEIPT__R1359.md",
       "NEXT_VERSION_BUILD_LIST__R1359.md",
-      "NEXT_VERSION_IMPROVEMENT_LIST__R1359.md",
-      "R1359_RELEASE_RECEIPT.json",
-      "OUTREACH_READY_HANDOFF__R1359.md"
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1359.md"
     ],
     "colorSystem": {
       "asset": "/assets/r1336-color-system.css",
@@ -3821,24 +3803,63 @@
       "version": "FR-NAV1.30.12-HF3.12.4",
       "commit": "e09327f1048d7c4801e08732fa494da8634d408f",
       "artifactSha256": "02e53dd92b8c38a0bf7c05f916aeb282c7651452d9ffed6d74914f8f3c2ca37f"
-    },
-    "qualificationSummary": {
-      "findingsClosed": [
-        193,
-        194,
-        195,
-        196,
-        197
-      ],
-      "publicExactMainRun": 35747710398,
-      "runtimeStartupTests": {
-        "pass": 97,
-        "fail": 0,
-        "ready": true
-      },
-      "profilePathRegression": "PASS",
-      "claimReviewRegression": "PASS",
-      "noRegression": "PASS"
     }
+  },
+  "r1360": {
+    "version": "FR-NAV1.30.60-HF3.13.42",
+    "date": "2026-09-23",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_QUALIFICATION",
+    "predecessor": "FR-NAV1.30.59-HF3.13.41",
+    "profileFactory": {
+      "version": "FR-PF-PLATFORM-15.37",
+      "artifactSha256": "3feac2b4f8c912e2dced0ef9bcea76902b91776651a0829d9914693d78fff4b7",
+      "aliasCount": 99,
+      "reviewHeld": 2
+    },
+    "ownerFindings": [
+      198,
+      199,
+      200,
+      201,
+      202,
+      203
+    ],
+    "publicProjection": {
+      "baseRecords": 19103,
+      "canonicalPublicRecords": 19002,
+      "protectedLocalOverlayProfiles": 1,
+      "unsafePublicDisplayHitsAfter": 0
+    },
+    "claimUx": {
+      "verificationExplainedBeforeAccount": true,
+      "viewportFeedbackAfterAccountActions": true,
+      "reviewerControlsAbsentFromOrdinaryClaimantFlow": true,
+      "primaryAction": "Start management verification",
+      "selectionDoesNotGrantControl": true,
+      "supportEscapeHatch": true
+    },
+    "preserved": {
+      "basicProfileManagementFree": true,
+      "factualCorrectionsRemovalFree": true,
+      "communityMembershipOptional": true,
+      "communityMembershipAnnualUsd": 35,
+      "renewsAnnuallyUntilCanceled": true,
+      "noPaidFactualSuperiority": true,
+      "noPaidVerification": true,
+      "noEndorsement": true,
+      "noGuaranteedRankingLeadsPlacementAvailabilityResults": true
+    },
+    "outreachGate": {
+      "state": "HOLD_NOT_SEND",
+      "resumeOnlyAfter": "R1360_QUALIFIED_DEPLOYED_LIVE_SMOKE_AND_OUTREACH_READY_HANDOFF"
+    },
+    "receipts": [
+      "NEXT_VERSION_IMPROVEMENT_LIST__R1360.md",
+      "R1360_QUALIFICATION_RECEIPT.json",
+      "FRANKLIN_NAVIGATOR__OUTREACH_READY_HANDOFF__R1360.md"
+    ]
   }
 }
