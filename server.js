@@ -13,6 +13,7 @@ const {createMemberWorkflow,VERSION:MEMBER_FULFILLMENT_VERSION}=require('./lib/m
 const {createMemberMedia,VERSION:MEMBER_MEDIA_VERSION}=require('./lib/member-media');
 const {createReviewSystem,VERSION:COMMUNITY_REVIEWS_VERSION}=require('./lib/reviews');
 const {loadProfileScope}=require('./lib/profile-scope');
+const {loadProfileAliases,canonicalProfileId}=require('./lib/profile-aliases');
 const {createReviewerConsole,VERSION:REVIEWER_CONSOLE_VERSION}=require('./lib/reviewer-console');
 const {createIncidentMonitor,VERSION:ISSUE_MONITOR_VERSION}=require('./lib/incident-monitor');
 const {createAccountRecovery,VERSION:ACCOUNT_RECOVERY_VERSION}=require('./lib/account-recovery');
@@ -25,7 +26,7 @@ const CLAIM_WORKFLOW_VERSION='FRANKLIN_CLAIM_WORKFLOW_R1358_1';
 const MANAGER_PROFILE_VERSION='FRANKLIN_VERIFIED_MANAGER_DIRECT_R1359_1';
 const PROTECTED_PLATFORM_PROFILE_ID='FR-ORG-b00c0ace7943973c';
 
-const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.59-HF3.13.41';
+const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.60-HF3.13.42';
 const SCHEMA_VERSION = 'FRANKLIN_COMMERCE_SCHEMA_2';
 const PORT = Number(process.env.PORT || 10000);
 const PUBLIC_ORIGIN = String(process.env.PUBLIC_ORIGIN || 'https://franklinnavigator.com').replace(/\/$/, '');
@@ -192,7 +193,8 @@ function clearSessionCookie(res){res.setHeader('Set-Cookie',`${COOKIE_NAME}=; Pa
 async function createSession(req,res,accountId){const token=randomToken();const expiresAt=new Date(Date.now()+SESSION_DAYS*86400000).toISOString();await query(`insert into franklin_sessions(session_hash,account_id,expires_at,ip_prefix_hash,user_agent_hash) values($1,$2,$3,$4,$5)`,[sha256(`${SESSION_SECRET}:${token}`),accountId,expiresAt,clientKey(req),sha256(req.headers['user-agent']||'').slice(0,32)]);setSessionCookie(res,token,expiresAt);}
 async function sessionFor(req){const token=parseCookies(req.headers.cookie)[COOKIE_NAME];if(!token)return null;const result=await query(`select s.account_id,a.email,a.display_name,a.preferred_language,a.email_verified_at from franklin_sessions s join franklin_accounts a using(account_id) where s.session_hash=$1 and s.expires_at>now() and a.state='ACTIVE'`,[sha256(`${SESSION_SECRET}:${token}`)]);return result.rows[0]||null;}
 async function requireSession(req){const session=await sessionFor(req);if(!session)throw publicError('AUTH_REQUIRED','Sign in to continue.',401);req._franklinIssueAccount=session.account_id;return session;}
-function normalizeProfile(value){const id=String(value||'').trim();if(!PROFILE_RE.test(id))throw publicError('PROFILE_ID_INVALID','Choose a valid Franklin Navigator profile.');return id;}
+const runtimeProfileAliases=loadProfileAliases();
+function normalizeProfile(value){const id=String(value||'').trim();if(!PROFILE_RE.test(id))throw publicError('PROFILE_ID_INVALID','Choose a valid Franklin Navigator profile.');const canonical=canonicalProfileId(id,runtimeProfileAliases);if(!PROFILE_RE.test(canonical))throw publicError('PROFILE_ID_INVALID','Choose a valid Franklin Navigator profile.');return canonical;}
 async function audit(client,actorType,actorRef,actionType,targetType,targetRef,reqId,context={}){await client.query(`insert into franklin_audit_log(audit_id,actor_type,actor_ref_hash,action_type,target_type,target_ref_hash,request_id,safe_context) values($1,$2,$3,$4,$5,$6,$7,$8::jsonb)`,[newId('audit'),actorType,actorRef?sha256(actorRef):null,actionType,targetType||null,targetRef?sha256(targetRef):null,reqId||null,JSON.stringify(context)]);}
 async function initializePurchaseReservations(){const sql=fs.readFileSync(path.join(__dirname,'schema','002_purchase_reservations.sql'),'utf8');const digest=sha256(sql);await tx(async client=>{await client.query('select pg_advisory_xact_lock(3316401,1)');const prior=(await client.query('select digest_sha256 from franklin_schema_migrations where version=$1',[CHECKOUT_SAFETY_VERSION])).rows[0];if(prior&&prior.digest_sha256!==digest)throw new Error('checkout_safety_migration_digest_mismatch');await client.query(sql);await client.query('insert into franklin_schema_migrations(version,digest_sha256) values($1,$2) on conflict(version) do nothing',[CHECKOUT_SAFETY_VERSION,digest]);});}
 async function initializeDatabase(){const cfg=configStatus();if(!cfg.ok)throw new Error(`missing_required_environment:${cfg.missing.join(',')}`);const schema=fs.readFileSync(path.join(__dirname,'schema','001_init.sql'),'utf8');schemaDigest=sha256(schema);await pool.query(schema);await initializePurchaseReservations();await initializeMemberFulfillment();await initializeReviewerConsole();await initializeIssueMonitoring();await initializeMemberMedia();await initializeCommunityReviews();await initializeMemberRecognition();await initializeProfileInvitations();await initializeClaimWorkflow();await initializeVerifiedManagerProfile();await pool.query(`insert into franklin_schema_migrations(version,digest_sha256) values($1,$2) on conflict(version) do update set digest_sha256=excluded.digest_sha256`,[SCHEMA_VERSION,schemaDigest]);}
@@ -304,6 +306,19 @@ async function initializeVerifiedManagerProfile(){const sql=fs.readFileSync(path
 
 const runtimeProfileScope=loadProfileScope();
 const profileNames=runtimeProfileScope.profiles;
+async function assertNoRetiredAliasState(){
+  const aliases=[...runtimeProfileAliases.keys()];
+  const checks=[
+    ['franklin_profile_links','profile_id'],['franklin_checkout_intents','profile_id'],['franklin_memberships','profile_id'],
+    ['franklin_representation_reviews','profile_id'],['franklin_member_drafts','profile_id'],['franklin_member_publications','profile_id'],
+    ['franklin_reviews','profile_id'],['franklin_member_recognition_years','profile_id'],['franklin_member_decal_fulfillment','profile_id'],
+    ['franklin_profile_invitations','profile_id'],['franklin_onboarding','profile_id']
+  ];
+  const residual=[];
+  for(const [table,col] of checks){const row=(await query(`select count(*)::int count from ${table} where ${col}=any($1::text[])`,[aliases])).rows[0];const count=Number(row?.count||0);if(count)residual.push({table,count});}
+  if(residual.length){const e=new Error('retired_profile_alias_state_requires_reconciliation:'+JSON.stringify(residual));e.code='RETIRED_PROFILE_ALIAS_STATE';throw e;}
+  return {aliasCount:aliases.length,residualRows:0};
+}
 const controlProfileRegistry=loadControlProfileRegistry();
 async function memberLifecycleSummary(){
   const [pendingClaims,verifiedLinks,activeMemberships,submittedDrafts,publishedProfiles,readbacks]=await Promise.all([
@@ -485,7 +500,7 @@ async function reconcileR1312SyntheticSupportArtifacts(){
 }
 
 const server=http.createServer(route);server.requestTimeout=15000;server.headersTimeout=10000;server.keepAliveTimeout=5000;
-async function start(){try{await initializeDatabase();await reconcileR1312SyntheticSupportArtifacts();const monitorSelfTest=await incidentMonitor.selfTest();console.log(JSON.stringify({event:'FRANKLIN_INCIDENT_MONITOR_SELF_TEST',release:RELEASE,...monitorSelfTest,at:nowIso()}));await incidentMonitor.scanDerivedIssues();
+async function start(){try{await initializeDatabase();const aliasState=await assertNoRetiredAliasState();console.log(JSON.stringify({event:'FRANKLIN_R1360_ALIAS_STATE_GATE',release:RELEASE,...aliasState,at:nowIso()}));await reconcileR1312SyntheticSupportArtifacts();const monitorSelfTest=await incidentMonitor.selfTest();console.log(JSON.stringify({event:'FRANKLIN_INCIDENT_MONITOR_SELF_TEST',release:RELEASE,...monitorSelfTest,at:nowIso()}));await incidentMonitor.scanDerivedIssues();
 const expectedAuthIncidents=await incidentMonitor.list({status:'OPEN',severity:['CRITICAL','HIGH'],limit:100});
 let expectedAuthResolved=0;
 for(const incident of expectedAuthIncidents){

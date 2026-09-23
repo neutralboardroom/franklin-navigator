@@ -35,5 +35,12 @@
       "runtime/acceptance/reviewer-browser-fixture.cjs": "dd102586feb558090ae27edd6225c537615cbdadd6f219c927f952a4c29d1438",
       "runtime/acceptance/reviewer-console.integration.cjs": "24a916575b8966ed424dc6d922bae3617580524a5cce2fea280a65729272f3d5"
     }
+  },
+  "r1360ProfileAliasFirewall": {
+    "profileFactoryVersion": "FR-PF-PLATFORM-15.37",
+    "profileFactoryArtifactSha256": "3feac2b4f8c912e2dced0ef9bcea76902b91776651a0829d9914693d78fff4b7",
+    "aliasCount": 99,
+    "canonicalization": "INPUT_BOUNDARY",
+    "startupResidualAliasStateGate": "FAIL_CLOSED"
   }
 }
