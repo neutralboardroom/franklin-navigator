@@ -79,7 +79,7 @@ def main():
     })
     write_json(manifest_path,manifest)
 
-    alias_public={'schema':'franklin.profile-aliases.r1360.v1','community':'FRANKLIN_TN','release':TARGET,'profileFactoryVersion':'FR-PF-PLATFORM-15.37','profileFactoryArtifactSha256':ov['profileFactoryArtifactSha256'],'aliases':aliases}
+    alias_public={'schema':'franklin.profile-aliases.r1360.v1','community':'FRANKLIN_TN','release':TARGET,'profileFactoryVersion':'FR-PF-PLATFORM-15.37','profileFactoryArtifactSha256':ov['profileFactoryArtifactSha256'],'aliases':aliases,'reviewHeldProfileIds':sorted(holds)}
     write_json(DIST/'data'/'profile-aliases-r1360.json',alias_public)
 
     # Public pages: safe location text in own profiles + related cards.
