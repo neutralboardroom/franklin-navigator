@@ -268,3 +268,33 @@ The 1,739 count is a lower-bound pattern audit, not a claim that every one of th
 **Priority:** P0 outreach / public trust / profile quality.
 
 **Status:** OPEN — owner-observed and corpus-confirmed during first-time-user outreach smoke test.
+
+
+## Finding #200 — First-time claim page asks for account creation before explaining what management verification will require
+
+**Owner evidence:** signed-out live claim-path screenshots, 2026-09-23, exact profile `The Factory at Franklin`.
+
+**Observed behavior:** the page clearly preserves the selected profile and shows the four-step path (`Exact profile → Account → Verify management → Profile Center`). The current Account step asks for name, email and password and notes that a work/organization email can make verification easier. However, it does not explain before account creation what the next `Verify management` step will ask the user to do, what kinds of evidence may be accepted, or that the user should proceed only if actually authorized to manage the selected profile.
+
+**Problem:** a first-time business owner reached from outreach is asked to create an account before knowing the expected verification burden. That uncertainty can cause avoidable abandonment or encourage an unauthorized visitor to continue farther than intended.
+
+**Desired outcome:** before the user creates/signs into an account, give a short, plain-language preview of the next step without overloading the page.
+
+**Implementation direction:**
+- add a compact `What happens next` panel beside/below the Account step;
+- state that the user should continue only if authorized to manage the selected business/organization;
+- explain that the next step confirms the relationship and may use a work/organization email and/or other reasonable evidence depending on the profile;
+- state that no payment or Community Membership is required for verification/basic management;
+- avoid promising instant approval or a fixed review time unless guaranteed;
+- preserve the exact-profile selection through account creation/sign-in.
+
+**Acceptance criteria:**
+1. A first-time user understands the verification expectation before creating an account.
+2. The page explicitly says to continue only if authorized to manage the selected profile.
+3. Free profile access remains clearly separate from paid Community Membership.
+4. No unsupported timing/approval promise is shown.
+5. The selected exact profile remains visible throughout the account step.
+
+**Priority:** P1 outreach conversion / trust / claim clarity.
+
+**Status:** OPEN — owner-observed during first-time-user smoke test.
