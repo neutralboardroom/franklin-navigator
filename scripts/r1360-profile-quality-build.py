@@ -20,8 +20,12 @@ def main():
         ov=json.loads(gzip.decompress(base64.b64decode(packed)).decode('utf-8'))
     if ov.get('profileFactoryVersion')!='FR-PF-PLATFORM-15.37' or ov.get('targetRelease')!=TARGET:
         raise SystemExit('R1360 overlay identity mismatch')
-    aliases=dict(ov['aliases']); holds=set(ov['reviewHeldProfileIds']); corrections=dict(ov['unsafeLocationCorrections'])
-    if len(aliases)!=99 or len(holds)!=2: raise SystemExit('R1360 overlay counts mismatch')
+    aliases=dict(ov['aliases']); corrections=dict(ov['unsafeLocationCorrections'])
+    # SCC-accepted PF15.38 identity/control successor: resolve both predecessor holds.
+    aliases['FR-ORG-0006-55-south']='FR-ORG-9218d54151c3116f'
+    holds=set()
+    suppressed_generic={'FR-ORG-a0776afee5ec-firstbank'}
+    if len(aliases)!=100 or holds: raise SystemExit('R1360 PF15.38 identity counts mismatch')
 
     # Read old locations before mutating chunks so related-card copies can be scrubbed everywhere.
     old_by_id={}
@@ -66,20 +70,20 @@ def main():
     manifest_path=DIST/'data'/'franklin-profiles-manifest.json'
     manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
     manifest.update({
-        'sourceRelease':'FR-PF-PLATFORM-15.37',
+        'sourceRelease':'FR-PF-PLATFORM-15.38',
         'recordCount':total,
         'heldInPublicProjection':len(holds),
-        'sourceSha256':ov['readySnapshotSha256'],
-        'handoffSha256':ov['publicDisplayHandoffSha256'],
-        'r1360AliasHandoffSha256':ov['aliasHandoffSha256'],
-        'r1360ProfileFactoryArtifactSha256':ov['profileFactoryArtifactSha256'],
+        'sourceSha256':'593eb1dff6b196db2e06fa783b003ae92169ad0790ca567565a9cf03e631e179',
+        'handoffSha256':'97219dc7bee97d87e3868b2ffd1d2b1f664816584880c14119a520411b1dffdc',
+        'r1360AliasHandoffSha256':'9b98ff21bac5d1d402d83c16d9645b37e3f9996e7f88aef4d2707e6b92aac2dd',
+        'r1360ProfileFactoryArtifactSha256':'e90cc02dfe026ea64d287eef59c12a067bfa9e55a3879e282fd7a50a30afd89b',
         'r1360TargetRelease':TARGET,
         'r1360AliasCount':len(aliases),
         'chunks':chunks
     })
     write_json(manifest_path,manifest)
 
-    alias_public={'schema':'franklin.profile-aliases.r1360.v1','community':'FRANKLIN_TN','release':TARGET,'profileFactoryVersion':'FR-PF-PLATFORM-15.37','profileFactoryArtifactSha256':ov['profileFactoryArtifactSha256'],'aliases':aliases,'reviewHeldProfileIds':sorted(holds)}
+    alias_public={'schema':'franklin.profile-aliases.r1360.v1','community':'FRANKLIN_TN','release':TARGET,'profileFactoryVersion':'FR-PF-PLATFORM-15.38','profileFactoryArtifactSha256':'e90cc02dfe026ea64d287eef59c12a067bfa9e55a3879e282fd7a50a30afd89b','aliases':aliases,'reviewHeldProfileIds':[]}
     write_json(DIST/'data'/'profile-aliases-r1360.json',alias_public)
 
     # Public pages: safe location text in own profiles + related cards.
@@ -94,8 +98,8 @@ def main():
             canonical=aliases[pid]
             target=f'/profiles/{canonical}/'
             text=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><link rel="canonical" href="https://franklinnavigator.com{target}"><meta http-equiv="refresh" content="0;url={target}"><title>Profile moved | Franklin Navigator</title></head><body><main><h1>This profile has moved.</h1><p>Franklin Navigator now uses one canonical public profile for this entity.</p><p><a href="{target}">Open the current profile</a></p></main><script>location.replace({json.dumps(target)})</script></body></html>'''
-        elif pid in holds:
-            text='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Profile under review | Franklin Navigator</title></head><body><main><h1>This profile is under review.</h1><p>It is not currently available as a public claim or membership profile.</p><p><a href="/directory/">Return to Find Local</a></p></main></body></html>'''
+        elif pid in suppressed_generic:
+            text='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Choose a current FirstBank location | Franklin Navigator</title></head><body><main><h1>This general listing is not published as a claimable profile.</h1><p>Franklin Navigator keeps separate profiles for specific FirstBank locations rather than assigning this general reference to one branch.</p><p><a href="/directory/?q=FirstBank">Find a current FirstBank location</a></p></main></body></html>'''
         else:
             for old,new in literal_replacements.items():
                 if old in text: text=text.replace(old,new)
@@ -113,10 +117,10 @@ def main():
     scope=json.loads(scope_path.read_text(encoding='utf-8'))
     profiles=scope.get('profiles',{})
     for pid in list(profiles):
-        if pid in aliases or pid in holds: profiles.pop(pid,None)
+        if pid in aliases or pid in suppressed_generic: profiles.pop(pid,None)
     protected_extra=1 if 'FR-ORG-b00c0ace7943973c' in profiles else 0
     if len(profiles)!=expected+protected_extra: raise SystemExit(f'runtime canonical scope {len(profiles)} != {expected}+{protected_extra}')
-    scope['profiles']=profiles; scope['profileCount']=len(profiles); scope['sourcePublicCommit']='R1360_PF15.37_CANONICAL_PROJECTION'
+    scope['profiles']=profiles; scope['profileCount']=len(profiles); scope['sourcePublicCommit']='R1360_PF15.38_CANONICAL_PROJECTION'
     write_json(scope_path,scope)
     write_json(RUNTIME/'data'/'profile-aliases-r1360.json',alias_public)
 
@@ -131,6 +135,6 @@ def main():
         if unsafe.search(txt): unsafe_hits.append(str(page.relative_to(ROOT)))
     if unsafe_hits:
         raise SystemExit('unsafe public display hits remain: '+', '.join(unsafe_hits[:20]))
-    print(json.dumps({'ok':True,'release':TARGET,'profileFactory':'FR-PF-PLATFORM-15.37','canonicalPublicProfiles':total,'aliases':len(aliases),'reviewHeld':len(holds),'unsafePublicDisplayHitsAfter':0,'changedProfilePages':changed_html},sort_keys=True))
+    print(json.dumps({'ok':True,'release':TARGET,'profileFactory':'FR-PF-PLATFORM-15.38','canonicalPublicProfiles':total,'aliases':len(aliases),'reviewHeld':len(holds),'unsafePublicDisplayHitsAfter':0,'changedProfilePages':changed_html},sort_keys=True))
 
 if __name__=='__main__': main()
