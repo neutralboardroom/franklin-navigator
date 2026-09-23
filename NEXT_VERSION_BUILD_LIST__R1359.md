@@ -298,3 +298,37 @@ The 1,739 count is a lower-bound pattern audit, not a claim that every one of th
 **Priority:** P1 outreach conversion / trust / claim clarity.
 
 **Status:** OPEN — owner-observed during first-time-user smoke test.
+
+
+## Finding #201 — Account-mode feedback appears off-screen and automatic create→sign-in switching is not obvious
+
+**Owner evidence:** signed-out first-time claim-path test, 2026-09-23, exact profile `The Factory at Franklin`.
+
+**Observed behavior:** after entering an existing Franklin account email in the account-creation flow, the backend correctly returns `ACCOUNT_ALREADY_EXISTS`. The client automatically changes `accountMode` from `register` to `login` and displays `An account already exists for this email. Sign in or reset your password.` However, the status message is rendered near the top of the page while the user remains lower in the form and must manually scroll upward to discover what happened.
+
+**Confirmed source behavior:** `membership-live.js` handles `ACCOUNT_ALREADY_EXISTS` by setting `state.accountMode='login'`, preserving the email, and setting a top-level `state.message`. The subsequent `rerender()` does not focus or scroll the account form/message into view.
+
+**Problem:** a first-time user can reasonably think the form did nothing or failed. Because the interface also silently switches from Create account to Sign in, the user may misinterpret the message as a failed login rather than a helpful account-detection transition.
+
+**Desired outcome:** account-transition/error feedback should remain adjacent to the form/action that caused it and be immediately visible without manual scrolling.
+
+**Implementation direction:**
+- when an existing account is detected, move/focus the user directly to the Sign in form or an inline account-status panel;
+- say explicitly: `We found an existing Franklin account for this email. We switched you to Sign in.`;
+- preserve the entered email but never preserve/expose a create-password value into the login form;
+- provide visible `Forgot password?` and account-help actions in the same viewport;
+- for login errors, keep feedback next to the login form and focus it accessibly rather than rendering only at the page top;
+- avoid large scroll jumps; respect sticky-header offset and mobile/keyboard behavior;
+- apply the same local-feedback pattern to account creation, login, password recovery and other claim-path form errors.
+
+**Acceptance criteria:**
+1. Existing-account detection automatically reveals the Sign in form in the current viewport.
+2. The user is explicitly told that the interface switched from Create account to Sign in.
+3. No manual scrolling is needed to discover the result of account submission.
+4. Login errors are displayed/focused adjacent to the login form.
+5. Exact-profile selection remains preserved through the transition.
+6. Keyboard and screen-reader focus moves predictably without hiding content beneath the sticky header.
+
+**Priority:** P1 outreach conversion / account access clarity.
+
+**Status:** OPEN — owner-observed and source-confirmed during first-time-user smoke test.
