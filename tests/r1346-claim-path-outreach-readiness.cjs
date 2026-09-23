@@ -16,7 +16,7 @@ add('R1346 progress tracker has semantic steps',access.includes('data-r1346-prof
 add('R1346 progress distinguishes completed/current/future',live.includes("classList.toggle('is-complete'")&&live.includes("setAttribute('aria-current','step')")&&styles.includes('.r1346-profile-progress [data-step].is-current'));
 add('R1346 exact profile switcher is secondary',live.includes('Wrong profile? Choose another')&&live.includes("details.r1346-profile-change")===false&&styles.includes('.r1346-profile-change'));
 add('R1346 selected profile presentation includes type and location',live.includes("summaryItem('Type'")&&live.includes("summaryItem('Location'"));
-add('R1346 connect action has immediate loading and duplicate-click guard',live.includes("connect.textContent='Connecting profile…'")&&live.includes('if(connect.disabled)return')&&live.includes("focusIntoView('[data-r1346-verification-heading]')"));
+add('R1346 connect action has immediate loading and duplicate-click guard',live.includes("connect.textContent='Starting verification…'")&&live.includes('if(connect.disabled)return')&&live.includes("focusIntoView('[data-r1346-verification-heading]')"));
 add('R1346 verification heading names selected profile',live.includes("'Verify that you manage '+state.selected.n")&&live.includes("verifyHeading.dataset.r1346VerificationHeading=''"));
 add('R1346 verification form uses dedicated vertical class',live.includes("form.className='r1346-profile-access-verification'")&&!live.includes("form.className='form-grid r1345-profile-access-verification'"));
 add('R1346 verification fields are full-width with comfortable textarea',styles.includes('.r1346-profile-access-verification input[type="url"]')&&styles.includes('min-height:150px')&&styles.includes('grid-template-columns:auto minmax(0,1fr)!important'));
@@ -32,5 +32,5 @@ add('R1346 correction route remains reachable with differentiated manage wording
 add('R1346 Spanish parity covers new dynamic claim/recovery actions',i18n.includes("'Wrong profile? Choose another':'¿Perfil equivocado? Elija otro'")&&i18n.includes("'Check your email':'Revise su correo electrónico'")&&i18n.includes('Verify that you manage'));
 add('R1346 durable no-silent-click rule exists',rule.includes('NO SILENT CLICKS')&&rule.includes('duplicate')&&rule.includes('focus'));
 const failed=checks.filter(x=>!x[1]);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.57-HF3.13.39',checks,failed},null,2));
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.60-HF3.13.42',checks,failed},null,2));
 if(failed.length)process.exit(1);

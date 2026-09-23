@@ -54,7 +54,7 @@
       'Send support request':'Enviar solicitud de soporte',
       'Your selected profile':'Su perfil seleccionado',
       'Your selected profile stays with you through sign-in and access review. You do not need to search for it again.':'Su perfil seleccionado se conserva durante el inicio de sesión y la revisión de acceso. No necesita buscarlo de nuevo.',
-      'Continue with this profile':'Continuar con este perfil',
+      'Start management verification':'Iniciar verificación de administración',
       'This exact profile is selected.':'Este perfil exacto está seleccionado.',
       'Franklin checks your account and access state before showing the next action. Selecting this profile does not claim it or change public facts.':'Franklin revisa el estado de su cuenta y acceso antes de mostrar la siguiente acción. Seleccionar este perfil no lo reclama ni cambia los datos públicos.',
       'Profile access requests and factual corrections/removal are free. Community Membership is optional.':'Las solicitudes de acceso al perfil y las correcciones factuales o el retiro son gratuitos. La Membresía Comunitaria es opcional.',

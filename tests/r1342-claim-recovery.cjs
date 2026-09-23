@@ -27,7 +27,7 @@ assert.match(profile,/Official Franklin Navigator profile/);
 assert.match(profile,/\/profile-access\/\?profile=/);
 
 const claim=read('dist/assets/hf310.js');
-assert.match(claim,/Continue with this profile/);
+assert.match(claim,/Start management verification/);
 assert.match(claim,/r1342-selected-focus/);
 assert.match(claim,/listing=.*PUBLIC_REMOVAL|PUBLIC_REMOVAL.*listing=/s);
 
@@ -68,7 +68,7 @@ assert.match(reviews,/entityLabel/);
 
 console.log(JSON.stringify({
   result:'PASS',
-  release:'FR-NAV1.30.57-HF3.13.39',
+  release:'FR-NAV1.30.60-HF3.13.42',
   exactFranklinNavigatorRank:firstName(exact[0]),
   exactProfileId:exact[0].i,
   checked:'directory ranking, claim CTA, deep-link continuity, recovery UI, support wording, five-step business path, correction context, first-party review policy'

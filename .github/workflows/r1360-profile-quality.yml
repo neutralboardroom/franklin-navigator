@@ -1,0 +1,62 @@
+name: R1360 profile quality generator and qualification
+on:
+  push:
+    branches: [r1360-profile-quality-20260923]
+permissions:
+  contents: write
+jobs:
+  generate-qualify:
+    if: ${{ !contains(github.event.head_commit.message, '[r1360-generated]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: r1360-profile-quality-20260923
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Decode exact PF 15.37 consumer overlay
+        run: |
+          python - <<'PY'
+          import base64,gzip,pathlib
+          src=pathlib.Path('r1360-input/pf1537-consumer-overlay.json.gz.b64')
+          out=pathlib.Path('r1360-input/pf1537-consumer-overlay.json')
+          out.write_bytes(gzip.decompress(base64.b64decode(src.read_text().strip())))
+          PY
+      - name: Generate exact R1360 canonical public projection
+        run: python scripts/r1360-profile-quality-build.py | tee R1360_GENERATOR_RESULT.json
+      - name: Focused R1360 qualification
+        run: |
+          node tests/r1352-claim-review-path.cjs
+          node tests/r1358-profile-claim-management-depth.cjs
+          node tests/r1346-claim-path-outreach-readiness.cjs
+          node tests/r1342-claim-recovery.cjs
+          node runtime/franklin-membership/test-r1360-alias-firewall.js
+          node --check runtime/franklin-membership/server.js
+          python - <<'PY'
+          import json,re,glob,sys,pathlib
+          ov=json.load(open('r1360-input/pf1537-consumer-overlay.json'))
+          pat=re.compile(ov['unsafePattern'],re.I)
+          hits=[]
+          for f in glob.glob('dist/profiles/*/index.html'):
+            if pat.search(pathlib.Path(f).read_text(errors='ignore')): hits.append(f)
+          if hits: raise SystemExit('unsafe public profile hits:'+str(hits[:10]))
+          print('unsafe_public_display_hits_after=0')
+          PY
+      - name: Commit exact generated successor tree
+        run: |
+          rm -f r1360-input/pf1537-consumer-overlay.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add dist runtime/franklin-membership/data/member-profile-scope.json R1360_GENERATOR_RESULT.json
+          if git diff --cached --quiet; then
+            echo 'No generated changes.'
+          else
+            git commit -m 'R1360: generate canonical profile projection [r1360-generated]'
+            git push origin HEAD:r1360-profile-quality-20260923
+          fi

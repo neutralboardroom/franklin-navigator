@@ -1,0 +1,9 @@
+{
+  "release":"FR-NAV1.30.60-HF3.13.42",
+  "state":"LOCAL_QUALIFICATION_IN_PROGRESS_NOT_DEPLOYED",
+  "profileFactory":{"version":"FR-PF-PLATFORM-15.37","artifactSha256":"3feac2b4f8c912e2dced0ef9bcea76902b91776651a0829d9914693d78fff4b7","aliasCount":99,"reviewHeld":2},
+  "publicProjection":{"canonicalPublicProfiles":19002,"protectedLocalOverlayProfiles":1,"unsafePublicDisplayHitsAfter":0,"retiredOrHeldCrossReferences":0},
+  "focusedTests":{"r1352ClaimReview":"PASS","r1358ClaimDepth":"PASS","r1346ClaimPath":"PASS","r1342ClaimRecovery":"PASS","runtimeAliasFirewallUnit":"PASS"},
+  "findings":{"198":"IMPLEMENTED_PENDING_DEPLOY","199":"IMPLEMENTED_PENDING_DEPLOY","200":"IMPLEMENTED_PENDING_DEPLOY","201":"IMPLEMENTED_PENDING_DEPLOY","202":"IMPLEMENTED_PENDING_DEPLOY","203":"IMPLEMENTED_PENDING_DEPLOY"},
+  "outreach":"HOLD_NOT_SEND_UNTIL_DEPLOY_AND_LIVE_SMOKE"
+}
