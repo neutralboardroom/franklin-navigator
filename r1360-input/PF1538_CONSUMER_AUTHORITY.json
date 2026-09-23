@@ -1,0 +1,18 @@
+{
+  "schema": "franklin.r1360.pf-authority.v1",
+  "workOrder": "WO-20260923-SCC-LOCAL-FRANKLIN-R1360-PF1538-REBASE-076",
+  "profileFactoryVersion": "FR-PF-PLATFORM-15.38",
+  "artifactSha256": "e90cc02dfe026ea64d287eef59c12a067bfa9e55a3879e282fd7a50a30afd89b",
+  "readySnapshotSha256": "593eb1dff6b196db2e06fa783b003ae92169ad0790ca567565a9cf03e631e179",
+  "readyCount": 28818,
+  "localCommunityPlatformHandoffSha256": "a4ba3151b6fae8431dda8cd1e4cd1407f2ca1360090a47de0dae505d6d4e085a",
+  "aliasHandoffSha256": "9b98ff21bac5d1d402d83c16d9645b37e3f9996e7f88aef4d2707e6b92aac2dd",
+  "publicDisplayHandoffSha256": "97219dc7bee97d87e3868b2ffd1d2b1f664816584880c14119a520411b1dffdc",
+  "aliasCount": 100,
+  "reviewHoldCount": 0,
+  "suppressedGenericProfileIds": [
+    "FR-ORG-a0776afee5ec-firstbank"
+  ],
+  "semantics": "FULL_REPLACE_NOT_APPEND",
+  "authorityTransfer": false
+}
