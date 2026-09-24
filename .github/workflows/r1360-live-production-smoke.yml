@@ -58,6 +58,7 @@ jobs:
           assert aliases['profileFactoryVersion']=='FR-PF-PLATFORM-15.38'
           assert len(aliases['aliases'])==100
           assert aliases['reviewHeldProfileIds']==[]
+          assert aliases.get('suppressedGenericProfileIds')==['FR-ORG-a0776afee5ec-firstbank']
           assert aliases['aliases']['FR-ORG-0006-55-south']=='FR-ORG-9218d54151c3116f'
           assert 'FR-ORG-9218d54151c3116f' in fiftyfive
           assert 'under review' not in fiftyfive.lower()
