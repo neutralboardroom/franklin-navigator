@@ -1,0 +1,95 @@
+name: R1360 live production smoke
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  live-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Live desktop/mobile and runtime smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          PUBLIC="https://franklinnavigator.com"
+          API="https://franklin-navigator-membership.onrender.com"
+          CANON="FR-ORG-0086-the-factory-at-franklin"
+          ALIAS="FR-ORG-adba2e46b06e6112"
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/profiles/$CANON/" -o canonical.html
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/profiles/$ALIAS/" -o alias.html
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/claim-profile/?profile=$CANON" -o claim-source.html
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/profile-access/?profile=$CANON" -o access-source.html
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/business-membership/" -o membership.html
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/profiles/FR-ORG-0006-55-south/" -o fiftyfive.html
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/profiles/FR-ORG-a0776afee5ec-firstbank/" -o firstbank.html
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/data/profile-aliases-r1360.json" -o aliases.json
+          curl --retry 4 --retry-delay 2 -fsSL "$API/health" -o health.json
+          curl --retry 4 --retry-delay 2 -fsSL "$API/ready" -o ready.json
+          python - <<'PY'
+          from pathlib import Path
+          import json,re
+          canonical=Path('canonical.html').read_text(errors='ignore')
+          alias=Path('alias.html').read_text(errors='ignore')
+          claim=Path('claim-source.html').read_text(errors='ignore')
+          access=Path('access-source.html').read_text(errors='ignore')
+          member=Path('membership.html').read_text(errors='ignore')
+          health=Path('health.json').read_text(errors='ignore')
+          ready=Path('ready.json').read_text(errors='ignore')
+          fiftyfive=Path('fiftyfive.html').read_text(errors='ignore')
+          firstbank=Path('firstbank.html').read_text(errors='ignore')
+          aliases=json.loads(Path('aliases.json').read_text(errors='ignore'))
+          assert 'The Factory at Franklin' in canonical
+          assert 'FR-ORG-0086-the-factory-at-franklin' in alias
+          banned=re.compile(r'Profile Factory|FR-PF-PLATFORM|street address is not asserted|source-processing',re.I)
+          assert not banned.search(canonical)
+          assert 'Claim or manage this profile' in canonical
+          assert 'Request removal from public view' in canonical
+          assert 'Selecting a profile does not grant control' in claim
+          assert 'Community Membership is optional' in claim
+          assert 'No membership or payment is required' in access
+          assert '/community-help-center/' in access
+          assert 'community@franklinnavigator.com' in access
+          assert 'Franklin Navigator Community Membership — $35/year' in member
+          assert 'factual corrections' in member.lower()
+          assert 'FR-NAV1.30.60-HF3.13.42' in health
+          assert 'FR-NAV1.30.60-HF3.13.42' in ready
+          assert aliases['profileFactoryVersion']=='FR-PF-PLATFORM-15.38'
+          assert len(aliases['aliases'])==100
+          assert aliases['reviewHeldProfileIds']==[]
+          assert aliases.get('suppressedGenericProfileIds')==['FR-ORG-a0776afee5ec-firstbank']
+          assert aliases['aliases']['FR-ORG-0006-55-south']=='FR-ORG-9218d54151c3116f'
+          assert 'FR-ORG-9218d54151c3116f' in fiftyfive
+          assert 'under review' not in fiftyfive.lower()
+          assert 'not published as a claimable profile' in firstbank
+          assert 'under review' not in firstbank.lower()
+          print('STATIC_AND_RUNTIME_HTTP_SMOKE=PASS')
+          PY
+          CHROME="$(command -v google-chrome-stable || command -v google-chrome || command -v chromium || true)"
+          test -n "$CHROME"
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --virtual-time-budget=5000 --window-size=1366,900 --dump-dom "$PUBLIC/claim-profile/?profile=$CANON" > desktop.html
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --virtual-time-budget=5000 --window-size=390,844 --user-agent="Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148" --dump-dom "$PUBLIC/claim-profile/?profile=$CANON" > mobile.html
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/assets/hf310.js?v=frnav1290" -o hf310.js
+          curl --retry 4 --retry-delay 2 -fsSL "$PUBLIC/assets/membership-live.js?v=frnav1360" -o membership-live.js
+          python - <<'PY'
+          from pathlib import Path
+          hf=Path('hf310.js').read_text(errors='ignore')
+          ml=Path('membership-live.js').read_text(errors='ignore')
+          assert 'Start management verification' in hf
+          assert 'Continue with this profile' not in hf+ml
+          assert 'scrollIntoView' in hf+ml and 'focus' in hf+ml
+          for name in ('desktop.html','mobile.html'):
+              s=Path(name).read_text(errors='ignore')
+              assert 'This exact profile is selected.' in s, name
+              assert 'Claim or manage this profile' in s, name
+              assert 'start management verification' in s.lower(), name
+              assert 'Continue with this profile' not in s, name
+              assert 'Selecting a profile does not grant control' in s, name
+              assert 'Request removal' in s, name
+              assert 'Community Membership benefits' in s, name
+              assert 'Help Center' in s, name
+          print('DESKTOP_FIRST_TIME_CLAIM_SMOKE=PASS')
+          print('MOBILE_FIRST_TIME_CLAIM_SMOKE=PASS')
+          PY
+          echo "R1360_LIVE_SMOKE=PASS"
