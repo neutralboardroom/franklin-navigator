@@ -1,0 +1,28 @@
+name: R1360 profile identity and claim safety
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+jobs:
+  qualify-r1360:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build publication-safe profile surfaces
+        run: python scripts/r1360-profile-publication-safety.py
+      - name: R1360 profile data and claim contract
+        run: node --test test/r1360-profile-data-claim-safety.test.js
+      - name: Syntax checks
+        run: |
+          node --check dist/assets/membership-live.js
+          python -m py_compile scripts/r1360-profile-publication-safety.py
