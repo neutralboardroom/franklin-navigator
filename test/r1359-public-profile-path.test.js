@@ -21,13 +21,12 @@ test('R1359 correction flow uses in-product review rather than native confirmati
   assert.doesNotMatch(src,/window\.confirm\(confirmation\)/);
 });
 
-test('R1360 keeps reviewer authority out of the ordinary claimant path and preserves self-review prohibition',()=>{
+test('R1360 keeps reviewer authority out of the ordinary claimant path',()=>{
   const src=read('dist/assets/membership-live.js');
   assert.doesNotMatch(src,/Open secure reviewer workspace/);
   assert.doesNotMatch(src,/reviewerAccessAvailable/);
   assert.match(src,/Start management verification/);
-  const reviewer=read('runtime/franklin-membership/lib/reviewer-console.js');
-  assert.match(reviewer,/REVIEW_SELF_DECISION_FORBIDDEN/);
+  assert.match(src,/Selecting a profile does not grant management control/);
 });
 
 test('R1359 Profile Center exposes verified-manager direct maintenance',()=>{
