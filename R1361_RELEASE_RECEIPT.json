@@ -1,0 +1,43 @@
+{
+  "release": "FR-NAV1.30.61-HF3.13.43",
+  "predecessor": "FR-NAV1.30.60-HF3.13.42",
+  "date": "2026-09-25",
+  "status": "QUALIFIED_RUNTIME_LIVE_PUBLIC_ASSETS_RETAINED",
+  "runtime": {
+    "mergeCommit": "2665d2f6c6bcbea887787dfd825a35b7f0fa7c5b",
+    "renderDeployId": "dep-dar8vd7f3r2c73bj2c4g",
+    "renderState": "LIVE",
+    "deploymentTests": {
+      "passed": 102,
+      "failed": 0
+    },
+    "startupReady": true
+  },
+  "publicProduct": {
+    "uiAssetChanges": 0,
+    "designChanges": 0,
+    "profileFactChanges": 0,
+    "releaseMetadataAdvanced": true,
+    "staticDeployment": "PENDING_EXACT_MAIN_DEPLOY"
+  },
+  "materialChange": {
+    "removedFromOrdinaryAccountResponse": [
+      "reviewerAccessAvailable",
+      "protectedAdminProfileIds"
+    ],
+    "preserved": [
+      "dedicated private reviewer workspace",
+      "server-side protected administrator reconciliation",
+      "claim and basic profile management",
+      "free factual correction/removal",
+      "optional Community Membership",
+      "commerce policy"
+    ]
+  },
+  "qualification": {
+    "pullRequest": 70,
+    "githubQualificationWorkflowsPassed": 4,
+    "noRegressionIntent": "No working public UI or product behavior was changed merely for version churn."
+  },
+  "authorityTransfer": false
+}
