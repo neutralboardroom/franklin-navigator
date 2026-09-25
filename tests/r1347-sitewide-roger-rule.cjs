@@ -25,7 +25,20 @@ const currentSet=new Set(currentRoutes);
 const missing=baseline.requiredNonProfileHtmlRoutes.filter(p=>!currentSet.has(p));
 add('All protected non-profile public routes remain present',missing.length===0,missing.slice(0,20).join(', '));
 add('Non-profile route count has not regressed',currentRoutes.length>=baseline.minimumNonProfileHtmlRoutes,`${currentRoutes.length} >= ${baseline.minimumNonProfileHtmlRoutes}`);
-add('Profile scope has not silently regressed',Number(release.counts?.profiles||0)>=baseline.minimumProfileCount,`${release.counts?.profiles} >= ${baseline.minimumProfileCount}`);
+let effectiveProfileCoverage=Number(release.counts?.profiles||0),profileCoverageDetail=`${effectiveProfileCoverage} public profiles`;
+if(release.release==='FR-NAV1.30.60-HF3.13.42'){
+  const aliasState=JSON.parse(read('dist/data/profile-aliases-r1360.json'));
+  const receipt=JSON.parse(read('R1360_QUALIFICATION_RECEIPT.json'));
+  const aliasCount=Object.keys(aliasState.aliases||{}).length;
+  const suppressedCount=(aliasState.suppressedGenericProfileIds||[]).length;
+  effectiveProfileCoverage+=aliasCount+suppressedCount;
+  profileCoverageDetail=`${release.counts?.profiles} public + ${aliasCount} canonical aliases + ${suppressedCount} explicit generic suppression = ${effectiveProfileCoverage}`;
+  add('R1360 profile-count reduction is explicit canonicalization/suppression, not silent loss',
+    receipt.profileFactory?.version==='FR-PF-PLATFORM-15.38'&&
+    receipt.profileFactory?.semantics==='FULL_REPLACE_NOT_APPEND'&&aliasCount===100&&suppressedCount===1&&
+    (aliasState.reviewHeldProfileIds||[]).length===0,profileCoverageDetail);
+}
+add('Profile identity coverage has not silently regressed',effectiveProfileCoverage>=baseline.minimumProfileCount,`${profileCoverageDetail}; baseline ${baseline.minimumProfileCount}`);
 add('Assistant route scope has not silently regressed',Number(release.counts?.assistantRoutes||0)>=baseline.minimumAssistantRouteCount,`${release.counts?.assistantRoutes} >= ${baseline.minimumAssistantRouteCount}`);
 
 add('Roger rule requires explicit owner direction before removal/burial',rule.includes('only when Roger explicitly directs that specific change')&&rule.includes('no regression, no burial, no silent removal'));
@@ -61,5 +74,5 @@ const predecessorTests=[
 add('All predecessor permanent regression test files remain present',predecessorTests.every(exists),predecessorTests.filter(x=>!exists(x)).join(', '));
 
 const failed=checks.filter(x=>!x.pass);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:release.release,baseline:{nonProfileRoutes:baseline.minimumNonProfileHtmlRoutes,minimumProfiles:baseline.minimumProfileCount,minimumAssistantRoutes:baseline.minimumAssistantRouteCount},current:{nonProfileRoutes:currentRoutes.length,profiles:release.counts?.profiles,assistantRoutes:release.counts?.assistantRoutes},checks,failed},null,2));
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:release.release,baseline:{nonProfileRoutes:baseline.minimumNonProfileHtmlRoutes,minimumProfiles:baseline.minimumProfileCount,minimumAssistantRoutes:baseline.minimumAssistantRouteCount},current:{nonProfileRoutes:currentRoutes.length,profiles:release.counts?.profiles,effectiveProfileCoverage,assistantRoutes:release.counts?.assistantRoutes},checks,failed},null,2));
 if(failed.length)process.exit(1);

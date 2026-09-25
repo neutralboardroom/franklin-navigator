@@ -19,8 +19,8 @@ ok('direct profile-access path protects official platform profile',
   live.includes("state.selected.i===SELF_ID")&&live.includes('Ordinary public claims are not accepted'));
 ok('pending state is status-aware and names Franklin Navigator team',
   live.includes("title.textContent='Access request pending.'")&&live.includes('The Franklin Navigator team reviews the submitted evidence'));
-ok('reviewer handoff no longer places account email in URL fragment',
-  !live.includes("reviewerContext.set('email'")&&live.includes('Open secure reviewer workspace'));
+ok('reviewer tools are removed from the ordinary claimant runtime',
+  !live.includes("reviewerContext.set('email'")&&!live.includes('Open secure reviewer workspace')&&!live.includes('reviewerAccessAvailable'));
 ok('profile switcher uses plain language',
   live.includes("summary.textContent='Wrong profile? Choose another'"));
 ok('correction/removal page exposes required fields and direct removal action',
@@ -39,4 +39,4 @@ ok('Spanish parity covers audited high-value labels',
   i18n.includes("'Correct public facts':'Corregir datos públicos'")&&
   i18n.includes("'Open secure reviewer workspace':'Abrir espacio seguro de revisión'"));
 
-console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.59-HF3.13.41',checks:checks.length,items:checks},null,2));
+console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.60-HF3.13.42',checks:checks.length,items:checks},null,2));
