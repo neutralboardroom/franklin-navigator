@@ -76,3 +76,9 @@ body.hf35 .learning-boundary .card,body.hf35 .learning-boundary .card h1,body.hf
   .r1359-history-row{align-items:flex-start}
   .r1359-history-row .button{width:100%;margin-left:0}
 }
+
+/* R1360 — first-time profile verification clarity */
+.r1360-what-next{margin:.9rem 0 1rem;padding:1rem 1.05rem;border:1px solid #cfe0dd;border-radius:14px;background:#f5faf9}
+.r1360-what-next p{margin:.45rem 0 0}
+.r1360-account-notice{margin:.85rem 0}
+.r1360-account-notice:focus{outline:3px solid currentColor;outline-offset:3px}
