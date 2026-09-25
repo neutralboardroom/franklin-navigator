@@ -223,7 +223,7 @@ This confirms the Factory case is not isolated. The fix must be corpus-wide and 
 
 **Priority:** P0 outreach / profile identity / claim-path clarity.
 
-**Status:** OPEN — owner-observed during first-time-user outreach smoke test.
+**Status:** IMPLEMENTED_CANDIDATE — owner-observed during first-time-user outreach smoke test.
 
 
 ## Finding #199 — Internal/provenance/technical source text is leaking into public profile location and About content
@@ -267,7 +267,7 @@ The 1,739 count is a lower-bound pattern audit, not a claim that every one of th
 
 **Priority:** P0 outreach / public trust / profile quality.
 
-**Status:** OPEN — owner-observed and corpus-confirmed during first-time-user outreach smoke test.
+**Status:** IMPLEMENTED_CANDIDATE — owner-observed and corpus-confirmed during first-time-user outreach smoke test.
 
 
 ## Finding #200 — First-time claim page asks for account creation before explaining what management verification will require
@@ -297,7 +297,7 @@ The 1,739 count is a lower-bound pattern audit, not a claim that every one of th
 
 **Priority:** P1 outreach conversion / trust / claim clarity.
 
-**Status:** OPEN — owner-observed during first-time-user smoke test.
+**Status:** IMPLEMENTED_CANDIDATE — owner-observed during first-time-user smoke test.
 
 
 ## Finding #201 — Account-mode feedback appears off-screen and automatic create→sign-in switching is not obvious
@@ -331,7 +331,7 @@ The 1,739 count is a lower-bound pattern audit, not a claim that every one of th
 
 **Priority:** P1 outreach conversion / account access clarity.
 
-**Status:** OPEN — owner-observed and source-confirmed during first-time-user smoke test.
+**Status:** IMPLEMENTED_CANDIDATE — owner-observed and source-confirmed during first-time-user smoke test.
 
 
 ## Finding #202 — Reviewer workspace intrudes into an unrelated ordinary profile-claim path for privileged accounts
@@ -362,7 +362,7 @@ The 1,739 count is a lower-bound pattern audit, not a claim that every one of th
 
 **Priority:** P1 security UX / role separation / claim clarity.
 
-**Status:** OPEN — owner-observed and source-confirmed during first-time-user smoke test.
+**Status:** IMPLEMENTED_CANDIDATE — owner-observed and source-confirmed during first-time-user smoke test.
 
 
 ## Finding #203 — “Continue with this profile” creates an unverified account-profile link before proof, but the UI does not explain the distinction
@@ -394,4 +394,9 @@ The 1,739 count is a lower-bound pattern audit, not a claim that every one of th
 
 **Priority:** P1 security UX / claim-boundary clarity.
 
-**Status:** OPEN — owner-observed and source-confirmed during first-time-user smoke test.
+**Status:** IMPLEMENTED_CANDIDATE — owner-observed and source-confirmed during first-time-user smoke test.
+
+
+## R1360 candidate disposition — 2026-09-25
+
+Findings #198–#203 are implemented in the R1360 candidate and remain **not closed** until inherited regression, exact-source qualification, deployment and live first-time-user smoke testing pass. The outreach hold remains active.
