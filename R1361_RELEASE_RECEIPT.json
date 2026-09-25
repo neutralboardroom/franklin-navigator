@@ -18,7 +18,8 @@
     "designChanges": 0,
     "profileFactChanges": 0,
     "releaseMetadataAdvanced": true,
-    "staticDeployment": "PENDING_EXACT_MAIN_DEPLOY"
+    "staticDeploymentEvidence": "RENDER_PROVIDER_HISTORY_AFTER_EXACT_MAIN_DEPLOY",
+    "publicBytesPolicy": "dist/ is intentionally unchanged from the already-qualified R1360 public UI; R1361 does not redesign or rewrite working public pages."
   },
   "materialChange": {
     "removedFromOrdinaryAccountResponse": [
