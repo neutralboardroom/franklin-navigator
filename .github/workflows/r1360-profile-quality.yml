@@ -1,64 +1,84 @@
-name: R1360 profile quality generator and qualification
+name: R1360 profile quality qualification
 on:
-  push:
-    branches: [r1360-profile-quality-20260923]
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - 'dist/**'
+      - 'runtime/franklin-membership/**'
+      - 'PRODUCTION_RELEASE.json'
+      - 'R1360_QUALIFICATION_RECEIPT.json'
+      - 'R1360_GENERATOR_RESULT.json'
+      - 'r1360-input/PF1538_CONSUMER_AUTHORITY.json'
+      - 'scripts/r1360-profile-quality-build.py'
+      - 'tests/r1352-claim-review-path.cjs'
+      - 'tests/r1358-profile-claim-management-depth.cjs'
+      - 'tests/r1346-claim-path-outreach-readiness.cjs'
+      - 'tests/r1342-claim-recovery.cjs'
+      - '.github/workflows/r1360-profile-quality.yml'
 permissions:
-  contents: write
+  contents: read
+concurrency:
+  group: r1360-profile-quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
-  generate-qualify:
-    if: ${{ github.event_name == 'pull_request' || !contains(github.event.head_commit.message, '[r1360-generated]') }}
-    runs-on: ubuntu-latest
+  qualify-r1360:
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
-          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Decode exact PF 15.37 consumer overlay
+      - name: Exact PF15.38 authority and public projection
         run: |
           python - <<'PY'
-          import base64,gzip,pathlib
-          src=pathlib.Path('r1360-input/pf1537-consumer-overlay.json.gz.b64')
-          out=pathlib.Path('r1360-input/pf1537-consumer-overlay.json')
-          out.write_bytes(gzip.decompress(base64.b64decode(src.read_text().strip())))
+          import json,re,glob,pathlib
+          receipt=json.load(open('R1360_QUALIFICATION_RECEIPT.json'))
+          result=json.load(open('R1360_GENERATOR_RESULT.json'))
+          authority=json.load(open('r1360-input/PF1538_CONSUMER_AUTHORITY.json'))
+          aliases=json.load(open('dist/data/profile-aliases-r1360.json'))
+          assert receipt['release']=='FR-NAV1.30.60-HF3.13.42'
+          assert receipt['profileFactory']['version']=='FR-PF-PLATFORM-15.38'
+          assert receipt['profileFactory']['artifactSha256']=='e90cc02dfe026ea64d287eef59c12a067bfa9e55a3879e282fd7a50a30afd89b'
+          assert receipt['profileFactory']['semantics']=='FULL_REPLACE_NOT_APPEND'
+          assert receipt['profileFactory']['aliasCount']==100
+          assert receipt['profileFactory']['reviewHeld']==0
+          assert receipt['profileFactory']['suppressedGeneric']==1
+          assert receipt['publicProjection']['canonicalPublicProfiles']==19002
+          assert receipt['publicProjection']['protectedLocalOverlayProfiles']==1
+          assert receipt['publicProjection']['unsafePublicDisplayHitsAfter']==0
+          assert result['profileFactory']=='FR-PF-PLATFORM-15.38'
+          assert result['aliases']==100 and result['reviewHeld']==0
+          assert result['suppressedGenericProfiles']==1
+          assert aliases['profileFactoryVersion']=='FR-PF-PLATFORM-15.38'
+          assert len(aliases['aliases'])==100
+          assert aliases.get('reviewHeldProfileIds',[])==[]
+          assert aliases.get('suppressedGenericProfileIds')==['FR-ORG-a0776afee5ec-firstbank']
+          assert authority['profileFactoryVersion']=='FR-PF-PLATFORM-15.38'
+          unsafe=re.compile(r'(source coordinate|street address not asserted|exact coordinates retained|public irs filing address geocoded|assigned community|current named member/resource|\bPF\d+\b)',re.I)
+          hits=[]
+          for p in glob.glob('dist/profiles/*/index.html'):
+            if unsafe.search(pathlib.Path(p).read_text(errors='ignore')): hits.append(p)
+          assert not hits,hits[:10]
+          print('PF15.38 authority/public projection PASS')
           PY
-      - name: Generate exact R1360 canonical public projection
-        run: python scripts/r1360-profile-quality-build.py | tee R1360_GENERATOR_RESULT.json
-      - name: Focused R1360 qualification
+      - name: Focused R1360 claim and alias qualification
         run: |
           node tests/r1352-claim-review-path.cjs
           node tests/r1358-profile-claim-management-depth.cjs
           node tests/r1346-claim-path-outreach-readiness.cjs
           node tests/r1342-claim-recovery.cjs
           node runtime/franklin-membership/test-r1360-alias-firewall.js
+          node --check dist/assets/membership-live.js
+          node --check dist/assets/hf36.js
           node --check runtime/franklin-membership/server.js
-          python - <<'PY'
-          import json,re,glob,sys,pathlib
-          ov=json.load(open('r1360-input/pf1537-consumer-overlay.json'))
-          pat=re.compile(ov['unsafePattern'],re.I)
-          hits=[]
-          for f in glob.glob('dist/profiles/*/index.html'):
-            if pat.search(pathlib.Path(f).read_text(errors='ignore')): hits.append(f)
-          if hits: raise SystemExit('unsafe public profile hits:'+str(hits[:10]))
-          print('unsafe_public_display_hits_after=0')
-          PY
-      - name: Commit exact generated successor tree
+      - name: Qualification is read-only
         run: |
-          rm -f r1360-input/pf1537-consumer-overlay.json
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add dist runtime/franklin-membership/data/member-profile-scope.json runtime/franklin-membership/data/profile-aliases-r1360.json R1360_GENERATOR_RESULT.json
-          if git diff --cached --quiet; then
-            echo 'No generated changes.'
-          else
-            git commit -m 'R1360: generate canonical profile projection [r1360-generated]'
-            git push origin HEAD:${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}
-          fi
+          test -z "$(git status --porcelain)"
