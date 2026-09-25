@@ -45,5 +45,5 @@ test('R1357 protects the official Franklin Navigator profile from new ordinary c
 });
 
 test('R1357 release identity is current',()=>{
-  assert.ok(server().includes('FR-NAV1.30.60-HF3.13.42'));
+  assert.ok(server().includes('FR-NAV1.30.61-HF3.13.43'));
 });
