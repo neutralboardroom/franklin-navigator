@@ -1,9 +1,9 @@
 {
-  "release": "FR-NAV1.30.60-HF3.13.42",
-  "date": "2026-09-23",
-  "base": "FR-NAV1.30.59-HF3.13.41",
+  "release": "FR-NAV1.30.61-HF3.13.43",
+  "date": "2026-09-25",
+  "base": "FR-NAV1.30.60-HF3.13.42",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
-  "scope": "R1360 closes profile-quality Findings #198-#203: canonical alias collapse, public provenance-text safety, explicit first-time management verification, viewport-visible account feedback, claimant/reviewer separation, and a fail-closed runtime alias firewall while preserving free profile management and optional $35/year Community Membership.",
+  "scope": "R1361 hardens the private reviewer/owner-authority boundary by removing internal reviewer and protected-administrator eligibility flags from the ordinary signed-in account response. The dedicated private reviewer workspace, server-side protected-administrator reconciliation, public design, profile facts, free correction/removal and basic management paths, optional $35/year Community Membership, and commerce policy are preserved.",
   "counts": {
     "profiles": 19003,
     "assistantRoutes": 254
@@ -1222,7 +1222,7 @@
       "19,103 canonical discovery profiles plus authorized Franklin Navigator self-profile overlay",
       "free factual correction/removal/claim management",
       "finished business/professional profiles",
-      "1\u20135 ratings and written firsthand reviews",
+      "1–5 ratings and written firsthand reviews",
       "review reporting/moderation and verified manager responses",
       "free reviewed profile photo/logo upload",
       "paid Community Member cover/gallery",
@@ -1519,7 +1519,7 @@
     "donorRegistry": "DONOR_CAPABILITY_REGISTRY__R1337.json",
     "homepageHistoryHeading": {
       "value": "Franklin Through Time",
-      "previousValue": "Franklin Through Time \u2014 Then & Now",
+      "previousValue": "Franklin Through Time — Then & Now",
       "ownerInstructionDate": "2026-09-18",
       "changeScope": "HEADING_TEXT_ONLY",
       "preserveRestOfHomepage": true
@@ -1695,7 +1695,7 @@
     "ownerDirection": "APPROVED_BUSINESS_VISIBILITY_HEADLINE_AND_CONTINUE_PROFILE_CLAIM_LANGUAGE_PATH_MANAGEMENT_IMPROVEMENTS",
     "materialImprovement": {
       "approvedBusinessHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
-      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mej\u00f3relo. Aumente su visibilidad local.",
+      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local.",
       "profileCenterTerminologyRepositoryWide": true,
       "staleProfileStudioVisibleLanguageRemoved": true,
       "staleManagedUnclaimedVisibleLabelsRemoved": true,
@@ -1772,7 +1772,7 @@
     "ownerDirection": "FIX_OWNER_REPORTED_BUSINESS_DASHBOARD_OVERLAP_AND_ENSURE_READABILITY_SITEWIDE",
     "materialImprovement": {
       "approvedBusinessHeadline": "Find your Franklin profile. Improve it. Grow your local visibility.",
-      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mej\u00f3relo. Aumente su visibilidad local.",
+      "spanishBusinessHeadline": "Encuentre su perfil de Franklin. Mejórelo. Aumente su visibilidad local.",
       "staleDynamicHeadlineOverrideRemoved": true,
       "dynamicPathFixedBadgeGeometryNeutralized": true,
       "pathCardReadableColorAndWrapping": true,
@@ -2506,7 +2506,7 @@
       "staticDeploy": "dep-danptbjtqb8s73co9k4g"
     },
     "ownerCommandRevision": "2026-09-03-R2",
-    "materialImprovement": "Repair two current public-quality defects without unrelated redesign: restore English/Spanish static homepage currentness parity, and prevent broad umbrella profile categories from generating unrelated Related local profiles; use a qualified restaurant/food override for Daddy\u2019s Dogs and allow fewer results when relevance is insufficient.",
+    "materialImprovement": "Repair two current public-quality defects without unrelated redesign: restore English/Spanish static homepage currentness parity, and prevent broad umbrella profile categories from generating unrelated Related local profiles; use a qualified restaurant/food override for Daddy’s Dogs and allow fewer results when relevance is insufficient.",
     "fixes": {
       "bilingualStaticHomepageCurrentnessParity": true,
       "expiredSpanishSplashParkRemoved": true,
@@ -3861,5 +3861,35 @@
       "R1360_QUALIFICATION_RECEIPT.json",
       "FRANKLIN_NAVIGATOR__OUTREACH_READY_HANDOFF__R1360.md"
     ]
+  },
+  "r1361": {
+    "role": "LOCAL_COMMUNITY_PLATFORM",
+    "edition": "FRANKLIN_TN",
+    "predecessor": "FR-NAV1.30.60-HF3.13.42",
+    "runtimeRelease": "FR-NAV1.30.61-HF3.13.43",
+    "runtimeCommit": "2665d2f6c6bcbea887787dfd825a35b7f0fa7c5b",
+    "runtimeDeployId": "dep-dar8vd7f3r2c73bj2c4g",
+    "runtimeDeployState": "LIVE",
+    "runtimeQualification": {
+      "githubWorkflowsPassed": 4,
+      "deploymentTestsPassed": 102,
+      "deploymentTestsFailed": 0,
+      "startupReady": true
+    },
+    "improvement": "PRIVATE_REVIEWER_AUTHORITY_BOUNDARY_HARDENING",
+    "ordinaryAccountResponseRemovedFields": [
+      "reviewerAccessAvailable",
+      "protectedAdminProfileIds"
+    ],
+    "privateReviewerWorkspacePreserved": true,
+    "protectedAdminServerReconciliationPreserved": true,
+    "publicDesignChanged": false,
+    "publicDistAssetsChanged": false,
+    "profileFactsChanged": false,
+    "pricingChanged": false,
+    "membershipPolicyChanged": false,
+    "profileFactoryMutation": false,
+    "localInvestigatorConsumed": false,
+    "smarterJusticeDonorUsed": false
   }
 }
