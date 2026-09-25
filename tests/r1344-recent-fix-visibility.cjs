@@ -67,7 +67,7 @@ add('R1342 Spanish recovery/claim parity retained',i18n.includes("'Forgot passwo
 add('R1342 unverified users continue through Profile Access',hf39.includes("access='/profile-access/?profile='")&&!hf39.includes("Continue profile access',studio"));
 
 add('R1343 universal claim CTA retained',app.includes('universal profile-control visibility guard')&&css.includes('--claim-accent:#f6c453'));
-add('R1351 neutral profile-selection action retained',claim.includes("b.textContent='Continue with this profile'")&&css.includes('.r1342-claim-result-action')&&css.includes('background:var(--claim-accent)!important'));
+add('R1360 neutral profile-selection action retained',claim.includes("b.textContent='Start management verification'")&&claim.includes('Selecting a profile does not grant control.')&&css.includes('.r1342-claim-result-action')&&css.includes('background:var(--claim-accent)!important'));
 add('R1344 correction page exposes claim/manage prominently',corrections.includes('data-r1344-claim-cta')&&corrections.includes('Claim or manage this profile — free'));
 add('R1344 correction claim keeps exact-profile continuity',profileControl.includes("claimCta.href='/profile-access/?profile='"));
 add('R1344 correction claim uses distinct ownership accent',css.includes('.r1344-owner-claim-callout')&&css.includes('.r1343-claim-primary'));
@@ -77,12 +77,12 @@ add('R1345 correction completion respects pre-verification route',profileControl
 add('R1345 authority-routing durable rule retained',authorityRule.includes('Profile Center')&&authorityRule.includes('post-verification management workspace'));
 add('R1346 claim CTA remains visually primary while official website is secondary',r1330.includes("r1343-claim-primary")&&css.includes('body.r1346-claimable.hf35-profile.r1332-profile .profile-primary-actions a.button.primary:not(.r1343-claim-primary)'));
 add('R1346 Step 3 verification form remains readable and vertical',live.includes("form.className='r1346-profile-access-verification'")&&css.includes('.r1346-profile-access-verification textarea{min-height:150px'));
-add('R1346 connect and recovery actions cannot be silent',live.includes('Connecting profile…')&&recovery.includes("submit.textContent='Sending password-reset instructions…'")&&recovery.includes("submit.textContent='Changing password…'"));
+add('R1360 verification and recovery actions cannot be silent',live.includes('Starting verification…')&&live.includes('Starting management verification…')&&recovery.includes("submit.textContent='Sending password-reset instructions…'")&&recovery.includes("submit.textContent='Changing password…'"));
 add('R1346 exact-profile recovery success replaces old form',recovery.includes('body.replaceChildren()')&&recovery.includes("profile?'/profile-access/'+profileQuery")&&recovery.includes("go.href=destination"));
 add('R1346 progress semantics remain visible',access.includes('data-r1346-profile-progress')&&live.includes("setAttribute('aria-current','step')"));
 add('R1346 no-silent-click durable rule retained',asyncRule.includes('NO SILENT CLICKS')&&asyncRule.includes('scroll/focus'));
 
 
 const failed=checks.filter(x=>!x[1]);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.55-HF3.13.37',checks,failed},null,2));
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.60-HF3.13.42',checks,failed},null,2));
 if(failed.length)process.exit(1);
