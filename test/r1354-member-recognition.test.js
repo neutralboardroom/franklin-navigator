@@ -71,7 +71,7 @@ test('source contract preserves annual uniqueness, history, one-unit cap and dig
 test('runtime wiring advances release and exposes recognition without changing free claim rights',()=>{
   const server=fs.readFileSync('server.js','utf8');
   const member=fs.readFileSync('lib/member-fulfillment.js','utf8');
-  assert.ok(server.includes("FR-NAV1.30.60-HF3.13.42"));
+  assert.ok(server.includes("FR-NAV1.30.61-HF3.13.43"));
   assert.ok(server.includes('memberRecognitionVersion:MEMBER_RECOGNITION_VERSION'));
   assert.ok(server.includes('memberRecognition.syncMembership'));
   assert.ok(server.includes('memberRecognition.route'));
