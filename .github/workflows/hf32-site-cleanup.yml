@@ -120,7 +120,17 @@ jobs:
           assert d['branding']['favicon']=='/assets/favicon.svg'
           a=d['assistant']
           assert d['counts']['assistantRoutes']==254
-          assert d['counts']['profiles']>=19103
+          if d['release']=='FR-NAV1.30.60-HF3.13.42':
+              r=json.loads(Path('R1360_QUALIFICATION_RECEIPT.json').read_text())
+              assert r['profileFactory']['version']=='FR-PF-PLATFORM-15.38'
+              assert r['profileFactory']['semantics']=='FULL_REPLACE_NOT_APPEND'
+              assert r['profileFactory']['aliasCount']==100
+              assert r['profileFactory']['reviewHeld']==0
+              assert r['profileFactory']['suppressedGeneric']==1
+              assert r['publicProjection']['unsafePublicDisplayHitsAfter']==0
+              assert d['counts']['profiles']==r['publicProjection']['canonicalPublicProfiles']+r['publicProjection']['protectedLocalOverlayProfiles']
+          else:
+              assert d['counts']['profiles']>=19103
           assert a.get('availableLegacyRouteCount',a.get('routeCount'))==254
           assert a.get('availableSiteProfileCount',a.get('profileCount'))==19103
           assert a['attachmentNetworkSubmission'] is False
@@ -158,10 +168,15 @@ jobs:
           idx=Path('dist')/manifest['index']['file'].lstrip('/')
           assert manifest['recordCount']==19103
           assert hashlib.sha256(idx.read_bytes()).hexdigest()==manifest['index']['sha256']
-          # A single owner-directed, source-backed PF15.28 Franklin Navigator self-profile
-          # overlay may extend the public profile scope to 19,104 without rewriting the
-          # canonical 19,103 discovery index.
-          if d['counts']['profiles']==19104:
+          # R1360 consumes PF15.38 as a FULL_REPLACE public projection: the source
+          # discovery corpus remains 19,103 while aliases/generic suppression reduce the
+          # canonical public profile set. Earlier releases retain the prior count contract.
+          if d['release']=='FR-NAV1.30.60-HF3.13.42':
+              r=json.loads(Path('R1360_QUALIFICATION_RECEIPT.json').read_text())
+              assert manifest['recordCount']==19103
+              assert d['counts']['profiles']==r['publicProjection']['canonicalPublicProfiles']+r['publicProjection']['protectedLocalOverlayProfiles']
+              assert Path('dist/data/profile-aliases-r1360.json').is_file()
+          elif d['counts']['profiles']==19104:
               assert d.get('authority',{}).get('pf15_28CanonicalProfileId')=='FR-ORG-b00c0ace7943973c'
               assert Path('dist/profiles/FR-ORG-b00c0ace7943973c/index.html').is_file()
           else:
@@ -211,6 +226,22 @@ jobs:
           node tests/r1344-recent-fix-visibility.cjs
           node tests/r1345-profile-access-authority-routing.cjs
           node tests/r1346-claim-path-outreach-readiness.cjs
+          node runtime/franklin-membership/test-r1360-alias-firewall.js
+          python - <<'PY'
+          import json,re,glob,pathlib
+          receipt=json.load(open('R1360_QUALIFICATION_RECEIPT.json'))
+          aliases=json.load(open('dist/data/profile-aliases-r1360.json'))
+          assert receipt['profileFactory']['version']=='FR-PF-PLATFORM-15.38'
+          assert len(aliases['aliases'])==100
+          assert aliases['reviewHeldProfileIds']==[]
+          assert aliases['suppressedGenericProfileIds']==['FR-ORG-a0776afee5ec-firstbank']
+          unsafe=re.compile(r'(source coordinate|street address not asserted|exact coordinates retained|public irs filing address geocoded|assigned community|current named member/resource|\\bPF\\d+\\b)',re.I)
+          hits=[]
+          for p in glob.glob('dist/profiles/*/index.html'):
+              if unsafe.search(pathlib.Path(p).read_text(errors='ignore')): hits.append(p)
+          assert not hits, hits[:10]
+          print('R1360 PF15.38 public identity/provenance gate PASS')
+          PY
           node tests/r1347-two-command-permanent-baseline.cjs
           node tests/r1347-sitewide-roger-rule.cjs
           node tests/r1353-alert-notification-hygiene.cjs
@@ -235,7 +266,10 @@ jobs:
           test -f dist/review-guidelines/index.html
           grep -F "Sponsored" dist/assets/r1333-paid-sponsored.js
           grep -F "ordinary unpaid" dist/membership-start/index.html
-          grep -F "Continue with this profile" dist/assets/membership-live.js
+          grep -F "Start management verification" dist/assets/membership-live.js
+          grep -F "Selecting a profile does not grant management control." dist/assets/membership-live.js
+          grep -F "Before you create an account or sign in" dist/assets/membership-live.js
+          ! grep -F "Open secure reviewer workspace" dist/assets/membership-live.js
           grep -F "This exact public listing stays selected through sign-in, password recovery, and access review." dist/assets/membership-live.js
           grep -F "linked.authority_state==='VERIFIED'" dist/assets/membership-live.js
           grep -F "authorityConfirmed:true" dist/assets/member-profile-live.js
