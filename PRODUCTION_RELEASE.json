@@ -1,7 +1,7 @@
 {
-  "release": "FR-NAV1.30.59-HF3.13.41",
+  "release": "FR-NAV1.30.60-HF3.13.42",
   "date": "2026-09-22",
-  "base": "FR-NAV1.30.58-HF3.13.40",
+  "base": "FR-NAV1.30.59-HF3.13.41",
   "unchangedPageBaseline": "FR-NAV1.29.0-HF3.10",
   "scope": "R1358 deepens the free profile claim, correction and review workflow after the owner live audit: immutable claim-submission evidence history, richer reviewer metadata, post-commit decision notification tracking, reviewer expiry guidance, structured correction/removal reasons, and expanded regression coverage while preserving canonical profile authority, optional Community Membership and whole-site no-regression.",
   "counts": {
@@ -3840,5 +3840,44 @@
       "claimReviewRegression": "PASS",
       "noRegression": "PASS"
     }
+  },
+  "r1360": {
+    "version": "FR-NAV1.30.60-HF3.13.42",
+    "date": "2026-09-25",
+    "canonicalBuilderRole": "LOCAL_COMMUNITY_PLATFORM",
+    "activeEdition": "FRANKLIN_TN",
+    "writableProductLane": "LOCAL_COMMUNITY_PLATFORM/FRANKLIN_TN",
+    "state": "CANDIDATE_QUALIFICATION",
+    "predecessor": {
+      "version": "FR-NAV1.30.59-HF3.13.41",
+      "publicCommit": "979abfc059dceade443a4022fbb302cb4edcd970",
+      "runtimeCommit": "7651daa1e17c4f7b762c02d76b1d3420835b6483"
+    },
+    "ownerFindings": [
+      198,
+      199,
+      200,
+      201,
+      202,
+      203
+    ],
+    "profileIdentitySafety": {
+      "sourceProfiles": 19103,
+      "publicDiscoveryProfiles": 18991,
+      "aliases": 32,
+      "identityReviewHolds": 80,
+      "profileHtmlSanitized": 1872,
+      "policy": "FAIL_CLOSED"
+    },
+    "upstreamProfileFactory": {
+      "newestObserved": "FR-PF-PLATFORM-15.36",
+      "state": "QUALIFIED_SUCCESSOR_CANDIDATE_READY_FOR_EXTERNAL_ACCEPTANCE",
+      "currentPointerAdvanced": false,
+      "usedAsCanonicalImport": false
+    },
+    "outreachGate": {
+      "state": "HOLD_UNTIL_R1360_LIVE_AND_SMOKE_PASS"
+    },
+    "qualification": "IN_PROGRESS"
   }
 }
