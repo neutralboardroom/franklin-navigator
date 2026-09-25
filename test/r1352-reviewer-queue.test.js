@@ -23,8 +23,10 @@ test('private reviewer queue exposes bounded operational context',()=>{
 
 test('reviewer discoverability remains authorization-bound and private',()=>{
   assert.ok(reviewer.includes('reviewerAccessForAccount:accountId=>Boolean(configured&&bindings.has'));
-  assert.ok(server.includes('reviewerAccessAvailable:reviewerConsole.reviewerAccessForAccount(session.account_id)'));
-  assert.ok(!server.includes("reviewerAccessAvailable:true"));
+  assert.ok(reviewer.includes("if(!url.pathname.startsWith('/api/reviewer/'))return false"));
+  assert.ok(reviewer.includes("Cache-Control','no-store, private"));
+  assert.ok(!server.includes('reviewerAccessAvailable:'));
+  assert.ok(!server.includes('protectedAdminProfileIds'));
 });
 
 test('existing decision security and audit semantics remain intact',()=>{
