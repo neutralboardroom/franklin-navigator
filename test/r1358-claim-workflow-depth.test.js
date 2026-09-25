@@ -41,7 +41,7 @@ test('R1358 reviewer console exposes immutable submission history and richer que
 
 test('R1358 server initializes exact migration and sends decision email without making delivery authoritative',()=>{
   const src=read('server.js');
-  assert.match(src,/FR-NAV1\.30\.60-HF3\.13\.42/);
+  assert.match(src,/FR-NAV1\.30\.61-HF3\.13\.43/);
   assert.match(src,/FRANKLIN_CLAIM_WORKFLOW_R1358_1/);
   assert.match(src,/initializeClaimWorkflow/);
   assert.match(src,/sendClaimDecisionNotification/);
