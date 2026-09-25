@@ -39,4 +39,4 @@ ok('Spanish parity covers audited high-value labels',
   i18n.includes("'Correct public facts':'Corregir datos públicos'")&&
   i18n.includes("'Open secure reviewer workspace':'Abrir espacio seguro de revisión'"));
 
-console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.59-HF3.13.41',checks:checks.length,items:checks},null,2));
+console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.60-HF3.13.42',checks:checks.length,items:checks},null,2));
