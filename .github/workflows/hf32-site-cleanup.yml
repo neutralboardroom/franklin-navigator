@@ -104,6 +104,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: R1360 publication and identity safety build
+        run: |
+          python scripts/r1360-profile-publication-safety.py
+          node --test test/r1360-profile-data-claim-safety.test.js
+
       - name: Current release, profile, Assistant, navigation and monitoring contract
         run: |
           set -euo pipefail
