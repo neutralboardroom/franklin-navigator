@@ -35,7 +35,9 @@ test('R1355 reviewer recovery hands off to secure public link recovery',()=>{
 });
 
 test('R1355 password reset email uses a branded HTML action and remains single-use',()=>{
-  assert.match(server,/Franklin Navigator <\$\{resetEmailConfig\.from\}>/);
+  assert.match(server,/FRANKLIN_TRANSACTIONAL_BRIDGE_URL/);
+  assert.match(server,/sendTransactionalEmail/);
+  assert.match(server,/subject:'Reset your Franklin Navigator password'/);
   assert.match(server,/>Reset your password<\/a>/);
   assert.match(server,/within 30 minutes/);
   assert.match(recovery,/update franklin_recovery_tokens set consumed_at=now\(\)/);
