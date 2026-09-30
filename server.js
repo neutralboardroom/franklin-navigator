@@ -99,14 +99,31 @@ async function readBody(req,raw=false){const chunks=[];let size=0;for await(cons
 async function query(text,values=[]){if(!pool)throw publicError('DATABASE_NOT_CONFIGURED','Membership service is not ready.',503);return pool.query(text,values);}
 async function tx(fn){if(!pool)throw publicError('DATABASE_NOT_CONFIGURED','Membership service is not ready.',503);const client=await pool.connect();try{await client.query('begin');const out=await fn(client);await client.query('commit');return out;}catch(error){await client.query('rollback').catch(()=>{});throw error;}finally{client.release();}}
 const incidentMonitor=createIncidentMonitor({query,tx,newId,sha256,release:RELEASE,environment:'PRODUCTION'});
-const resetEmailConfig=Object.freeze({
-  apiKey:String(process.env.FRANKLIN_ACCOUNT_RECOVERY_RESEND_API_KEY||process.env.FRANKLIN_ALERT_RESEND_API_KEY||process.env.RESEND_API_KEY||'').trim(),
-  from:String(process.env.FRANKLIN_ACCOUNT_RECOVERY_FROM_EMAIL||process.env.FRANKLIN_ALERT_FROM_EMAIL||'').trim()
+const transactionalEmailConfig=Object.freeze({
+  bridgeUrl:String(process.env.FRANKLIN_TRANSACTIONAL_BRIDGE_URL||'').trim().replace(/\/$/,''),
+  bridgeSecret:String(process.env.FRANKLIN_TRANSACTIONAL_BRIDGE_SECRET||'').trim()
 });
-const claimEmailConfig=Object.freeze({
-  apiKey:String(process.env.FRANKLIN_CLAIM_NOTIFICATION_RESEND_API_KEY||resetEmailConfig.apiKey||'').trim(),
-  from:String(process.env.FRANKLIN_CLAIM_NOTIFICATION_FROM_EMAIL||resetEmailConfig.from||'').trim()
-});
+function transactionalEmailConfigured(){
+  try{
+    const url=new URL(transactionalEmailConfig.bridgeUrl);
+    return url.protocol==='https:'&&transactionalEmailConfig.bridgeSecret.length>=32;
+  }catch{return false;}
+}
+async function sendTransactionalEmail({to,subject,text,html=''}){
+  if(!transactionalEmailConfigured())throw Object.assign(new Error('FRANKLIN_TRANSACTIONAL_EMAIL_NOT_CONFIGURED'),{code:'FRANKLIN_TRANSACTIONAL_EMAIL_NOT_CONFIGURED'});
+  const response=await fetch(transactionalEmailConfig.bridgeUrl+'/transactional/send',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'X-Franklin-Transactional-Secret':transactionalEmailConfig.bridgeSecret
+    },
+    body:JSON.stringify({to,subject,text,html}),
+    signal:AbortSignal.timeout(8000)
+  });
+  const payload=await response.json().catch(()=>({}));
+  if(!response.ok||!payload.ok||!payload.messageId)throw Object.assign(new Error('FRANKLIN_TRANSACTIONAL_EMAIL_FAILED'),{code:'FRANKLIN_TRANSACTIONAL_EMAIL_FAILED'});
+  return {id:String(payload.messageId).slice(0,160)};
+}
 function claimDecisionCopy(decision){
   return {
     VERIFIED:{subject:'Your Franklin Navigator profile access was approved',heading:'Profile access approved',body:'Your request to manage this Franklin Navigator profile was approved. Profile Center is now available when you sign in.'},
@@ -118,52 +135,28 @@ function claimDecisionCopy(decision){
 async function sendClaimDecisionNotification(input){
   const copy=claimDecisionCopy(input.decision);
   if(!copy||!EMAIL_RE.test(String(input.email||'')))return {deliveryState:'NOT_CONFIGURED',failureCode:'CLAIM_NOTIFICATION_RECIPIENT_INVALID'};
-  if(!/^re_[A-Za-z0-9_\-]{12,}$/.test(claimEmailConfig.apiKey)||!EMAIL_RE.test(claimEmailConfig.from))return {deliveryState:'NOT_CONFIGURED',failureCode:'CLAIM_NOTIFICATION_EMAIL_NOT_CONFIGURED'};
+  if(!transactionalEmailConfigured())return {deliveryState:'NOT_CONFIGURED',failureCode:'CLAIM_NOTIFICATION_EMAIL_NOT_CONFIGURED'};
   const statusUrl=new URL('/profile-access/',PUBLIC_ORIGIN);statusUrl.searchParams.set('profile',input.profileId);
   const reason=safeText(input.publicReason,600);
   const text=[copy.heading,'',copy.body,reason?'Decision message: '+reason:'','',statusUrl.toString(),'','Profile claiming and factual corrections remain free. Community Membership is optional.'].filter(Boolean).join('\n');
+  const html=`<!doctype html><html><body style="font-family:Arial,sans-serif;color:#162638;line-height:1.5"><div style="max-width:620px;margin:auto;padding:24px"><h1 style="font-size:24px">${copy.heading}</h1><p>${copy.body}</p>${reason?`<p><strong>Decision message:</strong> ${reason.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`:''}<p><a href="${statusUrl.toString().replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" style="display:inline-block;background:#0b6f73;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Review profile access status</a></p><p style="font-size:14px;color:#465766">Profile claiming and factual corrections remain free. Community Membership is optional.</p></div></body></html>`;
   try{
-    const response=await fetch('https://api.resend.com/emails',{
-      method:'POST',
-      headers:{Authorization:'Bearer '+claimEmailConfig.apiKey,'Content-Type':'application/json'},
-      body:JSON.stringify({
-        from:`Franklin Navigator <${claimEmailConfig.from}>`,
-        to:[input.email],
-        subject:copy.subject,
-        text,
-        html:`<!doctype html><html><body style="font-family:Arial,sans-serif;color:#162638;line-height:1.5"><div style="max-width:620px;margin:auto;padding:24px"><h1 style="font-size:24px">${copy.heading}</h1><p>${copy.body}</p>${reason?`<p><strong>Decision message:</strong> ${reason.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`:''}<p><a href="${statusUrl.toString().replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" style="display:inline-block;background:#0b6f73;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Review profile access status</a></p><p style="font-size:14px;color:#465766">Profile claiming and factual corrections remain free. Community Membership is optional.</p></div></body></html>`
-      }),
-      signal:AbortSignal.timeout(8000)
-    });
-    const payload=await response.json().catch(()=>({}));
-    if(!response.ok||!payload.id)return {deliveryState:'FAILED',failureCode:'CLAIM_NOTIFICATION_EMAIL_FAILED'};
-    return {deliveryState:'SENT',providerMessageId:String(payload.id).slice(0,120)};
+    const result=await sendTransactionalEmail({to:input.email,subject:copy.subject,text,html});
+    return {deliveryState:'SENT',providerMessageId:String(result.id).slice(0,160)};
   }catch(error){
     return {deliveryState:'FAILED',failureCode:String(error?.code||'CLAIM_NOTIFICATION_EMAIL_FAILED').slice(0,120)};
   }
 }
 async function sendPasswordResetEmail(email,token,profileId,returnMode){
-  if(!/^re_[A-Za-z0-9_\-]{12,}$/.test(resetEmailConfig.apiKey)||!EMAIL_RE.test(resetEmailConfig.from))throw Object.assign(new Error('PASSWORD_RESET_EMAIL_NOT_CONFIGURED'),{code:'PASSWORD_RESET_EMAIL_NOT_CONFIGURED'});
+  if(!transactionalEmailConfigured())throw Object.assign(new Error('PASSWORD_RESET_EMAIL_NOT_CONFIGURED'),{code:'PASSWORD_RESET_EMAIL_NOT_CONFIGURED'});
   const target=new URL('/account-recovery/',PUBLIC_ORIGIN);
   if(returnMode==='reviewer')target.searchParams.set('return','reviewer');
   const fragment=new URLSearchParams({token:String(token||'')});
   if(PROFILE_RE.test(String(profileId||''))&&Object.hasOwn(profileNames,String(profileId)))fragment.set('profile',String(profileId));
   const resetUrl=target.toString()+'#'+fragment.toString();
-  const response=await fetch('https://api.resend.com/emails',{
-    method:'POST',
-    headers:{Authorization:'Bearer '+resetEmailConfig.apiKey,'Content-Type':'application/json'},
-    body:JSON.stringify({
-      from:`Franklin Navigator <${resetEmailConfig.from}>`,
-      to:[email],
-      subject:'Reset your Franklin Navigator password',
-      text:['Franklin Navigator password reset','',`Open your secure one-time reset link within 30 minutes: ${resetUrl}`,'','If you did not request this reset, you can safely ignore this email. Franklin Navigator will never send your password by email.'].join('\n'),
-      html:`<!doctype html><html><body style="font-family:Arial,sans-serif;color:#162638;line-height:1.5"><div style="max-width:620px;margin:auto;padding:24px"><h1 style="font-size:24px">Reset your Franklin Navigator password</h1><p>Use the secure button below within 30 minutes. The link is single-use.</p><p><a href="${resetUrl.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" style="display:inline-block;background:#0b6f73;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Reset your password</a></p><p>If you didn’t request this reset, you can safely ignore this email.</p><p style="font-size:14px;color:#465766">Franklin Navigator will never send your password by email.</p></div></body></html>`
-    }),
-    signal:AbortSignal.timeout(8000)
-  });
-  const payload=await response.json().catch(()=>({}));
-  if(!response.ok||!payload.id)throw Object.assign(new Error('PASSWORD_RESET_EMAIL_FAILED'),{code:'PASSWORD_RESET_EMAIL_FAILED'});
-  return {id:String(payload.id).slice(0,120)};
+  const text=['Franklin Navigator password reset','',`Open your secure one-time reset link within 30 minutes: ${resetUrl}`,'','If you did not request this reset, you can safely ignore this email. Franklin Navigator will never send your password by email.'].join('\n');
+  const html=`<!doctype html><html><body style="font-family:Arial,sans-serif;color:#162638;line-height:1.5"><div style="max-width:620px;margin:auto;padding:24px"><h1 style="font-size:24px">Reset your Franklin Navigator password</h1><p>Use the secure button below within 30 minutes. The link is single-use.</p><p><a href="${resetUrl.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" style="display:inline-block;background:#0b6f73;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px">Reset your password</a></p><p>If you didn’t request this reset, you can safely ignore this email.</p><p style="font-size:14px;color:#465766">Franklin Navigator will never send your password by email.</p></div></body></html>`;
+  return sendTransactionalEmail({to:email,subject:'Reset your Franklin Navigator password',text,html});
 }
 const accountRecovery=createAccountRecovery({
   query,tx,readBody,rateLimit,clientKey,normalizeEmail,emailRe:EMAIL_RE,sha256,randomToken,hashPassword,publicError,createSession,audit,
@@ -365,7 +358,7 @@ async function reconcileProtectedAdminAccess(session,reqId){
     return changed;
   });
 }
-  if(req.method==='GET'&&url.pathname==='/health'){let database=false;try{database=Boolean((await query('select 1 ok')).rowCount);}catch{}const cfg=configStatus();const healthy=cfg.ok&&database&&!readyError;return sendJson(req,res,healthy?200:503,{ok:healthy,release:RELEASE,checkoutSafetyVersion:CHECKOUT_SAFETY_VERSION,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,memberMediaVersion:MEMBER_MEDIA_VERSION,communityReviewsVersion:COMMUNITY_REVIEWS_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION,memberRecognitionVersion:MEMBER_RECOGNITION_VERSION,issueMonitorVersion:ISSUE_MONITOR_VERSION,accountRecoveryVersion:ACCOUNT_RECOVERY_VERSION,profileInvitationsVersion:PROFILE_INVITATIONS_VERSION,claimWorkflowVersion:CLAIM_WORKFLOW_VERSION,managerProfileVersion:MANAGER_PROFILE_VERSION,reviewerConsoleConfigured:reviewerConsole.configured,reviewCoverageConfigured:memberWorkflow.reviewCoverageConfigured,community:COMMUNITY,commerceEnabled:COMMERCE_ENABLED,databaseConfigured:Boolean(DATABASE_URL),database,startupReady:!readyError,missing:cfg.missing,ownerAlertDeliveryConfigured:incidentMonitor.externalDeliveryConfigured(),ownerAlertDelivery:incidentMonitor.externalDeliveryStatus(),uptimeSeconds:Math.floor(process.uptime())},reqId);}
+  if(req.method==='GET'&&url.pathname==='/health'){let database=false;try{database=Boolean((await query('select 1 ok')).rowCount);}catch{}const cfg=configStatus();const healthy=cfg.ok&&database&&!readyError;return sendJson(req,res,healthy?200:503,{ok:healthy,release:RELEASE,checkoutSafetyVersion:CHECKOUT_SAFETY_VERSION,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,memberMediaVersion:MEMBER_MEDIA_VERSION,communityReviewsVersion:COMMUNITY_REVIEWS_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION,memberRecognitionVersion:MEMBER_RECOGNITION_VERSION,issueMonitorVersion:ISSUE_MONITOR_VERSION,accountRecoveryVersion:ACCOUNT_RECOVERY_VERSION,profileInvitationsVersion:PROFILE_INVITATIONS_VERSION,claimWorkflowVersion:CLAIM_WORKFLOW_VERSION,managerProfileVersion:MANAGER_PROFILE_VERSION,reviewerConsoleConfigured:reviewerConsole.configured,reviewCoverageConfigured:memberWorkflow.reviewCoverageConfigured,community:COMMUNITY,commerceEnabled:COMMERCE_ENABLED,databaseConfigured:Boolean(DATABASE_URL),database,startupReady:!readyError,missing:cfg.missing,ownerAlertDeliveryConfigured:incidentMonitor.externalDeliveryConfigured(),ownerAlertDelivery:incidentMonitor.externalDeliveryStatus(),transactionalEmailConfigured:transactionalEmailConfigured(),uptimeSeconds:Math.floor(process.uptime())},reqId);}
   if(req.method==='GET'&&url.pathname==='/ready'){let database=false,migration=null;try{database=Boolean((await query('select 1 ok')).rowCount);migration=(await query(`select version,digest_sha256,applied_at from franklin_schema_migrations where version=$1`,[SCHEMA_VERSION])).rows[0]||null;}catch{}const cfg=configStatus();const infrastructureReady=cfg.ok&&database&&stripeKeyConfigured()&&stripeWebhookConfigured()&&Boolean(migration)&&!readyError;return sendJson(req,res,infrastructureReady?200:503,{ok:infrastructureReady,release:RELEASE,checkoutSafetyVersion:CHECKOUT_SAFETY_VERSION,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION,memberRecognitionVersion:MEMBER_RECOGNITION_VERSION,issueMonitorVersion:ISSUE_MONITOR_VERSION,accountRecoveryVersion:ACCOUNT_RECOVERY_VERSION,profileInvitationsVersion:PROFILE_INVITATIONS_VERSION,claimWorkflowVersion:CLAIM_WORKFLOW_VERSION,reviewerConsoleConfigured:reviewerConsole.configured,reviewCoverageConfigured:memberWorkflow.reviewCoverageConfigured,community:COMMUNITY,schemaVersion:SCHEMA_VERSION,schemaDigest,migration,database,stripeCheckoutSessionConfigured:stripeKeyConfigured(),stripeWebhookConfigured:stripeWebhookConfigured(),portalSessionConfigured:stripeKeyConfigured(),commerceEnabled:COMMERCE_ENABLED,liveCheckoutEnabled:infrastructureReady&&COMMERCE_ENABLED,checkoutContract:'SERVER_CREATED_STRIPE_CHECKOUT_SESSION_V1',ownerAlertDeliveryConfigured:incidentMonitor.externalDeliveryConfigured(),ownerAlertDelivery:incidentMonitor.externalDeliveryStatus(),missing:cfg.missing,startupError:readyError?String(readyError.message||readyError):null},reqId);}
   if(req.method==='GET'&&url.pathname==='/api/catalog')return sendJson(req,res,200,publicCatalog(),reqId);
   if(req.method==='POST'&&url.pathname==='/api/telemetry/issue'){
