@@ -26,7 +26,7 @@ const CLAIM_WORKFLOW_VERSION='FRANKLIN_CLAIM_WORKFLOW_R1358_1';
 const MANAGER_PROFILE_VERSION='FRANKLIN_VERIFIED_MANAGER_DIRECT_R1359_1';
 const PROTECTED_PLATFORM_PROFILE_ID='FR-ORG-b00c0ace7943973c';
 
-const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.61-HF3.13.43';
+const RELEASE = process.env.LOCAL_RELEASE || 'FR-NAV1.30.62-HF3.13.44';
 const SCHEMA_VERSION = 'FRANKLIN_COMMERCE_SCHEMA_2';
 const PORT = Number(process.env.PORT || 10000);
 const PUBLIC_ORIGIN = String(process.env.PUBLIC_ORIGIN || 'https://franklinnavigator.com').replace(/\/$/, '');
@@ -358,8 +358,23 @@ async function reconcileProtectedAdminAccess(session,reqId){
     return changed;
   });
 }
-  if(req.method==='GET'&&url.pathname==='/health'){let database=false;try{database=Boolean((await query('select 1 ok')).rowCount);}catch{}const cfg=configStatus();const healthy=cfg.ok&&database&&!readyError;return sendJson(req,res,healthy?200:503,{ok:healthy,release:RELEASE,checkoutSafetyVersion:CHECKOUT_SAFETY_VERSION,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,memberMediaVersion:MEMBER_MEDIA_VERSION,communityReviewsVersion:COMMUNITY_REVIEWS_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION,memberRecognitionVersion:MEMBER_RECOGNITION_VERSION,issueMonitorVersion:ISSUE_MONITOR_VERSION,accountRecoveryVersion:ACCOUNT_RECOVERY_VERSION,profileInvitationsVersion:PROFILE_INVITATIONS_VERSION,claimWorkflowVersion:CLAIM_WORKFLOW_VERSION,managerProfileVersion:MANAGER_PROFILE_VERSION,reviewerConsoleConfigured:reviewerConsole.configured,reviewCoverageConfigured:memberWorkflow.reviewCoverageConfigured,community:COMMUNITY,commerceEnabled:COMMERCE_ENABLED,databaseConfigured:Boolean(DATABASE_URL),database,startupReady:!readyError,missing:cfg.missing,ownerAlertDeliveryConfigured:incidentMonitor.externalDeliveryConfigured(),ownerAlertDelivery:incidentMonitor.externalDeliveryStatus(),transactionalEmailConfigured:transactionalEmailConfigured(),uptimeSeconds:Math.floor(process.uptime())},reqId);}
-  if(req.method==='GET'&&url.pathname==='/ready'){let database=false,migration=null;try{database=Boolean((await query('select 1 ok')).rowCount);migration=(await query(`select version,digest_sha256,applied_at from franklin_schema_migrations where version=$1`,[SCHEMA_VERSION])).rows[0]||null;}catch{}const cfg=configStatus();const infrastructureReady=cfg.ok&&database&&stripeKeyConfigured()&&stripeWebhookConfigured()&&Boolean(migration)&&!readyError;return sendJson(req,res,infrastructureReady?200:503,{ok:infrastructureReady,release:RELEASE,checkoutSafetyVersion:CHECKOUT_SAFETY_VERSION,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION,memberRecognitionVersion:MEMBER_RECOGNITION_VERSION,issueMonitorVersion:ISSUE_MONITOR_VERSION,accountRecoveryVersion:ACCOUNT_RECOVERY_VERSION,profileInvitationsVersion:PROFILE_INVITATIONS_VERSION,claimWorkflowVersion:CLAIM_WORKFLOW_VERSION,reviewerConsoleConfigured:reviewerConsole.configured,reviewCoverageConfigured:memberWorkflow.reviewCoverageConfigured,community:COMMUNITY,schemaVersion:SCHEMA_VERSION,schemaDigest,migration,database,stripeCheckoutSessionConfigured:stripeKeyConfigured(),stripeWebhookConfigured:stripeWebhookConfigured(),portalSessionConfigured:stripeKeyConfigured(),commerceEnabled:COMMERCE_ENABLED,liveCheckoutEnabled:infrastructureReady&&COMMERCE_ENABLED,checkoutContract:'SERVER_CREATED_STRIPE_CHECKOUT_SESSION_V1',ownerAlertDeliveryConfigured:incidentMonitor.externalDeliveryConfigured(),ownerAlertDelivery:incidentMonitor.externalDeliveryStatus(),missing:cfg.missing,startupError:readyError?String(readyError.message||readyError):null},reqId);}
+  if(req.method==='GET'&&url.pathname==='/health'){
+    let database=false;
+    try{database=Boolean((await query('select 1 ok')).rowCount);}catch{}
+    const cfg=configStatus();
+    const healthy=cfg.ok&&database&&!readyError;
+    return sendJson(req,res,healthy?200:503,{ok:healthy,release:RELEASE,community:COMMUNITY},reqId);
+  }
+  if(req.method==='GET'&&url.pathname==='/ready'){
+    let database=false,migration=null;
+    try{
+      database=Boolean((await query('select 1 ok')).rowCount);
+      migration=(await query(`select version,digest_sha256,applied_at from franklin_schema_migrations where version=$1`,[SCHEMA_VERSION])).rows[0]||null;
+    }catch{}
+    const cfg=configStatus();
+    const infrastructureReady=cfg.ok&&database&&stripeKeyConfigured()&&stripeWebhookConfigured()&&Boolean(migration)&&!readyError;
+    return sendJson(req,res,infrastructureReady?200:503,{ok:infrastructureReady,release:RELEASE,community:COMMUNITY},reqId);
+  }
   if(req.method==='GET'&&url.pathname==='/api/catalog')return sendJson(req,res,200,publicCatalog(),reqId);
   if(req.method==='POST'&&url.pathname==='/api/telemetry/issue'){
     if(!rateLimit(`issue-telemetry:${clientKey(req)}`,30,60000))throw publicError('RATE_LIMITED','Too many issue signals. Try again later.',429);
@@ -417,7 +432,31 @@ async function reconcileProtectedAdminAccess(session,reqId){
     if(req.method==='GET'&&url.pathname==='/admin/incidents/summary')return sendJson(req,res,200,{ok:true,...await incidentMonitor.summary()},reqId);
     if(req.method==='GET'&&url.pathname==='/admin/incidents/digest'){const hours=Math.max(1,Math.min(168,Number(url.searchParams.get('hours')||12)));const limit=Math.max(1,Math.min(100,Number(url.searchParams.get('limit')||50)));return sendJson(req,res,200,{ok:true,...await incidentMonitor.digest({hours,limit})},reqId);}
     if(req.method==='GET'&&url.pathname==='/admin/incidents'){const severity=String(url.searchParams.get('severity')||'').split(',').filter(Boolean);const incidents=await incidentMonitor.list({status:url.searchParams.get('status')||'OPEN',severity,limit:url.searchParams.get('limit')||100});return sendJson(req,res,200,{ok:true,community:COMMUNITY,incidents,externalDelivery:incidentMonitor.externalDeliveryStatus()},reqId);}
-    if(req.method==='GET'&&url.pathname==='/admin/readiness'){const monitoring=await incidentMonitor.readinessSnapshot(),memberLifecycle=await memberLifecycleSummary(),memberRecognitionMetrics=await memberRecognition.metrics();return sendJson(req,res,200,{ok:true,community:COMMUNITY,release:RELEASE,monitoring,memberLifecycle,memberRecognition:memberRecognitionMetrics,commerceEnabled:COMMERCE_ENABLED,stripeCheckoutSessionConfigured:stripeKeyConfigured(),stripeWebhookConfigured:stripeWebhookConfigured(),portalSessionConfigured:stripeKeyConfigured(),profileScopeCount:Object.keys(profileNames||{}).length,memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,memberRecognitionVersion:MEMBER_RECOGNITION_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION},reqId);}
+    if(req.method==='GET'&&url.pathname==='/admin/readiness'){
+      let database=false,migration=null;
+      try{
+        database=Boolean((await query('select 1 ok')).rowCount);
+        migration=(await query(`select version,digest_sha256,applied_at from franklin_schema_migrations where version=$1`,[SCHEMA_VERSION])).rows[0]||null;
+      }catch{}
+      const cfg=configStatus();
+      const infrastructureReady=cfg.ok&&database&&stripeKeyConfigured()&&stripeWebhookConfigured()&&Boolean(migration)&&!readyError;
+      const monitoring=await incidentMonitor.readinessSnapshot(),memberLifecycle=await memberLifecycleSummary(),memberRecognitionMetrics=await memberRecognition.metrics();
+      return sendJson(req,res,200,{
+        ok:true,community:COMMUNITY,release:RELEASE,serviceReady:infrastructureReady,
+        monitoring,memberLifecycle,memberRecognition:memberRecognitionMetrics,
+        commerceEnabled:COMMERCE_ENABLED,liveCheckoutEnabled:infrastructureReady&&COMMERCE_ENABLED,
+        stripeCheckoutSessionConfigured:stripeKeyConfigured(),stripeWebhookConfigured:stripeWebhookConfigured(),portalSessionConfigured:stripeKeyConfigured(),
+        reviewerConsoleConfigured:reviewerConsole.configured,reviewCoverageConfigured:memberWorkflow.reviewCoverageConfigured,
+        ownerAlertDeliveryConfigured:incidentMonitor.externalDeliveryConfigured(),ownerAlertDelivery:incidentMonitor.externalDeliveryStatus(),
+        profileScopeCount:Object.keys(profileNames||{}).length,
+        memberFulfillmentVersion:MEMBER_FULFILLMENT_VERSION,memberRecognitionVersion:MEMBER_RECOGNITION_VERSION,reviewerConsoleVersion:REVIEWER_CONSOLE_VERSION,
+        checkoutSafetyVersion:CHECKOUT_SAFETY_VERSION,memberMediaVersion:MEMBER_MEDIA_VERSION,communityReviewsVersion:COMMUNITY_REVIEWS_VERSION,
+        issueMonitorVersion:ISSUE_MONITOR_VERSION,accountRecoveryVersion:ACCOUNT_RECOVERY_VERSION,profileInvitationsVersion:PROFILE_INVITATIONS_VERSION,
+        claimWorkflowVersion:CLAIM_WORKFLOW_VERSION,managerProfileVersion:MANAGER_PROFILE_VERSION,
+        schemaVersion:SCHEMA_VERSION,schemaDigest,migration,database,checkoutContract:'SERVER_CREATED_STRIPE_CHECKOUT_SESSION_V1',
+        missing:cfg.missing,startupError:readyError?String(readyError.message||readyError):null
+      },reqId);
+    }
     const incidentAction=url.pathname.match(/^\/admin\/incidents\/(incident_[A-Za-z0-9]+)\/(acknowledge|resolve|suppress)$/);
     if(req.method==='POST'&&incidentAction){const body=await readBody(req);const state={acknowledge:'ACKNOWLEDGED',resolve:'RESOLVED',suppress:'SUPPRESSED'}[incidentAction[2]];const incident=await incidentMonitor.setStatus(incidentAction[1],state,body.resolutionNote||'');return sendJson(req,res,200,{ok:true,incident},reqId);}
 if(req.method==='POST'&&url.pathname==='/admin/payment-links/sync')throw publicError('LEGACY_PAYMENT_LINK_SYNC_RETIRED','Franklin checkout now uses server-created Stripe Checkout Sessions.',410);
