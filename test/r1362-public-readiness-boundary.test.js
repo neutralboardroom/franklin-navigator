@@ -49,3 +49,12 @@ test('R1362 advances the runtime release without changing commerce policy',()=>{
   assert.match(text,/FR-NAV1\.30\.62-HF3\.13\.44/);
   assert.match(text,/const COMMERCE_ENABLED =/);
 });
+
+
+test('R1362 runtime fails closed if deployment release identity drifts from embedded source',()=>{
+  const text=src();
+  assert.match(text,/const EMBEDDED_RELEASE = 'FR-NAV1\.30\.62-HF3\.13\.44'/);
+  assert.match(text,/CONFIGURED_RELEASE && CONFIGURED_RELEASE!==EMBEDDED_RELEASE/);
+  assert.match(text,/LOCAL_RELEASE_MISMATCH/);
+  assert.match(text,/const RELEASE = EMBEDDED_RELEASE/);
+});
