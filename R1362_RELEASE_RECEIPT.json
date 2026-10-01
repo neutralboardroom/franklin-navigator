@@ -1,0 +1,71 @@
+{
+  "release": "FR-NAV1.30.62-HF3.13.44",
+  "predecessorRelease": "FR-NAV1.30.61-HF3.13.43",
+  "date": "2026-10-01",
+  "status": "QUALIFIED_SUCCESSOR_LIVE_VERIFIED_RUNTIME_PUBLIC_ASSETS_RETAINED",
+  "sourceCurrentness": {
+    "predecessorRuntimeSourceCommit": "2aae3026a0fec34a04d7f04a3ab568951c43b2cd",
+    "predecessorSourceIncludedPostR1361ZohoBridgeChanges": true,
+    "noSilentRebaseLoss": true
+  },
+  "runtime": {
+    "initialMergeCommit": "f4828568f83d39ad1de72e08537a1c583fd9bef2",
+    "finalCommit": "004201a5e3f6d82fea68b1d1ca1cd32456fd888e",
+    "renderServiceId": "srv-dabgvefqj5pc739vr4h0",
+    "finalRenderDeployId": "dep-dauvutg473hc73ctk5hg",
+    "renderState": "LIVE",
+    "deploymentTests": {
+      "passed": 106,
+      "failed": 0
+    },
+    "startupReady": true,
+    "runtimeListeningRelease": "FR-NAV1.30.62-HF3.13.44"
+  },
+  "materialChanges": {
+    "publicHealthAndReadyResponses": "BOUNDED_TO_OK_RELEASE_COMMUNITY",
+    "detailedOperationalReadiness": "AUTHENTICATED_ADMIN_ONLY",
+    "releaseIdentityLock": "FAIL_CLOSED_IF_LOCAL_RELEASE_DIFFERS_FROM_EMBEDDED_RELEASE",
+    "profileQualityWorkflowPipefail": "ENABLED"
+  },
+  "deploymentQualificationIncident": {
+    "observed": "FIRST_R1362_DEPLOY_USED_STALE_LOCAL_RELEASE_OVERRIDE",
+    "falseLiveClaimAvoided": true,
+    "correction": "LOCAL_RELEASE_UPDATED_TO_FR-NAV1.30.62-HF3.13.44",
+    "recurrencePrevention": "SOURCE_LEVEL_RELEASE_IDENTITY_LOCK_ADDED_AND_REDEPLOYED",
+    "finalResult": "PASS"
+  },
+  "publicProduct": {
+    "uiAssetChanges": 0,
+    "designChanges": 0,
+    "profileFactChanges": 0,
+    "pricingChanges": 0,
+    "membershipPolicyChanges": 0,
+    "publicBytesPolicy": "Public dist assets are intentionally retained; R1362 is runtime and release-integrity hardening.",
+    "staticProviderErrorCheck": {
+      "windowUtc": "2026-09-30T00:00:00Z/2026-10-01T06:40:00Z",
+      "observed404Or5xxRequests": 0
+    }
+  },
+  "preserved": [
+    "current Zoho transactional bridge",
+    "claim and basic profile management",
+    "free factual correction/removal",
+    "optional Community Membership at $35/year",
+    "private reviewer authority boundary",
+    "canonical profile alias/no-fork behavior",
+    "no paid factual superiority"
+  ],
+  "qualification": {
+    "pullRequests": [
+      71,
+      72
+    ],
+    "finalRuntimeTestsPassed": 106,
+    "finalRuntimeTestsFailed": 0,
+    "releaseIdentityDriftRegression": "PASS",
+    "publicReadinessBoundaryRegression": "PASS",
+    "externalWebReaderReadback": "UNAVAILABLE_FROM_CURRENT_TOOL_NETWORK",
+    "renderProviderHealthGate": "PASS"
+  },
+  "authorityTransfer": false
+}
