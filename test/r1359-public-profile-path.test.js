@@ -21,11 +21,14 @@ test('R1359 correction flow uses in-product review rather than native confirmati
   assert.doesNotMatch(src,/window\.confirm\(confirmation\)/);
 });
 
-test('R1359 separates reviewer role from claimant profile management',()=>{
+test('R1361+ keeps reviewer authority out of claimant profile management while preserving claimant review state',()=>{
   const src=read('dist/assets/membership-live.js');
-  assert.match(src,/You cannot approve your own request/);
-  assert.match(src,/ordinary self-review is never required/);
-  assert.match(src,/protectedAdminProfileIds/);
+  assert.doesNotMatch(src,/You cannot approve your own request/);
+  assert.doesNotMatch(src,/ordinary self-review is never required/);
+  assert.doesNotMatch(src,/protectedAdminProfileIds/);
+  assert.match(src,/review_state/);
+  assert.match(src,/review_revision/);
+  assert.match(src,/Withdraw access request/);
 });
 
 test('R1359 Profile Center exposes verified-manager direct maintenance',()=>{

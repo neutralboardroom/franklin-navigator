@@ -31,7 +31,9 @@ jobs:
           out.write_bytes(gzip.decompress(base64.b64decode(src.read_text().strip())))
           PY
       - name: Generate exact R1360 canonical public projection
-        run: python scripts/r1360-profile-quality-build.py | tee R1360_GENERATOR_RESULT.json
+        run: |
+          set -euo pipefail
+          python scripts/r1360-profile-quality-build.py | tee R1360_GENERATOR_RESULT.json
       - name: Focused R1360 qualification
         run: |
           node tests/r1352-claim-review-path.cjs
