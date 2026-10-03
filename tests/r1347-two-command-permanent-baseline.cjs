@@ -1,6 +1,7 @@
 'use strict';
 const fs=require('fs'),path=require('path'),child=require('child_process');
 const root=path.join(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const prod=JSON.parse(read('PRODUCTION_RELEASE.json'));
 const checks=[];const add=(name,ok)=>checks.push([name,Boolean(ok)]);
 const core=read('dist/assets/local-discovery-core.js');
 const claim=read('dist/assets/hf310.js');
@@ -24,7 +25,7 @@ const authorityRule=read('DURABLE_RULE__PROFILE_ACCESS_AUTHORITY_ROUTING.md');
 const r1342=child.spawnSync(process.execPath,[path.join(root,'tests/r1342-claim-recovery.cjs')],{encoding:'utf8'});
 add('Sep19 inherited R1342 contract still passes',r1342.status===0);
 add('Sep19 exact-match ranking hierarchy remains implemented',/exact|phrase|starts|token|partial/i.test(core));
-add('R1351 claim search keeps neutral primary result action',claim.includes("b.textContent='Continue with this profile'")&&claim.includes('r1342-claim-result-action'));
+add('R1360 claim search keeps explicit pre-authority primary result action',claim.includes("b.textContent='Start management verification'")&&claim.includes("b.setAttribute('aria-label','Start management verification for '+row.n)")&&claim.includes('r1342-claim-result-action'));
 add('R1352 selected claim panel keeps primary, free alternatives and optional membership actions',['Claim or manage this profile','Correct information','Request removal','See Community Membership benefits'].every(x=>claim.includes(x)));
 add('Sep19 selected result moves/focuses to action panel',claim.includes("section.scrollIntoView")&&claim.includes("section.focus"));
 add('Sep19 profile claim deep-link preserves exact profile',profile.includes("/profile-access/?profile="));
@@ -46,7 +47,7 @@ add('Sep20 Profile Access hero explicitly means public Franklin Navigator profil
 add('Sep20 four-step progress remains semantic and dynamic',access.includes('data-r1346-profile-progress')&&live.includes("setAttribute('aria-current','step')")&&live.includes("classList.toggle('is-complete'"));
 add('Sep20 wrong-profile search remains secondary/collapsible',live.includes('Wrong profile? Choose another')&&live.includes("document.createElement('details')"));
 add('Sep20 selected profile remains obvious with type and location',live.includes("summaryItem('Profile'")&&live.includes("summaryItem('Type'")&&live.includes("summaryItem('Location'"));
-add('Sep20 claim connect has visible local loading, duplicate suppression, retry/help and automatic focus',live.includes('Connecting profile…')&&live.includes('if(connect.disabled)return')&&live.includes('Retry connection')&&live.includes("link('Get help'")&&live.includes("focusIntoView('[data-r1346-verification-heading]')"));
+add('Sep20 claim verification start has visible local loading, duplicate suppression, retry/help and automatic focus',live.includes("connect.textContent='Starting verification…'")&&live.includes('if(connect.disabled)return')&&live.includes("connect.textContent='Retry management verification'")&&live.includes('You can retry or get help.')&&live.includes("link('Get help'")&&live.includes("focusIntoView('[data-r1346-verification-heading]')"));
 add('Sep20 Step 3 remains dedicated vertical form with full-width fields and separate checkbox row',live.includes("form.className='r1346-profile-access-verification'")&&css.includes('.r1346-profile-access-verification input[type="url"]')&&css.includes('min-height:150px')&&css.includes('grid-template-columns:auto minmax(0,1fr)!important'));
 add('Sep20 Step 3 heading names selected profile',live.includes("'Verify that you manage '+state.selected.n"));
 add('R1352 authority submit has visible loading and pending focus',live.includes('Submitting your request. Please keep this page open.')&&(live.includes("pendingCard.dataset.r1346PendingStatus=''")||live.includes("pendingNotice.dataset.r1346PendingStatus=''"))&&live.includes("focusIntoView('[data-r1346-pending-status]')"));
@@ -68,5 +69,5 @@ add('Two-command durable baseline requires visible/reachable browser qualificati
 add('Password sender exception remains evidence-gated, not silently changed',durable.includes('replacement Franklin account/security transactional sender')&&durable.includes('independently verified'));
 
 const failed=checks.filter(x=>!x[1]);
-console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:'FR-NAV1.30.57-HF3.13.39',checks,failed},null,2));
+console.log(JSON.stringify({result:failed.length?'FAIL':'PASS',release:prod.release,checks,failed},null,2));
 if(failed.length)process.exit(1);
