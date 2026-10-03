@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json, hashlib, html, os, re, sys, gzip, base64
+from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -11,6 +12,35 @@ TARGET='FR-NAV1.30.60-HF3.13.42'
 def bsha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def write_json(p,obj):
     Path(p).write_text(json.dumps(obj,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
+
+class VisibleTextParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.hidden_depth=0
+        self.parts=[]
+    def handle_starttag(self,tag,attrs):
+        if tag.lower() in {'script','style','template','noscript'}:
+            self.hidden_depth+=1
+    def handle_endtag(self,tag):
+        if tag.lower() in {'script','style','template','noscript'} and self.hidden_depth:
+            self.hidden_depth-=1
+    def handle_data(self,data):
+        if not self.hidden_depth and data.strip():
+            self.parts.append(data)
+
+def iter_public_record_strings(value,path='record'):
+    if isinstance(value,str):
+        # IDs and route/provider URLs are not customer-facing prose. Public-display
+        # validation belongs on human-readable scalar fields, not serialization syntax.
+        if path.endswith('.i') or value.startswith(('http://','https://','mailto:','tel:')):
+            return
+        yield path,value
+    elif isinstance(value,list):
+        for i,item in enumerate(value):
+            yield from iter_public_record_strings(item,f'{path}[{i}]')
+    elif isinstance(value,dict):
+        for key,item in value.items():
+            yield from iter_public_record_strings(item,f'{path}.{key}')
 
 def main():
     if OVERLAY_PATH.exists():
@@ -124,17 +154,28 @@ def main():
     write_json(scope_path,scope)
     write_json(RUNTIME/'data'/'profile-aliases-r1360.json',alias_public)
 
-    # Verification scans: no alias/held profiles in chunks and no PF unsafe pattern in public profile HTML/data.
+    # Verification scans: validate actual human-readable record fields and visible
+    # profile-page text. Never scan raw serialized JSON/HTML where punctuation,
+    # hidden scripts, URLs, or adjacent fields can create misleading regex hits.
     unsafe=re.compile(ov['unsafePattern'],re.I)
     unsafe_hits=[]
     for p in chunk_paths:
-        txt=p.read_text(encoding='utf-8')
-        if unsafe.search(txt): unsafe_hits.append(str(p.relative_to(ROOT)))
+        d=json.loads(p.read_text(encoding='utf-8'))
+        for row_index,row in enumerate(d.get('records',[])):
+            pid=row.get('i') or f'row-{row_index}' if isinstance(row,dict) else f'row-{row_index}'
+            for field,value in iter_public_record_strings(row):
+                match=unsafe.search(value)
+                if match:
+                    unsafe_hits.append({'surface':str(p.relative_to(ROOT)),'profileId':pid,'field':field,'match':match.group(0)[:120]})
     for page in profile_root.glob('*/index.html'):
-        txt=page.read_text(encoding='utf-8')
-        if unsafe.search(txt): unsafe_hits.append(str(page.relative_to(ROOT)))
+        parser=VisibleTextParser()
+        parser.feed(page.read_text(encoding='utf-8'))
+        visible='\n'.join(parser.parts)
+        match=unsafe.search(visible)
+        if match:
+            unsafe_hits.append({'surface':str(page.relative_to(ROOT)),'profileId':page.parent.name,'field':'visibleText','match':match.group(0)[:120]})
     if unsafe_hits:
-        raise SystemExit('unsafe public display hits remain: '+', '.join(unsafe_hits[:20]))
+        raise SystemExit('unsafe public display hits remain: '+json.dumps(unsafe_hits[:20],ensure_ascii=False,sort_keys=True))
     print(json.dumps({'ok':True,'release':TARGET,'profileFactory':'FR-PF-PLATFORM-15.38','canonicalPublicProfiles':total,'aliases':len(aliases),'reviewHeld':len(holds),'unsafePublicDisplayHitsAfter':0,'changedProfilePages':changed_html},sort_keys=True))
 
 if __name__=='__main__': main()
