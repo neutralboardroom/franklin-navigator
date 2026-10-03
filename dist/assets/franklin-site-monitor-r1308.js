@@ -1,8 +1,15 @@
 (()=>{'use strict';
 const VERSION='FR-NAV1.30.8-HF3.12.0';
+const CURRENT_RELEASE='FR-NAV1.30.62-HF3.13.44';
 const ENDPOINT='https://franklin-navigator-membership.onrender.com/api/telemetry/issue';
 const MEMBERSHIP_HOST='franklin-navigator-membership.onrender.com';
 const ASSISTANT_HOST='franklin-navigator-assistant.onrender.com';
+try{
+  let releaseMeta=document.querySelector('meta[name="franklin-release"]');
+  if(!releaseMeta){releaseMeta=document.createElement('meta');releaseMeta.setAttribute('name','franklin-release');document.head.append(releaseMeta)}
+  releaseMeta.content=CURRENT_RELEASE;
+  document.documentElement.dataset.franklinRelease=CURRENT_RELEASE;
+}catch{}
 const originalFetch=window.fetch?.bind(window);
 if(!originalFetch||window.FranklinIssueMonitorR1308)return;
 
@@ -73,9 +80,6 @@ window.addEventListener('error',event=>{
   const target=event.target;
   if(target&&target!==window&&target.tagName){
     const tag=String(target.tagName).toUpperCase();
-    // Only elements that actually load an external resource may create a
-    // BROKEN_ASSET incident. Inline STYLE and empty href/src events otherwise
-    // collapse to "/" and create false HIGH incidents.
     const resourceTags=new Set(['IMG','SCRIPT','LINK','VIDEO','AUDIO','SOURCE','IFRAME']);
     if(!resourceTags.has(tag))return;
     const src=String(target.currentSrc||target.src||target.href||'').trim();
@@ -112,5 +116,5 @@ window.addEventListener('load',()=>{
   if(location.pathname.includes('/membership-enroll/')&&params.get('checkout')==='canceled')report('CHECKOUT_CANCELED',{path:location.pathname,workflow:'CHECKOUT',clientSignal:'STRIPE_RETURN_CANCELED'});
 },{once:true});
 
-window.FranklinIssueMonitorR1308=Object.freeze({version:VERSION,report});
+window.FranklinIssueMonitorR1308=Object.freeze({version:VERSION,release:CURRENT_RELEASE,report});
 })();
