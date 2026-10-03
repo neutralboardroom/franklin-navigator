@@ -120,7 +120,8 @@ jobs:
           assert d['branding']['favicon']=='/assets/favicon.svg'
           a=d['assistant']
           assert d['counts']['assistantRoutes']==254
-          assert d['counts']['profiles']>=19103
+          canonical_profile_count=d['counts']['profiles']
+          assert isinstance(canonical_profile_count,int) and canonical_profile_count>0
           assert a.get('availableLegacyRouteCount',a.get('routeCount'))==254
           assert a.get('availableSiteProfileCount',a.get('profileCount'))==19103
           assert a['attachmentNetworkSubmission'] is False
@@ -158,14 +159,27 @@ jobs:
           idx=Path('dist')/manifest['index']['file'].lstrip('/')
           assert manifest['recordCount']==19103
           assert hashlib.sha256(idx.read_bytes()).hexdigest()==manifest['index']['sha256']
+          # R1360+ distinguishes the legacy discovery-row population from the
+          # canonical public entity population after accepted alias consolidation.
+          if canonical_profile_count==19003:
+              aliases=json.loads(Path('dist/data/profile-aliases-r1360.json').read_text())
+              canonical_manifest=json.loads(Path('dist/data/franklin-profiles-manifest.json').read_text())
+              assert aliases['community']=='FRANKLIN_TN'
+              assert aliases['profileFactoryVersion']=='FR-PF-PLATFORM-15.38'
+              assert len(aliases['aliases'])==100
+              assert manifest['recordCount']-canonical_profile_count==len(aliases['aliases'])
+              assert all(alias!=canonical for alias,canonical in aliases['aliases'].items())
+              assert canonical_manifest['sourceRelease']=='FR-PF-PLATFORM-15.38'
+              assert canonical_manifest['recordCount']==canonical_profile_count
+              assert canonical_manifest['r1360AliasCount']==len(aliases['aliases'])
           # A single owner-directed, source-backed PF15.28 Franklin Navigator self-profile
-          # overlay may extend the public profile scope to 19,104 without rewriting the
+          # overlay may extend the pre-R1360 public scope to 19,104 without rewriting the
           # canonical 19,103 discovery index.
-          if d['counts']['profiles']==19104:
+          elif canonical_profile_count==19104:
               assert d.get('authority',{}).get('pf15_28CanonicalProfileId')=='FR-ORG-b00c0ace7943973c'
               assert Path('dist/profiles/FR-ORG-b00c0ace7943973c/index.html').is_file()
           else:
-              assert d['counts']['profiles']==manifest['recordCount']
+              assert canonical_profile_count==manifest['recordCount']
           total=a.get('availableLegacyRouteCount',a.get('routeCount',0))
           assert total==254
           # Validate legacy shards only on releases that still expose their manifest.
@@ -179,7 +193,7 @@ jobs:
                   assert r['recordCount']==item['count']
                   shard_total+=r['recordCount']
               assert shard_total==254
-          print(d['release'], manifest['recordCount'], d['counts']['profiles'], total)
+          print(d['release'], manifest['recordCount'], canonical_profile_count, total)
           PY
           grep -F '<h2>Franklin Through Time</h2>' dist/index.html
           ! grep -F 'Franklin Through Time — Then &amp; Now' dist/index.html
