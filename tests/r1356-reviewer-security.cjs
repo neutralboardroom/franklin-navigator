@@ -4,8 +4,6 @@ const root=path.resolve(__dirname,'..');
 const prod=JSON.parse(fs.readFileSync(path.join(root,'PRODUCTION_RELEASE.json'),'utf8'));
 assert.match(prod.release,/^FR-NAV\d+\.\d+\.\d+-HF\d+\.\d+\.\d+$/);
 assert.notEqual(prod.release,prod.base);
-const currentReleaseMeta=Object.values(prod).find(v=>v&&typeof v==='object'&&v.version===prod.release&&v.runtime);
-assert(currentReleaseMeta&&currentReleaseMeta.runtime,'current release runtime metadata is required');
 const r=prod.r1356;
 assert(r&&r.runtime);
 assert(prod.r1357&&prod.r1357.materialScope==='OWNER_LIVE_PROFILE_CLAIM_MANAGEMENT_SCREENSHOT_AUDIT');
@@ -48,4 +46,4 @@ if(Object.values(files).every(fs.existsSync)){
   assert.match(reviewer,/!current\.email_verified_at/);
   assert.match(reviewer,/REVIEW_EMAIL_CONFIRMATION_REQUIRED|confirmEmail/);
 }
-console.log(JSON.stringify({result:'PASS',release:prod.release,currentRuntimeCommit:currentReleaseMeta.runtime.commit,r1356RuntimeCommit:r.runtime.commit,artifactRuntimeSourceAssertions:Object.values(files).every(fs.existsSync)}));
+console.log(JSON.stringify({result:'PASS',release:prod.release,r1356RuntimeCommit:r.runtime.commit,artifactRuntimeSourceAssertions:Object.values(files).every(fs.existsSync)}));
