@@ -2,6 +2,7 @@
 const fs=require('fs');
 const assert=require('node:assert/strict');
 const read=p=>fs.readFileSync(p,'utf8');
+const prod=JSON.parse(read('PRODUCTION_RELEASE.json'));
 const profile=read('dist/assets/r1330-profile.js');
 const live=read('dist/assets/membership-live.js');
 const corrections=read('dist/corrections/index.html');
@@ -19,8 +20,8 @@ ok('direct profile-access path protects official platform profile',
   live.includes("state.selected.i===SELF_ID")&&live.includes('Ordinary public claims are not accepted'));
 ok('pending state is status-aware and names Franklin Navigator team',
   live.includes("title.textContent='Access request pending.'")&&live.includes('The Franklin Navigator team reviews the submitted evidence'));
-ok('reviewer handoff no longer places account email in URL fragment',
-  !live.includes("reviewerContext.set('email'")&&live.includes('Open secure reviewer workspace'));
+ok('claimant UI has no reviewer workspace handoff or account email URL fragment',
+  !live.includes("reviewerContext.set('email'")&&!live.includes('Open secure reviewer workspace')&&!live.includes("'/reviewer/"));
 ok('profile switcher uses plain language',
   live.includes("summary.textContent='Wrong profile? Choose another'"));
 ok('correction/removal page exposes required fields and direct removal action',
@@ -34,9 +35,8 @@ ok('removal requires reason and confirmation before submission',
   control.includes("clean(fd.get('removalReason'),1800).length<10")&&control.includes('Confirm this removal request')&&control.includes('showReview(fd,removal)'));
 ok('signed-in correction form can reuse account contact details without requiring sign-in',
   control.includes("fetch(API+'/api/accounts/me'")&&control.includes("set('requesterEmail'"));
-ok('Spanish parity covers audited high-value labels',
+ok('Spanish parity covers audited claimant and correction labels',
   i18n.includes("'Wrong profile? Choose another':'¿Perfil equivocado? Elija otro'")&&
-  i18n.includes("'Correct public facts':'Corregir datos públicos'")&&
-  i18n.includes("'Open secure reviewer workspace':'Abrir espacio seguro de revisión'"));
+  i18n.includes("'Correct public facts':'Corregir datos públicos'"));
 
-console.log(JSON.stringify({result:'PASS',release:'FR-NAV1.30.59-HF3.13.41',checks:checks.length,items:checks},null,2));
+console.log(JSON.stringify({result:'PASS',release:prod.release,checks:checks.length,items:checks},null,2));
