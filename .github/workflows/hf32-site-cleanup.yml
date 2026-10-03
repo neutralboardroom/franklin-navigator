@@ -170,8 +170,13 @@ jobs:
               assert manifest['recordCount']-canonical_profile_count==len(aliases['aliases'])
               assert all(alias!=canonical for alias,canonical in aliases['aliases'].items())
               assert canonical_manifest['sourceRelease']=='FR-PF-PLATFORM-15.38'
-              assert canonical_manifest['recordCount']==canonical_profile_count
               assert canonical_manifest['r1360AliasCount']==len(aliases['aliases'])
+              assert canonical_manifest['r1360SuppressedGenericProfileIds']==['FR-ORG-a0776afee5ec-firstbank']
+              # The chunk manifest excludes the intentionally suppressed generic record.
+              # PRODUCTION_RELEASE includes the separately source-backed Franklin
+              # Navigator self profile that is rendered outside those chunks.
+              assert canonical_manifest['recordCount']==canonical_profile_count-1
+              assert Path('dist/profiles/FR-ORG-b00c0ace7943973c/index.html').is_file()
           # A single owner-directed, source-backed PF15.28 Franklin Navigator self-profile
           # overlay may extend the pre-R1360 public scope to 19,104 without rewriting the
           # canonical 19,103 discovery index.
