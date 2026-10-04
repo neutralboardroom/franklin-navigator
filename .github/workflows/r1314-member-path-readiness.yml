@@ -4,10 +4,13 @@ on:
     branches: [franklin-commerce-runtime-r30]
     paths:
       - 'server.js'
+      - 'promotions-proxy.js'
+      - 'schema/012_member_promotions.sql'
       - 'lib/member-profile-policy.js'
       - 'scripts/owner-review-preflight.cjs'
       - 'data/member-control-profiles.json'
       - 'test/member-profile-policy.test.js'
+      - 'test/r1365-promotions-runtime.test.js'
       - 'package.json'
       - '.github/workflows/r1314-member-path-readiness.yml'
   workflow_dispatch:
@@ -35,3 +38,10 @@ jobs:
           grep -F '"FR-TEST-SCC-OWNER-CONTROL"' data/member-control-profiles.json
           grep -F 'isProductionProfile' scripts/owner-review-preflight.cjs
           grep -F 'memberLifecycle' server.js
+      - name: R1365 promotions/events fail-closed contract
+        run: |
+          grep -F "pdfUpload:false" promotions-proxy.js
+          grep -F "ACTIVE_MEMBERSHIP_REQUIRED" promotions-proxy.js
+          grep -F "PROFILE_VERIFICATION_REQUIRED" promotions-proxy.js
+          grep -F "idempotency_key" schema/012_member_promotions.sql
+          grep -F "PUBLISHED" schema/012_member_promotions.sql
