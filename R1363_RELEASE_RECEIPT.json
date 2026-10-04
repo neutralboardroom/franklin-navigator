@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "franklin.local.release-receipt.v1",
+  "release": "FR-NAV1.30.63-HF3.13.45",
+  "date": "2026-10-04",
+  "role": "LOCAL_COMMUNITY_PLATFORM",
+  "edition": "FRANKLIN_TN",
+  "predecessorRelease": "FR-NAV1.30.62-HF3.13.44",
+  "findingClosed": 204,
+  "publicSourceBaseCommit": "b6eabfdf4ab12c290763c949dd2711caa127ba17",
+  "runtimeBranch": "franklin-commerce-runtime-r30",
+  "runtimeCommit": "10bc9678415589335b63b86c92bd4ae6d39d7baa",
+  "renderServiceId": "srv-dabgvefqj5pc739vr4h0",
+  "renderDeployId": "dep-db0t7u2d0e5s73d3vmc0",
+  "renderDeployState": "LIVE",
+  "runtimeTests": {
+    "passed": 111,
+    "failed": 0
+  },
+  "runtimeSyntaxCheck": "PASS",
+  "startup": {
+    "ready": true,
+    "observedRelease": "FR-NAV1.30.63-HF3.13.45"
+  },
+  "change": {
+    "ordinaryAccountResponse": "ALLOWLISTED",
+    "ordinaryMembershipResponse": "ALLOWLISTED",
+    "checkoutResponseProviderIdentifiers": "REMOVED_WHEN_NOT_CALLER_REQUIRED",
+    "billingPortalSessionIdentifier": "REMOVED_FROM_CLIENT_RESPONSE",
+    "publicDesignChanged": false,
+    "profileFactsChanged": false,
+    "pricingChanged": false,
+    "membershipPolicyChanged": false
+  },
+  "authority": {
+    "profileFacts": "UNCHANGED_PROFILE_FACTORY_AUTHORITY_PRESERVED",
+    "reviewerAuthority": "PRIVATE_SERVER_AUTHORIZATION_PRESERVED",
+    "billingAuthority": "SERVER_SIDE_PROVIDER_STATE_PRESERVED",
+    "authorityTransfer": false
+  }
+}
