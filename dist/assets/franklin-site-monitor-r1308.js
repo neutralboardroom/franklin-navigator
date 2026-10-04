@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const VERSION='FR-NAV1.30.8-HF3.12.0';
-const CURRENT_RELEASE='FR-NAV1.30.62-HF3.13.44';
+const CURRENT_RELEASE='FR-NAV1.30.63-HF3.13.45';
 const ENDPOINT='https://franklin-navigator-membership.onrender.com/api/telemetry/issue';
 const MEMBERSHIP_HOST='franklin-navigator-membership.onrender.com';
 const ASSISTANT_HOST='franklin-navigator-assistant.onrender.com';
