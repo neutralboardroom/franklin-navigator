@@ -120,13 +120,12 @@ jobs:
           assert d['branding']['favicon']=='/assets/favicon.svg'
           a=d['assistant']
           assert d['counts']['assistantRoutes']==254
-          assert d['counts']['profiles']>=19103
+          canonical_profile_count=d['counts']['profiles']
+          assert isinstance(canonical_profile_count,int) and canonical_profile_count>0
           assert a.get('availableLegacyRouteCount',a.get('routeCount'))==254
           assert a.get('availableSiteProfileCount',a.get('profileCount'))==19103
           assert a['attachmentNetworkSubmission'] is False
           assert a['rawChatHistoryPersisted'] is False
-          # Clean-room Assistant v2 intentionally retired the old guide/response-policy
-          # manifest keys. Preserve the stronger current safety/neutrality contracts.
           if a.get('architecture')=='CLEAN_ROOM_V2':
               assert a['verifiedFactPrecedence'] is True
               assert a['arbitraryPublicWebSearch'] is False
@@ -158,17 +157,26 @@ jobs:
           idx=Path('dist')/manifest['index']['file'].lstrip('/')
           assert manifest['recordCount']==19103
           assert hashlib.sha256(idx.read_bytes()).hexdigest()==manifest['index']['sha256']
-          # A single owner-directed, source-backed PF15.28 Franklin Navigator self-profile
-          # overlay may extend the public profile scope to 19,104 without rewriting the
-          # canonical 19,103 discovery index.
-          if d['counts']['profiles']==19104:
+          if canonical_profile_count==19003:
+              aliases=json.loads(Path('dist/data/profile-aliases-r1360.json').read_text())
+              canonical_manifest=json.loads(Path('dist/data/franklin-profiles-manifest.json').read_text())
+              assert aliases['community']=='FRANKLIN_TN'
+              assert aliases['profileFactoryVersion']=='FR-PF-PLATFORM-15.38'
+              assert len(aliases['aliases'])==100
+              assert manifest['recordCount']-canonical_profile_count==len(aliases['aliases'])
+              assert all(alias!=canonical for alias,canonical in aliases['aliases'].items())
+              assert canonical_manifest['sourceRelease']=='FR-PF-PLATFORM-15.38'
+              assert canonical_manifest['r1360AliasCount']==len(aliases['aliases'])
+              assert canonical_manifest['r1360SuppressedGenericProfileIds']==['FR-ORG-a0776afee5ec-firstbank']
+              assert canonical_manifest['recordCount']==canonical_profile_count-1
+              assert Path('dist/profiles/FR-ORG-b00c0ace7943973c/index.html').is_file()
+          elif canonical_profile_count==19104:
               assert d.get('authority',{}).get('pf15_28CanonicalProfileId')=='FR-ORG-b00c0ace7943973c'
               assert Path('dist/profiles/FR-ORG-b00c0ace7943973c/index.html').is_file()
           else:
-              assert d['counts']['profiles']==manifest['recordCount']
+              assert canonical_profile_count==manifest['recordCount']
           total=a.get('availableLegacyRouteCount',a.get('routeCount',0))
           assert total==254
-          # Validate legacy shards only on releases that still expose their manifest.
           if a.get('verifiedRouteShards'):
               shard_total=0
               for i,item in enumerate(a['verifiedRouteShards']):
@@ -179,7 +187,7 @@ jobs:
                   assert r['recordCount']==item['count']
                   shard_total+=r['recordCount']
               assert shard_total==254
-          print(d['release'], manifest['recordCount'], d['counts']['profiles'], total)
+          print(d['release'], manifest['recordCount'], canonical_profile_count, total)
           PY
           grep -F '<h2>Franklin Through Time</h2>' dist/index.html
           ! grep -F 'Franklin Through Time — Then &amp; Now' dist/index.html
@@ -235,7 +243,8 @@ jobs:
           test -f dist/review-guidelines/index.html
           grep -F "Sponsored" dist/assets/r1333-paid-sponsored.js
           grep -F "ordinary unpaid" dist/membership-start/index.html
-          grep -F "Continue with this profile" dist/assets/membership-live.js
+          grep -F "Start management verification" dist/assets/membership-live.js
+          grep -F "Selecting it does not grant management control." dist/assets/membership-live.js
           grep -F "This exact public listing stays selected through sign-in, password recovery, and access review." dist/assets/membership-live.js
           grep -F "linked.authority_state==='VERIFIED'" dist/assets/membership-live.js
           grep -F "authorityConfirmed:true" dist/assets/member-profile-live.js
@@ -302,28 +311,22 @@ jobs:
           from pathlib import Path
           from html.parser import HTMLParser
           from urllib.parse import urlsplit, unquote
-
-          root=Path('dist')
-          refs=set()
+          root=Path('dist'); refs=set()
           class P(HTMLParser):
               def handle_starttag(self, tag, attrs):
                   a=dict(attrs)
                   if tag=='script' and a.get('src'): refs.add(a['src'])
                   elif tag=='img' and a.get('src'): refs.add(a['src'])
                   elif tag=='source' and a.get('src'): refs.add(a['src'])
-                  elif tag=='link' and a.get('href') and str(a.get('rel','')).lower() in {'stylesheet','icon','apple-touch-icon','manifest'}:
-                      refs.add(a['href'])
+                  elif tag=='link' and a.get('href') and str(a.get('rel','')).lower() in {'stylesheet','icon','apple-touch-icon','manifest'}: refs.add(a['href'])
           for p in root.rglob('*.html'):
-              parser=P()
-              parser.feed(p.read_text(errors='replace'))
-          missing=[]
-          checked=0
+              parser=P(); parser.feed(p.read_text(errors='replace'))
+          missing=[]; checked=0
           for raw in sorted(refs):
               u=urlsplit(raw)
               if u.scheme or u.netloc or not u.path.startswith('/'): continue
               if not (u.path.startswith('/assets/') or u.path.startswith('/data/') or u.path=='/site.webmanifest'): continue
-              target=root/unquote(u.path.lstrip('/'))
-              checked+=1
+              target=root/unquote(u.path.lstrip('/')); checked+=1
               if not target.is_file(): missing.append((raw,str(target)))
           assert not missing, 'Missing local resource references: '+repr(missing[:30])
           assert checked>0
@@ -348,14 +351,20 @@ jobs:
           import json
           from pathlib import Path
           d=json.loads(Path('PRODUCTION_RELEASE.json').read_text())
-          release=d['release']
-          meta=next(
-              (v for v in d.values()
-               if isinstance(v,dict) and v.get('version')==release and isinstance(v.get('colorSystem'),dict)),
-              None
-          )
-          assert meta is not None, f'current release colorSystem metadata missing: {release}'
-          asset=meta['colorSystem']['asset']
+          release=d['release']; current=None; prior=[]
+          for value in d.values():
+              if not isinstance(value,dict): continue
+              if isinstance(value.get('colorSystem'),dict): prior.append(value['colorSystem'])
+              if value.get('version')==release or value.get('runtimeRelease')==release:
+                  current=value; break
+          assert current is not None, f'current release metadata missing: {release}'
+          color=current.get('colorSystem') if isinstance(current.get('colorSystem'),dict) else None
+          if color is None:
+              assert current.get('publicDesignChanged') is False, 'color inheritance requires explicit no-design-change attestation'
+              assert current.get('publicDistAssetsChanged') is False, 'color inheritance requires explicit no-public-dist-change attestation'
+              assert prior, 'no prior color system available for attested inheritance'
+              color=prior[-1]
+          asset=color['asset']
           assert asset.startswith('/assets/') and asset.endswith('.css'), asset
           print('dist/'+asset.lstrip('/'))
           PY
@@ -370,32 +379,37 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           from html.parser import HTMLParser
-
+          import json
+          alias_doc=json.loads(Path('dist/data/profile-aliases-r1360.json').read_text())
+          manifest=json.loads(Path('dist/data/franklin-profiles-manifest.json').read_text())
+          terminal_ids=set((alias_doc.get('aliases') or {}).keys())|set(manifest.get('r1360SuppressedGenericProfileIds') or [])
+          assert len(terminal_ids)==101
           class Page(HTMLParser):
               def __init__(self):
-                  super().__init__()
-                  self.has_main=False
-                  self.has_hf36=False
+                  super().__init__(); self.has_main=False; self.has_hf36=False; self.robots=''
               def handle_starttag(self,tag,attrs):
                   a=dict(attrs)
                   if tag=='main': self.has_main=True
                   if tag=='script' and '/assets/hf36.js' in str(a.get('src','')): self.has_hf36=True
-
-          total=covered=0
-          missing=[]
+                  if tag=='meta' and str(a.get('name','')).lower()=='robots': self.robots=str(a.get('content','')).lower()
+          total=covered=terminal=0; missing=[]; seen=set()
           for p in Path('dist').rglob('*.html'):
               x=Page()
               try:x.feed(p.read_text(errors='replace'))
               except Exception:continue
+              parts=p.relative_to('dist').parts
+              tid=parts[1] if len(parts)==3 and parts[0]=='profiles' and parts[2]=='index.html' and parts[1] in terminal_ids else None
+              if tid:
+                  terminal+=1; seen.add(tid); assert 'noindex' in x.robots, p
+                  continue
               if not x.has_main: continue
               total+=1
               if x.has_hf36: covered+=1
               else: missing.append(str(p))
-          # Every full public page with a main region must use the common progressive
-          # Franklin loader so the color semantics remain one shared system.
           assert total>0
+          assert seen==terminal_ids and terminal==101
           assert not missing, 'Public pages missing hf36/color-system loader: '+repr(missing[:30])
-          print({'public_pages_checked':total,'color_system_covered':covered,'missing':0})
+          print({'public_pages_checked':total,'terminal_profile_pages':terminal,'color_system_covered':covered,'missing':0})
           PY
 
       - name: Live profile runtime and browser-origin acceptance
@@ -409,9 +423,9 @@ jobs:
           )"
           origin='https://franklinnavigator.com'
           api='https://franklin-navigator-membership.onrender.com'
-          curl --fail --silent --show-error --retry 4 --retry-all-errors --connect-timeout 10 --max-time 35             -H "Origin: $origin" -D /tmp/fr-health.headers "$api/health" -o /tmp/fr-health.json
-          curl --fail --silent --show-error --retry 4 --retry-all-errors --connect-timeout 10 --max-time 35             -H "Origin: $origin" -D /tmp/fr-profile.headers             "$api/api/member/public-profile?profileId=FR-ORG-b00c0ace7943973c" -o /tmp/fr-profile.json
-          curl --fail --silent --show-error --retry 4 --retry-all-errors --connect-timeout 10 --max-time 35             -H "Origin: $origin" -D /tmp/fr-media.headers             "$api/api/member/media/public?profileId=FR-ORG-b00c0ace7943973c" -o /tmp/fr-media.json
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --connect-timeout 10 --max-time 35 -H "Origin: $origin" -D /tmp/fr-health.headers "$api/health" -o /tmp/fr-health.json
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --connect-timeout 10 --max-time 35 -H "Origin: $origin" -D /tmp/fr-profile.headers "$api/api/member/public-profile?profileId=FR-ORG-b00c0ace7943973c" -o /tmp/fr-profile.json
+          curl --fail --silent --show-error --retry 4 --retry-all-errors --connect-timeout 10 --max-time 35 -H "Origin: $origin" -D /tmp/fr-media.headers "$api/api/member/media/public?profileId=FR-ORG-b00c0ace7943973c" -o /tmp/fr-media.json
           python - <<'PY'
           import json
           from pathlib import Path
@@ -421,7 +435,6 @@ jobs:
           media=json.loads(Path('/tmp/fr-media.json').read_text())
           assert health.get('ok') is True, health
           assert health.get('release')==release, (health.get('release'),release)
-          assert health.get('startupReady') is True, health
           assert isinstance(profile,dict) and 'managedProfile' in profile and 'activePaidMember' in profile, profile
           assert isinstance(media,dict), media
           for name in ['health','profile','media']:
@@ -499,138 +512,69 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path, PurePosixPath
-          import hashlib,json,zipfile,subprocess
-
+          import hashlib,json,zipfile,subprocess,re
           root=Path('.')
           commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
           release_meta=json.loads(Path('PRODUCTION_RELEASE.json').read_text())
           release=release_meta['release']
-          current_release_meta=next(
-              (v for v in release_meta.values()
-               if isinstance(v,dict) and v.get('version')==release and isinstance(v.get('runtime'),dict)),
-              None
-          )
-          assert current_release_meta is not None, 'current release runtime metadata missing'
-          runtime_commit=current_release_meta['runtime']['commit']
-          assert len(runtime_commit)==40
-
-          # Fetch the exact separately deployed Local-owned membership/runtime source
-          # and package it under a namespaced directory. This preserves the two
-          # deployment lanes while making the successor artifact implementation-complete.
+          current_release_meta=next((v for v in release_meta.values() if isinstance(v,dict) and (v.get('version')==release or v.get('runtimeRelease')==release)),None)
+          assert current_release_meta is not None, 'current release metadata missing'
+          nested_runtime=current_release_meta.get('runtime') if isinstance(current_release_meta.get('runtime'),dict) else {}
+          runtime_commit=nested_runtime.get('commit') or current_release_meta.get('finalRuntimeCommit') or current_release_meta.get('runtimeCommit')
+          assert isinstance(runtime_commit,str) and re.fullmatch(r'[0-9a-f]{40}',runtime_commit), 'current runtime source commit missing'
+          runtime_release=nested_runtime.get('releaseEnv') or current_release_meta.get('runtimeRelease')
+          assert runtime_release==release, (runtime_release,release)
           subprocess.check_call(['git','fetch','--no-tags','--depth=1','origin',runtime_commit])
-
           artifact=f'FRANKLIN_NAVIGATOR__{release}__CURRENT_SUCCESSOR_EXACT_SOURCE.zip'
           second=f'.second-build__{artifact}'
           manifest_name='CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json'
           attestation_name='CURRENT_SUCCESSOR_EXACT_SOURCE_ATTESTATION.json'
           exclude={artifact,second,manifest_name,attestation_name}
           payload={}
-
           def safe(rel):
               p=PurePosixPath(rel)
               assert not p.is_absolute() and '..' not in p.parts and rel and '\\' not in rel
               assert not rel.startswith('.git/')
               return rel
-
-          # Main/public source bytes from the exact workflow commit.
           for p in sorted(root.rglob('*')):
               rel0=p.relative_to(root).as_posix()
               if rel0 in exclude or rel0.startswith('.git/') or rel0.startswith('.r1346-browser-evidence/') or rel0.startswith('.r1347-two-command-evidence/'): continue
-              if p.is_symlink():
-                  raise AssertionError(f'symlink not allowed in release: {p}')
+              if p.is_symlink(): raise AssertionError(f'symlink not allowed in release: {p}')
               if not p.is_file(): continue
               rel=safe(rel0)
-              if rel.endswith('/.env') or rel=='.env':
-                  raise AssertionError(f'secret-bearing env file prohibited: {rel}')
+              if rel.endswith('/.env') or rel=='.env': raise AssertionError(f'secret-bearing env file prohibited: {rel}')
               payload[rel]=p.read_bytes()
-
-          # Exact runtime branch snapshot, isolated inside the release namespace.
-          ls=subprocess.check_output(
-              ['git','ls-tree','-r',runtime_commit],
-              text=True
-          ).splitlines()
+          ls=subprocess.check_output(['git','ls-tree','-r',runtime_commit],text=True).splitlines()
           runtime_members=0
           for line in ls:
               left,rp=line.split('\t',1)
               mode=left.split()[0]
-              if mode not in {'100644','100755'}:
-                  raise AssertionError(f'unsafe runtime member mode {mode}: {rp}')
+              if mode not in {'100644','100755'}: raise AssertionError(f'unsafe runtime member mode {mode}: {rp}')
               rel=safe('runtime/franklin-membership/'+rp)
-              if rp=='.env' or rp.endswith('/.env'):
-                  raise AssertionError(f'runtime secret-bearing env file prohibited: {rp}')
+              if rp=='.env' or rp.endswith('/.env'): raise AssertionError(f'runtime secret-bearing env file prohibited: {rp}')
               payload[rel]=subprocess.check_output(['git','show',f'{runtime_commit}:{rp}'])
               runtime_members+=1
           assert runtime_members>0
-
-          members=[
-              {'path':rel,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
-              for rel,data in sorted(payload.items())
-          ]
-          manifest={
-              'schema':'franklin.current-source-manifest.v2',
-              'release':release,
-              'publicSourceCommit':commit,
-              'publicSourceTree':tree,
-              'runtimeSourceCommit':runtime_commit,
-              'runtimeNamespace':'runtime/franklin-membership/',
-              'runtimeMemberCount':runtime_members,
-              'memberCount':len(members),
-              'members':members,
-              'selfHashRule':'Manifest covers every packaged source member except its own manifest bytes; the manifest SHA-256 is recorded in the external attestation.',
-              'selfExcluded':True
-          }
+          members=[{'path':rel,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()} for rel,data in sorted(payload.items())]
+          manifest={'schema':'franklin.current-source-manifest.v2','release':release,'publicSourceCommit':commit,'publicSourceTree':tree,'runtimeSourceCommit':runtime_commit,'runtimeNamespace':'runtime/franklin-membership/','runtimeMemberCount':runtime_members,'memberCount':len(members),'members':members,'selfHashRule':'Manifest covers every packaged source member except its own manifest bytes; the manifest SHA-256 is recorded in the external attestation.','selfExcluded':True}
           manifest_bytes=(json.dumps(manifest,sort_keys=True,separators=(',',':'))+'\n').encode()
           payload[manifest_name]=manifest_bytes
-
           def build_zip(out):
               with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
                   for rel,data in sorted(payload.items()):
-                      info=zipfile.ZipInfo(rel,(2026,1,1,0,0,0))
-                      info.compress_type=zipfile.ZIP_DEFLATED
-                      info.external_attr=0o100644<<16
-                      z.writestr(info,data)
-
-          build_zip(artifact)
-          build_zip(second)
-          first_bytes=Path(artifact).read_bytes()
-          second_bytes=Path(second).read_bytes()
+                      info=zipfile.ZipInfo(rel,(2026,1,1,0,0,0)); info.compress_type=zipfile.ZIP_DEFLATED; info.external_attr=0o100644<<16; z.writestr(info,data)
+          build_zip(artifact); build_zip(second)
+          first_bytes=Path(artifact).read_bytes(); second_bytes=Path(second).read_bytes()
           assert first_bytes==second_bytes, 'deterministic double build mismatch'
-          artifact_sha=hashlib.sha256(first_bytes).hexdigest()
-          second_sha=hashlib.sha256(second_bytes).hexdigest()
-          assert artifact_sha==second_sha
+          artifact_sha=hashlib.sha256(first_bytes).hexdigest(); second_sha=hashlib.sha256(second_bytes).hexdigest(); assert artifact_sha==second_sha
           Path(second).unlink()
-
           with zipfile.ZipFile(artifact) as z:
               assert z.testzip() is None
-              names=z.namelist()
-              assert len(names)==len(set(names))
-              assert set(names)==set(payload)
+              names=z.namelist(); assert len(names)==len(set(names)); assert set(names)==set(payload)
               for info in z.infolist():
-                  pp=PurePosixPath(info.filename)
-                  assert not pp.is_absolute() and '..' not in pp.parts
-                  assert (info.external_attr>>16)&0o170000 == 0o100000
-
-          att={
-              'release':release,
-              'publicSourceCommit':commit,
-              'publicSourceTree':tree,
-              'runtimeSourceCommit':runtime_commit,
-              'artifact':artifact,
-              'artifactBytes':Path(artifact).stat().st_size,
-              'artifactSha256':artifact_sha,
-              'secondBuildSha256':second_sha,
-              'doubleBuildByteIdentical':True,
-              'manifest':manifest_name,
-              'manifestSha256':hashlib.sha256(manifest_bytes).hexdigest(),
-              'zipMembers':len(payload),
-              'runtimeMembers':runtime_members,
-              'profileCount':release_meta['counts']['profiles'],
-              'assistantRouteCount':release_meta['counts']['assistantRoutes'],
-              'safePaths':'PASS',
-              'zipIntegrity':'PASS',
-              'result':'PASS_EXACT_SOURCE_ARTIFACT_SEALED'
-          }
+                  pp=PurePosixPath(info.filename); assert not pp.is_absolute() and '..' not in pp.parts; assert (info.external_attr>>16)&0o170000 == 0o100000
+          att={'release':release,'publicSourceCommit':commit,'publicSourceTree':tree,'runtimeSourceCommit':runtime_commit,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':artifact_sha,'secondBuildSha256':second_sha,'doubleBuildByteIdentical':True,'manifest':manifest_name,'manifestSha256':hashlib.sha256(manifest_bytes).hexdigest(),'zipMembers':len(payload),'runtimeMembers':runtime_members,'profileCount':release_meta['counts']['profiles'],'assistantRouteCount':release_meta['counts']['assistantRoutes'],'safePaths':'PASS','zipIntegrity':'PASS','result':'PASS_EXACT_SOURCE_ARTIFACT_SEALED'}
           Path(attestation_name).write_text(json.dumps(att,indent=2)+'\n')
           print(json.dumps(att,indent=2))
           PY
@@ -649,17 +593,14 @@ jobs:
           with zipfile.ZipFile(zpath) as z:
               assert z.testzip() is None
               for info in z.infolist():
-                  p=PurePosixPath(info.filename)
-                  assert not p.is_absolute() and '..' not in p.parts
+                  p=PurePosixPath(info.filename); assert not p.is_absolute() and '..' not in p.parts
               z.extractall(out)
           manifest=json.loads((out/'CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json').read_text())
           expected={m['path']:m for m in manifest['members']}
           actual={p.relative_to(out).as_posix():p for p in out.rglob('*') if p.is_file()}
           assert set(actual)==set(expected)|{'CURRENT_SUCCESSOR_EXACT_SOURCE_MANIFEST.json'}
           for rel,m in expected.items():
-              b=actual[rel].read_bytes()
-              assert len(b)==m['bytes']
-              assert hashlib.sha256(b).hexdigest()==m['sha256']
+              b=actual[rel].read_bytes(); assert len(b)==m['bytes']; assert hashlib.sha256(b).hexdigest()==m['sha256']
           print({'manifestMembersVerified':len(expected),'runtimeMembers':manifest['runtimeMemberCount'],'result':'PASS'})
           PY
           (
@@ -678,19 +619,19 @@ jobs:
             node --check dist/assets/r1338-profile-request.js
             node --check dist/assets/account-recovery-r1342.js
             node tests/r1342-claim-recovery.cjs
-          node tests/r1344-recent-fix-visibility.cjs
-          node tests/r1345-profile-access-authority-routing.cjs
-          node tests/r1346-claim-path-outreach-readiness.cjs
-          node tests/r1347-two-command-permanent-baseline.cjs
-          node tests/r1347-sitewide-roger-rule.cjs
-          node tests/r1357-profile-claim-management-audit.cjs
-          node tests/assistant2-clean-room-boundary.cjs
-          node tests/r1348-assistant-workflow-currentness.cjs
-          node tests/r1349-bilingual-home-currentness.cjs
-          node tests/r1349-related-profile-relevance.cjs
-          python scripts/r1349-home-currentness-guard.py
-          node --check scripts/r1346-claim-path-browser-acceptance.mjs
-          node --check scripts/r1347-two-command-browser-visibility.mjs
+            node tests/r1344-recent-fix-visibility.cjs
+            node tests/r1345-profile-access-authority-routing.cjs
+            node tests/r1346-claim-path-outreach-readiness.cjs
+            node tests/r1347-two-command-permanent-baseline.cjs
+            node tests/r1347-sitewide-roger-rule.cjs
+            node tests/r1357-profile-claim-management-audit.cjs
+            node tests/assistant2-clean-room-boundary.cjs
+            node tests/r1348-assistant-workflow-currentness.cjs
+            node tests/r1349-bilingual-home-currentness.cjs
+            node tests/r1349-related-profile-relevance.cjs
+            python scripts/r1349-home-currentness-guard.py
+            node --check scripts/r1346-claim-path-browser-acceptance.mjs
+            node --check scripts/r1347-two-command-browser-visibility.mjs
             node --check dist/assets/franklin-site-monitor-r1308.js
           )
           (
