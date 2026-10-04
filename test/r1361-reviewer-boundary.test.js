@@ -32,8 +32,8 @@ test('R1361 reviewer authority remains isolated to private reviewer routes',()=>
   assert.match(src,/SameSite=Strict/);
 });
 
-test('R1361 reviewer boundary survives the R1362 release advance without changing commerce policy',()=>{
+test('R1361 reviewer boundary survives the R1363 release advance without changing commerce policy',()=>{
   const src=server();
-  assert.match(src,/FR-NAV1\.30\.62-HF3\.13\.44/);
+  assert.match(src,/FR-NAV1\.30\.63-HF3\.13\.45/);
   assert.match(src,/const COMMERCE_ENABLED =/);
 });
