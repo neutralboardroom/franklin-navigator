@@ -1,0 +1,77 @@
+{
+  "receiptType": "LOCAL_COMMUNITY_PLATFORM_R1364_PUBLIC_VISIBILITY_POST_DEPLOY",
+  "recordedDate": "2026-10-04",
+  "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
+  "community": "FRANKLIN_TN",
+  "publicSurfaceVersion": "FR-NAV1.30.64-HF3.13.46",
+  "authoritativeRuntimeVersion": "FR-NAV1.30.63-HF3.13.45",
+  "authorityTransfer": false,
+  "runtimeChangeRequired": false,
+  "reasonRuntimePreserved": "R1364 is a static/public membership-visibility messaging successor. Existing paid access control, claim, billing, entitlement, media, review, and profile-management behavior is inherited from the already-live R1363 runtime; no runtime, schema, storage, payment, pricing, or entitlement mutation is required for this public-surface slice.",
+  "publicDeployment": {
+    "repository": "neutralboardroom/franklin-navigator",
+    "branch": "main",
+    "mergeCommit": "85e3c24a34a0f48d1874d5e1e811cb8ab545f1a4",
+    "renderServiceId": "srv-da8tg6rbc2fs73crru2g",
+    "renderDeployId": "dep-db12pn7avr4c73a078lg",
+    "renderState": "LIVE",
+    "renderFinishedAt": "2026-10-04T10:40:43.830617Z"
+  },
+  "runtimePreserved": {
+    "renderServiceId": "srv-dabgvefqj5pc739vr4h0",
+    "branch": "franklin-commerce-runtime-r30",
+    "runtimeCommit": "10bc9678415589335b63b86c92bd4ae6d39d7baa",
+    "renderDeployId": "dep-db0t7u2d0e5s73d3vmc0",
+    "renderState": "LIVE",
+    "release": "FR-NAV1.30.63-HF3.13.45"
+  },
+  "qualifiedHead": "c94cd3acbf8830828956367b963cc67b883573a6",
+  "qualification": {
+    "allApplicableFreshWorkflowsPassed": true,
+    "workflowRuns": [
+      {"name": "R1364 membership visibility qualification", "runId": 37195782736, "conclusion": "success"},
+      {"name": "R1359 profile outreach readiness", "runId": 37195782729, "conclusion": "success"},
+      {"name": "R1352 complete claim review path", "runId": 37195782737, "conclusion": "success"},
+      {"name": "R1360 profile quality generator and qualification", "runId": 37195782754, "conclusion": "success"},
+      {"name": "Franklin current-successor regression and exact-artifact qualification", "runId": 37195782764, "conclusion": "success"}
+    ]
+  },
+  "exactArtifactEvidence": {
+    "workflowArtifactId": 11301485846,
+    "workflowArtifactName": "franklin-current-successor-exact-source",
+    "workflowArtifactDigest": "sha256:019fe4bf4832cc49257ca8cb5be99e55ad1ae30d4c38502680a70f4a15215f3b",
+    "sealedCanonicalRuntimeRelease": "FR-NAV1.30.63-HF3.13.45",
+    "note": "The exact-source artifact remains canonically named for R1363 because the runtime is intentionally unchanged. It contains the qualified R1364 public-surface files and the inherited R1363 runtime source."
+  },
+  "livePublicChanges": [
+    "/business-dashboard/",
+    "/membership-start/",
+    "/member-profile-preview/",
+    "/claim-profile/"
+  ],
+  "approvedLiveMessagingScope": [
+    "Community Membership is optional at $35/year.",
+    "The primary value proposition may be described as helping a business increase visibility in the Franklin community.",
+    "Richer reviewed profile information, currently supported profile media, special-offer or offer/event information, supported customer-action links, and clearly labeled Community Member or Sponsored discovery eligibility may be described within existing entitlement and review boundaries.",
+    "Basic profile claiming and legitimate basic management remain free after verified authority.",
+    "Factual corrections and public-profile removal remain free.",
+    "Membership does not buy factual accuracy, ordinary unpaid ranking, endorsement, leads, customers, sales, revenue, or guaranteed results."
+  ],
+  "stillNotApproved": [
+    "Coupon graphic upload claims",
+    "Promotional graphic upload claims",
+    "Flyer upload claims",
+    "PDF coupon or flyer upload claims",
+    "Dedicated multi-item coupon, sale, promotion, or event CRUD claims",
+    "Guaranteed ranking, exposure, traffic, leads, customers, sales, or revenue claims"
+  ],
+  "outreachState": "HOLD_FOR_POINT_OF_SEND_PREFLIGHT",
+  "nextVersionImprovementList": [
+    "Verify post-claim upgrade messaging against the live verified-manager path.",
+    "Verify post-payment member setup wording against the live member onboarding path.",
+    "Run explicit responsive/mobile visual acceptance on the four R1364 public decision surfaces.",
+    "Run live media upload/display smoke tests before expanding any media-specific outreach claim.",
+    "Only implement flyer, PDF, coupon, promotion, sale, or event-specific upload/CRUD capabilities as a separate qualified product change; do not imply they exist before implementation."
+  ],
+  "result": "PASS_PUBLIC_SURFACE_DEPLOYED_RUNTIME_PRESERVED_NO_AUTHORITY_TRANSFER"
+}
