@@ -3,6 +3,8 @@ const test=require('node:test');
 const assert=require('node:assert/strict');
 const {OVERLAY_RELEASE,VERSION,validatePromotionInput,promotionIsCurrent,normalizeKind,normalizeMediaKind}=require('../promotions-proxy');
 
+const hasCode=code=>error=>Boolean(error&&error.code===code);
+
 test('R1365 overlay has explicit release/version identity',()=>{
   assert.equal(OVERLAY_RELEASE,'FR-NAV1.30.65-HF3.13.47');
   assert.equal(VERSION,'FRANKLIN_MEMBER_PROMOTIONS_R1365_1');
@@ -10,17 +12,17 @@ test('R1365 overlay has explicit release/version identity',()=>{
 
 test('promotion kinds are closed-world',()=>{
   for(const kind of ['COUPON','SPECIAL','SALE','PROMOTION','EVENT'])assert.equal(normalizeKind(kind),kind);
-  assert.throws(()=>normalizeKind('ad'),/PROMOTION_KIND_INVALID/);
+  assert.throws(()=>normalizeKind('ad'),hasCode('PROMOTION_KIND_INVALID'));
 });
 
 test('promotion media kinds exclude unsafe/unimplemented PDFs',()=>{
   for(const kind of ['COUPON_GRAPHIC','SALE_GRAPHIC','PROMOTIONAL_GRAPHIC','PROMOTIONAL_FLYER','EVENT_FLYER'])assert.equal(normalizeMediaKind(kind),kind);
-  assert.throws(()=>normalizeMediaKind('PDF'),/PROMOTION_MEDIA_KIND_INVALID/);
+  assert.throws(()=>normalizeMediaKind('PDF'),hasCode('PROMOTION_MEDIA_KIND_INVALID'));
 });
 
 test('event requires a valid start and end must follow start',()=>{
-  assert.throws(()=>validatePromotionInput({kind:'EVENT',title:'Open house',description:'Join us for a community open house.'}),/EVENT_START_REQUIRED/);
-  assert.throws(()=>validatePromotionInput({kind:'SALE',title:'Sale',description:'A real limited time sale for local residents.',startAt:'2026-10-10T10:00:00Z',endAt:'2026-10-09T10:00:00Z'}),/PROMOTION_DATE_ORDER_INVALID/);
+  assert.throws(()=>validatePromotionInput({kind:'EVENT',title:'Open house',description:'Join us for a community open house.'}),hasCode('EVENT_START_REQUIRED'));
+  assert.throws(()=>validatePromotionInput({kind:'SALE',title:'Sale',description:'A real limited time sale for local residents.',startAt:'2026-10-10T10:00:00Z',endAt:'2026-10-09T10:00:00Z'}),hasCode('PROMOTION_DATE_ORDER_INVALID'));
 });
 
 test('public currentness hides future and expired items',()=>{
