@@ -1,29 +1,23 @@
-/* R1332 — cache-independent Community Member special-offer projection */
+/* R1365 — Community Member offers, promotions and events; preserves R1332 legacy offer projection */
 (()=>{'use strict';
  const m=location.pathname.match(/^\/profiles\/(FR-[A-Z0-9]+-[A-Za-z0-9][A-Za-z0-9._-]{2,100})\/$/);if(!m)return;
  const id=decodeURIComponent(m[1]),API='https://franklin-navigator-membership.onrender.com';
  const n=(t,x,c)=>{const e=document.createElement(t);if(x!==undefined)e.textContent=x;if(c)e.className=c;return e};
  const safe=v=>{try{const u=new URL(String(v||''));return u.protocol==='https:'&&!u.username&&!u.password?u:null}catch{return null}};
- async function run(){
-  let out;try{const r=await fetch(API+'/api/member/public-profile?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'});if(!r.ok)return;out=await r.json()}catch{return}
-  if(out.activePaidMember!==true)return;
-  const p=out.publication;if(!p||p.profileId!==id||p.provenance!=='MEMBER_SUBMITTED_REVIEWED')return;
-  const f=p.fields||{},title=String(f.specialOfferTitle||'').trim(),details=String(f.specialOfferDetails||'').trim(),expires=String(f.specialOfferExpires||'').trim();
-  if(!title||!details||document.querySelector('#member-special-offer'))return;
-  if(expires&&/^\d{4}-\d{2}-\d{2}$/.test(expires)&&new Date(expires+'T23:59:59').getTime()<Date.now())return;
-  const article=document.querySelector('.r22-profile-layout>article');if(!article)return;
-  const section=n('section','', 'hf35-member-module r1332-special-offer');section.id='member-special-offer';
-  section.append(n('div','Community Member offer','eyebrow'),n('h2','Special offer for Franklin Navigator users'),n('h3',title),n('p',details));
-  const meta=n('div','', 'r1332-offer-meta');
-  if(String(f.specialOfferCode||'').trim())meta.append(n('span','Code: '+String(f.specialOfferCode).trim()));
-  if(expires)meta.append(n('span','Through '+expires));
-  if(meta.childNodes.length)section.append(meta);
-  if(String(f.specialOfferTerms||'').trim())section.append(n('p',String(f.specialOfferTerms).trim(),'fine-print'));
-  const u=safe(f.specialOfferUrl);if(u){const a=n('a','View offer','button primary');a.href=u.href;a.rel='noopener noreferrer ugc';section.append(a)}
-  section.append(n('p','Offer provided by this Community Member. Franklin Navigator does not guarantee availability, terms or results.','fine-print'));
-  const anchor=document.querySelector('#member-updates')||document.querySelector('#official-links')||document.querySelector('#manage');
-  anchor?article.insertBefore(section,anchor):article.append(section);
-  const nav=document.querySelector('.r1330-section-nav');if(nav&&!nav.querySelector('a[href="#member-special-offer"]')){const a=n('a','Offers');a.href='#member-special-offer';const reviews=nav.querySelector('a[href="#reviews"]');reviews?nav.insertBefore(a,reviews):nav.append(a)}
+ const when=v=>{try{return v?new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(v)):''}catch{return''}};
+ const label=k=>({COUPON:'Coupon',SPECIAL:'Special',SALE:'Sale',PROMOTION:'Promotion',EVENT:'Event'}[k]||'Community Member update');
+ function ensureCss(){if(document.querySelector('link[data-r1365-promotions]'))return;const l=document.createElement('link');l.rel='stylesheet';l.href='/assets/r1365-member-promotions.css?v=frnav1365';l.dataset.r1365Promotions='1';document.head.append(l)}
+ function article(){return document.querySelector('.r22-profile-layout>article')}
+ function insert(section){const a=article();if(!a)return false;const anchor=document.querySelector('#member-updates')||document.querySelector('#official-links')||document.querySelector('#manage');anchor?a.insertBefore(section,anchor):a.append(section);return true}
+ function addNav(id,text){const nav=document.querySelector('.r1330-section-nav');if(!nav||nav.querySelector('a[href="#'+id+'"]'))return;const a=n('a',text);a.href='#'+id;const reviews=nav.querySelector('a[href="#reviews"]');reviews?nav.insertBefore(a,reviews):nav.append(a)}
+ function renderPromotions(items){if(!Array.isArray(items)||!items.length||document.querySelector('#member-promotions'))return false;ensureCss();const section=n('section',undefined,'hf35-member-module r1365-public-promotions');section.id='member-promotions';section.append(n('div','Community Member','eyebrow'),n('h2','Current promotions & events'));const grid=n('div',undefined,'r1365-public-promo-grid');
+  for(const p of items){const card=n('article',undefined,'r1365-public-promo');card.append(n('div',label(p.kind),'eyebrow'),n('h3',String(p.title||'').trim()),n('p',String(p.description||'').trim()));const meta=n('div',undefined,'r1365-public-promo-meta');if(String(p.promoCode||'').trim())meta.append(n('span','Code: '+String(p.promoCode).trim()));if(String(p.discountText||'').trim())meta.append(n('span',String(p.discountText).trim()));if(p.startAt)meta.append(n('span',(p.kind==='EVENT'?'Starts ':'From ')+when(p.startAt)));if(p.endAt)meta.append(n('span',(p.kind==='EVENT'?'Ends ':'Through ')+when(p.endAt)));if(String(p.eventLocation||'').trim())meta.append(n('span',String(p.eventLocation).trim()));if(meta.childNodes.length)card.append(meta);
+   for(const media of Array.isArray(p.media)?p.media:[]){if(media?.mimeType!=='image/webp'||!String(media.url||'').startsWith('/api/member/promotions/media/file?'))continue;const img=document.createElement('img');img.src=API+media.url;img.alt=String(p.title||label(p.kind))+' promotional image';img.loading='lazy';img.decoding='async';card.append(img)}
+   const u=safe(p.actionUrl);if(u){const a=n('a',p.kind==='EVENT'?'Event details':'View details','button primary');a.href=u.href;a.rel='noopener noreferrer ugc';card.append(a)}card.append(n('p','Information provided by this Community Member. Confirm current availability, terms and event details directly with the business or organization.','fine-print'));grid.append(card)}section.append(grid);if(!insert(section))return false;addNav('member-promotions','Promotions & events');return true
  }
+ function renderLegacy(out,newItems){if(out?.activePaidMember!==true)return;const p=out.publication;if(!p||p.profileId!==id||p.provenance!=='MEMBER_SUBMITTED_REVIEWED')return;const f=p.fields||{},title=String(f.specialOfferTitle||'').trim(),details=String(f.specialOfferDetails||'').trim(),expires=String(f.specialOfferExpires||'').trim();if(!title||!details||document.querySelector('#member-special-offer'))return;if((newItems||[]).some(x=>String(x.title||'').trim().toLowerCase()===title.toLowerCase()))return;if(expires&&/^\d{4}-\d{2}-\d{2}$/.test(expires)&&new Date(expires+'T23:59:59').getTime()<Date.now())return;
+  const section=n('section',undefined,'hf35-member-module r1332-special-offer');section.id='member-special-offer';section.append(n('div','Community Member offer','eyebrow'),n('h2','Special offer for Franklin Navigator users'),n('h3',title),n('p',details));const meta=n('div',undefined,'r1332-offer-meta');if(String(f.specialOfferCode||'').trim())meta.append(n('span','Code: '+String(f.specialOfferCode).trim()));if(expires)meta.append(n('span','Through '+expires));if(meta.childNodes.length)section.append(meta);if(String(f.specialOfferTerms||'').trim())section.append(n('p',String(f.specialOfferTerms).trim(),'fine-print'));const u=safe(f.specialOfferUrl);if(u){const a=n('a','View offer','button primary');a.href=u.href;a.rel='noopener noreferrer ugc';section.append(a)}section.append(n('p','Offer provided by this Community Member. Franklin Navigator does not guarantee availability, terms or results.','fine-print'));if(insert(section))addNav('member-special-offer','Offers')
+ }
+ async function run(){let promos={promotions:[]},legacy=null;try{const [a,b]=await Promise.all([fetch(API+'/api/member/promotions/public?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'}),fetch(API+'/api/member/public-profile?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'})]);if(a.ok)promos=await a.json();if(b.ok)legacy=await b.json()}catch{return}const items=Array.isArray(promos.promotions)?promos.promotions:[];renderPromotions(items);renderLegacy(legacy,items)}
  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',run,{once:true}):run();
 })();
