@@ -3992,6 +3992,15 @@
       "canonicalProfileCount": 19003,
       "incidentMonitorSelfTest": true
     },
-    "authorityTransfer": false
+    "authorityTransfer": false,
+    "colorSystem": {
+      "asset": "/assets/r1336-color-system.css",
+      "loader": "/assets/hf36.js",
+      "primary": "FRANKLIN_TEAL",
+      "randomDecorativeColoring": false,
+      "darkSemanticSurfaceReadabilityGuard": true,
+      "inheritedFrom": "R1362",
+      "inheritedWithoutVisualChange": true
+    }
   }
 }

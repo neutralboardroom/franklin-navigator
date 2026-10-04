@@ -36,5 +36,14 @@
     "reviewerAuthority": "PRIVATE_SERVER_AUTHORIZATION_PRESERVED",
     "billingAuthority": "SERVER_SIDE_PROVIDER_STATE_PRESERVED",
     "authorityTransfer": false
+  },
+  "colorSystem": {
+    "asset": "/assets/r1336-color-system.css",
+    "loader": "/assets/hf36.js",
+    "primary": "FRANKLIN_TEAL",
+    "randomDecorativeColoring": false,
+    "darkSemanticSurfaceReadabilityGuard": true,
+    "inheritedFrom": "R1362",
+    "inheritedWithoutVisualChange": true
   }
 }
