@@ -22,8 +22,9 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: '22'
+          node-version: 22
       - name: Apply R1363 response-minimization patch
+        shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -82,31 +83,31 @@ jobs:
             t=t.replace('R1362 advances the runtime release without changing commerce policy','R1362 readiness boundary survives the R1363 runtime release advance without changing commerce policy')
             t=t.replace('R1362 runtime fails closed if deployment release identity drifts from embedded source','R1362 fail-closed identity guard survives the R1363 runtime release advance')
             p.write_text(t)
-
-          Path('test/r1363-account-response-minimization.test.js').write_text(r'''\'use strict\';
-          const test=require(\'node:test\');
-          const assert=require(\'node:assert/strict\');
-          const fs=require(\'node:fs\');
-          const src=()=>fs.readFileSync(\'server.js\',\'utf8\');
-          const section=(s,start,end)=>{const a=s.indexOf(start),b=s.indexOf(end,a+start.length);assert.ok(a>=0&&b>a,`${start} section missing`);return s.slice(a,b)};
-          test(\'R1363 release identity advances for account response minimization\',()=>{assert.ok(src().includes("const EMBEDDED_RELEASE = \'FR-NAV1.30.63-HF3.13.45\'"));});
-          test(\'ordinary account identity is allowlisted and omits verification internals\',()=>{const m=section(src(),\'function publicAccount(session)\',\'function publicMembership\');for(const key of [\'account_id:session.account_id\',\'email:session.email\',\'display_name:session.display_name\',\'preferred_language:session.preferred_language\'])assert.ok(m.includes(key),key);assert.ok(!m.includes(\'email_verified_at\'));});
-          test(\'ordinary membership response is an explicit user-facing allowlist\',()=>{const m=section(src(),\'function publicMembership(membership)\',\'async function resolveEventContext\');for(const key of [\'profile_id\',\'lookup_key\',\'status\',\'cancel_at_period_end\',\'current_period_end\',\'access_state\',\'growth_desk\',\'rich_profile\',\'local_visibility_tools\'])assert.ok(m.includes(key),key);for(const secret of [\'membership_id\',\'account_id\',\'stripe_customer_id\',\'stripe_subscription_id\',\'failure_count\',\'last_event_created\',\'created_at\',\'updated_at\'])assert.ok(!m.includes(secret),secret);});
-          test(\'accounts me and membership status return sanitized shapes\',()=>{const s=src(),me=section(s,"url.pathname===\'/api/accounts/me\'","url.pathname===\'/api/profile-links\'");assert.ok(me.includes(\'account:publicAccount(session)\'));assert.ok(me.includes(\'membership:publicMembership(membership)\'));assert.ok(!me.includes(\'l.verified_at\'));assert.ok(!me.includes(\'account:session\'));const status=section(s,"url.pathname===\'/api/membership/status\'","url.pathname===\'/api/billing/portal\'");assert.ok(status.includes(\'publicMembership(await membershipForAccount(session.account_id))\'));});
-          test(\'checkout and billing responses do not expose provider session identifiers\',()=>{const s=src(),checkout=section(s,\'const {checkoutUrl,reused}=purchase\',"url.pathname===\'/api/membership/status\'");assert.ok(checkout.includes(\'checkoutUrl\'));for(const secret of [\'checkoutSessionId\',\'intentId\',\'stripePriceId\'])assert.ok(!checkout.includes(secret),secret);const portal=section(s,"url.pathname===\'/api/billing/portal\'","url.pathname===\'/api/onboarding\'");assert.ok(portal.includes(\'url:portal.url\'));assert.ok(!portal.includes(\'portalSessionId\'));});
-          ''')
           PY
+          cat > test/r1363-account-response-minimization.test.js <<'EOF'
+          'use strict';
+          const test=require('node:test');
+          const assert=require('node:assert/strict');
+          const fs=require('node:fs');
+          const src=()=>fs.readFileSync('server.js','utf8');
+          const section=(s,start,end)=>{const a=s.indexOf(start),b=s.indexOf(end,a+start.length);assert.ok(a>=0&&b>a,`${start} section missing`);return s.slice(a,b)};
+          test('R1363 release identity advances for account response minimization',()=>{assert.ok(src().includes("const EMBEDDED_RELEASE = 'FR-NAV1.30.63-HF3.13.45'"));});
+          test('ordinary account identity is allowlisted and omits verification internals',()=>{const m=section(src(),'function publicAccount(session)','function publicMembership');for(const key of ['account_id:session.account_id','email:session.email','display_name:session.display_name','preferred_language:session.preferred_language'])assert.ok(m.includes(key),key);assert.ok(!m.includes('email_verified_at'));});
+          test('ordinary membership response is an explicit user-facing allowlist',()=>{const m=section(src(),'function publicMembership(membership)','async function resolveEventContext');for(const key of ['profile_id','lookup_key','status','cancel_at_period_end','current_period_end','access_state','growth_desk','rich_profile','local_visibility_tools'])assert.ok(m.includes(key),key);for(const secret of ['membership_id','account_id','stripe_customer_id','stripe_subscription_id','failure_count','last_event_created','created_at','updated_at'])assert.ok(!m.includes(secret),secret);});
+          test('accounts me and membership status return sanitized shapes',()=>{const s=src(),me=section(s,"url.pathname==='/api/accounts/me'","url.pathname==='/api/profile-links'");assert.ok(me.includes('account:publicAccount(session)'));assert.ok(me.includes('membership:publicMembership(membership)'));assert.ok(!me.includes('l.verified_at'));assert.ok(!me.includes('account:session'));const status=section(s,"url.pathname==='/api/membership/status'","url.pathname==='/api/billing/portal'");assert.ok(status.includes('publicMembership(await membershipForAccount(session.account_id))'));});
+          test('checkout and billing responses do not expose provider session identifiers',()=>{const s=src(),checkout=section(s,'const {checkoutUrl,reused}=purchase',"url.pathname==='/api/membership/status'");assert.ok(checkout.includes('checkoutUrl'));for(const secret of ['checkoutSessionId','intentId','stripePriceId'])assert.ok(!checkout.includes(secret),secret);const portal=section(s,"url.pathname==='/api/billing/portal'","url.pathname==='/api/onboarding'");assert.ok(portal.includes('url:portal.url'));assert.ok(!portal.includes('portalSessionId'));});
+          EOF
       - name: Install and test complete runtime
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npm test
           npm run check
       - name: Commit tested R1363 source
+        shell: bash
         run: |
-          git rm .github/workflows/r1363-account-response-minimization-build.yml
-          git config user.name 'neutralboardroom'
-          git config user.email 'reachrgnow@gmail.com'
-          git add server.js test/
-          git diff --cached --check
-          git commit -m 'R1363: minimize ordinary account and billing response data'
+          rm .github/workflows/r1363-account-response-minimization-build.yml
+          git config user.name "neutralboardroom"
+          git config user.email "reachrgnow@gmail.com"
+          git add -A
+          git commit -m "R1363: minimize ordinary account and payment response data"
           git push origin HEAD:r1363-account-response-minimization-20261004
