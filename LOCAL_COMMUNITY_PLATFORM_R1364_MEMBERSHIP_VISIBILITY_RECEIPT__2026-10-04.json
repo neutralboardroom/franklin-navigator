@@ -1,0 +1,138 @@
+{
+  "receiptType": "LOCAL_COMMUNITY_PLATFORM_R1364_MEMBERSHIP_VISIBILITY_QUALIFICATION",
+  "recordedDate": "2026-10-04",
+  "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
+  "community": "FRANKLIN_TN",
+  "authorityTransfer": false,
+  "previousAuthoritativeVersion": "FR-NAV1.30.63-HF3.13.45",
+  "candidateVersion": "FR-NAV1.30.64-HF3.13.46",
+  "predecessorCommit": "697449ef3487d8870eec6430c3082991d5630580",
+  "candidateBranch": "r1364-community-membership-visibility-20261004",
+  "pullRequest": 76,
+  "deploymentState": "NOT_DEPLOYED_CANDIDATE",
+  "databaseSchemaChanges": false,
+  "storageArchitectureChanges": false,
+  "paymentPricingChanges": false,
+  "pricing": {
+    "communityMembershipUsdPerYear": 35,
+    "renewal": "ANNUAL_UNTIL_CANCELED",
+    "basicProfileFree": true,
+    "claimFree": true,
+    "factualCorrectionsFree": true,
+    "publicRemovalFree": true,
+    "membershipOptional": true
+  },
+  "changedCustomerRoutes": [
+    "/business-dashboard/",
+    "/membership-start/",
+    "/member-profile-preview/",
+    "/claim-profile/"
+  ],
+  "currentEntitlementMatrix": {
+    "unclaimedProfile": {
+      "publicCoreFacts": "FREE",
+      "claim": "FREE_AFTER_AUTHORITY_VERIFICATION",
+      "correctionRemoval": "FREE"
+    },
+    "claimedFreeProfile": {
+      "legitimateBasicManagement": "FREE",
+      "approvedProfileImageLogoManagement": "FREE",
+      "correctionRemoval": "FREE",
+      "paidRichFields": "NOT_ENTITLED",
+      "paidCoverGalleryMedia": "NOT_ENTITLED"
+    },
+    "paidCommunityMember": {
+      "basicFreeRightsRetained": true,
+      "richReviewedProfileFields": "ENTITLED_WITH_VERIFIED_AUTHORITY",
+      "coverGalleryMedia": "ENTITLED_WITH_ACTIVE_MEMBERSHIP_AND_REVIEW",
+      "specialOfferFields": "ENTITLED_WITH_ACTIVE_MEMBERSHIP_AND_REVIEW",
+      "offerEventInformation": "ENTITLED_WITH_ACTIVE_MEMBERSHIP_AND_REVIEW",
+      "supportedCustomerActionLinks": "ENTITLED_WITH_REVIEW",
+      "sponsoredCommunityMemberDiscovery": "ELIGIBLE_CLEARLY_LABELED_NO_RANKING_CLAIM"
+    },
+    "staffReviewer": {
+      "reviewPublishControls": "PRESERVED_EXISTING_AUTHORITY_ONLY"
+    }
+  },
+  "currentMediaContract": {
+    "supportedUploadFormat": ["image/webp"],
+    "profileImageMaxBytes": 2097152,
+    "paidCoverGalleryMaxBytes": 4194304,
+    "maxWidth": 3000,
+    "maxHeight": 3000,
+    "maxPixels": 9000000,
+    "pdfUpload": false,
+    "promotionalFlyerUpload": false,
+    "promotionSpecificGraphicUpload": false
+  },
+  "promotionEventContract": {
+    "specialOfferTitle": true,
+    "specialOfferDetails": true,
+    "specialOfferCode": true,
+    "specialOfferExpirationDate": true,
+    "specialOfferUrl": true,
+    "aggregateOffersEventsInformation": true,
+    "distinctMultiItemCouponCrud": false,
+    "distinctMultiItemSaleCrud": false,
+    "distinctMultiItemEventCrud": false,
+    "promotionSpecificMediaAttachment": false
+  },
+  "outreachReadiness": {
+    "SITEWIDE_VISIBILITY_MESSAGE_READY": "NO_PENDING_LIVE_DEPLOY_AND_BROADER_SITEWIDE_VERIFICATION",
+    "VISIBILITY_MECHANISM_EXPLAINED": "YES_CANDIDATE",
+    "MARKETING_PAGES_MEMBERSHIP_MESSAGE_ALIGNED": "NO_PENDING_LIVE_AND_BROADER_SITEWIDE_VERIFICATION",
+    "BENEFITS_SECTIONS_MEMBERSHIP_MESSAGE_ALIGNED": "NO_PENDING_LIVE_AND_BROADER_SITEWIDE_VERIFICATION",
+    "PRICING_MEMBERSHIP_MESSAGE_ALIGNED": "YES_CANDIDATE",
+    "PRECLAIM_MEMBERSHIP_MESSAGE_ALIGNED": "YES_CANDIDATE",
+    "POSTCLAIM_MEMBERSHIP_MESSAGE_ALIGNED": "NO_NOT_VERIFIED_IN_THIS_SLICE",
+    "POSTPAYMENT_MEMBERSHIP_MESSAGE_ALIGNED": "NO_NOT_VERIFIED_IN_THIS_SLICE",
+    "LOCAL_VISIBILITY_VALUE_READY": "YES_CANDIDATE",
+    "LOGO_UPLOAD_READY": "NO_NOT_LIVE_SMOKED_IN_THIS_RUN",
+    "PRIMARY_PROFILE_IMAGE_READY": "NO_NOT_LIVE_SMOKED_IN_THIS_RUN",
+    "PUBLIC_LOGO_DISPLAY_READY": "NO_NOT_LIVE_SMOKED_IN_THIS_RUN",
+    "PRECLAIM_MEMBERSHIP_BENEFITS_CLEAR": "YES_CANDIDATE",
+    "POSTCLAIM_UPGRADE_BENEFITS_CLEAR": "NO_NOT_VERIFIED_IN_THIS_SLICE",
+    "POSTPAYMENT_MEMBER_SETUP_READY": "NO_NOT_VERIFIED_IN_THIS_SLICE",
+    "COUPON_CREATION_READY": "NO_DISTINCT_COUPON_CRUD_NOT_IMPLEMENTED",
+    "SPECIAL_CREATION_READY": "NO_DISTINCT_SPECIAL_CRUD_NOT_IMPLEMENTED",
+    "SALE_PROMOTION_READY": "NO_DISTINCT_SALE_CRUD_NOT_IMPLEMENTED",
+    "EVENT_CREATION_READY": "NO_DISTINCT_EVENT_CRUD_NOT_IMPLEMENTED",
+    "COUPON_UPLOAD_READY": "NO",
+    "PROMOTIONAL_GRAPHIC_UPLOAD_READY": "NO",
+    "PROMOTIONAL_FLYER_UPLOAD_READY": "NO",
+    "SALE_GRAPHIC_UPLOAD_READY": "NO",
+    "EVENT_FLYER_UPLOAD_READY": "NO",
+    "SUPPORTED_PDF_UPLOAD_READY": "NO",
+    "PUBLIC_PROFILE_PROMOTIONS_DISPLAY_READY": "NO_DISTINCT_PROMOTION_SYSTEM_NOT_VERIFIED",
+    "PUBLIC_PROFILE_MEDIA_DISPLAY_READY": "NO_NOT_LIVE_SMOKED_IN_THIS_RUN",
+    "PROMOTION_EXPIRATION_READY": "NO_DISTINCT_PROMOTION_SYSTEM_NOT_IMPLEMENTED",
+    "EVENT_EXPIRATION_READY": "NO_DISTINCT_EVENT_SYSTEM_NOT_IMPLEMENTED",
+    "PAID_MEMBERSHIP_ACCESS_CONTROL_VERIFIED": "INHERITED_R1363_RUNTIME_NO_NEW_RUNTIME_CHANGE",
+    "FREE_PROFILE_ENTITLEMENTS_PRESERVED": "YES_CANDIDATE_STATIC_ONLY_CHANGE",
+    "MOBILE_DISPLAY_VERIFIED": "NO_PENDING_LIVE_RESPONSIVE_VERIFICATION",
+    "ACCESSIBILITY_VERIFIED": "NO_PENDING_FULL_QUALIFICATION",
+    "SECURITY_VALIDATION_VERIFIED": "INHERITED_RUNTIME_UNCHANGED_PENDING_FULL_R1364_QUALIFICATION",
+    "NO_REGRESSION_VERIFIED": "NO_PENDING_ALL_APPLICABLE_CI_AND_LIVE_SMOKE",
+    "OUTREACH_COPY_READY": "NO_PENDING_DEPLOYMENT_LIVE_SMOKE_AND_POINT_OF_SEND_PREFLIGHT"
+  },
+  "candidateApprovedClaimsAfterLiveVerificationOnly": [
+    "Help increase your visibility in the Franklin community.",
+    "Build a stronger Franklin Navigator presence and give residents more ways to discover and connect with your business.",
+    "Add richer reviewed business information and supported customer-action links.",
+    "Use reviewed profile media available under the current entitlement and rights controls.",
+    "Add reviewed special-offer and offer/event information supported by the current member profile contract."
+  ],
+  "explicitlyNotApprovedClaims": [
+    "Upload coupon graphics.",
+    "Upload promotional graphics.",
+    "Upload promotional or event flyers.",
+    "Upload PDF coupons or flyers.",
+    "Create multiple standalone coupons, sales, promotions or events through a dedicated CRUD system.",
+    "Guaranteed search ranking, exposure, traffic, leads, customers, sales or revenue."
+  ],
+  "qualification": {
+    "r1364DedicatedWorkflow": "PASS_ON_PRIOR_HEAD_AND_RETRIGGERED_AFTER_WORDING_COMPATIBILITY_FIX",
+    "inheritedRegression": "RETRIGGERED_AFTER_RESTORING_EXACT_OPTIONAL_MEMBERSHIP_PREVIEW_WORDING",
+    "finalStatus": "CANDIDATE_NOT_YET_QUALIFIED_OR_LIVE"
+  }
+}
