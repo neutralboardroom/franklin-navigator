@@ -1,0 +1,20 @@
+name: R1364 membership visibility qualification
+on:
+  pull_request:
+    paths:
+      - 'dist/business-dashboard/index.html'
+      - 'dist/membership-start/index.html'
+      - 'dist/member-profile-preview/index.html'
+      - 'dist/claim-profile/index.html'
+      - 'test-r1364-membership-visibility.js'
+      - '.github/workflows/r1364-membership-visibility.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node test-r1364-membership-visibility.js
