@@ -48,6 +48,7 @@
   },
   "sealIntegrity": {
     "colorSystemMetadataExplicit": true,
+    "runtimeCommitMetadataExplicit": true,
     "temporaryHelperWorkflowPresent": false
   }
 }
