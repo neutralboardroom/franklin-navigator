@@ -44,16 +44,16 @@ test('R1362 detailed operational readiness remains available only behind admin a
   assert.match(admin,/startupError:/);
 });
 
-test('R1362 advances the runtime release without changing commerce policy',()=>{
+test('R1362 readiness boundary survives the R1363 runtime release advance without changing commerce policy',()=>{
   const text=src();
-  assert.match(text,/FR-NAV1\.30\.62-HF3\.13\.44/);
+  assert.match(text,/FR-NAV1\.30\.63-HF3\.13\.45/);
   assert.match(text,/const COMMERCE_ENABLED =/);
 });
 
 
-test('R1362 runtime fails closed if deployment release identity drifts from embedded source',()=>{
+test('R1362 fail-closed identity guard survives the R1363 runtime release advance',()=>{
   const text=src();
-  assert.match(text,/const EMBEDDED_RELEASE = 'FR-NAV1\.30\.62-HF3\.13\.44'/);
+  assert.match(text,/const EMBEDDED_RELEASE = 'FR-NAV1\.30\.63-HF3\.13\.45'/);
   assert.match(text,/CONFIGURED_RELEASE && CONFIGURED_RELEASE!==EMBEDDED_RELEASE/);
   assert.match(text,/LOCAL_RELEASE_MISMATCH/);
   assert.match(text,/const RELEASE = EMBEDDED_RELEASE/);
