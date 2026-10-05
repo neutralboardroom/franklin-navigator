@@ -1,0 +1,61 @@
+name: R1366 live SRE cohort profile validation
+
+on:
+  push:
+    branches:
+      - r1366-exact-combined-package-20261005
+    paths:
+      - '.github/workflows/r1366-live-sre-cohort-validation.yml'
+      - 'evidence/R1366_SRE_COHORT_55_PROFILE_URLS.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-live-profile-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate 55 exact live profile URLs and free claim/manage path
+        shell: bash
+        run: |
+          set -euo pipefail
+          total=0
+          passed=0
+          : > R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
+          while IFS= read -r url; do
+            [ -n "$url" ] || continue
+            total=$((total+1))
+            body=$(mktemp)
+            code=$(curl -L --retry 2 --retry-delay 1 --connect-timeout 10 --max-time 30 -A 'Franklin-R1366-Live-Qualification/1.0' -sS -o "$body" -w '%{http_code}' "$url")
+            if [ "$code" != "200" ]; then
+              printf '%s\tHTTP_%s\tFAIL\n' "$url" "$code" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
+              rm -f "$body"
+              continue
+            fi
+            if ! grep -Eqi 'claim|manage this profile|profile access|review / correct|review / correct this profile|claim-profile|profile-studio|profile-access' "$body"; then
+              printf '%s\tHTTP_200\tCLAIM_PATH_NOT_VISIBLE\n' "$url" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
+              rm -f "$body"
+              continue
+            fi
+            if grep -Eqi 'profile factory|source-processing|build release|internal provenance|candidate release' "$body"; then
+              printf '%s\tHTTP_200\tPUBLIC_PROVENANCE_LEAK\n' "$url" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
+              rm -f "$body"
+              continue
+            fi
+            printf '%s\tHTTP_200\tPASS\n' "$url" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
+            passed=$((passed+1))
+            rm -f "$body"
+          done < evidence/R1366_SRE_COHORT_55_PROFILE_URLS.txt
+          test "$total" -eq 55
+          test "$passed" -eq 55
+          printf '{"release":"FR-NAV1.30.66-HF3.13.48","checked":%s,"passed":%s,"claimManagePathRequired":true,"publicProvenanceLeakCheck":true,"result":"PASS_ALL_55_LIVE"}\n' "$total" "$passed" > R1366_SRE_COHORT_55_LIVE_VALIDATION.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1366-sre-cohort-55-live-validation
+          path: |
+            R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
+            R1366_SRE_COHORT_55_LIVE_VALIDATION.json
+          if-no-files-found: error
+          retention-days: 30
