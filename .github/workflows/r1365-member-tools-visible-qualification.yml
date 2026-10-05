@@ -1,0 +1,32 @@
+name: R1365 visible member tools qualification
+on:
+  push:
+    branches: [r1365-member-tools-visible-ui]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: JavaScript syntax
+        run: |
+          node --check dist/assets/r1365-member-tools.js
+          node --check dist/assets/r1332-member-offers.js
+          node --check test-r1365-member-tools-visible.js
+      - name: Discoverability and no-regression contract
+        run: node test-r1365-member-tools-visible.js
+      - name: Public-language guard
+        run: |
+          ! grep -Eiq 'source-backed|candidateVersion|authorityTransfer|internal runtime|deployment receipt' dist/member-tools/index.html dist/profile-studio/index.html dist/member-account/index.html dist/business-dashboard/index.html
+      - name: Route and release markers
+        run: |
+          grep -F 'FR-NAV1.30.65-HF3.13.47' dist/member-tools/index.html
+          grep -F 'FR-NAV1.30.65-HF3.13.47' dist/profile-studio/index.html
+          grep -F 'FR-NAV1.30.65-HF3.13.47' dist/member-account/index.html
+          grep -F 'FR-NAV1.30.65-HF3.13.47' dist/business-dashboard/index.html
