@@ -1,0 +1,38 @@
+name: R1366 PDF promotions qualification
+
+on:
+  pull_request:
+    branches:
+      - franklin-commerce-runtime-r30
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'promotions-proxy.js'
+      - 'r1366-media-proxy.js'
+      - 'lib/**'
+      - 'schema/**'
+      - 'test/**'
+      - '.github/workflows/r1366-pdf-promotions-qualification.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+      - name: R1366 static safety assertions
+        run: |
+          grep -q "application/pdf" r1366-media-proxy.js
+          grep -q "Content-Disposition','attachment" r1366-media-proxy.js
+          grep -q "PDF_ACTIVE_CONTENT_NOT_ALLOWED" lib/r1366-pdf-policy.js
+          grep -q "image/webp','application/pdf" schema/013_member_promotion_documents.sql
