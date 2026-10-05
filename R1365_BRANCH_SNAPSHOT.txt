@@ -1,0 +1,3 @@
+R1365 runtime candidate snapshot
+Head: 5a2f67f2126b81a919a68dea6e6e8ded2cffac4a
+Purpose: preserve qualified promotions/events runtime work before restoring the production runtime branch.
