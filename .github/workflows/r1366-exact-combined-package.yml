@@ -22,6 +22,7 @@ jobs:
       RUNTIME_DEPLOY: dep-db1jihpsrm7s73c04jlg
       PUBLIC_QUALIFICATION_RUN: '37269030086'
       RUNTIME_QUALIFICATION_RUN: '37268925131'
+      POST_DEPLOY_TEST_CORRECTION_COMMIT: 04f0ef276a3a828a04d0d05cf4cae86880804c17
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,7 +32,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf package-root verify-root build-a.zip build-b.zip
-          mkdir -p package-root runtime-src
+          mkdir -p package-root
           git archive "$PUBLIC_COMMIT" | tar -x -C package-root
           rm -rf package-root/runtime/franklin-membership
           mkdir -p package-root/runtime/franklin-membership
@@ -41,38 +42,17 @@ jobs:
           import json, hashlib, pathlib
           root=pathlib.Path('package-root')
           att={
-            'receiptType':'LOCAL_COMMUNITY_PLATFORM_R1366_EXACT_COMBINED_RELEASE_ATTESTATION',
-            'release':'FR-NAV1.30.66-HF3.13.48',
-            'stableRoleId':'LOCAL_COMMUNITY_PLATFORM',
-            'community':'FRANKLIN_TN',
-            'publicSourceCommit':'ee944d7c4e34adb11bbb7e1af70c8c9e2477cc36',
-            'runtimeSourceCommit':'f5a99db2f67bd76b7b01f54aeb37091153d04d8b',
-            'publicRenderDeploy':'dep-db1jl05g1s2s73agjkt0',
-            'runtimeRenderDeploy':'dep-db1jihpsrm7s73c04jlg',
-            'publicQualificationRun':37269030086,
-            'runtimeQualificationRun':37268925131,
-            'runtimeQualification':'PASS',
-            'publicQualification':'PASS',
-            'imageInputTypes':['image/jpeg','image/png','image/webp'],
-            'storedImageType':'image/webp',
-            'pdfUpload':True,
-            'pdfMaxBytes':4194304,
-            'pdfMaxPages':20,
-            'pdfBoundary':'Passive standard PDFs only; active/encrypted/embedded-file/form-like PDFs fail closed; approved PDFs are served as downloads.',
-            'spanishMemberToolsParity':True,
-            'freeRightsPreserved':True,
-            'membershipOptional':True,
-            'membershipPrice':'$35/year',
-            'outreachLocalState':'READY_FOR_SRE_POINT_OF_SEND_PREFLIGHT',
-            'liveSendAuthorizedByLocal':False,
-            'authorityTransfer':False
-          }
-          (root/'R1366_EXACT_COMBINED_RELEASE_ATTESTATION.json').write_text(json.dumps(att,indent=2,sort_keys=True)+'\n',encoding='utf-8')
-          manifest=[]
+            'receiptType':'LOCAL_COMMUNITY_PLATFORM_R1366_EXACT_COMBINED_RELEASE_ATTESTATION','release':'FR-NAV1.30.66-HF3.13.48','stableRoleId':'LOCAL_COMMUNITY_PLATFORM','community':'FRANKLIN_TN',
+            'publicSourceCommit':'ee944d7c4e34adb11bbb7e1af70c8c9e2477cc36','runtimeSourceCommit':'f5a99db2f67bd76b7b01f54aeb37091153d04d8b','postDeployTestCorrectionCommit':'04f0ef276a3a828a04d0d05cf4cae86880804c17',
+            'publicRenderDeploy':'dep-db1jl05g1s2s73agjkt0','runtimeRenderDeploy':'dep-db1jihpsrm7s73c04jlg','publicQualificationRun':37269030086,'runtimeQualificationRun':37268925131,
+            'runtimeQualification':'PASS','publicQualification':'PASS','imageInputTypes':['image/jpeg','image/png','image/webp'],'storedImageType':'image/webp','pdfUpload':True,'pdfMaxBytes':4194304,'pdfMaxPages':20,
+            'pdfBoundary':'Passive standard PDFs only; active/encrypted/embedded-file/form-like PDFs fail closed; approved PDFs are served as downloads.','spanishMemberToolsParity':True,'freeRightsPreserved':True,'membershipOptional':True,'membershipPrice':'$35/year',
+            'outreachLocalState':'READY_FOR_SRE_POINT_OF_SEND_PREFLIGHT','liveSendAuthorizedByLocal':False,'authorityTransfer':False}
+          (root/'R1366_EXACT_COMBINED_RELEASE_ATTESTATION.json').write_text(json.dumps(att,indent=2,sort_keys=True)+'\n')
+          members=[]
           for p in sorted(x for x in root.rglob('*') if x.is_file() and x.name!='R1366_EXACT_COMBINED_MANIFEST.json'):
-            b=p.read_bytes(); manifest.append({'path':p.relative_to(root).as_posix(),'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
-          m={'schemaVersion':'franklin.exact-combined-manifest.v1','release':'FR-NAV1.30.66-HF3.13.48','manifestSelfHashExcluded':True,'memberCount':len(manifest),'members':manifest}
-          (root/'R1366_EXACT_COMBINED_MANIFEST.json').write_text(json.dumps(m,indent=2,sort_keys=True)+'\n',encoding='utf-8')
+            b=p.read_bytes(); members.append({'path':p.relative_to(root).as_posix(),'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
+          (root/'R1366_EXACT_COMBINED_MANIFEST.json').write_text(json.dumps({'schemaVersion':'franklin.exact-combined-manifest.v1','release':'FR-NAV1.30.66-HF3.13.48','manifestSelfHashExcluded':True,'memberCount':len(members),'members':members},indent=2,sort_keys=True)+'\n')
           PY
       - name: Build twice deterministically and compare bytes
         shell: bash
@@ -84,68 +64,51 @@ jobs:
           def build(out):
             with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
               for p in sorted(x for x in root.rglob('*') if x.is_file()):
-                rel=p.relative_to(root).as_posix()
-                info=zipfile.ZipInfo(rel,(2026,1,1,0,0,0))
-                info.compress_type=zipfile.ZIP_DEFLATED
-                info.external_attr=(0o100644 << 16)
-                info.create_system=3
-                z.writestr(info,p.read_bytes(),compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
+                i=zipfile.ZipInfo(p.relative_to(root).as_posix(),(2026,1,1,0,0,0)); i.compress_type=zipfile.ZIP_DEFLATED; i.external_attr=(0o100644<<16); i.create_system=3
+                z.writestr(i,p.read_bytes(),compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
           build('build-a.zip'); build('build-b.zip')
           PY
           cmp build-a.zip build-b.zip
           mv build-a.zip FRANKLIN_NAVIGATOR__FR-NAV1.30.66-HF3.13.48__QUALIFIED_SUCCESSOR.zip
           sha256sum FRANKLIN_NAVIGATOR__FR-NAV1.30.66-HF3.13.48__QUALIFIED_SUCCESSOR.zip | tee R1366_FINAL_SHA256.txt
           stat -c '%s' FRANKLIN_NAVIGATOR__FR-NAV1.30.66-HF3.13.48__QUALIFIED_SUCCESSOR.zip | tee R1366_FINAL_BYTES.txt
-      - name: Fresh extraction and manifest validation
+      - name: Fresh extraction and exact R1366 validation
         shell: bash
         run: |
           set -euo pipefail
           mkdir verify-root
           unzip -q FRANKLIN_NAVIGATOR__FR-NAV1.30.66-HF3.13.48__QUALIFIED_SUCCESSOR.zip -d verify-root
           python3 - <<'PY'
-          import json, hashlib, pathlib, sys
-          root=pathlib.Path('verify-root')
-          m=json.loads((root/'R1366_EXACT_COMBINED_MANIFEST.json').read_text())
-          expected={x['path']:(x['bytes'],x['sha256']) for x in m['members']}
-          actual={}
+          import json,hashlib,pathlib,re
+          root=pathlib.Path('verify-root'); m=json.loads((root/'R1366_EXACT_COMBINED_MANIFEST.json').read_text())
+          expected={x['path']:(x['bytes'],x['sha256']) for x in m['members']}; actual={}
           for p in sorted(x for x in root.rglob('*') if x.is_file() and x.name!='R1366_EXACT_COMBINED_MANIFEST.json'):
             b=p.read_bytes(); actual[p.relative_to(root).as_posix()]=(len(b),hashlib.sha256(b).hexdigest())
-          if actual!=expected:
-            print('manifest mismatch',file=sys.stderr); sys.exit(1)
-          a=json.loads((root/'R1366_EXACT_COMBINED_RELEASE_ATTESTATION.json').read_text())
-          assert a['publicSourceCommit']=='ee944d7c4e34adb11bbb7e1af70c8c9e2477cc36'
-          assert a['runtimeSourceCommit']=='f5a99db2f67bd76b7b01f54aeb37091153d04d8b'
-          assert a['release']=='FR-NAV1.30.66-HF3.13.48'
-          assert (root/'dist/assets/r1366-member-tools-extension.js').is_file()
-          assert (root/'dist/assets/r1366-member-tools-i18n.js').is_file()
-          assert (root/'runtime/franklin-membership/r1366-media-proxy.js').is_file()
-          assert (root/'runtime/franklin-membership/lib/r1366-pdf-policy.js').is_file()
-          assert (root/'runtime/franklin-membership/schema/013_member_promotion_documents.sql').is_file()
-          print('R1366 combined exact-source fresh extraction: PASS')
+          assert actual==expected
+          a=json.loads((root/'R1366_EXACT_COMBINED_RELEASE_ATTESTATION.json').read_text()); assert a['release']=='FR-NAV1.30.66-HF3.13.48'; assert a['publicSourceCommit']=='ee944d7c4e34adb11bbb7e1af70c8c9e2477cc36'; assert a['runtimeSourceCommit']=='f5a99db2f67bd76b7b01f54aeb37091153d04d8b'
+          required=['dist/assets/r1366-member-tools-extension.js','dist/assets/r1366-member-tools-i18n.js','runtime/franklin-membership/r1366-media-proxy.js','runtime/franklin-membership/lib/r1366-pdf-policy.js','runtime/franklin-membership/schema/013_member_promotion_documents.sql']
+          assert all((root/p).is_file() for p in required)
+          tools=(root/'dist/member-tools/index.html').read_text(); business=(root/'dist/business-dashboard/index.html').read_text(); membership=(root/'dist/membership-start/index.html').read_text(); preview=(root/'dist/member-profile-preview/index.html').read_text(); es=(root/'dist/es/negocios/index.html').read_text()
+          assert 'JPG/JPEG, PNG and WebP' in tools and 'application/pdf' in tools and 'PDFs are accepted as reviewed documents' in tools
+          assert all('/member-tools/' in s for s in [business,membership,preview,es])
+          assert '$35/year' in business and 'Corrections and removal are always free' in business
+          assert 'documentos PDF revisados' in es
+          assert not re.search(r'(?:we|membership|franklin navigator)\s+(?:will\s+)?guarantee(?:s|d)?\s+(?:leads|customers|sales|results)', '\n'.join([tools,business,membership,preview]), re.I)
+          print('R1366 exact combined fresh extraction: PASS')
           PY
-          node verify-root/test-r1365-member-tools-visible.js
-          node verify-root/test-r1364-membership-visibility.js
+          node --check verify-root/dist/assets/r1366-member-tools-extension.js
+          node --check verify-root/dist/assets/r1366-member-tools-i18n.js
+          node --check verify-root/dist/assets/r1332-member-offers.js
+          node --check verify-root/runtime/franklin-membership/r1366-media-proxy.js
+          node --check verify-root/runtime/franklin-membership/lib/r1366-pdf-policy.js
+          node --test verify-root/runtime/franklin-membership/test/r1366-pdf-policy.test.cjs
       - name: Create external artifact attestation
         shell: bash
         run: |
-          set -euo pipefail
           python3 - <<'PY'
           import json,hashlib,pathlib
-          p=pathlib.Path('FRANKLIN_NAVIGATOR__FR-NAV1.30.66-HF3.13.48__QUALIFIED_SUCCESSOR.zip')
-          b=p.read_bytes()
-          out={
-            'release':'FR-NAV1.30.66-HF3.13.48',
-            'artifact':p.name,
-            'artifactBytes':len(b),
-            'artifactSha256':hashlib.sha256(b).hexdigest(),
-            'doubleBuildByteIdentical':True,
-            'freshExtractionValidation':'PASS',
-            'publicSourceCommit':'ee944d7c4e34adb11bbb7e1af70c8c9e2477cc36',
-            'runtimeSourceCommit':'f5a99db2f67bd76b7b01f54aeb37091153d04d8b',
-            'publicDeploy':'dep-db1jl05g1s2s73agjkt0',
-            'runtimeDeploy':'dep-db1jihpsrm7s73c04jlg',
-            'result':'PASS_R1366_EXACT_COMBINED_SUCCESSOR_SEALED'
-          }
+          p=pathlib.Path('FRANKLIN_NAVIGATOR__FR-NAV1.30.66-HF3.13.48__QUALIFIED_SUCCESSOR.zip'); b=p.read_bytes()
+          out={'release':'FR-NAV1.30.66-HF3.13.48','artifact':p.name,'artifactBytes':len(b),'artifactSha256':hashlib.sha256(b).hexdigest(),'doubleBuildByteIdentical':True,'freshExtractionValidation':'PASS','publicSourceCommit':'ee944d7c4e34adb11bbb7e1af70c8c9e2477cc36','runtimeSourceCommit':'f5a99db2f67bd76b7b01f54aeb37091153d04d8b','publicDeploy':'dep-db1jl05g1s2s73agjkt0','runtimeDeploy':'dep-db1jihpsrm7s73c04jlg','result':'PASS_R1366_EXACT_COMBINED_SUCCESSOR_SEALED'}
           pathlib.Path('R1366_EXTERNAL_ARTIFACT_ATTESTATION.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
           PY
       - uses: actions/upload-artifact@v4
