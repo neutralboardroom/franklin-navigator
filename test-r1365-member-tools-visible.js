@@ -10,7 +10,7 @@ const account=read('dist/member-account/index.html');
 const business=read('dist/business-dashboard/index.html');
 const publicOffers=read('dist/assets/r1332-member-offers.js');
 
-for(const label of ['Profile media','Coupons & specials','Sales & promotions','Events']) assert.ok(tools.includes(label),`missing visible tool: ${label}`);
+for(const label of ['Profile media','Coupons &amp; specials','Sales &amp; promotions','Events']) assert.ok(tools.includes(label),`missing visible tool: ${label}`);
 assert.ok(studio.includes('/member-tools/'),'Profile Center must link directly to Member tools');
 assert.ok(account.includes('/member-tools/'),'Member Account must link directly to Member tools');
 assert.ok(business.includes('Coupons &amp; specials')&&business.includes('Sales &amp; promotions')&&business.includes('Events'),'business page must name member features before purchase');
