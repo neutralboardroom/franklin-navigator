@@ -1,29 +1,16 @@
-/* R1332 — cache-independent Community Member special-offer projection */
+/* R1365 — Community Member offers, promotions and events public projection */
 (()=>{'use strict';
  const m=location.pathname.match(/^\/profiles\/(FR-[A-Z0-9]+-[A-Za-z0-9][A-Za-z0-9._-]{2,100})\/$/);if(!m)return;
  const id=decodeURIComponent(m[1]),API='https://franklin-navigator-membership.onrender.com';
  const n=(t,x,c)=>{const e=document.createElement(t);if(x!==undefined)e.textContent=x;if(c)e.className=c;return e};
  const safe=v=>{try{const u=new URL(String(v||''));return u.protocol==='https:'&&!u.username&&!u.password?u:null}catch{return null}};
- async function run(){
-  let out;try{const r=await fetch(API+'/api/member/public-profile?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'});if(!r.ok)return;out=await r.json()}catch{return}
-  if(out.activePaidMember!==true)return;
-  const p=out.publication;if(!p||p.profileId!==id||p.provenance!=='MEMBER_SUBMITTED_REVIEWED')return;
-  const f=p.fields||{},title=String(f.specialOfferTitle||'').trim(),details=String(f.specialOfferDetails||'').trim(),expires=String(f.specialOfferExpires||'').trim();
-  if(!title||!details||document.querySelector('#member-special-offer'))return;
-  if(expires&&/^\d{4}-\d{2}-\d{2}$/.test(expires)&&new Date(expires+'T23:59:59').getTime()<Date.now())return;
-  const article=document.querySelector('.r22-profile-layout>article');if(!article)return;
-  const section=n('section','', 'hf35-member-module r1332-special-offer');section.id='member-special-offer';
-  section.append(n('div','Community Member offer','eyebrow'),n('h2','Special offer for Franklin Navigator users'),n('h3',title),n('p',details));
-  const meta=n('div','', 'r1332-offer-meta');
-  if(String(f.specialOfferCode||'').trim())meta.append(n('span','Code: '+String(f.specialOfferCode).trim()));
-  if(expires)meta.append(n('span','Through '+expires));
-  if(meta.childNodes.length)section.append(meta);
-  if(String(f.specialOfferTerms||'').trim())section.append(n('p',String(f.specialOfferTerms).trim(),'fine-print'));
-  const u=safe(f.specialOfferUrl);if(u){const a=n('a','View offer','button primary');a.href=u.href;a.rel='noopener noreferrer ugc';section.append(a)}
-  section.append(n('p','Offer provided by this Community Member. Franklin Navigator does not guarantee availability, terms or results.','fine-print'));
-  const anchor=document.querySelector('#member-updates')||document.querySelector('#official-links')||document.querySelector('#manage');
-  anchor?article.insertBefore(section,anchor):article.append(section);
-  const nav=document.querySelector('.r1330-section-nav');if(nav&&!nav.querySelector('a[href="#member-special-offer"]')){const a=n('a','Offers');a.href='#member-special-offer';const reviews=nav.querySelector('a[href="#reviews"]');reviews?nav.insertBefore(a,reviews):nav.append(a)}
- }
+ const kindLabel=k=>({COUPON:'Coupon',SPECIAL:'Special offer',SALE:'Sale',PROMOTION:'Promotion',EVENT:'Event'}[k]||'Community Member update');
+ const dateLabel=v=>{if(!v)return'';try{return new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(v))}catch{return''}};
+ function addNav(){const nav=document.querySelector('.r1330-section-nav');if(nav&&!nav.querySelector('a[href="#member-offers-events"]')){const a=n('a','Offers & events');a.href='#member-offers-events';const reviews=nav.querySelector('a[href="#reviews"]');reviews?nav.insertBefore(a,reviews):nav.append(a)}}
+ function insertSection(section){const article=document.querySelector('.r22-profile-layout>article');if(!article)return false;const anchor=document.querySelector('#member-updates')||document.querySelector('#official-links')||document.querySelector('#manage');anchor?article.insertBefore(section,anchor):article.append(section);addNav();return true}
+ function renderCurrent(items){if(!items.length||document.querySelector('#member-offers-events'))return false;const section=n('section','', 'hf35-member-module r1332-special-offer r1365-public-offers');section.id='member-offers-events';section.append(n('div','Community Member offers & events','eyebrow'),n('h2','Current offers, promotions and events'));
+   for(const item of items){const card=n('article','', 'r1365-public-item');card.append(n('div',kindLabel(item.kind),'eyebrow'),n('h3',String(item.title||'').trim()),n('p',String(item.description||'').trim()));const meta=n('div','', 'r1332-offer-meta');if(item.promoCode)meta.append(n('span','Code: '+item.promoCode));if(item.discountText)meta.append(n('span',item.discountText));if(item.startAt)meta.append(n('span','Starts '+dateLabel(item.startAt)));if(item.endAt)meta.append(n('span',(item.kind==='EVENT'?'Ends ':'Through ')+dateLabel(item.endAt)));if(item.eventLocation)meta.append(n('span',item.eventLocation));if(meta.childNodes.length)card.append(meta);const u=safe(item.actionUrl);if(u){const a=n('a',item.kind==='EVENT'?'Event details':'View details','button primary');a.href=u.href;a.rel='noopener noreferrer ugc';card.append(a)}const media=(item.media||[]).filter(x=>String(x.mimeType||'').toLowerCase()==='image/webp'&&x.url);if(media.length){const gallery=n('div','', 'r1365-public-media');for(const image of media){const img=n('img');img.src=API+image.url;img.alt=(item.title||'Community Member promotion')+' graphic';img.loading='lazy';img.decoding='async';gallery.append(img)}card.append(gallery)}card.append(n('p','Provided by this Community Member. Franklin Navigator does not guarantee availability, terms or results.','fine-print'));section.append(card)}return insertSection(section)}
+ async function legacy(){let out;try{const r=await fetch(API+'/api/member/public-profile?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'});if(!r.ok)return;out=await r.json()}catch{return}if(out.activePaidMember!==true)return;const p=out.publication;if(!p||p.profileId!==id||p.provenance!=='MEMBER_SUBMITTED_REVIEWED')return;const f=p.fields||{},title=String(f.specialOfferTitle||'').trim(),details=String(f.specialOfferDetails||'').trim(),expires=String(f.specialOfferExpires||'').trim();if(!title||!details||document.querySelector('#member-offers-events'))return;if(expires&&/^\d{4}-\d{2}-\d{2}$/.test(expires)&&new Date(expires+'T23:59:59').getTime()<Date.now())return;const section=n('section','', 'hf35-member-module r1332-special-offer');section.id='member-offers-events';section.append(n('div','Community Member offer','eyebrow'),n('h2','Special offer for Franklin Navigator users'),n('h3',title),n('p',details));const meta=n('div','', 'r1332-offer-meta');if(String(f.specialOfferCode||'').trim())meta.append(n('span','Code: '+String(f.specialOfferCode).trim()));if(expires)meta.append(n('span','Through '+expires));if(meta.childNodes.length)section.append(meta);if(String(f.specialOfferTerms||'').trim())section.append(n('p',String(f.specialOfferTerms).trim(),'fine-print'));const u=safe(f.specialOfferUrl);if(u){const a=n('a','View offer','button primary');a.href=u.href;a.rel='noopener noreferrer ugc';section.append(a)}section.append(n('p','Offer provided by this Community Member. Franklin Navigator does not guarantee availability, terms or results.','fine-print'));insertSection(section)}
+ async function run(){let out;try{const r=await fetch(API+'/api/member/promotions/public?profileId='+encodeURIComponent(id),{credentials:'omit',cache:'no-store'});if(r.ok)out=await r.json()}catch{}if(out?.promotions?.length&&renderCurrent(out.promotions))return;legacy()}
  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',run,{once:true}):run();
 })();
