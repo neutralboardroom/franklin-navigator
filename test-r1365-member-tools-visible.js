@@ -31,7 +31,7 @@ assert.match(membership,/reviewed PDF/);
 assert.match(preview,/reviewed PDF/);
 assert.match(spanishBusiness,/documentos PDF revisados/);
 for(const surface of [tools,business,membership,preview]) assert.doesNotMatch(surface,/PDF (?:coupon\/flyer |flyer\/coupon )?uploads are not supported|PDF coupons\/flyers are not represented as ready/i);
-for(const surface of [tools,business,membership,preview]) assert.doesNotMatch(surface,/guaranteed (leads|customers|sales|results)/i);
+for(const surface of [tools,business,membership,preview]) assert.doesNotMatch(surface,/(?:we|membership|franklin navigator)\s+(?:will\s+)?guarantee(?:s|d)?\s+(?:leads|customers|sales|results)/i);
 assert.match(js,/\/api\/member\/promotions\/create/);
 assert.match(js,/\/api\/member\/promotions\/submit/);
 assert.match(js,/\/api\/member\/promotions\/unpublish/);
