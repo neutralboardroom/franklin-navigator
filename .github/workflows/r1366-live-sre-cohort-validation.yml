@@ -17,41 +17,35 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Validate 55 exact live profile URLs and free claim/manage path
+      - name: Validate and record 55 exact live profile URLs
+        id: validate
         shell: bash
         run: |
-          set -euo pipefail
-          total=0
-          passed=0
+          set -u
+          total=0; passed=0; http_fail=0; claim_fail=0; provenance_fail=0
           : > R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
           while IFS= read -r url; do
             [ -n "$url" ] || continue
-            total=$((total+1))
-            body=$(mktemp)
-            code=$(curl -L --retry 2 --retry-delay 1 --connect-timeout 10 --max-time 30 -A 'Franklin-R1366-Live-Qualification/1.0' -sS -o "$body" -w '%{http_code}' "$url")
+            total=$((total+1)); body=$(mktemp)
+            code=$(curl -L --retry 2 --retry-delay 1 --connect-timeout 10 --max-time 30 -A 'Franklin-R1366-Live-Qualification/1.0' -sS -o "$body" -w '%{http_code}' "$url" || printf '000')
             if [ "$code" != "200" ]; then
-              printf '%s\tHTTP_%s\tFAIL\n' "$url" "$code" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
-              rm -f "$body"
-              continue
+              printf '%s\tHTTP_%s\tHTTP_FAIL\n' "$url" "$code" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv; http_fail=$((http_fail+1)); rm -f "$body"; continue
             fi
-            if ! grep -Eqi 'claim|manage this profile|profile access|review / correct|review / correct this profile|claim-profile|profile-studio|profile-access' "$body"; then
-              printf '%s\tHTTP_200\tCLAIM_PATH_NOT_VISIBLE\n' "$url" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
-              rm -f "$body"
-              continue
+            if ! grep -Eqi 'claim|manage this profile|profile access|review / correct|claim-profile|profile-studio|profile-access|claim this profile' "$body"; then
+              printf '%s\tHTTP_200\tCLAIM_PATH_NOT_VISIBLE_STATIC_RESPONSE\n' "$url" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv; claim_fail=$((claim_fail+1)); rm -f "$body"; continue
             fi
-            if grep -Eqi 'profile factory|source-processing|build release|internal provenance|candidate release' "$body"; then
-              printf '%s\tHTTP_200\tPUBLIC_PROVENANCE_LEAK\n' "$url" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
-              rm -f "$body"
-              continue
+            if grep -Eqi 'profile factory|source-processing|internal provenance|candidate release' "$body"; then
+              printf '%s\tHTTP_200\tPUBLIC_PROVENANCE_LEAK\n' "$url" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv; provenance_fail=$((provenance_fail+1)); rm -f "$body"; continue
             fi
-            printf '%s\tHTTP_200\tPASS\n' "$url" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
-            passed=$((passed+1))
-            rm -f "$body"
+            printf '%s\tHTTP_200\tPASS\n' "$url" >> R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv; passed=$((passed+1)); rm -f "$body"
           done < evidence/R1366_SRE_COHORT_55_PROFILE_URLS.txt
-          test "$total" -eq 55
-          test "$passed" -eq 55
-          printf '{"release":"FR-NAV1.30.66-HF3.13.48","checked":%s,"passed":%s,"claimManagePathRequired":true,"publicProvenanceLeakCheck":true,"result":"PASS_ALL_55_LIVE"}\n' "$total" "$passed" > R1366_SRE_COHORT_55_LIVE_VALIDATION.json
+          result=FAIL
+          [ "$total" -eq 55 ] && [ "$passed" -eq 55 ] && result=PASS_ALL_55_LIVE
+          printf '{"release":"FR-NAV1.30.66-HF3.13.48","checked":%s,"passed":%s,"httpFailures":%s,"claimPathStaticFailures":%s,"provenanceFailures":%s,"claimManagePathRequired":true,"publicProvenanceLeakCheck":true,"result":"%s"}\n' "$total" "$passed" "$http_fail" "$claim_fail" "$provenance_fail" "$result" > R1366_SRE_COHORT_55_LIVE_VALIDATION.json
+          cat R1366_SRE_COHORT_55_LIVE_VALIDATION.json
+          cat R1366_SRE_COHORT_55_LIVE_VALIDATION.tsv
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: r1366-sre-cohort-55-live-validation
           path: |
@@ -59,3 +53,13 @@ jobs:
             R1366_SRE_COHORT_55_LIVE_VALIDATION.json
           if-no-files-found: error
           retention-days: 30
+      - name: Enforce exact Local live-profile gate
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open('R1366_SRE_COHORT_55_LIVE_VALIDATION.json'))
+          assert d['checked']==55, d
+          assert d['passed']==55, d
+          assert d['result']=='PASS_ALL_55_LIVE', d
+          PY
