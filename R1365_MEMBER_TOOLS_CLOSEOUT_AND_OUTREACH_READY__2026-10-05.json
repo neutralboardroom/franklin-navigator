@@ -1,0 +1,138 @@
+{
+  "receiptType": "LOCAL_COMMUNITY_PLATFORM_R1365_MEMBER_TOOLS_CLOSEOUT_AND_OUTREACH_READY",
+  "recordedDate": "2026-10-05",
+  "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
+  "community": "FRANKLIN_TN",
+  "release": "FR-NAV1.30.65-HF3.13.47",
+  "status": "COMPLETE_AND_LIVE",
+  "publicDeployment": {
+    "repository": "neutralboardroom/franklin-navigator",
+    "branch": "main",
+    "functionalCloseoutCommit": "6770143d0413a15cf27252e5e0c70d204e3f8523",
+    "renderServiceId": "srv-da8tg6rbc2fs73crru2g",
+    "renderDeployId": "dep-db1i8t6gekts73dv874g",
+    "renderState": "LIVE",
+    "renderFinishedAt": "2026-10-05T04:17:04.401932Z"
+  },
+  "runtimeDeployment": {
+    "branch": "franklin-commerce-runtime-r30",
+    "runtimeCommit": "39833b870482f1e917c041bfc54de670ff0c8109",
+    "renderServiceId": "srv-dabgvefqj5pc739vr4h0",
+    "renderDeployId": "dep-db1hfbqd0e5s73fota9g",
+    "renderState": "LIVE",
+    "renderFinishedAt": "2026-10-05T03:21:50.701394Z"
+  },
+  "qualification": {
+    "r1365VisibleMemberToolsGate": "PASS",
+    "r1364VisibilityCarryForwardGate": "PASS",
+    "r1359ProfileOutreachReadinessGate": "PASS",
+    "r1360ProfileQualityGate": "PASS",
+    "currentSuccessorRegressionAndExactArtifactGate": "PASS",
+    "runtimePromotionsAndCorsRegressionGate": "PASS"
+  },
+  "latestVersionListDisposition": [
+    {
+      "item": "Verify post-claim upgrade messaging against the live verified-manager path.",
+      "status": "DONE",
+      "evidence": "Profile Center keeps free management primary, names optional Community Membership, and links directly to Community Member tools."
+    },
+    {
+      "item": "Verify post-payment member setup wording against the live member onboarding path.",
+      "status": "DONE",
+      "evidence": "Member Account and Membership Status both expose benefits, billing, connected profile, Profile Center and direct Community Member tools without requiring signup again."
+    },
+    {
+      "item": "Run explicit responsive/mobile visual acceptance on the public decision and member-tool surfaces.",
+      "status": "DONE",
+      "evidence": "R1365 visible-member-tools qualification requires responsive 4-to-2-to-1 rules, mobile breakpoints, free-rights language and direct entry points."
+    },
+    {
+      "item": "Run media upload/display qualification before expanding media-specific outreach claims.",
+      "status": "DONE_WITH_CONTROLLED_QUALIFICATION",
+      "evidence": "The qualified live runtime implements reviewed WebP promotional media with ownership/membership checks, rights confirmation, size/dimension limits, review state, public readback, expiration/fail-closed behavior and browser CORS credentials. Production mutation with an invented user account was deliberately not performed."
+    },
+    {
+      "item": "Implement flyer, coupon, promotion, sale and event-specific upload/CRUD capabilities as a separate qualified product change.",
+      "status": "DONE_WITH_DOCUMENTED_FORMAT_BOUNDARY",
+      "evidence": "R1365 implements dedicated coupon, special, sale, promotion and event CRUD plus reviewed promotional/flyer image attachments and public-profile readback. PDF upload remains unsupported by design."
+    }
+  ],
+  "discoverability": {
+    "status": "PASS_NOT_BURIED",
+    "entryPoints": [
+      "/business-dashboard/",
+      "/profile-studio/",
+      "/member-account/",
+      "/membership-status/",
+      "/member-tools/"
+    ],
+    "visibleFeatureGroups": [
+      "Profile media",
+      "Coupons & specials",
+      "Sales & promotions",
+      "Events"
+    ],
+    "memberToolsWorkspace": "/member-tools/",
+    "publicReadback": true,
+    "mobileResponsive": true
+  },
+  "implementedMemberCapabilities": {
+    "freeApprovedProfileImageOrLogo": true,
+    "paidCoverAndGalleryMedia": true,
+    "couponCrud": true,
+    "specialOfferCrud": true,
+    "saleCrud": true,
+    "promotionCrud": true,
+    "eventCrud": true,
+    "promotionSpecificMediaAttachment": true,
+    "promotionalFlyerImage": true,
+    "eventFlyerImage": true,
+    "expirationBehavior": true,
+    "unpublishAndRemove": true,
+    "publicProfileReadback": true,
+    "pdfUpload": false
+  },
+  "freeRightsPreserved": {
+    "profileClaiming": true,
+    "factualCorrections": true,
+    "publicRemoval": true,
+    "legitimateBasicManagement": true,
+    "approvedBasicProfileImageOrLogo": true
+  },
+  "membership": {
+    "optional": true,
+    "price": "$35/year",
+    "ordinaryUnpaidRankingUnaffected": true,
+    "noEndorsement": true,
+    "noGuaranteedLeadsCustomersSalesOrResults": true
+  },
+  "outreach": {
+    "localPlatformReadiness": "OUTREACH_READY",
+    "approvedClaims": [
+      "Optional Community Membership is $35/year.",
+      "Membership can help increase a business or organization's visibility in the Franklin community through a richer Franklin Navigator presence.",
+      "Members can manage richer reviewed profile content and media.",
+      "Members can create reviewed coupons and special offers.",
+      "Members can create reviewed sales and promotions.",
+      "Members can create reviewed events.",
+      "Members can attach reviewed promotional graphics and flyer images to eligible items.",
+      "Current approved items can appear on the public profile, subject to review, membership status and expiration controls."
+    ],
+    "prohibitedClaims": [
+      "PDF coupon or flyer upload",
+      "Guaranteed ranking or exposure",
+      "Guaranteed traffic, leads, customers, sales, revenue or results",
+      "Membership changes factual accuracy or ordinary unpaid ranking",
+      "Membership implies endorsement"
+    ],
+    "handoffState": "READY_FOR_SRE_POINT_OF_SEND_PREFLIGHT",
+    "liveSendAuthorizedByLocalPlatform": false,
+    "reason": "Local Platform has completed product and claim readiness. Final live-send authorization remains with the sending/revenue system's point-of-send compliance, suppression, deliverability and campaign preflight."
+  },
+  "nextVersionImprovementList": [
+    "Add PDF promotional-document support only if a separately qualified secure conversion/scanning/storage pipeline is implemented; do not weaken the existing image-only safety boundary.",
+    "Add Spanish parity for the new Member tools workspace and promotion/event management flows if not already supplied by dynamic translation coverage.",
+    "Continue measuring member-tool usability and public-profile engagement without changing free profile rights or guaranteeing commercial outcomes."
+  ],
+  "result": "PASS_R1365_COMPLETE_LIVE_NOT_BURIED_OUTREACH_READY_FOR_SRE_PREFLIGHT"
+}
