@@ -1,0 +1,131 @@
+{
+  "receiptType": "LOCAL_COMMUNITY_PLATFORM_R1366_CLOSEOUT_AND_OUTREACH_READY_FOR_SRE_PREFLIGHT",
+  "recordedDate": "2026-10-05",
+  "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
+  "product": "FRANKLIN_NAVIGATOR",
+  "community": "FRANKLIN_TN",
+  "activeEdition": "FRANKLIN_TN",
+  "authorityTransfer": false,
+  "predecessor": "FR-NAV1.30.65-HF3.13.47",
+  "release": "FR-NAV1.30.66-HF3.13.48",
+  "result": "QUALIFIED_SUCCESSOR_LIVE_LOCAL_OUTREACH_READY_FOR_SRE_PREFLIGHT",
+  "public": {
+    "functionalSourceCommit": "ee944d7c4e34adb11bbb7e1af70c8c9e2477cc36",
+    "postDeployTestCorrectionCommit": "04f0ef276a3a828a04d0d05cf4cae86880804c17",
+    "renderServiceId": "srv-da8tg6rbc2fs73crru2g",
+    "renderDeployId": "dep-db1jl05g1s2s73agjkt0",
+    "state": "LIVE"
+  },
+  "runtime": {
+    "sourceCommit": "f5a99db2f67bd76b7b01f54aeb37091153d04d8b",
+    "renderServiceId": "srv-dabgvefqj5pc739vr4h0",
+    "renderDeployId": "dep-db1jihpsrm7s73c04jlg",
+    "state": "LIVE"
+  },
+  "qualification": {
+    "publicQualificationRun": 37269030086,
+    "runtimeQualificationRun": 37268925131,
+    "publicInheritedGates": "PASS",
+    "runtimeInheritedAndR1366PdfGates": "PASS",
+    "liveRuntimeBrowserOriginGate": "PASS",
+    "controlledClaimPathGate": "PASS",
+    "nonBurialGate": "PASS",
+    "deterministicCombinedPackageRun": 37303005510,
+    "deterministicCombinedPackage": "PASS",
+    "doubleBuildByteIdentical": true,
+    "freshExtractionValidation": "PASS"
+  },
+  "exactArtifact": {
+    "name": "FRANKLIN_NAVIGATOR__FR-NAV1.30.66-HF3.13.48__QUALIFIED_SUCCESSOR.zip",
+    "bytes": 85510080,
+    "sha256": "cb3f0c655e02a1496ed0033295620c8964cfc0e97af067c160c1e06298466855"
+  },
+  "profileAuthority": {
+    "canonicalLocalProfileSource": "FR-PF-PLATFORM-15.38",
+    "acceptedHandoffSha256": "e90cc02dfe026ea64d287eef59c12a067bfa9e55a3879e282fd7a50a30afd89b",
+    "findings198Through203": "CLOSED_NO_REGRESSION",
+    "aliasCountPreviouslyAccepted": 100,
+    "reviewHoldCountPreviouslyAccepted": 0,
+    "pf15_39OutreachOverlay": "NOT_CONSUMED_AS_LOCAL_CANONICAL_PROFILE_TRUTH",
+    "pf15_39StatusObserved": "QUALIFIED_CANDIDATE_PENDING_INDEPENDENT_SCC_D1_ACCEPTANCE"
+  },
+  "memberCapabilities": {
+    "visibleAndNotBuried": true,
+    "visibleEntryPoints": [
+      "/business-dashboard/",
+      "/profile-studio/",
+      "/member-account/",
+      "/membership-status/",
+      "/member-tools/"
+    ],
+    "featureGroups": ["Profile media", "Coupons & specials", "Sales & promotions", "Events"],
+    "imageInputs": ["JPG", "JPEG", "PNG", "WebP"],
+    "normalizedStoredImageType": "WebP",
+    "pdfDocuments": true,
+    "pdfMaxBytes": 4194304,
+    "pdfMaxPages": 20,
+    "pdfActiveOrEncryptedContent": "REJECTED_FAIL_CLOSED",
+    "pdfPublicDelivery": "REVIEWED_DOWNLOAD_ONLY",
+    "spanishMemberToolsParity": true,
+    "publicProfileReadback": true,
+    "expirationAndUnpublish": true
+  },
+  "freeRights": {
+    "profileClaiming": true,
+    "factualCorrections": true,
+    "publicRemoval": true,
+    "legitimateBasicManagement": true,
+    "approvedBasicProfileImageOrLogo": true,
+    "membershipRequiredForTheseFreeRights": false
+  },
+  "membership": {
+    "optional": true,
+    "price": "$35/year",
+    "ordinaryUnpaidRankingUnaffected": true,
+    "doesNotBuyFactualTruth": true,
+    "doesNotImplyEndorsement": true,
+    "noGuaranteedLeadsCustomersSalesOrResults": true
+  },
+  "srePreparedCohortValidation": {
+    "sourceCohortCount": 55,
+    "liveUrlsWithClaimManagePath": 21,
+    "http404Urls": 34,
+    "claimPathFailuresAmongHttp200": 0,
+    "publicProvenanceLeaksAmongHttp200": 0,
+    "disposition": "USE_ONLY_THE_21_LIVE_URLS; EXCLUDE_OR_REPLACE_THE_34_404_CANDIDATES THROUGH PROFILE_FACTORY/SRE; LOCAL_MUST_NOT_INVENT_OR_REWRITE_PROFILE_CANON"
+  },
+  "outreach": {
+    "localPlatformState": "OUTREACH_READY_FOR_SRE_PREFLIGHT",
+    "liveSendAuthorizedByLocal": false,
+    "localMaySend": false,
+    "approvedProductClaims": [
+      "Optional Community Membership is $35/year.",
+      "Members can manage richer reviewed profile content and media.",
+      "Members can create reviewed coupons, special offers, sales, promotions and events.",
+      "Members can upload JPG/JPEG, PNG and WebP images through the qualified image path.",
+      "Members can upload reviewed passive PDF flyers/documents within the stated limits.",
+      "Current approved items can appear on the public profile subject to review, active membership and expiration controls."
+    ],
+    "remainingSreOrSccPointOfSendGates": [
+      "PF15.39 independent SCC D1 acceptance or equivalent accepted exact contact handoff where required for the chosen recipient cohort.",
+      "Exclude or replace the 34 prepared candidate profile URLs that currently return HTTP 404.",
+      "Direct Zoho first-10 bounce/unsubscribe/complaint/reply/stop reconciliation or explicit source-unavailable disposition.",
+      "Fresh Zoho sender/authentication/suppression/organization-domain point-of-send preflight.",
+      "Confirm no new outreach-relevant product incident immediately before send."
+    ]
+  },
+  "nextVersionImprovementList": [
+    {
+      "improvement": "Measure real member-tool usability and public-profile engagement after sufficient live usage exists.",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "Requires post-live behavioral evidence; no fabricated metrics.",
+      "responsibleAuthority": "LOCAL_COMMUNITY_PLATFORM"
+    },
+    {
+      "improvement": "Replace or canonically resolve prepared outreach candidates whose exact profile URLs are not live.",
+      "disposition": "HANDOFF_REQUIRED",
+      "reason": "34 of 55 prepared candidate URLs returned HTTP 404; Local cannot invent canonical profile identity.",
+      "responsibleAuthority": "PROFILE_FACTORY + SRE_OWNER_CONSOLE"
+    }
+  ]
+}
