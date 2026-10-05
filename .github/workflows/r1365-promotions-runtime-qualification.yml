@@ -1,0 +1,30 @@
+name: R1365 member promotions runtime qualification
+on:
+  push:
+    branches: [r1365-member-promotions-events-runtime]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Syntax gate
+        run: npm run check
+      - name: Full runtime regression suite
+        run: npm test
+      - name: R1365 fail-closed contract
+        run: |
+          grep -F "pdfUpload:false" promotions-proxy.js
+          grep -F "ACTIVE_MEMBERSHIP_REQUIRED" promotions-proxy.js
+          grep -F "PROFILE_VERIFICATION_REQUIRED" promotions-proxy.js
+          grep -F "idempotency_key" schema/012_member_promotions.sql
+          grep -F "X-Franklin-Rights-Confirmed" r1365-cors-hook.js
+          grep -F "Access-Control-Allow-Credentials" r1365-cors-hook.js
