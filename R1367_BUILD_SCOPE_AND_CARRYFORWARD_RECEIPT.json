@@ -1,0 +1,21 @@
+{
+  "receiptType": "R1367_BUILD_SCOPE_AND_CARRYFORWARD_RECEIPT",
+  "release": "FR-NAV1.30.67-HF3.13.49",
+  "predecessor": "FR-NAV1.30.66-HF3.13.48",
+  "activeEdition": "FRANKLIN_TN",
+  "r1359OwnerBuildList193Through197": "CLOSED_CARRY_FORWARD",
+  "r1364NextVersionList": "CLOSED_BY_R1365",
+  "r1365NextVersionList": {
+    "pdfSupport": "CLOSED_BY_R1366",
+    "spanishMemberToolsParity": "CLOSED_BY_R1366",
+    "realUsageMeasurement": "DEFERRED_WITH_CAUSE_NO_FABRICATED_METRICS"
+  },
+  "r1363CarryForward": {
+    "responseMinimizationBehavioralPostgresCoverage": "IMPLEMENTED_R1367",
+    "historicalHighTelemetryReconciliation": "CONTINUING_ONLY_WITH_FRESH_PROVIDER_EVIDENCE",
+    "liveJourneySmoke": "RETAINED_AS_MATERIAL_SUCCESSOR_GATE",
+    "authorityAndReviewerIsolation": "RETAINED_NO_DRIFT"
+  },
+  "newCurrentWork": "WO-20261006-SCC-LOCAL-FRANKLIN-LI51-PUBLIC-CALENDAR-PLACEHOLDER-083",
+  "li51Sha256": "2056720af2ff7e7fc00076aad7c447e1e531ad52feb08debbf81ccc669396795"
+}
