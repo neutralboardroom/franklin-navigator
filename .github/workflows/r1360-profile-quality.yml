@@ -34,6 +34,10 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/r1360-profile-quality-build.py | tee R1360_GENERATOR_RESULT.json
+      - name: Apply bounded R1367 Local product currentness
+        run: |
+          set -euo pipefail
+          python scripts/r1367-local-product-build.py
       - name: Focused R1360 and R1367 qualification
         run: |
           node tests/r1352-claim-review-path.cjs
@@ -62,6 +66,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No generated changes.'
           else
-            git commit -m 'R1360: generate canonical profile projection [r1360-generated]'
+            git commit -m 'R1367: persist bounded Local generated currentness [r1360-generated]'
             git push origin HEAD:${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}
           fi
