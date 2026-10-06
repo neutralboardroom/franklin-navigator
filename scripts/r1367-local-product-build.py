@@ -9,6 +9,9 @@ This script intentionally does not alter canonical PF identity truth. It only:
   Spanish business/membership experience;
 - repairs Spanish homepage links where an existing Spanish route was already
   available but the homepage still sent the user back to the English route.
+
+The transformation is deliberately idempotent so deterministic qualification can
+run repeatedly without manufacturing new bytes or false failures.
 """
 from __future__ import annotations
 import json
@@ -46,15 +49,17 @@ def patch_home(path:pathlib.Path)->None:
     if n!=1:
         raise SystemExit(f'Expected one release marker: {path}')
     if path.parts[-2:] == ('es','index.html'):
-        if OLD_ES not in text:
-            raise SystemExit('Expected stale Spanish membership sentence was not found exactly once')
-        text=text.replace(OLD_ES,NEW_ES,1)
+        if OLD_ES in text:
+            text=text.replace(OLD_ES,NEW_ES,1)
+        elif NEW_ES not in text:
+            raise SystemExit('Neither the expected stale nor corrected Spanish membership sentence is present')
         if OLD_ES in text:
             raise SystemExit('Stale Spanish membership sentence remains')
         for old,new in ES_ROUTE_REPAIRS.items():
-            if old not in text:
-                raise SystemExit(f'Expected Spanish route repair source not found: {old}')
-            text=text.replace(old,new,1)
+            if old in text:
+                text=text.replace(old,new,1)
+            elif new not in text:
+                raise SystemExit(f'Neither source nor corrected Spanish route is present: {old}')
     path.write_text(text)
 
 def main()->None:
@@ -68,7 +73,8 @@ def main()->None:
         'suppressedGenericProfileIds':[SUPPRESSED],
         'desktopHeroBaseModified':False,
         'spanishHomepageMembershipCurrentness':'UPDATED',
-        'spanishHomepageExistingRouteRepairs':sorted(ES_ROUTE_REPAIRS.values())
+        'spanishHomepageExistingRouteRepairs':sorted(ES_ROUTE_REPAIRS.values()),
+        'idempotent':True
     },sort_keys=True))
 
 if __name__=='__main__': main()
