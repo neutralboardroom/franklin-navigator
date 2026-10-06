@@ -6,7 +6,9 @@ This script intentionally does not alter canonical PF identity truth. It only:
   consumer contract consumed by profile-scope.js;
 - updates homepage release markers for the pages materially changed in R1367;
 - removes one stale Spanish homepage sentence that contradicted the already-live
-  Spanish business/membership experience.
+  Spanish business/membership experience;
+- repairs Spanish homepage links where an existing Spanish route was already
+  available but the homepage still sent the user back to the English route.
 """
 from __future__ import annotations
 import json
@@ -23,6 +25,11 @@ ALIAS_FILES=[
 HOME_FILES=[ROOT/'dist/index.html',ROOT/'dist/es/index.html']
 OLD_ES='Encuentre su perfil público, use el planificador gratuito de crecimiento y previsualiza la experiencia de perfil ampliado para miembros mientras la inscripción permanece cerrada.'
 NEW_ES='Encuentre su perfil público, revise la versión ampliada para miembros y decida si la Membresía Comunitaria opcional de $35/año le conviene. Reclamar el perfil, corregir hechos y solicitar el retiro siguen siendo gratuitos.'
+ES_ROUTE_REPAIRS={
+    'href="/community/">Explorar Comunidad':'href="/es/comunidad/">Explorar Comunidad',
+    'href="/membership-start/">Membresía':'href="/es/iniciar-membresia/">Membresía',
+    'href="/privacy/">Privacidad':'href="/es/privacidad/">Privacidad',
+}
 
 def patch_alias_contract(path:pathlib.Path)->None:
     payload=json.loads(path.read_text())
@@ -44,6 +51,10 @@ def patch_home(path:pathlib.Path)->None:
         text=text.replace(OLD_ES,NEW_ES,1)
         if OLD_ES in text:
             raise SystemExit('Stale Spanish membership sentence remains')
+        for old,new in ES_ROUTE_REPAIRS.items():
+            if old not in text:
+                raise SystemExit(f'Expected Spanish route repair source not found: {old}')
+            text=text.replace(old,new,1)
     path.write_text(text)
 
 def main()->None:
@@ -56,7 +67,8 @@ def main()->None:
         'reviewHoldCount':0,
         'suppressedGenericProfileIds':[SUPPRESSED],
         'desktopHeroBaseModified':False,
-        'spanishHomepageMembershipCurrentness':'UPDATED'
+        'spanishHomepageMembershipCurrentness':'UPDATED',
+        'spanishHomepageExistingRouteRepairs':sorted(ES_ROUTE_REPAIRS.values())
     },sort_keys=True))
 
 if __name__=='__main__': main()
