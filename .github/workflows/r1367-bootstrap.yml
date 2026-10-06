@@ -1,0 +1,44 @@
+name: R1367 bootstrap apply
+
+on:
+  push:
+    branches:
+      - r1367-li51-currentness-carryforward-20261006
+    paths:
+      - '.github/workflows/r1367-bootstrap.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: r1367-li51-currentness-carryforward-20261006
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply R1367 bundle
+        run: python .r1367/apply.py
+      - name: Static qualification
+        run: |
+          node --check dist/assets/r1367-currentness.js
+          node --check runtime/franklin-membership/acceptance/r1367-response-minimization.integration.cjs
+          node test-r1367-currentness.js
+          node test-r1365-member-tools-visible.js
+          node test-r1364-membership-visibility.js
+      - name: Remove bootstrap transport and commit product changes
+        run: |
+          rm -rf .r1367
+          rm -f .github/workflows/r1367-bootstrap.yml
+          git config user.name neutralboardroom
+          git config user.email reachrgnow@gmail.com
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No generated changes to commit'
+            exit 1
+          fi
+          git commit -m 'R1367: current Franklin public facts and close carry-forward test debt'
+          git push origin HEAD:r1367-li51-currentness-carryforward-20261006
