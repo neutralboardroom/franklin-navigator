@@ -3,15 +3,16 @@ const fs=require('fs');
 const crypto=require('crypto');
 const assert=require('node:assert/strict');
 const read=p=>fs.readFileSync(p,'utf8');
-const sha256=s=>crypto.createHash('sha256').update(s).digest('hex');
+const gitBlobSha1=s=>{const b=Buffer.from(s,'utf8');return crypto.createHash('sha1').update(Buffer.concat([Buffer.from(`blob ${b.length}\0`),b])).digest('hex')};
 const checks=[];
 const ok=(name,value)=>{assert.ok(value,name);checks.push(name)};
 const RELEASE='FR-NAV1.30.67-HF3.13.49';
 
 // Owner lock: R1367 may change the phone presentation, but the established
 // desktop/laptop homepage stylesheet must remain byte-for-byte unchanged.
+// Compare against the exact R1366 Git blob identity, not a mismatched raw hash type.
 const baseStyles=read('dist/assets/styles.css');
-ok('desktop/laptop homepage stylesheet remains byte-identical to R1366',sha256(baseStyles)==='65e31e734a7f68ebb10ed5ed4197a700bf76c3cb');
+ok('desktop/laptop homepage stylesheet remains byte-identical to R1366',gitBlobSha1(baseStyles)==='65e31e734a7f68ebb10ed5ed4197a700bf76c3cb');
 
 const homeCss=read('dist/assets/r27-home.css');
 const marker='/* R1367 mobile-only homepage image refinement. Desktop/tablet presentation is intentionally untouched. */';
