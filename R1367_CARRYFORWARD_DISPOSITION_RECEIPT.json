@@ -1,0 +1,145 @@
+{
+  "schema": "franklin.local.next_version_carryforward.v1",
+  "product": "FRANKLIN_NAVIGATOR",
+  "role": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "candidateRelease": "FR-NAV1.30.67-HF3.13.49",
+  "authoritativePredecessor": "FR-NAV1.30.66-HF3.13.48",
+  "predecessorArtifactSha256": "cb3f0c655e02a1496ed0033295620c8964cfc0e97af067c160c1e06298466855",
+  "profileSource": {
+    "release": "FR-PF-PLATFORM-15.38",
+    "semantics": "FULL_REPLACE_NOT_APPEND",
+    "artifactSha256": "e90cc02dfe026ea64d287eef59c12a067bfa9e55a3879e282fd7a50a30afd89b",
+    "readySourceProfiles": 28818,
+    "localCanonicalPublicProfiles": 19002,
+    "localRuntimeScopeProfiles": 19003,
+    "aliases": 100,
+    "reviewHolds": 0
+  },
+  "runtime": {
+    "liveCommit": "f5a99db2f67bd76b7b01f54aeb37091153d04d8b",
+    "mutationRequiredByR1367": false,
+    "note": "The live runtime already carries the explicit suppressedGenericProfileIds contract. R1367 aligns the packaged/public consumer contract and adds behavioral evidence without changing live runtime behavior."
+  },
+  "dispositions": [
+    {
+      "source": "R1360 standalone process/validation improvement list",
+      "item": "Use pipefail so generator failures cannot be hidden by tee.",
+      "state": "COMPLETED_PREVIOUSLY_AND_REQUALIFIED_R1367",
+      "evidence": "The profile-quality workflow uses set -euo pipefail; R1367 retains and re-runs it."
+    },
+    {
+      "source": "R1360 standalone process/validation improvement list",
+      "item": "Replace broad unsafe-text validation with record/field-scoped validation.",
+      "state": "COMPLETED_PREVIOUSLY_AND_REQUALIFIED_R1367",
+      "evidence": "The current R1360 profile-quality generator performs scoped validation and R1367 re-runs the unsafe-public-display gate."
+    },
+    {
+      "source": "R1360 standalone process/validation improvement list",
+      "item": "Keep canonical alias, intentional generic suppression, and review hold as distinct identity states.",
+      "state": "STRENGTHENED_R1367",
+      "evidence": "R1367 explicitly carries suppressedGenericProfileIds in public/package contracts while retaining 100 aliases and zero review holds; regression tests keep the three states distinct."
+    },
+    {
+      "source": "R1360 standalone process/validation improvement list",
+      "item": "Prove suppressed generic identities cannot enter public discovery, claim, membership, entitlement, checkout, support-authority, or onboarding scope.",
+      "state": "STRENGTHENED_R1367",
+      "evidence": "R1367 regression proves the suppressed FirstBank generic is absent from the public directory and runtime scope, is noindex/nonclaimable, and exposes no claim/membership/checkout path. Runtime alias/scope protections remain active."
+    },
+    {
+      "source": "R1360 standalone process/validation improvement list",
+      "item": "Preserve live-smoke and regression coverage for first-time claim, free correction/removal, optional membership, aliases/suppression, /health, and /ready.",
+      "state": "PRESERVED_AND_REQUALIFIED_R1367",
+      "evidence": "Inherited R1351, R1359, R1360, current-successor, alias, claim and recovery suites passed on the R1367 candidate parent; R1367 adds focused mobile/profile-boundary coverage. Live postdeploy smoke remains required after deployment."
+    },
+    {
+      "source": "R1360 after-release list",
+      "item": "Continue owner live review after Finding #203.",
+      "state": "CONTINUING_OBSERVATIONAL_WORK",
+      "reason": "This is evidence-driven live review, not a missing code feature. New findings must be based on observed defects rather than manufactured release churn."
+    },
+    {
+      "source": "R1360 after-release list",
+      "item": "Add internal alias-state reconciliation only if pre-R1360 retired IDs persist in runtime state.",
+      "state": "CONDITION_NOT_MET",
+      "reason": "No current evidence shows retired alias state requiring reconciliation. Runtime remains fail-closed; building an unused repair tool would be churn."
+    },
+    {
+      "source": "R1360 after-release list",
+      "item": "Reduce coarse-location profiles when newer accepted PF evidence provides safer precision.",
+      "state": "UPSTREAM_DEPENDENT",
+      "reason": "Local must not infer addresses or profile facts. Resume only with a newer exact accepted PF handoff containing materially improved public location evidence."
+    },
+    {
+      "source": "R1360/R1361/R1362 lists",
+      "item": "Dedicated private reviewer entry/workspace isolated from ordinary claimant/member pages.",
+      "state": "COMPLETED_PREVIOUSLY",
+      "evidence": "The membership runtime serves a protected /review/ reviewer workspace with authorization-bound sessions and security controls; ordinary claimant navigation does not expose reviewer controls."
+    },
+    {
+      "source": "R1361/R1362 lists",
+      "item": "Move reviewer workspace to a Franklin-controlled private hostname when authorized DNS/custom-domain tooling exists and security is preserved or improved.",
+      "state": "CONDITION_NOT_MET",
+      "reason": "No current owner authorization or accepted same-origin/security migration evidence requires this move. Existing protected reviewer workspace remains the qualified state."
+    },
+    {
+      "source": "R1361/R1362/R1363 lists",
+      "item": "Minimize ordinary account/membership JSON responses while preserving user-facing behavior.",
+      "state": "COMPLETED_PREVIOUSLY_AND_BEHAVIORALLY_PROVED_R1367",
+      "evidence": "R1367 runs the exact live runtime against a synthetic real Postgres database and verifies strict account/membership response shapes, no provider/customer/subscription leakage, active membership behavior, and fail-closed billing."
+    },
+    {
+      "source": "R1363 list",
+      "item": "Add real database-backed behavioral integration coverage for signed-in account, active membership, checkout recovery, and billing UI against minimized response shapes.",
+      "state": "COMPLETED_R1367",
+      "evidence": "R1367 response-minimization behavioral qualification passed using Postgres 16, the exact live runtime commit, synthetic data only, zero live Stripe calls, active membership assertions, billing fail-closed assertions, and legacy checkout recovery without duplicate provider-session creation."
+    },
+    {
+      "source": "R1360-R1363 continuity lists",
+      "item": "Preserve provenance, alias/no-fork, self-review/private-review, free-management, optional-membership, no-paid-factual-superiority and release identity gates.",
+      "state": "PRESERVED_AND_REQUALIFIED_R1367",
+      "evidence": "Inherited profile/claim/outreach/current-successor suites and R1367 focused gates pass without changing canonical PF truth or the $35/year optional-membership/free-rights boundary."
+    },
+    {
+      "source": "R1360-R1363 live/outreach monitoring items",
+      "item": "Monitor real outreach recipients for claim completion, recovery, verification friction, Profile Center first value, optional membership conversion, support volume and alias regressions.",
+      "state": "SRE_AND_LIVE_USAGE_DEPENDENT",
+      "reason": "Local cannot fabricate production usage or send outreach. Continue from actual SRE-authorized outreach and privacy-safe observed product usage."
+    },
+    {
+      "source": "R1362 telemetry item",
+      "item": "Reconcile historical HIGH client telemetry only against fresh provider/runtime evidence.",
+      "state": "CONDITION_NOT_MET_FOR_NEW_DEFECT",
+      "reason": "No newly reproduced current product defect was established from stale telemetry during this run. Freshly reproduced defects remain actionable immediately."
+    },
+    {
+      "source": "R1366 public consistency audit discovered in R1367",
+      "item": "Remove stale public statements that member PDF uploads are unsupported.",
+      "state": "COMPLETED_R1367",
+      "evidence": "Profile Center and Membership Status now match the R1366 reviewed PDF capability: max 4 MB, max 20 pages, unsafe active/encrypted/embedded/form-like PDFs rejected."
+    },
+    {
+      "source": "Owner instruction 2026-10-06",
+      "item": "Fix the homepage header/hero image on mobile without changing the laptop/desktop version.",
+      "state": "COMPLETED_R1367",
+      "evidence": "Only the <=620px phone breakpoint changes the hero-photo presentation. Desktop base stylesheet is locked byte-for-byte to the R1366 Git blob; all three desktop source images remain unchanged."
+    },
+    {
+      "source": "Current cross-builder state",
+      "item": "Consume LI V51 / WO083 calendar-currentness work.",
+      "state": "NOT_ACCEPTED_NOT_CONSUMED",
+      "reason": "The SCC work order is persisted but dispatch/acknowledgement/acceptance has not been established. Generated or persisted does not equal dispatched or accepted; Local will not import nondispatched work."
+    },
+    {
+      "source": "Current cross-builder state",
+      "item": "Resolve 34 prepared SRE cohort profile URLs returning 404 and complete point-of-send gates.",
+      "state": "HANDOFF_REQUIRED",
+      "reason": "Canonical profile identity/publication belongs to Profile Factory and outreach execution belongs to SRE. Local must not invent profile identities or authorize sending."
+    }
+  ],
+  "releaseGovernanceRepair": {
+    "finding": "The exact R1366 sealed package carries historical Next Version Improvement Lists through R1363 but no distinct fresh R1364/R1365/R1366 list files were found.",
+    "r1367Action": "R1367 restores explicit carry-forward disposition plus a fresh post-build NEXT_VERSION_IMPROVEMENT_LIST__R1367.md."
+  },
+  "ownerActionRequired": "NONE"
+}
