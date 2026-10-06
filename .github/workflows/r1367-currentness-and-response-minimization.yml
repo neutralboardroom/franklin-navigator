@@ -1,0 +1,49 @@
+name: R1367 currentness and response minimization qualification
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: franklin_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d franklin_test"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      TEST_DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/franklin_test
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Public currentness and placeholder contract
+        run: node test-r1367-currentness.js
+      - name: Existing public regression gates
+        run: |
+          node test-r1364-membership-visibility.js
+          node test-r1365-member-tools-visible.js
+          node --test test/r1359-public-profile-path.test.js
+      - name: Install runtime locked dependencies
+        working-directory: runtime/franklin-membership
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Runtime syntax and unit regression
+        working-directory: runtime/franklin-membership
+        run: |
+          npm run check
+          npm test
+      - name: R1367 real Postgres minimized-response acceptance
+        working-directory: runtime/franklin-membership
+        run: node acceptance/r1367-response-minimization.integration.cjs
