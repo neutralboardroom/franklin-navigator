@@ -10,7 +10,6 @@ const RELEASE='FR-NAV1.30.67-HF3.13.49';
 
 // Owner lock: R1367 may change the phone presentation, but the established
 // desktop/laptop homepage stylesheet must remain byte-for-byte unchanged.
-// Compare against the exact R1366 Git blob identity, not a mismatched raw hash type.
 const baseStyles=read('dist/assets/styles.css');
 ok('desktop/laptop homepage stylesheet remains byte-identical to R1366',gitBlobSha1(baseStyles)==='65e31e734a7f68ebb10ed5ed4197a700bf76c3cb');
 
@@ -40,6 +39,14 @@ ok('Spanish homepage accurately states optional $35/year Community Membership an
 ok('Spanish Explore Community stays in the Spanish experience',esHome.includes('href="/es/comunidad/">Explorar Comunidad'));
 ok('Spanish footer membership stays in the Spanish experience',esHome.includes('href="/es/iniciar-membresia/">Membresía'));
 ok('Spanish footer privacy stays in the Spanish experience',esHome.includes('href="/es/privacidad/">Privacidad'));
+
+for(const page of ['dist/profile-studio/index.html','dist/membership-status/index.html']){
+  const html=read(page);
+  ok(`${page} carries the R1367 release marker`,html.includes(`content="${RELEASE}" name="franklin-release"`));
+  ok(`${page} does not contradict the live reviewed-PDF capability`,!/PDF (?:flyer\/coupon )?uploads are not supported/i.test(html));
+  ok(`${page} states the reviewed PDF size and page limits`,html.includes('PDF')&&html.includes('4 MB')&&html.includes('20 pages'));
+  ok(`${page} states fail-closed unsafe PDF classes`,html.includes('active')&&html.includes('encrypted')&&html.includes('embedded-file')&&html.includes('form-like'));
+}
 
 // R1360 carried-forward identity boundary: an intentionally suppressed generic
 // profile must not re-enter public discovery, claim, membership or checkout scope.
