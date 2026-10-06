@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "franklin.public-currentness.v1",
+  "release": "FR-NAV1.30.67-HF3.13.49",
+  "checkedDate": "2026-10-05",
+  "timezone": "America/Chicago",
+  "items": [
+    {
+      "id": "city-transit-2026-10-06",
+      "category": "Civic",
+      "start": "2026-10-06T16:00:00-05:00",
+      "end": "2026-10-06T17:30:00-05:00",
+      "title": {"en": "Franklin Transit Authority — October 6", "es": "Autoridad de Tránsito de Franklin — 6 de octubre"},
+      "meta": {"en": "October 6 · Franklin, Tennessee", "es": "6 de octubre · Franklin, Tennessee"},
+      "summary": {"en": "Official city calendar item. Check the city source for the current agenda, location and access details before attending.", "es": "Elemento del calendario oficial de la ciudad. Consulte la fuente municipal para confirmar agenda, ubicación y acceso antes de asistir."},
+      "sourceUrl": "https://www.franklintn.gov/our-city/calendar",
+      "sourceLabel": {"en": "Check City calendar", "es": "Consultar calendario de la ciudad"}
+    },
+    {
+      "id": "city-budget-finance-2026-10-08",
+      "category": "Civic",
+      "start": "2026-10-08T15:00:00-05:00",
+      "end": "2026-10-08T17:30:00-05:00",
+      "title": {"en": "Budget & Finance Committee — October 8", "es": "Comité de Presupuesto y Finanzas — 8 de octubre"},
+      "meta": {"en": "October 8 · Franklin, Tennessee", "es": "8 de octubre · Franklin, Tennessee"},
+      "summary": {"en": "Official city calendar item. Recheck the city source for the current agenda, location and participation details.", "es": "Elemento del calendario oficial de la ciudad. Vuelva a consultar la fuente municipal para confirmar agenda, ubicación y participación."},
+      "sourceUrl": "https://www.franklintn.gov/our-city/calendar",
+      "sourceLabel": {"en": "Check City calendar", "es": "Consultar calendario de la ciudad"}
+    },
+    {
+      "id": "wcs-no-student-2026-10-12-16",
+      "category": "Family",
+      "start": "2026-10-12T00:00:00-05:00",
+      "end": "2026-10-16T23:59:59-05:00",
+      "title": {"en": "WCS no-student days and Fall Break — October 12–16", "es": "WCS: días sin estudiantes y vacaciones de otoño — 12 al 16 de octubre"},
+      "meta": {"en": "October 12–16 · Williamson County Schools", "es": "12 al 16 de octubre · Williamson County Schools"},
+      "summary": {"en": "Oct. 12 is Parent/Teacher Conference Day, Oct. 13 is Professional Development Day, and Oct. 14–16 is Fall Break/system closed.", "es": "El 12 de octubre es día de conferencias de padres y maestros, el 13 es desarrollo profesional y del 14 al 16 son vacaciones de otoño con el sistema cerrado."},
+      "sourceUrl": "https://www.wcs.edu/about-us/calendar",
+      "sourceLabel": {"en": "Check WCS calendar", "es": "Consultar calendario de WCS"}
+    },
+    {
+      "id": "early-voting-2026-10-14-29",
+      "category": "Civic",
+      "start": "2026-10-14T00:00:00-05:00",
+      "end": "2026-10-29T23:59:59-05:00",
+      "title": {"en": "Williamson County early voting — October 14–29", "es": "Votación anticipada del Condado de Williamson — 14 al 29 de octubre"},
+      "meta": {"en": "October 14–29 · Williamson County", "es": "14 al 29 de octubre · Condado de Williamson"},
+      "summary": {"en": "The official election calendar lists early voting for October 14–29. Check the county voting page near use for exact locations and hours.", "es": "El calendario electoral oficial indica votación anticipada del 14 al 29 de octubre. Consulte la página electoral del condado cerca de la fecha para ubicaciones y horarios exactos."},
+      "sourceUrl": "https://www.williamsoncounty-tn.gov/1576/Voting-Information",
+      "sourceLabel": {"en": "Check voting information", "es": "Consultar información electoral"}
+    },
+    {
+      "id": "election-day-2026-11-03",
+      "category": "Civic",
+      "start": "2026-11-03T00:00:00-06:00",
+      "end": "2026-11-03T23:59:59-06:00",
+      "title": {"en": "Election Day — November 3, 2026", "es": "Día de las elecciones — 3 de noviembre de 2026"},
+      "meta": {"en": "November 3 · Williamson County", "es": "3 de noviembre · Condado de Williamson"},
+      "summary": {"en": "Election Day is Tuesday, November 3. Use the county voting page and vote-center information near use for current locations and details.", "es": "El Día de las Elecciones es el martes 3 de noviembre. Consulte la página electoral del condado y la información de centros de votación cerca de la fecha."},
+      "sourceUrl": "https://www.williamsoncounty-tn.gov/1576/Voting-Information",
+      "sourceLabel": {"en": "Check voting information", "es": "Consultar información electoral"}
+    }
+  ]
+}
