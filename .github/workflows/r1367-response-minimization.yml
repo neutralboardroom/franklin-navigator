@@ -27,10 +27,10 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - name: Checkout exact current runtime branch
+      - name: Checkout exact current live runtime source
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ref: franklin-commerce-runtime-r30
+          ref: f5a99db2f67bd76b7b01f54aeb37091153d04d8b
           path: runtime-src
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
