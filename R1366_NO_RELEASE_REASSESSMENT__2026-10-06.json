@@ -1,0 +1,135 @@
+{
+  "receiptType": "LOCAL_COMMUNITY_PLATFORM_NO_RELEASE_REASSESSMENT",
+  "recordedDate": "2026-10-06",
+  "stableRoleId": "LOCAL_COMMUNITY_PLATFORM",
+  "product": "FRANKLIN_NAVIGATOR",
+  "activeEdition": "FRANKLIN_TN",
+  "authorityTransfer": false,
+  "outcome": "NO_RELEASE",
+  "reason": "Fresh currentness reconciliation found no remaining Local-owned candidate that simultaneously satisfies authority, evidence, material value, complete-slice, immediate-verifiability, no-loss, isolation, privacy, accessibility, performance and rollback requirements. Creating R1367 would be version churn.",
+  "currentLocal": {
+    "release": "FR-NAV1.30.66-HF3.13.48",
+    "preReassessmentMainHead": "61e3d630572c7e46c5933ef95608b0587dca5c6c",
+    "materialPublicSourceCommit": "ee944d7c4e34adb11bbb7e1af70c8c9e2477cc36",
+    "activePublicDeployCommit": "04f0ef276a3a828a04d0d05cf4cae86880804c17",
+    "activePublicRenderDeploy": "dep-db1jos2d0e5s73830hd0",
+    "publicState": "LIVE",
+    "runtimeSourceCommit": "f5a99db2f67bd76b7b01f54aeb37091153d04d8b",
+    "activeRuntimeRenderDeploy": "dep-db1jihpsrm7s73c04jlg",
+    "runtimeState": "LIVE",
+    "newerR1367BranchObserved": false
+  },
+  "authoritativeCrossBuilderCurrentness": {
+    "scc": {
+      "release": "v0.39.0 R34",
+      "acceptanceState": "ACCEPTED",
+      "qualificationState": "PASS",
+      "canonicalPointerState": "UNCHANGED"
+    },
+    "profileFactory": {
+      "sccSourceAcceptedRelease": "FR-PF-PLATFORM-15.39",
+      "sccSourceAcceptance": "PASS",
+      "readyProfiles": 28818,
+      "localPublicProjectionCurrentlyBoundThrough": "FR-PF-PLATFORM-15.38",
+      "localProductDisposition": "NO_LOCAL_PRODUCT_DELTA_PROVEN_NOW",
+      "basis": "Current SRE candidate evidence still identifies FR-PF-PLATFORM-15.38 as the public profile source while FR-PF-PLATFORM-15.39 supplies later outreach/contact/currentness material. No accepted Local-consumable public-profile delta requiring replacement was located in this run."
+    },
+    "localInvestigator": {
+      "observedRelease": "SLI-FRANKLIN-HANDOFF-20261005-051",
+      "handoffDispatch": "NOT_DISPATCHED",
+      "consumerAcceptance": "UNKNOWN",
+      "localConsumption": "DEFER_WITH_CAUSE"
+    },
+    "sre": {
+      "sourceCurrentRelease": "SRE-OC-CP-2.63.0",
+      "state": "PREPARE_ONLY_MULTI_GATE_BLOCKED",
+      "providerMode": "ZOHO_DIRECT_SMTP_IMAP",
+      "sendAuthorizationByLocal": false
+    }
+  },
+  "candidateDispositions": [
+    {
+      "candidate": "Member-tools usability and public engagement measurement",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "Requires sufficient post-live behavioral evidence; fabricating or prematurely interpreting metrics would violate analytics-truth rules.",
+      "responsibleAuthority": "LOCAL_COMMUNITY_PLATFORM",
+      "resumeCondition": "Sufficient privacy-safe live usage exists to support meaningful observed metrics."
+    },
+    {
+      "candidate": "Replace or canonically resolve the 34 prepared SRE profile URLs that returned HTTP 404 in R1366 validation",
+      "disposition": "HANDOFF_REQUIRED",
+      "reason": "Canonical profile identity and publication eligibility belong to PROFILE_FACTORY; outreach cohort composition belongs to SRE_OWNER_CONSOLE. Local must not invent profiles or rewrite canon.",
+      "responsibleAuthority": "PROFILE_FACTORY + SRE_OWNER_CONSOLE",
+      "resumeCondition": "A new accepted exact profile handoff or replacement cohort supplies live canonical URLs."
+    },
+    {
+      "candidate": "Consume FR-PF-PLATFORM-15.39 into Local public profile projection",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "SCC accepts 15.39 source currentness, but this run found no accepted Local-consumable public-profile delta beyond the already-live 28,818-profile projection sourced through 15.38. A release solely to rename the producer binding would create churn.",
+      "responsibleAuthority": "PROFILE_FACTORY + SCC_INTERNAL + LOCAL_COMMUNITY_PLATFORM",
+      "resumeCondition": "An accepted consumer handoff proves a changed public-profile payload, alias/suppression set, or other Local-owned behavior requiring import."
+    },
+    {
+      "candidate": "Consume Local Investigator V51 civic/election/currentness package",
+      "disposition": "DEFER_WITH_CAUSE",
+      "reason": "External attestation states handoff not dispatched and consumer acceptance unknown; Local cannot promote it as accepted product truth.",
+      "responsibleAuthority": "LOCAL_INVESTIGATOR + SCC_INTERNAL",
+      "resumeCondition": "Qualified dispatch/consumer acceptance or another exact accepted handoff authorizes Local consumption."
+    }
+  ],
+  "preSealCurrentnessReceipt": {
+    "status": "PASS_NO_RELEASE",
+    "newerSameRoleSuccessor": "NONE_OBSERVED",
+    "newerExecutableLocalWorkOrder": "NONE_OBSERVED",
+    "newerAcceptedLocalProductSource": "NONE_OBSERVED",
+    "currentPublicAndRuntimeLive": true,
+    "qualifiedNowCandidateRemaining": false
+  },
+  "roleProductScopeAndAuthorityNoDriftReceipt": {
+    "status": "PASS_NO_DRIFT",
+    "localOwnsProductMutation": true,
+    "profileFactoryOwnsCanonicalProfiles": true,
+    "localInvestigatorOwnsQualifiedLocalResearch": true,
+    "sreOwnsCommercialAndOutreachIntent": true,
+    "sccOwnsGovernanceCurrentnessAndAcceptance": true,
+    "smarterJusticeOperationalConnectionCreated": false
+  },
+  "noLossAndCommunityIsolationReceipt": {
+    "status": "PASS_NO_CHANGE",
+    "franklinOnly": true,
+    "functionalSourceChanged": false,
+    "runtimeChanged": false,
+    "deploymentChangedByThisRun": false,
+    "existingR1366CapabilitiesPreserved": true
+  },
+  "nextVersionImprovementList": [
+    {
+      "priority": "P1",
+      "improvement": "Measure real member-tool usability and public-profile engagement using privacy-safe observed events after adequate live usage exists.",
+      "responsibleAuthority": "LOCAL_COMMUNITY_PLATFORM",
+      "resumeCondition": "Adequate observed live usage"
+    },
+    {
+      "priority": "P1",
+      "improvement": "Consume the next accepted Profile Factory public-profile delta when it materially changes profile payload, aliases, suppressions, currentness, or Local rendering requirements.",
+      "responsibleAuthority": "PROFILE_FACTORY + SCC_INTERNAL + LOCAL_COMMUNITY_PLATFORM",
+      "resumeCondition": "Exact accepted Local-consumable PF handoff with material delta"
+    },
+    {
+      "priority": "P1",
+      "improvement": "Consume qualified Local Investigator V51-or-successor current Franklin civic/currentness data after dispatch and consumer acceptance are established.",
+      "responsibleAuthority": "LOCAL_INVESTIGATOR + SCC_INTERNAL + LOCAL_COMMUNITY_PLATFORM",
+      "resumeCondition": "Accepted consumer handoff"
+    },
+    {
+      "priority": "P1_OUTREACH_DEPENDENCY",
+      "improvement": "Replace or resolve the 34 invalid prepared outreach profile URLs without weakening profile or outreach safety.",
+      "responsibleAuthority": "PROFILE_FACTORY + SRE_OWNER_CONSOLE",
+      "resumeCondition": "Canonical live replacement URLs and fresh SRE point-of-send qualification"
+    }
+  ],
+  "successor": null,
+  "successorArchive": null,
+  "deploymentPerformed": false,
+  "ownerActionRequired": "NONE"
+}
