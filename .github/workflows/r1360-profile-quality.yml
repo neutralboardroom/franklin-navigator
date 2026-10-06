@@ -34,13 +34,14 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/r1360-profile-quality-build.py | tee R1360_GENERATOR_RESULT.json
-      - name: Focused R1360 qualification
+      - name: Focused R1360 and R1367 qualification
         run: |
           node tests/r1352-claim-review-path.cjs
           node tests/r1358-profile-claim-management-depth.cjs
           node tests/r1346-claim-path-outreach-readiness.cjs
           node tests/r1342-claim-recovery.cjs
           node runtime/franklin-membership/test-r1360-alias-firewall.js
+          node tests/r1367-mobile-home-and-profile-boundaries.cjs
           node --check runtime/franklin-membership/server.js
           python - <<'PY'
           import json,re,glob,sys,pathlib
