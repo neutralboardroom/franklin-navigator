@@ -1,0 +1,20 @@
+{
+  "receiptType": "LOCAL_WO083_DISPOSITION",
+  "workOrder": "WO-20261006-SCC-LOCAL-FRANKLIN-LI51-PUBLIC-CALENDAR-PLACEHOLDER-083",
+  "release": "FR-NAV1.30.67-HF3.13.49",
+  "community": "FRANKLIN_TN",
+  "authorityTransfer": false,
+  "li51InputSha256": "2056720af2ff7e7fc00076aad7c447e1e531ad52feb08debbf81ccc669396795",
+  "disposition": "IMPLEMENTED_IN_LOCAL_PUBLIC_DISPLAY_LAYER",
+  "changes": [
+    "Added a narrow public placeholder firewall that rejects exact TEST/placeholder calendar cards without suppressing legitimate records.",
+    "Added a current public projection from accepted LI51-safe City, school and county-election facts.",
+    "Kept source links and point-of-use recheck language visible.",
+    "Added English and Spanish rendering parity."
+  ],
+  "prohibitedActionsObserved": false,
+  "localInvestigatorEvidenceMutated": false,
+  "profileFactoryCanonMutated": false,
+  "outreachSent": false,
+  "deploymentClaimed": false
+}
