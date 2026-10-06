@@ -133,6 +133,27 @@ body.r27-dialog-open { overflow: hidden; }
   .r27-navigator-body { padding: 18px; }
   .r27-navigator-body .actions,
   .r27-business-actions { grid-template-columns: 1fr; }
+
+  /* R1367 mobile-only homepage image refinement. Desktop/tablet presentation is intentionally untouched. */
+  body.hf36-home .r24-hero-photos {
+    grid-template-columns: 1fr;
+    gap: 0;
+    max-width: 100%;
+    margin-top: 18px;
+  }
+  body.hf36-home .r24-hero-photos figure {
+    display: none;
+  }
+  body.hf36-home .r24-hero-photos figure:first-child {
+    display: block;
+  }
+  body.hf36-home .r24-hero-photos img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: center;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
