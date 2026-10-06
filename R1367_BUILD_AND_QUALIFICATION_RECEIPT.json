@@ -1,0 +1,76 @@
+{
+  "schema": "franklin.local.release_receipt.v1",
+  "product": "FRANKLIN_NAVIGATOR",
+  "role": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "release": "FR-NAV1.30.67-HF3.13.49",
+  "predecessor": "FR-NAV1.30.66-HF3.13.48",
+  "predecessorArtifact": {
+    "filename": "FRANKLIN_NAVIGATOR__FR-NAV1.30.66-HF3.13.48__QUALIFIED_SUCCESSOR.zip",
+    "bytes": 85510080,
+    "sha256": "cb3f0c655e02a1496ed0033295620c8964cfc0e97af067c160c1e06298466855"
+  },
+  "candidateBranch": "r1367-local-product-improvements",
+  "qualificationParentHead": "0bc25593981cc4763206c6f95af1ee67b5093f50",
+  "generatedCurrentnessCommit": "70835f0345ba844d9b60401f9f373987446e10a3",
+  "materialChanges": [
+    "Phone-only homepage hero presentation changed to one stable full-width 16:9 Main Street image at max-width 620px; desktop/laptop base stylesheet remains byte-identical to R1366 and all three desktop source images are preserved.",
+    "Spanish homepage no longer claims Community Membership enrollment is closed; it accurately states optional $35/year membership while preserving free claim/correction/removal rights and keeps available navigation inside Spanish routes.",
+    "Public/package profile alias contract now explicitly records intentional generic suppression separately from 100 canonical aliases and zero review holds, matching the already-live runtime contract.",
+    "Suppressed generic profile boundary is now directly regression-tested against public discovery, claimability, membership/entitlement scope and checkout exposure.",
+    "Profile Center and Membership Status no longer carry stale R1365-era text saying PDFs are unsupported; both now match the R1366 reviewed PDF limits and fail-closed document rules.",
+    "A real Postgres behavioral acceptance test now proves minimized account/membership response shapes, active membership behavior, legacy checkout recovery, billing fail-closed behavior and absence of provider/customer/subscription leakage against the exact live runtime source, using synthetic data and zero live Stripe calls.",
+    "Historical R1360-R1363 Next Version Improvement obligations were reconciled explicitly; missing fresh later-release list governance is repaired by R1367 carry-forward disposition and a new R1367 list."
+  ],
+  "desktopHeroLock": {
+    "ownerInstruction": "Do not change the laptop/desktop homepage image presentation while correcting mobile.",
+    "r1366BaseStylesGitBlobSha1": "65e31e734a7f68ebb10ed5ed4197a700bf76c3cb",
+    "status": "LOCKED_AND_TESTED"
+  },
+  "profileState": {
+    "sourceRelease": "FR-PF-PLATFORM-15.38",
+    "sourceArtifactSha256": "e90cc02dfe026ea64d287eef59c12a067bfa9e55a3879e282fd7a50a30afd89b",
+    "readySourceProfiles": 28818,
+    "canonicalPublicProfiles": 19002,
+    "runtimeScopeProfiles": 19003,
+    "aliasCount": 100,
+    "reviewHoldCount": 0,
+    "suppressedGenericProfileIds": ["FR-ORG-a0776afee5ec-firstbank"],
+    "canonicalTruthMutatedByLocal": false
+  },
+  "runtimeState": {
+    "liveCommit": "f5a99db2f67bd76b7b01f54aeb37091153d04d8b",
+    "liveDeploy": "dep-db1jihpsrm7s73c04jlg",
+    "r1367RuntimeMutation": false,
+    "reason": "R1367 public/product work and behavioral qualification do not require a runtime behavior change; explicit generic suppression already exists in the live runtime contract."
+  },
+  "qualification": {
+    "r1351ProfilePathAndAssistant": "PASS",
+    "r1359ProfileOutreachReadiness": "PASS",
+    "r1360ProfileQualityGeneratorAndQualification": "PASS",
+    "currentSuccessorRegressionAndExactArtifactQualification": "PASS",
+    "r1367ResponseMinimizationBehavioralQualification": "PASS",
+    "r1367Postgres": "PASS_SYNTHETIC_REAL_DATABASE",
+    "liveRuntimeUnitRegression": "125_OF_125_PASS",
+    "unsafePublicDisplayHits": 0,
+    "desktopHeroNoDrift": "PASS",
+    "mobileHeroScope": "PHONE_BREAKPOINT_ONLY",
+    "externalOutreachAuthorizedByLocal": false
+  },
+  "crossBuilderDisposition": {
+    "li51Wo083": "NOT_CONSUMED_PERSISTED_NOT_DISPATCHED_NOT_ACCEPTED",
+    "sre404PreparedProfiles": "HANDOFF_REQUIRED_34_OF_55_PREPARED_URLS_INVALID",
+    "localMaySendOutreach": false
+  },
+  "deploymentStateAtReceiptCreation": "NOT_YET_MERGED_OR_DEPLOYED",
+  "postDeployRequired": [
+    "Verify production homepage and mobile-only hero CSS after exact public deploy.",
+    "Verify Spanish homepage membership/current routes.",
+    "Verify Profile Center and Membership Status PDF capability copy.",
+    "Confirm desktop/laptop homepage presentation remains unchanged.",
+    "Verify public service health and rollback target."
+  ],
+  "ownerActionRequired": "NONE",
+  "nextVersionList": "NEXT_VERSION_IMPROVEMENT_LIST__R1367.md",
+  "carryforwardReceipt": "R1367_CARRYFORWARD_DISPOSITION_RECEIPT.json"
+}

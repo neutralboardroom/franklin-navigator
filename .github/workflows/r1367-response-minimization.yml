@@ -1,0 +1,55 @@
+name: R1367 response-minimization behavioral qualification
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: franklin_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d franklin_test"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      TEST_DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/franklin_test
+    steps:
+      - name: Checkout R1367 public candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Checkout exact current live runtime source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: f5a99db2f67bd76b7b01f54aeb37091153d04d8b
+          path: runtime-src
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install actual runtime locked dependencies
+        working-directory: runtime-src
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Runtime syntax and unit regression
+        working-directory: runtime-src
+        run: |
+          npm run check
+          npm test
+      - name: Bind R1367 acceptance to actual runtime source
+        run: |
+          mkdir -p runtime-src/acceptance
+          cp runtime/franklin-membership/acceptance/r1367-response-minimization.integration.cjs runtime-src/acceptance/
+      - name: R1367 real Postgres minimized-response acceptance
+        working-directory: runtime-src
+        env:
+          PUBLIC_DIST_DIR: ${{ github.workspace }}/dist
+        run: node acceptance/r1367-response-minimization.integration.cjs
