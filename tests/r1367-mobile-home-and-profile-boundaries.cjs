@@ -36,6 +36,9 @@ for(const page of ['dist/index.html','dist/es/index.html']){
 const esHome=read('dist/es/index.html');
 ok('Spanish homepage no longer says membership enrollment is closed',!esHome.includes('mientras la inscripción permanece cerrada'));
 ok('Spanish homepage accurately states optional $35/year Community Membership and preserves free rights',esHome.includes('Membresía Comunitaria opcional de $35/año')&&esHome.includes('corregir hechos')&&esHome.includes('solicitar el retiro'));
+ok('Spanish Explore Community stays in the Spanish experience',esHome.includes('href="/es/comunidad/">Explorar Comunidad'));
+ok('Spanish footer membership stays in the Spanish experience',esHome.includes('href="/es/iniciar-membresia/">Membresía'));
+ok('Spanish footer privacy stays in the Spanish experience',esHome.includes('href="/es/privacidad/">Privacidad'));
 
 // R1360 carried-forward identity boundary: an intentionally suppressed generic
 // profile must not re-enter public discovery, claim, membership or checkout scope.
