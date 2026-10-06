@@ -6,6 +6,7 @@ const read=p=>fs.readFileSync(p,'utf8');
 const sha256=s=>crypto.createHash('sha256').update(s).digest('hex');
 const checks=[];
 const ok=(name,value)=>{assert.ok(value,name);checks.push(name)};
+const RELEASE='FR-NAV1.30.67-HF3.13.49';
 
 // Owner lock: R1367 may change the phone presentation, but the established
 // desktop/laptop homepage stylesheet must remain byte-for-byte unchanged.
@@ -30,11 +31,22 @@ for(const page of ['dist/index.html','dist/es/index.html']){
   const html=read(page);
   ok(`${page} keeps the same three desktop hero source images`,html.includes('/assets/franklin-photos/main-street.webp')&&html.includes('/assets/franklin-photos/pinkerton.webp')&&html.includes('/assets/franklin-photos/business.webp'));
   ok(`${page} still loads the shared R27 homepage stylesheet`,html.includes('/assets/r27-home.css'));
+  ok(`${page} carries the R1367 release marker`,html.includes(`content="${RELEASE}" name="franklin-release"`));
 }
+const esHome=read('dist/es/index.html');
+ok('Spanish homepage no longer says membership enrollment is closed',!esHome.includes('mientras la inscripción permanece cerrada'));
+ok('Spanish homepage accurately states optional $35/year Community Membership and preserves free rights',esHome.includes('Membresía Comunitaria opcional de $35/año')&&esHome.includes('corregir hechos')&&esHome.includes('solicitar el retiro'));
 
 // R1360 carried-forward identity boundary: an intentionally suppressed generic
 // profile must not re-enter public discovery, claim, membership or checkout scope.
 const suppressed='FR-ORG-a0776afee5ec-firstbank';
+const aliasPublic=JSON.parse(read('dist/data/profile-aliases-r1360.json'));
+const aliasRuntime=JSON.parse(read('runtime/franklin-membership/data/profile-aliases-r1360.json'));
+ok('public alias contract explicitly distinguishes intentional generic suppression',JSON.stringify(aliasPublic.suppressedGenericProfileIds)==JSON.stringify([suppressed]));
+ok('runtime alias contract explicitly distinguishes intentional generic suppression',JSON.stringify(aliasRuntime.suppressedGenericProfileIds)==JSON.stringify([suppressed]));
+ok('review-hold state remains distinct and empty in the accepted PF15.38 contract',Array.isArray(aliasRuntime.reviewHeldProfileIds)&&aliasRuntime.reviewHeldProfileIds.length===0);
+ok('canonical alias state remains distinct with 100 retired-to-canonical mappings',Object.keys(aliasRuntime.aliases||{}).length===100);
+
 const scope=JSON.parse(read('runtime/franklin-membership/data/member-profile-scope.json'));
 ok('suppressed generic is absent from membership/entitlement runtime scope',!Object.hasOwn(scope.profiles||{},suppressed));
 
@@ -55,5 +67,7 @@ ok('suppressed generic route offers location discovery instead of claim or membe
 const generator=read('scripts/r1360-profile-quality-build.py');
 ok('identity generator retains separate alias, review-hold and generic-suppression states',generator.includes('aliases=dict(')&&generator.includes('holds=set()')&&generator.includes("suppressed_generic={'FR-ORG-a0776afee5ec-firstbank'}"));
 ok('runtime scope generator removes aliases and suppressed generic identities',generator.includes('if pid in aliases or pid in suppressed_generic: profiles.pop(pid,None)'));
+const scopeLoader=read('runtime/franklin-membership/lib/profile-scope.js');
+ok('runtime profile loader fails closed on explicit suppressed-generic contract entries',scopeLoader.includes('for(const suppressed of aliasContract.suppressedGenericProfileIds||[])delete profiles[suppressed]'));
 
-console.log(JSON.stringify({result:'PASS',releaseCandidate:'R1367',checks:checks.length,items:checks},null,2));
+console.log(JSON.stringify({result:'PASS',releaseCandidate:RELEASE,checks:checks.length,items:checks},null,2));
