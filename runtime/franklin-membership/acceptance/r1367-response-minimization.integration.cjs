@@ -1,8 +1,9 @@
 'use strict';
 // Dedicated synthetic loopback/Postgres acceptance. No live Stripe calls and no real customer data.
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),crypto=require('node:crypto'),http=require('node:http'),assert=require('node:assert/strict'),{spawn}=require('node:child_process'),{Pool}=require('pg');
-const ROOT=path.resolve(__dirname,'..'),db=process.env.TEST_DATABASE_URL,u=new URL(db||'https://invalid');
+const ROOT=path.resolve(__dirname,'..'),PUBLIC_DIST=path.resolve(process.env.PUBLIC_DIST_DIR||path.join(ROOT,'..','..','dist')),db=process.env.TEST_DATABASE_URL,u=new URL(db||'https://invalid');
 assert(['127.0.0.1','localhost'].includes(u.hostname)&&u.pathname.includes('test'),'Dedicated loopback test DB required');
+assert(fs.existsSync(path.join(PUBLIC_DIST,'member-account','index.html')),'Current public UI fixtures required');
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'franklin-r1367-'));fs.cpSync(ROOT,tmp,{recursive:true,filter:s=>!s.includes('/node_modules')&&!s.includes('/evidence')});fs.symlinkSync(path.join(ROOT,'node_modules'),path.join(tmp,'node_modules'),'dir');
 const profile='FR-ORG-SYNTHETIC-R1367';fs.writeFileSync(path.join(tmp,'data/member-profile-scope.json'),JSON.stringify({community:'FRANKLIN_TN',sourcePublicCommit:'SYNTHETIC_R1367_ISOLATED_ONLY',profileCount:1,profiles:{[profile]:{name:'Synthetic R1367 business'}}}));
 const port=Number(process.env.TEST_PORT||18197),base='http://127.0.0.1:'+port,password='Synthetic_response_shape_12345!';
@@ -23,6 +24,6 @@ const allowedMembership=['access_state','cancel_at_period_end','current_period_e
  r=await call('GET','/api/accounts/me');assert.equal(r.status,200);assert.deepEqual(Object.keys(r.body.membership).sort(),allowedMembership);assert.equal(r.body.membership.status,'ACTIVE');assert.equal(r.body.membership.access_state,'ACTIVE');assert.doesNotMatch(r.raw,/member_SYNTH_R1367|cus_SYNTH_ACTIVE|sub_SYNTH_ACTIVE|failure_count|last_event_created|created_at|updated_at/);
  r=await call('GET','/api/membership/status');assert.equal(r.status,200);assert.deepEqual(Object.keys(r.body.membership).sort(),allowedMembership);assert.doesNotMatch(r.raw,/cus_SYNTH_ACTIVE|sub_SYNTH_ACTIVE|membership_id|account_id/);
  r=await call('POST','/api/billing/portal',{});assert.equal(r.status,503);assert.equal(r.body.error.code,'STRIPE_API_NOT_CONFIGURED');assert.doesNotMatch(r.raw,/cus_SYNTH_ACTIVE|sub_SYNTH_ACTIVE/);
- const memberAccount=fs.readFileSync(path.join(ROOT,'..','..','dist','member-account','index.html'),'utf8'),membershipStatus=fs.readFileSync(path.join(ROOT,'..','..','dist','membership-status','index.html'),'utf8');assert.match(memberAccount,/Member tools|Community Member tools/i);assert.match(membershipStatus,/billing|membership/i);
- console.log(JSON.stringify({result:'PASS_R1367_RESPONSE_MINIMIZATION_BEHAVIORAL',actualPostgres:true,syntheticOnly:true,liveStripeCalls:0,accountShape:allowedAccount,membershipShape:allowedMembership,providerSecretsExposed:false}));
+ const memberAccount=fs.readFileSync(path.join(PUBLIC_DIST,'member-account','index.html'),'utf8'),membershipStatus=fs.readFileSync(path.join(PUBLIC_DIST,'membership-status','index.html'),'utf8');assert.match(memberAccount,/Member tools|Community Member tools/i);assert.match(membershipStatus,/billing|membership/i);
+ console.log(JSON.stringify({result:'PASS_R1367_RESPONSE_MINIMIZATION_BEHAVIORAL',actualPostgres:true,syntheticOnly:true,liveStripeCalls:0,accountShape:allowedAccount,membershipShape:allowedMembership,providerSecretsExposed:false,runtimeBranch:'franklin-commerce-runtime-r30'}));
  }finally{await stop();await pool?.end();}})().catch(e=>{console.error(e);process.exit(1)});
