@@ -64,7 +64,7 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path,PurePosixPath
-          import hashlib,json,zipfile,subprocess,re
+          import hashlib,json,zipfile,subprocess
           root=Path('.')
           pointer=json.loads(Path('CURRENT_LOCAL_RELEASE.json').read_text())
           receipt=json.loads(Path(pointer['sourceReceipt']).read_text())
@@ -140,7 +140,7 @@ jobs:
           Path(attestation_name).write_text(json.dumps(att,indent=2)+'\n')
           print(json.dumps(att,indent=2))
           PY
-      - name: Fresh extraction and focused R1367 validation
+      - name: Fresh extraction and independent public/runtime validation
         run: |
           set -euo pipefail
           rm -rf _r1367_fresh && mkdir _r1367_fresh
@@ -165,11 +165,21 @@ jobs:
           PY
           (
             cd _r1367_fresh
-            node tests/r1367-mobile-home-and-profile-boundaries.cjs
             node --check dist/assets/r1366-member-tools-extension.js
             node --check dist/assets/r1366-member-tools-i18n.js
             grep -F 'R1367 mobile-only homepage image refinement' dist/assets/r27-home.css
+            grep -F 'aspect-ratio: 16 / 9' dist/assets/r27-home.css
+            grep -F 'content="FR-NAV1.30.67-HF3.13.49" name="franklin-release"' dist/index.html
+            grep -F 'content="FR-NAV1.30.67-HF3.13.49" name="franklin-release"' dist/es/index.html
+            grep -F 'FR-ORG-a0776afee5ec-firstbank' dist/data/franklin-profiles-manifest.json
+            grep -F 'FR-ORG-a0776afee5ec-firstbank' dist/data/profile-aliases-r1360.json
             grep -F 'FR-NAV1.30.67-HF3.13.49' CURRENT_LOCAL_RELEASE.json
+          )
+          (
+            cd _r1367_fresh/runtime/franklin-membership
+            npm ci --ignore-scripts --no-audit --no-fund
+            npm test
+            npm run check
           )
           rm -rf _r1367_fresh
       - name: Upload exact R1367 successor
