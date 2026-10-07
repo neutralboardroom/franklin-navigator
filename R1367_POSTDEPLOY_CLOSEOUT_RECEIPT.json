@@ -1,0 +1,48 @@
+{
+  "schema": "franklin.local.postdeploy_closeout.v1",
+  "product": "FRANKLIN_NAVIGATOR",
+  "role": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "release": "FR-NAV1.30.67-HF3.13.49",
+  "predecessor": "FR-NAV1.30.66-HF3.13.48",
+  "public": {
+    "sourceCommit": "193d3c94264929af54eb29cd8e132db4e199cdaa",
+    "renderServiceId": "srv-da8tg6rbc2fs73crru2g",
+    "renderDeployId": "dep-db32q4ks728c73b57afg",
+    "renderStatus": "LIVE"
+  },
+  "runtime": {
+    "sourceCommit": "f5a99db2f67bd76b7b01f54aeb37091153d04d8b",
+    "renderServiceId": "srv-dabgvefqj5pc739vr4h0",
+    "renderDeployId": "dep-db1jihpsrm7s73c04jlg",
+    "renderStatus": "LIVE",
+    "r1367BehaviorMutation": false
+  },
+  "artifact": {
+    "filename": "FRANKLIN_NAVIGATOR__FR-NAV1.30.67-HF3.13.49__QUALIFIED_SUCCESSOR.zip",
+    "workflowRunId": 37564797655,
+    "artifactId": 11458627069,
+    "archiveBytes": 81804655,
+    "archiveSha256": "a96f9ddae23abf02283d6dd09efbcddfba43aaba5af39dfdc688856a8dff48cc"
+  },
+  "ownerMobileInstruction": {
+    "desktopLaptopHomepageHero": "LOCKED_UNCHANGED",
+    "mobileHomepageHero": "REFINED_ONLY_AT_MAX_WIDTH_620PX",
+    "mobileBehavior": "ONE_FULL_WIDTH_16_9_MAIN_STREET_IMAGE",
+    "desktopRegressionProtection": "QUALIFIED"
+  },
+  "qualification": {
+    "exactReleaseSeal": "PASS",
+    "githubWorkflowRun": 37564797655,
+    "publicDeploy": "PASS_LIVE",
+    "runtimeContinuity": "PASS_LIVE_UNCHANGED",
+    "historicalNextVersionCarryforward": "RECONCILED",
+    "spanishAndMemberCurrentness": "QUALIFIED",
+    "suppressedGenericBoundary": "QUALIFIED",
+    "postgresResponseMinimization": "QUALIFIED"
+  },
+  "externalOutreachAuthorizedByLocal": false,
+  "ownerActionRequired": "NONE",
+  "nextVersionList": "NEXT_VERSION_IMPROVEMENT_LIST__R1367.md",
+  "state": "CLOSED_PUBLIC_LIVE"
+}
