@@ -1,0 +1,14 @@
+{
+  "schema": "franklin.current-local-release.v1",
+  "product": "FRANKLIN_NAVIGATOR",
+  "role": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "release": "FR-NAV1.30.67-HF3.13.49",
+  "predecessor": "FR-NAV1.30.66-HF3.13.48",
+  "runtimeSourceCommit": "f5a99db2f67bd76b7b01f54aeb37091153d04d8b",
+  "runtimeBehaviorChange": false,
+  "sourceReceipt": "R1367_BUILD_AND_QUALIFICATION_RECEIPT.json",
+  "desktopHeroPresentation": "LOCKED_NO_CHANGE",
+  "mobileHeroPresentation": "PHONE_ONLY_REFINEMENT_MAX_WIDTH_620PX",
+  "state": "QUALIFIED_SOURCE_PENDING_EXACT_ARTIFACT_RESEAL_AND_DEPLOYMENT"
+}
