@@ -1,0 +1,32 @@
+{
+  "schema": "franklin.local.owner_command_qualification.v1",
+  "release": "FR-NAV1.30.68-HF3.13.50",
+  "predecessor": "FR-NAV1.30.67-HF3.13.49",
+  "state": "CANDIDATE_QUALIFICATION",
+  "ownerCommand": "PAID_COMMUNITY_MEMBERSHIP_VISIBILITY_AND_PROMOTIONS",
+  "runtimeBehaviorChange": false,
+  "materialImprovements": [
+    "Complete resident-facing preview before promotion submission",
+    "Authenticated preview/remove/replace controls for promotion media using existing server-side entitlement paths",
+    "Post-payment first-value page aligned to profile/media/promotion/event workflow",
+    "Spanish dynamic member-tools strings extended for new controls"
+  ],
+  "preserved": [
+    "free claim",
+    "free factual correction",
+    "free public-profile removal",
+    "legitimate free basic management",
+    "optional Community Membership at $35/year",
+    "no guaranteed business outcomes",
+    "server-side membership/authority checks",
+    "existing reviewed image/PDF policy",
+    "desktop homepage presentation lock"
+  ],
+  "outreach": {
+    "productCopyCandidate": true,
+    "localMaySend": false,
+    "srePointOfSendRequired": true,
+    "knownExternalBlocker": "34_OF_55_PREPARED_PROFILE_URLS_INVALID_PER_2026_10_08_SRE_RECONCILIATION"
+  },
+  "finalReadiness": "PENDING_CI_EXACT_ARTIFACT_DEPLOY_AND_LIVE_SMOKE"
+}
