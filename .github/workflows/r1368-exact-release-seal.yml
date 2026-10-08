@@ -55,7 +55,10 @@ jobs:
           assert r['profileState']['canonicalLocalSourceRelease']=='FR-PF-PLATFORM-15.38'
           assert r['profileState']['aliases']==100 and r['profileState']['reviewHolds']==0
           assert p['desktopHeroPresentation']=='LOCKED_NO_CHANGE'
-          print({'release':p['release'],'runtimeSourceCommit':p['runtimeSourceCommit'],'runtimeBehaviorChange':False})
+          overlays=p.get('generatedRuntimeDataOverlay',[])
+          assert overlays==['runtime/franklin-membership/data/member-profile-scope.json']
+          assert all(Path(x).is_file() for x in overlays)
+          print({'release':p['release'],'runtimeSourceCommit':p['runtimeSourceCommit'],'runtimeBehaviorChange':False,'generatedRuntimeDataOverlay':overlays})
           PY
           node test-r1368-member-preview-media.js
           node test-r1365-member-tools-visible.js
@@ -86,6 +89,8 @@ jobs:
               assert rel and not p.is_absolute() and '..' not in p.parts and '\\' not in rel
               assert not rel.startswith('.git/')
               return rel
+          generated_overlays=[safe(x) for x in pointer.get('generatedRuntimeDataOverlay',[])]
+          assert generated_overlays==['runtime/franklin-membership/data/member-profile-scope.json']
           for p in sorted(root.rglob('*')):
               rel0=p.relative_to(root).as_posix()
               if rel0 in exclude or rel0.startswith('.git/') or rel0.startswith('runtime/franklin-membership/'): continue
@@ -102,8 +107,16 @@ jobs:
               rel=safe('runtime/franklin-membership/'+rp)
               if rp=='.env' or rp.endswith('/.env'): raise AssertionError(f'runtime env prohibited: {rp}')
               payload[rel]=subprocess.check_output(['git','show',f'{runtime_commit}:{rp}']); runtime_members+=1
+          # Local owns the deterministic generated profile-scope overlay. Layer it after
+          # the exact live runtime source so the approved suppression/alias boundary is
+          # preserved without pretending R1368 changes runtime behavior.
+          for rel in generated_overlays:
+              assert rel.startswith('runtime/franklin-membership/data/')
+              p=root/rel
+              if p.is_symlink() or not p.is_file(): raise AssertionError(f'generated runtime data overlay missing/unsafe: {rel}')
+              payload[rel]=p.read_bytes()
           members=[{'path':rel,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()} for rel,data in sorted(payload.items())]
-          manifest={'schema':'franklin.r1368.exact-source-manifest.v1','release':release,'predecessor':pointer['predecessor'],'publicSourceCommit':commit,'publicSourceTree':tree,'runtimeSourceCommit':runtime_commit,'runtimeBehaviorChange':False,'sourceReceipt':pointer['sourceReceipt'],'runtimeNamespace':'runtime/franklin-membership/','runtimeMemberCount':runtime_members,'memberCount':len(members),'members':members,'selfExcluded':True}
+          manifest={'schema':'franklin.r1368.exact-source-manifest.v1','release':release,'predecessor':pointer['predecessor'],'publicSourceCommit':commit,'publicSourceTree':tree,'runtimeSourceCommit':runtime_commit,'runtimeBehaviorChange':False,'sourceReceipt':pointer['sourceReceipt'],'runtimeNamespace':'runtime/franklin-membership/','runtimeMemberCount':runtime_members,'generatedRuntimeDataOverlay':generated_overlays,'generatedRuntimeDataOverlayCount':len(generated_overlays),'memberCount':len(members),'members':members,'selfExcluded':True}
           manifest_bytes=(json.dumps(manifest,sort_keys=True,separators=(',',':'))+'\n').encode(); payload[manifest_name]=manifest_bytes
           def build(out):
               with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
@@ -114,7 +127,7 @@ jobs:
           sha=hashlib.sha256(a).hexdigest()
           with zipfile.ZipFile(artifact) as z:
               assert z.testzip() is None; names=z.namelist(); assert len(names)==len(set(names)); assert set(names)==set(payload)
-          att={'release':release,'predecessor':pointer['predecessor'],'publicSourceCommit':commit,'publicSourceTree':tree,'runtimeSourceCommit':runtime_commit,'runtimeBehaviorChange':False,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':sha,'secondBuildSha256':sha,'doubleBuildByteIdentical':True,'manifest':manifest_name,'manifestSha256':hashlib.sha256(manifest_bytes).hexdigest(),'zipMembers':len(payload),'runtimeMembers':runtime_members,'safePaths':'PASS','zipIntegrity':'PASS','result':'PASS_EXACT_R1368_SUCCESSOR_SEALED'}
+          att={'release':release,'predecessor':pointer['predecessor'],'publicSourceCommit':commit,'publicSourceTree':tree,'runtimeSourceCommit':runtime_commit,'runtimeBehaviorChange':False,'generatedRuntimeDataOverlay':generated_overlays,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':sha,'secondBuildSha256':sha,'doubleBuildByteIdentical':True,'manifest':manifest_name,'manifestSha256':hashlib.sha256(manifest_bytes).hexdigest(),'zipMembers':len(payload),'runtimeMembers':runtime_members,'safePaths':'PASS','zipIntegrity':'PASS','result':'PASS_EXACT_R1368_SUCCESSOR_SEALED'}
           Path(attestation_name).write_text(json.dumps(att,indent=2)+'\n'); print(json.dumps(att,indent=2))
           PY
       - name: Fresh extraction and independent public/runtime validation
@@ -124,7 +137,8 @@ jobs:
           python - <<'PY'
           from pathlib import Path,PurePosixPath
           import hashlib,json,zipfile
-          release=json.loads(Path('CURRENT_LOCAL_RELEASE.json').read_text())['release']; zpath=Path(f'FRANKLIN_NAVIGATOR__{release}__QUALIFIED_SUCCESSOR.zip'); out=Path('_r1368_fresh')
+          pointer=json.loads(Path('CURRENT_LOCAL_RELEASE.json').read_text())
+          release=pointer['release']; zpath=Path(f'FRANKLIN_NAVIGATOR__{release}__QUALIFIED_SUCCESSOR.zip'); out=Path('_r1368_fresh')
           with zipfile.ZipFile(zpath) as z:
               assert z.testzip() is None
               for i in z.infolist():
@@ -134,7 +148,8 @@ jobs:
           assert set(actual)==set(expected)|{'R1368_EXACT_SOURCE_MANIFEST.json'}
           for rel,x in expected.items():
               b=actual[rel].read_bytes(); assert len(b)==x['bytes']; assert hashlib.sha256(b).hexdigest()==x['sha256']
-          print({'verifiedMembers':len(expected),'runtimeMembers':m['runtimeMemberCount'],'result':'PASS'})
+          assert m['generatedRuntimeDataOverlay']==pointer['generatedRuntimeDataOverlay']
+          print({'verifiedMembers':len(expected),'runtimeMembers':m['runtimeMemberCount'],'generatedRuntimeDataOverlay':m['generatedRuntimeDataOverlay'],'result':'PASS'})
           PY
           (
             cd _r1368_fresh
