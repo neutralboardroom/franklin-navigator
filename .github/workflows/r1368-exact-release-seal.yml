@@ -1,0 +1,166 @@
+name: R1368 exact Local successor seal
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, r1368-spanish-route-integrity]
+    paths:
+      - 'CURRENT_LOCAL_RELEASE.json'
+      - 'R1368_BUILD_AND_QUALIFICATION_RECEIPT.json'
+      - 'R1368_OWNER_COMMAND_CANDIDATE_RECEIPT.json'
+      - 'NEXT_VERSION_IMPROVEMENT_LIST__R1368.md'
+      - 'dist/**'
+      - 'test-r1368-member-preview-media.js'
+      - '.github/workflows/r1368-*.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: r1368-exact-release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  seal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Validate R1368 release pointer and no-drift boundary
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,re
+          from pathlib import Path
+          p=json.loads(Path('CURRENT_LOCAL_RELEASE.json').read_text())
+          r=json.loads(Path(p['sourceReceipt']).read_text())
+          assert p['product']=='FRANKLIN_NAVIGATOR'
+          assert p['role']=='LOCAL_COMMUNITY_PLATFORM'
+          assert p['activeEdition']=='FRANKLIN_TN'
+          assert p['release']=='FR-NAV1.30.68-HF3.13.50'
+          assert p['predecessor']=='FR-NAV1.30.67-HF3.13.49'
+          assert re.fullmatch(r'[0-9a-f]{40}',p['runtimeSourceCommit'])
+          assert p['runtimeBehaviorChange'] is False
+          assert r['release']==p['release'] and r['predecessor']==p['predecessor']
+          assert r['runtimeState']['liveCommit']==p['runtimeSourceCommit']
+          assert r['runtimeState']['r1368RuntimeMutation'] is False
+          assert r['profileState']['canonicalLocalSourceRelease']=='FR-PF-PLATFORM-15.38'
+          assert r['profileState']['aliases']==100 and r['profileState']['reviewHolds']==0
+          assert p['desktopHeroPresentation']=='LOCKED_NO_CHANGE'
+          print({'release':p['release'],'runtimeSourceCommit':p['runtimeSourceCommit'],'runtimeBehaviorChange':False})
+          PY
+          node test-r1368-member-preview-media.js
+          node test-r1365-member-tools-visible.js
+          node test-r1364-membership-visibility.js
+          node --check dist/assets/r1368-member-preview-extension.js
+          node tests/r1367-mobile-home-and-profile-boundaries.cjs
+      - name: Build deterministic exact R1368 source artifact
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path,PurePosixPath
+          import hashlib,json,zipfile,subprocess
+          root=Path('.')
+          pointer=json.loads(Path('CURRENT_LOCAL_RELEASE.json').read_text())
+          receipt=json.loads(Path(pointer['sourceReceipt']).read_text())
+          release=pointer['release']; runtime_commit=pointer['runtimeSourceCommit']
+          commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          assert receipt['release']==release and receipt['runtimeState']['liveCommit']==runtime_commit
+          subprocess.check_call(['git','fetch','--no-tags','--depth=1','origin',runtime_commit])
+          artifact=f'FRANKLIN_NAVIGATOR__{release}__QUALIFIED_SUCCESSOR.zip'
+          second=f'.second-build__{artifact}'
+          manifest_name='R1368_EXACT_SOURCE_MANIFEST.json'; attestation_name='R1368_EXACT_SOURCE_ATTESTATION.json'
+          exclude={artifact,second,manifest_name,attestation_name}
+          payload={}
+          def safe(rel):
+              p=PurePosixPath(rel)
+              assert rel and not p.is_absolute() and '..' not in p.parts and '\\' not in rel
+              assert not rel.startswith('.git/')
+              return rel
+          for p in sorted(root.rglob('*')):
+              rel0=p.relative_to(root).as_posix()
+              if rel0 in exclude or rel0.startswith('.git/') or rel0.startswith('runtime/franklin-membership/'): continue
+              if rel0.startswith('_r1368_fresh/'): continue
+              if p.is_symlink(): raise AssertionError(f'symlink prohibited: {p}')
+              if not p.is_file(): continue
+              rel=safe(rel0)
+              if rel=='.env' or rel.endswith('/.env'): raise AssertionError(f'env file prohibited: {rel}')
+              payload[rel]=p.read_bytes()
+          runtime_members=0
+          for line in subprocess.check_output(['git','ls-tree','-r',runtime_commit],text=True).splitlines():
+              left,rp=line.split('\t',1); mode=left.split()[0]
+              if mode not in {'100644','100755'}: raise AssertionError(f'unsafe runtime member mode {mode}: {rp}')
+              rel=safe('runtime/franklin-membership/'+rp)
+              if rp=='.env' or rp.endswith('/.env'): raise AssertionError(f'runtime env prohibited: {rp}')
+              payload[rel]=subprocess.check_output(['git','show',f'{runtime_commit}:{rp}']); runtime_members+=1
+          members=[{'path':rel,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()} for rel,data in sorted(payload.items())]
+          manifest={'schema':'franklin.r1368.exact-source-manifest.v1','release':release,'predecessor':pointer['predecessor'],'publicSourceCommit':commit,'publicSourceTree':tree,'runtimeSourceCommit':runtime_commit,'runtimeBehaviorChange':False,'sourceReceipt':pointer['sourceReceipt'],'runtimeNamespace':'runtime/franklin-membership/','runtimeMemberCount':runtime_members,'memberCount':len(members),'members':members,'selfExcluded':True}
+          manifest_bytes=(json.dumps(manifest,sort_keys=True,separators=(',',':'))+'\n').encode(); payload[manifest_name]=manifest_bytes
+          def build(out):
+              with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+                  for rel,data in sorted(payload.items()):
+                      info=zipfile.ZipInfo(rel,(2026,1,1,0,0,0)); info.compress_type=zipfile.ZIP_DEFLATED; info.external_attr=0o100644<<16; z.writestr(info,data)
+          build(artifact); build(second)
+          a=Path(artifact).read_bytes(); b=Path(second).read_bytes(); assert a==b; Path(second).unlink()
+          sha=hashlib.sha256(a).hexdigest()
+          with zipfile.ZipFile(artifact) as z:
+              assert z.testzip() is None; names=z.namelist(); assert len(names)==len(set(names)); assert set(names)==set(payload)
+          att={'release':release,'predecessor':pointer['predecessor'],'publicSourceCommit':commit,'publicSourceTree':tree,'runtimeSourceCommit':runtime_commit,'runtimeBehaviorChange':False,'artifact':artifact,'artifactBytes':Path(artifact).stat().st_size,'artifactSha256':sha,'secondBuildSha256':sha,'doubleBuildByteIdentical':True,'manifest':manifest_name,'manifestSha256':hashlib.sha256(manifest_bytes).hexdigest(),'zipMembers':len(payload),'runtimeMembers':runtime_members,'safePaths':'PASS','zipIntegrity':'PASS','result':'PASS_EXACT_R1368_SUCCESSOR_SEALED'}
+          Path(attestation_name).write_text(json.dumps(att,indent=2)+'\n'); print(json.dumps(att,indent=2))
+          PY
+      - name: Fresh extraction and independent public/runtime validation
+        run: |
+          set -euo pipefail
+          rm -rf _r1368_fresh && mkdir _r1368_fresh
+          python - <<'PY'
+          from pathlib import Path,PurePosixPath
+          import hashlib,json,zipfile
+          release=json.loads(Path('CURRENT_LOCAL_RELEASE.json').read_text())['release']; zpath=Path(f'FRANKLIN_NAVIGATOR__{release}__QUALIFIED_SUCCESSOR.zip'); out=Path('_r1368_fresh')
+          with zipfile.ZipFile(zpath) as z:
+              assert z.testzip() is None
+              for i in z.infolist():
+                  p=PurePosixPath(i.filename); assert not p.is_absolute() and '..' not in p.parts
+              z.extractall(out)
+          m=json.loads((out/'R1368_EXACT_SOURCE_MANIFEST.json').read_text()); expected={x['path']:x for x in m['members']}; actual={p.relative_to(out).as_posix():p for p in out.rglob('*') if p.is_file()}
+          assert set(actual)==set(expected)|{'R1368_EXACT_SOURCE_MANIFEST.json'}
+          for rel,x in expected.items():
+              b=actual[rel].read_bytes(); assert len(b)==x['bytes']; assert hashlib.sha256(b).hexdigest()==x['sha256']
+          print({'verifiedMembers':len(expected),'runtimeMembers':m['runtimeMemberCount'],'result':'PASS'})
+          PY
+          (
+            cd _r1368_fresh
+            node test-r1368-member-preview-media.js
+            node test-r1365-member-tools-visible.js
+            node test-r1364-membership-visibility.js
+            node --check dist/assets/r1368-member-preview-extension.js
+            node tests/r1367-mobile-home-and-profile-boundaries.cjs
+            grep -F 'FR-NAV1.30.68-HF3.13.50' CURRENT_LOCAL_RELEASE.json
+            grep -F 'FR-NAV1.30.68-HF3.13.50' dist/member-tools/index.html
+            grep -F 'Complete your member profile.' dist/member-first-value/index.html
+          )
+          (
+            cd _r1368_fresh/runtime/franklin-membership
+            npm ci --ignore-scripts --no-audit --no-fund
+            npm test
+            npm run check
+          )
+          rm -rf _r1368_fresh
+      - name: Upload exact R1368 successor
+        uses: actions/upload-artifact@v4
+        with:
+          name: franklin-r1368-qualified-successor
+          path: |
+            FRANKLIN_NAVIGATOR__FR-NAV1.30.68-HF3.13.50__QUALIFIED_SUCCESSOR.zip
+            R1368_EXACT_SOURCE_MANIFEST.json
+            R1368_EXACT_SOURCE_ATTESTATION.json
+          if-no-files-found: error
+          retention-days: 30
