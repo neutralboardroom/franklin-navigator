@@ -1,0 +1,59 @@
+{
+  "schema": "franklin.local.release_receipt.v1",
+  "product": "FRANKLIN_NAVIGATOR",
+  "role": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "release": "FR-NAV1.30.68-HF3.13.50",
+  "predecessor": "FR-NAV1.30.67-HF3.13.49",
+  "candidateBranch": "r1368-spanish-route-integrity",
+  "runtimeState": {
+    "liveCommit": "f5a99db2f67bd76b7b01f54aeb37091153d04d8b",
+    "liveDeploy": "dep-db1jihpsrm7s73c04jlg",
+    "r1368RuntimeMutation": false,
+    "reason": "R1368 completes public/member workflow controls over already-qualified R1366 runtime promotion/media APIs; no runtime behavior change is required."
+  },
+  "desktopHeroLock": {
+    "status": "LOCKED_AND_TESTED_PREDECESSOR_PRESERVED_NO_CHANGE"
+  },
+  "profileState": {
+    "canonicalLocalSourceRelease": "FR-PF-PLATFORM-15.38",
+    "canonicalLocalSourceArtifactSha256": "e90cc02dfe026ea64d287eef59c12a067bfa9e55a3879e282fd7a50a30afd89b",
+    "pf1539Disposition": "SCC_ACCEPTED_FOR_SRE_CONTACT_OUTREACH_LAYER_NOT_PROVEN_AS_REPLACEMENT_LOCAL_CANONICAL_PROFILE_HANDOFF",
+    "pf1540Disposition": "QUALIFIED_CANDIDATE_NOT_SCC_D1_ACCEPTED_AT_2026_10_08_CURRENTNESS_CHECK",
+    "canonicalPublicProfiles": 19002,
+    "runtimeScopeProfiles": 19003,
+    "aliases": 100,
+    "reviewHolds": 0
+  },
+  "materialChanges": [
+    "Resident-facing preview for coupon, special, sale, promotion and event drafts before publication.",
+    "Authenticated preview controls for attached promotional image/PDF media.",
+    "Business-facing remove and replace controls for promotion media using existing server-side ownership and active-membership checks.",
+    "Post-payment first-value page now leads with completing the member profile and the highest-value logo/profile/media/promotion/event actions.",
+    "Dynamic English/Spanish labels for the new preview and media-management controls.",
+    "Free claim, correction, removal and legitimate basic management remain explicitly separate from optional $35/year Community Membership."
+  ],
+  "qualification": {
+    "localR1368StaticTest": "PASS_LOCAL_PRE_PR",
+    "r1365R1366VisibleMemberToolsRegression": "PASS_LOCAL_PRE_PR",
+    "r1364MembershipVisibilityRegression": "PASS_LOCAL_PRE_PR",
+    "javascriptSyntax": "PASS_LOCAL_PRE_PR",
+    "mobileHeroScope": "PRESERVED_R1367_PHONE_BREAKPOINT_ONLY",
+    "fullCi": "PENDING",
+    "exactArtifactDoubleBuild": "PENDING",
+    "freshExtraction": "PENDING",
+    "livePublicSmoke": "PENDING"
+  },
+  "outreach": {
+    "localProductCopyCandidate": true,
+    "localMaySend": false,
+    "externalSendAuthorization": false,
+    "knownBlockers": [
+      "34 of 55 prepared SRE profile URLs remain invalid per 2026-10-08 reconciliation.",
+      "Fresh SRE sender/authentication/suppression/organization-domain/provider checks remain mandatory at point of send.",
+      "SCC exact artifact acceptance/currentness remains independently owned."
+    ]
+  },
+  "state": "CANDIDATE_QUALIFICATION",
+  "nextVersionList": "NEXT_VERSION_IMPROVEMENT_LIST__R1368.md"
+}
