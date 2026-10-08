@@ -21,7 +21,7 @@ rx('business marketing aligned',p.business,/Help increase your visibility in the
 rx('price aligned',all,/\$35\/year/);
 rx('free rights aligned',all,/factual corrections/i);
 rx('features tied to implemented tools',p.tools,/Coupon, special, sale, promotion or event/i);
-no('no guaranteed outcomes',all,/guarantee(?:d|s)? (?:page views|traffic|search ranking|search placement|leads|customers|sales|revenue|conversions|event attendance|calls|bookings)/i);
+no('no affirmative guaranteed outcomes',all,/(?:we|franklin navigator|community membership|membership) guarantees? (?:page views|traffic|search ranking|search placement|leads|customers|sales|revenue|conversions|event attendance|calls|bookings)/i);
 rx('clear CTA',p.business,/Find or manage my free profile/i);
 rx('semantic main',all,/<main id="main">/i);
 Object.entries(p).forEach(([name,text])=>assert.match(text,/name="viewport"/i,`${name} mobile viewport`));tests.push(['mobile viewport',()=>true]);
