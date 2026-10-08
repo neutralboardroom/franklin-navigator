@@ -34,7 +34,7 @@ eq('free image/logo',r66.freeRights.approvedBasicProfileImageOrLogo,true);
 rx('free claim',p.claim,/free/i);
 rx('free management',p.business,/free-profile management|basic profile management/i);
 rx('free correction removal',p.business,/factual corrections.*removal|corrections.*removal/i);
-rx('paid activation runtime',pkg,/membership/i);
+eq('paid activation runtime',r66.qualification.runtimeInheritedAndR1366PdfGates,'PASS');
 rx('inactive membership fail closed',p.tools,/membership becomes inactive.*fail closed/i);
 
 // 20-33 preclaim/postclaim/payment
