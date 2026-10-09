@@ -1,0 +1,69 @@
+{
+  "schema": "franklin.local.release_receipt.v1",
+  "product": "FRANKLIN_NAVIGATOR",
+  "role": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "release": "FR-NAV1.30.68-HF3.13.50",
+  "predecessor": "FR-NAV1.30.67-HF3.13.49",
+  "baselineMainCommit": "c780e18dda0a7db369fddd5df825dfb385c0b0d5",
+  "candidateBranch": "r1368-final-reconcile-20261009",
+  "reconciliation": {
+    "mergedWorkstream": "PR83_MEMBER_FIRST_VALUE_AND_101_POINT_OWNER_COMMAND",
+    "preservedWorkstream": "PR84_PREVIEW_MEDIA_MANAGEMENT_QUALIFIED_CHANGES",
+    "sameVersionForkAvoided": true,
+    "stalePr84Closed": true
+  },
+  "runtimeState": {
+    "liveCommit": "f5a99db2f67bd76b7b01f54aeb37091153d04d8b",
+    "liveDeploy": "dep-db1jihpsrm7s73c04jlg",
+    "r1368RuntimeMutation": false,
+    "reason": "R1368 uses the already-qualified live promotion/media runtime; this successor changes Local public/member workflow surfaces and does not fork runtime behavior."
+  },
+  "desktopHeroLock": {
+    "status": "LOCKED_NO_CHANGE"
+  },
+  "profileState": {
+    "canonicalLocalSourceRelease": "FR-PF-PLATFORM-15.38",
+    "canonicalLocalSourceArtifactSha256": "e90cc02dfe026ea64d287eef59c12a067bfa9e55a3879e282fd7a50a30afd89b",
+    "pf1539Disposition": "SCC_ACCEPTED_FOR_SRE_CONTACT_OUTREACH_LAYER_NOT_PROVEN_AS_REPLACEMENT_LOCAL_CANONICAL_PROFILE_HANDOFF",
+    "pf1540Disposition": "QUALIFIED_CANDIDATE_NOT_YET_ACCEPTED_AS_LOCAL_CANONICAL_PROFILE_HANDOFF_AT_RECONCILIATION",
+    "canonicalPublicProfiles": 19002,
+    "runtimeScopeProfiles": 19003,
+    "aliases": 100,
+    "reviewHolds": 0
+  },
+  "materialChanges": [
+    "Post-payment/member-account path prioritizes completing the member profile, profile media, business information, promotions/events and public preview.",
+    "Member first-value page now provides a direct ordered setup path instead of generic activation language.",
+    "Resident-facing preview added for coupon, special, sale, promotion and event drafts before publication.",
+    "Authenticated preview controls added for attached promotional image/PDF media.",
+    "Business-facing remove and replace controls added for promotion media using existing qualified ownership and active-membership runtime gates.",
+    "Dynamic English/Spanish labels added for the new preview and media-management controls.",
+    "Free claim, factual correction, removal and legitimate basic management remain explicitly separate from optional $35/year Community Membership.",
+    "No guaranteed traffic, ranking, leads, customers, sales, bookings or revenue claims were introduced."
+  ],
+  "qualification": {
+    "pr83OwnerCommandBaseline": "PASS_101_OF_101_AND_MERGED_TO_MAIN",
+    "reconciledOwnerCommand": "PENDING_PR",
+    "r1368PreviewMediaTest": "PENDING_PR",
+    "r1365R1366VisibleMemberToolsRegression": "PENDING_PR",
+    "r1364MembershipVisibilityRegression": "PENDING_PR",
+    "r1367MobileProfileBoundaryRegression": "PENDING_PR",
+    "currentSuccessorFullRegression": "PENDING_PR",
+    "deterministicExactArtifact": "PENDING_PR",
+    "freshExtraction": "PENDING_PR",
+    "livePublicSmoke": "PENDING_POST_MERGE_DEPLOY"
+  },
+  "outreach": {
+    "localProductCopyCandidate": true,
+    "localMaySend": false,
+    "externalSendAuthorization": false,
+    "knownBlockers": [
+      "Fresh SRE evidence still requires repair or replacement of invalid prepared outreach profile URLs before those candidates can be certified.",
+      "Fresh Zoho sender/authentication, suppression, organization/domain, prior-outcome and provider checks remain mandatory at point of send.",
+      "SCC exact artifact/currentness acceptance remains independently owned."
+    ]
+  },
+  "state": "CANDIDATE_QUALIFICATION",
+  "nextVersionList": "NEXT_VERSION_IMPROVEMENT_LIST__R1368.md"
+}
