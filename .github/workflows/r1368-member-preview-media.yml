@@ -1,0 +1,25 @@
+name: R1368 member preview and media qualification
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: R1368 member preview/media
+        run: node test-r1368-member-preview-media.js
+      - name: R1368 consolidated owner command
+        run: node test-r1368-owner-command.js
+      - name: R1365/R1366 visible member tools regression
+        run: node test-r1365-member-tools-visible.js
+      - name: R1364 membership visibility regression
+        run: node test-r1364-membership-visibility.js
+      - name: R1367 mobile/profile boundary regression
+        run: node tests/r1367-mobile-home-and-profile-boundaries.cjs
+      - name: JavaScript syntax
+        run: node --check dist/assets/r1368-member-preview-extension.js
