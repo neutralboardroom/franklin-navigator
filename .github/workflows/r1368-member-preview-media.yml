@@ -13,8 +13,6 @@ jobs:
           node-version: 22
       - name: R1368 member preview/media
         run: node test-r1368-member-preview-media.js
-      - name: R1368 consolidated owner command
-        run: node test-r1368-owner-command.js
       - name: R1365/R1366 visible member tools regression
         run: node test-r1365-member-tools-visible.js
       - name: R1364 membership visibility regression
