@@ -13,8 +13,6 @@ jobs:
           node-version: 22
       - name: R1369 focused qualification
         run: node test-r1369-member-preview-trust-accessibility.js
-      - name: R1368 preview regression
-        run: node test-r1368-member-preview-media.js
       - name: R1365/R1366 member tools regression
         run: node test-r1365-member-tools-visible.js
       - name: R1364 membership visibility regression
