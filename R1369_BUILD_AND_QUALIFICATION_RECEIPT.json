@@ -1,0 +1,55 @@
+{
+  "schema": "franklin.local.release_receipt.v1",
+  "product": "FRANKLIN_NAVIGATOR",
+  "role": "LOCAL_COMMUNITY_PLATFORM",
+  "activeEdition": "FRANKLIN_TN",
+  "release": "FR-NAV1.30.69-HF3.13.51",
+  "predecessor": "FR-NAV1.30.68-HF3.13.50",
+  "baselineMainCommit": "555326d710ed6c76397af3fc0a9ad98e1da9b619",
+  "candidateBranch": "r1369-member-preview-trust-accessibility-20261010",
+  "runtimeState": {
+    "liveCommit": "f5a99db2f67bd76b7b01f54aeb37091153d04d8b",
+    "r1369RuntimeMutation": false,
+    "reason": "R1369 is a Local public/member-workspace trust and accessibility refinement using the already-qualified runtime APIs."
+  },
+  "scope": {
+    "publicProductMutation": true,
+    "membershipRuntimeMutation": false,
+    "canonicalProfileMutation": false,
+    "pricingMutation": false,
+    "outreachAuthorization": false,
+    "desktopHomepageHeroMutation": false
+  },
+  "materialChanges": [
+    "Fail-closed public action-link rendering now permits only http/https addresses before a resident-facing link is shown.",
+    "Internal promotion/media state tokens are translated into plain English/Spanish member-facing labels and unknown states fail closed to neutral copy.",
+    "Promotion/event previews now include a non-approval details check for missing resident-facing dates, locations and action links.",
+    "Dynamic media preview/remove/replace actions now expose aria-expanded, aria-busy, focus movement and polite screen-reader announcements.",
+    "Media preview renders only expected PDF or image MIME classes and does not silently display unsupported media types.",
+    "Mobile member-preview layout remains one-column at the existing narrow breakpoint; desktop homepage hero is untouched."
+  ],
+  "preservedRules": [
+    "Free claim, factual correction, removal and basic profile management remain free.",
+    "Community Membership remains optional and pricing is unchanged.",
+    "No payment buys factual truth or verification.",
+    "No guaranteed traffic, ranking, lead, customer, sale, booking or revenue claims.",
+    "Local does not authorize or send outreach.",
+    "Profile Factory remains canonical profile authority.",
+    "Desktop/laptop homepage hero presentation remains unchanged."
+  ],
+  "qualification": {
+    "r1369Focused": "PENDING_PR",
+    "r1368PreviewRegression": "PENDING_PR",
+    "r1365R1366MemberToolsRegression": "PENDING_PR",
+    "r1364MembershipVisibilityRegression": "PENDING_PR",
+    "r1367MobileProfileBoundaryRegression": "PENDING_PR",
+    "javascriptSyntax": "PENDING_PR",
+    "currentSuccessorFullRegression": "PENDING_PR",
+    "deterministicExactArtifact": "PENDING_PR",
+    "freshExtraction": "PENDING_PR",
+    "livePublicSmoke": "PENDING_POST_MERGE_DEPLOY"
+  },
+  "state": "CANDIDATE_QUALIFICATION",
+  "nextVersionList": "NEXT_VERSION_IMPROVEMENT_LIST__R1369.md",
+  "authorityTransfer": false
+}
