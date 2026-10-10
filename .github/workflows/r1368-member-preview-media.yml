@@ -1,7 +1,5 @@
 name: R1368 member preview and media qualification
 on:
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 jobs:
   qualify:
