@@ -1,0 +1,25 @@
+name: R1369 member preview trust and accessibility
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: R1369 focused qualification
+        run: node test-r1369-member-preview-trust-accessibility.js
+      - name: R1368 preview regression
+        run: node test-r1368-member-preview-media.js
+      - name: R1365/R1366 member tools regression
+        run: node test-r1365-member-tools-visible.js
+      - name: R1364 membership visibility regression
+        run: node test-r1364-membership-visibility.js
+      - name: R1367 mobile/profile boundary regression
+        run: node tests/r1367-mobile-home-and-profile-boundaries.cjs
+      - name: JavaScript syntax
+        run: node --check dist/assets/r1369-member-preview-accessibility.js
